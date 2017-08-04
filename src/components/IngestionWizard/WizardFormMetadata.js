@@ -34,7 +34,7 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
     <div className="form-group row">
       <label className="col-md-3 form-control-label">Categoria</label>
       <div className="col-md-9">
-         <div className="form-group">
+         <div className="form-group row">
           <select className="form-control" {...input}>
             <option value="ECON"  key='theme' defaultValue>ECONOMIA</option>
             {themes.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
@@ -45,13 +45,23 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
    </div>
 );
 
-const renderField = ({ input, label, type, value = '', meta: { touched, error } }) => (
+const renderField = ({ input, label, type, value = '', readonly, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
-   <div className="col-md-9">
-      <input {...input} placeholder={label} type={type} className="form-control"/>
-      {touched && error && <span>{error}</span>}
-    </div>
+      {(touched && error) ?
+      <div className="col-md-9"> 
+        <div className="form-group row has-danger">
+          <input {...input} placeholder={label} type={type} className="form-control form-control-danger"/>
+          <div className="form-control-feedback">{error}</div>
+        </div>
+      </div>
+      :
+      <div className="col-md-9">
+        <div className="form-group row">  
+          <input {...input} placeholder={label} readOnly={readonly} type={type} className="form-control"/>
+        </div>
+      </div>
+      }
   </div>
 )
 
@@ -238,7 +248,7 @@ class WizardFormMetadata extends Component {
     super(props)
   }
 
-  renderDropzoneInput = ({fields, input, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields, input, reset, meta : {touched, error} }) => 
       <div>     
       {fields.length == 0 &&
       <div className="form-group">
@@ -267,6 +277,7 @@ class WizardFormMetadata extends Component {
 
       {fields.map((test, index) => 
       (index == 0) ?
+      <div>
         <div className="form-group">
           <Field
             name={`${test}.tipo.name`}
@@ -276,6 +287,12 @@ class WizardFormMetadata extends Component {
             value={`${test}.tipo.name`}
           />
         </div>
+        <div className="form-group">
+          <div className="col-md-9 offset-md-8">
+            <button type="button" className="btn btn-primary" onClick={reset}>Clear Values</button>
+          </div>
+        </div>
+      </div>
       :
       <div className="form-group">
       <div className="card">
@@ -352,24 +369,22 @@ class WizardFormMetadata extends Component {
     const { handleSubmit, previousPage, pristine, submitting, reset, title, nomefile } = this.props;
     return (
     <form onSubmit={handleSubmit}>
-      
       <div className="form-group row">
-        <div className="col-md-5">
+        <div className="col-md-6">
           <FieldArray
             name="tests"
             component={this.renderDropzoneInput}
             title={title}
+            reset={reset}
           />
         </div>
-        <div className="col-md-2">
-          <button type="button" className="btn btn-primary" disabled={pristine || submitting} onClick={reset}>Clear Values</button>
-        </div>
-        <div className="col-md-5">
+        <div className="col-md-6">
           <Field
             name="title"
             type="text"
             component={renderField}
             label="Title"
+            readonly="readonly"
           />
           <Field
             name="notes"

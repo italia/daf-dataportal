@@ -11,6 +11,19 @@ import 'react-select/dist/react-select.css';
 const isStds = ['true'];
 const tipo_lettura = ['ts']
 
+const renderField = ({ input, label, type, value = '', meta: { touched, error } }) => (
+  <div>
+      {(touched && error) ?
+        <div className="form-group row has-danger">
+          <input {...input} placeholder={label} type={type} className="form-control form-control-danger"/>
+          <div className="form-control-feedback">{error}</div>
+        </div>
+      :
+          <input {...input} placeholder={label} type={type} className="form-control"/>
+      }
+  </div>
+)
+
 const renderTipoLettura = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
@@ -71,6 +84,13 @@ const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
         </div>
       </div> */
 
+/*
+        {(isFtp === 'sftp') 
+            ? <div className="form-group"><Field name="sftp" component={renderField} type="text" placeholder="sftp://..." /></div>
+            : <div className="form-group"><Field name="https" component={renderField} type="text" placeholder="https://.." /></div>
+        }
+*/
+
 
 let WizardFormThirdPage = props => {
   const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk, isPush, isFtp } = props;
@@ -86,10 +106,12 @@ let WizardFormThirdPage = props => {
         <label>SFTP or web service</label>
         <Field name="ftporws" component={ftpOrWebservice} />
       </div>
-        {(isFtp === 'sftp') 
-            ? <div className="form-group"><Field name="sftp" component="input" type="text" placeholder="sftp://..." /></div>
-            : <div className="form-group"><Field name="https" component="input" type="text" placeholder="https://.." /></div>
-        }
+      <div className="form-group">
+         {(isFtp === 'sftp') 
+            ? <Field name="sftp" component={renderField} type="text" label="sftp://..." />
+            : <Field name="sftp" component={renderField} type="text" label="https://.." />
+         }
+      </div>
       <div className="form-group">
         <label>Definisce uno standard?</label>
         <Field name="is_std" component={renderYesNoSelector} />
@@ -97,7 +119,7 @@ let WizardFormThirdPage = props => {
         {(isOk === 'true') &&
       <div className="form-group">
         <label>Uri Standard Associato</label>
-        <Field name="uri_associato" component="input" type="text" placeholder="uri associato" />
+        <Field name="uri_associato" component={renderField} type="text" label="uri associato" /><br/>
         <Field name="country" component={TestSelect}  url='http://localhost:9000/catalog-manager/v1/dataset-catalogs/standard-uris' />
       </div>}
 
