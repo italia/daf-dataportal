@@ -1,0 +1,6 @@
+{
+  "name": "IngestionWizard",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Ontologies.js"
+}
