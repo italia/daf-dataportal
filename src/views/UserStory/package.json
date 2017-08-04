@@ -1,0 +1,6 @@
+{
+  "name": "UserStory",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./UserStory.js"
+}
