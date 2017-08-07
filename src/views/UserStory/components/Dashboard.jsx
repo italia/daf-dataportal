@@ -9,6 +9,7 @@ import AddWidgetDialog from './AddWidgetDialog';
 import CustomFrame from './CustomFrame';
 
 // Widgets of the dashboard.
+import TextWidget from './widgets/TextWidget';
 import BarChart from './widgets/BarChart';
 import LineChart from './widgets/LineChart';
 import DoughnutChart from './widgets/DoughnutChart';
@@ -53,6 +54,10 @@ class Dash extends Component {
     this.state = {
       // Widgets that are available in the dashboard
       widgets: {
+        TextWidget: {
+          type: TextWidget,
+          title: 'Text',
+        },
         EngineTelemetricsWidget: {
           type: BarChart,
           title: 'Engine',
@@ -75,7 +80,12 @@ class Dash extends Component {
         rows: [{
           columns: [{
             className: 'col-md-12 col-sm-12 col-xs-12',
-            widgets: [{key: 'ShipVitalTelemetricsWidget'}],
+            widgets: [{
+                        key: 'TextWidget'
+                      }, 
+                      {
+                        key: 'ShipVitalTelemetricsWidget'
+                      }],
           }],
         }, {
           columns: [{

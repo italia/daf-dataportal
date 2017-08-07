@@ -66,10 +66,10 @@ class Sidebar extends Component {
               <NavLink to={'/charts'} className="nav-link" onClick={this.handleClick.bind(this)} activeClassName="active"><i className="icon-pie-chart"></i> Grafici</NavLink>
             </li>
             <li className="nav-item">
-              <a href={'http://localhost:8088'} className="nav-link"  activeClassName="active"><i className="icon-pie-chart"></i> Busness Intelligence</a>
+              <a href={'http://localhost:8088'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Busness Intelligence</a>
             </li>
             <li className="nav-item">
-              <a href={'http://localhost/jupyter'} className="nav-link"  activeClassName="active"><i className="icon-pie-chart"></i> Data Science</a>
+              <a href={'http://localhost/jupyter'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>
             </li>
           </ul>
         </nav>

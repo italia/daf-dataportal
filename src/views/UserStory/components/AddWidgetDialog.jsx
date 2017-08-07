@@ -13,6 +13,7 @@ const AddWidgetDialog = ({ widgets, isModalOpen, onRequestClose, onWidgetSelect}
   });
   return (
     <Modal
+      contentLabel="Add a widget"
       className="Modal__Bootstrap modal-dialog"
       isOpen={isModalOpen}>
       <div className="modal-content">
