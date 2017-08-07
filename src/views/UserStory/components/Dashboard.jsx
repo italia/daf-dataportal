@@ -94,7 +94,9 @@ class Dash extends Component {
           }, {
             className: 'col-md-4 col-sm-4 col-xs-4',
             widgets: [{key: 'PerformanceWidget'}],
-          },
+          }]
+        }, {
+          columns: [
            {
             className: 'col-md-12 col-sm-12 col-xs-12',
             widgets: [{key: 'IframeTest'}],
@@ -223,7 +225,11 @@ class Dash extends Component {
     <Container>
       <AddWidgetDialog widgets={this.state.widgets} isModalOpen={this.state.isModalOpen} onRequestClose={this.onRequestClose} onWidgetSelect={this.handleWidgetSelection}/>
       <Header />
-      <EditBar onEdit={this.toggleEdit} onAddRow={this.addRow}/>
+      <EditBar 
+        onEdit={this.toggleEdit} 
+        onAddRow={this.addRow}
+        layout={this.state.layout}
+        />
       <Dashboard
         frameComponent={CustomFrame}
         onRemove={this.onRemove}
