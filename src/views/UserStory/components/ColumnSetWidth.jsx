@@ -10,6 +10,8 @@ class ColumnSetWidth extends React.Component {
         }
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
+        this.removeCol = this.removeCol.bind(this)
+        
     }
 
     openModal = function(e){
@@ -35,7 +37,6 @@ class ColumnSetWidth extends React.Component {
         rows.splice(to, 0, rows.splice(from, 1)[0]);
 
         this.props.setLayout(this.props.layout);
-        this.closeModal();
     }
 
     moveDown = function(index) {
@@ -46,7 +47,17 @@ class ColumnSetWidth extends React.Component {
         rows.splice(to, 0, rows.splice(from, 1)[0]);
 
         this.props.setLayout(this.props.layout);
-        this.closeModal();
+    }
+    
+    removeCol = function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.nativeEvent.stopImmediatePropagation();
+
+        let rows = this.props.layout.rows;
+        rows.splice(this.props.index, 1);
+
+        this.props.setLayout(this.props.layout);
     }
 
     setCol = function (size, index, align) {
@@ -117,6 +128,9 @@ class ColumnSetWidth extends React.Component {
             <div>
                 <div>
                     <a href="" onClick={this.openModal}>Change width</a>
+                </div>
+                <div>
+                    <a href="" onClick={this.removeCol}>Remove Column</a>
                 </div>
                 <button type="button" className="btn btn-sm btn-link" disabled={this.props.index==this.props.layout.rows.length-1} aria-label="Move Down"
                     onClick={() => this.moveUp(this.props.index)}>
