@@ -26,7 +26,29 @@ class ColumnSetWidth extends React.Component {
             isModalOpen: false
         })
     }
-    
+
+    moveUp = function(index) {
+        let rows = this.props.layout.rows;
+        let from = index;
+        let to = index + 1;
+
+        rows.splice(to, 0, rows.splice(from, 1)[0]);
+
+        this.props.setLayout(this.props.layout);
+        this.closeModal();
+    }
+
+    moveDown = function(index) {
+        let rows = this.props.layout.rows;
+        let from = index;
+        let to = index - 1;
+
+        rows.splice(to, 0, rows.splice(from, 1)[0]);
+
+        this.props.setLayout(this.props.layout);
+        this.closeModal();
+    }
+
     setCol = function (size, index, align) {
 
         let sizeClass = "col-xs-12"; 
@@ -93,7 +115,17 @@ class ColumnSetWidth extends React.Component {
     render() {
         return (
             <div>
-                <a href="" onClick={this.openModal}>Change width</a>
+                <div>
+                    <a href="" onClick={this.openModal}>Change width</a>
+                </div>
+                <button type="button" className="btn btn-sm btn-link" disabled={this.props.index==this.props.layout.rows.length-1} aria-label="Move Down"
+                    onClick={() => this.moveUp(this.props.index)}>
+                    <span className="icon-arrow-down" aria-hidden="true"></span>
+                </button>
+                <button type="button" className="btn btn-sm btn-link" disabled={this.props.index==0} aria-label="Move Up"
+                    onClick={() => this.moveDown(this.props.index)}>
+                    <span className="icon-arrow-up" aria-hidden="true"></span>
+                </button>
 
                 <Modal
                     contentLabel="Set width columns"

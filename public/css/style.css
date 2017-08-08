@@ -8992,8 +8992,9 @@ hr.transparent {
 }
 
 .h-layout {
-  height: 80px;
-  line-height: 80px;
+  height: 80px;    
+  line-height: 23px;
+  margin-top: 8px;
 }
 
 .view-layout .layout-box {
