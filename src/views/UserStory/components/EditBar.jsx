@@ -1,47 +1,8 @@
 import React, { PropTypes } from 'react';
-
+import ColumnSetWidth from './ColumnSetWidth';
 
 const EditBar = ({ onEdit, layout, setLayout }) => {
 
-  var setCol = function (size, index) {
-
-    let sizeClass = "col-xs-12"; 
-
-    //set size class
-    if (size == 1) {
-      sizeClass = "col-md-12 col-sm-12 col-xs-12"; 
-    } else if (size == 2) {
-      sizeClass = "col-md-6 col-sm-6 col-xs-6"; 
-    } else if (size == 3) {
-      sizeClass = "col-md-4 col-sm-4 col-xs-4"; 
-    } else if (size == 4) {
-      sizeClass = "col-md-3 col-sm-3 col-xs-3"; 
-    }
-
-    //add or remove columns on row
-    for(let i=0; i < size; i++) {
-
-      if (i <= size) {
-        //crea colonna
-        if (!layout.rows[index].columns[i]) {
-          layout.rows[index].columns[i] = {
-              className: sizeClass,
-              widgets: []
-            }
-        } else {
-          //update size col
-          layout.rows[index].columns[i].className=sizeClass;
-        }
-      }
-
-      //rimuovi colonna
-      if (i > size && layout.rows[index].columns[i]) {
-        layout.rows[index].columns[i] = undefined;
-      }
-    }
-
-    setLayout(layout);
-  }
 
   var addRow = function () { 
     let row = {
@@ -99,12 +60,17 @@ const EditBar = ({ onEdit, layout, setLayout }) => {
                 layout.rows.map(function(row, c) {
                 return (
                   <div className="row">
-                    <div className="btn-group" role="group" aria-label="Columns number">
+                    <ColumnSetWidth 
+                      index={c} 
+                      setLayout={setLayout} 
+                      layout={layout}>
+                    </ColumnSetWidth>
+                    {/* <div className="btn-group" role="group" aria-label="Columns number">
                       <button type="button" className="btn btn-default" onClick={() => setCol(1, c)}>1</button>
                       <button type="button" className="btn btn-default" onClick={() => setCol(2, c)}>2</button>
                       <button type="button" className="btn btn-default" onClick={() => setCol(3, c)}>3</button>
                       <button type="button" className="btn btn-default" onClick={() => setCol(4, c)}>4</button>
-                    </div>
+                    </div> */}
                   </div>
                   );
                 })

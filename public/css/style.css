@@ -8922,6 +8922,8 @@ hr.transparent {
     border-right-color: #4dbd74; }
 
     
+/* USER STORY */
+
 .mb-20{
     margin-bottom: 20px;
 }
@@ -8932,4 +8934,51 @@ hr.transparent {
   padding: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.modal-content {
+  top: 50px;
+}
+
+.layout-box {
+  height: 80px;
+  background-color: #f2f2f2;
+  line-height: 80px;
+  text-align: center;
+  color: #333;
+  font-size: 11px;
+  font-weight: bold;
+  margin: 0px;
+  cursor: pointer;
+}
+
+.layout-container {
+  padding: 10px;
+}
+
+.layout-box:hover {
+  background-color: #e2e2e2;
+}
+
+.layout-box.active {
+  background: -webkit-linear-gradient(top,#eee,#e0e0e0);
+  background: -moz-linear-gradient(top,#eee,#e0e0e0);
+  background: linear-gradient(top,#eee,#e0e0e0);
+}
+
+.layout-box div[class*=" col-"] {
+  border-left: 1px solid #999;
+}
+
+.layout-box {
+  border: 1px solid #999;
+  border-left: 0px;
+}
+
+.layout-box .col-xs-3 {
+  padding: 0px;
+}
+
+.p-s-10 {
+  padding: 0px 10px;
 }
