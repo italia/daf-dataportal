@@ -8924,6 +8924,14 @@ hr.transparent {
     
 /* USER STORY */
 
+.mt-20{
+    margin-top: 20px;
+}
+
+.mt-40{
+    margin-top: 40px;
+}
+
 .mb-20{
     margin-bottom: 20px;
 }
@@ -8981,4 +8989,17 @@ hr.transparent {
 
 .p-s-10 {
   padding: 0px 10px;
+}
+
+.h-layout {
+  height: 80px;
+  line-height: 80px;
+}
+
+.view-layout .layout-box {
+  border-top: 0px;
+}
+
+.view-layout .layout-box:first-child {
+  border-top: 1px solid #999;
 }

@@ -93,110 +93,110 @@ class ColumnSetWidth extends React.Component {
     render() {
         return (
             <div>
-                <a href="" onClick={this.openModal}>Customize columns</a>
+                <a href="" onClick={this.openModal}>Change width</a>
 
                 <Modal
                     contentLabel="Set width columns"
                     className="Modal__Bootstrap modal-dialog"
                     isOpen={this.state.isModalOpen}>
                     <div className="modal-content">
-                    <div className="modal-header">
-                        <button type="button" className="close" onClick={this.closeModal}>
-                        <span aria-hidden="true">&times;</span>
-                        <span className="sr-only">Close</span>
-                        </button>
-                        <h4 className="modal-title">Customize columns</h4>
-                    </div>
-                    <div className="modal-body">
-                        <div className="row p-s-10">
-                            <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                
-                                <div className="row layout-box" onClick={() => this.setCol(1, this.props.index)}>
-                                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        100%
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                
-                                <div className="row layout-box" onClick={() => this.setCol(3, this.props.index)}>
-                                    <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        33%
-                                    </div>
-                                    <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        33%
-                                    </div>
-                                    <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        33%
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                
-                                <div className="row layout-box" onClick={() => this.setCol(4, this.props.index)}>
-                                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                        25%
-                                    </div>
-                                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                        25%
-                                    </div>
-                                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                        25%
-                                    </div>
-                                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                        25%
-                                    </div>
-                                </div>
-
-                            </div>
+                        <div className="modal-header">
+                            <button type="button" className="close" onClick={this.closeModal}>
+                            <span aria-hidden="true">&times;</span>
+                            <span className="sr-only">Close</span>
+                            </button>
+                            <h4 className="modal-title">Customize columns</h4>
                         </div>
+                        <div className="modal-body">
+                            <div className="row p-s-10">
+                                <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    
+                                    <div className="row layout-box" onClick={() => this.setCol(1, this.props.index)}>
+                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            100%
+                                        </div>
+                                    </div>
 
-                        
-                        <div className="row p-s-10">
-                            <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                
-                                <div className="row layout-box" onClick={() => this.setCol(2, this.props.index, 1)}>
-                                    <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        30%
-                                    </div>
-                                    <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                        70%
-                                    </div>
                                 </div>
+                                <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    
+                                    <div className="row layout-box" onClick={() => this.setCol(3, this.props.index)}>
+                                        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            33%
+                                        </div>
+                                        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            33%
+                                        </div>
+                                        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            33%
+                                        </div>
+                                    </div>
 
-                            </div>
-                            <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                
-                                <div className="row layout-box" onClick={() => this.setCol(2, this.props.index)}>
-                                    <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        50%
-                                    </div>
-                                    <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        50%
-                                    </div>
                                 </div>
+                                <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    
+                                    <div className="row layout-box" onClick={() => this.setCol(4, this.props.index)}>
+                                        <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                            25%
+                                        </div>
+                                        <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                            25%
+                                        </div>
+                                        <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                            25%
+                                        </div>
+                                        <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                            25%
+                                        </div>
+                                    </div>
 
-                            </div>
-                            <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                
-                                <div className="row layout-box" onClick={() => this.setCol(2, this.props.index, 2)}>
-                                    <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                        70%
-                                    </div>
-                                    <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        30%
-                                    </div>
                                 </div>
-
                             </div>
+
+                            
+                            <div className="row p-s-10">
+                                <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    
+                                    <div className="row layout-box" onClick={() => this.setCol(2, this.props.index, 1)}>
+                                        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            30%
+                                        </div>
+                                        <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                            70%
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    
+                                    <div className="row layout-box" onClick={() => this.setCol(2, this.props.index)}>
+                                        <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            50%
+                                        </div>
+                                        <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            50%
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div className="layout-container col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    
+                                    <div className="row layout-box" onClick={() => this.setCol(2, this.props.index, 2)}>
+                                        <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                            70%
+                                        </div>
+                                        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            30%
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </div>
-
-                    </div>
-                    <div className="modal-footer">
-                        <button onClick={this.closeModal} type="button" className="btn btn-default" >Close</button>
-                    </div>
+                        <div className="modal-footer">
+                            <button onClick={this.closeModal} type="button" className="btn btn-default" >Close</button>
+                        </div>
                     </div>
                 </Modal>
                     

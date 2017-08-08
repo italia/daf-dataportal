@@ -31,19 +31,19 @@ const EditBar = ({ onEdit, layout, setLayout }) => {
           Customize Layout
         </h4>
 
-        <div className="container">
+        <div className="container view-layout mt-40">
           <div className="row">
             <div className="col-sm-6 col-md-4">
               
               {
                 layout.rows.map(function(row) {
                 return (
-                  <div className="row">
+                  <div className="row layout-box">
                     {
                       row.columns.map(function(col) {
                       return (
-                          <div className="col-xs-1">
-                            x
+                          <div className={col.className}>
+                          
                           </div>
                         );
                       })
@@ -59,7 +59,7 @@ const EditBar = ({ onEdit, layout, setLayout }) => {
               {
                 layout.rows.map(function(row, c) {
                 return (
-                  <div className="row">
+                  <div className="row h-layout">
                     <ColumnSetWidth 
                       index={c} 
                       setLayout={setLayout} 
@@ -80,6 +80,7 @@ const EditBar = ({ onEdit, layout, setLayout }) => {
           
         </div>
 
+        <div className="clearfix mt-20 mb-20"></div>
         <button type="button" className="btn btn-default btn-xs" onClick={addRow}>
           <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
             Add Row
