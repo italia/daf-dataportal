@@ -37,21 +37,26 @@
    },
    "widgets":{
       "TextWidget":{
+         "type": "TextWidget",
          "title":"Text",
          "props":{
             "text":"Insert your text here"
          }
       },
       "EngineTelemetricsWidget":{
+         "type": "BarChart",
          "title":"Engine"
       },
       "PerformanceWidget":{
+         "type": "DoughnutChart",
          "title":"Reactor Temp"
       },
       "ShipVitalTelemetricsWidget":{
+         "type": "LineChart",
          "title":"Reactor Telemetrics"
       },
       "IframeTest":{
+         "type": "iframe",
          "title":"Test Iframe"
       }
    }

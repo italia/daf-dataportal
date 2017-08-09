@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Components from 'react';
 import Dashboard, { addWidget } from 'react-dazzle';
 
 // App components
@@ -59,72 +60,65 @@ class Dash extends Component {
     let response = widgetService.get();
 
     response.then((config) => {
-      console.log(config);
+
+      for(let i in config.widgets) {
+        let wid = config.widgets[i];
+        let type = wid.type;
+
+        let components = {
+          "TextWidget": TextWidget, 
+          "BtnControlWidget": BtnControlWidget,
+          "BarChart": BarChart,
+          "LineChart": LineChart,
+          "DoughnutChart": DoughnutChart, 
+          "IframeWid": IframeWid
+        }
+
+        wid.type = components[wid.type];
+        
+        /*
+        var Hello = React.createClass({
+            render: function() {
+              console.log(Components);
+                var MyComponent = Components[this.props.component.type  + "Component"];
+                console.log(MyComponent);
+                return <div>
+                  <this.props.component.type>
+                    {this.props.component.value} {this.props.component.type}
+                    <MyComponent />
+                  </this.props.component.type>
+                </div>
+            }
+        });
+
+
+        
+        wid.type = (wid) => 
+        <div>
+          <Hello component={{type: type, value:'This is my value'}} />
+        </div>
+        */
+
+        console.log(wid);
+      }
+      
+      //console.log(config.widgets);
+      this.state.widgets = config.widgets;
+      this.setLayout(config.layout);
     });
 
     this.state = {
       // Widgets that are available in the dashboard
-      widgets: {
-        TextWidget: {
-          type: TextWidget,
-          title: 'Text',
-          props: {
-            text: "Insert your text here"
-          }
-        },
-        EngineTelemetricsWidget: {
-          type: BarChart,
-          title: 'Engine',
-        },
-        PerformanceWidget: {
-          type: DoughnutChart,
-          title: 'Reactor Temp',
-        },
-        ShipVitalTelemetricsWidget: {
-          type: LineChart,
-          title: 'Reactor Telemetrics',
-        },
-        IframeTest : {
-          type: iframe,
-          title : "Test Iframe"
-        }
-      },
+      widgets: {},
       // Layout of the dashboard
       layout: {
-        rows: [
-          {
-            columns: [
-              {
-              className: 'col-md-12 col-sm-12 col-xs-12',
-              widgets: [{ key: 'TextWidget' }],
-              }
-            ],
-          }],
+        rows: []
       },
       editMode: true,
       isModalOpen: false,
-      addWidgetOptions: null,
+      addWidgetOptions: null
     };
  
-    // add control button
-    this.state.layout.rows.map((row, index) =>{
-      
-      this.state.widgets['BtnControlWidget_' + index] = {
-        type: BtnControlWidget,
-        title: '',
-        props: {
-          layout: this.state.layout,
-          index: index,
-          setLayout: this.setLayout
-        }
-      }
-
-      row.columns.push({
-          className: 'col-w-30',
-          widgets: [{key: 'BtnControlWidget_' + index}],
-        })
-    }) 
-
   }
 
   componentDidMount(){
