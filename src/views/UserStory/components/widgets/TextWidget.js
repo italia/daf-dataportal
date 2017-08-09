@@ -14,8 +14,8 @@ class TextWidget extends Component {
     this.state = {
         text: props.text
     };
-    const contentBlock = htmlToDraft(html);
-    if (contentBlock) {
+    if (html) {
+      const contentBlock = htmlToDraft(html);
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
       const editorState = EditorState.createWithContent(contentState);
       this.state = {

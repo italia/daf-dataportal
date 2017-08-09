@@ -255,6 +255,7 @@ class Dash extends Component {
     <Container>
       <AddWidgetDialog widgets={this.state.widgets} isModalOpen={this.state.isModalOpen} onRequestClose={this.onRequestClose} onWidgetSelect={this.handleWidgetSelection}/>
       <Header />
+      <div id="print-mount"></div>
       <Dashboard
         frameComponent={CustomFrame}
         onRemove={this.onRemove}

@@ -9039,3 +9039,11 @@ hr.transparent {
 .x_panel.fixed_height_320 {
   height: auto!important;
 }
+
+.preview-widget {
+  width: 70%;
+  display: inline-block;
+  overflow: hidden;
+  height: 100px;
+  margin-right: 20px;
+}

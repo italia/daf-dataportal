@@ -1,17 +1,26 @@
 import React, { PropTypes } from 'react';
 import Modal from 'react-modal';
+import ReactDOM from 'react-dom';
 
 const AddWidgetDialog = ({ widgets, isModalOpen, onRequestClose, onWidgetSelect}) => {
   const widgetItems = Object.keys(widgets).map((widget, key) => {
+    let wid = widgets[widget].type;
+ 
     if(widget && widget.indexOf("BtnControlWidget") != 0)
       return (
         <div key={key} className="list-group">
           <a href="#/dash" className="list-group-item" onClick={() => onWidgetSelect(widget)}>
-            <h6 className="list-group-item-heading">{widgets[widget].title}</h6>
+            <h6 className="list-group-item-heading">
+              <div className="preview-widget">
+                {React.createElement(wid)}
+              </div>
+              {widgets[widget].title}
+            </h6>
           </a>
         </div>
       );
   });
+
   return (
     <Modal
       contentLabel="Add a widget"
