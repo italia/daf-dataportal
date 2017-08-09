@@ -9027,3 +9027,23 @@ hr.transparent {
 .add-widget-button {
   display: none;
 }
+
+.rdw-editor-main {
+    min-height: 150px;
+    border: 1px solid #F1F1F1;
+    margin-bottom: 15px;
+    padding: 0px 10px;
+    cursor: text;
+}
+
+.x_panel.fixed_height_320 {
+  height: auto!important;
+}
+
+.preview-widget {
+  width: 70%;
+  display: inline-block;
+  overflow: hidden;
+  height: 100px;
+  margin-right: 20px;
+}

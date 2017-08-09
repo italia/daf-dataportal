@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 class BtnControlWidget extends React.Component {
     constructor() {
         super();
-            this.state = {
+        this.state = {
         }
         
         this.openModal = this.openModal.bind(this)
