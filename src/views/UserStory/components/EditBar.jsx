@@ -1,102 +1,88 @@
 import React, { PropTypes } from 'react';
-import ColumnSetWidth from './ColumnSetWidth';
+import AddWidgetDialog from './AddWidgetDialog';
 
-const EditBar = ({ onEdit, layout, setLayout }) => {
-
-
-  var addRow = function () { 
-    let row = {
-          columns: [{
-            className: 'col-md-12 col-sm-12 col-xs-12',
-            widgets: [],
-          }],
+class EditBar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isModalOpen: false
         }
-    layout.rows.unshift(row);
-    setLayout(layout);
+
+        this.addWidget = this.addWidget.bind(this)
+        this.addRow = this.addRow.bind(this)
+        this.onWidgetSelect = this.onWidgetSelect.bind(this)
+    }
+
+  addRow = function (widgetName) { 
+    let columns = [{
+        className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12',
+        widgets: [],
+      }];
+    
+    if(widgetName && typeof widgetName == "string") {
+      columns[0].widgets.push({key: widgetName});
+    }
+
+    let row = {columns: columns}
+
+    this.props.layout.rows.push(row);
+    this.props.setLayout(this.props.layout);
   }
 
-  return (
-    <div className="row edit-bar">
-      {/* 
-      <div className="col-sm-12 text-right">
-        <button type="button" className="btn btn-default btn-xs" onClick={onEdit}>
-          <span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-            Edit
+  addWidget = function() {
+    this.setState({
+      isModalOpen: true
+    });
+  }
+
+  onWidgetSelect = function(widgetName) {
+    this.addRow(widgetName)
+    this.onRequestClose();
+  }
+
+  onRequestClose = () => {
+    this.setState({
+      isModalOpen: false,
+    });
+  }
+
+  render = function(){
+
+    return (
+      <div className="row edit-bar">
+
+        <div className="box">
+          <button type="button" className="btn btn-default btn-xs" onClick={this.addRow}>
+            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              Add Row
           </button>
-      </div> 
-      */}
-
-      <div className="box">
-        <h4 className="mb-20">
-          Customize Layout
-        </h4>
-
-        <div className="container view-layout mt-40">
-          <div className="row">
-            <div className="col-sm-6 col-md-4">
-              
-              {
-                layout.rows.map(function(row) {
-                return (
-                  <div className="row layout-box">
-                    {
-                      row.columns.map(function(col) {
-                      return (
-                          <div className={col.className}>
-                          
-                          </div>
-                        );
-                      })
-                    }
-                  </div>
-                  );
-                })
-              }
-              
-            </div>
-            <div className="col-sm-6 col-md-4">
-
-              {
-                layout.rows.map(function(row, c) {
-                return (
-                  <div className="row h-layout">
-                    <ColumnSetWidth 
-                      index={c} 
-                      setLayout={setLayout} 
-                      layout={layout}>
-                    </ColumnSetWidth>
-                    {/* <div className="btn-group" role="group" aria-label="Columns number">
-                      <button type="button" className="btn btn-default" onClick={() => setCol(1, c)}>1</button>
-                      <button type="button" className="btn btn-default" onClick={() => setCol(2, c)}>2</button>
-                      <button type="button" className="btn btn-default" onClick={() => setCol(3, c)}>3</button>
-                      <button type="button" className="btn btn-default" onClick={() => setCol(4, c)}>4</button>
-                    </div> */}
-                  </div>
-                  );
-                })
-              }
-            </div>
-          </div>
           
+          <button type="button" className="btn btn-default btn-xs" onClick={this.addWidget}>
+            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              Add Widget
+          </button>
+
         </div>
 
-        <div className="clearfix mt-20 mb-20"></div>
-        <button type="button" className="btn btn-default btn-xs" onClick={addRow}>
-          <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            Add Row
-        </button>
+        <AddWidgetDialog
+          widgets={this.props.widgets}
+          isModalOpen={this.state.isModalOpen}
+          onWidgetSelect={this.onWidgetSelect}
+          onRequestClose={this.onRequestClose}
+        >
+        </AddWidgetDialog>
       </div>
 
-      <div className="clearfix"></div>
-    </div>
-
-  );
+    );
+  }
 };
 
+/* 
 EditBar.propTypes = {
   onEdit: PropTypes.func,
   setLayout: PropTypes.func,
-  layout: PropTypes.object
-};
+  layout: PropTypes.object,
+  widgets: PropTypes.object
+}; */
 
 export default EditBar;

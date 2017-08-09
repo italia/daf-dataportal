@@ -1,15 +1,43 @@
 import React from 'react';
+import { Bar } from 'react-chartjs';
+import { getRandomInt } from './util';
 import Modal from 'react-modal';
 
-
-class ColumnSetWidth extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isModalOpen: false
+class BtnControlWidget extends React.Component {
+    constructor() {
+        super();
+            this.state = {
         }
+        
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
+    }
+
+    moveDown = function(index) {
+        let rows = this.props.layout.rows;
+        let from = index;
+        let to = index + 1;
+
+        rows.splice(to, 0, rows.splice(from, 1)[0]);
+        this.props.setLayout(this.props.layout);
+    }
+
+    moveUp = function(index) {
+        console.log(this.props.layout.rows[0].columns[0].widgets)
+        debugger
+        let rows = this.props.layout.rows;
+        let from = index;
+        let to = index - 1;
+
+        rows.splice(to, 0, rows.splice(from, 1)[0]);
+        this.props.setLayout(this.props.layout);
+    }
+
+    removeCol = function () {
+        let rows = this.props.layout.rows;
+        rows.splice(this.props.index, 1);
+
+        this.props.setLayout(this.props.layout);
     }
 
     openModal = function(e){
@@ -25,28 +53,6 @@ class ColumnSetWidth extends React.Component {
         this.setState({
             isModalOpen: false
         })
-    }
-
-    moveUp = function(index) {
-        let rows = this.props.layout.rows;
-        let from = index;
-        let to = index + 1;
-
-        rows.splice(to, 0, rows.splice(from, 1)[0]);
-
-        this.props.setLayout(this.props.layout);
-        this.closeModal();
-    }
-
-    moveDown = function(index) {
-        let rows = this.props.layout.rows;
-        let from = index;
-        let to = index - 1;
-
-        rows.splice(to, 0, rows.splice(from, 1)[0]);
-
-        this.props.setLayout(this.props.layout);
-        this.closeModal();
     }
 
     setCol = function (size, index, align) {
@@ -70,6 +76,7 @@ class ColumnSetWidth extends React.Component {
             max = this.props.layout.rows[index].columns.length;
         }
 
+        let control = this.props.layout.rows[index].columns.pop();
         for(let i=0; i < max; i++) {
 
             //set column 30/70
@@ -108,24 +115,37 @@ class ColumnSetWidth extends React.Component {
             }
         }
 
+        this.props.layout.rows[index].columns.push(control);
+
         this.props.setLayout(this.props.layout);
         this.closeModal();
     }
 
     render() {
         return (
-            <div>
-                <div>
-                    <a href="" onClick={this.openModal}>Change width</a>
-                </div>
-                <button type="button" className="btn btn-sm btn-link" disabled={this.props.index==this.props.layout.rows.length-1} aria-label="Move Down"
-                    onClick={() => this.moveUp(this.props.index)}>
-                    <span className="icon-arrow-down" aria-hidden="true"></span>
+            <div class="btn-control-widget">
+                { this.props.index != 0 &&
+                    <button type="button" className="btn btn-sm btn-default" aria-label="Move Up"
+                        onClick={() => this.moveUp(this.props.index)}>
+                        <span className="icon-arrow-up" aria-hidden="true"></span>
+                    </button>
+                }
+                { this.props.index != this.props.layout.rows.length - 1 &&
+                    <button type="button" className="btn btn-sm btn-default" aria-label="Move Down"
+                        onClick={() => this.moveDown(this.props.index)}>
+                        <span className="icon-arrow-down" aria-hidden="true"></span>
+                    </button>
+                }
+                <button type="button" className="btn btn-sm btn-default" aria-label="Remove"
+                    onClick={() => this.removeCol()}>
+                    <span className="icon-trash" aria-hidden="true"></span>
                 </button>
-                <button type="button" className="btn btn-sm btn-link" disabled={this.props.index==0} aria-label="Move Up"
-                    onClick={() => this.moveDown(this.props.index)}>
-                    <span className="icon-arrow-up" aria-hidden="true"></span>
+                
+                <button type="button" className="btn btn-sm btn-default" aria-label="Change witdh"
+                    onClick={this.openModal}>
+                    <span className="icon-pencil" aria-hidden="true"></span>
                 </button>
+
 
                 <Modal
                     contentLabel="Set width columns"
@@ -231,10 +251,9 @@ class ColumnSetWidth extends React.Component {
                         </div>
                     </div>
                 </Modal>
-                    
             </div>
-        )
-    }
+        );
+  }
 }
 
-export default ColumnSetWidth;
+export default BtnControlWidget;

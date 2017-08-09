@@ -9004,3 +9004,26 @@ hr.transparent {
 .view-layout .layout-box:first-child {
   border-top: 1px solid #999;
 }
+
+.col-w-30 {
+  z-index: 100;
+  border: none!important;
+  width: 30px;
+  margin-left: -38px;
+  padding: 0px!important;
+  max-height: 150px;
+}
+
+.col-w-30 .x_panel {
+  padding: 0px;
+  background-color: transparent;
+  border: none;
+}
+
+.col-w-30 .x_title {
+  display: none;
+}
+
+.add-widget-button {
+  display: none;
+}

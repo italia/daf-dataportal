@@ -3,13 +3,14 @@ import Modal from 'react-modal';
 
 const AddWidgetDialog = ({ widgets, isModalOpen, onRequestClose, onWidgetSelect}) => {
   const widgetItems = Object.keys(widgets).map((widget, key) => {
-    return (
-      <div key={key} className="list-group">
-        <a href="#/dash" className="list-group-item" onClick={() => onWidgetSelect(widget)}>
-          <h6 className="list-group-item-heading">{widgets[widget].title}</h6>
-        </a>
-      </div>
-    );
+    if(widget && widget.indexOf("BtnControlWidget") != 0)
+      return (
+        <div key={key} className="list-group">
+          <a href="#/dash" className="list-group-item" onClick={() => onWidgetSelect(widget)}>
+            <h6 className="list-group-item-heading">{widgets[widget].title}</h6>
+          </a>
+        </div>
+      );
   });
   return (
     <Modal
