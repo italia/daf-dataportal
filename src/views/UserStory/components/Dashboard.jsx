@@ -16,6 +16,9 @@ import LineChart from './widgets/LineChart';
 import DoughnutChart from './widgets/DoughnutChart';
 import IframeWid from './widgets/Iframe';
 
+// Services
+import WidgetService from './services/WidgetService';
+
 // We are using bootstrap as the UI library
 //import 'bootstrap/dist/css/bootstrap.css';
 
@@ -26,6 +29,7 @@ import 'react-dazzle/lib/style/style.css';
 import '../styles/custom.css';
 
 
+const widgetService = new WidgetService();
 const IframeContainer = (url) => 
 <div>
    <Iframe  iframe={url} />
@@ -51,6 +55,12 @@ class Dash extends Component {
   constructor(props) {
     super(props);
     const iframe = () => <Iframe iframe='<iframe width="100%"  height="300" seamless frameBorder="0" scrolling="no" src="http://localhost:8088/superset/explore/table/3/?form_data=%7B%22datasource%22%3A%223__table%22%2C%22viz_type%22%3A%22line%22%2C%22slice_id%22%3A20%2C%22granularity_sqla%22%3A%22ds%22%2C%22time_grain_sqla%22%3A%22Time+Column%22%2C%22since%22%3A%22100+years+ago%22%2C%22until%22%3A%22now%22%2C%22metrics%22%3A%5B%22sum__num%22%5D%2C%22groupby%22%3A%5B%22name%22%5D%2C%22limit%22%3A%2225%22%2C%22timeseries_limit_metric%22%3Anull%2C%22show_brush%22%3Afalse%2C%22show_legend%22%3Atrue%2C%22rich_tooltip%22%3Atrue%2C%22show_markers%22%3Afalse%2C%22x_axis_showminmax%22%3Atrue%2C%22line_interpolation%22%3A%22linear%22%2C%22contribution%22%3Afalse%2C%22x_axis_label%22%3A%22%22%2C%22x_axis_format%22%3A%22smart_date%22%2C%22y_axis_label%22%3A%22%22%2C%22y_axis_bounds%22%3A%5Bnull%2Cnull%5D%2C%22y_axis_format%22%3A%22.3s%22%2C%22y_log_scale%22%3Afalse%2C%22rolling_type%22%3A%22None%22%2C%22time_compare%22%3Anull%2C%22num_period_compare%22%3A%22%22%2C%22period_ratio_type%22%3A%22growth%22%2C%22resample_how%22%3Anull%2C%22resample_rule%22%3Anull%2C%22resample_fillmethod%22%3Anull%2C%22where%22%3A%22%22%2C%22having%22%3A%22%22%2C%22filters%22%3A%5B%5D%7D&standalone=true&height=400"></iframe>' />
+    
+    let response = widgetService.get();
+
+    response.then((config) => {
+      console.log(config);
+    });
 
     this.state = {
       // Widgets that are available in the dashboard
@@ -167,30 +177,6 @@ class Dash extends Component {
   }
 
   /**
-   * When a widget is removed, the layout should be set again.
-   */
-  onRemove = (layout) => {
-    this.setLayout(layout);
-  }
-
-  /**
-   * Adds new widgget.
-   */
-  onAdd = (layout, rowIndex, columnIndex) => {
-    // Open the AddWidget dialog by seting the 'isModalOpen' to true.
-    // Also preserve the details such as the layout, rowIndex, and columnIndex  in 'addWidgetOptions'.
-    //  This will be used later when user picks a widget to add.
-    this.setState({
-      isModalOpen: true,
-      addWidgetOptions: {
-        layout,
-        rowIndex,
-        columnIndex,
-      },
-    });
-  }
-
-  /**
    * When a widget moved, this will be called. Layout should be given back.
    */
   onMove = (layout) => {
@@ -241,11 +227,15 @@ class Dash extends Component {
 
     }) 
 
-    console.log(layout);
     this.setState({
       layout: layout
     });
 
+    this.save();
+  }
+
+  save = () => {
+    const response = widgetService.save( this.state.layout, this.state.widgets);
   }
 
   //       <Iframe iframe='<iframe width="600"  height="400" seamless frameBorder="0" scrolling="no" src="http://localhost:8088/superset/explore/table/3/?form_data=%7B%22datasource%22%3A%223__table%22%2C%22viz_type%22%3A%22line%22%2C%22slice_id%22%3A20%2C%22granularity_sqla%22%3A%22ds%22%2C%22time_grain_sqla%22%3A%22Time+Column%22%2C%22since%22%3A%22100+years+ago%22%2C%22until%22%3A%22now%22%2C%22metrics%22%3A%5B%22sum__num%22%5D%2C%22groupby%22%3A%5B%22name%22%5D%2C%22limit%22%3A%2225%22%2C%22timeseries_limit_metric%22%3Anull%2C%22show_brush%22%3Afalse%2C%22show_legend%22%3Atrue%2C%22rich_tooltip%22%3Atrue%2C%22show_markers%22%3Afalse%2C%22x_axis_showminmax%22%3Atrue%2C%22line_interpolation%22%3A%22linear%22%2C%22contribution%22%3Afalse%2C%22x_axis_label%22%3A%22%22%2C%22x_axis_format%22%3A%22smart_date%22%2C%22y_axis_label%22%3A%22%22%2C%22y_axis_bounds%22%3A%5Bnull%2Cnull%5D%2C%22y_axis_format%22%3A%22.3s%22%2C%22y_log_scale%22%3Afalse%2C%22rolling_type%22%3A%22None%22%2C%22time_compare%22%3Anull%2C%22num_period_compare%22%3A%22%22%2C%22period_ratio_type%22%3A%22growth%22%2C%22resample_how%22%3Anull%2C%22resample_rule%22%3Anull%2C%22resample_fillmethod%22%3Anull%2C%22where%22%3A%22%22%2C%22having%22%3A%22%22%2C%22filters%22%3A%5B%5D%7D&standalone=true&height=400"></iframe>' />

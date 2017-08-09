@@ -1,0 +1,58 @@
+{
+   "layout":{
+      "rows":[
+         {
+            "columns":[
+               {
+                  "className":"col-md-12 col-sm-12 col-xs-12",
+                  "widgets":[
+                     {
+                        "key":"TextWidget"
+                     }
+                  ]
+               }
+            ]
+         },
+         {
+            "columns":[
+               {
+                  "className":"col-lg-4 col-md-4 col-sm-4 col-xs-4",
+                  "widgets":[
+                     {
+                        "key":"EngineTelemetricsWidget"
+                     }
+                  ]
+               },
+               {
+                  "className":"col-lg-8 col-md-8 col-sm-8 col-xs-8",
+                  "widgets":[
+                     {
+                        "key":"ShipVitalTelemetricsWidget"
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   "widgets":{
+      "TextWidget":{
+         "title":"Text",
+         "props":{
+            "text":"Insert your text here"
+         }
+      },
+      "EngineTelemetricsWidget":{
+         "title":"Engine"
+      },
+      "PerformanceWidget":{
+         "title":"Reactor Temp"
+      },
+      "ShipVitalTelemetricsWidget":{
+         "title":"Reactor Telemetrics"
+      },
+      "IframeTest":{
+         "title":"Test Iframe"
+      }
+   }
+}
