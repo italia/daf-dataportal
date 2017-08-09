@@ -53,7 +53,7 @@ class TextWidget extends Component {
           <div>
             <div dangerouslySetInnerHTML={{__html: this.state.text}}></div>
             <div className="mt-20">
-              <button onClick={() => this.edit()} type="button" className="btn btn-link" >Edit</button>
+              <button onClick={() => this.edit()} type="button" className="btn btn-link" >Edit Text</button>
             </div>
           </div>
         }
@@ -68,6 +68,7 @@ class TextWidget extends Component {
               onEditorStateChange={this.onEditorStateChange}
             />
             <button onClick={() => this.save()} type="button" className="btn btn-primary" >Save</button>
+            <div className="clearfix"></div>
           </div>
         }
     </div>

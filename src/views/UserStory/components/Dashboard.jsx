@@ -59,7 +59,7 @@ class Dash extends Component {
           type: TextWidget,
           title: 'Text',
           props: {
-            text: "<p>Testo d<strong>i pr</strong>ova</p>"
+            text: "Insert your text here"
           }
         },
         EngineTelemetricsWidget: {
