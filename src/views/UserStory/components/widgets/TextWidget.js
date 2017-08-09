@@ -11,12 +11,16 @@ class TextWidget extends Component {
   constructor(props) {
     super(props);
     const html = props.text;
+    this.state = {
+        text: props.text
+    };
     const contentBlock = htmlToDraft(html);
     if (contentBlock) {
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
       const editorState = EditorState.createWithContent(contentState);
       this.state = {
         editorState,
+        text: props.text
       };
     }
   }
@@ -28,12 +32,10 @@ class TextWidget extends Component {
   };
 
   save(){
-    //let html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
-    //console.log(html)
-    //this.state.text = html;
-
+    let html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
     this.setState({
-      edit: false
+      edit: false,
+      text: html
     })
   }
 
@@ -49,7 +51,7 @@ class TextWidget extends Component {
     <div>
         {!this.state.edit && 
           <div>
-            { draftToHtml(convertToRaw(editorState.getCurrentContent())) }
+            <div dangerouslySetInnerHTML={{__html: this.state.text}}></div>
             <div className="mt-20">
               <button onClick={() => this.edit()} type="button" className="btn btn-link" >Edit</button>
             </div>
