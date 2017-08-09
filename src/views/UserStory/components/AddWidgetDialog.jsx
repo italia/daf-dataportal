@@ -14,6 +14,7 @@ const AddWidgetDialog = ({ widgets, isModalOpen, onRequestClose, onWidgetSelect}
               {/* <div className="preview-widget">
                 {React.createElement(wid)}
               </div> */}
+              
               {widgets[widget].title}
             </h6>
           </a>
