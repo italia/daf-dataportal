@@ -83,33 +83,29 @@ class Dash extends Component {
             columns: [
               {
               className: 'col-md-12 col-sm-12 col-xs-12',
-              widgets: [{
-                          key: 'TextWidget'
-                        }, 
-                        {
-                          key: 'ShipVitalTelemetricsWidget'
-                        }],
+              widgets: [{ key: 'TextWidget' }],
               }
-
-              /* ,{
-                className: 'col-w-30',
-                widgets: [{key: 'BtnControlWidget'}],
-              } */
-
+            ],
+          },{
+            columns: [
+              {
+              className: 'col-md-12 col-sm-12 col-xs-12',
+              widgets: [{ key: 'ShipVitalTelemetricsWidget' }],
+              }
             ],
           }, {
             columns: [{
               className: 'col-md-8 col-sm-8 col-xs-8',
-              widgets: [{key: 'EngineTelemetricsWidget'}],
+              widgets: [{ key: 'EngineTelemetricsWidget' }],
             }, {
               className: 'col-md-4 col-sm-4 col-xs-4',
-              widgets: [{key: 'PerformanceWidget'}],
+              widgets: [{ key: 'PerformanceWidget' }],
             }]
           }, {
             columns: [
             {
               className: 'col-md-12 col-sm-12 col-xs-12',
-              widgets: [{key: 'IframeTest'}],
+              widgets: [{ key: 'IframeTest' }],
             }]
           }],
       },
@@ -236,10 +232,6 @@ class Dash extends Component {
   * Set layout Dashboard
   */
   setLayout = (layout) => {
-    this.setState({
-      layout: layout
-    });
-
     
     // add control button
     this.state.layout.rows.map((row, index) =>{
@@ -256,13 +248,19 @@ class Dash extends Component {
         }
       }
 
-      row.columns.pop();
+      if (row.columns.length > 0 && row.columns[row.columns.length - 1].className == "col-w-30")
+        row.columns.pop();
+
       row.columns.push({
         className: 'col-w-30',
         widgets: [{key: 'BtnControlWidget_' + index}],
       })
 
     }) 
+
+    this.setState({
+      layout: layout
+    });
 
   }
 
@@ -277,6 +275,8 @@ class Dash extends Component {
         onEdit={this.toggleEdit} 
         layout={this.state.layout}
         setLayout={this.setLayout}
+        widgets={this.state.widgets}
+        onWidgetSelect={this.handleWidgetSelection}
         />
       <Dashboard
         frameComponent={CustomFrame}
