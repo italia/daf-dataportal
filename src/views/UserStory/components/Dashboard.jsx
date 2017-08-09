@@ -58,6 +58,9 @@ class Dash extends Component {
         TextWidget: {
           type: TextWidget,
           title: 'Text',
+          props: {
+            text: "Testo di prova"
+          }
         },
         EngineTelemetricsWidget: {
           type: BarChart,
