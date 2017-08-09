@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import ColumnSetWidth from './ColumnSetWidth';
 import AddWidgetDialog from './AddWidgetDialog';
 
 class EditBar extends React.Component {
@@ -37,7 +36,6 @@ class EditBar extends React.Component {
   }
 
   onWidgetSelect = function(widgetName) {
-
     this.addRow(widgetName)
     this.onRequestClose();
   }

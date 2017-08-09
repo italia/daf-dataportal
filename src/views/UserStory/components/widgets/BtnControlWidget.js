@@ -10,6 +10,7 @@ class BtnControlWidget extends React.Component {
         }
         
         this.openModal = this.openModal.bind(this)
+        this.closeModal = this.closeModal.bind(this)
     }
 
     moveDown = function(index) {
