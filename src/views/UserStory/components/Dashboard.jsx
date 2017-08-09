@@ -86,27 +86,6 @@ class Dash extends Component {
               widgets: [{ key: 'TextWidget' }],
               }
             ],
-          },{
-            columns: [
-              {
-              className: 'col-md-12 col-sm-12 col-xs-12',
-              widgets: [{ key: 'ShipVitalTelemetricsWidget' }],
-              }
-            ],
-          }, {
-            columns: [{
-              className: 'col-md-8 col-sm-8 col-xs-8',
-              widgets: [{ key: 'EngineTelemetricsWidget' }],
-            }, {
-              className: 'col-md-4 col-sm-4 col-xs-4',
-              widgets: [{ key: 'PerformanceWidget' }],
-            }]
-          }, {
-            columns: [
-            {
-              className: 'col-md-12 col-sm-12 col-xs-12',
-              widgets: [{ key: 'IframeTest' }],
-            }]
           }],
       },
       editMode: true,
@@ -271,13 +250,6 @@ class Dash extends Component {
     <Container>
       <AddWidgetDialog widgets={this.state.widgets} isModalOpen={this.state.isModalOpen} onRequestClose={this.onRequestClose} onWidgetSelect={this.handleWidgetSelection}/>
       <Header />
-      <EditBar 
-        onEdit={this.toggleEdit} 
-        layout={this.state.layout}
-        setLayout={this.setLayout}
-        widgets={this.state.widgets}
-        onWidgetSelect={this.handleWidgetSelection}
-        />
       <Dashboard
         frameComponent={CustomFrame}
         onRemove={this.onRemove}
@@ -288,6 +260,13 @@ class Dash extends Component {
         onMove={this.onMove}
         addWidgetComponentText="Add New Widget"
         />
+        <EditBar 
+          onEdit={this.toggleEdit} 
+          layout={this.state.layout}
+          setLayout={this.setLayout}
+          widgets={this.state.widgets}
+          onWidgetSelect={this.handleWidgetSelection}
+          />
     </Container>
     );
   }

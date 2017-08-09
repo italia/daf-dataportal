@@ -26,7 +26,7 @@ class EditBar extends React.Component {
 
     let row = {columns: columns}
 
-    this.props.layout.rows.unshift(row);
+    this.props.layout.rows.push(row);
     this.props.setLayout(this.props.layout);
   }
 
