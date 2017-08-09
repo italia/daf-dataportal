@@ -23,8 +23,6 @@ class BtnControlWidget extends React.Component {
     }
 
     moveUp = function(index) {
-        console.log(this.props.layout.rows[0].columns[0].widgets)
-        debugger
         let rows = this.props.layout.rows;
         let from = index;
         let to = index - 1;
