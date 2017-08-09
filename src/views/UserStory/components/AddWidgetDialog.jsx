@@ -11,9 +11,9 @@ const AddWidgetDialog = ({ widgets, isModalOpen, onRequestClose, onWidgetSelect}
         <div key={key} className="list-group">
           <a href="#/dash" className="list-group-item" onClick={() => onWidgetSelect(widget)}>
             <h6 className="list-group-item-heading">
-              <div className="preview-widget">
+              {/* <div className="preview-widget">
                 {React.createElement(wid)}
-              </div>
+              </div> */}
               {widgets[widget].title}
             </h6>
           </a>
