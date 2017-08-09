@@ -1,87 +1,44 @@
-import React from 'react';
-import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
+import React, { Component } from 'react';
+import { Editor } from 'react-draft-wysiwyg';
+import htmlToDraft from 'html-to-draftjs';
 import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
 
+class TextWidget extends Component {
 
-class TextWidget extends React.Component {
   constructor(props) {
-    super();
-
-    this.state = {
-      edit: false,
-      editorContent: this._getInitialHTML(props.text),
-      text: props.text
-    };
-
-    this.onEditorChange = this.onEditorChange.bind(this)
+    super(props);
+    const html = props.text;
+    const contentBlock = htmlToDraft(html);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+      const editorState = EditorState.createWithContent(contentState);
+      this.state = {
+        editorState,
+      };
+    }
   }
 
-  _getInitialHTML(text) {
-    const contentBlocks = convertFromHTML(text);
-    const contentState = ContentState.createFromBlockArray(contentBlocks);
-    return convertToRaw(contentState);
-  }
-
-  componentDidMount() {
-    //console.log('mount');
-  }
-
-  componentWillUnmount() {
-    //console.log('unmount');
-  }
-
-  onEditorChange(editorContent) {
-    let text = draftToHtml(editorContent);
-
-    this.setState({ 
-      editorContent, 
-      text: text
+  onEditorStateChange = (editorState) => {
+    this.setState({
+      editorState,
     });
   };
 
-  save(){
-
-    this.setState({
-      edit: false
-    })
-  }
-
-  edit(){
-    debugger
-    this.setState({
-      edit: true
-    })
-  }
-
   render() {
-    return (
-      <div>
-        {!this.state.edit && 
-          <div>
-            {this.state.text}
-            <div className="mt-20">
-              <button onClick={() => this.edit()} type="button" className="btn btn-link" >Edit</button>
-            </div>
-          </div>
-        }
-        
-        {this.state.edit && 
-          <div>
-            <Editor 
-        
-              rawContentState={this.state.editorContent}
-              onChange={this.onEditorChange.bind(this)}
-
-            />
-            <button onClick={() => this.save()} type="button" className="btn btn-primary" >Save</button>
-          </div>
-        }
-      </div>
-    );
+    const { editorState } = this.state;
+    return (<div className="rdw-storybook-root">
+      <span>HTML Content: <pre>{ draftToHtml(convertToRaw(editorState.getCurrentContent())) }</pre></span>
+      <Editor
+        editorState={editorState}
+        toolbarClassName="rdw-storybook-toolbar"
+        wrapperClassName="rdw-storybook-wrapper"
+        editorClassName="rdw-storybook-editor"
+        onEditorStateChange={this.onEditorStateChange}
+      />
+    </div>);
   }
 }
 
