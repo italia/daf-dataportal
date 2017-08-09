@@ -167,9 +167,7 @@ class Dash extends Component {
    * When a widget is removed, the layout should be set again.
    */
   onRemove = (layout) => {
-    this.setState({
-      layout: layout,
-    });
+    this.setLayout(layout);
   }
 
   /**
@@ -193,9 +191,7 @@ class Dash extends Component {
    * When a widget moved, this will be called. Layout should be given back.
    */
   onMove = (layout) => {
-    this.setState({
-      layout: layout,
-    });
+    this.setLayout(layout);
   }
 
   /**
@@ -211,25 +207,30 @@ class Dash extends Component {
   * Set layout Dashboard
   */
   setLayout = (layout) => {
-    
     // add control button
     this.state.layout.rows.map((row, index) =>{
       
-      if(!this.state.widgets['BtnControlWidget_' + index] ) {
-        this.state.widgets['BtnControlWidget_' + index] = {
-          type: BtnControlWidget,
-          title: '',
-          props: {
-            layout: this.state.layout,
-            index: index,
-            setLayout: this.setLayout
-          }
+      //remove old widget control
+      if(this.state.widgets['BtnControlWidget_' + index] ) {
+        this.state.widgets['BtnControlWidget_' + index] = null;
+      }
+
+      //create new widget control
+      this.state.widgets['BtnControlWidget_' + index] = {
+        type: BtnControlWidget,
+        title: '',
+        props: {
+          layout: layout,
+          index: index,
+          setLayout: this.setLayout
         }
       }
 
+      //remove widget control from layout
       if (row.columns.length > 0 && row.columns[row.columns.length - 1].className == "col-w-30")
         row.columns.pop();
 
+      //insert new widget control in layout
       row.columns.push({
         className: 'col-w-30',
         widgets: [{key: 'BtnControlWidget_' + index}],
@@ -237,6 +238,7 @@ class Dash extends Component {
 
     }) 
 
+    console.log(layout);
     this.setState({
       layout: layout
     });
