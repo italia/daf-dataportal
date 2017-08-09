@@ -225,13 +225,19 @@ class Dash extends Component {
     };
 
     //clean widgets from control button
-    let widgetsOld = JSON.parse(JSON.stringify(this.state.widgets));
+    let widgetsOld = this.state.widgets;
     let widgets = {};
 
     for(let i in widgetsOld) {
       let widget = widgetsOld[i];
-      if( !i.startsWith("BtnControlWidget") == 0)
-        widgets[i] = widget;
+      if(!i.startsWith("BtnControlWidget")) {
+        if (widget.type) {
+          widgets[i] = JSON.parse(JSON.stringify(widget));
+          widgets[i].type = widget.type.name
+        } else {
+          debugger
+        }
+      }
     }
 
     //save data
