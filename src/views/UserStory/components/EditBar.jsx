@@ -15,15 +15,13 @@ class EditBar extends React.Component {
     }
 
   addRow = function (widgetName) { 
-    let columns = [];
+    let columns = [{
+        className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12',
+        widgets: [],
+      }];
     
     if(widgetName && typeof widgetName == "string") {
-      let widget = {
-        className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12',
-        widgets: [{key: widgetName}],
-      }
-
-      columns.push(widget)
+      columns[0].widgets.push({key: widgetName});
     }
 
     let row = {columns: columns}
