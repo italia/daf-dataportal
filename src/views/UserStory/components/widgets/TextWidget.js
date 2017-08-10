@@ -10,17 +10,24 @@ class TextWidget extends Component {
 
   constructor(props) {
     super(props);
-    const html = props.text;
+    
     this.state = {
       text: props.text
     };
+
+    this.load();
+    
+  }
+
+  load = function(){
+    let html = this.state.text;
     if (html) {
       const contentBlock = htmlToDraft(html);
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
       const editorState = EditorState.createWithContent(contentState);
       this.state = {
         editorState,
-        text: props.text
+        text: html
       };
     }
   }
@@ -50,6 +57,13 @@ class TextWidget extends Component {
     })
   }
 
+  close() {
+    this.load();
+    this.setState({
+      edit: false
+    })
+  }
+
   render() {
     const { editorState } = this.state;
     return (
@@ -72,6 +86,8 @@ class TextWidget extends Component {
               editorClassName="rdw-storybook-editor"
               onEditorStateChange={this.onEditorStateChange}
             />
+            
+            <button onClick={() => this.close()} type="button" className="btn btn-default" >Cancel</button>
             <button onClick={() => this.save()} type="button" className="btn btn-primary" >Save</button>
             <div className="clearfix"></div>
           </div>
