@@ -42,7 +42,7 @@ class EditBar extends React.Component {
               Add Row
           </button>
           
-          <button type="button" className="btn btn-default btn-xs" onClick={this.addWidgetOpenModal}>
+          <button type="button" className="btn btn-primary btn-xs" onClick={this.addWidgetOpenModal}>
             <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
               Add Widget
           </button>
