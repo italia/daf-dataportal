@@ -9024,6 +9024,10 @@ hr.transparent {
   display: none;
 }
 
+.x_title {
+  overflow: hidden;
+}
+
 .add-widget-button {
   display: none;
 }
