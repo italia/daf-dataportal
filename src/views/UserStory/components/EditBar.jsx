@@ -8,35 +8,20 @@ class EditBar extends React.Component {
             isModalOpen: false
         }
 
+        this.addWidgetOpenModal = this.addWidgetOpenModal.bind(this)
         this.addWidget = this.addWidget.bind(this)
-        this.addRow = this.addRow.bind(this)
-        this.onWidgetSelect = this.onWidgetSelect.bind(this)
     }
 
-  addRow = function (widgetName) { 
-    let columns = [{
-        className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12',
-        widgets: [],
-      }];
-    
-    if(widgetName && typeof widgetName == "string") {
-      columns[0].widgets.push({key: widgetName});
-    }
+  
 
-    let row = {columns: columns}
-
-    this.props.layout.rows.push(row);
-    this.props.setLayout(this.props.layout);
-  }
-
-  addWidget = function() {
+  addWidgetOpenModal = function() {
     this.setState({
       isModalOpen: true
     });
   }
 
-  onWidgetSelect = function(widgetName) {
-    this.addRow(widgetName)
+  addWidget = function(widgetName) {
+    this.props.addWidget(widgetName);
     this.onRequestClose();
   }
 
@@ -52,12 +37,12 @@ class EditBar extends React.Component {
       <div className="row edit-bar">
 
         <div className="box">
-          <button type="button" className="btn btn-default btn-xs" onClick={this.addRow}>
+          <button type="button" className="btn btn-default btn-xs" onClick={this.props.addRow}>
             <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
               Add Row
           </button>
           
-          <button type="button" className="btn btn-default btn-xs" onClick={this.addWidget}>
+          <button type="button" className="btn btn-default btn-xs" onClick={this.addWidgetOpenModal}>
             <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
               Add Widget
           </button>
@@ -67,7 +52,7 @@ class EditBar extends React.Component {
         <AddWidgetDialog
           widgets={this.props.widgets}
           isModalOpen={this.state.isModalOpen}
-          onWidgetSelect={this.onWidgetSelect}
+          onWidgetSelect={this.addWidget}
           onRequestClose={this.onRequestClose}
         >
         </AddWidgetDialog>

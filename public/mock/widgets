@@ -1,0 +1,28 @@
+{
+   "layout":{
+      "rows":[
+         {
+            "columns":[
+               {
+                  "className":"col-lg-12 col-md-12 col-sm-12 col-xs-12",
+                  "widgets":[
+                     {
+                        "key":"TextWidget_1"
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   "widgets":{
+      "TextWidget_1":{
+         "title":"Text",
+         "props":{
+            "wid_key":"TextWidget_1",
+            "text":"<p>Insert your text here</p>\n"
+         },
+         "type":"TextWidget"
+      }
+   }
+}
