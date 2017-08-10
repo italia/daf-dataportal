@@ -94,6 +94,28 @@ class Dash extends Component {
       addWidgetOptions: null
     };
  
+    this.addRow = this.addRow.bind(this)
+  }
+
+  widgetsTypes = {
+    "TextWidget":{
+         "type": "TextWidget",
+         "title":"Text"
+    },
+    "IframeTest": {
+      "type": "IframeTest",
+      "title":"Iframe",
+      "props":{
+        "url": "url1"
+      }
+    },
+    "IframeTest2": {
+      "type": "IframeTest",
+      "title":"Iframe 2",
+      "props":{
+        "url": "url2"
+      }
+    }
   }
 
   componentDidMount(){
@@ -152,15 +174,6 @@ class Dash extends Component {
     this.setLayout(layout);
   }
 
-  /**
-   * This will be called when user tries to close the modal dialog.
-   */
-  onRequestClose = () => {
-    this.setState({
-      isModalOpen: false,
-    });
-  }
-
   /*
   * Set layout Dashboard
   */
@@ -203,6 +216,28 @@ class Dash extends Component {
     this.save();
   }
 
+  /*
+  * Add row
+  */
+  addRow = function (widgetName) { 
+    let columns = [{
+        className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12',
+        widgets: [],
+      }];
+    
+    if(widgetName && typeof widgetName == "string") {
+      columns[0].widgets.push({key: widgetName});
+    }
+
+    let row = {columns: columns}
+
+    this.state.layout.rows.push(row);
+    this.setLayout(this.state.layout);
+  }
+
+  /*
+  * Save Layout and widgets
+  */
   save = () => {
 
     //clean layout from control button
@@ -249,9 +284,7 @@ class Dash extends Component {
   render() {
     return (
     <Container>
-      <AddWidgetDialog widgets={this.state.widgets} isModalOpen={this.state.isModalOpen} onRequestClose={this.onRequestClose} onWidgetSelect={this.handleWidgetSelection}/>
       <Header />
-      <div id="print-mount"></div>
       <Dashboard
         frameComponent={CustomFrame}
         onRemove={this.onRemove}
@@ -264,10 +297,8 @@ class Dash extends Component {
         />
         <EditBar 
           onEdit={this.toggleEdit} 
-          layout={this.state.layout}
-          setLayout={this.setLayout}
-          widgets={this.state.widgets}
-          onWidgetSelect={this.handleWidgetSelection}
+          addRow={this.addRow}
+          widgets={this.widgetsTypes}
           />
     </Container>
     );
@@ -282,23 +313,6 @@ class Dash extends Component {
     });
   };
 
-  /**
-   * When user selects a widget from the modal dialog, this will be called.
-   * By calling the 'addWidget' method, the widget could be added to the previous requested location.
-   */
-  handleWidgetSelection = (widgetName) => {
-    const {layout, rowIndex, columnIndex} = this.state.addWidgetOptions;
-
-    /**
-     * 'AddWidget' method gives you the new layout.
-     */
-    this.setState({
-      layout: addWidget(layout, rowIndex, columnIndex, widgetName),
-    });
-
-    // Close the dialogbox
-    this.onRequestClose();
-  }
 }
 
 export default Dash;
