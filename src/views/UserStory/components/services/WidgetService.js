@@ -21,9 +21,9 @@ export default class WidgetService {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                    layout: layout,
-                    widgets: widgets,
-                })
+                layout: layout,
+                widgets: widgets,
+            })
         })
         
         return response.json();
