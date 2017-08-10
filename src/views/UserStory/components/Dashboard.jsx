@@ -118,7 +118,7 @@ class Dash extends Component {
   }
 
   componentDidMount(){
-     var that = this;
+ /*    var that = this;
     	fetch('http://localhost:9000/superset/iframes')//fetch(`https://api.github.com/search/users?q=${input}`)
 		  .then((response) => response.json())
 		  .then((json) => {
@@ -163,7 +163,7 @@ class Dash extends Component {
       } 
       } 
       )  
-		}); 
+		});  */
   }
 
   /**
