@@ -23,8 +23,6 @@ class BtnControlWidget extends React.Component {
     }
 
     moveUp = function(index) {
-        console.log(this.props.layout.rows[0].columns[0].widgets)
-        debugger
         let rows = this.props.layout.rows;
         let from = index;
         let to = index - 1;
@@ -123,7 +121,7 @@ class BtnControlWidget extends React.Component {
 
     render() {
         return (
-            <div class="btn-control-widget">
+            <div className="btn-control-widget">
                 { this.props.index != 0 &&
                     <button type="button" className="btn btn-sm btn-default" aria-label="Move Up"
                         onClick={() => this.moveUp(this.props.index)}>
