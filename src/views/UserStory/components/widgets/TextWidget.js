@@ -12,7 +12,7 @@ class TextWidget extends Component {
     super(props);
     const html = props.text;
     this.state = {
-        text: props.text
+      text: props.text
     };
     if (html) {
       const contentBlock = htmlToDraft(html);
@@ -31,15 +31,20 @@ class TextWidget extends Component {
     });
   };
 
-  save(){
-    let html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
+  save() {
+    let html = "";
+    if (this.state.editorState)
+      html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
+    
     this.setState({
       edit: false,
       text: html
     })
+    
+    this.props.onSave(this.props.wid_key, html);
   }
 
-  edit(){
+  edit() {
     this.setState({
       edit: true
     })

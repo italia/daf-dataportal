@@ -21,7 +21,7 @@ class EditBar extends React.Component {
   }
 
   addWidget = function(widgetName) {
-    this.props.addRow(widgetName);
+    this.props.addWidget(widgetName);
     this.onRequestClose();
   }
 

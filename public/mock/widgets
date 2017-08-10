@@ -4,30 +4,10 @@
          {
             "columns":[
                {
-                  "className":"col-md-12 col-sm-12 col-xs-12",
+                  "className":"col-lg-12 col-md-12 col-sm-12 col-xs-12",
                   "widgets":[
                      {
-                        "key":"TextWidget"
-                     }
-                  ]
-               }
-            ]
-         },
-         {
-            "columns":[
-               {
-                  "className":"col-lg-4 col-md-4 col-sm-4 col-xs-4",
-                  "widgets":[
-                     {
-                        "key":"EngineTelemetricsWidget"
-                     }
-                  ]
-               },
-               {
-                  "className":"col-lg-8 col-md-8 col-sm-8 col-xs-8",
-                  "widgets":[
-                     {
-                        "key":"ShipVitalTelemetricsWidget"
+                        "key":"TextWidget_1"
                      }
                   ]
                }
@@ -36,28 +16,13 @@
       ]
    },
    "widgets":{
-      "TextWidget":{
-         "type": "TextWidget",
+      "TextWidget_1":{
          "title":"Text",
          "props":{
-            "text":"Insert your text here"
-         }
-      },
-      "EngineTelemetricsWidget":{
-         "type": "BarChart",
-         "title":"Engine"
-      },
-      "PerformanceWidget":{
-         "type": "DoughnutChart",
-         "title":"Reactor Temp"
-      },
-      "ShipVitalTelemetricsWidget":{
-         "type": "LineChart",
-         "title":"Reactor Telemetrics"
-      },
-      "IframeTest":{
-         "type": "IframeWid",
-         "title":"Test Iframe"
+            "wid_key":"TextWidget_1",
+            "text":"<p>Insert your text here</p>\n"
+         },
+         "type":"TextWidget"
       }
    }
 }
