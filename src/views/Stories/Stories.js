@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import StoriesEditor from './components/StoriesEditor';
 
 class Stories extends Component {
   constructor(props) {
@@ -8,9 +9,7 @@ class Stories extends Component {
 
   render() {
     return (
-    <div>
-        <h5>Stories</h5>
-    </div>
+      <StoriesEditor/>
     );
   }
 
