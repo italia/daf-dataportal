@@ -32,7 +32,7 @@ import '../styles/custom.css';
 
 const widgetService = new WidgetService();
 
-class Dash extends Component {
+class DashboardEditor extends Component {
   constructor(props) {
     super(props);
 
@@ -138,7 +138,9 @@ class Dash extends Component {
         props: {
           layout: layout,
           index: index,
-          setLayout: this.setLayout
+          setLayout: this.setLayout,
+          addWidget: this.addWidget,
+          widgets: this.widgetsTypes
         }
       }
 
@@ -319,7 +321,6 @@ class Dash extends Component {
         editable={this.state.editMode}
         onAdd={this.onAdd}
         onMove={this.onMove}
-        addWidgetText="Add New Widget"
         />
         <EditBar 
           onEdit={this.toggleEdit} 
@@ -333,4 +334,4 @@ class Dash extends Component {
 
 }
 
-export default Dash;
+export default DashboardEditor;

@@ -2,13 +2,18 @@ import React from 'react';
 import { Bar } from 'react-chartjs';
 import { getRandomInt } from './util';
 import Modal from 'react-modal';
+import AddWidgetDialog from '../AddWidgetDialog';
 
 class BtnControlWidget extends React.Component {
     constructor() {
         super();
         this.state = {
+            isModalAddOpen: false,
+            isModalOpen: false
         }
-        
+
+        this.addWidgetOpenModal = this.addWidgetOpenModal.bind(this)
+        this.addWidget = this.addWidget.bind(this)
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
     }
@@ -51,6 +56,23 @@ class BtnControlWidget extends React.Component {
         this.setState({
             isModalOpen: false
         })
+    }
+
+    addWidgetOpenModal = function() {
+        this.setState({
+            isModalAddOpen: true
+        });
+    }
+
+    addWidget = function(widgetName) {
+        this.props.addWidget(widgetName);
+        this.onRequestClose();
+    }
+
+    onRequestClose = () => {
+        this.setState({
+            isModalAddOpen: false,
+        });
     }
 
     setCol = function (size, index, align) {
@@ -122,28 +144,41 @@ class BtnControlWidget extends React.Component {
     render() {
         return (
             <div className="btn-control-widget">
+                <button type="button" className="btn btn-sm btn-default" aria-label="Add Widget"
+                    onClick={this.addWidgetOpenModal}>
+                    <span className="fa fa-plus" aria-hidden="true"></span>
+                </button>
+
                 { this.props.index != 0 &&
                     <button type="button" className="btn btn-sm btn-default" aria-label="Move Up"
                         onClick={() => this.moveUp(this.props.index)}>
-                        <span className="icon-arrow-up" aria-hidden="true"></span>
+                        <span className="fa fa-chevron-up" aria-hidden="true"></span>
                     </button>
                 }
                 { this.props.index != this.props.layout.rows.length - 1 &&
                     <button type="button" className="btn btn-sm btn-default" aria-label="Move Down"
                         onClick={() => this.moveDown(this.props.index)}>
-                        <span className="icon-arrow-down" aria-hidden="true"></span>
+                        <span className="fa fa-chevron-down" aria-hidden="true"></span>
                     </button>
                 }
                 <button type="button" className="btn btn-sm btn-default" aria-label="Remove"
                     onClick={() => this.removeCol()}>
-                    <span className="icon-trash" aria-hidden="true"></span>
+                    <span className="fa fa-trash" aria-hidden="true"></span>
                 </button>
                 
                 <button type="button" className="btn btn-sm btn-default" aria-label="Change witdh"
                     onClick={this.openModal}>
-                    <span className="icon-pencil" aria-hidden="true"></span>
+                    <span className="fa fa-pencil" aria-hidden="true"></span>
                 </button>
 
+
+                <AddWidgetDialog
+                    widgets={this.props.widgets}
+                    isModalOpen={this.state.isModalAddOpen}
+                    onWidgetSelect={this.addWidget}
+                    onRequestClose={this.onRequestClose}
+                    >
+                </AddWidgetDialog>
 
                 <Modal
                     contentLabel="Set width columns"

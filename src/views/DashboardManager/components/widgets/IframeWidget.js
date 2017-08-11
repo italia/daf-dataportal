@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom'
 
 class IframeWidget extends Component {
 
-    constructor(props){
-        super(props);
-    }
+  constructor(props){
+      super(props);
+  }
 
   componentDidMount () {
     let iframe = ReactDOM.findDOMNode(this.refs.iframe)
@@ -71,6 +71,7 @@ class IframeWidget extends Component {
 
     return (
       <iframe
+        className={this.props.class}
         ref="iframe"
         frameBorder={'0'}
         style={iframeStyle}

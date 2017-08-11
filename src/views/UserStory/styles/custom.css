@@ -1,68 +1,59 @@
-.x_panel {
-  position: relative;
+.story-content {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+.title-story-content {
+  border-top: 1px solid #e4e5e6;
+  min-height: 40px;
+  margin-top: 20px;
+}
+
+.title-story-content h3 {
+  color: #263238;
+  background-color: #e4e5e6;
+  position: absolute;
+  padding: 5px 10px;
+  font-size: 15px;
+}
+
+.text-editor input,
+.text-editor textarea{
   width: 100%;
-  margin-bottom: 10px;
-  padding: 10px 17px;
-  display: inline-block;
-  background: #fff;
-  border: 1px solid #E6E9ED;
-  -webkit-column-break-inside: avoid;
-  -moz-column-break-inside: avoid;
-  column-break-inside: avoid;
-  opacity: 1;
-  -moz-transition: all .2s ease;
-  -o-transition: all .2s ease;
-  -webkit-transition: all .2s ease;
-  -ms-transition: all .2s ease;
-  transition: all .2s ease;
+  text-align: center;
+  border: none;
+  outline: none;
+  color: rgba(0,0,0,.8);
+  font-family: medium-content-sans-serif-font,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif;
 }
-.x_title {
-  border-bottom: 2px solid #E6E9ED;
-  padding: 1px 5px 6px;
-  margin-bottom: 10px;
+
+.text-editor-title {
+  letter-spacing: -.02em;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 40px;
+  margin-left: -2.5px;
+  line-height: 1.04;
+  letter-spacing: -.028em;
 }
-.x_title .filter {
-  width: 40%;
-  float: right;
+
+.text-editor-subtitle {
+  --x-height-multiplier: 0.35;
+  --baseline-multiplier: 0.179;
+  font-family: medium-content-serif-font,Georgia,Cambria,"Times New Roman",Times,serif;
+  letter-spacing: .01rem;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 21px;
+  line-height: 1.58;
+  letter-spacing: -.003em;
 }
-.x_title h2 {
-  margin: 5px 0 6px;
-  float: left;
-  display: block;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.x_title h2 small {
-  margin-left: 10px;
-}
-.x_title span {
-  color: #BDBDBD;
-}
-.x_content {
-  padding: 0 5px 6px;
-  position: relative;
+
+/* .text-editor.text-editor-content input {
+  text-align: left;
+} */
+
+.image-container {
   width: 100%;
-  float: left;
-  clear: both;
-  margin-top: 5px;
-}
-.x_content h4 {
-  font-size: 16px;
-  font-weight: 500;
-}
-.panel_toolbox {
-  float: right;
-  min-width: 10px;
-}
-.panel_toolbox>li {
-  float: left;
-}
-.panel_toolbox>li>a {
-  padding: 5px;
-  color: #C5C7CB;
-  font-size: 14px;
-}
-.panel_toolbox>li>a:hover {
-  background: #F5F7FA;
 }

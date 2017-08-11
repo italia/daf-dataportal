@@ -1,0 +1,6 @@
+{
+  "name": "dashboard_manager",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./dashboard_manager.js"
+}

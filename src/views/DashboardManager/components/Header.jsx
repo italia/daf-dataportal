@@ -5,7 +5,7 @@ const Header = () => {
     <div className="top_nav">
         <div className="nav_menu">
             <nav className="dashboardHeader">
-                <h2>La Tua Storia</h2>
+                <h2>Dashboard</h2>
             </nav>
         </div>
     </div>
