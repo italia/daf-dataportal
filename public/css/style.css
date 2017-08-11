@@ -8953,7 +8953,7 @@ hr.transparent {
 }
 
 .modal-content {
-  top: 50px;
+  position: static;
 }
 
 .layout-box {
@@ -9069,7 +9069,8 @@ hr.transparent {
   max-width: none;
 }
 
-.ReactModal__Overlay.ReactModal__Overlay--after-open {
-  position: absolute!important;
-  bottom: initial!important;
+.ReactModal__Content {
+  max-height: 80%;
+  overflow: auto;
+  margin-top: 80px;
 }
