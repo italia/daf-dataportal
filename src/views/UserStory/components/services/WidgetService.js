@@ -2,9 +2,15 @@
 export default class WidgetService {
     
     baseUrl = "http://localhost:3000/mock/" + "widgets";
+    urlIframe = "http://localhost:9000/dati-gov/v1/dashboard/iframes?apikey=test";
 
     constructor() {
 
+    }
+
+    async getIframe(){
+        const response = await fetch( this.urlIframe );
+        return response.json();
     }
 
     async get(layout, widgets) {
@@ -21,9 +27,9 @@ export default class WidgetService {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                    layout: layout,
-                    widgets: widgets,
-                })
+                layout: layout,
+                widgets: widgets,
+            })
         })
         
         return response.json();
