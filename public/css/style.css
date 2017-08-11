@@ -9091,3 +9091,7 @@ hr.transparent {
   font-size: 1.12em;
   margin-top: 7px;
 }
+
+.editable-column {
+  min-height: 170px;
+}

@@ -138,7 +138,9 @@ class DashboardManager extends Component {
         props: {
           layout: layout,
           index: index,
-          setLayout: this.setLayout
+          setLayout: this.setLayout,
+          addWidget: this.addWidget,
+          widgets: this.widgetsTypes
         }
       }
 
@@ -319,7 +321,6 @@ class DashboardManager extends Component {
         editable={this.state.editMode}
         onAdd={this.onAdd}
         onMove={this.onMove}
-        addWidgetText="Add New Widget"
         />
         <EditBar 
           onEdit={this.toggleEdit} 
