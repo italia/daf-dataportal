@@ -14,6 +14,13 @@ class UserStoryEditorContainer extends Component {
       dataStory: props.dataStory
     };
 
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange = function(key, value) {
+    this.state.dataStory[key] = value;
+    if(this.props.onChange)
+      this.props.onChange(this.state.dataStory);
   }
 
   /**
@@ -24,23 +31,51 @@ class UserStoryEditorContainer extends Component {
     <div className="story-content">
 
         <SectionTitle title="Titolo"/>
-        <TextEditor text={this.state.dataStory.title} size="title"></TextEditor>
+        <TextEditor 
+          keyValue="title"
+          text={this.state.dataStory.title} 
+          className="text-editor-title"
+          onChange={this.onChange}
+        ></TextEditor>
         
         <SectionTitle title="Sottotitolo"/>
-        <TextEditor text={this.state.dataStory.subtitle} size="subtitle"></TextEditor>
+        <TextEditor 
+          keyValue="subtitle"
+          text={this.state.dataStory.subtitle} 
+          className="text-editor-subtitle"
+          onChange={this.onChange}
+        ></TextEditor>
         <ProfileView></ProfileView>
 
         <SectionTitle title="Grafico"/>
-        <GraphEditor graph={this.state.dataStory.graph}></GraphEditor>
+        <GraphEditor 
+          keyValue="graph"
+          graph={this.state.dataStory.graph}
+          onChange={this.onChange}
+        ></GraphEditor>
 
         <SectionTitle title="La Tua Storia"/>
-        <TextEditor text={this.state.dataStory.text} size="content"></TextEditor>
+        <TextEditor 
+          keyValue="text"
+          text={this.state.dataStory.text} 
+          className="text-editor-content"
+          onChange={this.onChange}
+        ></TextEditor>
 
         <SectionTitle title="Immagine"/>
-        <ImageEditor image_caption={this.state.dataStory.image_caption} image_url={this.state.dataStory.image_url}></ImageEditor>
+        <ImageEditor 
+          keyValue="image"
+          image={this.state.dataStory.image} 
+          onChange={this.onChange}
+        ></ImageEditor>
         
         <SectionTitle title="Footer"/>
-        <TextEditor text={this.state.dataStory.footer} size="footer"></TextEditor>
+        <TextEditor 
+          keyValue="footer"
+          text={this.state.dataStory.footer} 
+          className="text-editor-footer"
+          onChange={this.onChange}
+        ></TextEditor>
         
     </div>
     );

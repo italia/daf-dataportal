@@ -12,9 +12,9 @@ class ImageEditor extends Component {
   render() {
     return (
     <div>
-        {this.props.image_url}
+        {this.props.image.url}
         <h5>
-          {this.props.image_caption}
+          {this.props.image.caption}
         </h5>
     </div>
     );

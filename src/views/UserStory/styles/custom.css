@@ -17,3 +17,15 @@
   padding: 5px 10px;
   font-size: 15px;
 }
+
+.text-editor-title {
+  color: #b3b3b1;
+  font-family: medium-content-sans-serif-font,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif;
+  letter-spacing: -.02em;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 40px;
+  margin-left: -2.5px;
+  line-height: 1.04;
+  letter-spacing: -.028em;
+}
