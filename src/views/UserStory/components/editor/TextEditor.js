@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import TextareaAutosize from 'react-autosize-textarea';
 
 class TextEditor extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class TextEditor extends Component {
   render() {
     return (
     <div className={"text-editor " + this.props.className}>
-        <input placeholder={this.props.placeholder} type="text" value={this.state.text} onChange={this.handleChange} />
+        <TextareaAutosize placeholder={this.props.placeholder} type="text" value={this.state.text} onChange={this.handleChange} />
     </div>
     );
   }

@@ -45,7 +45,7 @@ class UserStoryEditorContainer extends Component {
           text={this.state.dataStory.subtitle} 
           className="text-editor-subtitle"
           onChange={this.onChange}
-          placeholder="Subitle"
+          placeholder="Subtitle"
         ></TextEditor>
         <ProfileView></ProfileView>
 
