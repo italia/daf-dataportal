@@ -58,7 +58,7 @@ export default class App extends Component {
     this.removeListener()
   }
   render() {
-    return this.state.loading === true ? <h1>Loading</h1> : (
+    return this.state.loading === true ? <h1 className="m-20">Loading</h1> : (
     <Provider store={store}>
         <HashRouter history={history}>
         <Switch>
