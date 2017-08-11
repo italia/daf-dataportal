@@ -9092,6 +9092,6 @@ hr.transparent {
   margin-top: 7px;
 }
 
-.editable-column {
-  min-height: 170px;
+.dashboardHeader {
+  margin-bottom: 30px;
 }
