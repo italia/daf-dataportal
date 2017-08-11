@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Dashboard from './components/Dashboard';
 
-class UserStory extends Component {
+class dashboard_manager extends Component {
   constructor(props) {
     super(props)
   }
@@ -14,4 +14,4 @@ class UserStory extends Component {
 }
 
 
-export default UserStory;
+export default dashboard_manager;
