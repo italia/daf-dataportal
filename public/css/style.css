@@ -9074,3 +9074,20 @@ hr.transparent {
   overflow: auto;
   margin-top: 80px;
 }
+
+.no-click {
+  pointer-events: none
+}
+
+.preview-widget-container .list-group-item:hover {
+  background-color: #efeeee;
+  border: 1px solid #a29b9b;
+}
+
+.preview-widget-container h6 {
+  color: #4c545b;
+  font-weight: 700;
+  font-family: Lato, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 1.12em;
+  margin-top: 7px;
+}
