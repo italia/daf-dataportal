@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
-import Dashboard from './components/Dashboard';
+import Components from 'react';
+import UserStoryEditor from './components/UserStoryEditor';
+
+// Our styles
+import './styles/custom.css';
 
 class UserStory extends Component {
   constructor(props) {
-    super(props)
-  }
+    super(props);
+  } 
 
   render() {
     return (
-        <Dashboard/>
-    )
+      <UserStoryEditor/>
+    );
   }
+
 }
 
-
 export default UserStory;
+
