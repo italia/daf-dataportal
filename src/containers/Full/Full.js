@@ -9,9 +9,9 @@ import IngestionWizard from '../../views/IngestionWizard/';
 import Ontologies from '../../views/Ontologies/';
 import Dashboard from '../../views/Dashboard/';
 import Dataset from '../../views/Dataset/';
-import DashboardManager from '../../views/DashboardManager/';
-import Stories from '../../views/Stories/';
+import UserStory from '../../views/UserStory/';
 import Profile from '../../views/Profile/';
+import DashboardManager from '../../views/DashboardManager/DashboardManager';
 
 class Full extends Component {
   render() {
@@ -28,8 +28,8 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/ingestionwizzard" name="Forms" component={IngestionWizard} />
                 <Route path="/ontologies" name="Ontologies" component={Ontologies} />
-                <Route path="/dashboard_manager" name="Dash" component={DashboardManager} />
-                <Route path="/stories" name="Storie" component={Stories} />
+                <Route path="/dashboard_manager" name="Dashboard manager" component={DashboardManager} />
+                <Route path="/user_story" name="User Story" component={UserStory} />
                 <Route path="/dataset" name="Dataset" component={Dataset} />
                 <Route path="/profile" name="Profile" component={Profile} />
                 <Redirect from="/" to="/dashboard"/>

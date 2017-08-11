@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import Components from 'react';
-import StoriesEditor from './components/StoriesEditor';
+import UserStoryEditor from './components/UserStoryEditor';
 
-class Stories extends Component {
+class UserStory extends Component {
   constructor(props) {
     super(props);
   } 
 
   render() {
     return (
-      <StoriesEditor/>
+      <UserStoryEditor/>
     );
   }
 
 }
 
-export default Stories;
+export default UserStory;
 

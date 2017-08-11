@@ -32,7 +32,7 @@ import '../styles/custom.css';
 
 const widgetService = new WidgetService();
 
-class DashboardManager extends Component {
+class DashboardEditor extends Component {
   constructor(props) {
     super(props);
 
@@ -334,4 +334,4 @@ class DashboardManager extends Component {
 
 }
 
-export default DashboardManager;
+export default DashboardEditor;
