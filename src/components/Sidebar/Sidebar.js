@@ -51,10 +51,22 @@ class Sidebar extends Component {
               </ul>
             </li>
             <li className={this.activeRoute("/icons")}>
+              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Dashboard</a>
+              <ul className="nav-dropdown-items">
+                <li className="nav-item">
+                  <NavLink to={'/dash'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Dashboard</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to={'/icons/simple-line-icons'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Visualizza</NavLink>
+                </li>
+              </ul>
+            </li>
+
+            <li className={this.activeRoute("/icons")}>
               <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Storie</a>
               <ul className="nav-dropdown-items">
                 <li className="nav-item">
-                  <NavLink to={'/dash'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Storia</NavLink>
+                  <NavLink to={'/stories'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Storia</NavLink>
                 </li>
                 <li className="nav-item">
                   <NavLink to={'/icons/simple-line-icons'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Visualizza</NavLink>
