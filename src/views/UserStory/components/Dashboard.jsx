@@ -271,7 +271,7 @@ class Dash extends Component {
   widgetsTypes = {
     "TextWidget":{
       "type": TextWidget,
-      "title":"Text",
+      "title": "Contenuto Testuale",
       "props":{
         "onSave": this.saveTextWidget.bind(this)
       }
