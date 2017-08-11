@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import Dashboard from './components/Dashboard';
+import DashboardEditor from './components/DashboardEditor';
 
-class dashboard_manager extends Component {
+class DashboardManager extends Component {
   constructor(props) {
     super(props)
   }
 
   render() {
     return (
-        <Dashboard/>
+        <DashboardEditor/>
     )
   }
 }
 
 
-export default dashboard_manager;
+export default DashboardManager;
