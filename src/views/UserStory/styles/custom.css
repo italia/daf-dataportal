@@ -53,3 +53,7 @@
 /* .text-editor.text-editor-content input {
   text-align: left;
 } */
+
+.image-container {
+  width: 100%;
+}
