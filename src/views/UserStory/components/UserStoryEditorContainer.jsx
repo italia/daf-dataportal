@@ -36,6 +36,7 @@ class UserStoryEditorContainer extends Component {
           text={this.state.dataStory.title} 
           className="text-editor-title"
           onChange={this.onChange}
+          placeholder="Title"
         ></TextEditor>
         
         <SectionTitle title="Sottotitolo"/>
@@ -44,6 +45,7 @@ class UserStoryEditorContainer extends Component {
           text={this.state.dataStory.subtitle} 
           className="text-editor-subtitle"
           onChange={this.onChange}
+          placeholder="Subitle"
         ></TextEditor>
         <ProfileView></ProfileView>
 
@@ -60,6 +62,7 @@ class UserStoryEditorContainer extends Component {
           text={this.state.dataStory.text} 
           className="text-editor-content"
           onChange={this.onChange}
+          placeholder="Tell your story..."
         ></TextEditor>
 
         <SectionTitle title="Immagine"/>
@@ -75,6 +78,7 @@ class UserStoryEditorContainer extends Component {
           text={this.state.dataStory.footer} 
           className="text-editor-footer"
           onChange={this.onChange}
+          placeholder="Footer"
         ></TextEditor>
         
     </div>

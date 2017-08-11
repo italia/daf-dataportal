@@ -22,8 +22,8 @@ class TextEditor extends Component {
    */
   render() {
     return (
-    <div className={this.props.className}>
-        <input type="text" value={this.state.text} onChange={this.handleChange} />
+    <div className={"text-editor " + this.props.className}>
+        <input placeholder={this.props.placeholder} type="text" value={this.state.text} onChange={this.handleChange} />
     </div>
     );
   }
