@@ -1,4 +1,6 @@
 {
+   "id" : 2,
+   "title": "Dashboard 2",
    "layout":{
       "rows":[
          {
@@ -20,7 +22,7 @@
          "title":"Text",
          "props":{
             "wid_key":"TextWidget_1",
-            "text":"<p>Insert your text here</p>\n"
+            "text":"<p>Dash 2</p>\n"
          },
          "type":"TextWidget"
       }

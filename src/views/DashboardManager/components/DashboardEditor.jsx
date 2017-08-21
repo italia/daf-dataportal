@@ -18,6 +18,7 @@ import IframeWidget from './widgets/IframeWidget';
 
 // Services
 import WidgetService from './services/WidgetService';
+import DashboardService from './services/DashboardService';
 
 // We are using bootstrap as the UI library
 // Removed for conflicts
@@ -31,6 +32,7 @@ import '../styles/custom.css';
 
 
 const widgetService = new WidgetService();
+const dashboardService = new DashboardService();
 
 class DashboardEditor extends Component {
   constructor(props) {
@@ -49,6 +51,8 @@ class DashboardEditor extends Component {
 
     //set state
     this.state = {
+      //id of widget to edit
+      id: 1,
       // Widgets that are available in the dashboard
       widgets: {},
       // Layout of the dashboard
@@ -89,7 +93,7 @@ class DashboardEditor extends Component {
    * Method called for load stored user widget
    */
   load = (config) => {
-    let response = widgetService.get();
+    let response = dashboardService.get(this.state.id);
     response.then((config) => {
       for(let i in config.widgets) {
         let widget = config.widgets[i];
@@ -256,7 +260,7 @@ class DashboardEditor extends Component {
     }
 
     //save data
-    const response = widgetService.save(layout, widgets);
+    const response = dashboardService.save(this.state.id, layout, widgets);
   }
 
   /**
@@ -312,7 +316,7 @@ class DashboardEditor extends Component {
   render() {
     return (
     <Container>
-      <Header />
+      <Header title="Edit Dashboard" />
       <Dashboard
         frameComponent={CustomFrame}
         onRemove={this.onRemove}

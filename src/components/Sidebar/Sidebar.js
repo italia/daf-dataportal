@@ -54,10 +54,10 @@ class Sidebar extends Component {
               <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Dashboard</a>
               <ul className="nav-dropdown-items">
                 <li className="nav-item">
-                  <NavLink to={'/dashboard_manager'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Dashboard</NavLink>
+                  <NavLink to={'/dashboard/manager'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Dashboard</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to={'/icons/simple-line-icons'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Visualizza</NavLink>
+                  <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Visualizza</NavLink>
                 </li>
               </ul>
             </li>

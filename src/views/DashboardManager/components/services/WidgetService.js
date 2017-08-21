@@ -13,25 +13,4 @@ export default class WidgetService {
         return response.json();
     }
 
-    async get(layout, widgets) {
-        const response = await fetch( this.baseUrl );
-        return response.json();
-    }
-
-    async save(layout, widgets) {
-
-        const response = await fetch( this.baseUrl, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                layout: layout,
-                widgets: widgets,
-            })
-        })
-        
-        return response.json();
-    }
 } 
