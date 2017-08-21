@@ -4,8 +4,8 @@ import Components from 'react';
 // App components
 import Header from './Header';
 import Container from './Container';
+import ViewBar from './bar/ViewBar';
 import UserStoryEditorContainer from './UserStoryEditorContainer';
-import EditBarTop from './bar/EditBarTop';
 
 // SERVICES
 import UserStoryService from './services/UserStoryService';
@@ -23,9 +23,7 @@ class UserStoryEditor extends Component {
     };
 
     //bind functions
-    this.save = this.save.bind(this);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
-    
+
     //load data
     let response = userStoryService.get(this.state.id);
     response.then((story) => {
@@ -33,18 +31,7 @@ class UserStoryEditor extends Component {
         dataStory: story
       });
     });
-  }
 
-  save(value) {
-    console.log(value);
-  }
-
-  /**
-   * onChangeTitle
-   */
-  onChangeTitle(title){
-    this.state.dataStory.title = title;
-    this.save(this.state.dataStory);
   }
 
   /**
@@ -56,12 +43,10 @@ class UserStoryEditor extends Component {
       <Header />
       {
         this.state.dataStory &&
+        
         <div>
-          <EditBarTop 
-              title={this.state.dataStory.title}
-              onChange={this.onChangeTitle}
-              id={this.state.dataStory.id}
-          ></EditBarTop>
+          <ViewBar title={this.state.dataStory.title} id={this.state.id}></ViewBar>
+      
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory} 
             onChange={this.save}

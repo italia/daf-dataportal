@@ -1,24 +1,23 @@
 
-export default class WidgetService {
+export default class UserStoryService {
     
-    baseUrl = "http://localhost:3000/mock/" + "widgets";
-    urlIframe = "http://localhost:9000/dati-gov/v1/dashboard/iframes?apikey=test";
+    baseUrl = "http://localhost:3000/mock/" + "user_story";
 
     constructor() {
 
     }
 
-    async getIframe(){
-        const response = await fetch( this.urlIframe );
+    async get(id) {
+        const response = await fetch( this.baseUrl + "/" + id );
         return response.json();
     }
 
-    async get(layout, widgets) {
-        const response = await fetch( this.baseUrl );
+    async list() {
+        const response = await fetch( this.baseUrl + "/list" );
         return response.json();
     }
 
-    async save(layout, widgets) {
+    async save(id, story) {
 
         const response = await fetch( this.baseUrl, {
             method: 'POST',
@@ -27,8 +26,7 @@ export default class WidgetService {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                layout: layout,
-                widgets: widgets,
+                story: story
             })
         })
         

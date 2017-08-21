@@ -59,3 +59,9 @@
 .image-container {
   width: 100%;
 }
+
+.user-story-card {
+  padding: 20px;
+  margin: 20px;
+  background: #F5F7FA;
+}
