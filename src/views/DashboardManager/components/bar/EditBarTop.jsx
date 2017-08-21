@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
-import AddWidgetDialog from './AddWidgetDialog';
+import AddWidgetDialog from '../AddWidgetDialog';
 import { Route, Link } from 'react-router-dom';
-import TextEditor from '../../UserStory/components/editor/TextEditor'
+import TextEditor from '../../../UserStory/components/editor/TextEditor'
 
 class EditBarTop extends React.Component {
 
@@ -14,7 +14,7 @@ class EditBarTop extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.state.title = JSON.parse(JSON.stringify(nextProps.title));
+    this.state.title = nextProps.title;
   }
 
   handleChange(event) {

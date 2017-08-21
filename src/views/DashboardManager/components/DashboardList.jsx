@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Components from 'react';
 import { Route, Link } from 'react-router-dom';
+import ListBar from './bar/ListBar';
 
 // App components
 import Header from './Header';
@@ -60,6 +61,7 @@ class DashboardList extends Component {
           })
         }
       </div>
+      <ListBar></ListBar>
     </Container>
     );
   }

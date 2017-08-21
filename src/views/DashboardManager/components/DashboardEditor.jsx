@@ -4,8 +4,8 @@ import Dashboard, { addWidget } from 'react-dazzle';
 
 // App components
 import Header from './Header';
-import EditBar from './EditBar';
-import EditBarTop from './EditBarTop';
+import EditBar from './bar/EditBar';
+import EditBarTop from './bar/EditBarTop';
 import Container from './Container';
 import CustomFrame from './CustomFrame';
 

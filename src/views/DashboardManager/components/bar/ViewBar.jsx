@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import AddWidgetDialog from './AddWidgetDialog';
 import { Route, Link } from 'react-router-dom';
 
 class ViewBar extends React.Component {
@@ -35,12 +34,5 @@ class ViewBar extends React.Component {
   }
 };
 
-/* 
-ViewBar.propTypes = {
-  onEdit: PropTypes.func,
-  setLayout: PropTypes.func,
-  layout: PropTypes.object,
-  widgets: PropTypes.object
-}; */
 
 export default ViewBar;

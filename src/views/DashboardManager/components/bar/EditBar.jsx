@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import AddWidgetDialog from './AddWidgetDialog';
+import AddWidgetDialog from '../AddWidgetDialog';
 
 class EditBar extends React.Component {
     constructor(props) {
