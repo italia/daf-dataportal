@@ -19,7 +19,10 @@ function sendPostDataMeta(json, file) {
     url: "http://localhost:9000/catalog-manager/v1/catalog-ds/add",
     dataType: 'json',
     data: JSON.stringify(json),
-    contentType: "application/json",
+    contentType: 'application/json',
+    headers: {
+        authorization: 'Basic ' + btoa("ckanadmin:ckanadmin")   //If your header name has spaces or any other char not appropriate
+    },
     success: function( data ) {
       console.log(data)
       alert('ok')
