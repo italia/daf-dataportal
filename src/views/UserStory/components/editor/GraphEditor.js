@@ -57,8 +57,8 @@ class GraphEditor extends Component {
    */
   changeGraph(widgetName) {
     this.onRequestClose();
-    debugger
     this.state.graph = this.state.widgets[widgetName];
+    this.props.onChange(this.props.keyValue, this.state.graph)
   }
 
   onRequestClose = () => {
