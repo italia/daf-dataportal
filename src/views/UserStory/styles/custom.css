@@ -50,9 +50,11 @@
   letter-spacing: -.003em;
 }
 
-/* .text-editor.text-editor-content input {
-  text-align: left;
-} */
+.text-editor.text-editor-content,
+.text-editor.text-editor-footer {
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
 
 .image-container {
   width: 100%;
