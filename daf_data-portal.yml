@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-portal
+  labels:
+    app: data-portal
+spec:
+  ports:
+  - port: 5000
+  selector:
+    app: data-portal
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: data-portal-deployment
+spec:
+  replicas: 1
+  strategy:
+      type: Recreate
+  template:
+    metadata:
+      labels:
+        app: data-portal
+    spec:
+      containers:
+      - name: data-portal
+        image: 10.98.74.120:5000/data-portal:1.0.0
+        imagePullPolicy: Always
+        lifecycle:
+          postStart:
+            exec:
+             command: ["/bin/sh", "-c", "cat /etc/extra_hosts >> /etc/hosts"]
+        ports:
+        - name: client
+          containerPort: 5000
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        volumeMounts:
+        - name: hosts
+          mountPath: /etc/extra_hosts
+      imagePullSecrets:
+      - name: regsecret
+      volumes:
+      - name: hosts
+        hostPath:
+          path: /etc/hosts

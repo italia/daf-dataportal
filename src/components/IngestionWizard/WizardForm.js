@@ -56,12 +56,12 @@ class WizardForm extends Component {
 
                 {page === 1 &&
                 <WizardFormMetadata
+                      onSubmit={this.nextPage}/>}
+                {page ===2 &&  <WizardFormFirstPage
+                      previousPage={this.previousPage}
                       onSubmit={this.nextPage}
-                //  <WizardFormSecondPage
-                //      previousPage={this.previousPage}
-                //      onSubmit={this.nextPage2}
                   />}
-                {page === 2 &&
+                {page === 3 &&
                     <WizardFormThirdPage
                       previousPage={this.previousPage}
                       onSubmit={onSubmit}

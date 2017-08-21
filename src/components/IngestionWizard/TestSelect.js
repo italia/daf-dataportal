@@ -9,7 +9,7 @@ class TestSelect extends Component {
         this.url = this.props.url
     }
     getOptions() {
-      return fetch(this.url)
+      return fetch(this.url,{headers:  {'authorization' : 'Basic ' + btoa('ckanadmin:ckanadmin')}})
 		.then((response) => response.json())
 		.then((json) => {
 			return { options: json };

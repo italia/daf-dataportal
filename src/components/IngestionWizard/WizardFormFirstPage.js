@@ -5,23 +5,22 @@ import renderField from './renderField'
 
 const themes = [
 {'val' : 'AGRI', 'name' : 'AGRICOLTURA'},{'val' : 'EDUC', 'name' : 'EDUCAZIONE'},
-{'val' : 'ECON', 'name' : 'ECONOMIA'},{'val' : 'AGRI', 'name' : 'AGRICOLTURA'},
+{'val' : 'ECON', 'name' : 'ECONOMIA'},
 {'val' : 'ENVI', 'name' : 'AMBIENTE'},{'val' : 'HEAL', 'name' : 'SANITA'},
 {'val' : 'INTR', 'name' : 'INTERNAZIONALE'},{'val' : 'JUST', 'name' : 'GIUSTIZIA'},
 {'val' : 'SOCI', 'name' : 'REGIONE'},{'val' : 'TECH', 'name' : 'TECNOLOGIA'},
 {'val' : 'TRAN', 'name' : 'TRASPORTO'}]
 
-
-
-
 const renderThemes = ({ input, meta: { touched, error } }) => (
-    <div className="form-group row">
-      <label className="col-md-3 form-control-label">Categoria</label>
-      <div className="col-md-9">
-      <select {...input}>
-        <option value="ECON"  key='theme'>ECONOMIA</option>
-        {themes.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
-        </select>
+    <div className="form-group">
+      <label className="form-control-label">Categoria</label>
+      <div>
+         <div className="form-group">
+          <select className="form-control" {...input}>
+            <option value="ECON"  key='theme' defaultValue>ECONOMIA</option>
+            {themes.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
+          </select>
+        </div>
         {touched && error && <span>{error}</span>}
       </div>
    </div>
@@ -30,84 +29,47 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
  
 
 const WizardFormFirstPage = props => {
-  const { handleSubmit } = props
+  const { handleSubmit, previousPage } = props
   return (
-    <form className="form-horizontal" onSubmit={handleSubmit}>
-      <Field
-        name="title"
-        type="text"
-        component={renderField}
-        label="Title"
-      />
-      <Field
-        name="identifier"
-        type="text"
-        component={renderField}
-        label="Identifier"
-      />
-      <Field
-        name="notes"
-        type="text"
-        component={renderField}
-        label="Description"
-      />
-      <Field
-        name="theme"
-        type="text"
-        component={renderThemes}
-        label="Themes"
-      />
-      <Field
-        name="publisher_editor"
-        type="text"
-        component={renderField}
-        label="Editor"
-      />
-      <Field
-        name="publisher_identifier"
-        type="text"
-        component={renderField}
-        label="Ipa/Iva"
-      />
-      <Field
-        name="creation_date"
-        type="text"
-        component={renderField}
-        label="Modification Date"
-      />
-      <Field
-        name="holder_name"
-        type="text"
-        component={renderField}
-        label="Rights Holder"
-      />
-      <Field
-        name="holder_identifier"
-        type="text"
-        component={renderField}
-        label="R. Ipa/Iva"
-      />
-      <Field
-        name="license_title"
-        type="text"
-        component={renderField}
-        label="License"
-      />
-      <Field
-        name="license_id"
-        type="text"
-        component={renderField}
-        label="License ID"
-      />
-      <Field
-        name="owner_org"
-        type="text"
-        component={renderField}
-        label="Organization"
-      />
-      <div>
-        <button type="submit" className="next">Next</button>
+    <form  onSubmit={handleSubmit}>
+        <div className="col-md-12">
+          <Field
+            name="title"
+            type="text"
+            component={renderField}
+            label="Title"
+            readonly="readonly"
+          />
+          <Field
+            name="notes"
+            type="textarea"
+            component={renderField}
+            label="Description"
+          />
+          <Field
+            name="theme"
+            type="text"
+            component={renderThemes}
+            label="Themes"
+          />
+          <Field
+            name="license_title"
+            type="text"
+            component={renderField}
+            label="License"
+          />
+          <Field
+            name="ownership"
+            type="text"
+            component={renderField}
+            label="Ownership"
+          />
+        </div>
+      <div className="btn-group mr-2" role="group" aria-label="First group">
+        <button type="button" className="btn btn-primary" onClick={previousPage}>Previous</button>
+        <button type="submit" className="btn btn-primary">Next</button>
       </div>
+ 
     </form>
   )
 }

@@ -14,7 +14,8 @@ const calcDataFields = (fields, files) =>
            console.log(item)
            fields.push({nome : item, tipo : resData.props[index].type, concetto : '', 
             desc : '', required : 0, field_type : '' , cat : '', tag : '', 
-            constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' }})
+            constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
+            data :  resData.data[item]})
         } , 
           fields.push({nome : 'file', tipo : files[0]})
         )
@@ -67,8 +68,8 @@ const renderField = ({ input, label, type, value = '', readonly, meta: { touched
 
   const renderFieldMeta = ({ input, label, type, value = '', meta: { touched, error } }) => (
     <div>
-    <label className="col-md-2 form-control-label">{label}</label>
-   <div className="col-md-4">
+    <label className="form-control-label">{label}</label>
+   <div className="col-md-12">
       <input {...input} placeholder={label} type={type} className="form-control"/>
       {touched && error && <span>{error}</span>}
     </div>
@@ -77,8 +78,8 @@ const renderField = ({ input, label, type, value = '', readonly, meta: { touched
 
 const renderYesNoSelector = ({ input, meta: { touched, error } }) => (
     <div>
-    <label className="col-md-2 form-control-label">Obbligatorio?</label>
-   <div className="col-md-4">
+    <label className="form-control-label">Obbligatorio?</label>
+   <div className="col-md-12">
     <select className="form-control" {...input}>
       <option value="0" defaultValue key='false'>No</option>
       <option value="1" key="1">Yes</option>
@@ -90,8 +91,8 @@ const renderYesNoSelector = ({ input, meta: { touched, error } }) => (
 
 const renderFieldType = ({ input, meta: { touched, error } }) => (
     <div>
-    <label className="col-md-2 form-control-label">Tipo Colonna</label>
-   <div className="col-md-4">
+    <label className="form-control-label">Tipo Colonna</label>
+   <div className="col-md-12">
     <select className="form-control" {...input}>
       <option value="" defaultValue key=''></option>
       <option value="dimension" key='dimension'>Dimension</option>
@@ -248,9 +249,9 @@ class WizardFormMetadata extends Component {
     super(props)
   }
 
-  renderDropzoneInput = ({fields, input, reset, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields,columnCard, input, reset, meta : {touched, error} }) => 
       <div>     
-      {fields.length == 0 &&
+      {fields.length > -1 &&
       <div className="form-group">
          <div className="col-md-6 offset-md-3">
           <label htmlFor='tests'>Carica il file max 50MB</label>
@@ -261,7 +262,8 @@ class WizardFormMetadata extends Component {
             onDrop={( filesToUpload, e ) => {
               const {dispatch} = this.props 
               calcDataFields(fields, filesToUpload);
-              dispatch(change('wizard', 'title', filesToUpload[0].name))
+              const fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
+              dispatch(change('wizard', 'title', fileName))
               }
             }>
             <div>Try dropping some files here, or click to select files to upload.</div>
@@ -294,6 +296,8 @@ class WizardFormMetadata extends Component {
         </div>
       </div>
       :
+      <div className="row">
+        <div className="col-md-6">
       <div className="form-group">
       <div className="card">
         <div className="card-header">
@@ -362,49 +366,72 @@ class WizardFormMetadata extends Component {
       </div>
       </div>
       </div>
+      </div>
+       <div className="col-md-6">
+            <div className="card">
+              <div className="card-header">
+                <i className="fa fa-align-justify"></i> Colonna #{index}
+              </div>
+              <div className="card-block">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>{index}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> test </td>
+                      <td>
+                        <span className="badge badge-success">Active</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Estavan Lykos</td>
+                      <td>
+                        <span className="badge badge-danger">Banned</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Chetan Mohamed</td>
+                      <td>
+                        <span className="badge badge-default">Inactive</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Derick Maximinus</td>
+                      <td>
+                        <span className="badge badge-warning">Pending</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Friderik Dávid</td>
+                      <td>
+                        <span className="badge badge-success">Active</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
       )}
     </div>
   
   render() {
-    const { handleSubmit, previousPage, pristine, submitting, reset, title, nomefile } = this.props;
+    const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard } = this.props;
     return (
     <form onSubmit={handleSubmit}>
       <div className="form-group row">
-        <div className="col-md-6">
+        <div className="col-md-12">
           <FieldArray
             name="tests"
             component={this.renderDropzoneInput}
             title={title}
             reset={reset}
+            columnCard={columnCard}
           />
-        </div>
-        <div className="col-md-6">
-          <Field
-            name="title"
-            type="text"
-            component={renderField}
-            label="Title"
-            readonly="readonly"
-          />
-          <Field
-            name="notes"
-            type="text"
-            component={renderField}
-            label="Description"
-          />
-          <Field
-            name="theme"
-            type="text"
-            component={renderThemes}
-            label="Themes"
-          />
-          <Field
-            name="license_title"
-            type="text"
-            component={renderField}
-            label="License"
-          />
-  
         </div>
       </div>
       <div className="form-group row">
@@ -457,8 +484,11 @@ class WizardFormMetadata extends Component {
 WizardFormMetadata = connect(state => {
   // can select values individually
   const nomefile = state.nomefile || 'prova';
+  //const dataSample = state.dataSample || [];
   return {
     nomefile
+    //,
+ //   dataSample
   }
 })(WizardFormMetadata)
 
