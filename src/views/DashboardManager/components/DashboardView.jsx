@@ -7,6 +7,7 @@ import Header from './Header';
 import EditBar from './EditBar';
 import Container from './Container';
 import CustomFrame from './CustomFrame';
+import ViewBar from './ViewBar';
 
 // Widgets of the dashboard.
 import TextWidget from './widgets/TextWidget';
@@ -105,7 +106,8 @@ class DashboardView extends Component {
       //render widgets
       this.state.widgets = config.widgets;
       this.setState({
-        layout: config.layout
+        layout: config.layout,
+        title: config.title
       });
     });
 
@@ -118,7 +120,8 @@ class DashboardView extends Component {
   render() {
     return (
     <Container>
-      <Header title="View Dashboard" />
+      <Header title="Anteprima Dashboard" />
+      <ViewBar title={this.state.title} id={this.state.id}></ViewBar>
       <Dashboard
         frameComponent={CustomFrame}
         layout={this.state.layout}

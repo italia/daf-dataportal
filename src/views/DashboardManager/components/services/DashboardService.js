@@ -17,7 +17,7 @@ export default class DashboardService {
         return response.json();
     }
 
-    async save(id, layout, widgets) {
+    async save(id, layout, widgets, title) {
 
         const response = await fetch( this.baseUrl + "/" + id , {
             method: 'POST',
@@ -28,6 +28,7 @@ export default class DashboardService {
             body: JSON.stringify({
                 layout: layout,
                 widgets: widgets,
+                title: title
             })
         })
         

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import { Route, Link } from 'react-router-dom';
 
 // App components
 import Header from './Header';
@@ -45,16 +46,16 @@ class DashboardList extends Component {
   render() {
     return (
     <Container>
-      <Header title="List Dashboard" />
+      <Header title="Le Mie Dashboards" />
       <div>
         {
           this.state.dashboards.map((dash, index) => {
             return <div key={index} className="dashboard-card">
-              <h2>
-                <a href={"#/dashboard/list/" + dash.id}>
+              <Link to={"/dashboard/list/" + dash.id}>
+                <h2>
                   {dash.title}
-                </a>
-              </h2>
+                </h2>
+              </Link>
             </div>
           })
         }

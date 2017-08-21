@@ -5,6 +5,7 @@ import Dashboard, { addWidget } from 'react-dazzle';
 // App components
 import Header from './Header';
 import EditBar from './EditBar';
+import EditBarTop from './EditBarTop';
 import Container from './Container';
 import CustomFrame from './CustomFrame';
 
@@ -51,8 +52,6 @@ class DashboardEditor extends Component {
 
     //set state
     this.state = {
-      //id of widget to edit
-      id: 1,
       // Widgets that are available in the dashboard
       widgets: {},
       // Layout of the dashboard
@@ -62,12 +61,16 @@ class DashboardEditor extends Component {
       editMode: true,
       isModalOpen: false
     };
+    
+    //id of widget to edit
+    this.id= this.props.match.params.id,
  
     //bind functions
     this.addRow = this.addRow.bind(this);
     this.addWidget = this.addWidget.bind(this);
     this.saveTextWidget = this.saveTextWidget.bind(this);
     this.save = this.save.bind(this);
+    this.onChangeTitle = this.onChangeTitle.bind(this);
     
   }
 
@@ -93,7 +96,7 @@ class DashboardEditor extends Component {
    * Method called for load stored user widget
    */
   load = (config) => {
-    let response = dashboardService.get(this.state.id);
+    let response = dashboardService.get(this.id);
     response.then((config) => {
       for(let i in config.widgets) {
         let widget = config.widgets[i];
@@ -110,8 +113,11 @@ class DashboardEditor extends Component {
       }
 
       //render widgets
-      this.state.widgets = config.widgets;
-      this.setLayout(config.layout);
+      this.state = {
+        widgets: config.widgets,
+        title: config.title
+      };
+      this.setLayout(config.layout, true);
     });
 
   }
@@ -126,7 +132,7 @@ class DashboardEditor extends Component {
   /**
   * Set layout Dashboard
   */
-  setLayout = (layout) => {
+  setLayout = (layout, notSave) => {
     // add control button
     layout.rows.map((row, index) => {
       
@@ -164,7 +170,8 @@ class DashboardEditor extends Component {
       layout: layout
     });
 
-    this.save();
+    if(!notSave)
+      this.save();
   }
 
   /**
@@ -260,7 +267,7 @@ class DashboardEditor extends Component {
     }
 
     //save data
-    const response = dashboardService.save(this.state.id, layout, widgets);
+    const response = dashboardService.save(this.id, layout, widgets, this.state.title);
   }
 
   /**
@@ -311,12 +318,25 @@ class DashboardEditor extends Component {
   }
   
   /**
+   * onChangeTitle
+   */
+  onChangeTitle(title){
+    this.state.title = title;
+    this.save();
+  }
+
+  /**
    * Render Function
    */
   render() {
     return (
     <Container>
-      <Header title="Edit Dashboard" />
+      <Header title="Modifica Dashboard" />
+      <EditBarTop 
+          title={this.state.title}
+          onChange={this.onChangeTitle}
+          id={this.id}
+      ></EditBarTop>
       <Dashboard
         frameComponent={CustomFrame}
         onRemove={this.onRemove}
@@ -325,13 +345,13 @@ class DashboardEditor extends Component {
         editable={this.state.editMode}
         onAdd={this.onAdd}
         onMove={this.onMove}
+      />
+      <EditBar 
+        onEdit={this.toggleEdit} 
+        addRow={this.addRow}
+        widgets={this.widgetsTypes}
+        addWidget={this.addWidget}
         />
-        <EditBar 
-          onEdit={this.toggleEdit} 
-          addRow={this.addRow}
-          widgets={this.widgetsTypes}
-          addWidget={this.addWidget}
-          />
     </Container>
     );
   }

@@ -8956,6 +8956,10 @@ hr.transparent {
   margin-bottom: 20px;
 }
 
+.box.transparent {
+  background-color: transparent;
+}
+
 .modal-content {
   position: static;
 }
