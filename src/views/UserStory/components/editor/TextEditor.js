@@ -24,7 +24,14 @@ class TextEditor extends Component {
   render() {
     return (
     <div className={"text-editor " + this.props.className}>
+      {
+        this.props.readonly!=true &&
         <TextareaAutosize placeholder={this.props.placeholder} type="text" value={this.state.text} onChange={this.handleChange} />
+      }
+      {
+        this.props.readonly==true &&
+        this.state.text
+      }
     </div>
     );
   }

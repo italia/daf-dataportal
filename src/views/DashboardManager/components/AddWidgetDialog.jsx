@@ -14,7 +14,7 @@ const AddWidgetDialog = ({ widgets, isModalOpen, onRequestClose, onWidgetSelect}
     if(widget && widget =="TextWidget")
       return (
         <div key={key} className="col-sm-12 col-md-12 col-lg-12 list-group mb-20">
-          <a href="#/dashboard_manager" className="list-group-item" onClick={() => onWidgetSelect(widget)}>
+          <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
             <h6 className="list-group-item-heading">
               {widgets[widget].title}
             </h6>
@@ -24,7 +24,7 @@ const AddWidgetDialog = ({ widgets, isModalOpen, onRequestClose, onWidgetSelect}
     if(widget && widget.indexOf("BtnControlWidget") != 0 && widget !="TextWidget")
       return (
         <div key={key} className="col-sm-6 col-md-6 col-lg-6 list-group mb-20">
-          <a href="#/dashboard_manager" className="list-group-item" onClick={() => onWidgetSelect(widget)}>
+          <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
             <h6 className="list-group-item-heading" id={"title-preview-" + key}>
               {widgets[widget].title}
             </h6>

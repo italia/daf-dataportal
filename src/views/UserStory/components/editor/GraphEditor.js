@@ -17,6 +17,15 @@ class GraphEditor extends Component {
       isModalAddOpen: false
     };
 
+    if (!this.state.graph) {
+      this.state.graph = {
+        "title": "",
+        "props": {
+            "url": null
+        }
+      }
+    }
+
     //bind functions
     this.changeGraph = this.changeGraph.bind(this);
 
@@ -92,16 +101,20 @@ class GraphEditor extends Component {
               style={iframeStyle}
               src={this.state.graph.props.url}
             />
-            <div className="text-center mt-20">
-              <button type="button" className="btn btn-default" onClick={() => this.openModalChangeGraph()}>
-                  Change Graph
-              </button>
-            </div>
+            
+            {
+              this.props.readonly!=true &&
+              <div className="text-center mt-20">
+                <button type="button" className="btn btn-default" onClick={() => this.openModalChangeGraph()}>
+                    Change Graph
+                </button>
+              </div>
+            }
           </div>
         }
         {
           //if graph not selected
-          !this.state.graph.props.url &&
+          !this.state.graph.props.url && this.props.readonly!=true &&
           <div className="text-center mt-20 mb-40">
             <button type="button" className="btn btn-default" onClick={() => this.openModalChangeGraph()}>
                 Select Graph

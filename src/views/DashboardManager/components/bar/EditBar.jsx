@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import AddWidgetDialog from './AddWidgetDialog';
+import AddWidgetDialog from '../AddWidgetDialog';
 
 class EditBar extends React.Component {
     constructor(props) {
@@ -36,17 +36,17 @@ class EditBar extends React.Component {
     return (
       <div className="row edit-bar">
 
-        <div className="box">
-          <button type="button" className="btn btn-default btn-xs" onClick={this.props.addRow}>
-            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              Add Row
-          </button>
-          
+        <div className="box transparent">
           <button type="button" className="btn btn-primary btn-xs" onClick={this.addWidgetOpenModal}>
             <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
               Add Widget
           </button>
 
+          <button type="button" className="btn btn-link btn-xs" onClick={this.props.addRow}>
+            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              Add Row
+          </button>
+          
         </div>
 
         <AddWidgetDialog

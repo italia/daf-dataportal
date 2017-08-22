@@ -50,33 +50,19 @@ class Sidebar extends Component {
                 </li>
               </ul>
             </li>
-            <li className={this.activeRoute("/icons")}>
-              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Dashboard</a>
-              <ul className="nav-dropdown-items">
-                <li className="nav-item">
-                  <NavLink to={'/dashboard_manager'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Dashboard</NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink to={'/icons/simple-line-icons'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Visualizza</NavLink>
-                </li>
-              </ul>
+        
+            <li className="nav-item">
+              <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Dashboard</NavLink>
             </li>
-
-            <li className={this.activeRoute("/icons")}>
-              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Storie</a>
-              <ul className="nav-dropdown-items">
-                <li className="nav-item">
-                  <NavLink to={'/user_story'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Storia</NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink to={'/icons/simple-line-icons'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Visualizza</NavLink>
-                </li>
-              </ul>
+                
+            <li className="nav-item">
+              <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Storie</NavLink>
             </li>
 
             <li className="nav-item">
               <NavLink to={'/charts'} className="nav-link" onClick={this.handleClick.bind(this)} activeClassName="active"><i className="icon-pie-chart"></i> Grafici</NavLink>
             </li>
+
             <li className="nav-item">
               <a href={'http://localhost:8088'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Busness Intelligence</a>
             </li>

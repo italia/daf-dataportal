@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Components from 'react';
 import UserStoryEditor from './components/UserStoryEditor';
+import UserStoryList from './components/UserStoryList';
+import UserStoryView from './components/UserStoryView';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 // Our styles
 import './styles/custom.css';
@@ -12,7 +15,12 @@ class UserStory extends Component {
 
   render() {
     return (
-      <UserStoryEditor/>
+      <Switch>
+        <Route path='/user_story/create'         exact component={UserStoryEditor} />
+        <Route path="/user_story/list"           exact component={UserStoryList} />
+        <Route path="/user_story/list/:id"       exact component={UserStoryView} />
+        <Route path="/user_story/list/:id/edit"  exact component={UserStoryEditor} />
+      </Switch>
     );
   }
 

@@ -1,0 +1,14 @@
+[
+    {
+        "id" : 1,
+        "title": "Dashboard 1"
+    },
+    {
+        "id" : 2,
+        "title": "Dashboard 2"
+    },
+    {
+        "id" : 3,
+        "title": "Dashboard 3"
+    }
+]
