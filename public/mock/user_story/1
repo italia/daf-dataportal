@@ -3,15 +3,15 @@
     "title": "Storia 1",
     "subtitle": "Storia di prova",
     "graph": {
-    "title": "",
-    "props": {
-        "url": null
-    }
+        "title": "Sp ID Overalls, Filtered by Year 2017",
+        "props": {
+            "url": "http://91.206.129.158:8080/public/question/b9f1e87b-5cd0-46e0-b816-0ad7cefd2ef6"
+        }
     },
     "text": "Contenuto della storia",
     "image": {
-    "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
-    "caption": "Testo Immagine"
+        "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
+        "caption": "Testo Immagine"
     },
     "footer": "Questo è il footer"
 }
