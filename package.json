@@ -26,6 +26,7 @@
     "react-draft-js": "^1.0.0",
     "react-draft-wysiwyg": "^1.10.7",
     "react-dropzone": "^3.13.4",
+    "react-medium-editor": "^1.8.1",
     "react-modal": "^2.2.2",
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
