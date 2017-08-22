@@ -1,10 +1,16 @@
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import React, { Component } from 'react';
-import { Editor } from 'react-draft-wysiwyg';
+//import { Editor } from 'react-draft-wysiwyg';
 import htmlToDraft from 'html-to-draftjs';
 import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+
+//medium text editor
+import Editor from 'react-medium-editor';
+
+require('medium-editor/dist/css/medium-editor.css');
+require('medium-editor/dist/css/themes/default.css');
 
 class TextWidget extends Component {
 
@@ -14,52 +20,38 @@ class TextWidget extends Component {
     this.state = {
       text: props.text
     };
-
-    this.load();
     
   }
 
-  load = function(){
-    let html = this.state.text;
-    if (html) {
-      const contentBlock = htmlToDraft(html);
-      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-      const editorState = EditorState.createWithContent(contentState);
-      this.state = {
-        editorState,
-        text: html
-      };
-    }
-  }
-
-  onEditorStateChange = (editorState) => {
+  onEditorStateChange = (text) => {
     this.setState({
-      editorState,
+      text: text
     });
   };
 
   save() {
-    let html = "";
-    if (this.state.editorState)
-      html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
+    //let html = "";
+    //if (this.state.editorState)
+    //  html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
     
     this.setState({
       edit: false,
-      text: html
+      text: this.state.text
     })
     
-    this.props.onSave(this.props.wid_key, html);
+    this.props.onSave(this.props.wid_key, this.state.text);
   }
 
   edit() {
     this.setState({
-      edit: true
+      edit: true,
+      oldText: this.state.text
     })
   }
 
   close() {
-    this.load();
     this.setState({
+      text: this.state.oldText,
       edit: false
     })
   }
@@ -82,13 +74,21 @@ class TextWidget extends Component {
         
         {this.state.edit && 
           <div>
+            
+            <Editor
+              text={this.state.text}
+              onChange={this.onEditorStateChange}
+              options={{toolbar: {buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],}}}
+            />
+
+            {/*  OLD EDITOR
             <Editor
               editorState={editorState}
               toolbarClassName="rdw-storybook-toolbar"
               wrapperClassName="rdw-storybook-wrapper"
               editorClassName="rdw-storybook-editor"
               onEditorStateChange={this.onEditorStateChange}
-            />
+            /> */}
             
             <button onClick={() => this.close()} type="button" className="btn btn-default" >Cancel</button>
             <button onClick={() => this.save()} type="button" className="btn btn-primary" >Save</button>

@@ -130,6 +130,14 @@ class DashboardEditor extends Component {
   }
 
   /**
+   * When a widget moved, this will be called. Layout should be given back.
+   */
+  onRemove = (layout) => {
+    this.setLayout(layout);
+  }
+
+
+  /**
   * Set layout Dashboard
   */
   setLayout = (layout, notSave) => {
@@ -165,6 +173,8 @@ class DashboardEditor extends Component {
       })
 
     }) 
+    
+    this.state.layout = layout;
 
     this.setState({
       layout: layout
@@ -192,8 +202,13 @@ class DashboardEditor extends Component {
   /**
   * Add widget
   */
-  addWidget = function (widgetKey) {
-    this.addRow();
+  addWidget = function (widgetKey, row) {
+    
+    if (row == undefined) {
+      row = this.state.layout.rows.length;
+      this.addRow();
+    }
+
     let newWidget = this.widgetsTypes[widgetKey];
 
     //count widget of type
@@ -207,7 +222,7 @@ class DashboardEditor extends Component {
     //add widget to list
     this.state.widgets[newKey] = newWidget;
     //add widget to layout
-    this.state.layout.rows[this.state.layout.rows.length-1].columns[0].widgets.push({key: newKey});
+    this.state.layout.rows[row].columns[0].widgets.push({key: newKey});
     this.setLayout(this.state.layout);
   }
 
@@ -342,7 +357,7 @@ class DashboardEditor extends Component {
         onRemove={this.onRemove}
         layout={this.state.layout}
         widgets={this.state.widgets}
-        editable={this.state.editMode}
+        editable={true}
         onAdd={this.onAdd}
         onMove={this.onMove}
       />

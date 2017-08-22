@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import Components from 'react';
-import TextareaAutosize from 'react-autosize-textarea';
+//import TextareaAutosize from 'react-autosize-textarea';
+
+//medium text editor
+import Editor from 'react-medium-editor';
+
+require('medium-editor/dist/css/medium-editor.css');
+require('medium-editor/dist/css/themes/default.css');
 
 class TextEditor extends Component {
   constructor(props) {
@@ -12,8 +18,7 @@ class TextEditor extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
   
-  handleChange = function(e) {
-    let value = e.target.value;
+  handleChange = function(value) {
     this.setState({text: value});
     this.props.onChange(this.props.keyValue, value)
   };
@@ -26,7 +31,13 @@ class TextEditor extends Component {
     <div className={"text-editor " + this.props.className}>
       {
         this.props.readonly!=true &&
-        <TextareaAutosize placeholder={this.props.placeholder} type="text" value={this.state.text} onChange={this.handleChange} />
+
+        <Editor
+          text={this.state.text}
+          onChange={this.handleChange}
+          options={{toolbar: {buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],}}}
+        />
+//        <TextareaAutosize placeholder={this.props.placeholder} type="text" value={this.state.text} onChange={this.handleChange} />
       }
       {
         this.props.readonly==true &&

@@ -9111,3 +9111,7 @@ hr.transparent {
 .dashboardHeader {
   margin-bottom: 30px;
 }
+
+.medium-editor-element {
+  outline: none;
+}
