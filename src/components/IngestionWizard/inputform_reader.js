@@ -16,7 +16,7 @@ function getJsonCatalog(){
 function sendPostDataMeta(json, file) {
     $.ajax({
     type: "POST",
-    url: "http://localhost:9000/catalog-manager/v1/catalog-ds/add",
+    url: "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1/catalog-ds/add",
     dataType: 'json',
     data: JSON.stringify(json),
     contentType: 'application/json',
