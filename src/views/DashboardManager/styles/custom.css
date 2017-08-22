@@ -72,3 +72,14 @@
   margin: 20px;
   background: #F5F7FA;
 }
+
+.panel_toolbox {
+  position: absolute;
+  right: 25px;
+  top: 6px;
+}
+
+.x_title {
+  height: 0px;
+  border: none;
+}
