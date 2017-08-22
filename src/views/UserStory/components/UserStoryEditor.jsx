@@ -5,33 +5,59 @@ import Components from 'react';
 import Header from './Header';
 import Container from './Container';
 import UserStoryEditorContainer from './UserStoryEditorContainer';
+import EditBarTop from './bar/EditBarTop';
+
+// SERVICES
+import UserStoryService from './services/UserStoryService';
+
+const userStoryService = new UserStoryService();
 
 
 class UserStoryEditor extends Component {
   constructor(props) {
     super(props);
-    this.save = this.save.bind(this);
-  }
 
-  dataStory = {
-    title: "",
-    subtitle: "",
-    graph: {
-      title: "",
-      props: {
-        url: null
-      }
-    },
-    text: "",
-    image: {
-      url: "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
-      caption: ""
-    },
-    footer: ""
+    //init state
+    this.state={
+      id: this.props.match.params.id
+    };
+
+    //bind functions
+    this.save = this.save.bind(this);
+    this.onChangeTitle = this.onChangeTitle.bind(this);
+    this.onPublish = this.onPublish.bind(this);
+    
+    //load data
+    if (this.state.id) {
+      let response = userStoryService.get(this.state.id);
+      response.then((story) => {
+        this.setState({
+          dataStory: story
+        });
+      });
+    } else {
+      this.state.dataStory= {};
+    }
   }
 
   save(value) {
     console.log(value);
+  }
+
+  /**
+   * onChangeTitle
+   */
+  onChangeTitle(title){
+    this.state.dataStory.title = title;
+    this.save(this.state.dataStory);
+  }
+
+  /**
+   * onChangeTitle
+   */
+  onPublish(published){
+    this.state.dataStory.published = published;
+    this.save(this.state.dataStory);
   }
 
   /**
@@ -41,10 +67,22 @@ class UserStoryEditor extends Component {
     return (
     <Container>
       <Header />
-      <UserStoryEditorContainer 
-        dataStory={this.dataStory} 
-        onChange={this.save}
-      />
+      {
+        this.state.dataStory &&
+        <div>
+          <EditBarTop 
+              title={this.state.dataStory.title}
+              onChange={this.onChangeTitle}
+              onPublish={this.onPublish}
+              id={this.state.dataStory.id}
+              published={this.state.dataStory.published}
+          ></EditBarTop>
+          <UserStoryEditorContainer 
+            dataStory={this.state.dataStory} 
+            onChange={this.save}
+          />
+        </div>
+      }
     </Container>
     );
   }

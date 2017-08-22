@@ -69,7 +69,8 @@ export default class App extends Component {
             <PrivateRoute authed={this.state.authed} path="/ingestionwizzard" name="Ingestion" component={Full}/>
             <PrivateRoute authed={this.state.authed} path="/ontologies" name="Ontologies" component={Full}/>
             <PrivateRoute authed={this.state.authed} path="/dataset" name="Dataset" component={Full}/>
-            <PrivateRoute authed={this.state.authed} path="/dashboard_manager" name="Dash" component={Full}/>
+            <PrivateRoute authed={this.state.authed} path="/dashboard/manager" name="Dash" component={Full}/>
+            <PrivateRoute authed={this.state.authed} path="/dashboard/list" name="Dash" component={Full}/>
             <PrivateRoute authed={this.state.authed} path="/user_story" name="Storie" component={Full}/>
             <PrivateRoute authed={this.state.authed} path="/profile" name="Profile" component={Full}/>
         </Switch>

@@ -71,9 +71,12 @@ class TextWidget extends Component {
         {!this.state.edit && 
           <div>
             <div dangerouslySetInnerHTML={{__html: this.state.text}}></div>
-            <div className="mt-20">
-              <button onClick={() => this.edit()} type="button" className="btn btn-link" >Edit Text</button>
-            </div>
+            {
+              this.props.readOnly!==false &&
+              <div className="mt-20">
+                <button onClick={() => this.edit()} type="button" className="btn btn-link" >Edit Text</button>
+              </div>
+            }
           </div>
         }
         

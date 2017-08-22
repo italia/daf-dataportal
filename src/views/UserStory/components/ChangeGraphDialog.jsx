@@ -14,7 +14,7 @@ const ChangeGraphDialog = ({ widgets, isModalOpen, onRequestClose, onWidgetSelec
     if(widget)
       return (
         <div key={key} className="col-sm-6 col-md-6 col-lg-6 list-group mb-20">
-          <a href="#/user_story" className="list-group-item" onClick={() => onWidgetSelect(widget)}>
+          <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
             <h6 className="list-group-item-heading" id={"title-preview-" + key}>
               {widgets[widget].title}
             </h6>
