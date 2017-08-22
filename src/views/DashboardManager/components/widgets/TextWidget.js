@@ -78,6 +78,7 @@ class TextWidget extends Component {
             <Editor
               text={this.state.text}
               onChange={this.onEditorStateChange}
+              options={{toolbar: {buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],}}}
             />
 
             {/*  OLD EDITOR

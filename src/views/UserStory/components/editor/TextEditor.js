@@ -35,6 +35,7 @@ class TextEditor extends Component {
         <Editor
           text={this.state.text}
           onChange={this.handleChange}
+          options={{toolbar: {buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],}}}
         />
 //        <TextareaAutosize placeholder={this.props.placeholder} type="text" value={this.state.text} onChange={this.handleChange} />
       }
