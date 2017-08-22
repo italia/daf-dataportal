@@ -17,6 +17,15 @@ class GraphEditor extends Component {
       isModalAddOpen: false
     };
 
+    if (!this.state.graph) {
+      this.state.graph = {
+        "title": "",
+        "props": {
+            "url": null
+        }
+      }
+    }
+
     //bind functions
     this.changeGraph = this.changeGraph.bind(this);
 

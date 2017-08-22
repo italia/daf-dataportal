@@ -7,10 +7,11 @@ class ImageEditor extends Component {
     super(props);
 
     this.state = {
-      image: {
-        caption: props.image.caption,
-        url: props.image.url
-      }
+      image: props.image
+    }
+    
+    if (!this.state.image) {
+      this.state.image = {}
     }
 
     this.onChange = this.onChange.bind(this);
@@ -28,7 +29,7 @@ class ImageEditor extends Component {
   render() {
     return (
     <div>
-        <img className="image-container" src={this.props.image.url} />
+        <img className="image-container" src={this.state.image.url} />
         
         {
           this.props.readonly!=true &&
@@ -41,7 +42,7 @@ class ImageEditor extends Component {
 
         <TextEditor 
           keyValue="caption"
-          text={this.props.image.caption} 
+          text={this.state.image.caption} 
           className="text-editor-img-caption"
           onChange={this.onChange}
           placeholder="Insert here image description..."

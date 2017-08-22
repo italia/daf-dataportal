@@ -16,7 +16,7 @@ const userStoryService = new UserStoryService();
 class UserStoryEditor extends Component {
   constructor(props) {
     super(props);
-    
+
     //init state
     this.state={
       id: this.props.match.params.id
@@ -27,12 +27,16 @@ class UserStoryEditor extends Component {
     this.onChangeTitle = this.onChangeTitle.bind(this);
     
     //load data
-    let response = userStoryService.get(this.state.id);
-    response.then((story) => {
-      this.setState({
-        dataStory: story
+    if (this.state.id) {
+      let response = userStoryService.get(this.state.id);
+      response.then((story) => {
+        this.setState({
+          dataStory: story
+        });
       });
-    });
+    } else {
+      this.state.dataStory= {};
+    }
   }
 
   save(value) {

@@ -3,15 +3,15 @@
     "title": "Storia 3",
     "subtitle": "Storia di prova",
     "graph": {
-    "title": "",
-    "props": {
-        "url": null
-    }
+        "title": "",
+        "props": {
+            "url": null
+        }
     },
     "text": "Contenuto della storia",
     "image": {
-    "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
-    "caption": "Testo Immagine"
+        "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
+        "caption": "Testo Immagine"
     },
     "footer": "Questo è il footer"
 }
