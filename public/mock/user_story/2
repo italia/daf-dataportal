@@ -1,6 +1,7 @@
 {
     "id":2,
     "title": "Storia 2",
+    "published": false,
     "subtitle": "Storia di prova",
     "graph": {
         "title": "Sp ID Overalls, Filtered by Year 2017",

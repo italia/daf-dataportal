@@ -51,13 +51,27 @@ class UserStoryList extends Component {
       <div>
         {
           this.state.userStories.map((story, index) => {
-            return <div key={index} className="user-story-card">
-              <Link to={"/user_story/list/" + story.id}>
-                <h2>
-                  {story.title}
-                </h2>
-              </Link>
-            </div>
+            return (
+              <div key={index} className="user-story-card">
+                <Link to={"/user_story/list/" + story.id}>
+                  <h2 className="pull-left">
+                    {story.title}
+                  </h2>
+                </Link>
+
+                {
+                  story.published==true &&
+                  <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
+                }
+                {
+                  !story.published &&
+                  <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
+                }
+
+                <div className="clearfix"></div>
+              </div>
+            
+            )
           })
         }
       </div>

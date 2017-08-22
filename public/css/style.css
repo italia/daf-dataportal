@@ -8948,6 +8948,14 @@ hr.transparent {
     margin-left: 0px;
 }
 
+.mr-10{
+  margin-right: 10px;
+}
+
+.mr-20{
+  margin-right: 20px;
+}
+
 .box {
   background-color: white;
   width: 100%;
