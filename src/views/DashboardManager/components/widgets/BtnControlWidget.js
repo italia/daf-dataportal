@@ -65,7 +65,7 @@ class BtnControlWidget extends React.Component {
     }
 
     addWidget = function(widgetName) {
-        this.props.addWidget(widgetName);
+        this.props.addWidget(widgetName, this.props.index);
         this.onRequestClose();
     }
 

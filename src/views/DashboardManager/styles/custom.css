@@ -73,6 +73,13 @@
   background: #F5F7FA;
 }
 
+.panel_toolbox {
+  position: absolute;
+  right: 25px;
+  top: 6px;
+}
+
 .x_title {
-  display: none;
+  height: 0px;
+  border: none;
 }
