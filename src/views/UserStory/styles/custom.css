@@ -18,6 +18,7 @@
   font-size: 15px;
 }
 
+.text-editor,
 .text-editor input,
 .text-editor textarea{
   width: 100%;
@@ -34,14 +35,14 @@
   font-style: normal;
   font-size: 40px;
   margin-left: -2.5px;
+  margin-bottom: 20px;
   line-height: 1.04;
   letter-spacing: -.028em;
 }
 
 .text-editor-subtitle {
   --x-height-multiplier: 0.35;
-  --baseline-multiplier: 0.179;
-  font-family: medium-content-serif-font,Georgia,Cambria,"Times New Roman",Times,serif;
+  --baseline-multiplier: 0.179; 
   letter-spacing: .01rem;
   font-weight: 400;
   font-style: normal;
@@ -58,6 +59,7 @@
 
 .image-container {
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .user-story-card {

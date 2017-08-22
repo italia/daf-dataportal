@@ -30,8 +30,9 @@ class UserStoryEditorContainer extends Component {
     return (
     <div className="story-content">
 
-        <SectionTitle title="Titolo"/>
+        <SectionTitle readonly={this.props.readonly} title="Titolo"/>
         <TextEditor 
+          readonly={this.props.readonly}
           keyValue="title"
           text={this.state.dataStory.title} 
           className="text-editor-title"
@@ -39,8 +40,9 @@ class UserStoryEditorContainer extends Component {
           placeholder="Title"
         ></TextEditor>
         
-        <SectionTitle title="Sottotitolo"/>
+        <SectionTitle readonly={this.props.readonly} title="Sottotitolo"/>
         <TextEditor 
+          readonly={this.props.readonly}
           keyValue="subtitle"
           text={this.state.dataStory.subtitle} 
           className="text-editor-subtitle"
@@ -49,15 +51,17 @@ class UserStoryEditorContainer extends Component {
         ></TextEditor>
         <ProfileView></ProfileView>
 
-        <SectionTitle title="Grafico"/>
+        <SectionTitle readonly={this.props.readonly} title="Grafico"/>
         <GraphEditor 
+          readonly={this.props.readonly}
           keyValue="graph"
           graph={this.state.dataStory.graph}
           onChange={this.onChange}
         ></GraphEditor>
 
-        <SectionTitle title="La Tua Storia"/>
+        <SectionTitle readonly={this.props.readonly} title="La Tua Storia"/>
         <TextEditor 
+          readonly={this.props.readonly}
           keyValue="text"
           text={this.state.dataStory.text} 
           className="text-editor-content"
@@ -65,15 +69,17 @@ class UserStoryEditorContainer extends Component {
           placeholder="Tell your story..."
         ></TextEditor>
 
-        <SectionTitle title="Immagine"/>
+        <SectionTitle readonly={this.props.readonly} title="Immagine"/>
         <ImageEditor 
+          readonly={this.props.readonly}
           keyValue="image"
           image={this.state.dataStory.image} 
           onChange={this.onChange}
         ></ImageEditor>
         
-        <SectionTitle title="Footer"/>
+        <SectionTitle readonly={this.props.readonly} title="Footer"/>
         <TextEditor 
+          readonly={this.props.readonly}
           keyValue="footer"
           text={this.state.dataStory.footer} 
           className="text-editor-footer"

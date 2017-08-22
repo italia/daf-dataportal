@@ -48,8 +48,8 @@ class UserStoryEditor extends Component {
           <ViewBar title={this.state.dataStory.title} id={this.state.id}></ViewBar>
       
           <UserStoryEditorContainer 
-            dataStory={this.state.dataStory} 
-            onChange={this.save}
+            dataStory={this.state.dataStory}
+            readonly={true}
           />
         </div>
       }

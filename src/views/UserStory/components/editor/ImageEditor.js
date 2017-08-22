@@ -30,11 +30,14 @@ class ImageEditor extends Component {
     <div>
         <img className="image-container" src={this.props.image.url} />
         
-        <div className="text-center mt-20 mb-20">
-          <button type="button" className="btn btn-default">
-              Change Image
-          </button>
-        </div>
+        {
+          this.props.readonly!=true &&
+          <div className="text-center mt-20 mb-20">
+            <button type="button" className="btn btn-default">
+                Change Image
+            </button>
+          </div>
+        }
 
         <TextEditor 
           keyValue="caption"
@@ -42,6 +45,7 @@ class ImageEditor extends Component {
           className="text-editor-img-caption"
           onChange={this.onChange}
           placeholder="Insert here image description..."
+          readonly={this.props.readonly}
         ></TextEditor>
     </div>
     );
