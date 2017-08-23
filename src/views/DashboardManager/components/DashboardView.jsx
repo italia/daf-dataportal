@@ -89,8 +89,13 @@ class DashboardView extends Component {
   load = (config) => {
     let response = dashboardService.get(this.state.id);
     response.then((config) => {
-      for(let i in config.widgets) {
-        let widget = config.widgets[i];
+      
+      let dashboard = config;
+      dashboard.widgets = JSON.parse(dashboard.widgets);
+      dashboard.layout = JSON.parse(dashboard.layout);
+
+      for(let i in dashboard.widgets) {
+        let widget = dashboard.widgets[i];
 
         //assign instance to widget.type
         let typeWid = i.split('_')[0];
@@ -104,10 +109,10 @@ class DashboardView extends Component {
       }
 
       //render widgets
-      this.state.widgets = config.widgets;
+      this.state.widgets = dashboard.widgets;
       this.setState({
-        layout: config.layout,
-        title: config.title
+        layout: dashboard.layout,
+        title: dashboard.title
       });
     });
 

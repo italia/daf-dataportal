@@ -17,19 +17,28 @@ export default class DashboardService {
         return response.json();
     }
 
-    async save(id, layout, widgets, title) {
+    async save(dashboard) {
 
-        const response = await fetch( this.baseUrl + "/" + id , {
+        const response = await fetch( this.baseUrl + "/" + dashboard._id , {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                layout: layout,
-                widgets: widgets,
-                title: title
-            })
+            body: JSON.stringify(dashboard)
+        })
+        
+        return response.json();
+    }
+    
+    async remove(id) {
+
+        const response = await fetch( this.baseUrl + "/" + id , {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
         })
         
         return response.json();
