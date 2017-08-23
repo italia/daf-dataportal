@@ -9,7 +9,7 @@ export default class WidgetService {
 
     }
 
-    async getIframe(){
+    async getIframe() {
         const response = await fetch( this.urlIframe );
         return response.json();
     }

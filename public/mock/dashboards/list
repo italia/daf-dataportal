@@ -1,7 +1,8 @@
 [
     {
         "id" : 1,
-        "title": "Dashboard 1"
+        "title": "Dashboard 1",
+        "published": true
     },
     {
         "id" : 2,

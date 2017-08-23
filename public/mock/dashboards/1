@@ -1,6 +1,7 @@
 {
    "id" : 1,
    "title": "Dashboard 1",
+   "published": true,
    "layout":{
       "rows":[
          {

@@ -88,10 +88,10 @@ class EditBarTop extends React.Component {
               }
 
               {
-                this.state.published && this.state.published==true &&
+                /* this.state.published && this.state.published==true &&
                 <button type="button" className="btn btn-danger btn-xs" onClick={() => this.pubblica()}>
                     Spubblica
-                </button>
+                </button> */
               }
             </div>
           </span>

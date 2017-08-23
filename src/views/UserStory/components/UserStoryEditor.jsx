@@ -53,7 +53,7 @@ class UserStoryEditor extends Component {
   }
 
   /**
-   * onChangeTitle
+   * onPublish
    */
   onPublish(published){
     this.state.dataStory.published = published;

@@ -71,6 +71,7 @@ class DashboardEditor extends Component {
     this.saveTextWidget = this.saveTextWidget.bind(this);
     this.save = this.save.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
+    this.onPublish = this.onPublish.bind(this);
     
   }
 
@@ -115,7 +116,8 @@ class DashboardEditor extends Component {
       //render widgets
       this.state = {
         widgets: config.widgets,
-        title: config.title
+        title: config.title,
+        published: config.published
       };
       this.setLayout(config.layout, true);
     });
@@ -341,6 +343,14 @@ class DashboardEditor extends Component {
   }
 
   /**
+   * onPublish
+   */
+  onPublish(published){
+    this.state.dataStory.published = published;
+    this.save(this.state.dataStory);
+  }
+
+  /**
    * Render Function
    */
   render() {
@@ -351,6 +361,8 @@ class DashboardEditor extends Component {
           title={this.state.title}
           onChange={this.onChangeTitle}
           id={this.id}
+          onPublish={this.onPublish}
+          published={this.state.published}
       ></EditBarTop>
       <Dashboard
         frameComponent={CustomFrame}
