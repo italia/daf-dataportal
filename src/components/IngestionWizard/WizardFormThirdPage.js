@@ -3,6 +3,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 import validate from './validate';
 import TestSelect from './TestSelect';
 import { connect  } from 'react-redux';
+import { serviceurl } from '../../config/serviceurl.js'
 
 
 import 'react-select/dist/react-select.css';
@@ -94,6 +95,9 @@ const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
 
 let WizardFormThirdPage = props => {
   const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk, isPush, isFtp } = props;
+  
+  let baseurl = serviceurl.apiURL; 
+  
   return (
     <form className="from-horizontal" onSubmit={handleSubmit}>
       <div className="col-md-6">
@@ -120,7 +124,7 @@ let WizardFormThirdPage = props => {
       <div className="form-group">
         <label>Uri Standard Associato</label>
         <Field name="uri_associato" component={renderField} type="text" label="uri associato" /><br/>
-        <Field name="country" component={TestSelect}  url='http://localhost:9000/catalog-manager/v1/dataset-catalogs/standard-uris' />
+        <Field name="country" component={TestSelect}  url={baseurl + '/catalog-manager/v1/dataset-catalogs/standard-uris'} />
       </div>}
 
 
