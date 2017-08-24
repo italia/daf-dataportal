@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Components from 'react';
 import Dashboard, { addWidget } from 'react-dazzle';
+import { withRouter } from 'react-router-dom'
 
 // App components
 import Header from './Header';
@@ -59,18 +60,23 @@ class DashboardEditor extends Component {
         rows: []
       },
       editMode: true,
-      isModalOpen: false
+      isModalOpen: false,
+      dashboard: {}
     };
     
     //id of widget to edit
     this.id= this.props.match.params.id,
  
     //bind functions
+    this.load = this.load.bind(this);
+    this.setLayout = this.setLayout.bind(this);
     this.addRow = this.addRow.bind(this);
     this.addWidget = this.addWidget.bind(this);
     this.saveTextWidget = this.saveTextWidget.bind(this);
     this.save = this.save.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
+    this.onPublish = this.onPublish.bind(this);
+    this.onRemove = this.onRemove.bind(this);
     
   }
 
@@ -96,10 +102,21 @@ class DashboardEditor extends Component {
    * Method called for load stored user widget
    */
   load = (config) => {
+    
     let response = dashboardService.get(this.id);
+    
     response.then((config) => {
-      for(let i in config.widgets) {
-        let widget = config.widgets[i];
+
+      let dashboard = config;
+      dashboard.widgets = JSON.parse(dashboard.widgets);
+      dashboard.layout = JSON.parse(dashboard.layout);
+
+      this.setState({
+        dashboard: dashboard
+      });
+
+      for(let i in dashboard.widgets) {
+        let widget = dashboard.widgets[i];
 
         //assign instance to widget.type
         let typeWid = i.split('_')[0];
@@ -113,11 +130,11 @@ class DashboardEditor extends Component {
       }
 
       //render widgets
-      this.state = {
-        widgets: config.widgets,
-        title: config.title
-      };
-      this.setLayout(config.layout, true);
+      this.setState( {
+        widgets: dashboard.widgets,
+      });
+      
+      this.setLayout(dashboard.layout, true);
     });
 
   }
@@ -130,9 +147,9 @@ class DashboardEditor extends Component {
   }
 
   /**
-   * When a widget moved, this will be called. Layout should be given back.
+   * When a widget is removed, this will be called. Layout should be given back.
    */
-  onRemove = (layout) => {
+  onRemoveWidget = (layout) => {
     this.setLayout(layout);
   }
 
@@ -142,46 +159,49 @@ class DashboardEditor extends Component {
   */
   setLayout = (layout, notSave) => {
     // add control button
-    layout.rows.map((row, index) => {
-      
-      //remove old widget control
-      if(this.state.widgets['BtnControlWidget_' + index] ) {
-        this.state.widgets['BtnControlWidget_' + index] = null;
-      }
+    if(layout) {
 
-      //create new widget control
-      this.state.widgets['BtnControlWidget_' + index] = {
-        type: BtnControlWidget,
-        title: '',
-        props: {
-          layout: layout,
-          index: index,
-          setLayout: this.setLayout,
-          addWidget: this.addWidget,
-          widgets: this.widgetsTypes
+      layout.rows.map((row, index) => {
+        
+        //remove old widget control
+        if(this.state.widgets['BtnControlWidget_' + index] ) {
+          this.state.widgets['BtnControlWidget_' + index] = null;
         }
-      }
-
-      //remove widget control from layout
-      if (row.columns.length > 0 && row.columns[row.columns.length - 1].className == "col-w-30")
-        row.columns.pop();
-
-      //insert new widget control in layout
-      row.columns.push({
-        className: 'col-w-30',
-        widgets: [{key: 'BtnControlWidget_' + index}],
-      })
-
-    }) 
-    
-    this.state.layout = layout;
-
-    this.setState({
-      layout: layout
-    });
-
-    if(!notSave)
-      this.save();
+  
+        //create new widget control
+        this.state.widgets['BtnControlWidget_' + index] = {
+          type: BtnControlWidget,
+          title: '',
+          props: {
+            layout: layout,
+            index: index,
+            setLayout: this.setLayout,
+            addWidget: this.addWidget,
+            widgets: this.widgetsTypes
+          }
+        }
+  
+        //remove widget control from layout
+        if (row.columns.length > 0 && row.columns[row.columns.length - 1].className == "col-w-30")
+          row.columns.pop();
+  
+        //insert new widget control in layout
+        row.columns.push({
+          className: 'col-w-30',
+          widgets: [{key: 'BtnControlWidget_' + index}],
+        })
+  
+      }) 
+      
+      this.state.layout = layout;
+  
+      this.setState({
+        layout: layout
+      });
+  
+      if(!notSave)
+        this.save();
+    }
   }
 
   /**
@@ -282,7 +302,10 @@ class DashboardEditor extends Component {
     }
 
     //save data
-    const response = dashboardService.save(this.id, layout, widgets, this.state.title);
+    let request = this.state.dashboard;
+    request.layout = JSON.stringify(layout);
+    request.widgets = JSON.stringify(widgets);
+    const response = dashboardService.save(request);
   }
 
   /**
@@ -336,8 +359,24 @@ class DashboardEditor extends Component {
    * onChangeTitle
    */
   onChangeTitle(title){
-    this.state.title = title;
+    this.state.dashboard.title = title;
     this.save();
+  }
+
+  /**
+   * onPublish
+   */
+  onPublish(published){
+    this.state.dashboard.status = published;
+    this.save();
+  }
+
+  /**
+   * onRemove
+   */
+  onRemove() {
+    dashboardService.remove(this.state.dashboard._id);
+    window.location = '#/dashboard/list';
   }
 
   /**
@@ -348,13 +387,15 @@ class DashboardEditor extends Component {
     <Container>
       <Header title="Modifica Dashboard" />
       <EditBarTop 
-          title={this.state.title}
+          dashboard={this.state.dashboard}
+
           onChange={this.onChangeTitle}
-          id={this.id}
+          onPublish={this.onPublish}
+          onRemove={this.onRemove}
       ></EditBarTop>
       <Dashboard
         frameComponent={CustomFrame}
-        onRemove={this.onRemove}
+        onRemove={this.onRemoveWidget}
         layout={this.state.layout}
         widgets={this.state.widgets}
         editable={true}

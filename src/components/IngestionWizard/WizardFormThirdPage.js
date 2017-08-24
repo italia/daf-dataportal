@@ -3,6 +3,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 import validate from './validate';
 import TestSelect from './TestSelect';
 import { connect  } from 'react-redux';
+import { serviceurl } from '../../config/serviceurl.js'
 
 
 import 'react-select/dist/react-select.css';
@@ -93,7 +94,10 @@ const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
 
 
 let WizardFormThirdPage = props => {
-  const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk = 'false', isPush = true, isFtp = 'sftp', followStandard = 'false' } = props;
+
+  const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk = 'false', isPush = true, isFtp = 'sftp', followStandard = 'false' } = props;  
+  let baseurl = serviceurl.apiURL; 
+ 
   return (
     <form  onSubmit={handleSubmit}>
       <div className="col-md-6">
