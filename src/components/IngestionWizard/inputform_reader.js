@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { serviceurl } from '../../config/serviceurl.js'
 
 export {getJsonCatalog, getJsonDataschema, sendPostDataMeta}
 
@@ -16,7 +17,7 @@ function getJsonCatalog(){
 function sendPostDataMeta(json, file) {
     $.ajax({
     type: "POST",
-    url: "http://localhost:9000/catalog-manager/v1/catalog-ds/add",
+    url: serviceurl.apiURL + "/catalog-manager/v1/catalog-ds/add",
     dataType: 'json',
     data: JSON.stringify(json),
     contentType: 'application/json',
@@ -55,7 +56,7 @@ function sendPostData(json) {
   var file = document.getElementById('ds_datafile').files[0];
   $.ajax({
     type: "POST",
-    url: "http://localhost:9000/catalog-manager/v1/catalog-ds/add",
+    url: serviceurl.apiURL + "/catalog-manager/v1/catalog-ds/add",
     dataType: 'json',
     data: JSON.stringify(json),
     contentType: "application/json",

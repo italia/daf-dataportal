@@ -1,5 +1,7 @@
 export const serviceurl = {
   // DatasetBackend module configs 
+  apiURL: "http://localhost:9000",
+  apiURL_mock: "http://localhost:3000/mock/",
   "DatasetBackend": {
     "Search": {
       "host": "localhost",

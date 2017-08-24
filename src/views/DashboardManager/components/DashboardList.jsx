@@ -52,11 +52,22 @@ class DashboardList extends Component {
         {
           this.state.dashboards.map((dash, index) => {
             return <div key={index} className="dashboard-card">
-              <Link to={"/dashboard/list/" + dash.id}>
-                <h2>
+              <Link to={"/dashboard/list/" + dash._id}>
+                <h2 className="pull-left">
                   {dash.title}
                 </h2>
               </Link>
+              
+              {
+                dash.status==true &&
+                <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
+              }
+              {
+                !dash.status &&
+                <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
+              }
+
+              <div className="clearfix"></div>
             </div>
           })
         }
