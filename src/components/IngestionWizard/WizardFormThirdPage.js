@@ -127,7 +127,7 @@ let WizardFormThirdPage = props => {
         <label>Segue uno standard?</label>
         <Field name="follow_standard" component={renderYesNoSelector} /><br/>
         {(followStandard === 'true') &&
-        <Field name="uri_associato" component={TestSelect}  url='http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1/dataset-catalogs/standard-uris' />
+        <Field name="uri_associato" component={TestSelect}  url='http://localhost:9000/catalog-manager/v1/dataset-catalogs/standard-uris' />
         }
       </div>}
 

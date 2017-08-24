@@ -2,7 +2,7 @@
 export default class WidgetService {
     
     baseUrl = "http://localhost:3000/mock/" + "widgets";
-    urlIframe = "http://datipubblici.default.svc.cluster.local:9000//dati-gov/v1/dashboard/iframes?apikey=test";
+    urlIframe = "http://localhost:9000/dati-gov/v1/dashboard/iframes?apikey=test";
 
     constructor() {
 
