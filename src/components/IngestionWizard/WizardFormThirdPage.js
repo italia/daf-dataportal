@@ -38,7 +38,7 @@ const renderTipoLettura = ({ input, meta: { touched, error } }) => (
 const renderYesNoSelector = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
-      <option value='false' selected key='false'>No</option>
+      <option value='false' defaultValue key='false'>No</option>
       {isStds.map(val => <option value={val} key={val}>Yes</option>)}
     </select>
     {touched && error && <span>{error}</span>}
@@ -94,12 +94,12 @@ const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
 
 
 let WizardFormThirdPage = props => {
-  const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk, isPush, isFtp } = props;
-  
+
+  const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk = 'false', isPush = true, isFtp = 'sftp', followStandard = 'false' } = props;  
   let baseurl = serviceurl.apiURL; 
-  
+ 
   return (
-    <form className="from-horizontal" onSubmit={handleSubmit}>
+    <form  onSubmit={handleSubmit}>
       <div className="col-md-6">
       <div className="form-group">
         <label>Esponi i dati o li invii?</label>
@@ -112,19 +112,27 @@ let WizardFormThirdPage = props => {
       </div>
       <div className="form-group">
          {(isFtp === 'sftp') 
-            ? <Field name="sftp" component={renderField} type="text" label="sftp://..." />
-            : <Field name="sftp" component={renderField} type="text" label="https://.." />
+             ? <div className="form-group">
+                <label>URI</label>
+                <Field name="dest_uri" component={renderField} type="text" label="sftp://..." />
+              </div>
+            : <div className="form-group">
+                <label>URI</label>
+                <Field name="dest_uri" component={renderField} type="text" label="https://..." />
+              </div>
          }
       </div>
       <div className="form-group">
         <label>Definisce uno standard?</label>
         <Field name="is_std" component={renderYesNoSelector} />
       </div>
-        {(isOk === 'true') &&
+        {(isOk === 'false') &&
       <div className="form-group">
-        <label>Uri Standard Associato</label>
-        <Field name="uri_associato" component={renderField} type="text" label="uri associato" /><br/>
-        <Field name="country" component={TestSelect}  url={baseurl + '/catalog-manager/v1/dataset-catalogs/standard-uris'} />
+        <label>Segue uno standard?</label>
+        <Field name="follow_standard" component={renderYesNoSelector} /><br/>
+        {(followStandard === 'true') &&
+        <Field name="uri_associato" component={TestSelect}  url='http://localhost:9000/catalog-manager/v1/dataset-catalogs/standard-uris' />
+        }
       </div>}
 
 
@@ -163,12 +171,14 @@ WizardFormThirdPage = connect(state => {
   // can select values individually
   const isOk = selector(state, 'is_std')
   const isPush = selector(state, 'pushOrPull')
+  const followStandard = selector(state, 'follow_standard')
   let isFtp = "sftp"
   isFtp = selector(state, 'ftporws')
   return {
     isOk,
     isPush,
-    isFtp
+    isFtp,
+    followStandard
   }
 })(WizardFormThirdPage)
 

@@ -20,7 +20,10 @@ function sendPostDataMeta(json, file) {
     url: serviceurl.apiURL + "/catalog-manager/v1/catalog-ds/add",
     dataType: 'json',
     data: JSON.stringify(json),
-    contentType: "application/json",
+    contentType: 'application/json',
+    headers: {
+        authorization: 'Basic ' + btoa("ckanadmin:ckanadmin")   //If your header name has spaces or any other char not appropriate
+    },
     success: function( data ) {
       console.log(data)
       alert('ok')

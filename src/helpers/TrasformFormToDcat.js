@@ -14,7 +14,10 @@ export function createOperational (values, data) {
   if (!values.read_type){
       data[operational]['read_type'] = 'update'
   }
-     return data
+  data[operational]['push'] = values.pushOrPull
+  data[operational]['ftporws'] = values.ftporws
+  data[operational]['connection'] = values.dest_uri
+  return data
 }
 
 export function createDcat (values, data) {
@@ -26,15 +29,15 @@ export function createDcat (values, data) {
   data[dcatapit]['alternate_identifier'] = values.title //values.identifier
   data[dcatapit]['notes'] = values.notes
   data[dcatapit]['theme'] =  (values.theme) ? values.theme  : 'ECON'
-  data[dcatapit]['publisher_name'] = 'testorg'//values.publisher_editor
-  data[dcatapit]['publisher_editor'] = 'testorg'//values.publisher_editor
-  data[dcatapit]['publisher_identifier'] = 'testorg'//values.publisher_editor
+  data[dcatapit]['publisher_name'] = values.ownership //values.publisher_editor
+  data[dcatapit]['publisher_editor'] = values.ownership //values.publisher_editor
+  data[dcatapit]['publisher_identifier'] = values.ownership //values.publisher_editor
   data[dcatapit]['modified'] = '2017-07-23' //values.creation_date
-  data[dcatapit]['holder_name'] = 'testorg' //values.holder_name
-  data[dcatapit]['holder_identifier'] = 'testorg' //values.holder_identifier
+  data[dcatapit]['holder_name'] = values.ownership  //values.holder_name
+  data[dcatapit]['holder_identifier'] = values.ownership  //values.holder_identifier
   data[dcatapit]['license_title'] = 'Altro (Non Commerciale)' //values.license_title
   data[dcatapit]['license_id'] = 'other-nc'//values.license_identifier
-  data[dcatapit]['owner_org'] = 'testorg'//values.owner_org
+  data[dcatapit]['owner_org'] = values.ownership //values.owner_org
   data[dcatapit]['frequency'] = 'unknown'//Not in form
   data[dcatapit]['creation_date'] = '2017-07-23' //Not in form
   data[dcatapit]["groups"] = []
@@ -52,7 +55,7 @@ export function createDataschema (values, data) {
   var theme = (values.theme) ? values.theme  : 'ECON'
   data[dataschema] = {}
   data[dataschema][avro] = {}
-  data[dataschema][avro]['namespace'] = 'daf://testorg' + '/' + theme +'/' + values.title
+  data[dataschema][avro]['namespace'] = 'daf://'+ values.ownership  + '/' + theme +'/' + values.title
   data[dataschema][avro]['name'] = values.title
   data[dataschema][avro]['aliases'] = values.title
   data[dataschema][avro]['fields'] =  []

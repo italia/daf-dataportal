@@ -1,10 +1,20 @@
 import React from 'react'
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <div className="form-group row">
-    <label className="col-md-3 form-control-label">{label}</label>
-   <div className="col-md-9">
+  <div className="form-group ">
+    <label className="form-control-label">{label}</label>
+   <div>
       <input {...input} placeholder={label} type={type} className="form-control"/>
+      {touched && error && <span>{error}</span>}
+    </div>
+  </div>
+)
+
+const renderTextArea = ({ input, label, type, meta: { touched, error } }) => (
+  <div className="form-group ">
+    <label className="form-control-label">{label}</label>
+   <div>
+      <input {...input} placeholder={label} type='textarea' className="form-control"/>
       {touched && error && <span>{error}</span>}
     </div>
   </div>
