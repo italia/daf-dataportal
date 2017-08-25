@@ -11,10 +11,12 @@ export const serviceurl = {
   apiURL_mock: "http://data-portal.default.svc.cluster.local:5000/",
   "DatasetBackend": {
     "Search": {
-      "host": "localhost",
+   //   "host": "localhost",
+   //   "port": 9000,
+      "host": "catalog-manager.default.svc.cluster.local",
       "port": 9000,
-      "nameSearch": "/dati-gov/v1/ckan/searchDataset",
-      "nameDetail": "/dati-gov/v1/ckan/datasets/"
+      "nameSearch": "/catalog-manager/v1/ckan/searchDataset",
+      "nameDetail": "/catalog-manager/v1/ckan/datasets/"
     }
   }
 }
