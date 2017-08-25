@@ -96,7 +96,7 @@ const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
 let WizardFormThirdPage = props => {
 
   const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk = 'false', isPush = true, isFtp = 'sftp', followStandard = 'false' } = props;  
-  let baseurl = serviceurl.apiURL; 
+  let standards = serviceurl.apiURLCatalog + '/catalog-manager/v1/dataset-catalogs/standard-uris' ; 
  
   return (
     <form  onSubmit={handleSubmit}>
@@ -131,7 +131,7 @@ let WizardFormThirdPage = props => {
         <label>Segue uno standard?</label>
         <Field name="follow_standard" component={renderYesNoSelector} /><br/>
         {(followStandard === 'true') &&
-        <Field name="uri_associato" component={TestSelect}  url='http://localhost:9000/catalog-manager/v1/dataset-catalogs/standard-uris' />
+        <Field name="uri_associato" component={TestSelect}  url={standards} />
         }
       </div>}
 

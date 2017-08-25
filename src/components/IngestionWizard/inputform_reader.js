@@ -17,7 +17,7 @@ function getJsonCatalog(){
 function sendPostDataMeta(json, file) {
     $.ajax({
     type: "POST",
-    url: serviceurl.apiURL + "/catalog-manager/v1/catalog-ds/add",
+    url: serviceurl.apiURLCatalog + "/catalog-manager/v1/catalog-ds/add",
     dataType: 'json',
     data: JSON.stringify(json),
     contentType: 'application/json',
@@ -56,7 +56,7 @@ function sendPostData(json) {
   var file = document.getElementById('ds_datafile').files[0];
   $.ajax({
     type: "POST",
-    url: serviceurl.apiURL + "/catalog-manager/v1/catalog-ds/add",
+    url: serviceurl.apiURLCatalog + "/catalog-manager/v1/catalog-ds/add",
     dataType: 'json',
     data: JSON.stringify(json),
     contentType: "application/json",
@@ -68,7 +68,7 @@ function sendPostData(json) {
       formData.append("upfile", file, "agency.txt")
       $.ajax({
           type: "POST",
-          url: "http://localhost:9001/ingestion-manager/v1/add-datasets/" + encodeURIComponent(data.message),
+          url: serviceurl.apiURLIngestion + "/ingestion-manager/v1/add-datasets/" + encodeURIComponent(data.message),
           data: formData,
           processData: false,
           contentType: false,

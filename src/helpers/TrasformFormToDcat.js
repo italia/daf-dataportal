@@ -65,6 +65,13 @@ export function createDataschema (values, data) {
     if(item.nome !== 'file'){
     var name = item.nome
     var tipo = item.tipo
+    if (Array.isArray( item.tipo)){
+      if( item.tipo.indexOf("string") == 1){
+        tipo = 'string'
+      } else {
+        tipo = tipo[0]
+      }
+    }
     var obj = {'name' : name, "`type`" : tipo}
     var metadata = { "desc": "", "required": 0, "field_type": "","cat": "","tag": "","constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
     data[dataschema][avro]['fields'].push(obj)

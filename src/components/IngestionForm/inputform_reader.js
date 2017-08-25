@@ -19,13 +19,13 @@ function sendPostData(json) {
   var file = document.getElementById('ds_datafile').files[0];
   $.ajax({
     type: "POST",
-    url: serviceurl.apiURL + "/catalog-manager/v1/catalog-ds/add",
+    url: serviceurl.apiURLCatalog + "/catalog-manager/v1/catalog-ds/add",
     dataType: 'json',
     data: JSON.stringify(json),
     contentType: "application/json",
     success: function( data ) {
       console.log(data)
-      alert('ok')
+      alert("Correctly saved at: " + data )
       if (file){
       var formData = new FormData();
       formData.append("upfile", file, "agency.txt")

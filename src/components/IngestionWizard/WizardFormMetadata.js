@@ -262,7 +262,9 @@ class WizardFormMetadata extends Component {
             onDrop={( filesToUpload, e ) => {
               const {dispatch} = this.props 
               calcDataFields(fields, filesToUpload);
-              const fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
+              let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
+              fileName = fileName.toLowerCase()
+              fileName = fileName.split(" ").join("-")
               dispatch(change('wizard', 'title', fileName))
               }
             }>

@@ -77,37 +77,12 @@ class Header extends Component {
           <li className="nav-item">
             <button className="nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}>&#9776;</button>
           </li>
-          <li className="nav-item px-1">
-            <a className="nav-link" href="#">Dashboard</a>
-          </li>
-          <li className="nav-item px-1">
-            <a className="nav-link" href="#">Users</a>
-          </li>
-          <li className="nav-item px-1">
-            <a className="nav-link" href="#">Settings</a>
-          </li>
         </ul>
-        <ul className="nav navbar-nav d-md-down-none mr-auto">
+        <ul className="nav navbar-nav d-md-down-none">
           <AutocompleteDataset ref="auto"/>
           <button className="btn btn-outline-success my-2 my-sm-0" type="submit" value="submit" onClick={this.handleLoadDatasetClick}>Cerca</button>
         </ul>
         <ul className="nav navbar-nav ml-auto">
-          <li className="nav-item hidden-md-down">
-            <a className="nav-link" href="#">
-              <i className="icon-bell"></i>
-              <span className="badge badge-pill badge-danger">5</span>
-            </a>
-          </li>
-          <li className="nav-item hidden-md-down">
-            <a className="nav-link" href="#">
-              <i className="icon-list"></i>
-            </a>
-          </li>
-          <li className="nav-item hidden-md-down">
-            <a className="nav-link" href="#">
-              <i className="icon-location-pin"></i>
-            </a>
-          </li>
           <li className="nav-item">
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
@@ -129,7 +104,7 @@ class Header extends Component {
           </li>
           
           <li className="nav-item hidden-md-down">
-            <a className="nav-link navbar-toggler aside-menu-toggler" href="#">☰</a>
+            <a className="nav-link navbar-toggler aside-menu-toggler" href="#"></a>
           </li>
         </ul>
       </header>
