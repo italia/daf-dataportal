@@ -1,25 +1,28 @@
+import { serviceurl } from '../../../../config/serviceurl.js'
 
 export default class DashboardService {
     
-    baseUrl = "http://localhost:3000/mock/" + "dashboards";
+    baseUrl = serviceurl.apiURL + serviceurl.apiURL_dati_gov + "/dashboards";
 
     constructor() {
 
     }
 
     async get(id) {
-        const response = await fetch( this.baseUrl + "/" + id );
+        const response = await fetch( this.baseUrl + "-get/" + id );
         return response.json();
     }
 
     async list(layout, widgets) {
-        const response = await fetch( this.baseUrl + "/list" );
+        const response = await fetch( this.baseUrl );
         return response.json();
     }
 
     async save(dashboard) {
 
-        const response = await fetch( this.baseUrl + "/" + dashboard._id , {
+        let id = dashboard._id || "save"
+        
+        const response = await fetch( this.baseUrl + "/save"  , {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

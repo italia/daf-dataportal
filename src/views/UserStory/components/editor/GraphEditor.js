@@ -13,7 +13,7 @@ class GraphEditor extends Component {
     super(props);
     this.state = {
       graph: props.graph,
-      widgets : [],
+      widgets : {},
       isModalAddOpen: false
     };
 
