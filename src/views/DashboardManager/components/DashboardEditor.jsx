@@ -61,7 +61,9 @@ class DashboardEditor extends Component {
       },
       editMode: true,
       isModalOpen: false,
-      dashboard: {}
+      dashboard: {
+        status: 0
+      }
     };
     
     //id of widget to edit
@@ -103,13 +105,19 @@ class DashboardEditor extends Component {
    */
   load = (config) => {
     
+    //if is new
+    if(!this.id) return;
+
     let response = dashboardService.get(this.id);
     
     response.then((config) => {
 
       let dashboard = config;
-      dashboard.widgets = JSON.parse(dashboard.widgets);
-      dashboard.layout = JSON.parse(dashboard.layout);
+      if (dashboard.widgets)
+        dashboard.widgets = JSON.parse(dashboard.widgets);
+  
+      if (dashboard.layout)
+       dashboard.layout = JSON.parse(dashboard.layout);
 
       this.setState({
         dashboard: dashboard

@@ -26,7 +26,7 @@ class EditBarTop extends React.Component {
 
   pubblica(){
 
-    let status = !this.state.dashboard.status;
+    let status = 1;
 
     this.state.dashboard.status = status;
     this.setState({
