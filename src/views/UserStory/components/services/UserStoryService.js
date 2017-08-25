@@ -32,4 +32,17 @@ export default class UserStoryService {
         
         return response.json();
     }
+    
+    async remove(id) {
+
+        const response = await fetch( this.baseUrl + "/" + id , {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+        
+        return response.json();
+    }
 } 

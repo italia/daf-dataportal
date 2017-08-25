@@ -91,8 +91,11 @@ class DashboardView extends Component {
     response.then((config) => {
       
       let dashboard = config;
-      dashboard.widgets = JSON.parse(dashboard.widgets);
-      dashboard.layout = JSON.parse(dashboard.layout);
+      if (dashboard.widgets)
+        dashboard.widgets = JSON.parse(dashboard.widgets);
+  
+      if (dashboard.layout)
+        dashboard.layout = JSON.parse(dashboard.layout);
 
       for(let i in dashboard.widgets) {
         let widget = dashboard.widgets[i];

@@ -38,17 +38,25 @@ class EditBarTop extends React.Component {
       this.props.onPublish(published);
   }
 
+  onRemove() {
+    this.props.onRemove();
+  }
+  
   render = function(){
 
     return (
       <div className="box text-right">
-        <div className="pull-left">
+        <div className="pull-left text-left">
           <input 
             className="form-control"
             value={this.state.title}
             placeholder="Insert a title"
             onChange={this.handleChange}
           />
+
+          <button type="button" className="btn btn-danger btn-xs mt-20" onClick={() => this.onRemove()}>
+              Elimina
+          </button>
           
         </div>
 

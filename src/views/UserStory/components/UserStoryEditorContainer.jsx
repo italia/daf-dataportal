@@ -29,7 +29,6 @@ class UserStoryEditorContainer extends Component {
   render() {
     return (
     <div className="story-content">
-
         <SectionTitle readonly={this.props.readonly} title="Titolo"/>
         <TextEditor 
           readonly={this.props.readonly}
