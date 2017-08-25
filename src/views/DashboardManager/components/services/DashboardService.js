@@ -2,7 +2,7 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 
 export default class DashboardService {
     
-    baseUrl = serviceurl.apiURL + serviceurl.apiURL_dati_gov + "/dashboards";
+    baseUrl = serviceurl.apiURLDatiGov + serviceurl.apiURL_dati_gov + "/dashboards";
 
     constructor() {
 

@@ -7,7 +7,8 @@ export const serviceurl = {
   apiURLCatalog: "http://catalog-manager.default.svc.cluster.local:9000",
   apiURLIngestion: "http://localhost:9002",
   apiURL_dati_gov: "/dati-gov/v1",
-  apiURL_mock: "http://localhost:3000/mock/",
+ // apiURL_mock: "http://localhost:3000/mock/",
+  apiURL_mock: "http://data-portal.default.svc.cluster.local:5000/",
   "DatasetBackend": {
     "Search": {
       "host": "localhost",
