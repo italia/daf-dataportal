@@ -21,13 +21,12 @@ function finalizeOpsMeta(json){
   //console.log(json);
   //console.log(JSON.stringify(json));
   var avroSchema = getAvroSchema(json);
-  return getFlatSchema(avroSchema);
+  return getFlatSchema(avroSchema, json);
   //call the callback function
 }
 
-function getFlatSchema(json){
+function getFlatSchema(json, fileData){
   var fieldList = {"names": [], "props": []};
-
   function recElem(fields, accObj){
     var rootName = accObj['fields'];
     for (var field of fields) {
@@ -62,6 +61,18 @@ function getFlatSchema(json){
   recElem(fields, {"fields": ""});
   //alert(JSON.stringify(fieldList));
   //cicla sui fields iniziali
+  var keys = Object.keys(fileData[0])
+  var initialize = {}
+  keys.map((key) => {
+     initialize[key] = []
+  })
+  for(var i = 0; i < 5; i++){
+      var obj = fileData[i]
+      Object.keys(obj).map((key) => {
+        initialize[key].push(obj[key])
+      })
+  } 
+  fieldList["data"] = initialize
   return fieldList;
 
 }

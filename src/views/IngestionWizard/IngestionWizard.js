@@ -14,7 +14,7 @@ const transformer = values => {
 const showResults = values =>{
   const transformed = transformer(values)
   sendPostDataMeta(transformed, undefined)
-  }
+}
   //new Promise(resolve => {
   //  setTimeout(() => {
   //    const transformed = transformer(values)
