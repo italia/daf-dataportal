@@ -26,6 +26,7 @@ class UserStoryEditor extends Component {
     this.save = this.save.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onPublish = this.onPublish.bind(this);
+    this.onRemove = this.onRemove.bind(this);
     
     //load data
     if (this.state.id) {
@@ -61,6 +62,14 @@ class UserStoryEditor extends Component {
   }
 
   /**
+   * onRemove
+   */
+  onRemove() {
+    userStoryService.remove(this.state.dataStory._id);
+    window.location = '#/user_story/list';
+  }
+
+  /**
    * Render Function
    */
   render() {
@@ -76,6 +85,7 @@ class UserStoryEditor extends Component {
               onPublish={this.onPublish}
               id={this.state.dataStory.id}
               published={this.state.dataStory.published}
+              onRemove={this.onRemove}
           ></EditBarTop>
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory} 
