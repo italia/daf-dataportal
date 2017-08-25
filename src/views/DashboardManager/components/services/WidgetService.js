@@ -3,7 +3,7 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 export default class WidgetService {
     
     baseUrl = serviceurl.apiURL_mock + "widgets";
-    urlIframe = serviceurl.apiURL + "/dati-gov/v1/dashboard/iframes?apikey=test";
+    urlIframe = serviceurl.apiURLDatiGov + "/dati-gov/v1/dashboard/iframes?apikey=test";
 
     constructor() {
 

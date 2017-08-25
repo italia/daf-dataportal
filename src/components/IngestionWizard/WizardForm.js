@@ -50,7 +50,15 @@ class WizardForm extends Component {
           <div className="col-md-12">
             <div className="card">
               <div className="card-header">
-                <strong>Basic Form</strong> Elements
+                {page === 1 &&
+                <div><strong> Passo 1:</strong> Carica file e descrivi le colonne</div> 
+                }
+                {page === 2 &&
+                <div><strong> Passo 2:</strong> Metadati </div> 
+                }
+              {page === 3 &&
+                <div><strong> Passo 3: </strong> Modalitá di invio</div> 
+                }
               </div>
               <div className="card-block">
 

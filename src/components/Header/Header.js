@@ -78,7 +78,7 @@ class Header extends Component {
             <button className="nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}>&#9776;</button>
           </li>
         </ul>
-        <ul className="nav navbar-nav d-md-down-none mr-auto">
+        <ul className="nav navbar-nav d-md-down-none">
           <AutocompleteDataset ref="auto"/>
           <button className="btn btn-outline-success my-2 my-sm-0" type="submit" value="submit" onClick={this.handleLoadDatasetClick}>Cerca</button>
         </ul>
