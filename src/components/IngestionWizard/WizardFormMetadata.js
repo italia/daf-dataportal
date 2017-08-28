@@ -264,7 +264,7 @@ class WizardFormMetadata extends Component {
               calcDataFields(fields, filesToUpload);
               let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
               fileName = fileName.toLowerCase()
-              fileName = fileName.split(" ").join("-")
+              fileName.split(" ").join("-")
               dispatch(change('wizard', 'title', fileName))
               }
             }>
@@ -369,7 +369,11 @@ class WizardFormMetadata extends Component {
       </div>
       </div>
       </div>
-       <div className="col-md-6">
+      </div>
+      )}
+    </div>
+  /*
+         <div className="col-md-6">
             <div className="card">
               <div className="card-header">
                 <i className="fa fa-align-justify"></i> Colonna #{index}
@@ -416,11 +420,8 @@ class WizardFormMetadata extends Component {
                 </table>
               </div>
             </div>
-          </div>
-      </div>
-      )}
-    </div>
-  
+          </div> 
+  */
   render() {
     const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard } = this.props;
     return (

@@ -16,14 +16,21 @@ import DashboardManager from '../../views/DashboardManager/DashboardManager';
 class Full extends Component {
   render() {
     const { history } = this.props
+    const divStyle = {
+      'padding-left': '0px',
+      'padding-rigth': '0px',
+    };
+    const mainDiv = {
+      'background-color' : 'white'
+    }
     return (
       <div className="app">
         <Header history={history}/>
         <div className="app-body">
           <Sidebar {...this.props}/>
-          <main className="main">
+          <main className="main" style={mainDiv}>
             <Breadcrumb />
-            <div className="container-fluid">
+            <div className="container-fluid" style={divStyle}>
               <Switch>
                 <Route path="/dashboard" name="Dashboard" exact component={Dashboard}/>
                 <Route path="/ingestionwizzard" name="Forms" component={IngestionWizard} />
