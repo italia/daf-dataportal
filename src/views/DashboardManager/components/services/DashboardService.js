@@ -3,13 +3,14 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 export default class DashboardService {
     
     baseUrl = serviceurl.apiURLDatiGov + serviceurl.apiURL_dati_gov + "/dashboards";
+    //baseUrl = serviceurl.apiURL_mock  + "/dashboards/list";
 
     constructor() {
 
     }
 
     async get(id) {
-        const response = await fetch( this.baseUrl + "-get/" + id );
+        const response = await fetch( this.baseUrl + "/" + id );
         return response.json();
     }
 
@@ -20,9 +21,9 @@ export default class DashboardService {
 
     async save(dashboard) {
 
-        let id = dashboard._id || "save"
+        let id = dashboard.id || "save"
         
-        const response = await fetch( this.baseUrl + "/save"  , {
+        const response = await fetch( this.baseUrl, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

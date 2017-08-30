@@ -52,7 +52,7 @@ class DashboardList extends Component {
         {
           this.state.dashboards.map((dash, index) => {
             return <div key={index} className="dashboard-card">
-              <Link to={"/dashboard/list/" + dash._id}>
+              <Link to={"/dashboard/list/" + dash.id}>
                 <h2 className="pull-left">
                   {dash.title}
                 </h2>
