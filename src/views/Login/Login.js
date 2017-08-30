@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { login, resetPassword } from '../../helpers/auth'
-import { loginAction } from './../../actions.js'
+import { loginAction, addUserOrganization } from './../../actions.js'
 import PropTypes from 'prop-types'
 
 function setErrorMsg(error) {
@@ -16,17 +15,20 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch, selectDataset } = this.props
-    dispatch(loginAction(this.email.value, this.pw.value)).catch((error) => {
+    dispatch(loginAction(this.email.value, this.pw.value))
+    .then(dispatch(addUserOrganization(this.email.value, this.pw.value)))
+    .then(this.props.history.push('/dashboard'))
+    .catch((error) => {
           this.setState(setErrorMsg('Invalid username/password.'))
         })
     console.log('login effettuato');
 }
 
-  resetPassword = () => {
+  /*resetPassword = () => {
     resetPassword(this.email.value)
       .then(() => this.setState(setErrorMsg(`Password reset email sent to ${this.email.value}.`)))
       .catch((error) => this.setState(setErrorMsg(`Email address not found.`)))
-  }
+  }*/
 
   render () {
     return (
@@ -36,7 +38,7 @@ class Login extends Component {
             <h1> Login </h1>
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
-                  <label>Email</label>
+                  <label>Username</label>
                   <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
                 </div>
                 <div className="form-group">

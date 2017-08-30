@@ -2,7 +2,6 @@ import fetch from 'isomorphic-fetch'
 import page from './data/dataset'
 import det from './data/datasetdetail'
 import { serviceurl } from './config/serviceurl.js'
-import { login } from './helpers/auth'
 
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
@@ -12,6 +11,8 @@ export const REQUEST_DATASET_DETAIL = 'REQUEST_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL = 'RECEIVE_DATASET_DETAIL'
 export const REQUEST_LOGIN = 'REQUEST_LOGIN'
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN'
+export const REMOVE_LOGGED_USER = 'REMOVE_LOGGED_USER'
+export const RECEIVE_ORGANIZATION = 'RECEIVE_ORGANIZATION'
 
 
 function requestDatasets() {
@@ -75,6 +76,15 @@ function receiveDatasetDetail(json) {
 }
 
 
+function removeLoggedUser() {
+  console.log('removeLoggedUser');
+  return {
+      type: REMOVE_LOGGED_USER,
+      receivedAt: Date.now(),
+      ope: 'REMOVE_LOGGED_USER'
+  }
+}
+
 function receiveLogin(response) {
   console.log('receiveLogin');
   console.log(response);
@@ -86,6 +96,19 @@ function receiveLogin(response) {
       ope: 'RECEIVE_LOGIN'
   }
 }
+
+function receiveOrganization(response) {
+  console.log('receiveOrganization');
+  console.log(response);
+  
+  return {
+      type: RECEIVE_ORGANIZATION,
+      org: response,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_ORGANIZATION'
+  }
+}
+
 
 function cleanDataset(json) {
   console.log('cleanDataset');
@@ -156,6 +179,7 @@ export function datasetDetail(datasetname) {
   }
 }
 
+/*
 export function loginAction(email, pw) {
   console.log("Called action loginAction");
     return dispatch => {
@@ -163,4 +187,102 @@ export function loginAction(email, pw) {
       return login(email, pw)
         .then(response => dispatch(receiveLogin(response)))
     }
+}
+*/
+export function loginAction(username, pw) {
+  console.log("Called action loginAction");
+  var url = 'http://localhost:9001/catalog-manager/v1/ckan/user/' + username;
+  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
+  console.log(url);
+  var toencode = username + ':' +pw;
+  const encodedString = new Buffer(toencode).toString('base64');
+  localStorage.setItem('encodedString', encodedString);
+  localStorage.setItem('username', username);
+  return dispatch => {
+      dispatch(requestLogin())
+      return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + encodedString
+          }
+        })
+        .then(response => response.json())
+        .then(json => dispatch(receiveLogin(json)))
+        //.then(addUserOrganization(username,encodedString))
+  }
+}
+
+export function loginActionEncoded(username, encodedString) {
+  console.log("Called action loginActionEncoded");
+  var url = 'http://localhost:9001/catalog-manager/v1/ckan/user/' + username;
+  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
+  console.log(url);
+  localStorage.setItem('encodedString', encodedString);
+  localStorage.setItem('username', username);
+  return dispatch => {
+      dispatch(requestLogin())
+      return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + encodedString
+          }
+        })
+        .then(response => response.json())
+        .then(json => dispatch(receiveLogin(json)))
+  }
+}
+
+export function logout() {
+  console.log("logout");
+  localStorage.removeItem('encodedString');
+  localStorage.removeItem('username');
+  return dispatch => { dispatch(removeLoggedUser()) }
+}
+
+export function addUserOrganization(username, pw) {
+  console.log("Called action loginActionEncoded");
+  var url = 'http://localhost:9001/catalog-manager/v1/ckan/userOrganizations/' + username;
+  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
+  console.log(url);
+  var toencode = username + ':' +pw;
+  const encodedString = new Buffer(toencode).toString('base64');
+  localStorage.setItem('encodedString', encodedString);
+  localStorage.setItem('username', username);
+  return dispatch => {
+      return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + encodedString
+          }
+        })
+        .then(response => response.json())
+        .then(json => dispatch(receiveOrganization(json)))
+  }
+}
+
+export function addUserOrganizationEncoded(username, encodedString) {
+  console.log("Called action loginActionEncoded");
+  var url = 'http://localhost:9001/catalog-manager/v1/ckan/userOrganizations/' + username;
+  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
+  console.log(url);
+  localStorage.setItem('encodedString', encodedString);
+  localStorage.setItem('username', username);
+  return dispatch => {
+      return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + encodedString
+          }
+        })
+        .then(response => response.json())
+        .then(json => dispatch(receiveOrganization(json)))
+  }
 }
