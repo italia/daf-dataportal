@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 import PropTypes from 'prop-types'
-import { logout } from '../../helpers/auth'
 import { Redirect } from 'react-router'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import {
   loadDatasets,
   unloadDatasets,
-  datasetDetail
+  datasetDetail,
+  logout
 } from '../../actions'
 import { createBrowserHistory } from 'history';
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
