@@ -2,7 +2,6 @@ import fetch from 'isomorphic-fetch'
 import page from './data/dataset'
 import det from './data/datasetdetail'
 import { serviceurl } from './config/serviceurl.js'
-import { login } from './helpers/auth'
 
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'

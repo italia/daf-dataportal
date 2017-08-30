@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { login, resetPassword } from '../../helpers/auth'
 import { loginAction, addUserOrganization } from './../../actions.js'
 import PropTypes from 'prop-types'
 
@@ -25,11 +24,11 @@ class Login extends Component {
     console.log('login effettuato');
 }
 
-  resetPassword = () => {
+  /*resetPassword = () => {
     resetPassword(this.email.value)
       .then(() => this.setState(setErrorMsg(`Password reset email sent to ${this.email.value}.`)))
       .catch((error) => this.setState(setErrorMsg(`Email address not found.`)))
-  }
+  }*/
 
   render () {
     return (

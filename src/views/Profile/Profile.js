@@ -36,7 +36,7 @@ class Profile extends Component {
                         </div>
                     </div>
                     {organizations.map(organization => 
-                        <div className="form-group row">
+                        <div className="form-group row" key={organization.id}>
                             <label htmlFor="example-search-input" className="col-2 col-form-label">Org</label>
                             <div className="col-10">
                                 <input className="form-control" type="search" value={organization.description}  id="example-search-input"/>

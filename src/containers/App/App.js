@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route, HashRouter, Redirect, Switch } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
-import { firebaseAuth } from '../../config/constants'
 import { Provider } from 'react-redux';
 import configureStore from '../../configureStore'
 import Full from '../Full/'
