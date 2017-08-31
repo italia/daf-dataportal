@@ -74,8 +74,12 @@ class EditBarTop extends React.Component {
           <span className="mr-20">
             <b className="mr-10">Stato</b>
             {
-              (!this.state.dashboard.status || this.state.dashboard.status==false) &&
+              (this.state.dashboard.status==0) &&
               <span>In bozza</span>
+            }
+            {
+              (this.state.dashboard.status==1) &&
+              <span>Pubblicato</span>
             }
           </span>
 
