@@ -71,6 +71,48 @@ class Header extends Component {
     const { loggedUser } = this.props
     return (
       <header className="app-header navbar">
+      <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
+      <a href=""><span>AgID <span className="u-hidden u-md-inline u-lg-inline u-sm-inline">- Agenzia per l'Italia Digitale</span></span></a>
+      <ul className="nav navbar-nav d-md-down-none mr-auto">
+        <li className="nav-item">
+          <button className="nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}>&#9776;</button>
+        </li>
+      </ul>
+      <ul className="nav navbar-nav d-md-down-none">
+        <AutocompleteDataset ref="auto"/>
+        <button className="btn btn-primary" type="submit" value="submit" onClick={this.handleLoadDatasetClick}>Cerca</button>
+      </ul>
+      <ul className="nav navbar-nav ml-auto">
+        <li className="nav-item">
+          <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+            <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
+              <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
+              <span className="d-md-down-none">{loggedUser?loggedUser.name:''}</span>
+            </button>
+
+            <DropdownMenu className="dropdown-menu-right">
+              <DropdownItem header className="text-center"><strong>Menu utente</strong></DropdownItem>
+              <DropdownItem><a className="nav-link" href="/#/profile"><i className="fa fa-user"></i> Profile</a></DropdownItem>
+              <DropdownItem> <a className="nav-link"  onClick={() => {
+              logout()
+              }} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
+
+            </DropdownMenu>
+          </Dropdown>
+        </li>
+        
+        <li className="nav-item hidden-md-down">
+          <a className="nav-link navbar-toggler aside-menu-toggler" href="#"></a>
+        </li>
+      </ul>
+      </header>
+    )
+  }
+}
+
+
+/*
+<header className="app-header navbar">
         <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
         <a className="navbar-brand" href="#"></a>
         <ul className="nav navbar-nav d-md-down-none mr-auto">
@@ -108,9 +150,8 @@ class Header extends Component {
           </li>
         </ul>
       </header>
-    )
-  }
-}
+      */
+
 
 /*
 <form className="form-inline my-2 my-lg-0" onSubmit={this.handleSubmit}>

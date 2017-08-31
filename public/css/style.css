@@ -2177,7 +2177,7 @@ tbody.collapse.show {
   color: #263238;
   text-align: left;
   list-style: none;
-  background-color: #fff;
+  background-color: #CDCBCB;
   background-clip: padding-box;
   border: 1px solid #cfd8dc; }
 
@@ -7588,13 +7588,22 @@ base-chart.chart {
   .app-header.navbar .dropdown-item {
     min-width: 180px; }
 
+.app-header.navbar > a{
+    font-weight: 600!important;
+    color: #fff;
+    text-decoration: none!important;
+    letter-spacing: .01em!important;
+    padding-left: 2rem!important;
+    padding-right: 2rem!important;
+}
+
 .navbar-brand {
   color: rgba(0, 0, 0, 0.8); }
   .navbar-brand:focus, .navbar-brand:hover {
     color: rgba(0, 0, 0, 0.8); }
 
 .navbar-nav .nav-link, .navbar-nav .navbar .dropdown-toggle, .navbar .navbar-nav .dropdown-toggle {
-  color: rgba(0, 0, 0, 0.3); }
+  color: rgb(248, 244, 244); }
   .navbar-nav .nav-link:focus, .navbar-nav .navbar .dropdown-toggle:focus, .navbar .navbar-nav .dropdown-toggle:focus, .navbar-nav .nav-link:hover, .navbar-nav .navbar .dropdown-toggle:hover, .navbar .navbar-nav .dropdown-toggle:hover {
     color: rgba(0, 0, 0, 0.6); }
 
@@ -8583,7 +8592,9 @@ app-root {
 .header-fixed .app-header {
   position: fixed;
   z-index: 1020;
-  width: 100%; }
+  width: 100%;
+  background-color: #06c!important; 
+}
 
 .header-fixed .app-body {
   margin-top: 55px; }
