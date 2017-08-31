@@ -64,7 +64,7 @@ class EditBarTop extends React.Component {
           </button>
         </Link>
 
-        <Link role="button" to={"/dashboard/list/" + this.state.dashboard._id }>
+        <Link role="button" to={"/dashboard/list/" + this.state.dashboard.id }>
           <button type="button" className="btn btn-primary btn-xs">
               Anteprima
           </button>

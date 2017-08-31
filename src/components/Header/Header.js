@@ -72,15 +72,16 @@ class Header extends Component {
     return (
       <header className="app-header navbar">
       <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
-      <a href=""><span>AgID <span className="u-hidden u-md-inline u-lg-inline u-sm-inline">- Agenzia per l'Italia Digitale</span></span></a>
+      <button className="nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}>&#9776;</button>
+        
       <ul className="nav navbar-nav d-md-down-none mr-auto">
-        <li className="nav-item">
-          <button className="nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}>&#9776;</button>
+        <li className="nav-item brand">
+          <a href=""><span>AgID <span className="u-hidden u-md-inline u-lg-inline u-sm-inline">- Agenzia per l'Italia Digitale</span></span></a>
         </li>
       </ul>
       <ul className="nav navbar-nav d-md-down-none">
         <AutocompleteDataset ref="auto"/>
-        <button className="btn btn-primary" type="submit" value="submit" onClick={this.handleLoadDatasetClick}>Cerca</button>
+        <button className="btn btn-default" type="submit" value="submit" onClick={this.handleLoadDatasetClick}>Cerca</button>
       </ul>
       <ul className="nav navbar-nav ml-auto">
         <li className="nav-item">

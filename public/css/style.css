@@ -7588,7 +7588,7 @@ base-chart.chart {
   .app-header.navbar .dropdown-item {
     min-width: 180px; }
 
-.app-header.navbar > a{
+.app-header.navbar .nav-item.brand a{
     font-weight: 600!important;
     color: #fff;
     text-decoration: none!important;
@@ -8696,6 +8696,7 @@ app-root {
       width: 70px;
       height: inherit; }
     .app-header .navbar-toggler {
+      color: white;
       color: rgba(0, 0, 0, 0.3); }
     .app-header .navbar-brand {
       width: 100% !important;
@@ -9125,4 +9126,26 @@ hr.transparent {
 
 .medium-editor-element {
   outline: none;
+}
+
+/* .sidebar {
+  background: #ffffff;
+}
+
+.sidebar .nav .nav-item .nav-link, .sidebar .nav .nav-item .navbar .dropdown-toggle, .navbar .sidebar .nav .nav-item .dropdown-toggle {
+  font-weight: bold;
+  color: #06c;
+} */
+
+.btn-primary,
+.btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
+  background-color: #06c;
+}
+
+.btn-primary:hover{
+  background-color: #005cb7;
+}
+
+.nav-link.navbar-toggler.sidebar-toggler {
+  color:white;
 }
