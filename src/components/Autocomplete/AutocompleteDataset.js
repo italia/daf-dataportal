@@ -67,6 +67,7 @@ class AutocompleteDataset extends Component {
   }
 
   onChange = (event, { newValue, method }) => {
+    console.log('onchange !!!')
     this.loadCkanSuggestion(newValue);
     this.setState({
       value: newValue

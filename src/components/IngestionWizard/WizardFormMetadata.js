@@ -281,7 +281,7 @@ class WizardFormMetadata extends Component {
 
       {fields.map((test, index) => 
       (index == 0) ?
-      <div>
+      <div key={index}>
         <div className="form-group">
           <Field
             name={`${test}.tipo.name`}
@@ -298,7 +298,7 @@ class WizardFormMetadata extends Component {
         </div>
       </div>
       :
-      <div className="row">
+      <div className="row" key={index}>
         <div className="col-md-6">
       <div className="form-group">
       <div className="card">
