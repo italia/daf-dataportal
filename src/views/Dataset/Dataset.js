@@ -56,7 +56,7 @@ class Dataset extends Component {
     if (ope == 'RECEIVE_DATASETS')
       return datasets.map(dataset => {
           return(
-          <div className="list-group">
+          <div className="list-group" key={dataset.name}>
             <a href="#" className="list-group-item list-group-item-action flex-column align-items-start" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>
               <div className="d-flex w-100 justify-content-between">
                 <h5 className="mb-1">{dataset.resources[0].name}</h5>

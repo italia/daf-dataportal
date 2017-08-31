@@ -43,7 +43,6 @@ class App extends Component {
     loading: true,
   }
   componentDidMount () {
-    debugger
     console.log('APP.componentDidMount()');
     console.log('loggedUser: ' + this.props.loggedUser);
     const { dispatch} = this.props
@@ -54,20 +53,31 @@ class App extends Component {
             loading: false
           })
     }else{
-      console.log('Controllo se utente loggato');
-      dispatch(loginActionEncoded(localStorage.getItem('username'), localStorage.getItem('encodedString')))
-      .then(dispatch(addUserOrganizationEncoded(localStorage.getItem('username'), localStorage.getItem('encodedString'))))
-      .then(this.setState({
-              authed: true,
-              loading: false
-            }))
-      .catch((error) => {
-            this.setState({
+      console.log('Controllo se utente loggato da variabili presenti in localstore');
+      console.log('username in localstorage: ' + localStorage.getItem('username'));
+      console.log('encodedString in localstorage: ' + localStorage.getItem('encodedString'));
+      if(localStorage.getItem('username') && localStorage.getItem('encodedString') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('encodedString') != 'null'){
+        console.log('Variabili localstorage presenti');
+        dispatch(loginActionEncoded(localStorage.getItem('username'), localStorage.getItem('encodedString')))
+        .then(dispatch(addUserOrganizationEncoded(localStorage.getItem('username'), localStorage.getItem('encodedString'))))
+        .then(this.setState({
+                authed: true,
+                loading: false
+              }))
+        .catch((error) => {
+              this.setState({
+                authed: false,
+                loading: false
+              })
+            })
+      }else{
+        console.log('Variabili localstorage non presenti');
+        this.setState({
               authed: false,
               loading: false
             })
-        })
-    }
+      }    }
   }
   componentWillUnmount () {
     this.removeListener()

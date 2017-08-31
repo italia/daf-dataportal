@@ -17,7 +17,7 @@ class Full extends Component {
   render() {
     const { history } = this.props
     const divStyle = {
-      'padding-left': '0px',
+      'padding-left': '10px',
       'padding-rigth': '0px',
     };
     const mainDiv = {
