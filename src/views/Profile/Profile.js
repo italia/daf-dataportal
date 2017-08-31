@@ -35,15 +35,13 @@ class Profile extends Component {
                             <input className="form-control" type="search" value={loggedUser?loggedUser.about:''} id="example-search-input"/>
                         </div>
                     </div>
-                    {organizations.map(organization => 
-                        <div className="form-group row" key={organization.id}>
-                            <label htmlFor="example-search-input" className="col-2 col-form-label">Org</label>
-                            <div className="col-10">
-                                <input className="form-control" type="search" value={organization.description}  id="example-search-input"/>
-                            </div>
-                        </div>
-                    )
-                    }
+                    <div className="form-group">
+                        <label>Organizzazioni</label>
+                        {organizations.map(organization => 
+                            <input key={organization.id} type="email" className="form-control" id="exampleInputEmail1" value={organization.description}/>
+                        )
+                        }
+                    </div>
                     <div className="col-md-9 offset-md-9">
                     <button type="button" className="btn btn-primary" data-toggle="button" aria-pressed="false">
                         Modifica
@@ -59,7 +57,7 @@ class Profile extends Component {
 
 Profile.propTypes = {
   loggedUser: PropTypes.object,
-  organizations: PropTypes.object
+  organizations: PropTypes.array
 }
 
 function mapStateToProps(state) {
