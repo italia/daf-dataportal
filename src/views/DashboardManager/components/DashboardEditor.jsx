@@ -314,6 +314,14 @@ class DashboardEditor extends Component {
     request.layout = JSON.stringify(layout);
     request.widgets = JSON.stringify(widgets);
     const response = dashboardService.save(request);
+
+    response.then((data)=> {
+      if (!this.state.dashboard.id ) {
+        this.state.dashboard.id = data.message;
+        this.state.saving = false;
+        this.save();
+      }
+    })
   }
 
   /**
@@ -368,7 +376,12 @@ class DashboardEditor extends Component {
    */
   onChangeTitle(title){
     this.state.dashboard.title = title;
-    this.save();
+    
+    if(!this.state.saving)
+      this.save();
+    
+    if (!this.state.dashboard.id)
+      this.state.saving = true;
   }
 
   /**
@@ -383,7 +396,7 @@ class DashboardEditor extends Component {
    * onRemove
    */
   onRemove() {
-    dashboardService.remove(this.state.dashboard._id);
+    dashboardService.remove(this.state.dashboard.id);
     window.location = '#/dashboard/list';
   }
 
