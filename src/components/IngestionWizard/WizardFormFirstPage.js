@@ -26,10 +26,25 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
    </div>
 );
 
+const renderOrganization = ({ input, label, type, organizations, meta: { touched, error } }) => (
+  <div className="form-group">
+    <label className="form-control-label">{label}</label>
+    <div>
+       <div className="form-group">
+        <select className="form-control">
+          <option value=""  key='organization' defaultValue></option>
+          {organizations.map(organization => <option value={organization.id} key={organization.id}>{organization.description}</option>)}
+        </select>
+      </div>
+      {touched && error && <span>{error}</span>}
+    </div>
+ </div>
+);
+
  
 
 const WizardFormFirstPage = props => {
-  const { handleSubmit, previousPage } = props
+  const { handleSubmit, previousPage, organizations } = props
   return (
     <form  onSubmit={handleSubmit}>
         <div className="col-md-12">
@@ -61,8 +76,9 @@ const WizardFormFirstPage = props => {
           <Field
             name="ownership"
             type="text"
-            component={renderField}
+            component={renderOrganization}
             label="Ownership"
+            organizations={organizations}
           />
         </div>
       <div className="btn-group mr-2" role="group" aria-label="First group">
