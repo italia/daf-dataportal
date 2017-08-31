@@ -62,7 +62,8 @@ function user( state = { isFetching: false, didInvalidate: false, user }, action
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        loggedUser: action.user
+        loggedUser: action.user,
+        authed: true
       })
     default:
       return state
