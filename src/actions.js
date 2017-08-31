@@ -191,7 +191,7 @@ export function loginAction(email, pw) {
 */
 export function loginAction(username, pw) {
   console.log("Called action loginAction");
-  var url = 'http://localhost:9001/catalog-manager/v1/ckan/user/' + username;
+  var url = serviceurl.apiURLSecurity + '/ckan/user/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   console.log(url);
   var toencode = username + ':' +pw;
@@ -216,7 +216,7 @@ export function loginAction(username, pw) {
 
 export function loginActionEncoded(username, encodedString) {
   console.log("Called action loginActionEncoded");
-  var url = 'http://localhost:9001/catalog-manager/v1/ckan/user/' + username;
+  var url = serviceurl.apiURLSecurity + '/ckan/user/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   console.log(url);
   localStorage.setItem('encodedString', encodedString);
@@ -245,7 +245,7 @@ export function logout() {
 
 export function addUserOrganization(username, pw) {
   console.log("Called action loginActionEncoded");
-  var url = 'http://localhost:9001/catalog-manager/v1/ckan/userOrganizations/' + username;
+  var url = serviceurl.apiURLSecurity + '/ckan/userOrganizations/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   console.log(url);
   var toencode = username + ':' +pw;
@@ -268,7 +268,7 @@ export function addUserOrganization(username, pw) {
 
 export function addUserOrganizationEncoded(username, encodedString) {
   console.log("Called action loginActionEncoded");
-  var url = 'http://localhost:9001/catalog-manager/v1/ckan/userOrganizations/' + username;
+  var url = serviceurl.apiURLSecurity + '/ckan/userOrganizations/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   console.log(url);
   localStorage.setItem('encodedString', encodedString);

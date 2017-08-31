@@ -1,0 +1,32 @@
+[
+ {
+   "name": "test2-org",
+   "image_url": "http://dati.trentino.it/images/logo.png",
+   "email": null,
+   "state": "active",
+   "description": "Prova organizzazione",
+   "users": null,
+   "is_organization": true,
+   "id": "232cad97-ecf2-447d-9656-63899023887t",
+   "title": "Organizzazione di prova",
+   "type": null,
+   "revision_id": "e9b313bb-fb61-4991-90f4-bdb308f024cf",
+   "approval_status": "approved",
+   "created": "2017-08-29T16:29:54.755873"
+ },
+ {
+   "name": "test3-org",
+   "image_url": "http://dati.trentino.it/images/logo.png",
+   "email": null,
+   "state": "active",
+   "description": "Prova organizzazione2",
+   "users": null,
+   "is_organization": true,
+   "id": "232cad97-ecf2-447d-9656-63899023887p",
+   "title": "Organizzazione di prova",
+   "type": null,
+   "revision_id": "4fe18408-9d08-413e-87bd-578013b80dd3",
+   "approval_status": "approved",
+   "created": "2017-08-30T10:25:04.554223"
+ }
+]
