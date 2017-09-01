@@ -11,8 +11,9 @@ class ViewBar extends React.Component {
 
     return (
       <div className="box text-right">
-
-        <h2 className="pull-left">{this.props.title}</h2>
+{/* 
+        <h2 className="pull-left">{this.props.title}</h2> 
+*/}
 
         <Link role="button" to="/user_story/list">
           <button type="button" className="btn btn-default btn-xs" >

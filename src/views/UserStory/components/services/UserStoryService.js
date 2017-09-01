@@ -5,7 +5,7 @@ export default class UserStoryService {
 
     urlIframe = serviceurl.apiURLDatiGov + "/dati-gov/v1/dashboard/iframes?apikey=test";
     //baseUrl = "http://localhost:3000/mock/" + "user_story";
-    baseUrl = serviceurl.apiURLDatiGov + "/dati-gov/v1/user-stories"
+    baseUrl = serviceurl.apiURLDatiGov + serviceurl.apiURL_dati_gov + "/user-stories";
 
     constructor() {
 
@@ -21,7 +21,7 @@ export default class UserStoryService {
         return response.json();
     }
 
-    async save(id, story) {
+    async save(story) {
 
         const response = await fetch( this.baseUrl, {
             method: 'POST',
@@ -29,9 +29,7 @@ export default class UserStoryService {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                story: story
-            })
+            body: JSON.stringify(story)
         })
         
         return response.json();

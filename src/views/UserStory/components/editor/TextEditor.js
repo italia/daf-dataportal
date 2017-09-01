@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Components from 'react';
 //import TextareaAutosize from 'react-autosize-textarea';
+import $ from 'jquery';
 
 //medium text editor
 import Editor from 'react-medium-editor';
@@ -18,7 +19,16 @@ class TextEditor extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
   
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      text : nextProps.text
+    });
+  }
+  
   handleChange = function(value) {
+    if (this.props.disableHtml)
+      value = $(value).text();
+
     this.setState({text: value});
     this.props.onChange(this.props.keyValue, value)
   };
@@ -41,7 +51,8 @@ class TextEditor extends Component {
       }
       {
         this.props.readonly==true &&
-        this.state.text
+        <div dangerouslySetInnerHTML={{__html: this.state.text}} />
+        
       }
     </div>
     );
