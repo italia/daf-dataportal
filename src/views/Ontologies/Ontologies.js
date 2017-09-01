@@ -8,7 +8,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <h1>Ontologies</h1>
+        <h1>Ontologie</h1>
         <AutocompleteOntologies/>
       </div>
     )

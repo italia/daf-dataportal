@@ -66,7 +66,7 @@ class TextWidget extends Component {
             {
               this.props.readOnly!==false &&
               <div className="mt-20">
-                <button onClick={() => this.edit()} type="button" className="btn btn-link" >Edit Text</button>
+                <button onClick={() => this.edit()} type="button" className="btn btn-link" >Edita testo</button>
               </div>
             }
           </div>
@@ -76,6 +76,7 @@ class TextWidget extends Component {
           <div>
             
             <Editor
+              data-placeholder="Inserisci il testo"
               text={this.state.text}
               onChange={this.onEditorStateChange}
               options={{toolbar: {buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],}}}
@@ -90,8 +91,8 @@ class TextWidget extends Component {
               onEditorStateChange={this.onEditorStateChange}
             /> */}
             
-            <button onClick={() => this.close()} type="button" className="btn btn-default" >Cancel</button>
-            <button onClick={() => this.save()} type="button" className="btn btn-primary" >Save</button>
+            <button onClick={() => this.close()} type="button" className="btn btn-default" >Annulla</button>
+            <button onClick={() => this.save()} type="button" className="btn btn-primary" >Salva</button>
             <div className="clearfix"></div>
           </div>
         }

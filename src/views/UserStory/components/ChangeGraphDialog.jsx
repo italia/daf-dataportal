@@ -28,25 +28,25 @@ const ChangeGraphDialog = ({ widgets, isModalOpen, onRequestClose, onWidgetSelec
 
   return (
     <Modal
-      contentLabel="Select Graph"
+      contentLabel="Seleziona grafico"
       className="Modal__Bootstrap modal-dialog modal-80"
       isOpen={isModalOpen}>
       <div className="modal-content">
        <div className="modal-header">
          <button type="button" className="close" onClick={onRequestClose}>
            <span aria-hidden="true">&times;</span>
-           <span className="sr-only">Close</span>
+           <span className="sr-only">Chiudi</span>
          </button>
-         <h4 className="modal-title">Add a widget</h4>
+         <h4 className="modal-title">Aggiungi un widget</h4>
        </div>
        <div className="modal-body">
-         <h5>Select a graph to add</h5>
+         <h5>Seleziona un grafico da aggiungere</h5>
          <div className="row ml-0 preview-widget-container">
            {widgetItems}
          </div>
        </div>
        <div className="modal-footer">
-         <button type="button" className="btn btn-default" onClick={onRequestClose}>Close</button>
+         <button type="button" className="btn btn-default" onClick={onRequestClose}>Chiudi</button>
        </div>
       </div>
     </Modal>

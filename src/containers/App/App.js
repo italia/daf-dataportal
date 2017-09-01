@@ -14,7 +14,6 @@ const history = createBrowserHistory();
 const store = configureStore();
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
-  console.log('PrivateRoute - authed?: ' + authed);
   return (
     <Route
       {...rest}
@@ -26,7 +25,6 @@ function PrivateRoute ({component: Component, authed, ...rest}) {
 }
 
 function PublicRoute ({component: Component, authed, ...rest}) {
-  console.log('PublicRoute - authed?: ' + authed);
   return (
     <Route
       {...rest}
@@ -43,22 +41,15 @@ class App extends Component {
     loading: true,
   }
   componentDidMount () {
-    console.log('APP.componentDidMount()');
-    console.log('loggedUser: ' + this.props.loggedUser);
     const { dispatch} = this.props
     if(this.props.loggedUser){
-      console.log('Utente loggato');
       this.setState({
             authed: true,
             loading: false
           })
     }else{
-      console.log('Controllo se utente loggato da variabili presenti in localstore');
-      console.log('username in localstorage: ' + localStorage.getItem('username'));
-      console.log('encodedString in localstorage: ' + localStorage.getItem('encodedString'));
       if(localStorage.getItem('username') && localStorage.getItem('encodedString') &&
         localStorage.getItem('username') != 'null' && localStorage.getItem('encodedString') != 'null'){
-        console.log('Variabili localstorage presenti');
         dispatch(loginActionEncoded(localStorage.getItem('username'), localStorage.getItem('encodedString')))
         .then(dispatch(addUserOrganizationEncoded(localStorage.getItem('username'), localStorage.getItem('encodedString'))))
         .then(this.setState({
@@ -72,7 +63,6 @@ class App extends Component {
               })
             })
       }else{
-        console.log('Variabili localstorage non presenti');
         this.setState({
               authed: false,
               loading: false

@@ -83,7 +83,7 @@ class ImageEditor extends Component {
         this.props.readonly!=true &&
         <div className="text-center mt-20 mb-20">
           <button type="button" className="btn btn-default" onClick={() => this.openModal()}>
-              Change Image
+              Seleziona immagine
           </button>
         </div>
       }
@@ -99,14 +99,14 @@ class ImageEditor extends Component {
 
         
       <Modal
-        contentLabel="Select Image"
+        contentLabel="Selezione immagine"
         className="Modal__Bootstrap modal-dialog modal-80"
         isOpen={this.state.isModalOpen}>
         <div className="modal-content">
          <div className="modal-header">
            <button type="button" className="close" onClick={this.closeModal}>
              <span aria-hidden="true">&times;</span>
-             <span className="sr-only">Close</span>
+             <span className="sr-only">Chiudi</span>
            </button>
            <h4 className="modal-title">Inserisci un'immagine</h4>
          </div>
@@ -118,7 +118,7 @@ class ImageEditor extends Component {
 
          </div>
          <div className="modal-footer">
-           <button type="button" className="btn btn-default" onClick={this.saveUrl}>Save</button>
+           <button type="button" className="btn btn-default" onClick={this.saveUrl}>Salva</button>
          </div>
         </div>
       </Modal>

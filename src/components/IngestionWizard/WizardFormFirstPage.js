@@ -52,38 +52,42 @@ const WizardFormFirstPage = props => {
             name="title"
             type="text"
             component={renderField}
-            label="Title"
+            label="Titolo"
             readonly="readonly"
           />
           <Field
             name="notes"
             type="textarea"
             component={renderField}
-            label="Description"
+            label="Descrizione"
           />
           <Field
             name="theme"
             type="text"
             component={renderThemes}
-            label="Themes"
+            label="Temi"
           />
           <Field
             name="license_title"
             type="text"
             component={renderField}
-            label="License"
+            label="Licenza"
           />
           <Field
             name="ownership"
             type="text"
             component={renderOrganization}
-            label="Ownership"
+            label="Organizzazione"
             organizations={organizations}
           />
         </div>
-      <div className="btn-group mr-2" role="group" aria-label="First group">
-        <button type="button" className="btn btn-primary" onClick={previousPage}>Previous</button>
-        <button type="submit" className="btn btn-primary">Next</button>
+      <div className="form-group row justify-content-between">
+        <div className="col-1">
+          <button type="button" className="btn btn-primary" onClick={previousPage}>Indietro</button>
+        </div>
+        <div className="col-1">
+          <button type="submit" className="btn btn-primary">Avanti</button>
+        </div>
       </div>
  
     </form>

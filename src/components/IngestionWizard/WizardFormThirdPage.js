@@ -39,7 +39,7 @@ const renderYesNoSelector = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
       <option value='false' defaultValue key='false'>No</option>
-      {isStds.map(val => <option value={val} key={val}>Yes</option>)}
+      {isStds.map(val => <option value={val} key={val}>Si</option>)}
     </select>
     {touched && error && <span>{error}</span>}
 
@@ -100,14 +100,14 @@ let WizardFormThirdPage = props => {
  
   return (
     <form  onSubmit={handleSubmit}>
-      <div className="col-md-6">
+      <div className="col-md-12">
       <div className="form-group">
         <label>Esponi i dati o li invii?</label>
         <Field name="pushOrPull" component={pushOrPull} />
       </div>
 
       <div className="form-group">
-        <label>SFTP or web service</label>
+        <label>SFTP o web service</label>
         <Field name="ftporws" component={ftpOrWebservice} />
       </div>
       <div className="form-group">
@@ -141,15 +141,17 @@ let WizardFormThirdPage = props => {
         <Field name="read_type"  component={renderTipoLettura} />
       </div>
 
-
-       <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-        <div className="btn-group mr-2" role="group" aria-label="First group">
-          <button type="button" className="btn btn-primary" onClick={previousPage}>Previous</button>
+      <div className="form-group row justify-content-between">
+        <div className="col-1">
+          <button type="button" className="btn btn-primary" onClick={previousPage}>Indietro</button>
         </div>
-        <div className="btn-group mr-2" role="group" aria-label="Second group">
-          <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Submit</button>
+        <div className="col-1">
+          <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Invia</button>
         </div>
       </div>
+
+
+
       </div>
     </form>
   );

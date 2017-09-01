@@ -39,7 +39,6 @@ function receiveDataset(json) {
   //Action are payload of information that sends data from the application to the store
   //Store doesn't have any other way to get data
   //Action are not responsible for update the state (only reducers) !!! 
-  console.log('MODE: ' + process.env.NODE_ENV) 
   if(process.env.NODE_ENV=='development')
     return {
       type: RECEIVE_DATASETS,
@@ -57,8 +56,6 @@ function receiveDataset(json) {
 }
 
 function receiveDatasetDetail(json) {
-  console.log('receiveDatasetDetail');
-  console.log('MODE: ' + process.env.NODE_ENV)
   if(process.env.NODE_ENV=='development') 
   return {
       type: RECEIVE_DATASET_DETAIL,
@@ -85,10 +82,7 @@ function removeLoggedUser() {
   }
 }
 
-function receiveLogin(response) {
-  console.log('receiveLogin');
-  console.log(response);
-  
+function receiveLogin(response) { 
   return {
       type: RECEIVE_LOGIN,
       user: response,
@@ -97,10 +91,7 @@ function receiveLogin(response) {
   }
 }
 
-function receiveOrganization(response) {
-  console.log('receiveOrganization');
-  console.log(response);
-  
+function receiveOrganization(response) {  
   return {
       type: RECEIVE_ORGANIZATION,
       org: response,
@@ -111,7 +102,6 @@ function receiveOrganization(response) {
 
 
 function cleanDataset(json) {
-  console.log('cleanDataset');
   //This function creates an action that a reducer can handle 
   return {
     type: DELETE_DATASETS,
@@ -121,13 +111,10 @@ function cleanDataset(json) {
 }
 
 function fetchDataset(query) {
-  console.log('fetchDataset');
   var queryurl='';
   if(query)
     queryurl='&q='+query;
-  console.log('queryurl: ' + queryurl);
   var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameSearch + '?rows=20' + queryurl;
-  console.log('url: ' + url);
   if(process.env.NODE_ENV=='development'){
     return dispatch => {dispatch(receiveDataset(null))}
   } else {
@@ -141,10 +128,8 @@ function fetchDataset(query) {
 }
 
 function fetchDatasetDetail(datasetname) {
-  console.log('fetchDatasetDetail');
   //http://localhost:9000/dati-gov/v1/ckan/datasets/${this.props.params.post
   var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
-  console.log(url);
   if(process.env.NODE_ENV=='development'){
     return dispatch => {dispatch(receiveDatasetDetail(null))}
   } else {
@@ -179,21 +164,9 @@ export function datasetDetail(datasetname) {
   }
 }
 
-/*
-export function loginAction(email, pw) {
-  console.log("Called action loginAction");
-    return dispatch => {
-      dispatch(requestLogin())
-      return login(email, pw)
-        .then(response => dispatch(receiveLogin(response)))
-    }
-}
-*/
 export function loginAction(username, pw) {
-  console.log("Called action loginAction");
   var url = 'http://localhost:9001/catalog-manager/v1/ckan/user/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
-  console.log(url);
   var toencode = username + ':' +pw;
   const encodedString = new Buffer(toencode).toString('base64');
   localStorage.setItem('encodedString', encodedString);
@@ -215,10 +188,8 @@ export function loginAction(username, pw) {
 }
 
 export function loginActionEncoded(username, encodedString) {
-  console.log("Called action loginActionEncoded");
   var url = 'http://localhost:9001/catalog-manager/v1/ckan/user/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
-  console.log(url);
   localStorage.setItem('encodedString', encodedString);
   localStorage.setItem('username', username);
   return dispatch => {
@@ -237,17 +208,14 @@ export function loginActionEncoded(username, encodedString) {
 }
 
 export function logout() {
-  console.log("logout");
   localStorage.removeItem('encodedString');
   localStorage.removeItem('username');
   return dispatch => { dispatch(removeLoggedUser()) }
 }
 
 export function addUserOrganization(username, pw) {
-  console.log("Called action loginActionEncoded");
   var url = 'http://localhost:9001/catalog-manager/v1/ckan/userOrganizations/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
-  console.log(url);
   var toencode = username + ':' +pw;
   const encodedString = new Buffer(toencode).toString('base64');
   localStorage.setItem('encodedString', encodedString);
@@ -267,10 +235,8 @@ export function addUserOrganization(username, pw) {
 }
 
 export function addUserOrganizationEncoded(username, encodedString) {
-  console.log("Called action loginActionEncoded");
   var url = 'http://localhost:9001/catalog-manager/v1/ckan/userOrganizations/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
-  console.log(url);
   localStorage.setItem('encodedString', encodedString);
   localStorage.setItem('username', username);
   return dispatch => {

@@ -17,11 +17,11 @@ class Full extends Component {
   render() {
     const { history } = this.props
     const divStyle = {
-      'padding-left': '10px',
-      'padding-rigth': '0px',
+      'paddingLeft': '10px',
+      'paddingRigth': '0px',
     };
     const mainDiv = {
-      'background-color' : 'white'
+      'backgroundColor' : 'white'
     }
     return (
       <div className="app">
