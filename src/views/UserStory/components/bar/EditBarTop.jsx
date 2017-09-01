@@ -53,7 +53,7 @@ class EditBarTop extends React.Component {
           <input 
             className="form-control"
             value={this.state.title}
-            placeholder="Insert a title"
+            placeholder="Inserisci un titolo"
             onChange={this.handleChange}
           />
 

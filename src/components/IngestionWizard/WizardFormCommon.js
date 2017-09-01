@@ -100,8 +100,8 @@ class FormItemSelectFieldType extends React.Component{
     return <select className={this.props.className} id={this.props.id}>
       <option value="" default></option>
       <option value="dimension">Dimensione</option>
-      <option value="numval">Numerical Value</option>
-      <option value="textval">Textual Value</option>
+      <option value="numval">Valore numerico</option>
+      <option value="textval">Valore testuale</option>
     </select>
   }
 }

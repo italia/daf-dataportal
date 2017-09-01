@@ -26,10 +26,25 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
    </div>
 );
 
+const renderOrganization = ({ input, label, type, organizations, meta: { touched, error } }) => (
+  <div className="form-group">
+    <label className="form-control-label">{label}</label>
+    <div>
+       <div className="form-group">
+        <select className="form-control">
+          <option value=""  key='organization' defaultValue></option>
+          {organizations.map(organization => <option value={organization.id} key={organization.id}>{organization.description}</option>)}
+        </select>
+      </div>
+      {touched && error && <span>{error}</span>}
+    </div>
+ </div>
+);
+
  
 
 const WizardFormFirstPage = props => {
-  const { handleSubmit, previousPage } = props
+  const { handleSubmit, previousPage, organizations } = props
   return (
     <form  onSubmit={handleSubmit}>
         <div className="col-md-12">
@@ -37,37 +52,42 @@ const WizardFormFirstPage = props => {
             name="title"
             type="text"
             component={renderField}
-            label="Title"
+            label="Titolo"
             readonly="readonly"
           />
           <Field
             name="notes"
             type="textarea"
             component={renderField}
-            label="Description"
+            label="Descrizione"
           />
           <Field
             name="theme"
             type="text"
             component={renderThemes}
-            label="Themes"
+            label="Temi"
           />
           <Field
             name="license_title"
             type="text"
             component={renderField}
-            label="License"
+            label="Licenza"
           />
           <Field
             name="ownership"
             type="text"
-            component={renderField}
-            label="Ownership"
+            component={renderOrganization}
+            label="Organizzazione"
+            organizations={organizations}
           />
         </div>
-      <div className="btn-group mr-2" role="group" aria-label="First group">
-        <button type="button" className="btn btn-primary" onClick={previousPage}>Previous</button>
-        <button type="submit" className="btn btn-primary">Next</button>
+      <div className="form-group row justify-content-between">
+        <div className="col-1">
+          <button type="button" className="btn btn-primary" onClick={previousPage}>Indietro</button>
+        </div>
+        <div className="col-1">
+          <button type="submit" className="btn btn-primary">Avanti</button>
+        </div>
       </div>
  
     </form>

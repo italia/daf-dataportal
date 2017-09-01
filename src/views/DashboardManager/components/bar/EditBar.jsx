@@ -39,12 +39,12 @@ class EditBar extends React.Component {
         <div className="box transparent">
           <button type="button" className="btn btn-primary btn-xs" onClick={this.addWidgetOpenModal}>
             <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              Add Widget
+              Aggiungi Widget
           </button>
 
           <button type="button" className="btn btn-link btn-xs" onClick={this.props.addRow}>
             <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              Add Row
+              Aggiungi Riga
           </button>
           
         </div>

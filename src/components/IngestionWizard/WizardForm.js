@@ -6,6 +6,7 @@ import WizardFormThirdPage from './WizardFormThirdPage'
 import WizardFormMetadata from './WizardFormMetadata'
 import {getJsonDataschema} from './inputform_reader.js'
 import { change } from 'redux-form';
+import { connect } from 'react-redux'
 
 
 class WizardForm extends Component {
@@ -43,7 +44,7 @@ class WizardForm extends Component {
               //    {page === 1 && <WizardFormFirstPage onSubmit={this.nextPage} />}
 // previousPage={this.previousPage}
   render() {
-    const { onSubmit } = this.props
+    const { onSubmit, organizations } = this.props
     const { page } = this.state
     return (
         <div className="row">
@@ -68,6 +69,7 @@ class WizardForm extends Component {
                 {page ===2 &&  <WizardFormFirstPage
                       previousPage={this.previousPage}
                       onSubmit={this.nextPage}
+                      organizations={organizations}
                   />}
                 {page === 3 &&
                     <WizardFormThirdPage
@@ -83,7 +85,15 @@ class WizardForm extends Component {
 }
 
 WizardForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  loggedUser: PropTypes.object,
+  organizations: PropTypes.array
 }
 
-export default WizardForm
+function mapStateToProps(state) {
+    const organizations = state.userReducer['org'].organizations || { };
+    const loggedUser = state.userReducer['obj'].loggedUser || { } 
+    return { loggedUser, organizations }
+}
+
+export default connect(mapStateToProps)(WizardForm)

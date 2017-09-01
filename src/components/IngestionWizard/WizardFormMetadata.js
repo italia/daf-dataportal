@@ -35,12 +35,10 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
     <div className="form-group row">
       <label className="col-md-3 form-control-label">Categoria</label>
       <div className="col-md-9">
-         <div className="form-group row">
           <select className="form-control" {...input}>
             <option value="ECON"  key='theme' defaultValue>ECONOMIA</option>
             {themes.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
           </select>
-        </div>
         {touched && error && <span>{error}</span>}
       </div>
    </div>
@@ -51,25 +49,21 @@ const renderField = ({ input, label, type, value = '', readonly, meta: { touched
     <label className="col-md-3 form-control-label">{label}</label>
       {(touched && error) ?
       <div className="col-md-9"> 
-        <div className="form-group row has-danger">
           <input {...input} placeholder={label} type={type} className="form-control form-control-danger"/>
           <div className="form-control-feedback">{error}</div>
-        </div>
       </div>
       :
       <div className="col-md-9">
-        <div className="form-group row">  
           <input {...input} placeholder={label} readOnly={readonly} type={type} className="form-control"/>
-        </div>
       </div>
       }
   </div>
 )
 
   const renderFieldMeta = ({ input, label, type, value = '', meta: { touched, error } }) => (
-    <div>
-    <label className="form-control-label">{label}</label>
-   <div className="col-md-12">
+  <div className="form-group row">
+    <label className="col-md-3 form-control-label">{label}</label>
+    <div className="col-md-9">
       <input {...input} placeholder={label} type={type} className="form-control"/>
       {touched && error && <span>{error}</span>}
     </div>
@@ -77,9 +71,9 @@ const renderField = ({ input, label, type, value = '', readonly, meta: { touched
 )
 
 const renderYesNoSelector = ({ input, meta: { touched, error } }) => (
-    <div>
-    <label className="form-control-label">Obbligatorio?</label>
-   <div className="col-md-12">
+  <div className="form-group row">
+    <label className="col-md-3 form-control-label">Obbligatorio?</label>
+   <div className="col-md-9">
     <select className="form-control" {...input}>
       <option value="0" defaultValue key='false'>No</option>
       <option value="1" key="1">Yes</option>
@@ -90,14 +84,14 @@ const renderYesNoSelector = ({ input, meta: { touched, error } }) => (
 );
 
 const renderFieldType = ({ input, meta: { touched, error } }) => (
-    <div>
-    <label className="form-control-label">Tipo Colonna</label>
-   <div className="col-md-12">
+  <div className="form-group row">
+    <label className="col-md-3 form-control-label">Tipo Colonna</label>
+   <div className="col-md-9">
     <select className="form-control" {...input}>
       <option value="" defaultValue key=''></option>
-      <option value="dimension" key='dimension'>Dimension</option>
-      <option value="numerical" key="numerical">Numerical Value</option>
-      <option value="textual" key="textual">Textual Value</option>
+      <option value="dimension" key='dimension'>Dimensione</option>
+      <option value="numerical" key="numerical">Valore numerico</option>
+      <option value="textual" key="textual">Valore testuale</option>
     </select>
     {touched && error && <span>{error}</span>}
 </div>
@@ -268,7 +262,7 @@ class WizardFormMetadata extends Component {
               dispatch(change('wizard', 'title', fileName))
               }
             }>
-            <div>Try dropping some files here, or click to select files to upload.</div>
+            <div>Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
           </Dropzone>
         </div>
       </div>
@@ -281,24 +275,25 @@ class WizardFormMetadata extends Component {
 
       {fields.map((test, index) => 
       (index == 0) ?
-      <div>
-        <div className="form-group">
-          <Field
-            name={`${test}.tipo.name`}
-            type="text"
-            component={renderField}
-            label="Nome File"
-            value={`${test}.tipo.name`}
-          />
-        </div>
-        <div className="form-group">
-          <div className="col-md-9 offset-md-8">
-            <button type="button" className="btn btn-primary" onClick={reset}>Clear Values</button>
+      <div key={index}>
+        <div className="form-group row justify-content-center">
+          <div className="col-6">
+            <Field
+              name={`${test}.tipo.name`}
+              type="text"
+              component={renderField}
+              label="Nome File"
+              value={`${test}.tipo.name`}
+              readonly="readonly"
+            />
+          </div>
+          <div className="col-4">
+            <button type="button" className="btn btn-primary" onClick={reset}>Elimina</button>
           </div>
         </div>
       </div>
       :
-      <div className="row">
+      <div className="row" key={index}>
         <div className="col-md-6">
       <div className="form-group">
       <div className="card">
@@ -328,10 +323,9 @@ class WizardFormMetadata extends Component {
           value={`${test}.concetto`}
         />
         <hr className="my-4"/>
-        <h6>
-        Metadata  Colonna #{index}
-        </h6>
-
+        <div className="form-group row">
+          <h6>Metadata  Colonna #{index}</h6>
+        </div>
         <Field
           name={`${test}.desc`}
           type="text"
@@ -439,7 +433,7 @@ class WizardFormMetadata extends Component {
       </div>
       <div className="form-group row">
             <div className="col-md-11 offset-md-11">
-              <button type="submit" className="btn btn-primary">Next</button>
+              <button type="submit" className="btn btn-primary">Avanti</button>
             </div>
       </div>
     </form>
