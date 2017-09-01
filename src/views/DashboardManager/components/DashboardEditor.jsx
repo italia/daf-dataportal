@@ -396,8 +396,9 @@ class DashboardEditor extends Component {
    * onRemove
    */
   onRemove() {
-    dashboardService.remove(this.state.dashboard.id);
-    window.location = '#/dashboard/list';
+    dashboardService.remove(this.state.dashboard.id).then(() => {
+      window.location = '#/dashboard/list';
+    });
   }
 
   /**
