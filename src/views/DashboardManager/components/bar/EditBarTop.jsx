@@ -53,9 +53,12 @@ class EditBarTop extends React.Component {
             onChange={this.handleChange}
           />
           
+          {
+          this.state.dashboard.id &&
           <button type="button" className="btn btn-danger btn-xs mt-20" onClick={() => this.onRemove()}>
               Elimina
           </button>
+          }
         </div>
 
         <Link role="button" to="/dashboard/list">
@@ -64,40 +67,45 @@ class EditBarTop extends React.Component {
           </button>
         </Link>
 
-        <Link role="button" to={"/dashboard/list/" + this.state.dashboard.id }>
-          <button type="button" className="btn btn-primary btn-xs">
-              Anteprima
-          </button>
-        </Link>
-
-        <div className="mt-20">
-          <span className="mr-20">
-            <b className="mr-10">Stato</b>
-            {
-              (this.state.dashboard.status==0) &&
-              <span>In bozza</span>
-            }
-            {
-              (this.state.dashboard.status==1) &&
-              <span>Pubblicato</span>
-            }
-          </span>
-
-          {
-            (!this.state.dashboard.status || this.state.dashboard.status==false) &&
-            <button type="button" className="btn btn-success btn-xs" onClick={() => this.pubblica()}>
-                Pubblica
+        {
+          this.state.dashboard.id &&
+          <Link role="button" to={"/dashboard/list/" + this.state.dashboard.id }>
+            <button type="button" className="btn btn-primary btn-xs">
+                Anteprima
             </button>
-          }
+          </Link>
+        }
 
-          {
-            /* this.state.dashboard.status && this.state.dashboard.status==true &&
-            <button type="button" className="btn btn-danger btn-xs" onClick={() => this.pubblica()}>
-                Spubblica
-            </button> */
-          }
-        </div>
-        
+        {
+          this.state.dashboard.id &&
+          <div className="mt-20">
+            <span className="mr-20">
+              <b className="mr-10">Stato</b>
+              {
+                (this.state.dashboard.status==0) &&
+                <span>In bozza</span>
+              }
+              {
+                (this.state.dashboard.status==1) &&
+                <span>Pubblicato</span>
+              }
+            </span>
+
+            {
+              (!this.state.dashboard.status || this.state.dashboard.status==false) &&
+              <button type="button" className="btn btn-success btn-xs" onClick={() => this.pubblica()}>
+                  Pubblica
+              </button>
+            }
+
+            {
+              /* this.state.dashboard.status && this.state.dashboard.status==true &&
+              <button type="button" className="btn btn-danger btn-xs" onClick={() => this.pubblica()}>
+                  Spubblica
+              </button> */
+            }
+          </div>
+        }
       </div>
 
     );

@@ -318,6 +318,10 @@ class DashboardEditor extends Component {
     response.then((data)=> {
       if (!this.state.dashboard.id ) {
         this.state.dashboard.id = data.message;
+        this.setState({
+          dashboard: this.state.dashboard
+        })
+        
         this.state.saving = false;
         this.save();
       }
