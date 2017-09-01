@@ -24,7 +24,7 @@ class Profile extends Component {
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlFor="example-search-input" className="col-2 col-form-label">Fullname</label>
+                        <label htmlFor="example-search-input" className="col-2 col-form-label">Nome completo</label>
                         <div className="col-10">
                             <input className="form-control" type="search" value={loggedUser?loggedUser.fullname:''} id="example-search-input"/>
                         </div>

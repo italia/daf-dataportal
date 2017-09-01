@@ -33,6 +33,7 @@ class TextEditor extends Component {
         this.props.readonly!=true &&
 
         <Editor
+          data-placeholder="Inserisci il testo"
           text={this.state.text}
           onChange={this.handleChange}
           options={{toolbar: {buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],}}}

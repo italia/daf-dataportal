@@ -190,7 +190,7 @@ class BtnControlWidget extends React.Component {
                             <span aria-hidden="true">&times;</span>
                             <span className="sr-only">Close</span>
                             </button>
-                            <h4 className="modal-title">Customize columns</h4>
+                            <h4 className="modal-title">Scegli il layout</h4>
                         </div>
                         <div className="modal-body">
                             <div className="row p-s-10">
@@ -280,7 +280,7 @@ class BtnControlWidget extends React.Component {
 
                         </div>
                         <div className="modal-footer">
-                            <button onClick={this.closeModal} type="button" className="btn btn-default" >Close</button>
+                            <button onClick={this.closeModal} type="button" className="btn btn-default" >Chiudi</button>
                         </div>
                     </div>
                 </Modal>

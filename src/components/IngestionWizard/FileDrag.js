@@ -30,11 +30,11 @@ class FileDrag extends React.Component {
       <section>
         <div className="dropzone">
           <Dropzone onDrop={this.onDrop.bind(this)}>
-            <p>Try dropping some files here, or click to select files to upload.</p>
+            <p>Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</p>
           </Dropzone>
         </div>
         <aside>
-          <h2>Dropped files</h2>
+          <h2>Files caricati</h2>
           <ul>
             {
               this.state.files.map(f => <li>{f.name} - {f.size} bytes</li>)
