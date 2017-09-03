@@ -76,7 +76,7 @@ class Header extends Component {
         
       <ul className="nav navbar-nav d-md-down-none mr-auto">
         <li className="nav-item brand">
-          <a href=""><span>AgID <span className="u-hidden u-md-inline u-lg-inline u-sm-inline">- Agenzia per l'Italia Digitale</span></span></a>
+          <a href=""><span>DAF </span></a>
         </li>
       </ul>
       <ul className="nav navbar-nav d-md-down-none">
