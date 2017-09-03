@@ -17,7 +17,10 @@ class EditBarTop extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.state.title = nextProps.title;
+    this.setState({
+      title : nextProps.title,
+      id : nextProps.id
+    });
   }
 
   handleChange(event) {
@@ -54,9 +57,12 @@ class EditBarTop extends React.Component {
             onChange={this.handleChange}
           />
 
+          {
+          this.props.id &&
           <button type="button" className="btn btn-danger btn-xs mt-20" onClick={() => this.onRemove()}>
               Elimina
           </button>
+          }
           
         </div>
 

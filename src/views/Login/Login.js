@@ -17,7 +17,10 @@ class Login extends Component {
     const { dispatch, selectDataset } = this.props
     dispatch(loginAction(this.email.value, this.pw.value))
     .then(dispatch(addUserOrganization(this.email.value, this.pw.value)))
-    .then(this.props.history.push('/dashboard'))
+    .then(() => {
+      debugger
+      this.props.history.push('/dashboard')
+    })
     .catch((error) => {
           this.setState(setErrorMsg('Invalid username/password.'))
         })

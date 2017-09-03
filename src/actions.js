@@ -165,7 +165,8 @@ export function datasetDetail(datasetname) {
 }
 
 export function loginAction(username, pw) {
-  var url = 'http://localhost:9001/catalog-manager/v1/ckan/user/' + username;
+  console.log("Called action loginAction");
+  var url = serviceurl.apiURLSecurity + '/ckan/user/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   var toencode = username + ':' +pw;
   const encodedString = new Buffer(toencode).toString('base64');
@@ -188,7 +189,8 @@ export function loginAction(username, pw) {
 }
 
 export function loginActionEncoded(username, encodedString) {
-  var url = 'http://localhost:9001/catalog-manager/v1/ckan/user/' + username;
+  console.log("Called action loginActionEncoded");
+  var url = serviceurl.apiURLSecurity + '/ckan/user/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   localStorage.setItem('encodedString', encodedString);
   localStorage.setItem('username', username);
@@ -214,7 +216,8 @@ export function logout() {
 }
 
 export function addUserOrganization(username, pw) {
-  var url = 'http://localhost:9001/catalog-manager/v1/ckan/userOrganizations/' + username;
+  console.log("Called action loginActionEncoded");
+  var url = serviceurl.apiURLSecurity + '/ckan/userOrganizations/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   var toencode = username + ':' +pw;
   const encodedString = new Buffer(toencode).toString('base64');
@@ -235,7 +238,8 @@ export function addUserOrganization(username, pw) {
 }
 
 export function addUserOrganizationEncoded(username, encodedString) {
-  var url = 'http://localhost:9001/catalog-manager/v1/ckan/userOrganizations/' + username;
+  console.log("Called action loginActionEncoded");
+  var url = serviceurl.apiURLSecurity + '/ckan/userOrganizations/' + username;
   //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   localStorage.setItem('encodedString', encodedString);
   localStorage.setItem('username', username);

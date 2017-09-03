@@ -67,28 +67,31 @@ class App extends Component {
               authed: false,
               loading: false
             })
-      }
-    }
+      }    }
   }
   componentWillUnmount () {
     this.removeListener()
   }
   render() {
+    
+    if (this.props.authed)
+      this.state.authed = true;
+
     return this.state.loading === true ? <h1 className="m-20">Loading</h1> : (
  
         <HashRouter history={history}>
         <Switch>
-            <PublicRoute authed={this.props.loggedUser?true:false} path='/' exact component={Home} />
-            <PublicRoute authed={this.props.loggedUser?true:false} path="/login" component={Home} />
-            <PublicRoute authed={this.props.loggedUser?true:false} path="/register" component={Home} />
-            <PrivateRoute authed={this.props.loggedUser?true:false} path="/dashboard" name="Dashboard" component={Full}/>
-            <PrivateRoute authed={this.props.loggedUser?true:false} path="/ingestionwizzard" name="Ingestion" component={Full}/>
-            <PrivateRoute authed={this.props.loggedUser?true:false} path="/ontologies" name="Ontologies" component={Full}/>
-            <PrivateRoute authed={this.props.loggedUser?true:false} path="/dataset" name="Dataset" component={Full}/>
-            <PrivateRoute authed={this.props.loggedUser?true:false} path="/dashboard/manager" name="Dash" component={Full}/>
-            <PrivateRoute authed={this.props.loggedUser?true:false} path="/dashboard/list" name="Dash" component={Full}/>
-            <PrivateRoute authed={this.props.loggedUser?true:false} path="/user_story" name="Storie" component={Full}/>
-            <PrivateRoute authed={this.props.loggedUser?true:false} path="/profile" name="Profile" component={Full}/>
+            <PublicRoute authed={this.state.authed} path='/' exact component={Home} />
+            <PublicRoute authed={this.state.authed} path="/login" component={Home} />
+            <PublicRoute authed={this.state.authed} path="/register" component={Home} />
+            <PrivateRoute authed={this.state.authed} path="/dashboard" name="Dashboard" component={Full}/>
+            <PrivateRoute authed={this.state.authed} path="/ingestionwizzard" name="Ingestion" component={Full}/>
+            <PrivateRoute authed={this.state.authed} path="/ontologies" name="Ontologies" component={Full}/>
+            <PrivateRoute authed={this.state.authed} path="/dataset" name="Dataset" component={Full}/>
+            <PrivateRoute authed={this.state.authed} path="/dashboard/manager" name="Dash" component={Full}/>
+            <PrivateRoute authed={this.state.authed} path="/dashboard/list" name="Dash" component={Full}/>
+            <PrivateRoute authed={this.state.authed} path="/user_story" name="Storie" component={Full}/>
+            <PrivateRoute authed={this.state.authed} path="/profile" name="Profile" component={Full}/>
         </Switch>
         </HashRouter>
    
@@ -102,8 +105,8 @@ App.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { loggedUser } = state.userReducer['obj'] || { }
-  return { loggedUser }
+  const { loggedUser, authed } = state.userReducer['obj'] || { }
+  return { loggedUser, authed }
 }
 
 export default connect(mapStateToProps)(App)

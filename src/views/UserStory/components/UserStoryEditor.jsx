@@ -41,8 +41,33 @@ class UserStoryEditor extends Component {
     }
   }
 
-  save(value) {
-    console.log(value);
+  save(story) {
+    if(!this.state.saving) {
+
+      if (!this.state.dataStory.id)
+        this.state.saving = true;
+
+      const response = userStoryService.save(story);
+
+      response.then((data)=> {
+        this.state.saving = false;
+        
+        if(!this.state.dataStory.id) {
+          this.state.dataStory.id = data.message;
+          this.setState({
+            dataStory: this.state.dataStory
+          })
+        }
+
+        if (this.state.resave ) {
+          this.state.resave = false;
+          this.save(this.state.dataStory);
+        }
+      })
+    } else {
+      this.state.resave = true;
+    }
+
   }
 
   /**
@@ -50,6 +75,9 @@ class UserStoryEditor extends Component {
    */
   onChangeTitle(title){
     this.state.dataStory.title = title;
+    this.setState({
+      dataStory: this.state.dataStory
+    })
     this.save(this.state.dataStory);
   }
 
@@ -65,8 +93,9 @@ class UserStoryEditor extends Component {
    * onRemove
    */
   onRemove() {
-    userStoryService.remove(this.state.dataStory._id);
-    window.location = '#/user_story/list';
+    userStoryService.remove(this.state.dataStory.id).then(() => {
+      window.location = '#/user_story/list';
+    })
   }
 
   /**

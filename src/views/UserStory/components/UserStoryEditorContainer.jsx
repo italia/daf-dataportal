@@ -3,6 +3,7 @@ import Components from 'react';
 
 import SectionTitle from './SectionTitle';
 import TextEditor from './editor/TextEditor';
+import TextWidget from '../../DashboardManager/components/widgets/TextWidget';
 import ProfileView from './editor/ProfileView';
 import GraphEditor from './editor/GraphEditor';
 import ImageEditor from './editor/ImageEditor';
@@ -15,6 +16,12 @@ class UserStoryEditorContainer extends Component {
     };
 
     this.onChange = this.onChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      dataStory : nextProps.dataStory
+    });
   }
 
   onChange = function(key, value) {
@@ -37,6 +44,7 @@ class UserStoryEditorContainer extends Component {
           className="text-editor-title"
           onChange={this.onChange}
           placeholder="Title"
+          disableHtml={true}
         ></TextEditor>
         
         <SectionTitle readonly={this.props.readonly} title="Sottotitolo"/>
