@@ -56,19 +56,13 @@ class Dataset extends Component {
     if (ope == 'RECEIVE_DATASETS')
       return datasets.map(dataset => {
           return(
-          <div className="list-group" key={dataset.name}>
-            <a href="#" className="list-group-item list-group-item-action flex-column align-items-start" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>
-              <div className="d-flex w-100 justify-content-between">
-                <h5 className="mb-1">{dataset.resources[0].name}</h5>
-                <small>{dataset.approval_status}</small>
-              </div>
-              <p className="mb-1">{dataset.resources[0].description}</p>
-              <small><strong>Pubblicato da: </strong>{dataset.organization.title}</small><br/>
-              <small><strong>Data di ultima modifica: </strong>{dataset.organization.created}</small>
-            </a>
-            <br/>
-          </div>
-            
+              <tr key={dataset.name}>
+                  <td>{dataset.resources[0].name}</td>
+                  <td>{dataset.resources[0].description}</td>
+                  <td>{dataset.organization.title}</td>
+                  <td>{dataset.organization.created}</td>
+                  <td><a href="#" className="list-group-item list-group-item-action flex-column align-items-start" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}><i className="icon-book-open icons font-2xl d-block m-t-2"></i></a></td>
+              </tr>
           );
       });
   }
@@ -79,18 +73,44 @@ class Dataset extends Component {
     if (datasets && datasets.length >0)
       return( 
           <div>
-            <h3>Sono stati trovati 10 dataset</h3>
-            {this.renderDatasetList(datasets, ope)}
-            <nav aria-label="Page navigation example">
-              <ul className="pagination">
-                <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                <li className="page-item"><a className="page-link" href="#">1</a></li>
-                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                <li className="page-item"><a className="page-link" href="#">3</a></li>
-                <li className="page-item"><a className="page-link" href="#">Next</a></li>
-              </ul>
-            </nav>
+            <div className="row">
+            <div className="col-lg-12">
+              <div className="card">
+                  <div className="card-header">
+                      <i className="fa fa-align-justify"></i> Sono stati trovati {datasets.length} dataset
+                  </div>
+                  <div className="card-block">
+                      <table className="table table-bordered table-striped table-condensed">
+                          <thead>
+                              <tr>
+                                  <th>Nome</th>
+                                  <th>Descrizione</th>
+                                  <th>Pubblicato da</th>
+                                  <th>Data Pubblicazione</th>
+                                  <th>Dettaglio</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {this.renderDatasetList(datasets, ope)}
+                            </tbody>
+                      </table>
+                      <nav>
+                          <ul className="pagination">
+                              <li className="page-item"><a className="page-link" href="#">Prev</a></li>
+                              <li className="page-item active">
+                                  <a className="page-link" href="#">1</a>
+                              </li>
+                              <li className="page-item"><a className="page-link" href="#">2</a></li>
+                              <li className="page-item"><a className="page-link" href="#">3</a></li>
+                              <li className="page-item"><a className="page-link" href="#">4</a></li>
+                              <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                          </ul>
+                      </nav>
+                  </div>
+              </div>
           </div>
+      </div>
+    </div>
         )
     }
 
@@ -99,26 +119,76 @@ class Dataset extends Component {
     if(ope == 'RECEIVE_DATASET_DETAIL'){
       if(dataset)
         return(
-          <div className="card">
-            <div className="card-header">
-              Dettaglio
+          <div className="row">
+            <div className="col-8">
+              <div className="card">
+                <div className="card-header">
+                  Descrizione
+                </div>
+                <div className="card-block">
+                  <h4 className="card-title">{dataset.resources[0].name}</h4>
+                  <p className="card-text">{dataset.resources[0].description}</p>
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-header">
+                  Risorse
+                </div>
+                <div className="card-block">
+                  <div className="row">
+                    <div className="col-2">
+                    <i className="fa fa-download fa-lg m-t-2"> JSON</i>
+                    </div>
+                    <div className="col-10">
+                      <p><strong>Metadata JSON:</strong> Questa risorsa contiene i metadati relativi ai JSON del dataset come da...</p>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-2">
+                      <i className="fa fa-download fa-lg m-t-2"> CSV</i>
+                    </div>
+                    <div className="col-10">
+                    <p><strong>Metadata CSV:</strong> Questa risorsa contiene i metadati relativi ai CSV del dataset come da...</p>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-2">
+                    <i className="fa fa-download fa-lg m-t-2"> ZIP</i>
+                    </div>
+                    <div className="col-10">
+                      <p><strong>Metadata ZIP:</strong> Questa risorsa contiene i metadati relativi ai ZIP del dataset come da...</p>
+                    </div>
+                  </div>
+                  </div>
+              </div>
             </div>
-            <div className="card-block">
-              <h4 className="card-title">{dataset.resources[0].name}</h4>
-              <p className="card-text">{dataset.resources[0].description}</p>
-              <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                <div className="btn-group mr-2" role="group" aria-label="First group">
-                  <button type="button" className="btn btn-info">JSON</button>
+            <div className="col-4">
+            <div className="card">
+                <div className="card-header">
+                  Informazioni
                 </div>
-                <div className="btn-group mr-2" role="group" aria-label="Second group">
-                  <button type="button" className="btn btn-info">CSV</button>
+                <div className="card-block">
+                  <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
+                  <p className="card-text"><strong>Temi del dataset:</strong> Imprese</p>
+                  <p className="card-text"><strong>Parole chiave del dataset:</strong> assicurazioni autoautomobile autoveicoli circolazione mobilità moto motorizzazione motoveicoli parco circolante revisioni veicoli vettura</p>
+                  <p className="card-text"><strong>Data di rilascio:</strong> 2017-03-07</p>
+                  <p className="card-text"><strong>Identificativo del dataset:</strong> 60a57c60-758c-4bd9-8d87-c286b797c289</p>
+                  <p className="card-text"><strong>Data di ultima modifica:</strong> Lunedì 17 Luglio 2017</p>
+                  <p className="card-text"><strong>Lingua del dataset:</strong> Italian</p>
                 </div>
-                <div className="btn-group" role="group" aria-label="Third group">
-                  <button type="button" className="btn btn-info">ZIP</button>
+              </div>
+              <div className="card">
+              <div className="card-header">
+                  Rifrimenti
+                </div>
+                <div className="card-block">
+                  <p className="card-text"><strong>Email Contatto:</strong>  mail@mail.it</p>
+                  <p className="card-text"><strong>Home page: :</strong> http://dati.mit.gov.it/catalog/dataset</p>
+                  <p className="card-text"><strong>URL AP:</strong> http://dati.mit.gov.it/catalog/api/3/a...</p>
                 </div>
               </div>
             </div>
-          </div>
+        </div>
         );
     }
   }
