@@ -128,7 +128,6 @@ class DashboardView extends Component {
   render() {
     return (
     <Container>
-      <Header title="Anteprima Dashboard" />
       <ViewBar title={this.state.title} id={this.state.id}></ViewBar>
       <Dashboard
         frameComponent={CustomFrame}
