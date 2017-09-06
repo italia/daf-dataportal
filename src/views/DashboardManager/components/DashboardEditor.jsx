@@ -115,9 +115,11 @@ class DashboardEditor extends Component {
       let dashboard = config;
       if (dashboard.widgets)
         dashboard.widgets = JSON.parse(dashboard.widgets);
-  
+      else dashboard.widgets = {}
+
       if (dashboard.layout)
        dashboard.layout = JSON.parse(dashboard.layout);
+      else dashboard.layout = { rows: [] }
 
       this.setState({
         dashboard: dashboard
@@ -411,7 +413,6 @@ class DashboardEditor extends Component {
   render() {
     return (
     <Container>
-      <Header title="Modifica Dashboard" />
       <EditBarTop 
           dashboard={this.state.dashboard}
 
