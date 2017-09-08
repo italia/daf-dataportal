@@ -2,8 +2,7 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 
 export default class WidgetService {
     
-    baseUrl = serviceurl.apiURL_mock + "widgets";
-    urlIframe = serviceurl.apiURLDatiGov + serviceurl.apiURL_dati_gov + "/dashboard/iframes?apikey=test";
+    urlIframe = serviceurl.apiURLDatiGov + "/dashboard/iframes?apikey=test";
 
     constructor() {
 

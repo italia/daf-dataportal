@@ -3,9 +3,8 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 export default class UserStoryService {
     
 
-    urlIframe = serviceurl.apiURLDatiGov + "/dati-gov/v1/dashboard/iframes?apikey=test";
-    //baseUrl = "http://localhost:3000/mock/" + "user_story";
-    baseUrl = serviceurl.apiURLDatiGov + serviceurl.apiURL_dati_gov + "/user-stories";
+    urlIframe = serviceurl.apiURLDatiGov + "/dashboard/iframes?apikey=test";
+    baseUrl = serviceurl.apiURLDatiGov  + "/user-stories";
 
     constructor() {
 
@@ -18,6 +17,8 @@ export default class UserStoryService {
 
     async list() {
         const response = await fetch( this.baseUrl );
+        //mock
+        //const response = await fetch( this.baseUrl + "/list");
         return response.json();
     }
 
