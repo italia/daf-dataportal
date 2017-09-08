@@ -32,14 +32,14 @@ class Full extends Component {
             <Breadcrumb />
             <div className="container-fluid" style={divStyle}>
               <Switch>
-                <Route path="/dashboard" name="Dashboard" exact component={Dashboard}/>
+                <Route path="/home" name="Dashboard" exact component={Dashboard}/>
                 <Route path="/ingestionwizzard" name="Forms" component={IngestionWizard} />
                 <Route path="/ontologies" name="Ontologies" component={Ontologies} />
                 <Route path="/dashboard" name="Dashboard manager" component={DashboardManager} />
                 <Route path="/user_story" name="User Story" component={UserStory} />
                 <Route path="/dataset" name="Dataset" component={Dataset} />
                 <Route path="/profile" name="Profile" component={Profile} />
-                <Redirect from="/" to="/dashboard"/>
+                <Redirect from="/" to="/home"/>
               </Switch>
             </div>
           </main>
