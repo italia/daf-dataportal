@@ -84,7 +84,7 @@ class GraphEditor extends Component {
     
     const iframeStyle = {
       width: '100%',
-      height: '300px',
+      height: '500px',
       border: '0'
     }
 

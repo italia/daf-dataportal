@@ -43,9 +43,76 @@ class EditBarTop extends React.Component {
 
   render = function(){
 
+    const style = {
+      "borderBottom": "1px solid #e4e5e6"
+    }
+
     return (
+          <div>
+          {this.state.dashboard.id &&
+          (this.state.dashboard.status==0) &&
+                <div className="row">
+                <div className="alert alert-warning" role="alert">
+                  Attenzione la dashboard è in bozza, per pubblicarla cliccare sul tasto "Pubblica" qui in basso
+                </div>
+                </div>
+              }
+              {
+                (this.state.dashboard.status==1) &&
+                <div className="row">
+                  <div className="alert alert-primary" role="alert">
+                    Dashboard correttamente pubblicata
+                  </div>
+                </div>
+              }
+          <div className="row" style={style}>
+            <div className="col-sm-7">
+              <h3 className="card-title">{this.state.dashboard.title}</h3>
+            </div>
+            <div className="col-sm-7">
+              <h7 className="card-title">Sottotitolo</h7>
+            </div>
+            <div className="col-sm-5 hidden-sm-down">
+              <div className="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">
+                <div className="btn-group mr-1" data-toggle="buttons" aria-label="First group">
+                  <Link role="button" to="/dashboard/list">
+                    <button type="button" className="btn btn-link float-right" title="Torna alle mie Dashboard">
+                      <i className="fa fa-navicon fa-lg m-t-2"></i>
+                    </button>
+                  </Link>
+                  {this.state.dashboard.id &&
+                  <button type="button" className="btn btn-link float-right" onClick={() => this.onRemove()}  title="Elimina">
+                    <i className="fa fa-trash fa-lg m-t-2"></i>
+                  </button>
+                  }
+
+                  {
+                   this.state.dashboard.id &&
+                    <Link role="button" to={"/dashboard/list/" + this.state.dashboard.id }>
+                      <button type="button" className="btn btn-link float-right" title="Anteprima">
+                        <i className="fa fa-file-image-o fa-lg m-t-2"></i>
+                      </button>
+                    </Link>
+                  }
+                  {
+                   (!this.state.dashboard.status || this.state.dashboard.status==false) &&
+                    <button type="button" className="btn btn-link float-right" onClick={() => this.pubblica()} title="Pubblica">
+                    <i className="fa fa-check-square-o fa-lg m-t-2"></i>
+                    </button>
+                  }
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    );
+  }
+};
+
+/*
       <div className="box text-right">
-        <div className="pull-left text-left">
+       <div className="pull-left text-left">
           <input 
             className="form-control"
             value={this.state.dashboard.title}
@@ -102,14 +169,12 @@ class EditBarTop extends React.Component {
               /* this.state.dashboard.status && this.state.dashboard.status==true &&
               <button type="button" className="btn btn-danger btn-xs" onClick={() => this.pubblica()}>
                   Spubblica
-              </button> */
+              </button> 
             }
           </div>
         }
       </div>
+*/
 
-    );
-  }
-};
 
 export default EditBarTop;
