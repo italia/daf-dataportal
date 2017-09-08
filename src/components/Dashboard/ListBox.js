@@ -8,7 +8,7 @@ export default class ListBox extends Component {
         this.state = {
             title: "title",
             list: [],
-            noResult: "No results found",
+            noResult: "Nessun risultato",
             ...props
         };
 
