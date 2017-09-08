@@ -32,10 +32,10 @@ class Sidebar extends Component {
               <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-puzzle"></i> Dataset</a>
               <ul className="nav-dropdown-items">
                 <li className="nav-item">
-                  <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Carica</NavLink>
+                  <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to={'/components/social-buttons'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Monitora</NavLink>
+                  <NavLink to={'/components/social-buttons'} className="nav-link" activeClassName="active"> Monitora</NavLink>
                 </li>
               </ul>
             </li>
@@ -43,10 +43,10 @@ class Sidebar extends Component {
               <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
               <ul className="nav-dropdown-items">
                 <li className="nav-item">
-                  <NavLink to={'/ontologies'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Ontologie</NavLink>
+                  <NavLink to={'/ontologies'} className="nav-link" activeClassName="active"> Ontologie</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to={'/icons/simple-line-icons'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Vocabolari</NavLink>
+                  <NavLink to={'/icons/simple-line-icons'} className="nav-link" activeClassName="active"> Vocabolari</NavLink>
                 </li>
               </ul>
             </li>

@@ -1,3 +1,5 @@
+/* CUSTOM SIDEBAR */
+
 .sidebar .nav .nav-item .nav-link {
     color: #304047;
 }
@@ -18,4 +20,13 @@
 
 .sidebar .nav .nav-title {
     color: #304047;
+}
+
+.sidebar .nav .nav-item.nav-dropdown.open, .sidebar .nav .nav-item.nav-dropdown.open .nav-link {
+    background: initial;
+    color: #304047;
+}
+
+.sidebar .nav .nav-item ul li {
+    padding-left: 40px;
 }
