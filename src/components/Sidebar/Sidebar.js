@@ -20,10 +20,10 @@ class Sidebar extends Component {
     return (
 
       <div className="sidebar">
-        <nav className="sidebar-nav">
+        <nav className="sidebar-nav mt-40">
           <ul className="nav">
             <li className="nav-item">
-              <NavLink to={'/dashboard'} className="nav-link" activeClassName="active"><i className="icon-speedometer"></i> Riepiligo</NavLink>
+              <NavLink to={'/home'} className="nav-link" activeClassName="active"><i className="icon-home"></i> Home</NavLink>
             </li>
             <li className="nav-title">
               Azioni

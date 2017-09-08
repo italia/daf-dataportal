@@ -1,0 +1,21 @@
+.sidebar .nav .nav-item .nav-link {
+    color: #304047;
+}
+
+.sidebar {
+    background: white;
+    border-right: 1px solid #cfd8dc;
+}
+
+.sidebar .nav .nav-item .nav-link.active {
+    color: #304047;
+    background: #eceff1;
+}
+
+.sidebar .nav .nav-item .nav-link.active i {
+    color: #304047;
+}
+
+.sidebar .nav .nav-title {
+    color: #304047;
+}
