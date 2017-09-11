@@ -27,7 +27,7 @@ class TextEditor extends Component {
   
   handleChange = function(value) {
     if (this.props.disableHtml)
-      value = $(value).text();
+      value = $('<span>' + value + '</span>').text();
 
     this.setState({text: value});
     this.props.onChange(this.props.keyValue, value)

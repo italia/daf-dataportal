@@ -24,7 +24,6 @@ class UserStoryEditor extends Component {
 
     //bind functions
     this.save = this.save.bind(this);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onPublish = this.onPublish.bind(this);
     this.onRemove = this.onRemove.bind(this);
     
@@ -42,43 +41,17 @@ class UserStoryEditor extends Component {
   }
 
   save(story) {
-    if(!this.state.saving) {
 
-      if (!this.state.dataStory.id)
-        this.state.saving = true;
-
-      const response = userStoryService.save(story);
-
-      response.then((data)=> {
-        this.state.saving = false;
-        
-        if(!this.state.dataStory.id) {
-          this.state.dataStory.id = data.message;
-          this.setState({
-            dataStory: this.state.dataStory
-          })
-        }
-
-        if (this.state.resave ) {
-          this.state.resave = false;
-          this.save(this.state.dataStory);
-        }
+      this.setState({
+        saving: true
+      });
+      
+      userStoryService.save(story).then((data)=> {
+        this.setState({
+          saving: false
+        })
       })
-    } else {
-      this.state.resave = true;
-    }
 
-  }
-
-  /**
-   * onChangeTitle
-   */
-  onChangeTitle(title){
-    this.state.dataStory.title = title;
-    this.setState({
-      dataStory: this.state.dataStory
-    })
-    this.save(this.state.dataStory);
   }
 
   /**
@@ -110,11 +83,11 @@ class UserStoryEditor extends Component {
         <div>
           <EditBarTop 
               title={this.state.dataStory.title}
-              onChange={this.onChangeTitle}
               onPublish={this.onPublish}
               id={this.state.dataStory.id}
-              published={this.state.dataStory.published}
+              status={this.state.dataStory.status}
               onRemove={this.onRemove}
+              saving={this.state.saving}
           ></EditBarTop>
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory} 

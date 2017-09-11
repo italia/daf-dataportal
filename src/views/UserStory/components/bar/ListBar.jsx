@@ -56,7 +56,7 @@ class ViewBar extends React.Component {
     });
 
   }
-
+  
   render = function(){
 
     return (
@@ -91,7 +91,7 @@ class ViewBar extends React.Component {
             <div className="col-10">
               <div className="input-prepend input-group mb-20">
                   <i className="fa fa-search input-group-addon transparent-frame"></i>
-                  <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" placeholder="Filtra la lista ..."/>
+                  <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" onChange={this.props.onChange} placeholder="Filtra la lista ..."/>
               </div>
             </div>
             <div className="col-md-2">

@@ -22,6 +22,8 @@ class UserStoryList extends Component {
     this.state={};
 
     this.load();
+
+    this.filter = this.filter.bind(this);
   }
   
   /**
@@ -34,12 +36,22 @@ class UserStoryList extends Component {
     
     let response = userStoryService.list();
     response.then((list) => {
+      this.originalUserStories = list;
       this.setState({
         userStories: list
       });
     });
   }
 
+  /**
+   * Execute filter
+   */
+  filter = (e) => {
+    let key = e.target.value;
+    this.setState({
+      userStories: this.originalUserStories.filter((item) => item.title.indexOf(key) != -1)
+    });
+  }
 
   /**
    * Render Function
@@ -49,7 +61,7 @@ class UserStoryList extends Component {
     <Container>
       <Header title="Le Mie Storie" />
       
-      <ListBar history={this.props.history} ></ListBar>
+      <ListBar onChange={this.filter} history={this.props.history} ></ListBar>
 
       <div className="row">
         {
@@ -77,6 +89,13 @@ class UserStoryList extends Component {
             
             )
           })
+        }
+
+        {
+          this.state.userStories && this.state.userStories.length == 0 &&
+          <div>
+            Nessuna storia trovata
+          </div>
         }
       </div>
     </Container>
