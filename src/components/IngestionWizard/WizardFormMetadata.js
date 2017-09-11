@@ -69,17 +69,24 @@ const renderField = ({ input, label, type, value = '', readonly, meta: { touched
     </div>
   </div>
 )
+/*
+name={`${test}.private`}
+type="text"
+component={renderYesNoSelector}
+label="Privato"
+value={`${test}.private`}*/
 
-const renderYesNoSelector = ({ input, meta: { touched, error } }) => (
+
+const renderYesNoSelector = ({ input, type, label, value, meta: { touched, error } }) => (
   <div className="form-group row">
-    <label className="col-md-3 form-control-label">Obbligatorio?</label>
+    <label className="col-md-3 form-control-label">{label}</label>
    <div className="col-md-9">
     <select className="form-control" {...input}>
       <option value="0" defaultValue key='false'>No</option>
-      <option value="1" key="1">Yes</option>
+      <option value="1" key="1">Si</option>
     </select>
     {touched && error && <span>{error}</span>}
-</div>
+  </div>
   </div>
 );
 
@@ -291,78 +298,89 @@ class WizardFormMetadata extends Component {
             <button type="button" className="btn btn-primary" onClick={reset}>Elimina</button>
           </div>
         </div>
+        <div className="form-group row justify-content-center">
+          <div className="col-6">
+            <Field
+              name={'private'}
+              type="text"
+              component={renderYesNoSelector}
+              label="Privato"
+            />
+          </div>
+          <div className="col-4"></div>
+        </div>
       </div>
       :
       <div className="row" key={index}>
         <div className="col-md-6">
-      <div className="form-group">
-      <div className="card">
-        <div className="card-header">
-          <strong>Colonna #{index}</strong>
+          <div className="form-group">
+          <div className="card">
+            <div className="card-header">
+              <strong>Colonna #{index}</strong>
+            </div>
+            <div className="card-block">
+            <Field
+              name={`${test}.nome`}
+              type="text"
+              component={renderField}
+              label="Nome Campo"
+              value={`${test}.nome`}
+            />
+            <Field
+              name={`${test}.tipo`}
+              type="text"
+              component={renderField}
+              label="Tipo"
+              value={`${test}.tipo`}
+            />
+            <Field
+              name={`${test}.concetto`}
+              type="text"
+              component={TestSelect2}
+              label="Concetto"
+              value={`${test}.concetto`}
+            />
+            <hr className="my-4"/>
+            <div className="form-group row">
+              <h6>Metadata  Colonna #{index}</h6>
+            </div>
+            <Field
+              name={`${test}.desc`}
+              type="text"
+              component={renderFieldMeta}
+              label="Descrizione"
+              value={`${test}.desc`}
+            />
+            <Field
+              name={`${test}.required`}
+              type="text"
+              component={renderYesNoSelector}
+              label="Obbligatorio"
+              value={`${test}.required`}
+            />
+            <Field
+              name={`${test}.field_type`}
+              type="text"
+              component={renderFieldType}
+              label="Tipo Colonna"
+              value={`${test}.field_type`}
+            />
+            <Field
+              name={`${test}.cat`}
+              type="text"
+              component={renderFieldMeta}
+              label="Categoria"
+              value={`${test}.cat`}
+            />
+            <div className="col-md-9 offset-md-9">
+              <button type="button" onClick={() => fields.remove(index)} className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off">
+                Rimuovi
+              </button>
+            </div>
+          </div>
+          </div>
+          </div>
         </div>
-        <div className="card-block">
-        <Field
-          name={`${test}.nome`}
-          type="text"
-          component={renderField}
-          label="Nome Campo"
-          value={`${test}.nome`}
-        />
-        <Field
-          name={`${test}.tipo`}
-          type="text"
-          component={renderField}
-          label="Tipo"
-          value={`${test}.tipo`}
-        />
-        <Field
-          name={`${test}.concetto`}
-          type="text"
-          component={TestSelect2}
-          label="Concetto"
-          value={`${test}.concetto`}
-        />
-        <hr className="my-4"/>
-        <div className="form-group row">
-          <h6>Metadata  Colonna #{index}</h6>
-        </div>
-        <Field
-          name={`${test}.desc`}
-          type="text"
-          component={renderFieldMeta}
-          label="Descrizione"
-          value={`${test}.desc`}
-        />
-        <Field
-          name={`${test}.required`}
-          type="text"
-          component={renderYesNoSelector}
-          label="Obbligatorio"
-          value={`${test}.required`}
-        />
-        <Field
-          name={`${test}.field_type`}
-          type="text"
-          component={renderFieldType}
-          label="Tipo Colonna"
-          value={`${test}.field_type`}
-        />
-        <Field
-          name={`${test}.cat`}
-          type="text"
-          component={renderFieldMeta}
-          label="Categoria"
-          value={`${test}.cat`}
-        />
-        <div className="col-md-9 offset-md-9">
-          <button type="button" onClick={() => fields.remove(index)} className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off">
-            Rimuovi
-          </button>
-        </div>
-      </div>
-      </div>
-      </div>
-      </div>
       </div>
       )}
     </div>
@@ -432,8 +450,8 @@ class WizardFormMetadata extends Component {
         </div>
       </div>
       <div className="form-group row">
-            <div className="col-md-11 offset-md-11">
-              <button type="submit" className="btn btn-primary">Avanti</button>
+            <div className="col-12">
+              <button type="submit" className="btn btn-primary float-right">Avanti</button>
             </div>
       </div>
     </form>

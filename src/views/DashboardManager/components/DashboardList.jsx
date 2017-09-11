@@ -103,12 +103,6 @@ class DashboardList extends Component {
    * Render Function
    */
   render() {
-    
-    const width = 500;
-    const searchStyle = {
-      width: '50%',
-      border: '0'
-    }
 
     const modalStyle = {
       display: 'none'
@@ -213,9 +207,9 @@ class DashboardList extends Component {
       <div className="container" ref="auto">
       <div className="row">
       <div className="col-10">
-        <div className="input-prepend input-group">
-            <i className="fa fa-search"></i>
-            <input id="prependedInput" style={searchStyle} className="form-control" size="25" type="text" placeholder="Filtra la lista ..."/>
+        <div className="input-prepend input-group mb-20">
+            <i className="fa fa-search input-group-addon transparent-frame"></i>
+            <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" placeholder="Filtra la lista ..."/>
         </div>
       </div>
         <div className="col-md-2">

@@ -97,7 +97,7 @@ function processInputFileMetadata(files, callback) {
     text = text.replace(/\r?\n?[^\r\n]*$/, "");
     try {
       var json = JSON.parse(text);
-      alert(JSON.stringify(json));
+      //alert(JSON.stringify(json));
       callback(finalizeOpsMeta(json))
     } catch (err) {
       var objCsv = Papa.parse(text, { header: true, quoteChar: '"', dynamicTyping: true,
