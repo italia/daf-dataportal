@@ -104,7 +104,7 @@ class UserStoryEditor extends Component {
   render() {
     return (
     <Container>
-      <Header />
+      <Header title="La Tua Storia" />
       {
         this.state.dataStory &&
         <div>

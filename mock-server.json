@@ -49,36 +49,43 @@
     
     "/dati-gov/v1/dashboards": {
         "get": [
-                    {
-                        "id" : 1,
-                        "title": "user-stories 1",
-                        "status": true
-                    },
-                    {
-                        "id" : 2,
-                        "title": "Dashboard 2"
-                    },
-                    {
-                        "id" : 3,
-                        "title": "Dashboard 3"
-                    }
-                ]
+                {
+                    "id" : 1,
+                    "title": "Dashboard 1"
+                },
+                {
+                    "id" : 2,
+                    "title": "Dashboard 2",
+                    "status": 1
+                },
+                {
+                    "id" : 3,
+                    "title": "Dashboard 3"
+                },
+                {
+                    "id" : 4,
+                    "title": "Dashboard 4"
+                }
+            ],
+        "post" : {
+            "message": 1
+        }
         
     },
     
     "/dati-gov/v1/dashboards/1": {
         "get": {
-            "_id" : 1,
+            "id" : 1,
             "title": "Dashboard 1",
-            "status": true,
-            "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
-            "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 1</p>\\n\"},\"type\":\"TextWidget\"}}"
-         }         
+            "layout":"{\"rows\":[]}",
+            "widgets": "{}"
+        }         
     },
     
     "/dati-gov/v1/dashboards/2": {
         "get": {
-            "_id" : 2,
+            "id" : 2,
+            "status": 1,
             "title": "Dashboard 2",
             "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
             "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 2</p>\\n\"},\"type\":\"TextWidget\"}}"
@@ -87,33 +94,32 @@
     
     "/dati-gov/v1/dashboards/3": {
         "get": {
-            "_id" : 3,
+            "id" : 3,
             "title": "Dashboard 3",
-            "status": false,
+            "status": 0,
             "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
             "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 3</p>\\n\"},\"type\":\"TextWidget\"}}"
          }    
     },
+
+    "/dati-gov/v1/dashboards/4": {
+        "get": {
+            "id" : 4,
+            "title": "Dashboard 4",
+            "status": 0,
+            "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+            "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 4</p>\\n\"},\"type\":\"TextWidget\"}}"
+         }    
+    },
     
     "/dati-gov/v1/user-stories": {
+        "post" : {
+            "message": 1
+        },
         "get": [
             {
                 "id":1,
-                "title": "Storia 1",
-                "published": true,
-                "subtitle": "Storia di prova",
-                "graph": {
-                    "title": "",
-                    "props": {
-                        "url": null
-                    }
-                },
-                "text": "Contenuto della storia",
-                "image": {
-                    "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
-                    "caption": "Testo Immagine"
-                },
-                "footer": "Questo è il footer"
+                "title": "Storia 1"
             },
             {
                 "id":2,
@@ -157,21 +163,7 @@
     "/dati-gov/v1/user-stories/1": {
         "get": {
             "id":1,
-            "title": "Storia 1",
-            "published": true,
-            "subtitle": "Storia di prova",
-            "graph": {
-                "title": "Sp ID Overalls, Filtered by Year 2017",
-                "props": {
-                    "url": "http://91.206.129.158:8080/public/question/b9f1e87b-5cd0-46e0-b816-0ad7cefd2ef6"
-                }
-            },
-            "text": "Contenuto della storia",
-            "image": {
-                "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
-                "caption": "Testo Immagine"
-            },
-            "footer": "Questo è il footer"
+            "title": "Storia 1"
         }
     },
     

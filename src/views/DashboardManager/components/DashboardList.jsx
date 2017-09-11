@@ -109,13 +109,10 @@ class DashboardList extends Component {
     }
 
     var elem = [];
-    for(var i = 0; i < this.state.dashboards.length; i+=3) {
-      var dash = this.state.dashboards[i];
-      var dash2 = this.state.dashboards[i + 1];
-      var dash3 = this.state.dashboards[i + 2];
+    for(var i = 0; i < this.state.dashboards.length; i++) {
+      let dash = this.state.dashboards[i];
       elem.push(
-        <div className="row" key={i}>
-        <div className="col-sm-4">
+        <div className="col-sm-4" key={i}>
           <div className="card text-center">
               <div className="card-body">
               <Link to={"/dashboard/list/" + dash.id}>
@@ -134,45 +131,6 @@ class DashboardList extends Component {
             </div>
           </div>
         </div>
-        {dash2 &&
-        <div className="col-sm-4">
-          <div className="card text-center">
-            <div className="card-body">
-              <Link to={"/dashboard/list/" + dash2.id}><h4 className="card-title">{dash2.title}</h4></Link>
-              <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
-              <img className="card-img-bottom" src="../../img/logo.png" alt="Card image cap"/>
-              {
-              dash2.status==true &&
-              <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
-              }
-              {
-                !dash2.status &&
-                <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
-              }
-            </div>
-          </div>
-        </div>
-        }
-        {dash3 &&
-        <div className="col-sm-4">
-          <div className="card text-center">
-            <div className="card-body">
-              <Link to={"/dashboard/list/" + dash3.id}><h4 className="card-title">{dash3.title}</h4></Link>
-              <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
-              <img className="card-img-bottom" src="../../img/logo.png" alt="Card image cap"/>
-              {
-              dash3.status==true &&
-              <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
-              }
-              {
-                !dash3.status &&
-                <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
-              }
-            </div>
-          </div>
-        </div>
-        }
-      </div>
       );
     }
 
@@ -205,20 +163,24 @@ class DashboardList extends Component {
         </form>
       </Modal>
       <div className="container" ref="auto">
-      <div className="row">
-      <div className="col-10">
-        <div className="input-prepend input-group mb-20">
-            <i className="fa fa-search input-group-addon transparent-frame"></i>
-            <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" placeholder="Filtra la lista ..."/>
+        <div className="row">
+          <div className="col-10">
+            <div className="input-prepend input-group mb-20">
+                <i className="fa fa-search input-group-addon transparent-frame"></i>
+                <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" placeholder="Filtra la lista ..."/>
+            </div>
+          </div>
+          <div className="col-md-2">
+            <button type="button" className="btn btn-link float-right" title="Aggiungi Dashboard" onClick={this.openModal}>
+              <i className="fa fa-plus-circle fa-lg m-t-2"></i>
+            </button>
+          </div>
+        </div> 
+      
+        <div className="row">
+          {elem}
         </div>
-      </div>
-        <div className="col-md-2">
-          <button type="button" className="btn btn-link float-right" title="Aggiungi Dashboard" onClick={this.openModal}>
-            <i className="fa fa-plus-circle fa-lg m-t-2"></i>
-          </button>
-        </div>
-      </div> 
-      {elem}
+      
       </div>
      
     </Container>

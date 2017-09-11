@@ -15,17 +15,16 @@ class ViewBar extends React.Component {
         <h2 className="pull-left">{this.props.title}</h2> 
 */}
 
+
         <Link role="button" to="/user_story/list">
-          <button type="button" className="btn btn-default btn-xs" >
-            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              Torna a Le Mie Storie
+          <button type="button" className="btn btn-link btn-xs" >
+              <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
           </button>
         </Link>
 
         <Link role="button" to={"/user_story/list/" + this.props.id + "/edit"}>
-          <button type="button" className="btn btn-primary btn-xs">
-            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              Modifica
+          <button type="button" className="btn btn-link btn-xs">
+              <i className="fa fa-pencil fa-lg m-t-2"></i> 
           </button>
         </Link>
 

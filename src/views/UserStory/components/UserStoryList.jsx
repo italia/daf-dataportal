@@ -48,34 +48,37 @@ class UserStoryList extends Component {
     return (
     <Container>
       <Header title="Le Mie Storie" />
-      <div>
+      
+      <ListBar history={this.props.history} ></ListBar>
+
+      <div className="row">
         {
           this.state.userStories.map((story, index) => {
             return (
-              <div key={index} className="user-story-card">
-                <Link to={"/user_story/list/" + story.id}>
-                  <h2 className="pull-left">
-                    {story.title}
-                  </h2>
-                </Link>
-
-                {
-                  story.published==true &&
-                  <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
-                }
-                {
-                  !story.published &&
-                  <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
-                }
-
-                <div className="clearfix"></div>
+              <div className="col-sm-4" key={index}>
+                <div className="card text-center">
+                    <div className="card-body">
+                    <Link to={"/user_story/list/" + story.id}>
+                      <h4 className="card-title">{story.title}</h4>
+                    </Link>
+                    <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
+                    <img className="card-img-bottom" src="../../../img/logo.png" alt="Card image cap"/>
+                    {
+                    story.status==true &&
+                    <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
+                    }
+                    {
+                      !story.status &&
+                      <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
+                    }
+                  </div>
+                </div>
               </div>
             
             )
           })
         }
       </div>
-      <ListBar></ListBar>
     </Container>
     );
   }
