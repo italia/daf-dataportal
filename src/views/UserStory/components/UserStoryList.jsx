@@ -47,9 +47,9 @@ class UserStoryList extends Component {
    * Execute filter
    */
   filter = (e) => {
-    let key = e.target.value;
+    let key = e.target.value.toLowerCase();
     this.setState({
-      userStories: this.originalUserStories.filter((item) => item.title.indexOf(key) != -1)
+      userStories: this.originalUserStories.filter((item) => item.title.toLowerCase().indexOf(key) != -1)
     });
   }
 
@@ -90,15 +90,16 @@ class UserStoryList extends Component {
             )
           })
         }
-
-        {
-          this.state.userStories && this.state.userStories.length == 0 &&
-          <div>
-            Nessuna storia trovata
-          </div>
-        }
       </div>
+
+      {
+        this.state.userStories && this.state.userStories.length == 0 &&
+        <p>
+          <b>Nessuna storia trovata</b>
+        </p>
+      }
     </Container>
+  
     );
   }
 
