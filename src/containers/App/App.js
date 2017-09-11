@@ -30,7 +30,7 @@ function PublicRoute ({component: Component, authed, ...rest}) {
       {...rest}
       render={(props) => authed === false
         ? <Component {...props} />
-        : <Redirect to='/dashboard' />}
+        : <Redirect to='/home' />}
     />
   )
 }
@@ -84,6 +84,7 @@ class App extends Component {
             <PublicRoute authed={this.state.authed} path='/' exact component={Home} />
             <PublicRoute authed={this.state.authed} path="/login" component={Home} />
             <PublicRoute authed={this.state.authed} path="/register" component={Home} />
+            <PrivateRoute authed={this.state.authed} path="/home" name="Dashboard" component={Full}/>
             <PrivateRoute authed={this.state.authed} path="/dashboard" name="Dashboard" component={Full}/>
             <PrivateRoute authed={this.state.authed} path="/ingestionwizzard" name="Ingestion" component={Full}/>
             <PrivateRoute authed={this.state.authed} path="/ontologies" name="Ontologies" component={Full}/>

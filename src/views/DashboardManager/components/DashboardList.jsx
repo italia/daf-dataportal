@@ -68,7 +68,6 @@ class DashboardList extends Component {
   */
   handleSave = (e) => {
       e.preventDefault()
-      console.log("this.subtitle.value: " + this.subtitle.value);
       //save data
       let layout = { rows: [] };
       let widgets = {};
