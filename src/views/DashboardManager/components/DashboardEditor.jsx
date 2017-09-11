@@ -277,7 +277,6 @@ class DashboardEditor extends Component {
   * Save Layout and widgets
   */
   save = () => {
-
     //clean layout from control button
     let layoutOld = JSON.parse(JSON.stringify(this.state.layout));
     let layout = {};
@@ -316,17 +315,12 @@ class DashboardEditor extends Component {
     request.layout = JSON.stringify(layout);
     request.widgets = JSON.stringify(widgets);
     const response = dashboardService.save(request);
-
+    this.setState({saving: true});
     response.then((data)=> {
-      if (!this.state.dashboard.id ) {
-        this.state.dashboard.id = data.message;
-        this.setState({
-          dashboard: this.state.dashboard
-        })
-        
-        this.state.saving = false;
-        this.save();
-      }
+      this.setState({
+        dashboard: this.state.dashboard,
+        saving: false
+      })
     })
   }
 
@@ -382,12 +376,7 @@ class DashboardEditor extends Component {
    */
   onChangeTitle(title){
     this.state.dashboard.title = title;
-    
-    if(!this.state.saving)
-      this.save();
-    
-    if (!this.state.dashboard.id)
-      this.state.saving = true;
+    this.save();
   }
 
   /**
@@ -415,7 +404,7 @@ class DashboardEditor extends Component {
     <Container>
       <EditBarTop 
           dashboard={this.state.dashboard}
-
+          saving={this.state.saving}
           onChange={this.onChangeTitle}
           onPublish={this.onPublish}
           onRemove={this.onRemove}

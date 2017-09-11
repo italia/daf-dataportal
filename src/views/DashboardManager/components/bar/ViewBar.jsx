@@ -23,7 +23,7 @@ class ViewBar extends React.Component {
               <Link role="button" to="/dashboard/list">
                 <button type="button" className="btn btn-link btn-xs" title="Torna alle mie Dashboard">
                   <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                  <i className="fa fa-navicon fa-lg m-t-2"></i>
+                  <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
                 </button>
               </Link>
 
