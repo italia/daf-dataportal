@@ -46,12 +46,16 @@
     "superagent-promise": "^1.1.0"
   },
   "devDependencies": {
+    "concurrently": "^3.5.0",
+    "mock-json-server": "0.0.4",
     "react-scripts": "1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "mock": "concurrently \"npm run start-mock-server\" \"npm start\" ",
+    "start-mock-server": "mock-json-server mock-server.json --port=3001"
   }
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Header = () => {
+const Header = (props) => {
   return (
     <div className="top_nav">
         <div className="nav_menu">
             <nav className="dashboardHeader">
-                <h2>La Tua Storia</h2>
+                <h2>{props.title}</h2>
             </nav>
         </div>
     </div>

@@ -1,0 +1,208 @@
+{
+    "/catalog-manager/v1/ckan/user/test": {
+        "get": {
+            "data": {
+                "name": "test",
+                "email": "test@gmail.it",
+                "fullname": "My Name",
+                "about": "about me",
+                "password": ""
+               }
+        }
+    },
+    "/catalog-manager/v1/ckan/userOrganizations/test": {
+        "get": {
+            "data": [
+                {
+                  "name": "test2-org",
+                  "image_url": "http://dati.trentino.it/images/logo.png",
+                  "email": null,
+                  "state": "active",
+                  "description": "Prova organizzazione",
+                  "users": null,
+                  "is_organization": true,
+                  "id": "232cad97-ecf2-447d-9656-63899023887t",
+                  "title": "Organizzazione di prova",
+                  "type": null,
+                  "revision_id": "e9b313bb-fb61-4991-90f4-bdb308f024cf",
+                  "approval_status": "approved",
+                  "created": "2017-08-29T16:29:54.755873"
+                },
+                {
+                  "name": "test3-org",
+                  "image_url": "http://dati.trentino.it/images/logo.png",
+                  "email": null,
+                  "state": "active",
+                  "description": "Prova organizzazione2",
+                  "users": null,
+                  "is_organization": true,
+                  "id": "232cad97-ecf2-447d-9656-63899023887p",
+                  "title": "Organizzazione di prova",
+                  "type": null,
+                  "revision_id": "4fe18408-9d08-413e-87bd-578013b80dd3",
+                  "approval_status": "approved",
+                  "created": "2017-08-30T10:25:04.554223"
+                }
+               ]
+        }
+    },
+    
+    "/dati-gov/v1/dashboards": {
+        "get": [
+                {
+                    "id" : 1,
+                    "title": "Dashboard 1"
+                },
+                {
+                    "id" : 2,
+                    "title": "Dashboard 2",
+                    "status": 1
+                },
+                {
+                    "id" : 3,
+                    "title": "Dashboard 3"
+                },
+                {
+                    "id" : 4,
+                    "title": "Dashboard 4"
+                }
+            ],
+        "post" : {
+            "message": 1
+        }
+        
+    },
+    
+    "/dati-gov/v1/dashboards/1": {
+        "get": {
+            "id" : 1,
+            "title": "Dashboard 1",
+            "layout":"{\"rows\":[]}",
+            "widgets": "{}"
+        }         
+    },
+    
+    "/dati-gov/v1/dashboards/2": {
+        "get": {
+            "id" : 2,
+            "status": 1,
+            "title": "Dashboard 2",
+            "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+            "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 2</p>\\n\"},\"type\":\"TextWidget\"}}"
+         }    
+    },
+    
+    "/dati-gov/v1/dashboards/3": {
+        "get": {
+            "id" : 3,
+            "title": "Dashboard 3",
+            "status": 0,
+            "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+            "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 3</p>\\n\"},\"type\":\"TextWidget\"}}"
+         }    
+    },
+
+    "/dati-gov/v1/dashboards/4": {
+        "get": {
+            "id" : 4,
+            "title": "Dashboard 4",
+            "status": 0,
+            "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+            "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 4</p>\\n\"},\"type\":\"TextWidget\"}}"
+         }    
+    },
+    
+    "/dati-gov/v1/user-stories": {
+        "post" : {
+            "message": 1
+        },
+        "get": [
+            {
+                "id":1,
+                "title": "Storia 1"
+            },
+            {
+                "id":2,
+                "title": "Storia 2",
+                "published": false,
+                "subtitle": "Storia di prova",
+                "graph": {
+                    "title": "",
+                    "props": {
+                        "url": null
+                    }
+                },
+                "text": "Contenuto della storia",
+                "image": {
+                    "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
+                    "caption": "Testo Immagine"
+                },
+                "footer": "Questo è il footer"
+            },
+            {
+                "id":3,
+                "title": "Storia 3",
+                "subtitle": "Storia di prova",
+                "graph": {
+                    "title": "",
+                    "props": {
+                        "url": null
+                    }
+                },
+                "text": "Contenuto della storia",
+                "image": {
+                    "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
+                    "caption": "Testo Immagine"
+                },
+                "footer": "Questo è il footer"
+            }
+        ]
+        
+    },
+    
+    "/dati-gov/v1/user-stories/1": {
+        "get": {
+            "id":1,
+            "title": "Storia 1"
+        }
+    },
+    
+    "/dati-gov/v1/user-stories/2": {
+        "get": {
+            "id":2,
+            "title": "Storia 2",
+            "published": false,
+            "subtitle": "Storia di prova",
+            "graph": {
+                "title": "Sp ID Overalls, Filtered by Year 2017",
+                "props": {
+                    "url": "http://91.206.129.158:8080/public/question/b9f1e87b-5cd0-46e0-b816-0ad7cefd2ef6"
+                }
+            },
+            "text": "Contenuto della storia",
+            "image": {
+            },
+            "footer": "Questo è il footer"
+        }
+    },
+    
+    "/dati-gov/v1/user-stories/3": {
+        "get": {
+            "id":3,
+            "title": "Storia 3",
+            "subtitle": "Storia di prova",
+            "graph": {
+                "title": "",
+                "props": {
+                    "url": null
+                }
+            },
+            "text": "Contenuto della storia",
+            "image": {
+                "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
+                "caption": "Testo Immagine"
+            },
+            "footer": "Questo è il footer"
+        }
+    }
+}

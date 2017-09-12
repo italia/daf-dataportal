@@ -19,7 +19,7 @@ function sendPostData(json) {
   var file = document.getElementById('ds_datafile').files[0];
   $.ajax({
     type: "POST",
-    url: serviceurl.apiURLCatalog + "/catalog-manager/v1/catalog-ds/add",
+    url: serviceurl.apiURLCatalog + "/catalog-ds/add",
     dataType: 'json',
     data: JSON.stringify(json),
     contentType: "application/json",
