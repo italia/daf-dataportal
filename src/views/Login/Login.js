@@ -18,7 +18,6 @@ class Login extends Component {
     dispatch(loginAction(this.email.value, this.pw.value))
       .then(dispatch(addUserOrganization(this.email.value, this.pw.value)))
       .then(() => {
-        debugger
         this.props.history.push('/dashboard')
       })
       .catch((error) => {

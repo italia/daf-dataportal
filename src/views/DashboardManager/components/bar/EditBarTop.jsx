@@ -47,7 +47,7 @@ class EditBarTop extends React.Component {
           <div>
             <div className="row">
             {this.state.dashboard.id &&
-            (this.state.dashboard.status==0) &&
+            (!this.state.dashboard.status) &&
                 <div className="col-sm-10">
                   <div className="alert alert-warning" role="alert">
                   <i className="fa fa-warning fa-lg m-t-2"></i> Attenzione la dashboard è in bozza, per pubblicarla cliccare sul tasto <i className="fa fa-paper-plane-o fa-lg m-t-2"></i> "Pubblica" qui in basso

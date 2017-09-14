@@ -30,6 +30,8 @@ class DashboardList extends Component {
     super(props);
     this.state={isOpen: false};
     this.load();
+
+    this.filter = this.filter.bind(this);
   }
   
   /**
@@ -42,184 +44,69 @@ class DashboardList extends Component {
     
     let response = dashboardService.list();
     response.then((list) => {
+      
+      this.originalDashboard = list;
       this.setState({
-        dashboards: list,
-        dashboard: {
-          status: 0
-        }
+        dashboards: list
       });
     });
   }
-    
-    openModal = () => {
-      this.setState({
-        isOpen: true
-      });
-    };
-    
-    hideModal = () => {
-      this.setState({
-        isOpen: false
-      });
-    };
 
   /**
-  * Save Title
-  */
-  handleSave = (e) => {
-      e.preventDefault()
-      //save data
-      let layout = { rows: [] };
-      let widgets = {};
-      let request = this.state.dashboard;
-      request.title = this.title.value;
-      request.subtitle = this.subtitle.value;
-      const response = dashboardService.save(request);
-      request.layout = JSON.stringify(layout);
-      request.widgets = JSON.stringify(widgets);
-      response.then((data)=> {
-        if (!this.state.dashboard.id ) {
-          this.state.dashboard.id = data.message;
-          this.setState({
-              // Widgets that are available in the dashboard
-              widgets: {},
-              // Layout of the dashboard
-              layout: {
-                rows: []
-              },
-              editMode: true,
-              isModalOpen: false,
-              dashboard: this.state.dashboard
-          })
-          
-          this.state.saving = false;
-          //this.save();
-          this.props.history.push('/dashboard/list/'+ this.state.dashboard.id + '/edit');
-        }
-      })
-    }
+   * Execute filter
+   */
+  filter = (e) => {
+    let key = e.target.value.toLowerCase();
+    this.setState({
+      dashboards: this.originalDashboard.filter((item) => item.title.toLowerCase().indexOf(key) != -1)
+    });
+  }
 
   /**
    * Render Function
    */
   render() {
 
-    const modalStyle = {
-      display: 'none'
-    }
-
-    var elem = [];
-    for(var i = 0; i < this.state.dashboards.length; i+=3) {
-      var dash = this.state.dashboards[i];
-      var dash2 = this.state.dashboards[i + 1];
-      var dash3 = this.state.dashboards[i + 2];
-      elem.push(
-        <div className="row" key={i}>
-        <div className="col-sm-4">
-          <div className="card text-center">
-              <div className="card-body">
-              <Link to={"/dashboard/list/" + dash.id}>
-                <h4 className="card-title">{dash.title}</h4>
-              </Link>
-              <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
-              <img className="card-img-bottom" src="../../../img/logo.png" alt="Card image cap"/>
-              {
-              dash.status==true &&
-              <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
-              }
-              {
-                !dash.status &&
-                <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
-              }
-            </div>
-          </div>
-        </div>
-        {dash2 &&
-        <div className="col-sm-4">
-          <div className="card text-center">
-            <div className="card-body">
-              <Link to={"/dashboard/list/" + dash2.id}><h4 className="card-title">{dash2.title}</h4></Link>
-              <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
-              <img className="card-img-bottom" src="../../img/logo.png" alt="Card image cap"/>
-              {
-              dash2.status==true &&
-              <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
-              }
-              {
-                !dash2.status &&
-                <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
-              }
-            </div>
-          </div>
-        </div>
-        }
-        {dash3 &&
-        <div className="col-sm-4">
-          <div className="card text-center">
-            <div className="card-body">
-              <Link to={"/dashboard/list/" + dash3.id}><h4 className="card-title">{dash3.title}</h4></Link>
-              <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
-              <img className="card-img-bottom" src="../../img/logo.png" alt="Card image cap"/>
-              {
-              dash3.status==true &&
-              <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
-              }
-              {
-                !dash3.status &&
-                <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
-              }
-            </div>
-          </div>
-        </div>
-        }
-      </div>
-      );
-    }
-
     return (
     <Container>
       <Header title="Le Mie Dashboards" />
-      <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
-        <form onSubmit={this.save}>
-          <ModalHeader>
-            <ModalClose onClick={this.hideModal}/>
-            <ModalTitle>Crea una Dashboard</ModalTitle>
-          </ModalHeader>
-          <ModalBody>
-          <div className="form-group">
-            <input type="text" className="form-control" ref={(title) => this.title = title} id="title" placeholder="Titolo"/>
-          </div>
-          <div className="form-group">
-            <input type="text" className="form-control" ref={(subtitle) => this.subtitle = subtitle} id="subtitle" placeholder="Sottotitolo"/>
-          </div>
-          </ModalBody>
-          <ModalFooter>
-            <button className='btn btn-default' onClick={this.hideModal}>
-              Close
-            </button>
-            <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
-              <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                Crea
-            </button>
-          </ModalFooter>
-        </form>
-      </Modal>
-      <div className="container" ref="auto">
+      
+      <ListBar onChange={this.filter} history={this.props.history} ></ListBar>
+      
       <div className="row">
-      <div className="col-10">
-        <div className="input-prepend input-group mb-20">
-            <i className="fa fa-search input-group-addon transparent-frame"></i>
-            <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" placeholder="Filtra la lista ..."/>
-        </div>
+        {
+          this.state.dashboards.map((dash, index) => {
+            return (
+              <div className="col-sm-4" key={index}>
+                <div className="card text-center">
+                    <div className="card-body">
+                    <Link to={"/dashboard/list/" + dash.id}>
+                      <h4 className="card-title">{dash.title}</h4>
+                    </Link>
+                    <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
+                    <img className="card-img-bottom" src="../../../img/logo.png" alt="Card image cap"/>
+                    {
+                      dash.status==true &&
+                      <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
+                    }
+                    {
+                      !dash.status &&
+                      <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
+                    }
+                  </div>
+                </div>
+              </div>
+            )
+          })
+        }
       </div>
-        <div className="col-md-2">
-          <button type="button" className="btn btn-link float-right" title="Aggiungi Dashboard" onClick={this.openModal}>
-            <i className="fa fa-plus-circle fa-lg m-t-2"></i>
-          </button>
-        </div>
-      </div> 
-      {elem}
-      </div>
+
+      {
+        this.state.dashboards && this.state.dashboards.length == 0 &&
+        <p>
+          <b className="ml-20">Nessuna dashboard trovata</b>
+        </p>
+      }
      
     </Container>
     );
