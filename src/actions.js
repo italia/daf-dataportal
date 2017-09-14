@@ -14,6 +14,8 @@ export const RECEIVE_LOGIN = 'RECEIVE_LOGIN'
 export const REMOVE_LOGGED_USER = 'REMOVE_LOGGED_USER'
 export const RECEIVE_ORGANIZATION = 'RECEIVE_ORGANIZATION'
 export const RECEIVE_REGISTRATION = 'RECEIVE_REGISTRATION'
+export const RECEIVE_ACTIVATION = 'RECEIVE_ACTIVATION'
+export const RECEIVE_ACTIVATION_ERROR = 'RECEIVE_ACTIVATION_ERROR'
 
 function requestDatasets() {
   return {
@@ -75,7 +77,6 @@ function receiveLogin(response) {
   }
 }
 function receiveRegistration(response) { 
-  console.log('receiveRegistration: ' + response) 
   return {
       type: RECEIVE_REGISTRATION,
       message: response,
@@ -92,6 +93,37 @@ function receiveOrganization(response) {
       ope: 'RECEIVE_ORGANIZATION'
   }
 }
+
+function receiveActivationSuccess(response) {  
+  if(response.ok)
+  return {
+      type: RECEIVE_ACTIVATION,
+      message: 'Attivazione avvenuta con successo !!!',
+      error: 0,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_ACTIVATION'
+  }
+  else
+  return {
+      type: RECEIVE_ACTIVATION_ERROR,
+      error: 1,
+      message: 'Errore durante l\'attivazione riprovare più tardi',
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_ACTIVATION_ERROR'
+  }
+}
+
+function receiveActivationError(json) {  
+  return {
+      type: RECEIVE_ACTIVATION_ERROR,
+      error: 1,
+      message: 'Errore durante l\'attivazione riprovare più tardi',
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_ACTIVATION_ERROR'
+  }
+}
+
+
 
 
 function cleanDataset(json) {
@@ -180,7 +212,6 @@ export function datasetDetail(datasetname) {
 export function loginAction(username, pw) {
   console.log("Called action loginAction");
   var url = serviceurl.apiURLSecurity + '/ipa/user/' + username;
-  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   var toencode = username + ':' +pw;
   const encodedString = new Buffer(toencode).toString('base64');
   localStorage.setItem('encodedString', encodedString);
@@ -197,14 +228,12 @@ export function loginAction(username, pw) {
         })
         .then(response => response.json())
         .then(json => dispatch(receiveLogin(json)))
-        //.then(addUserOrganization(username,encodedString))
   }
 }
 
 export function loginActionEncoded(username, encodedString) {
   console.log("Called action loginActionEncoded");
   var url = serviceurl.apiURLSecurity + '/ipa/user/' + username;
-  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   localStorage.setItem('encodedString', encodedString);
   localStorage.setItem('username', username);
   return dispatch => {
@@ -231,7 +260,6 @@ export function logout() {
 export function addUserOrganization(username, pw) {
   console.log("Called action loginActionEncoded");
   var url = serviceurl.apiURLSecurity + '/ckan/userOrganizations/' + username;
-  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   var toencode = username + ':' +pw;
   const encodedString = new Buffer(toencode).toString('base64');
   localStorage.setItem('encodedString', encodedString);
@@ -253,7 +281,6 @@ export function addUserOrganization(username, pw) {
 export function addUserOrganizationEncoded(username, encodedString) {
   console.log("Called action loginActionEncoded");
   var url = serviceurl.apiURLSecurity + '/ckan/userOrganizations/' + username;
-  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
   localStorage.setItem('encodedString', encodedString);
   localStorage.setItem('username', username);
   return dispatch => {
@@ -297,5 +324,26 @@ export function registerUser(nome, cognome, username, email, pw) {
       body: JSON.stringify(input)
     }).then(response => response.json())
       .then(json => dispatch(receiveRegistration(json)))
+  }
+}
+
+export function activateUser(token) {
+  console.log("Called action activateUser");
+  var url = serviceurl.apiURLSecurity + '/ipa/registration/confirm?token=' + token;
+
+  //TODO: remove basic authentication from register service 
+  var toencode = 'raippl' + ':' + 'raippl';
+  const encodedString = new Buffer(toencode).toString('base64');
+
+  return dispatch => {
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + encodedString
+      }
+    }).then(response => dispatch(receiveActivationSuccess(response)))
+      .catch(error => dispatch(receiveActivationError(error)))
   }
 }

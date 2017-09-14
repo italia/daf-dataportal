@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Login from '../../views/Login/';
 import Register from '../../views/Register/';
+import ConfirmRegistration from '../../views/Register/ConfirmRegistration.js';
 import Appo from './Appo.js';
 
 const mapStateToProps = state => ({
@@ -17,6 +18,7 @@ class Home extends React.Component {
             <Route path='/' exact component={Login} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route path="/confirmregistration" component={ConfirmRegistration} />
           </Switch>
       </div>
       );

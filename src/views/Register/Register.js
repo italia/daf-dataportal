@@ -50,9 +50,9 @@ class Register extends Component {
               <div className="card-block p-2">
                 <h1>Registrati</h1>
                 <p className="text-muted">Crea il tuo account</p>
-                {this.state.registerError && <p className="text-muted">Errore</p>}
-                {this.state.successMsg && <p className="text-muted">Success</p>}
-                {messaggio && <p className="text-muted">aaaaaaaaaaaaaaaaaaa</p>}
+                {this.state.registerError && <div className="alert alert-success" role="alert"><p className="text-muted">Errore durante la registrazione</p></div>}
+                {this.state.successMsg && <div className="alert alert-success" role="alert"><p className="text-muted">Registrazione avvenuta con successo, a breve riceverà una mail per l'attivazione.</p></div>}
+                {messaggio && <p className="text-muted">{messaggio.message}</p>}
                 <div className="input-group mb-1">
                   <span className="input-group-addon">
                     <i className="icon-user"></i></span>
@@ -108,8 +108,7 @@ Register.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { messaggio } = state.userReducer['regMsg'] || ''
-  return { messaggio }
+  return { messaggio: state.userReducer.msg }
 }
 
 export default connect(mapStateToProps)(Register)
