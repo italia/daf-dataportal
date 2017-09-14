@@ -18,10 +18,10 @@ export const serviceurl = {
   //apiURLSecurity: "http://localhost:3001/catalog-manager/v1",
 
   // PRODUCTION
-  apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000", 
-  apiURLCatalog: "http://catalog-manager.default.svc.cluster.local:9000",
+  apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000/dati-gov/v1", 
+  apiURLCatalog: "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
   apiURLIngestion: "http://localhost:9002",
-  apiURLSecurity : "http://catalog-manager.default.svc.cluster.local:9000",
+  apiURLSecurity : "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
   
   
  "DatasetBackend": {
