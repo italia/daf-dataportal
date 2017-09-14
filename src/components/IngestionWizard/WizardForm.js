@@ -91,7 +91,7 @@ WizardForm.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const organizations = state.userReducer['org'].organizations || { };
+    const organizations = state.userReducer['org'] ? state.userReducer['org'].organizations : [];
     const loggedUser = state.userReducer['obj'].loggedUser || { } 
     return { loggedUser, organizations }
 }

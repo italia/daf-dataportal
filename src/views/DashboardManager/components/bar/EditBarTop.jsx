@@ -43,31 +43,35 @@ class EditBarTop extends React.Component {
 
   render = function(){
 
-    const style = {
-      "borderBottom": "1px solid #e4e5e6"
-    }
-
     return (
           <div>
-          {this.state.dashboard.id &&
-          (this.state.dashboard.status==0) &&
-                <div className="row">
-                <div className="alert alert-warning" role="alert">
-                  Attenzione la dashboard è in bozza, per pubblicarla cliccare sul tasto "Pubblica" qui in basso
-                </div>
+            <div className="row">
+            {this.state.dashboard.id &&
+            (!this.state.dashboard.status) &&
+                <div className="col-sm-10">
+                  <div className="alert alert-warning" role="alert">
+                  <i className="fa fa-warning fa-lg m-t-2"></i> Attenzione la dashboard è in bozza, per pubblicarla cliccare sul tasto <i className="fa fa-paper-plane-o fa-lg m-t-2"></i> "Pubblica" qui in basso
+                  </div>
                 </div>
               }
               {
                 (this.state.dashboard.status==1) &&
-                <div className="row">
-                  <div className="alert alert-primary" role="alert">
-                    Dashboard correttamente pubblicata
+                  <div className="col-sm-10">
+                    <div className="alert alert-success" role="alert">
+                      <i className="fa fa-check-circle fa-lg m-t-2"></i> Dashboard correttamente pubblicata
+                    </div>
                   </div>
-                </div>
+                
               }
-          <div className="row" style={style}>
+              <div className="col-sm-2">
+              {
+                (!this.props.saving) ? <span className="badge badge-success float-right">Salvato</span> : <span className="badge badge-warning float-right">Sto salvando...</span>
+              }
+              </div>
+              </div>
+          <div className="row bar-border">
             <div className="col-sm-7">
-              <h3 className="card-title">{this.state.dashboard.title}</h3>
+            <h3 className="card-title">{this.state.dashboard.title}</h3>
             </div>
             <div className="col-sm-7">
               <h7 className="card-title">Sottotitolo</h7>
@@ -77,7 +81,7 @@ class EditBarTop extends React.Component {
                 <div className="btn-group mr-1" data-toggle="buttons" aria-label="First group">
                   <Link role="button" to="/dashboard/list">
                     <button type="button" className="btn btn-link float-right" title="Torna alle mie Dashboard">
-                      <i className="fa fa-navicon fa-lg m-t-2"></i>
+                      <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
                     </button>
                   </Link>
                   {this.state.dashboard.id &&
@@ -90,14 +94,14 @@ class EditBarTop extends React.Component {
                    this.state.dashboard.id &&
                     <Link role="button" to={"/dashboard/list/" + this.state.dashboard.id }>
                       <button type="button" className="btn btn-link float-right" title="Anteprima">
-                        <i className="fa fa-file-image-o fa-lg m-t-2"></i>
+                        <i className="fa fa-eye fa-lg m-t-2"></i>
                       </button>
                     </Link>
                   }
                   {
                    (!this.state.dashboard.status || this.state.dashboard.status==false) &&
                     <button type="button" className="btn btn-link float-right" onClick={() => this.pubblica()} title="Pubblica">
-                    <i className="fa fa-check-square-o fa-lg m-t-2"></i>
+                    <i className="fa fa-paper-plane-o fa-lg m-t-2"></i>
                     </button>
                   }
 

@@ -3,7 +3,6 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 export default class DashboardService {
     
     baseUrl = serviceurl.apiURLDatiGov + "/dashboards";
-    //baseUrl = serviceurl.apiURL_mock  + "/dashboards/list";
 
     constructor() {
 
@@ -16,8 +15,6 @@ export default class DashboardService {
 
     async list(layout, widgets) {
         const response = await fetch( this.baseUrl );
-        //mock
-        //const response = await fetch( this.baseUrl + "/list");
         return response.json();
     }
 

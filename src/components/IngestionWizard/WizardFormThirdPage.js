@@ -96,7 +96,7 @@ const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
 let WizardFormThirdPage = props => {
 
   const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk = 'false', isPush = true, isFtp = 'sftp', followStandard = 'false' } = props;  
-  let standards = serviceurl.apiURLCatalog + '/catalog-manager/v1/dataset-catalogs/standard-uris' ; 
+  let standards = serviceurl.apiURLCatalog + '/dataset-catalogs/standard-uris' ; 
  
   return (
     <form  onSubmit={handleSubmit}>
@@ -142,11 +142,11 @@ let WizardFormThirdPage = props => {
       </div>
 
       <div className="form-group row justify-content-between">
-        <div className="col-1">
-          <button type="button" className="btn btn-primary" onClick={previousPage}>Indietro</button>
+        <div className="col-6">
+          <button type="button" className="btn btn-primary float-left" onClick={previousPage}>Indietro</button>
         </div>
-        <div className="col-1">
-          <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Invia</button>
+        <div className="col-6">
+          <button type="submit" className="btn btn-primary float-right" disabled={pristine || submitting}>Invia</button>
         </div>
       </div>
 
