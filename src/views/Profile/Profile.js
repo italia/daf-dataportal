@@ -12,33 +12,27 @@ class Profile extends Component {
             <div className="card">
                 <div className="card-block">
                     <div className="form-group row">
-                        <label htmlFor="example-text-input" className="col-2 col-form-label">Nome</label>
+                        <label htmlFor="example-text-input" className="col-2 col-form-label">Nome Utente</label>
                         <div className="col-10">
-                            <input className="form-control" type="text" value={loggedUser?loggedUser.name:''} id="example-text-input"/>
+                            <input className="form-control" type="text" value={loggedUser?loggedUser.uid:''} id="example-text-input"/>
                         </div>
                     </div>
                     <div className="form-group row">
                         <label htmlFor="example-search-input" className="col-2 col-form-label">Email</label>
                         <div className="col-10">
-                            <input className="form-control" type="search" value={loggedUser?loggedUser.email:''} id="example-search-input"/>
+                            <input className="form-control" type="search" value={loggedUser?loggedUser.mail:''} id="example-search-input"/>
                         </div>
                     </div>
                     <div className="form-group row">
                         <label htmlFor="example-search-input" className="col-2 col-form-label">Nome completo</label>
                         <div className="col-10">
-                            <input className="form-control" type="search" value={loggedUser?loggedUser.fullname:''} id="example-search-input"/>
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="example-search-input" className="col-2 col-form-label">About</label>
-                        <div className="col-10">
-                            <input className="form-control" type="search" value={loggedUser?loggedUser.about:''} id="example-search-input"/>
+                            <input className="form-control" type="search" value={loggedUser?loggedUser.sn:''} id="example-search-input"/>
                         </div>
                     </div>
                     <div className="form-group">
                         <label>Organizzazioni</label>
                         {organizations.map(organization => 
-                            <input key={organization.id} type="email" className="form-control" id="exampleInputEmail1" value={organization.description}/>
+                            <input key={organization.name} type="email" className="form-control" id="exampleInputEmail1" value={organization.name}/>
                         )
                         }
                     </div>

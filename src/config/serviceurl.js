@@ -6,10 +6,10 @@ export const serviceurl = {
   apiURLSecurity: "http://localhost:9001/catalog-manager/v1",
   
   //MOCK
-  apiURLDatiGov: "http://localhost:3000/mock", 
+  //apiURLDatiGov: "http://localhost:3000/mock", 
   //apiURLCatalog: "http://localhost:9001",
   //apiURLIngestion: "http://localhost:9002",
-  apiURLSecurity: "http://localhost:3000/mock",
+  //apiURLSecurity: "http://localhost:3000/mock",
 
   // PRODUCTION
   //apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000", 

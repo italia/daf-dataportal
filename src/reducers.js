@@ -10,7 +10,8 @@ import {
   REQUEST_LOGIN,
   RECEIVE_LOGIN,
   REMOVE_LOGGED_USER,
-  RECEIVE_ORGANIZATION
+  RECEIVE_ORGANIZATION,
+  RECEIVE_REGISTRATION
 } from './actions'
 
 //Object.assign({}, state, .. create a new copy of the state
@@ -101,6 +102,8 @@ function datasetReducer(state = {}, action) {
 
 function userReducer(state = {}, action) {
   switch (action.type) {
+    case RECEIVE_REGISTRATION:
+      return Object.assign({}, state, {'regMsg': action.message})
     case REQUEST_LOGIN:
     case RECEIVE_LOGIN:
       return Object.assign({}, state, {'obj': user(state[action], action)})

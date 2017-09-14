@@ -57,11 +57,11 @@ class Dataset extends Component {
       return datasets.map(dataset => {
           return(
               <tr key={dataset.name}>
-                  <td>{dataset.resources[0].name}</td>
-                  <td>{dataset.resources[0].description}</td>
-                  <td>{dataset.organization.title}</td>
-                  <td>{dataset.organization.created}</td>
-                  <td><a href="#" className="list-group-item list-group-item-action flex-column align-items-start" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}><i className="icon-book-open icons font-2xl d-block m-t-2"></i></a></td>
+                  <td>{dataset.title}</td>
+                  <td>{dataset.notes}</td>
+                  <td>{dataset.organization.name}</td>
+                  <td>{dataset.organization.state}</td>
+                  <td><a href="#" className="list-group-item list-group-item-action flex-column transparent-frame" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}><i className="icon-book-open icons font-2xl d-block m-t-2"></i></a></td>
               </tr>
           );
       });
@@ -85,8 +85,8 @@ class Dataset extends Component {
                               <tr>
                                   <th>Nome</th>
                                   <th>Descrizione</th>
-                                  <th>Pubblicato da</th>
-                                  <th>Data Pubblicazione</th>
+                                  <th>Organizzazione</th>
+                                  <th>Stato</th>
                                   <th>Dettaglio</th>
                               </tr>
                           </thead>
@@ -126,8 +126,8 @@ class Dataset extends Component {
                   Descrizione
                 </div>
                 <div className="card-block">
-                  <h4 className="card-title">{dataset.resources[0].name}</h4>
-                  <p className="card-text">{dataset.resources[0].description}</p>
+                  <h4 className="card-title">{dataset.name}</h4>
+                  <p className="card-text">{dataset.notes}</p>
                 </div>
               </div>
               <div className="card">

@@ -4,12 +4,20 @@ import validate from './validate'
 import renderField from './renderField'
 
 const themes = [
-{'val' : 'AGRI', 'name' : 'AGRICOLTURA'},{'val' : 'EDUC', 'name' : 'EDUCAZIONE'},
+{'val' : 'AGRI', 'name' : 'AGRICOLTURA'},
 {'val' : 'ECON', 'name' : 'ECONOMIA'},
-{'val' : 'ENVI', 'name' : 'AMBIENTE'},{'val' : 'HEAL', 'name' : 'SANITA'},
-{'val' : 'INTR', 'name' : 'INTERNAZIONALE'},{'val' : 'JUST', 'name' : 'GIUSTIZIA'},
-{'val' : 'SOCI', 'name' : 'REGIONE'},{'val' : 'TECH', 'name' : 'TECNOLOGIA'},
-{'val' : 'TRAN', 'name' : 'TRASPORTO'}]
+{'val' : 'EDUC', 'name' : 'EDUCAZIONE'},
+{'val' : 'ENER', 'name' : 'ENERGIA'},
+{'val' : 'ENVI', 'name' : 'AMBIENTE'},
+{'val' : 'GOVE', 'name' : 'GOVERNO'},
+{'val' : 'HEAL', 'name' : 'SANITA'},
+{'val' : 'INTR', 'name' : 'INTERNAZIONALE'},
+{'val' : 'JUST', 'name' : 'GIUSTIZIA'},
+{'val' : 'REGI', 'name' : 'REGIONE'},
+{'val' : 'SOCI', 'name' : 'SOCIETA'},
+{'val' : 'TECH', 'name' : 'TECNOLOGIA'},
+{'val' : 'TRAN', 'name' : 'TRASPORTO'}
+]
 
 const renderThemes = ({ input, meta: { touched, error } }) => (
     <div className="form-group">
@@ -17,7 +25,6 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
       <div>
          <div className="form-group">
           <select className="form-control" {...input}>
-            <option value="ECON"  key='theme' defaultValue>ECONOMIA</option>
             {themes.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
           </select>
         </div>
@@ -31,9 +38,9 @@ const renderOrganization = ({ input, label, type, organizations, meta: { touched
     <label className="form-control-label">{label}</label>
     <div>
        <div className="form-group">
-        <select className="form-control">
+        <select className="form-control" {...input}>
           <option value=""  key='organization' defaultValue></option>
-          {organizations.map(organization => <option value={organization.id} key={organization.id}>{organization.description}</option>)}
+          {organizations.map(organization => <option value={organization.name} key={organization.name}>{organization.description}</option>)}
         </select>
       </div>
       {touched && error && <span>{error}</span>}

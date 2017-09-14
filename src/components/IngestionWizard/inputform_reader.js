@@ -22,7 +22,7 @@ function sendPostDataMeta(json, file) {
     data: JSON.stringify(json),
     contentType: 'application/json',
     headers: {
-        authorization: 'Basic ' + btoa("ckanadmin:ckanadmin")   //If your header name has spaces or any other char not appropriate
+        authorization: 'Basic ' + btoa("ckanadmin:ckanpassword")   //If your header name has spaces or any other char not appropriate
     },
     success: function( data ) {
       console.log(data)
