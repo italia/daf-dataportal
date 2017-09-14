@@ -5,6 +5,14 @@ import {processInputFileMetadata} from './avroschema.js'
 import Dropzone from 'react-dropzone'
 import TestSelect2 from './TestSelect2';
 import { connect } from 'react-redux';
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
 
 
 const calcDataFields = (fields, files) =>
@@ -36,7 +44,6 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
       <label className="col-md-3 form-control-label">Categoria</label>
       <div className="col-md-9">
           <select className="form-control" {...input}>
-            <option value="ECON"  key='theme' defaultValue>ECONOMIA</option>
             {themes.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
           </select>
         {touched && error && <span>{error}</span>}
@@ -247,13 +254,37 @@ const addMetadataFromFile = ({ fields, meta: { error, submitFailed } }) =>
 
 class WizardFormMetadata extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.state = {
+      files: []
+    }
   }
 
   renderDropzoneInput = ({fields,columnCard, input, reset, meta : {touched, error} }) => 
-      <div>     
+       /* <Dropzone
+        name="input"
+        multiple={false}
+        maxSize={52428800}
+        onDrop={this.onDrop.bind(this)} //<= Here
+        >
+        <div>Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+      </Dropzone>
+
+
+
+{
+              const {dispatch} = this.props 
+              calcDataFields(fields, filesToUpload);
+              let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
+              fileName = fileName.toLowerCase()
+              fileName.split(" ").join("-")
+              dispatch(change('wizard', 'title', fileName))
+              }
+
+      */
+      <div>   
       {fields.length > -1 &&
-      <div className="form-group">
+        <div className="form-group">
          <div className="col-md-6 offset-md-3">
           <label htmlFor='tests'>Carica il file max 50MB</label>
           <Dropzone
@@ -434,13 +465,32 @@ class WizardFormMetadata extends Component {
             </div>
           </div> 
   */
+
+  onDrop(fields, files) {
+    this.setState({
+      files: files
+    })
+    
+    
+    const {dispatch} = this.props 
+    calcDataFields(fields, files);
+    let fileName = files[0].name.toLowerCase().split(".")[0]
+    fileName = fileName.toLowerCase()
+    fileName.split(" ").join("-")
+    dispatch(change('wizard', 'title', fileName))
+
+    setTimeout(function() { this.setState({files: []}); }.bind(this), 3000);    
+}
+
+
   render() {
     const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard } = this.props;
     return (
+    <div>
     <form onSubmit={handleSubmit}>
       <div className="form-group row">
         <div className="col-md-12">
-          <FieldArray
+        <FieldArray
             name="tests"
             component={this.renderDropzoneInput}
             title={title}
@@ -449,16 +499,49 @@ class WizardFormMetadata extends Component {
           />
         </div>
       </div>
+      {this.state.files.length > 0 ? <div>
+          <h2>Uploading files...</h2>
+          </div> : null}
       <div className="form-group row">
             <div className="col-12">
               <button type="submit" className="btn btn-primary float-right">Avanti</button>
             </div>
       </div>
     </form>
+    </div>
     )
   }
 }
 
+/*
+
+
+
+        <FieldArray
+            name="tests"
+            component={this.renderDropzoneInput}
+            title={title}
+            reset={reset}
+            columnCard={columnCard}
+          />
+
+
+
+
+<Dropzone
+            name="input"
+            multiple={false}
+            maxSize={52428800}
+            onDrop={this.onDrop.bind(this)} //<= Here
+            >
+            <div>Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+          </Dropzone>
+        </div>
+        {this.state.imageFiles.length > 0 ? <div>
+          <h2>Uploading {this.state.imageFiles.length} files...</h2>
+          </div> : null}
+
+*/ 
 
 
 

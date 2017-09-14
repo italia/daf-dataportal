@@ -44,7 +44,19 @@ export function createDcat (values, data) {
   data[dcatapit]["resources"] = []
   data[dcatapit]["relationships_as_object"] = []
   data[dcatapit]["relationships_as_subject"] = []
-  data[dcatapit]["tags"] = []
+  data[dcatapit]["tags"] = (values.theme) ? [{
+    "name": values.theme,
+    "state": "active",
+    "vocabulary_id": null,
+    "display_name": values.theme,
+    "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+  }]  : [{
+    "name": "ECON",
+    "state": "active",
+    "vocabulary_id": null,
+    "display_name": "ECON",
+    "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+  }]
   return data
 }
 
@@ -65,12 +77,18 @@ export function createDataschema (values, data) {
     if(item.nome !== 'file'){
     var name = item.nome
     var tipo = item.tipo
+    console.log('item.nome: ' + item.nome);
+    console.log('item.tipo: ' + item.tipo);    
     if (Array.isArray( item.tipo)){
       if( item.tipo.indexOf("string") == 1){
         tipo = 'string'
       } else {
         tipo = tipo[0]
       }
+    }else if(item.tipo instanceof Object){
+      console.log('tipo object');
+      //tipo = 'string'
+      tipo = JSON.stringify(item.tipo);
     }
     var obj = {'name' : name, "`type`" : tipo}
     var metadata = { "desc": "", "required": 0, "field_type": "","cat": "","tag": "","constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}

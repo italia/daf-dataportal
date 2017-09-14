@@ -61,25 +61,45 @@ function getFlatSchema(json, fileData){
   recElem(fields, {"fields": ""});
   //alert(JSON.stringify(fieldList));
   //cicla sui fields iniziali
-  var keys = Object.keys(fileData[0])
-  var initialize = {}
-  keys.map((key) => {
-     initialize[key] = []
-  })
-  for(var i = 0; i < 5; i++){
-      var obj = fileData[i]
-      Object.keys(obj).map((key) => {
-        initialize[key].push(obj[key])
-      })
-  } 
-  fieldList["data"] = initialize
-  return fieldList;
+  var keys = "";
+  try{
+    keys = Object.keys(fileData[0]);
+    var initialize = {}
+    keys.map((key) => {
+       initialize[key] = []
+    })
+    for(var i = 0; i < 5; i++){
+        var obj = fileData[i]
+        Object.keys(obj).map((key) => {
+          initialize[key].push(obj[key])
+        })
+    } 
+    fieldList["data"] = initialize
+    return fieldList;
+  } catch(err){
+    keys = Object.keys(fileData);
+    var initialize = {}
+    keys.map((key) => {
+       initialize[key] = []
+    })
+    for(var i = 0; i < 5; i++){
+        var obj = fileData
+        Object.keys(obj).map((key) => {
+          initialize[key].push(obj[key])
+        })
+    } 
+    fieldList["data"] = initialize
+    return fieldList;
+  }
+ 
 
 }
 
 function getAvroSchema(json){
   //need to implement a iterative way to get the right schema by looking at multiple rows
+  console.log('getAvroSchema() - json: ' + json);
   var csvInferred = avro.Type.forValue(json);
+  console.log('csvInferred.itemsType: ' + csvInferred.itemsType);
   var schema = csvInferred.schema();
   //console.log(schema);
   //console.log(JSON.stringify(schema));
@@ -93,17 +113,20 @@ function processInputFileMetadata(files, callback) {
   var reader = new FileReader();
   reader.onload = function(e) {
     var text = reader.result;
-   // text = text.replace(/(^[ \t]*\n)/gm, "")
-    text = text.replace(/\r?\n?[^\r\n]*$/, "");
     try {
+      //var json = JSON.stringify(reader.result);
       var json = JSON.parse(text);
       //alert(JSON.stringify(json));
       callback(finalizeOpsMeta(json))
     } catch (err) {
+      console.log('text1: ' + text);
+      //text = text.replace(/(^[ \t]*\n)/gm, "")
+      text = text.replace(/\r?\n?[^\r\n]*$/, "");
+      console.log('text2: ' + text);
       var objCsv = Papa.parse(text, { header: true, quoteChar: '"', dynamicTyping: true,
         error: function(error, file) {alert(error)},
         complete: function(results, file) {
-          alert(JSON.stringify(results.data));
+          //alert(JSON.stringify(results.data));
           callback(finalizeOpsMeta(results.data))
         }
       });

@@ -3,6 +3,9 @@ const validate = values => {
   if (!values.title) {
     errors.title = 'Campo obbligatorio, nessun file caricato.'
   }
+  if (!values.ownership) {
+    errors.ownership = 'Campo obbligatorio'
+  }
   if (!values.editor) {
     errors.editor = 'Campo obbligatorio'
   }
