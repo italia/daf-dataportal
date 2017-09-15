@@ -12,6 +12,7 @@ import {
   REMOVE_LOGGED_USER,
   RECEIVE_ORGANIZATION,
   RECEIVE_REGISTRATION,
+  RECEIVE_REGISTRATION_ERROR,
   RECEIVE_ACTIVATION,
   RECEIVE_ACTIVATION_ERROR
 } from './actions'
@@ -106,6 +107,7 @@ function userReducer(state = {}, action) {
   switch (action.type) {
     case RECEIVE_ACTIVATION_ERROR:
     case RECEIVE_ACTIVATION:
+    case RECEIVE_REGISTRATION_ERROR:
     case RECEIVE_REGISTRATION:
       return Object.assign({}, state, {'msg': action.message, 'error': action.error})
     case REQUEST_LOGIN:
