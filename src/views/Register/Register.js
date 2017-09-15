@@ -41,7 +41,7 @@ class Register extends Component {
   }
 
   render() {
-    const { messaggio } = this.props
+    const { messaggio, error } = this.props
     return (
       <div className="container">
         <div className="row justify-content-center">
@@ -50,9 +50,16 @@ class Register extends Component {
               <div className="card-block p-2">
                 <h1>Registrati</h1>
                 <p className="text-muted">Crea il tuo account</p>
-                {this.state.registerError && <div className="alert alert-success" role="alert"><p className="text-muted">Errore durante la registrazione</p></div>}
-                {this.state.successMsg && <div className="alert alert-success" role="alert"><p className="text-muted">Registrazione avvenuta con successo, a breve riceverà una mail per l'attivazione.</p></div>}
-                {messaggio && <p className="text-muted">{messaggio.message}</p>}
+                {error===1 && 
+                <div className="alert alert-danger" role="alert">
+                  {messaggio}
+                </div>
+                }
+                {error===0 && 
+                  <div className="alert alert-success" role="alert">
+                    {messaggio}
+                  </div>
+                }   
                 <div className="input-group mb-1">
                   <span className="input-group-addon">
                     <i className="icon-user"></i></span>
@@ -103,12 +110,14 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  messaggio: PropTypes.object,
+  messaggio: PropTypes.string,
+  error: PropTypes.number,
   dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
-  return { messaggio: state.userReducer.msg }
+  return { messaggio: state.userReducer.msg,
+           error: state.userReducer.error }
 }
 
 export default connect(mapStateToProps)(Register)
