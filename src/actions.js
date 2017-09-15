@@ -14,6 +14,7 @@ export const RECEIVE_LOGIN = 'RECEIVE_LOGIN'
 export const REMOVE_LOGGED_USER = 'REMOVE_LOGGED_USER'
 export const RECEIVE_ORGANIZATION = 'RECEIVE_ORGANIZATION'
 export const RECEIVE_REGISTRATION = 'RECEIVE_REGISTRATION'
+export const RECEIVE_REGISTRATION_ERROR = 'RECEIVE_REGISTRATION_ERROR'
 export const RECEIVE_ACTIVATION = 'RECEIVE_ACTIVATION'
 export const RECEIVE_ACTIVATION_ERROR = 'RECEIVE_ACTIVATION_ERROR'
 
@@ -76,14 +77,6 @@ function receiveLogin(response) {
       ope: 'RECEIVE_LOGIN'
   }
 }
-function receiveRegistration(response) { 
-  return {
-      type: RECEIVE_REGISTRATION,
-      message: response,
-      receivedAt: Date.now(),
-      ope: 'RECEIVE_REGISTRATION'
-  }
-}
 
 function receiveOrganization(response) {  
   return {
@@ -123,8 +116,34 @@ function receiveActivationError(json) {
   }
 }
 
+function receiveRegistrationSuccess(response) {  
+  if(response.ok)
+  return {
+      type: RECEIVE_REGISTRATION,
+      message: 'Registrazione avvenuta con successo !!!',
+      error: 0,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_REGISTRATION'
+  }
+  else
+  return {
+      type: RECEIVE_REGISTRATION_ERROR,
+      error: 1,
+      message: 'Errore durante la registrazione riprovare più tardi',
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_REGISTRATION_ERROR'
+  }
+}
 
-
+function receiveRegistrationError(json) {  
+  return {
+      type: RECEIVE_REGISTRATION_ERROR,
+      error: 1,
+      message: 'Errore durante la registrazione riprovare più tardi',
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_REGISTRATION_ERROR'
+  }
+}
 
 function cleanDataset(json) {
   //This function creates an action that a reducer can handle 
@@ -303,8 +322,8 @@ export function registerUser(nome, cognome, username, email, pw) {
   //http://localhost:9001/catalog-manager/v1/ipa/registration/request
 
   //TODO: remove basic authentication from register service 
-  var toencode = 'raippl' + ':' + 'raippl';
-  const encodedString = new Buffer(toencode).toString('base64');
+  //var toencode = 'raippl' + ':' + 'raippl';
+  //const encodedString = new Buffer(toencode).toString('base64');
   var input = {
     'uid': username,
     'givenname': nome,
@@ -319,11 +338,11 @@ export function registerUser(nome, cognome, username, email, pw) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + encodedString
+        'Authorization': 'Basic ' + serviceurl.auth
       },
       body: JSON.stringify(input)
-    }).then(response => response.json())
-      .then(json => dispatch(receiveRegistration(json)))
+    }).then(response => dispatch(receiveRegistrationSuccess(response)))
+    .catch(error => dispatch(receiveRegistrationError(error)))
   }
 }
 
@@ -332,8 +351,8 @@ export function activateUser(token) {
   var url = serviceurl.apiURLSecurity + '/ipa/registration/confirm?token=' + token;
 
   //TODO: remove basic authentication from register service 
-  var toencode = 'raippl' + ':' + 'raippl';
-  const encodedString = new Buffer(toencode).toString('base64');
+  //var toencode = 'raippl' + ':' + 'raippl';
+  //const encodedString = new Buffer(toencode).toString('base64');
 
   return dispatch => {
     return fetch(url, {
@@ -341,7 +360,7 @@ export function activateUser(token) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + encodedString
+        'Authorization': 'Basic ' + serviceurl.auth
       }
     }).then(response => dispatch(receiveActivationSuccess(response)))
       .catch(error => dispatch(receiveActivationError(error)))

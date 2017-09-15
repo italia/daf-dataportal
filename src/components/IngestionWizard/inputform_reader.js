@@ -15,6 +15,12 @@ function getJsonCatalog(){
 }
 
 function sendPostDataMeta(json, file) {
+
+  var encodedString = '';
+
+  if(localStorage.getItem('encodedString') && localStorage.getItem('encodedString') != 'null'){
+    var encodedString = localStorage.getItem('encodedString')
+
     $.ajax({
     type: "POST",
     url: serviceurl.apiURLCatalog + "/catalog-ds/add",
@@ -22,11 +28,13 @@ function sendPostDataMeta(json, file) {
     data: JSON.stringify(json),
     contentType: 'application/json',
     headers: {
-        authorization: 'Basic ' + btoa("ckanadmin:ckanpassword")   //If your header name has spaces or any other char not appropriate
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ' + encodedString
     },
     success: function( data ) {
       console.log(data)
-      alert('ok')
+      alert('Dataset caricato correttamente')
       if (file){
       var formData = new FormData();
       formData.append("upfile", file, "agency.txt")
@@ -48,6 +56,9 @@ function sendPostDataMeta(json, file) {
       }
     }
     })
+  } else {
+    console.log('No basic auth string');
+  }
 
 }
 
