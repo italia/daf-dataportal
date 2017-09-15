@@ -1,52 +1,224 @@
 {
-    "/catalog-manager/v1/ckan/user/test": {
+    "/catalog-manager/v1/ipa/user/test": {
         "get": {
-            "data": {
-                "name": "test",
-                "email": "test@gmail.it",
-                "fullname": "My Name",
-                "about": "about me",
-                "password": ""
-               }
-        }
+                "sn": "test_sn",
+                "givenname": "test_gn",
+                "mail": "test@test.it",
+                "uid": "test_uid",
+                "userpassword": null
+            }
     },
     "/catalog-manager/v1/ckan/userOrganizations/test": {
-        "get": {
-            "data": [
+        "get": [
+            {
+              "name": "test-org",
+              "image_url": "http://dati.trentino.it/images/logo.png",
+              "email": null,
+              "state": "active",
+              "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
+              "users": null,
+              "is_organization": true,
+              "id": "232cad97-ecf2-447d-9656-63899023887t",
+              "title": "APT Altopiano di Pinè e Valle di Cembra it",
+              "type": null,
+              "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
+              "approval_status": "approved",
+              "created": "2017-09-11T14:25:30.958736"
+            }
+          ]
+    },
+    "/catalog-manager/v1/ckan/searchDataset": {
+        "get": [
+            {
+              "name": "test1",
+              "notes": "dd",
+              "organization": {
+                "name": "test-org",
+                "image_url": "http://dati.trentino.it/images/logo.png",
+                "email": null,
+                "state": "active",
+                "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
+                "users": null,
+                "is_organization": true,
+                "id": "232cad97-ecf2-447d-9656-63899023887t",
+                "title": "APT Altopiano di Pinè e Valle di Cembra it",
+                "type": null,
+                "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
+                "approval_status": "approved",
+                "created": "2017-09-11T14:25:30.958736"
+              },
+              "author": null,
+              "license_id": "other-nc",
+              "relationships_as_object": [],
+              "holder_identifier": null,
+              "identifier": null,
+              "license_title": "Other (Non-Commercial)",
+              "tags": [
                 {
-                  "name": "test2-org",
-                  "image_url": "http://dati.trentino.it/images/logo.png",
-                  "email": null,
+                  "name": "ECON",
                   "state": "active",
-                  "description": "Prova organizzazione",
-                  "users": null,
-                  "is_organization": true,
-                  "id": "232cad97-ecf2-447d-9656-63899023887t",
-                  "title": "Organizzazione di prova",
-                  "type": null,
-                  "revision_id": "e9b313bb-fb61-4991-90f4-bdb308f024cf",
-                  "approval_status": "approved",
-                  "created": "2017-08-29T16:29:54.755873"
-                },
-                {
-                  "name": "test3-org",
-                  "image_url": "http://dati.trentino.it/images/logo.png",
-                  "email": null,
-                  "state": "active",
-                  "description": "Prova organizzazione2",
-                  "users": null,
-                  "is_organization": true,
-                  "id": "232cad97-ecf2-447d-9656-63899023887p",
-                  "title": "Organizzazione di prova",
-                  "type": null,
-                  "revision_id": "4fe18408-9d08-413e-87bd-578013b80dd3",
-                  "approval_status": "approved",
-                  "created": "2017-08-30T10:25:04.554223"
+                  "vocabulary_id": null,
+                  "display_name": "ECON",
+                  "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
                 }
-               ]
-        }
+              ],
+              "groups": [],
+              "modified": null,
+              "alternate_identifier": null,
+              "relationships_as_subject": [],
+              "holder_name": null,
+              "publisher_identifier": null,
+              "resources": [],
+              "frequency": null,
+              "title": "colonnine_20170830074512_2",
+              "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
+              "theme": null,
+              "publisher_name": null
+            },
+            {
+              "name": "test2",
+              "notes": "aaa",
+              "organization": {
+                "name": "test-org",
+                "image_url": "http://dati.trentino.it/images/logo.png",
+                "email": null,
+                "state": "active",
+                "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
+                "users": null,
+                "is_organization": true,
+                "id": "232cad97-ecf2-447d-9656-63899023887t",
+                "title": "APT Altopiano di Pinè e Valle di Cembra it",
+                "type": null,
+                "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
+                "approval_status": "approved",
+                "created": "2017-09-11T14:25:30.958736"
+              },
+              "author": null,
+              "license_id": "other-nc",
+              "relationships_as_object": [],
+              "holder_identifier": null,
+              "identifier": null,
+              "license_title": "Other (Non-Commercial)",
+              "tags": [
+                {
+                  "name": "ECON",
+                  "state": "active",
+                  "vocabulary_id": null,
+                  "display_name": "ECON",
+                  "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                }
+              ],
+              "groups": [],
+              "modified": null,
+              "alternate_identifier": null,
+              "relationships_as_subject": [],
+              "holder_name": null,
+              "publisher_identifier": null,
+              "resources": [],
+              "frequency": null,
+              "title": "colonnine_20170830074512",
+              "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
+              "theme": null,
+              "publisher_name": null
+            },
+            {
+              "name": "test3",
+              "notes": "qwerewr",
+              "organization": {
+                "name": "test-org",
+                "image_url": "http://dati.trentino.it/images/logo.png",
+                "email": null,
+                "state": "active",
+                "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
+                "users": null,
+                "is_organization": true,
+                "id": "232cad97-ecf2-447d-9656-63899023887t",
+                "title": "APT Altopiano di Pinè e Valle di Cembra it",
+                "type": null,
+                "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
+                "approval_status": "approved",
+                "created": "2017-09-11T14:25:30.958736"
+              },
+              "author": null,
+              "license_id": "other-nc",
+              "relationships_as_object": [],
+              "holder_identifier": null,
+              "identifier": null,
+              "license_title": "Other (Non-Commercial)",
+              "tags": [
+                {
+                  "name": "ECON",
+                  "state": "active",
+                  "vocabulary_id": null,
+                  "display_name": "ECON",
+                  "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                }
+              ],
+              "groups": [],
+              "modified": null,
+              "alternate_identifier": null,
+              "relationships_as_subject": [],
+              "holder_name": null,
+              "publisher_identifier": null,
+              "resources": [],
+              "frequency": null,
+              "title": "bike_sharing3",
+              "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
+              "theme": null,
+              "publisher_name": null
+            }
+        ]
     },
     
+    "/catalog-manager/v1/ckan/datasets/test1": {
+        "get": {
+            "name": "colonnine_20170830074512_2",
+            "notes": "dd",
+            "organization": {
+              "name": "test-org",
+              "image_url": "http://dati.trentino.it/images/logo.png",
+              "email": null,
+              "state": "active",
+              "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
+              "users": null,
+              "is_organization": true,
+              "id": "232cad97-ecf2-447d-9656-63899023887t",
+              "title": "APT Altopiano di Pinè e Valle di Cembra it",
+              "type": null,
+              "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
+              "approval_status": "approved",
+              "created": "2017-09-11T14:25:30.958736"
+            },
+            "author": null,
+            "license_id": "other-nc",
+            "relationships_as_object": [],
+            "holder_identifier": "test-org",
+            "identifier": "colonnine_20170830074512_2",
+            "license_title": "Other (Non-Commercial)",
+            "tags": [
+              {
+                "name": "ECON",
+                "state": "active",
+                "vocabulary_id": null,
+                "display_name": "ECON",
+                "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+              }
+            ],
+            "groups": [],
+            "modified": "2017-07-23",
+            "alternate_identifier": "colonnine_20170830074512_2",
+            "relationships_as_subject": [],
+            "holder_name": "test-org",
+            "publisher_identifier": "test-org",
+            "resources": [],
+            "frequency": "unknown",
+            "title": "colonnine_20170830074512_2",
+            "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
+            "theme": "ECON",
+            "publisher_name": "test-org"
+          }
+    },
+
     "/dati-gov/v1/dashboards": {
         "get": [
                 {

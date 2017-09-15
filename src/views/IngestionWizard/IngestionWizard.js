@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {createMetacatalog} from '../../helpers/TrasformFormToDcat.js'
 import WizardForm from '../../components/IngestionWizard/WizardForm'
 import {getJsonDataschema, sendPostDataMeta} from '../../components/IngestionWizard/inputform_reader.js'
+import {reset} from 'redux-form';
 
 const transformer = values => {
   var metacatalog = {}
   metacatalog = createMetacatalog(values, metacatalog)
-  console.log(JSON.stringify(values))
-  console.log(JSON.stringify(metacatalog))
+  //console.log(JSON.stringify(values))
+  //console.log(JSON.stringify(metacatalog))
   return metacatalog
 }
 
@@ -30,10 +31,11 @@ class IngestionForm extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <WizardForm onSubmit={showResults} />
+        <WizardForm onSubmit={showResults.bind(this)} />
       </div>
     )
   }
 }
 
 export default IngestionForm;
+
