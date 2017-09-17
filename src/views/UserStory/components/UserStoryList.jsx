@@ -57,6 +57,12 @@ class UserStoryList extends Component {
    * Render Function
    */
   render() {
+
+    const iframeStyle = {
+      width: '100%',
+      height: '300px',
+      border: '0'
+    }
     return (
     <Container>
       <Header title="Le Mie Storie" />
@@ -66,6 +72,10 @@ class UserStoryList extends Component {
       <div className="row">
         {
           this.state.userStories.map((story, index) => {
+            let chartUrl = undefined
+            if (story.graph){
+              chartUrl = story.graph['props']['url']
+            }
             return (
               <div className="col-sm-4" key={index}>
                 <div className="card text-center">
@@ -74,7 +84,13 @@ class UserStoryList extends Component {
                       <h4 className="card-title">{story.title}</h4>
                     </Link>
                     <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
-                    <img className="card-img-bottom" src="../../../img/logo.png" alt="Card image cap"/>
+                      { chartUrl && <iframe
+                      ref="iframe"
+                      frameBorder={'0'}
+                      style={iframeStyle}
+                      src={chartUrl}
+                    />
+                    }
                     {
                     story.status==true &&
                     <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>

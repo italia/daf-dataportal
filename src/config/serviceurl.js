@@ -19,7 +19,6 @@ export const serviceurl = {
 
   auth: "dGVzdDp0dWxsaWFlYmxp",
 
-  
  "DatasetBackend": {
     "Search": {
       "host": "catalog-manager.default.svc.cluster.local",
