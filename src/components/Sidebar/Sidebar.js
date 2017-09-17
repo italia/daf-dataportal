@@ -20,7 +20,7 @@ class Sidebar extends Component {
     return (
 
       <div className="sidebar">
-        <nav className="sidebar-nav mt-40">
+        <nav className="sidebar-nav">
           <ul className="nav">
             <li className="nav-item">
               <NavLink to={'/home'} className="nav-link" activeClassName="active"><i className="icon-home"></i> Home</NavLink>
@@ -60,11 +60,11 @@ class Sidebar extends Component {
             </li>
 
             <li className="nav-item">
-              <NavLink to={'/charts'} className="nav-link" onClick={this.handleClick.bind(this)} activeClassName="active"><i className="icon-pie-chart"></i> Grafici</NavLink>
+              <a href={'http://metabase.default.svc.cluster.local:3000'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Grafici</a>
             </li>
 
             <li className="nav-item">
-              <a href={'http://localhost:8088'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Busness Intelligence</a>
+              <a href={'http://superset.default.svc.cluster.local:8088'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Busness Intelligence</a>
             </li>
             <li className="nav-item">
               <a href={'http://localhost/jupyter'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>

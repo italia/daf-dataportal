@@ -67,6 +67,12 @@ class DashboardList extends Component {
    */
   render() {
 
+    const iframeStyle = {
+      width: '100%',
+      height: '300px',
+      border: '0'
+    }
+
     return (
     <Container>
       <Header title="Le Mie Dashboards" />
@@ -76,6 +82,12 @@ class DashboardList extends Component {
       <div className="row">
         {
           this.state.dashboards.map((dash, index) => {
+            let chartUrl = undefined
+            if (dash.widgets !== '{}'){
+              const dashJson = JSON.parse(dash.widgets)
+              const firstWidget = dashJson[Object.keys(dashJson)[0]];
+              chartUrl = firstWidget['props']['url']
+            }
             return (
               <div className="col-sm-4" key={index}>
                 <div className="card text-center">
@@ -84,7 +96,13 @@ class DashboardList extends Component {
                       <h4 className="card-title">{dash.title}</h4>
                     </Link>
                     <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
-                    <img className="card-img-bottom" src="../../../img/logo.png" alt="Card image cap"/>
+                    { chartUrl && <iframe
+                      ref="iframe"
+                      frameBorder={'0'}
+                      style={iframeStyle}
+                      src={chartUrl}
+                    />
+                    }
                     {
                       dash.status==true &&
                       <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
