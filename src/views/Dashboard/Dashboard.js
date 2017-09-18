@@ -1,132 +1,114 @@
 import React, { Component } from 'react';
 import ListBox from '../../components/Dashboard/ListBox';
 import Card from '../../components/Dashboard/Card';
+import { Route, Link } from 'react-router-dom';
 //var LineChart = require("react-chartjs").Line;
-import {ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from 'recharts';
+
+// react-timeline....
+import { Timeline, TimelineEvent } from 'react-event-timeline'
+
+// Services
+import HomeService from './services/HomeService';
+
+const homeService = new HomeService();
 
 class Dashboard extends Component {
 
-  constructor (props) {
+
+  constructor(props) {
     super(props);
 
     this.state = {
-      listDataset: [],
-      listStories: [],
-      listDashboards: [],
-      
-      data: [
-        {date: '1', visite: 4000},
-        {date: '2', visite: 3000},
-        {date: '3', visite: 2000},
-        {date: '4', visite: 2780},
-        {date: '5', visite: 1890},
-        {date: '6', visite: 2390},
-        {date: '7', visite: 2090},
-        {date: '8', visite: 1800},
-        {date: '9', visite: 2000},
-        {date: '10', visite: 2780},
-        {date: '11', visite: 4000},
-        {date: '12', visite: 3000},
-        {date: '13', visite: 2000},
-        {date: '14', visite: 1780},
-        {date: '15'},
-        {date: '16'},
-        {date: '17'},
-        {date: '18'},
-        {date: '19'},
-        {date: '20'},
-        {date: '21'},
-        {date: '22'},
-        {date: '23'},
-        {date: '24'},
-        {date: '25'},
-        {date: '26'},
-        {date: '27'},
-        {date: '28'},
-        {date: '29'},
-        {date: '30'},
-        {date: '31'},
-      ]
+      //    listDataset: [],
+        //  listStories: [],
+       //   listDashboards: [],
 
     }
 
+    this.loadDashboard();
+
   }
 
+  loadDashboard = (config) => {
+    this.state = {
+      listDashboards: []
+    };
+
+    let response = homeService.dashboards();
+    response.then((list) => {
+      this.originalDashboard = list;
+      this.setState({
+        listDashboards: list
+      });
+    });
+  }
+
+
   render() {
+
+     const iframeStyle = {
+      width: '100%',
+      height: '300px',
+      border: '0'
+    }
+
     return (
       <div className="container" >
 
         {/* CARDS */}
         <div className="row">
 
-          <div className="col-sm-6 col-md-2">
-            <Card
-              value = "340" 
-            ></Card>
-          </div>
+          {/* GRAPH */}
+          <h2> Ultime Dashboard </h2>
 
-          <div className="col-sm-6 col-md-2">
-            <Card
-              color = "card-inverse card-success"
-              label = "Commenti"
-              icon = "icon-speech"
-              value = "34"
-            ></Card>
+          {/* BOXES */}
+          <div className="col-sm-12 col-md-12">
+
+
+            <Timeline>
+                      {
+          this.state.listDashboards.slice(0, 3).map((dash, index) => {
+            let chartUrl = undefined
+            if (dash.widgets !== '{}'){
+              const dashJson = JSON.parse(dash.widgets)
+              const firstWidget = dashJson[Object.keys(dashJson)[0]];
+              chartUrl = firstWidget['props']['url']
+            }
+            return (
+              <TimelineEvent
+                title="Alessandro"
+                createdAt="2016-09-12 10:06 PM"
+                icon={<i />}
+                iconColor="#6fba1c"
+              >
+                <h6>
+                  <Link to={"/dashboard/list/" + dash.id}>
+                      <h4 className="card-title">{dash.title}</h4>
+                    </Link></h6>
+                <div>
+                    { chartUrl && <iframe
+                      ref="iframe"
+                      frameBorder={'0'}
+                      style={iframeStyle}
+                      src={chartUrl}
+                    />
+                                      }
+                </div>
+</TimelineEvent>)
+          })
+          }
+            </Timeline>
+
           </div>
 
         </div>
-
-        {/* GRAPH */}
-        <h2> TEST </h2>
-        <div className="card">
-            <div className="card-block">
-                <div className="row mb-20">
-                    <div className="col-5">
-                        <h4 className="card-title">Visualizzazioni</h4>
-                        <div className="small text-muted mt-20" >Novembre 2017</div>
-                    </div>
-                    <div className="col-7">
-                        <div className="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">
-                            <div className="btn-group" data-toggle="buttons" aria-label="First group">
-                                <label className="btn btn-outline-secondary">
-                                      Day
-                                </label>
-                                <label className="btn btn-outline-secondary">
-                                      Month
-                                </label>
-                                <label className="btn btn-outline-secondary active">
-                                      Year
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="chart-wrapper" >
-
-                    <ResponsiveContainer aspect={4.0/1.0} width='100%'>
-                  
-                      <AreaChart data={this.state.data}>
-                        <defs>
-                          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#06c" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-                          </linearGradient>
-                        </defs>
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <Tooltip />
-                        <Area type="monotone" dataKey="visite" stroke="#8884d8" fillOpacity={0.6} fill="#06c" />
-                      </AreaChart>
-                    </ResponsiveContainer>
-
-                </div>
-            </div> 
-        </div>
-
-        {/* BOXES */}
+      </div>
+    )
+  }
+}
 
 
+/* 
         <div className="row">
 
           <div className="col-sm-12 col-md-4">
@@ -151,10 +133,5 @@ class Dashboard extends Component {
           </div>
 
         </div>
-
-      </div>
-    )
-  }
-}
-
+*/
 export default Dashboard;
