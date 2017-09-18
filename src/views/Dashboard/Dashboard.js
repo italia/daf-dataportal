@@ -77,7 +77,7 @@ class Dashboard extends Component {
         </div>
 
         {/* GRAPH */}
-
+        <h2> TEST </h2>
         <div className="card">
             <div className="card-block">
                 <div className="row mb-20">
@@ -121,7 +121,7 @@ class Dashboard extends Component {
                     </ResponsiveContainer>
 
                 </div>
-            </div>
+            </div> 
         </div>
 
         {/* BOXES */}
