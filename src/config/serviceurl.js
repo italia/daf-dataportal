@@ -16,7 +16,6 @@ export const serviceurl = {
   apiURLCatalog: "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
   apiURLIngestion: "http://localhost:9002",
   apiURLSecurity : "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
-
   auth: "dGVzdDp0dWxsaWFlYmxp",
 
  "DatasetBackend": {
