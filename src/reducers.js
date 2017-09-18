@@ -14,7 +14,8 @@ import {
   RECEIVE_REGISTRATION,
   RECEIVE_REGISTRATION_ERROR,
   RECEIVE_ACTIVATION,
-  RECEIVE_ACTIVATION_ERROR
+  RECEIVE_ACTIVATION_ERROR,
+  RECEIVE_ADD_DATASET
 } from './actions'
 
 //Object.assign({}, state, .. create a new copy of the state
@@ -98,6 +99,8 @@ function datasetReducer(state = {}, action) {
     case REQUEST_DATASETS:
       return Object.assign({}, state, {'obj': datasets(state[action], action)
       })
+    case RECEIVE_ADD_DATASET:
+      return Object.assign({}, state, {'msg': action.message})
     default:
       return state
   }
