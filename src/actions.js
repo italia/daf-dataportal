@@ -17,6 +17,7 @@ export const RECEIVE_REGISTRATION = 'RECEIVE_REGISTRATION'
 export const RECEIVE_REGISTRATION_ERROR = 'RECEIVE_REGISTRATION_ERROR'
 export const RECEIVE_ACTIVATION = 'RECEIVE_ACTIVATION'
 export const RECEIVE_ACTIVATION_ERROR = 'RECEIVE_ACTIVATION_ERROR'
+export const RECEIVE_ADD_DATASET = 'RECEIVE_ADD_DATASET'
 
 function requestDatasets() {
   return {
@@ -59,6 +60,14 @@ function receiveDatasetDetail(json) {
   }
 }
 
+function receiveAddDataset(response) { 
+  return {
+      type: RECEIVE_ADD_DATASET,
+      user: response,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_ADD_DATASET'
+  }
+}
 
 function removeLoggedUser() {
   console.log('removeLoggedUser');
@@ -364,5 +373,26 @@ export function activateUser(token) {
       }
     }).then(response => dispatch(receiveActivationSuccess(response)))
       .catch(error => dispatch(receiveActivationError(error)))
+  }
+}
+
+export function addDataset(json, encodedString) {
+  console.log("Called action addDataset");
+  var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
+  localStorage.setItem('encodedString', encodedString);
+
+  return dispatch => {
+      dispatch(requestLogin())
+      return fetch(url, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + encodedString
+          },
+          body: JSON.stringify(json)
+        })
+        .then(response => response.json())
+        .then(json => dispatch(receiveAddDataset(json)))
   }
 }

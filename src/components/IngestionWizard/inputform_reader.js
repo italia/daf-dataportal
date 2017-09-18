@@ -19,7 +19,7 @@ function sendPostDataMeta(json, file) {
   var encodedString = '';
 
   if(localStorage.getItem('encodedString') && localStorage.getItem('encodedString') != 'null'){
-    var encodedString = localStorage.getItem('encodedString')
+    var encodedString = localStorage.getItem('encodedString');
 
     $.ajax({
     type: "POST",
