@@ -11,8 +11,6 @@ import PropTypes from 'prop-types'
 const transformer = values => {
   var metacatalog = {}
   metacatalog = createMetacatalog(values, metacatalog)
-  //console.log(JSON.stringify(values))
-  //console.log(JSON.stringify(metacatalog))
   return metacatalog
 }
 
@@ -29,8 +27,8 @@ class IngestionForm extends Component {
   const transformed = transformer(values)
   //sendPostDataMeta(transformed, undefined)
   const { dispatch, resetForm } = this.props;
-  if(localStorage.getItem('encodedString') && localStorage.getItem('encodedString') != 'null'){
-  dispatch(addDataset(transformed, localStorage.getItem('encodedString')))
+  if(localStorage.getItem('token') && localStorage.getItem('token') != 'null'){
+  dispatch(addDataset(transformed, localStorage.getItem('token')))
     .then(() => {
       this.setState({msg: 'Dataset caricato correttamente', msgErr: ''})
     }).then(() => {dispatch(reset('wizard'))})
@@ -40,7 +38,7 @@ class IngestionForm extends Component {
     })
   console.log('login effettuato');
   } else {
-    console.log('encodedString non presente');
+    console.log('token non presente');
   }
 }
 

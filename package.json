@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "avsc": "^5.0.4",
+    "base-64": "^0.1.0",
     "bootstrap": "^3.3.7",
     "chart.js": "^1.1.1",
     "draft-js": "^0.10.1",

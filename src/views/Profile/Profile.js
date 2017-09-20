@@ -8,7 +8,7 @@ class Profile extends Component {
     const { loggedUser, organizations } = this.props
     return (
     <div className="form-group row">
-        <div className="col-md-6">
+        <div className="col-md-9">
             <div className="card">
                 <div className="card-block">
                     <div className="form-group row">
@@ -29,17 +29,18 @@ class Profile extends Component {
                             <input className="form-control" type="search" value={loggedUser?loggedUser.sn:''} id="example-search-input"/>
                         </div>
                     </div>
-                    <div className="form-group">
-                        <label>Organizzazioni</label>
-                        {organizations.map(organization => 
-                            <input key={organization.name} type="email" className="form-control" id="exampleInputEmail1" value={organization.name}/>
-                        )
-                        }
-                    </div>
-                    <div className="col-md-9 offset-md-9">
-                    <button type="button" className="btn btn-primary" data-toggle="button" aria-pressed="false">
-                        Modifica
-                    </button>
+                    <div className="form-group row">
+                        <label htmlFor="example-search-input" className="col-2 col-form-label">Organizzazioni</label>
+                        <div className="col-10">
+                            <select className="form-control" id="organizations" size="5" multiple>
+                                {organizations.map(organization => 
+                                    <option value={organization.name} key={organization.name}>{organization.name}</option>
+                                )
+                                }
+                            </select>
+                        </div>
+                        
+                       
                     </div>
                 </div>
             </div>

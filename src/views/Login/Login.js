@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { loginAction, addUserOrganization } from './../../actions.js'
+import { setAuthToken, loginAction, addUserOrganization, loadDatasets } from './../../actions.js'
 import PropTypes from 'prop-types'
 
 function setErrorMsg(error) {
@@ -15,8 +15,11 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch, selectDataset } = this.props
-    dispatch(loginAction(this.email.value, this.pw.value))
-      .then(dispatch(addUserOrganization(this.email.value, this.pw.value)))
+    dispatch(setAuthToken(this.email.value, this.pw.value))
+      .then(json => {localStorage.setItem('token', json); 
+                      dispatch(loginAction(this.email.value, json))
+                      dispatch(addUserOrganization(this.email.value, json))
+                    })
       .then(() => {
         this.props.history.push('/dashboard')
       })

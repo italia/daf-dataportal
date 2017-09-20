@@ -16,10 +16,10 @@ function getJsonCatalog(){
 
 function sendPostDataMeta(json, file) {
 
-  var encodedString = '';
+  var token = '';
 
-  if(localStorage.getItem('encodedString') && localStorage.getItem('encodedString') != 'null'){
-    var encodedString = localStorage.getItem('encodedString');
+  if(localStorage.getItem('token') && localStorage.getItem('token') != 'null'){
+    var token = localStorage.getItem('token');
 
     $.ajax({
     type: "POST",
@@ -30,7 +30,7 @@ function sendPostDataMeta(json, file) {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + encodedString
+      'Authorization': 'Bearer ' + token
     },
     success: function( data ) {
       console.log(data)

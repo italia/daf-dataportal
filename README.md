@@ -8,6 +8,9 @@ npm start
 Start with mock server:
 npm run mock
 
+Start only mock server:
+npm run start-mock-server
+
 Start in Production Mode:
 npm run build  
 npm install -g serve

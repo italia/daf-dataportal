@@ -18,6 +18,24 @@ export const RECEIVE_REGISTRATION_ERROR = 'RECEIVE_REGISTRATION_ERROR'
 export const RECEIVE_ACTIVATION = 'RECEIVE_ACTIVATION'
 export const RECEIVE_ACTIVATION_ERROR = 'RECEIVE_ACTIVATION_ERROR'
 export const RECEIVE_ADD_DATASET = 'RECEIVE_ADD_DATASET'
+export const RECEIVE_ONTOLOGIES = 'RECEIVE_ONTOLOGIES'
+
+
+/*********************************** REDUX ************************************************ */
+
+function receiveDataset(json) {
+  console.log('receiveDataset');
+  //This function creates an action that a reducer can handle 
+  //Action are payload of information that sends data from the application to the store
+  //Store doesn't have any other way to get data
+  //Action are not responsible for update the state (only reducers) !!! 
+  return {
+      type: RECEIVE_DATASETS,
+      datasets: json,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_DATASETS'
+  }
+}
 
 function requestDatasets() {
   return {
@@ -34,20 +52,6 @@ function requestDatasetDetail(selectDataset) {
 function requestLogin() {
   return {
     type: REQUEST_LOGIN
-  }
-}
-
-function receiveDataset(json) {
-  console.log('receiveDataset');
-  //This function creates an action that a reducer can handle 
-  //Action are payload of information that sends data from the application to the store
-  //Store doesn't have any other way to get data
-  //Action are not responsible for update the state (only reducers) !!! 
-  return {
-      type: RECEIVE_DATASETS,
-      datasets: json,
-      receivedAt: Date.now(),
-      ope: 'RECEIVE_DATASETS'
   }
 }
 
@@ -84,6 +88,16 @@ function receiveLogin(response) {
       user: response,
       receivedAt: Date.now(),
       ope: 'RECEIVE_LOGIN'
+  }
+}
+
+function receiveOntologies(response) {
+  return {
+      type: RECEIVE_ONTOLOGIES,
+      ontologies: response,
+      error: '',
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_ONTOLOGIES'
   }
 }
 
@@ -163,176 +177,18 @@ function cleanDataset(json) {
   }
 }
 
-function fetchDataset(query) {
-  var queryurl='';
-  var encodedString = '';
-  if(query)
-    queryurl='?q=name:*'+query+'*';
-  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameSearch + '?rows=20' + queryurl;
-  var url = serviceurl.apiURLSecurity + '/ckan/searchDataset' + queryurl;  
-  if(localStorage.getItem('username') && localStorage.getItem('encodedString') &&
-    localStorage.getItem('username') != 'null' && localStorage.getItem('encodedString') != 'null'){
-      encodedString = localStorage.getItem('encodedString')
-    }
-  return dispatch => {
-      dispatch(requestDatasets())
-      return fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + encodedString
-        }
-      })
-        .then(response => response.json())
-        .then(json => dispatch(receiveDataset(json)))
-    }
-  }
-
-
-function fetchDatasetDetail(datasetname) {
-  var encodedString = '';
-  //http://localhost:9000/dati-gov/v1/ckan/datasets/${this.props.params.post
-  //var url = 'http://' + serviceurl.DatasetBackend.Search.host + ':' + serviceurl.DatasetBackend.Search.port + serviceurl.DatasetBackend.Search.nameDetail + datasetname;
-  var url = serviceurl.apiURLSecurity + '/ckan/datasets/'  + datasetname;
-  if(localStorage.getItem('username') && localStorage.getItem('encodedString') &&
-    localStorage.getItem('username') != 'null' && localStorage.getItem('encodedString') != 'null'){
-      encodedString = localStorage.getItem('encodedString')
-    }
-  return dispatch => {
-      dispatch(requestDatasetDetail())
-      return fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + encodedString
-        }
-      })
-        .then(response => response.json())
-        .then(json => dispatch(receiveDatasetDetail(json)))
-    }
-  }
-
-
-export function loadDatasets(query) {
-  console.log('Load Dataset action');
-  return (dispatch, getState) => {
-      return dispatch(fetchDataset(query))
-  }
- 
-}
-
-export function unloadDatasets() {
-  console.log('Unload Dataset action');
-  return (dispatch, getState) => {
-      return dispatch(cleanDataset())
-  }
-}
-
-export function datasetDetail(datasetname) {
-  console.log('Dataset Detail action');
-  return (dispatch, getState) => {
-      return dispatch(fetchDatasetDetail(datasetname))
-  }
-}
-
-export function loginAction(username, pw) {
-  console.log("Called action loginAction");
-  var url = serviceurl.apiURLSecurity + '/ipa/user/' + username;
-  var toencode = username + ':' +pw;
-  const encodedString = new Buffer(toencode).toString('base64');
-  localStorage.setItem('encodedString', encodedString);
+function receiveAuth(username, response) { 
+  console.log('Codice di autenticazione utente '+username+'  ricevuto è: ' + response);
   localStorage.setItem('username', username);
-  return dispatch => {
-      dispatch(requestLogin())
-      return fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + encodedString
-          }
-        })
-        .then(response => response.json())
-        .then(json => dispatch(receiveLogin(json)))
-  }
-}
+  localStorage.setItem('token', response);
+} 
+/************************************************************************************************* */
 
-export function loginActionEncoded(username, encodedString) {
-  console.log("Called action loginActionEncoded");
-  var url = serviceurl.apiURLSecurity + '/ipa/user/' + username;
-  localStorage.setItem('encodedString', encodedString);
-  localStorage.setItem('username', username);
-  return dispatch => {
-      dispatch(requestLogin())
-      return fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + encodedString
-          }
-        })
-        .then(response => response.json())
-        .then(json => dispatch(receiveLogin(json)))
-  }
-}
-
-export function logout() {
-  localStorage.removeItem('encodedString');
-  localStorage.removeItem('username');
-  return dispatch => { dispatch(removeLoggedUser()) }
-}
-
-export function addUserOrganization(username, pw) {
-  console.log("Called action loginActionEncoded");
-  var url = serviceurl.apiURLSecurity + '/ckan/userOrganizations/' + username;
-  var toencode = username + ':' +pw;
-  const encodedString = new Buffer(toencode).toString('base64');
-  localStorage.setItem('encodedString', encodedString);
-  localStorage.setItem('username', username);
-  return dispatch => {
-      return fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + encodedString
-          }
-        })
-        .then(response => response.json())
-        .then(json => dispatch(receiveOrganization(json)))
-  }
-}
-
-export function addUserOrganizationEncoded(username, encodedString) {
-  console.log("Called action loginActionEncoded");
-  var url = serviceurl.apiURLSecurity + '/ckan/userOrganizations/' + username;
-  localStorage.setItem('encodedString', encodedString);
-  localStorage.setItem('username', username);
-  return dispatch => {
-      return fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + encodedString
-          }
-        })
-        .then(response => response.json())
-        .then(json => dispatch(receiveOrganization(json)))
-  }
-}
-
+/*********************************** REGISTRATION ************************************************ */
 export function registerUser(nome, cognome, username, email, pw) {
   console.log("Called action registerUser");
   var url = serviceurl.apiURLSecurity + '/ipa/registration/request';
-  //http://localhost:9001/catalog-manager/v1/ipa/registration/request
-
   //TODO: remove basic authentication from register service 
-  //var toencode = 'raippl' + ':' + 'raippl';
-  //const encodedString = new Buffer(toencode).toString('base64');
   var input = {
     'uid': username,
     'givenname': nome,
@@ -358,11 +214,7 @@ export function registerUser(nome, cognome, username, email, pw) {
 export function activateUser(token) {
   console.log("Called action activateUser");
   var url = serviceurl.apiURLSecurity + '/ipa/registration/confirm?token=' + token;
-
   //TODO: remove basic authentication from register service 
-  //var toencode = 'raippl' + ':' + 'raippl';
-  //const encodedString = new Buffer(toencode).toString('base64');
-
   return dispatch => {
     return fetch(url, {
       method: 'GET',
@@ -375,12 +227,140 @@ export function activateUser(token) {
       .catch(error => dispatch(receiveActivationError(error)))
   }
 }
+/****************************************************************************************** */
 
-export function addDataset(json, encodedString) {
+/*********************************** LOGIN ************************************************ */
+export function setAuthToken(username, pw) {
+  const base64 = require('base-64');
+  console.log("Called action setAuthToken");
+  localStorage.setItem('username', username);
+  var headers = new Headers();
+  headers.append("Authorization", "Basic " + base64.encode(username + ":" + pw));
+  var url = serviceurl.apiURLSecurity + '/token';
+  return dispatch => {
+      return fetch(url, {
+          method: 'GET',
+          headers: headers
+        })
+        .then(response => response.json())
+  }
+}
+
+export function loginAction(username, token) {
+  console.log("Called action loginAction");
+  var url = serviceurl.apiURLSecurity + '/ipa/user/' + username;
+  return dispatch => {
+      dispatch(requestLogin())
+      return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then(response => response.json())
+        .then(json => dispatch(receiveLogin(json)))
+  }
+}
+
+export function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('username');
+  return dispatch => { dispatch(removeLoggedUser()) }
+}
+
+export function addUserOrganization(username, token) {
+  console.log("Called action addUserOrganization");
+  var url = serviceurl.apiURLCatalog + '/ckan/userOrganizations/' + username;
+  return dispatch => {
+      return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then(response => response.json())
+        .then(json => dispatch(receiveOrganization(json)))
+  }
+}
+/******************************************************************************* */
+
+/******************************** DATASET ************************************** */
+function fetchDataset(query) {
+  var queryurl='';
+  var token = '';
+  if(query)
+    queryurl='?q=name:*'+query+'*';
+  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset' + queryurl;  
+  if(localStorage.getItem('username') && localStorage.getItem('token') &&
+    localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+      token = localStorage.getItem('token')
+    }
+  return dispatch => {
+      dispatch(requestDatasets())
+      return fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(response => response.json())
+        .then(json => dispatch(receiveDataset(json)))
+    }
+  }
+
+function fetchDatasetDetail(datasetname) {
+  var token = '';
+  var url = serviceurl.apiURLCatalog + '/ckan/datasets/'  + datasetname;
+  if(localStorage.getItem('username') && localStorage.getItem('token') &&
+    localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+      token = localStorage.getItem('token')
+    }
+  return dispatch => {
+      dispatch(requestDatasetDetail())
+      return fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(response => response.json())
+        .then(json => dispatch(receiveDatasetDetail(json)))
+    }
+  }
+
+export function loadDatasets(query) {
+  console.log('Load Dataset action');
+  return (dispatch, getState) => {
+      return dispatch(fetchDataset(query))
+  }
+ 
+}
+
+export function unloadDatasets() {
+  console.log('Unload Dataset action');
+  return (dispatch, getState) => {
+      return dispatch(cleanDataset())
+  }
+}
+
+export function datasetDetail(datasetname) {
+  console.log('Dataset Detail action');
+  return (dispatch, getState) => {
+      return dispatch(fetchDatasetDetail(datasetname))
+  }
+}
+
+export function addDataset(json, token) {
   console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
-  localStorage.setItem('encodedString', encodedString);
-
   return dispatch => {
       dispatch(requestLogin())
       return fetch(url, {
@@ -388,7 +368,7 @@ export function addDataset(json, encodedString) {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + encodedString
+            'Authorization': 'Bearer ' + token
           },
           body: JSON.stringify(json)
         })
@@ -396,3 +376,20 @@ export function addDataset(json, encodedString) {
         .then(json => dispatch(receiveAddDataset(json)))
   }
 }
+/******************************************************************************* */
+
+export function loadOntologies() {
+  console.log('Load Ontologies');
+  var url = 'http://localhost:3001/catalog-manager/v1/ontologies';  
+  return dispatch => {
+      return fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(json => dispatch(receiveOntologies(json)))
+    }
+  }
