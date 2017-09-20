@@ -7,7 +7,7 @@ import configureStore from '../../configureStore'
 import Full from '../Full/'
 import Home from '../Home/'
 import PropTypes from 'prop-types'
-import { loginActionEncoded, addUserOrganizationEncoded } from './../../actions.js'
+import { loginAction, addUserOrganization } from './../../actions.js'
 
 const history = createBrowserHistory();
 
@@ -48,10 +48,10 @@ class App extends Component {
             loading: false
           })
     }else{
-      if(localStorage.getItem('username') && localStorage.getItem('encodedString') &&
-        localStorage.getItem('username') != 'null' && localStorage.getItem('encodedString') != 'null'){
-        dispatch(loginActionEncoded(localStorage.getItem('username'), localStorage.getItem('encodedString')))
-        .then(dispatch(addUserOrganizationEncoded(localStorage.getItem('username'), localStorage.getItem('encodedString'))))
+      if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+        dispatch(loginAction(localStorage.getItem('username'), localStorage.getItem('token')))
+        .then(dispatch(addUserOrganization(localStorage.getItem('username'), localStorage.getItem('token'))))
         .then(this.setState({
                 authed: true,
                 loading: false

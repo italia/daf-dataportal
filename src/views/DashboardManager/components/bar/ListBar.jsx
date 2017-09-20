@@ -23,7 +23,8 @@ export default class ListBar extends React.Component {
       this.props = props;
 
       this.state = {
-        isOpen: false
+        isOpen: false,
+        validationMSg: 'Campo obbligatorio'
       }
   }
 
@@ -56,6 +57,19 @@ export default class ListBar extends React.Component {
     });
 
   }
+
+  validate = (e) => {
+    e.preventDefault()
+    if(!this.title.value){
+      this.setState({
+        validationMSg: 'Campo obbligatorio'
+      });
+    }else{
+      this.setState({
+        validationMSg: null
+      });
+    }
+  }
   
   /**
   * Save Dashboard
@@ -63,21 +77,28 @@ export default class ListBar extends React.Component {
   handleSave = (e) => {
     e.preventDefault()
 
-    //prepara data
-    let layout = { rows: [] };
-    let widgets = {};
-    let request = {
-      title : this.title.value,
-      subtitle : this.subtitle.value,
-      layout : JSON.stringify(layout),
-      widgets : JSON.stringify(widgets),
-      status: 0
-    };
-    
-    //save data
-    dashboardService.save(request).then((data)=> {
-        this.props.history.push('/dashboard/list/'+ data.message + '/edit');
-    })
+    if(this.title.value){
+
+      //prepara data
+      let layout = { rows: [] };
+      let widgets = {};
+      let request = {
+        title : this.title.value,
+        subtitle : this.subtitle.value,
+        layout : JSON.stringify(layout),
+        widgets : JSON.stringify(widgets),
+        status: 0
+      };
+      
+      //save data
+      dashboardService.save(request).then((data)=> {
+          this.props.history.push('/dashboard/list/'+ data.message + '/edit');
+      })
+    } else {
+      this.setState({
+        validationMSg: 'Campo obbligatorio'
+      });
+    }
   }
 
 
@@ -90,11 +111,12 @@ export default class ListBar extends React.Component {
           <form onSubmit={this.save}>
             <ModalHeader>
               <ModalClose onClick={this.hideModal}/>
-              <ModalTitle>Crea una Storia</ModalTitle>
+              <ModalTitle>Crea una Dashboard</ModalTitle>
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
-              <input type="text" className="form-control" ref={(title) => this.title = title} id="title" placeholder="Titolo"/>
+              <input type="text" className="form-control" ref={(title) => this.title = title} onChange={this.validate.bind(this)} id="title" placeholder="Titolo"/>
+              {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
             </div>
             <div className="form-group">
               <input type="text" className="form-control" ref={(subtitle) => this.subtitle = subtitle} id="subtitle" placeholder="Sottotitolo"/>

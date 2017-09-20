@@ -83,7 +83,7 @@ class DashboardList extends Component {
         {
           this.state.dashboards.map((dash, index) => {
             let chartUrl = undefined
-            if (dash.widgets !== '{}'){
+            if (dash.widgets && dash.widgets !== '{}'){
               const dashJson = JSON.parse(dash.widgets)
               const firstWidget = dashJson[Object.keys(dashJson)[0]];
               chartUrl = firstWidget['props']['url']

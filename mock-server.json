@@ -376,5 +376,35 @@
             },
             "footer": "Questo è il footer"
         }
-    }
+    },
+    "/catalog-manager/v1/ontologies":{
+        "get": [
+                {
+                "objectProperties": 26,
+                "ontologyDescription": "This is the ontology of the Italian application profile for Location and Addresses.",
+                "ontologyIRI": "http://stlab.istc.cnr.it/teamdigitale/Ontologie/Location/v0.2/CLV-AP_IT.ttl",
+                "ontologySource": "http://localhost:8000/stanbol/ontonethub/ontology/6SP0mIcPmvhZl6tvL0Fkcw/source",
+                "importedOntologies": 0,
+                "owlClasses": 53,
+                "datatypeProperties": 22,
+                "ontologyName": "CLV-AP_IT",
+                "individuals": 0,
+                "ontologyID": "6SP0mIcPmvhZl6tvL0Fkcw",
+                "annotationProperties": 0
+                },
+                {
+                "objectProperties": 26,
+                "ontologyDescription": "This is the ontology of ...",
+                "ontologyIRI": "http://stlab.istc.cnr.it/teamdigitale/Ontologie/Location/v0.2/CLV-AP_IT.ttl",
+                "ontologySource": "http://localhost:8000/stanbol/ontonethub/ontology/6SP0mIcPmvhZl6tvL0Fkcw/source",
+                "importedOntologies": 0,
+                "owlClasses": 53,
+                "datatypeProperties": 22,
+                "ontologyName": "CCT-AP_IT",
+                "individuals": 0,
+                "ontologyID": "6SP0mIcPmvhZl6tvL0Fkcw",
+                "annotationProperties": 0
+                }
+                ]
+    } 
 }

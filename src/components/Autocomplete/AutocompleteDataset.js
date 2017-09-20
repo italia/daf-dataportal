@@ -45,18 +45,18 @@ class AutocompleteDataset extends Component {
 
   loadCkanSuggestion(newValue) {  
     var that = this;
-    var encodedString = '';
-    var url = serviceurl.apiURLSecurity +'/ckan/autocompleteDataset?q=' + newValue;
-    if(localStorage.getItem('username') && localStorage.getItem('encodedString') &&
-      localStorage.getItem('username') != 'null' && localStorage.getItem('encodedString') != 'null'){
-        encodedString = localStorage.getItem('encodedString')
+    var token = '';
+    var url = serviceurl.apiURLCatalog +'/ckan/autocompleteDataset?q=' + newValue;
+    if(localStorage.getItem('username') && localStorage.getItem('token') &&
+      localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+        token = localStorage.getItem('token')
       }
       return fetch(url, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + encodedString
+          'Authorization': 'Bearer ' + token
         }
       }).then(response => response.json())
         .then(json => this.receiveAutocomplete(json))

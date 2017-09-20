@@ -43,7 +43,7 @@ class Sidebar extends Component {
               <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
               <ul className="nav-dropdown-items">
                 <li className="nav-item">
-                  <NavLink to={'/ontologies'} className="nav-link" activeClassName="active"> Ontologie</NavLink>
+                  <NavLink to={'/ontologies/list'} className="nav-link" activeClassName="active"> Ontologie</NavLink>
                 </li>
                 <li className="nav-item">
                   <NavLink to={'/icons/simple-line-icons'} className="nav-link" activeClassName="active"> Vocabolari</NavLink>
