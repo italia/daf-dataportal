@@ -1,6 +1,7 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import validate from './validate'
+import asyncValidate from './asyncValidate'
 import renderField from './renderField'
 
 const themes = [
@@ -47,9 +48,7 @@ const renderOrganization = ({ input, label, type, organizations, meta: { touched
     </div>
  </div>
 );
-
  
-
 const WizardFormFirstPage = props => {
   const { handleSubmit, previousPage, organizations } = props
   return (
@@ -103,7 +102,9 @@ const WizardFormFirstPage = props => {
 
 export default reduxForm({
   form: 'wizard', // <------ same form name
-  destroyOnUnmount: false, // <------ preserve form data
+  destroyOn: false, // <------ preserve form data
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
-  validate
+  validate,
+  asyncValidate,
+  asyncBlurFields: ['title']
 })(WizardFormFirstPage)
