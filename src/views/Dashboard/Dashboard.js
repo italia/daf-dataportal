@@ -21,7 +21,7 @@ class Dashboard extends Component {
     this.state = {
       //    listDataset: [],
         //  listStories: [],
-       //   listDashboards: [],
+          listDashboards: [],
 
     }
 
@@ -67,7 +67,7 @@ class Dashboard extends Component {
 
             <Timeline>
                       {
-          this.state.listDashboards.slice(0, 3).map((dash, index) => {
+          this.state.listDashboards.slice(0,3).map((dash, index) => {
             let chartUrl = undefined
             if (dash.widgets !== '{}'){
               const dashJson = JSON.parse(dash.widgets)
