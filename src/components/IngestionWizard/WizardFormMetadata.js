@@ -14,8 +14,8 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 
-
-const calcDataFields = (fields, files) =>
+/*
+const calcDataFields = (obj, fields, files) =>
      processInputFileMetadata(files, (resData)=>{
         console.log(JSON.stringify(resData))
         resData.names.map((item, index) => {
@@ -27,8 +27,9 @@ const calcDataFields = (fields, files) =>
         } , 
           fields.push({nome : 'file', tipo : files[0]})
         )
+        obj.setState({uploading: false})
      })
-
+*/
      
 //  var metadata = { "desc": "", "required": 0, "field_type": "","cat": "","tag": "","constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
 const themes = [
@@ -76,13 +77,6 @@ const renderField = ({ input, label, type, value = '', readonly, meta: { touched
     </div>
   </div>
 )
-/*
-name={`${test}.private`}
-type="text"
-component={renderYesNoSelector}
-label="Privato"
-value={`${test}.private`}*/
-
 
 const renderYesNoSelector = ({ input, type, label, value, meta: { touched, error } }) => (
   <div className="form-group row">
@@ -111,81 +105,6 @@ const renderFieldType = ({ input, meta: { touched, error } }) => (
 </div>
   </div>
 );
-
-/*const renderHobbies = ({ fields, meta: { error } }) =>
-  <ul>
-    <li>
-      <button type="button" onClick={() => fields.push()}>
-        Add Hobby
-      </button>
-    </li>
-    {fields.map((hobby, index) =>
-      <li key={index}>
-        <button
-          type="button"
-          title="Remove Hobby"
-          onClick={() => fields.remove(index)}
-        />
-        <Field
-          name={hobby}
-          type="text"
-          component={renderField}
-          label={`Hobby #${index + 1}`}
-        />
-      </li>
-    )}
-    {error &&
-      <li className="error">
-        {error}
-      </li>}
-  </ul> */
-
-
-/*
-const renderMembers = ({ fields, meta: { error, submitFailed } }) =>
-  <ul>
-    <li>
-      <button type="button" onClick={() => fields.push({})}>
-        Add Member
-      </button>
-      {submitFailed &&
-        error &&
-        <span>
-          {error}
-        </span>}
-    </li>
-    {fields.map((member, index) =>
-      <li key={index}>
-        <button
-          type="button"
-          title="Remove Member"
-          onClick={() => fields.remove(index)}
-        />
-        <h4>
-          Field #{index + 1}
-        </h4>
-        <Field
-          name={`${member}.nome`}
-          type="text"
-          component={renderField}
-          label="Nome Campo"
-        />
-        <Field
-          name={`${member}.tipo`}
-          type="text"
-          component={renderField}
-          label="Tipo"
-        />
-       <FieldArray name={`${member}.hobbies`} component={renderHobbies} />
-      </li>
-    )}
-  </ul> */
-
-  /*      <li>
-        <label htmlFor="ds_datafile">Add File</label>
-            <input className="form-control" type="file" id="ds_datafile" accept=".csv, .txt, .json, .avro" />
-            <input type="button" value="Calc Schema" onClick={() => calcDataFields(fields)}/>
-        </li> */
 
 const addMetadataFromFile = ({ fields, meta: { error, submitFailed } }) =>   
  <ul>
@@ -229,60 +148,35 @@ const addMetadataFromFile = ({ fields, meta: { error, submitFailed } }) =>
     )}
   </ul>
 
-//      <FieldArray name="tests" component={addMetadataFromFile}/>
-/*      <Field
-        name="namespace"
-        type="text"
-        component={renderField}
-        label="namespace"
-      />
-      <Field
-        name="name"
-        type="text"
-        component={renderField}
-        label="name"
-      />
-      <Field
-        name="aliases"
-        type="text"
-        component={renderField}
-        label="aliases"
-      />
-  */
-
-//let WizardFormMetadata = props => {
-
 class WizardFormMetadata extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: []
+      files: [],
+      uploading: false
     }
   }
 
-  renderDropzoneInput = ({fields,columnCard, input, reset, meta : {touched, error} }) => 
-       /* <Dropzone
-        name="input"
-        multiple={false}
-        maxSize={52428800}
-        onDrop={this.onDrop.bind(this)} //<= Here
-        >
-        <div>Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
-      </Dropzone>
+
+  calcDataFields (obj, fields, files) {
+  processInputFileMetadata(files, (resData)=>{
+     console.log(JSON.stringify(resData))
+     resData.names.map((item, index) => {
+        console.log(item)
+        fields.push({nome : item, tipo : resData.props[index].type, concetto : '', 
+         desc : '', required : 0, field_type : '' , cat : '', tag : '', 
+         constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
+         data :  resData.data[item]})
+     } , 
+       fields.push({nome : 'file', tipo : files[0]})
+     )
+     obj.setState({uploading: false})
+  })
+  }
 
 
-
-{
-              const {dispatch} = this.props 
-              calcDataFields(fields, filesToUpload);
-              let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
-              fileName = fileName.toLowerCase()
-              fileName.split(" ").join("-")
-              dispatch(change('wizard', 'title', fileName))
-              }
-
-      */
-      <div>   
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, meta : {touched, error} }) => 
+      <div>
       {fields.length > -1 &&
         <div className="form-group">
          <div className="col-md-6 offset-md-3">
@@ -293,14 +187,15 @@ class WizardFormMetadata extends Component {
             maxSize={52428800}
             onDrop={( filesToUpload, e ) => {
               const {dispatch} = this.props 
-              calcDataFields(fields, filesToUpload);
+              this.setState({uploading: true})
+              calcDataFields(this, fields, filesToUpload)
               let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
               fileName = fileName.toLowerCase()
               fileName.split(" ").join("-")
               dispatch(change('wizard', 'title', fileName))
               }
             }>
-            <div>Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+            {this.state.uploading ? <div>Sto caricando il file ....</div>:<div>Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>}
           </Dropzone>
         </div>
       </div>
@@ -415,72 +310,6 @@ class WizardFormMetadata extends Component {
       </div>
       )}
     </div>
-  /*
-         <div className="col-md-6">
-            <div className="card">
-              <div className="card-header">
-                <i className="fa fa-align-justify"></i> Colonna #{index}
-              </div>
-              <div className="card-block">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>{index}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td> test </td>
-                      <td>
-                        <span className="badge badge-success">Active</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Estavan Lykos</td>
-                      <td>
-                        <span className="badge badge-danger">Banned</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Chetan Mohamed</td>
-                      <td>
-                        <span className="badge badge-default">Inactive</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Derick Maximinus</td>
-                      <td>
-                        <span className="badge badge-warning">Pending</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Friderik Dávid</td>
-                      <td>
-                        <span className="badge badge-success">Active</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div> 
-  */
-
-  onDrop(fields, files) {
-    this.setState({
-      files: files
-    })
-    
-    
-    const {dispatch} = this.props 
-    calcDataFields(fields, files);
-    let fileName = files[0].name.toLowerCase().split(".")[0]
-    fileName = fileName.toLowerCase()
-    fileName.split(" ").join("-")
-    dispatch(change('wizard', 'title', fileName))
-
-    setTimeout(function() { this.setState({files: []}); }.bind(this), 3000);    
-}
 
 
   render() {
@@ -496,6 +325,7 @@ class WizardFormMetadata extends Component {
             title={title}
             reset={reset}
             columnCard={columnCard}
+            calcDataFields={this.calcDataFields.bind(this)}
           />
         </div>
       </div>
@@ -512,72 +342,6 @@ class WizardFormMetadata extends Component {
     )
   }
 }
-
-/*
-
-
-
-        <FieldArray
-            name="tests"
-            component={this.renderDropzoneInput}
-            title={title}
-            reset={reset}
-            columnCard={columnCard}
-          />
-
-
-
-
-<Dropzone
-            name="input"
-            multiple={false}
-            maxSize={52428800}
-            onDrop={this.onDrop.bind(this)} //<= Here
-            >
-            <div>Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
-          </Dropzone>
-        </div>
-        {this.state.imageFiles.length > 0 ? <div>
-          <h2>Uploading {this.state.imageFiles.length} files...</h2>
-          </div> : null}
-
-*/ 
-
-
-
-
-
-
-
-
-
-
-/*
-     
-      <div>
-        <button type="submit" className="next">Next</button>
-         <button type="button" className="previous" onClick={previousPage}>
-          Previous
-        </button>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
-        </button>
-      </div>
-      */
-
-
-
-// <FieldArray name="members" component={renderMembers} />
-
-
-//const selector = formValueSelector('wizard') // <-- same as form name
-//WizardFormMetadata = connect(state => {
-  // can select values individually
-//const title = (title) => change('wizard', 'title', title)
-// return {
-//    title
-//  }
-//})(WizardFormMetadata)
 
 WizardFormMetadata = connect(state => {
   // can select values individually

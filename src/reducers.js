@@ -15,7 +15,8 @@ import {
   RECEIVE_REGISTRATION_ERROR,
   RECEIVE_ACTIVATION,
   RECEIVE_ACTIVATION_ERROR,
-  RECEIVE_ADD_DATASET
+  RECEIVE_ADD_DATASET,
+  RECEIVE_ONTOLOGIES
 } from './actions'
 
 //Object.assign({}, state, .. create a new copy of the state
@@ -125,12 +126,22 @@ function userReducer(state = {}, action) {
   }
 }
 
+function ontologiesReducer(state = {}, action) {
+  switch (action.type) {
+    case RECEIVE_ONTOLOGIES:
+      return Object.assign({}, state, {'ont': {'ontologies': action.ontologies, 'error': action.error}})
+    default:
+      return state
+  }
+}
+
 //will mount each reducer with the corresponding key (datasetReducer)
 //but you can change it by naming the key differently (form: reduxFormReducer)
 const rootReducer = combineReducers({
   form: reduxFormReducer,
   datasetReducer,
-  userReducer
+  userReducer,
+  ontologiesReducer
 })
 
 export default rootReducer
