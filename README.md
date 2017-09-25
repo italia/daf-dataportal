@@ -16,4 +16,5 @@ Start only mock server:
 Start in Production Mode:
 ```npm run build  
 npm install -g serve
-serve -s build```
+serve -s build
+```
