@@ -4,7 +4,8 @@ React/Redux `dataportal` skeleton
 
 Start in Debug Mode:
 ```npm install
-npm start```
+npm start
+```
 
 Start with mock server:
 ```npm run mock```
