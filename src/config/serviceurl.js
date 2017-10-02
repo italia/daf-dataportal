@@ -2,8 +2,11 @@ export const serviceurl = {
   // DatasetBackend module configs
   apiURLDatiGov: "http://localhost:9000/dati-gov/v1", 
   apiURLCatalog: "http://localhost:9001/catalog-manager/v1",
-  apiURLIngestion: "http://localhost:9002/ingestion-manager/v1",
-  apiURLSecurity: "http://localhost:9002/security-manager/v1",
+  apiURLIngestion: "http://localhost:9003/ingestion-manager/v1",
+  apiURLSecurity: "http://localhost:9002/security-manager/v1",  
+  //MOCK
+
+ 
 
   //ANDREA
   //apiURLDatiGov: "http://10.100.82.250:9000/dati-gov/v1", 
@@ -21,7 +24,8 @@ export const serviceurl = {
   //apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000/dati-gov/v1", 
   //apiURLCatalog: "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
   //apiURLIngestion: "http://localhost:9002",
-  //apiURLSecurity : "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
+  //apiURLSecurity : "http://security-manager.default.svc.cluster.local:9000/security-manager/v1",
+  
   auth: "dGVzdDp0dWxsaWFlYmxp",
 
  "DatasetBackend": {

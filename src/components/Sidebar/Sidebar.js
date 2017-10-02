@@ -84,6 +84,10 @@ class Sidebar extends Component {
                 </li>
               </ul>
             </li>
+
+            <li className="nav-title">
+              Standards
+            </li>
             <li className={this.activeRoute("/icons")}>
               <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
               <ul className="nav-dropdown-items">
@@ -96,14 +100,9 @@ class Sidebar extends Component {
               </ul>
             </li>
         
-            <li className="nav-item">
-              <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Dashboard</NavLink>
+            <li className="nav-title">
+              Strumenti
             </li>
-                
-            <li className="nav-item">
-              <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Storie</NavLink>
-            </li>
-
             <li className="nav-item">
               <a href='#' onClick={this.openModal} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Grafici</a>
             </li>
@@ -112,6 +111,17 @@ class Sidebar extends Component {
             </li>
             <li className="nav-item">
               <a href='#' onClick={this.openModal} className="nav-link" /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>
+            </li>
+
+            <li className="nav-title">
+              Dashboards
+            </li>
+            <li className="nav-item">
+              <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Dashboard</NavLink>
+            </li>
+                
+            <li className="nav-item">
+              <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Storia</NavLink>
             </li>
           </ul>
         </nav>
