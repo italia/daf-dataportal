@@ -1,4 +1,7 @@
 {
+    "/catalog-manager/v1/token": {
+        "get": "eyJhbGciOiJIUzI1NiJ9.eyIkaW50X3Blcm1zIjpbXSwic3ViIjoib3JnLnBhYzRqLmxkYXAucHJvZmlsZS5MZGFwUHJvZmlsZSNwcm92YWFsbWEiLCIkaW50X3JvbGVzIjpbXX0.Oq93mHzGbCGKczWQ1OqGQk0FbohPyDNw_jeeFgqv7Pw"
+    },
     "/catalog-manager/v1/ipa/user/test": {
         "get": {
                 "sn": "test_sn",

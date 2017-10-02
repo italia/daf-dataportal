@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setAuthToken, loginAction, addUserOrganization, loadDatasets } from './../../actions.js'
+import { setAuthToken, loginAction, addUserOrganization, loadDatasets, setApplicationCookie } from './../../actions.js'
 import PropTypes from 'prop-types'
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
 
 function setErrorMsg(error) {
   return {
@@ -10,7 +18,14 @@ function setErrorMsg(error) {
 }
 
 class Login extends Component {
-  state = { loginMessage: null }
+  constructor(props) {
+      super(props);
+      this.props = props;
+      this.state = {
+        isOpen: false,
+        loginMessage: null
+      }
+  }
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -19,6 +34,7 @@ class Login extends Component {
       .then(json => {localStorage.setItem('token', json); 
                       dispatch(loginAction(this.email.value, json))
                       dispatch(addUserOrganization(this.email.value, json))
+                      dispatch(setApplicationCookie(json))
                     })
       .then(() => {
         this.props.history.push('/dashboard')
@@ -28,88 +44,78 @@ class Login extends Component {
       })
     console.log('login effettuato');
   }
-
-  /*resetPassword = () => {
-    resetPassword(this.email.value)
-      .then(() => this.setState(setErrorMsg(`Password reset email sent to ${this.email.value}.`)))
-      .catch((error) => this.setState(setErrorMsg(`Email address not found.`)))
-  }*/
+  
+  openModal = () => {
+    this.setState({
+      isOpen: true
+    });
+  };
+  
+  hideModal = () => {
+    this.setState({
+      isOpen: false
+    });
+  };
 
   render() {
     return (
-      /*
-      <div className="container">
-        <div className="row">
-          <div className="col align-self-center">
-            <h1> Login </h1>
-              <form onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <label>Username</label>
-                  <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
-                </div>
-                <div className="form-group">
-                  <label>Password</label>
-                  <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
-                </div>
-                {
-                  this.state.loginMessage &&
-                  <div className="alert alert-danger" role="alert">
-                    <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span className="sr-only">Error:</span>
-                    &nbsp;{this.state.loginMessage} <a href="#" onClick={this.resetPassword} className="alert-link">Forgot Password?</a>
-                  </div>
-                }
-                <button type="submit" onClick={this.handleSubmit.bind(this)} className="btn btn-primary">Login</button>
-              </form>
-              <br/>
-              <br/>
-              <br/>
-              <p>Se non hai le credenziali <a href='/#/register'>Registrati qui.</a></p>
-          </div>
-        </div>
-      </div>
-      */
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-8">
-            <div className="card-group mb-0">
-              <div className="card p-2">
-                <div className="card-block">
-                  <h1>Login</h1>
-                  <p className="text-muted">Accedi alla tua area personale</p>
-                  <div className="input-group mb-1">
-                    <span className="input-group-addon">
-                      <i className="icon-user"></i>
-                    </span>
-                    <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
-                  </div><div className="input-group mb-2">
-                    <span className="input-group-addon">
-                      <i className="icon-lock"></i>
-                    </span>
-                    <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
-                  </div><div className="row">
-                    <div className="col-6">
-                      <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
-                    </div><div className="col-6 text-right"><button type="button" className="btn btn-link px-0">Password dimenticata?</button>
+        <div className="container">
+        <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
+          <form>
+            <ModalHeader>
+              <ModalClose onClick={this.hideModal}/>
+              <ModalTitle>Recupero password</ModalTitle>
+            </ModalHeader>
+            <ModalBody>
+            <div className="form-group">
+              <p>Se hai dimenticato la password contattaci al seguente indirizzo email: email@email.com</p>
+            </div>
+
+            </ModalBody>
+            <ModalFooter>
+              <button className='btn btn-default' onClick={this.hideModal}>
+                Chiudi
+              </button>
+            </ModalFooter>
+          </form>
+        </Modal>
+          <div className="row justify-content-center">
+            <div className="col-md-8">
+              <div className="card-group mb-0">
+                <div className="card p-2">
+                  <div className="card-block">
+                    <h1>Login</h1>
+                    <p className="text-muted">Accedi alla tua area personale</p>
+                    <div className="input-group mb-1">
+                      <span className="input-group-addon">
+                        <i className="icon-user"></i>
+                      </span>
+                      <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
+                    </div><div className="input-group mb-2">
+                      <span className="input-group-addon">
+                        <i className="icon-lock"></i>
+                      </span>
+                      <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+                    </div><div className="row">
+                      <div className="col-6">
+                        <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
+                      </div><div className="col-6 text-right"><button type="button" className="btn btn-link px-0" onClick={this.openModal}>Password dimenticata?</button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="card card-inverse card-primary py-3 hidden-md-down">
-                <div className="card-block text-center"><div>
-                  <h2>Iscriviti</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/register')} >Registrati!</button>
-                </div>
+                <div className="card card-inverse card-primary py-3 hidden-md-down">
+                  <div className="card-block text-center"><div>
+                    <h2>Iscriviti</h2>
+                    <p>Per accedere all'area riservata del portale occorre registrarsi qui: </p>
+                    <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/register')} >Registrati!</button>
+                  </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-
-
     )
   }
 }
