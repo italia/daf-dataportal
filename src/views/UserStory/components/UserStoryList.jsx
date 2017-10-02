@@ -73,8 +73,8 @@ class UserStoryList extends Component {
         {
           this.state.userStories.map((story, index) => {
             let chartUrl = undefined
-            if (story.graph){
-              chartUrl = story.graph['props']['url']
+            if (story.graph1){
+              chartUrl = story.graph1['props']['url']
             }
             return (
               <div className="col-sm-4" key={index}>

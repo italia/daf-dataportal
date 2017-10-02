@@ -69,7 +69,7 @@ class Dashboard extends Component {
                       {
           this.state.listDashboards.slice(0, 3).map((dash, index) => {
             let chartUrl = undefined
-            if (dash.widgets !== '{}'){
+            if (dash.widgets && dash.widgets !== '{}'){
               const dashJson = JSON.parse(dash.widgets)
               const firstWidget = dashJson[Object.keys(dashJson)[0]];
               chartUrl = firstWidget['props']['url']
@@ -80,6 +80,7 @@ class Dashboard extends Component {
                 createdAt="2016-09-12 10:06 PM"
                 icon={<i />}
                 iconColor="#6fba1c"
+                key={dash.id}
               >
                 <h6>
                   <Link to={"/dashboard/list/" + dash.id}>
@@ -94,7 +95,7 @@ class Dashboard extends Component {
                     />
                                       }
                 </div>
-</TimelineEvent>)
+              </TimelineEvent>)
           })
           }
             </Timeline>

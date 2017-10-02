@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom'
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
 
 class Sidebar extends Component {
+  constructor(props) {
+      super(props);
+      this.props = props;
+      this.state = {
+        isOpen: false
+      }
+  }
 
   handleClick(e) {
     e.preventDefault();
@@ -12,14 +27,44 @@ class Sidebar extends Component {
     return this.props.location.pathname.indexOf(routeName) > -1 ? 'nav-item nav-dropdown open' : 'nav-item nav-dropdown';
   }
 
-  // secondLevelActive(routeName) {
-  //   return this.props.location.pathname.indexOf(routeName) > -1 ? "nav nav-second-level collapse in" : "nav nav-second-level collapse";
-  // }
+  openModal = () => {
+    this.setState({
+      isOpen: true
+    });
+  };
+  
+  hideModal = () => {
+    this.setState({
+      isOpen: false
+    });
+  };
 
   render() {
     return (
-
       <div className="sidebar">
+        <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
+          <form>
+            <ModalHeader>
+              <ModalClose onClick={this.hideModal}/>
+              <ModalTitle>Reindirizzamento</ModalTitle>
+            </ModalHeader>
+            <ModalBody>
+            <div className="form-group">
+              <p>Stai per essere renidirizzato nell'applicazione Metabase.</p>
+            </div>
+            </ModalBody>
+            <ModalFooter>
+              <button className='btn btn-default' onClick={this.hideModal}>
+                Chiudi
+              </button>
+              <a href={'http://metabase.default.svc.cluster.local:3000'}>
+                <button className='btn btn-default'>
+                  Vai a Metabase
+                </button>
+              </a>
+            </ModalFooter>
+          </form>
+        </Modal>
         <nav className="sidebar-nav">
           <ul className="nav">
             <li className="nav-item">
@@ -60,14 +105,13 @@ class Sidebar extends Component {
             </li>
 
             <li className="nav-item">
-              <a href={'http://metabase.default.svc.cluster.local:3000'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Grafici</a>
-            </li>
-
-            <li className="nav-item">
-              <a href={'http://superset.default.svc.cluster.local:8088'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Busness Intelligence</a>
+              <a href='#' onClick={this.openModal} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Grafici</a>
             </li>
             <li className="nav-item">
-              <a href={'http://localhost/jupyter'} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>
+              <a href='#' onClick={this.openModal} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Busness Intelligence</a>
+            </li>
+            <li className="nav-item">
+              <a href='#' onClick={this.openModal} className="nav-link" /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>
             </li>
           </ul>
         </nav>

@@ -110,8 +110,8 @@ function receiveOrganization(response) {
   }
 }
 
-function receiveActivationSuccess(response) {  
-  if(response.ok)
+function receiveActivationSuccess(ok, json) {  
+  if(ok=='ok')
   return {
       type: RECEIVE_ACTIVATION,
       message: 'Attivazione avvenuta con successo !!!',
@@ -119,13 +119,26 @@ function receiveActivationSuccess(response) {
       receivedAt: Date.now(),
       ope: 'RECEIVE_ACTIVATION'
   }
-  else
-  return {
-      type: RECEIVE_ACTIVATION_ERROR,
-      error: 1,
-      message: 'Errore durante l\'attivazione riprovare più tardi',
-      receivedAt: Date.now(),
-      ope: 'RECEIVE_ACTIVATION_ERROR'
+  else{
+    if(json.code==1){
+      console.log("messaggio errore codificato: " + json.message);
+      return {
+          type: RECEIVE_ACTIVATION_ERROR,
+          error: 1,
+          message: json.message,
+          receivedAt: Date.now(),
+          ope: 'RECEIVE_ACTIVATION_ERROR'
+      }
+    }else{
+      console.log("messaggio errore non codificato!!!");
+      return {
+          type: RECEIVE_ACTIVATION_ERROR,
+          error: 1,
+          message: 'Errore durante l\'attivazione riprovare più tardi',
+          receivedAt: Date.now(),
+          ope: 'RECEIVE_ACTIVATION_ERROR'
+      }
+    }
   }
 }
 
@@ -139,8 +152,8 @@ function receiveActivationError(json) {
   }
 }
 
-function receiveRegistrationSuccess(response) {  
-  if(response.ok)
+function receiveRegistrationSuccess(ok, json) {  
+  if(ok=='ok')
   return {
       type: RECEIVE_REGISTRATION,
       message: 'Registrazione avvenuta con successo !!!',
@@ -148,13 +161,26 @@ function receiveRegistrationSuccess(response) {
       receivedAt: Date.now(),
       ope: 'RECEIVE_REGISTRATION'
   }
-  else
-  return {
-      type: RECEIVE_REGISTRATION_ERROR,
-      error: 1,
-      message: 'Errore durante la registrazione riprovare più tardi',
-      receivedAt: Date.now(),
-      ope: 'RECEIVE_REGISTRATION_ERROR'
+  else{
+    if(json.code==1){
+      console.log("messaggio errore codificato: " + json.message);
+      return {
+          type: RECEIVE_REGISTRATION_ERROR,
+          error: 1,
+          message: json.message,
+          receivedAt: Date.now(),
+          ope: 'RECEIVE_REGISTRATION_ERROR'
+      }
+    }else{
+      console.log("messaggio errore non codificato !!!");
+      return {
+          type: RECEIVE_REGISTRATION_ERROR,
+          error: 1,
+          message: 'Errore durante la registrazione riprovare più tardi',
+          receivedAt: Date.now(),
+          ope: 'RECEIVE_REGISTRATION_ERROR'
+      }
+    }
   }
 }
 
@@ -162,7 +188,7 @@ function receiveRegistrationError(json) {
   return {
       type: RECEIVE_REGISTRATION_ERROR,
       error: 1,
-      message: 'Errore durante la registrazione riprovare più tardi',
+      message: json,
       receivedAt: Date.now(),
       ope: 'RECEIVE_REGISTRATION_ERROR'
   }
@@ -177,17 +203,13 @@ function cleanDataset(json) {
   }
 }
 
-function receiveAuth(username, response) { 
-  console.log('Codice di autenticazione utente '+username+'  ricevuto è: ' + response);
-  localStorage.setItem('username', username);
-  localStorage.setItem('token', response);
-} 
 /************************************************************************************************* */
 
 /*********************************** REGISTRATION ************************************************ */
-export function registerUser(nome, cognome, username, email, pw) {
+export function registerUser(nome, cognome, username, email, pw, pw2) {
   console.log("Called action registerUser");
   var url = serviceurl.apiURLSecurity + '/ipa/registration/request';
+
   //TODO: remove basic authentication from register service 
   var input = {
     'uid': username,
@@ -196,8 +218,9 @@ export function registerUser(nome, cognome, username, email, pw) {
     'mail': email,
     'userpassword': pw,
   };
-
+  var ok = '';
   return dispatch => {
+    if(pw===pw2){
     return fetch(url, {
       method: 'POST',
       headers: {
@@ -206,8 +229,24 @@ export function registerUser(nome, cognome, username, email, pw) {
         'Authorization': 'Basic ' + serviceurl.auth
       },
       body: JSON.stringify(input)
-    }).then(response => dispatch(receiveRegistrationSuccess(response)))
+    })
+    .then(response => {
+        if (response.ok) {
+           response.json().then(json => {
+            console.log(json);
+            dispatch(receiveRegistrationSuccess('ok', json))
+          });
+        } else {
+          response.json().then(json => {
+            console.log(json);
+            dispatch(receiveRegistrationSuccess('ko', json))
+          });
+        }
+      })
     .catch(error => dispatch(receiveRegistrationError(error)))
+    } else{
+      dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
+    }
   }
 }
 
@@ -223,8 +262,19 @@ export function activateUser(token) {
         'Content-Type': 'application/json',
         'Authorization': 'Basic ' + serviceurl.auth
       }
-    }).then(response => dispatch(receiveActivationSuccess(response)))
-      .catch(error => dispatch(receiveActivationError(error)))
+    }).then(response => {
+      if (response.ok) {
+         response.json().then(json => {
+          console.log(json);
+          dispatch(receiveActivationSuccess('ok', json))
+        });
+      } else {
+        response.json().then(json => {
+          console.log(json);
+          dispatch(receiveActivationError('ko', json))
+        });
+      }
+    }).catch(error => dispatch(receiveActivationError(error)))
   }
 }
 /****************************************************************************************** */
@@ -243,6 +293,27 @@ export function setAuthToken(username, pw) {
           headers: headers
         })
         .then(response => response.json())
+  }
+}
+
+export function setApplicationCookie(token) {
+  console.log("Called setApplicationCookie");
+  var url = serviceurl.apiURLSSOManager + '/secured/retriveCookie/superset';
+  return dispatch => {
+      return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then(response => response.json())
+        .then(json => {
+                let cookie = json.result.split('=');
+                console.log('Setto il seguente cookie: '+ cookie[1]);
+                document.cookie = "session=" + cookie[1] + "; path=/; domain=.default.svc.cluster.local";
+        })
   }
 }
 

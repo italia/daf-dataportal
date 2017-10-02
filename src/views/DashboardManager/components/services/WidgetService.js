@@ -9,7 +9,14 @@ export default class WidgetService {
     }
 
     async getIframe() {
-        const response = await fetch( this.urlIframe );
+        const response = await fetch( this.urlIframe , {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
         return response.json();
     }
 

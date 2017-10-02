@@ -9,12 +9,26 @@ export default class DashboardService {
     }
 
     async get(id) {
-        const response = await fetch( this.baseUrl + "/" + id );
+        const response = await fetch( this.baseUrl + "/" + id , {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
         return response.json();
     }
 
     async list(layout, widgets) {
-        const response = await fetch( this.baseUrl );
+        const response = await fetch( this.baseUrl , {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
         return response.json();
     }
 
@@ -27,6 +41,7 @@ export default class DashboardService {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
             body: JSON.stringify(dashboard)
         })
@@ -41,6 +56,7 @@ export default class DashboardService {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
         
