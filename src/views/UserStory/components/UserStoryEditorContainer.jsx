@@ -62,7 +62,7 @@ class UserStoryEditorContainer extends Component {
         <GraphEditor 
           readonly={this.props.readonly}
           keyValue="graph"
-          graph={this.state.dataStory.graph}
+          graph={this.state.dataStory.graph1}
           onChange={this.onChange}
         ></GraphEditor>
 
@@ -76,6 +76,7 @@ class UserStoryEditorContainer extends Component {
           placeholder="Tell your story..."
         ></TextEditor>
 
+        {/* 
         <SectionTitle readonly={this.props.readonly} title="Immagine"/>
         <ImageEditor 
           readonly={this.props.readonly}
@@ -83,7 +84,15 @@ class UserStoryEditorContainer extends Component {
           image={this.state.dataStory.image} 
           onChange={this.onChange}
         ></ImageEditor>
-        
+         */}
+        <SectionTitle readonly={this.props.readonly} title="Grafico"/>
+        <GraphEditor 
+          readonly={this.props.readonly}
+          keyValue="graph"
+          graph={this.state.dataStory.graph2}
+          onChange={this.onChange}
+        ></GraphEditor>
+
         <SectionTitle readonly={this.props.readonly} title="Footer"/>
         <TextEditor 
           readonly={this.props.readonly}

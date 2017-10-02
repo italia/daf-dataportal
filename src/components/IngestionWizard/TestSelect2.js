@@ -21,21 +21,33 @@ function getSuggestions(value, ontologies, filterType) {
 
 function ontologiesFilter(ontologies, regex){
       var res = [];
+      // CNR
+      //ontologies.forEach(function(entry) {
+      //        //console.log('entry: ' + entry['http://www.w3.org/2000/01/rdf-schema#label']);
+      //        var obj = entry['http://www.w3.org/2000/01/rdf-schema#label'];
+      //        obj.forEach(function(lang) {
+      //          //console.log('lang: ' + lang['xml:lang']);
+      //          if(lang['xml:lang'] == 'it'){
+      //            //console.log('lang1: ' + lang['value']);
+      //            if(regex.test(lang['value'])){
+      //                //console.log('lang2: ' + lang['value']);
+      //                entry.name = lang['value'];
+      //                res.push(entry);
+      //            }
+      //          }
+      //        })
+      //      });
+      
       ontologies.forEach(function(entry) {
-              //console.log('entry: ' + entry['http://www.w3.org/2000/01/rdf-schema#label']);
-              var obj = entry['http://www.w3.org/2000/01/rdf-schema#label'];
-              obj.forEach(function(lang) {
-                //console.log('lang: ' + lang['xml:lang']);
-                if(lang['xml:lang'] == 'it'){
-                  //console.log('lang1: ' + lang['value']);
-                  if(regex.test(lang['value'])){
-                      //console.log('lang2: ' + lang['value']);
-                      entry.name = lang['value'];
-                      res.push(entry);
-                  }
-                }
-              })
-            });
+        console.log('entry: ' + entry.label[0].value);
+        if(regex.test(entry.label[0].value)){
+            //console.log('value: ' + entry.label[0].value);
+            //console.log('ontology: ' + entry['label.ontology'][0].value)
+            entry.name = entry.label[0].value + ' [' + entry['label.ontology'][0].value + ']';
+            res.push(entry);
+        }
+      });
+      
       return res; 
 }
 
@@ -85,7 +97,13 @@ const TestSelect2 = createClass({
 	}
     console.log('loadOntologies - newValue: ' + input);    
     var that = this;
-    var url = 'http://stlab.istc.cnr.it/ontonethub/api/find';
+    // URL CNR
+    //var url = 'http://stlab.istc.cnr.it/ontonethub/api/find';
+
+    //TODO
+    // URL ONTONETHUB
+    var url = 'http://localhost:8000/stanbol/ontonethub/ontologies/find';
+
 
    // if(process.env.NODE_ENV=='development'){
    //   that.setState({ ontologies: ontologiesFile });

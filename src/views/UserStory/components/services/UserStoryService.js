@@ -11,12 +11,26 @@ export default class UserStoryService {
     }
 
     async get(id) {
-        const response = await fetch( this.baseUrl + "/" + id );
+        const response = await fetch( this.baseUrl + "/" + id , {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
         return response.json();
     }
 
     async list() {
-        const response = await fetch( this.baseUrl );
+        const response = await fetch( this.baseUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
         //mock
         //const response = await fetch( this.baseUrl + "/list");
         return response.json();
@@ -29,6 +43,7 @@ export default class UserStoryService {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
             body: JSON.stringify(story)
         })
@@ -43,6 +58,7 @@ export default class UserStoryService {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
         

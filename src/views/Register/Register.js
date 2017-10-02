@@ -5,39 +5,33 @@ import PropTypes from 'prop-types'
 
 function setErrorMsg(error) {
   return {
-    registerError: error.message,
-    successMsg: null
+    messaggio: error,
+    error: 1
   }
 }
 
 function setSuccessMsg(msg) {
   return {
-    successMsg: msg.message,
-    registerError: null
+    messaggio: msg,
+    error: 0
   }
 }
 
 class Register extends Component {
-  state = { 
-    registerError: null,
-    successMsg: null 
+  constructor(props) {
+      super(props);
+      this.props = props;
+      this.state = {
+        messaggio: null,
+        error: null
+      }
+      
   }
   
     handleSubmit = (e) => {
       e.preventDefault()
       const { dispatch, selectDataset } = this.props
-      if(this.password.value===this.password2.value){
-      dispatch(registerUser(this.nome.value, this.cognome.value, this.username.value, this.email.value, this.password.value))
-        .then(() => {
-          this.setState(setSuccessMsg('Registrazione avvenuta con successo.'))
-        })
-        .catch((error) => {
-          this.setState(setErrorMsg('Errore durante la registrazione.'))
-        })
-      console.log('registrazione effettuata');
-    }else{
-      this.setState(setErrorMsg('Password e ripeti password non coincidono'))
-    }
+      dispatch(registerUser(this.nome.value, this.cognome.value, this.username.value, this.email.value, this.password.value, this.password2.value))
   }
 
   render() {
@@ -90,16 +84,6 @@ class Register extends Component {
                   <input type="password" className="form-control" ref={(password2) => this.password2 = password2} placeholder="Ripeti password" />
                 </div>
                 <button type="button" className="btn btn-block btn-success" onClick={this.handleSubmit.bind(this)}>Crea Account</button>
-              </div>
-              <div className="card-footer p-2">
-                <div className="row"><div className="col-6">
-                  <button className="btn btn-block btn-facebook" type="button">
-                    <span>Facebook</span></button></div>
-                  <div className="col-6">
-                    <button className="btn btn-block btn-twitter" type="button">
-                      <span>Twitter</span></button>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
