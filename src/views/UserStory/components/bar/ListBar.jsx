@@ -23,10 +23,23 @@ class ViewBar extends React.Component {
       this.props = props;
 
       this.state = {
-        isOpen: false
+        isOpen: false,
+        validationMSg: 'Campo obbligatorio'
       }
   }
 
+  validate = (e) => {
+    e.preventDefault()
+    if(!this.title.value){
+      this.setState({
+        validationMSg: 'Campo obbligatorio'
+      });
+    }else{
+      this.setState({
+        validationMSg: null
+      });
+    }
+  }
   
   openModal = () => {
     this.setState({
@@ -46,6 +59,7 @@ class ViewBar extends React.Component {
   handleSave = (e) => {
     e.preventDefault()
 
+    if(this.title.value){
     //save data
     let request = {
       title: this.title.value
@@ -54,6 +68,11 @@ class ViewBar extends React.Component {
     userStoryService.save(request).then((data)=> {
         this.props.history.push('/user_story/list/'+ data.message + '/edit');
     });
+  }else{
+    this.setState({
+        validationMSg: 'Campo obbligatorio'
+      });
+  }
 
   }
   
@@ -70,7 +89,8 @@ class ViewBar extends React.Component {
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
-              <input type="text" className="form-control" ref={(title) => this.title = title} id="title" placeholder="Titolo"/>
+              <input type="text" className="form-control" ref={(title) => this.title = title} onChange={this.validate.bind(this)} id="title" placeholder="Titolo"/>
+              {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
             </div>
             </ModalBody>
             <ModalFooter>

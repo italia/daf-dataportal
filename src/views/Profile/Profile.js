@@ -33,7 +33,7 @@ class Profile extends Component {
                         <label htmlFor="example-search-input" className="col-2 col-form-label">Organizzazioni</label>
                         <div className="col-10">
                             <select className="form-control" id="organizations" size="5" multiple>
-                                {organizations.map(organization => 
+                                {organizations && organizations.length > 0 && organizations.map(organization => 
                                     <option value={organization.name} key={organization.name}>{organization.name}</option>
                                 )
                                 }
@@ -56,7 +56,7 @@ Profile.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const organizations = state.userReducer['org'].organizations || { };
+    const organizations = state.userReducer['org'] ? state.userReducer['org'].organizations || { } : { };
     const loggedUser = state.userReducer['obj'].loggedUser || { } 
     return { loggedUser, organizations }
 }

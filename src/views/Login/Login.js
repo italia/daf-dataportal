@@ -34,7 +34,8 @@ class Login extends Component {
       .then(json => {localStorage.setItem('token', json); 
                       dispatch(loginAction(this.email.value, json))
                       dispatch(addUserOrganization(this.email.value, json))
-                      dispatch(setApplicationCookie(json))
+                      dispatch(setApplicationCookie(json, 'superset', 'session'))
+                      dispatch(setApplicationCookie(json, 'metabase', 'metabase.SESSION_ID'))
                     })
       .then(() => {
         this.props.history.push('/dashboard')
@@ -86,12 +87,18 @@ class Login extends Component {
                   <div className="card-block">
                     <h1>Login</h1>
                     <p className="text-muted">Accedi alla tua area personale</p>
+                    {this.state.loginMessage && 
+                      <div className="alert alert-danger" role="alert">
+                        {this.state.loginMessage}
+                      </div>
+                      }
                     <div className="input-group mb-1">
                       <span className="input-group-addon">
                         <i className="icon-user"></i>
                       </span>
                       <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
-                    </div><div className="input-group mb-2">
+                    </div>
+                    <div className="input-group mb-2">
                       <span className="input-group-addon">
                         <i className="icon-lock"></i>
                       </span>

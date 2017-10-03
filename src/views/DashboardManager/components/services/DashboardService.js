@@ -35,7 +35,7 @@ export default class DashboardService {
     async save(dashboard) {
 
         let id = dashboard.id || "save"
-        
+        dashboard['timestamp'] = new Date(); 
         const response = await fetch( this.baseUrl, {
             method: 'POST',
             headers: {

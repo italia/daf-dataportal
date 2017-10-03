@@ -74,7 +74,7 @@ class EditBarTop extends React.Component {
             <h3 className="card-title">{this.state.dashboard.title}</h3>
             </div>
             <div className="col-sm-7">
-              <h7 className="card-title">Sottotitolo</h7>
+              <h7 className="card-title">{this.state.dashboard.subtitle}</h7>
             </div>
             <div className="col-sm-5 hidden-sm-down">
               <div className="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">

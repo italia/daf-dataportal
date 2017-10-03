@@ -3,14 +3,6 @@ import Components from 'react';
 import { Route, Link } from 'react-router-dom';
 import ListBar from './bar/ListBar';
 import Dimensions from 'react-dimensions'
-import {
-  Modal,
-  ModalHeader,
-  ModalTitle,
-  ModalClose,
-  ModalBody,
-  ModalFooter
-} from 'react-modal-bootstrap';
 
 // App components
 import Header from './Header';
@@ -95,7 +87,7 @@ class DashboardList extends Component {
                     <Link to={"/dashboard/list/" + dash.id}>
                       <h4 className="card-title">{dash.title}</h4>
                     </Link>
-                    <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
+                    <h6 className="card-subtitle mb-2 text-muted">{dash.subtitle}</h6>
                     { chartUrl && <iframe
                       ref="iframe"
                       frameBorder={'0'}

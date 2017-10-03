@@ -83,7 +83,7 @@ class UserStoryList extends Component {
                     <Link to={"/user_story/list/" + story.id}>
                       <h4 className="card-title">{story.title}</h4>
                     </Link>
-                    <h6 className="card-subtitle mb-2 text-muted">Sottotitolo</h6>
+                    <h6 className="card-subtitle mb-2 text-muted">{story.subtitle}</h6>
                       { chartUrl && <iframe
                       ref="iframe"
                       frameBorder={'0'}
@@ -92,11 +92,11 @@ class UserStoryList extends Component {
                     />
                     }
                     {
-                    story.status==true &&
+                    story.published==true &&
                     <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
                     }
                     {
-                      !story.status &&
+                      !story.published &&
                       <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
                     }
                   </div>

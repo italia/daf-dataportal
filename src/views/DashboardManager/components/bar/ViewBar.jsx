@@ -15,7 +15,7 @@ class ViewBar extends React.Component {
           <h3 className="card-title">{this.props.title}</h3>
         </div>
         <div className="col-sm-7">
-          <h7 className="card-title">Sottotitolo</h7>
+          <h7 className="card-title">{this.props.subtitle}</h7>
         </div>
         <div className="col-sm-5 hidden-sm-down">
           <div className="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">

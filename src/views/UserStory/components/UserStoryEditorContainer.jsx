@@ -26,6 +26,7 @@ class UserStoryEditorContainer extends Component {
 
   onChange = function(key, value) {
     this.state.dataStory[key] = value;
+    this.state.dataStory['timestamp'] = new Date(); 
     if(this.props.onChange)
       this.props.onChange(this.state.dataStory);
   }
@@ -61,7 +62,7 @@ class UserStoryEditorContainer extends Component {
         <SectionTitle readonly={this.props.readonly} title="Grafico"/>
         <GraphEditor 
           readonly={this.props.readonly}
-          keyValue="graph"
+          keyValue="graph1"
           graph={this.state.dataStory.graph1}
           onChange={this.onChange}
         ></GraphEditor>
@@ -76,19 +77,10 @@ class UserStoryEditorContainer extends Component {
           placeholder="Tell your story..."
         ></TextEditor>
 
-        {/* 
-        <SectionTitle readonly={this.props.readonly} title="Immagine"/>
-        <ImageEditor 
-          readonly={this.props.readonly}
-          keyValue="image"
-          image={this.state.dataStory.image} 
-          onChange={this.onChange}
-        ></ImageEditor>
-         */}
         <SectionTitle readonly={this.props.readonly} title="Grafico"/>
         <GraphEditor 
           readonly={this.props.readonly}
-          keyValue="graph"
+          keyValue="graph2"
           graph={this.state.dataStory.graph2}
           onChange={this.onChange}
         ></GraphEditor>
