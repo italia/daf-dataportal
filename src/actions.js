@@ -156,7 +156,7 @@ function receiveRegistrationSuccess(ok, json) {
   if(ok=='ok')
   return {
       type: RECEIVE_REGISTRATION,
-      message: 'Registrazione avvenuta con successo !!!',
+      message: 'Registrazione avvenuta con successo, a breve riceverai una mail per l\'attivazione all\'indirizzo indicato',
       error: 0,
       receivedAt: Date.now(),
       ope: 'RECEIVE_REGISTRATION'
@@ -296,9 +296,9 @@ export function setAuthToken(username, pw) {
   }
 }
 
-export function setApplicationCookie(token) {
+export function setApplicationCookie(token, nomeApp, nomeCookie) {
   console.log("Called setApplicationCookie");
-  var url = serviceurl.apiURLSSOManager + '/secured/retriveCookie/superset';
+  var url = serviceurl.apiURLSSOManager + '/secured/retriveCookie/' + nomeApp;
   return dispatch => {
       return fetch(url, {
           method: 'GET',
@@ -310,9 +310,11 @@ export function setApplicationCookie(token) {
         })
         .then(response => response.json())
         .then(json => {
-                let cookie = json.result.split('=');
-                console.log('Setto il seguente cookie: '+ cookie[1]);
-                document.cookie = "session=" + cookie[1] + "; path=/; domain=.default.svc.cluster.local";
+                if(json.result){
+                  let cookie = json.result.split('=');
+                  console.log('Setto il seguente cookie: '+ cookie[1]);
+                  document.cookie = nomeCookie + "=" + cookie[1] + "; path=/; domain=.default.svc.cluster.local";
+                }
         })
   }
 }

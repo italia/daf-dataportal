@@ -115,7 +115,8 @@ class DashboardView extends Component {
       this.state.widgets = dashboard.widgets;
       this.setState({
         layout: dashboard.layout,
-        title: dashboard.title
+        title: dashboard.title,
+        subtitle: dashboard.subtitle
       });
     });
 
@@ -128,7 +129,7 @@ class DashboardView extends Component {
   render() {
     return (
     <Container>
-      <ViewBar title={this.state.title} id={this.state.id}></ViewBar>
+      <ViewBar title={this.state.title} subtitle={this.state.subtitle} id={this.state.id}></ViewBar>
       <Dashboard
         frameComponent={CustomFrame}
         layout={this.state.layout}

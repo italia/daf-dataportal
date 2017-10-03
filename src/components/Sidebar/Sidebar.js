@@ -8,13 +8,16 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
+import { serviceurl } from '../../config/serviceurl.js'
 
 class Sidebar extends Component {
   constructor(props) {
       super(props);
       this.props = props;
       this.state = {
-        isOpen: false
+        isOpen: false,
+        url: null,
+        name: null
       }
   }
 
@@ -27,9 +30,11 @@ class Sidebar extends Component {
     return this.props.location.pathname.indexOf(routeName) > -1 ? 'nav-item nav-dropdown open' : 'nav-item nav-dropdown';
   }
 
-  openModal = () => {
+  openModal(name, url){
     this.setState({
-      isOpen: true
+      isOpen: true,
+      url: url,
+      name: name
     });
   };
   
@@ -37,94 +42,89 @@ class Sidebar extends Component {
     this.setState({
       isOpen: false
     });
+    window.open(this.state.url);
   };
 
   render() {
     return (
-      <div className="sidebar">
+      <div>
         <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
-          <form>
-            <ModalHeader>
-              <ModalClose onClick={this.hideModal}/>
-              <ModalTitle>Reindirizzamento</ModalTitle>
-            </ModalHeader>
-            <ModalBody>
-            <div className="form-group">
-              <p>Stai per essere renidirizzato nell'applicazione Metabase.</p>
-            </div>
-            </ModalBody>
-            <ModalFooter>
-              <button className='btn btn-default' onClick={this.hideModal}>
-                Chiudi
-              </button>
-              <a href={'http://metabase.default.svc.cluster.local:3000'}>
-                <button className='btn btn-default'>
-                  Vai a Metabase
-                </button>
-              </a>
-            </ModalFooter>
-          </form>
-        </Modal>
-        <nav className="sidebar-nav">
-          <ul className="nav">
-            <li className="nav-item">
-              <NavLink to={'/home'} className="nav-link" activeClassName="active"><i className="icon-home"></i> Home</NavLink>
-            </li>
-            <li className="nav-title">
-              Azioni
-            </li>
-            <li className={this.activeRoute("/components")}>
-              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-puzzle"></i> Dataset</a>
-              <ul className="nav-dropdown-items">
-                <li className="nav-item">
-                  <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica</NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink to={'/components/social-buttons'} className="nav-link" activeClassName="active"> Monitora</NavLink>
-                </li>
-              </ul>
-            </li>
+        <form>
+          <ModalHeader>
+            <ModalClose onClick={this.hideModal}/>
+            <ModalTitle>Reindirizzamento</ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+          <div className="form-group">
+            <p>Stai per essere renidirizzato nell'applicazione {this.state.name}.</p>
+          </div>
+          </ModalBody>
+          <ModalFooter>
+            <button className='btn btn-default' onClick={this.hideModal}>
+              Chiudi
+            </button>
+            <button className='btn btn-default' onClick={this.hideModal}>
+              Vai a {this.state.name}
+            </button>
+          </ModalFooter>
+        </form>
+      </Modal>
+        <div className="sidebar">
+          <nav className="sidebar-nav">
+            <ul className="nav">
+              <li className="nav-item">
+                <NavLink to={'/home'} className="nav-link" activeClassName="active"><i className="icon-home"></i> Home</NavLink>
+              </li>
+              <li className="nav-title">
+                Azioni
+              </li>
+              <li className={this.activeRoute("/components")}>
+                <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-puzzle"></i> Dataset</a>
+                <ul className="nav-dropdown-items">
+                  <li className="nav-item">
+                    <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica</NavLink>
+                  </li>
+                </ul>
+              </li>
 
-            <li className="nav-title">
-              Standards
-            </li>
-            <li className={this.activeRoute("/icons")}>
-              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
-              <ul className="nav-dropdown-items">
-                <li className="nav-item">
-                  <NavLink to={'/ontologies/list'} className="nav-link" activeClassName="active"> Ontologie</NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink to={'/icons/simple-line-icons'} className="nav-link" activeClassName="active"> Vocabolari</NavLink>
-                </li>
-              </ul>
-            </li>
-        
-            <li className="nav-title">
-              Strumenti
-            </li>
-            <li className="nav-item">
-              <a href='#' onClick={this.openModal} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Grafici</a>
-            </li>
-            <li className="nav-item">
-              <a href='#' onClick={this.openModal} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Busness Intelligence</a>
-            </li>
-            <li className="nav-item">
-              <a href='#' onClick={this.openModal} className="nav-link" /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>
-            </li>
+              <li className="nav-title">
+                Standards
+              </li>
+              <li className={this.activeRoute("/icons")}>
+                <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
+                <ul className="nav-dropdown-items">
+                  <li className="nav-item">
+                    <NavLink to={'/ontologies/list'} className="nav-link" activeClassName="active"> Ontologie</NavLink>
+                  </li>
+                </ul>
+              </li>
+          
+              <li className="nav-title">
+                Strumenti
+              </li>
+              <li className="nav-item">
+                <a onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Grafici</a>
+              </li>
+              <li className="nav-item">
+                <a onClick={() => this.openModal('Superset', serviceurl.urlSuperset)} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Busness Intelligence</a>
+              </li>
+              <li className="nav-item">
+                <a onClick={() => this.openModal('Jupiter', serviceurl.urlJupiter)} className="nav-link" /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>
+              </li>
 
-            <li className="nav-title">
-              Dashboards
-            </li>
-            <li className="nav-item">
-              <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Dashboard</NavLink>
-            </li>
-                
-            <li className="nav-item">
-              <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Storia</NavLink>
-            </li>
-          </ul>
-        </nav>
+              <li className="nav-title">
+                Dashboards
+              </li>
+              <li className="nav-item">
+                <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Dashboard</NavLink>
+              </li>
+                  
+              <li className="nav-item">
+                <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Storia</NavLink>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     )
   }
