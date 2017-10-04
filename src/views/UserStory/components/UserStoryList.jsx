@@ -83,7 +83,7 @@ class UserStoryList extends Component {
                     <Link to={"/user_story/list/" + story.id}>
                       <h4 className="card-title">{story.title}</h4>
                     </Link>
-                    <h6 className="card-subtitle mb-2 text-muted">{story.subtitle}</h6>
+                    <h6 className="card-subtitle mb-2 text-muted" dangerouslySetInnerHTML={{__html: story.subtitle}}></h6>
                       { chartUrl && <iframe
                       ref="iframe"
                       frameBorder={'0'}

@@ -68,16 +68,21 @@ class Dashboard extends Component {
             <Timeline>
                       {
           this.state.listDashboards.slice(0,3).map((dash, index) => {
+            let timestamp = undefined 
             let chartUrl = undefined
             if (dash.widgets && dash.widgets !== '{}'){
               const dashJson = JSON.parse(dash.widgets)
               const firstWidget = dashJson[Object.keys(dashJson)[0]];
               chartUrl = firstWidget['props']['url']
             }
+            if(dash.timestamp){
+              timestamp = dash.timestamp.dayOfMonth+"-"+dash.timestamp.monthValue+"-"+dash.timestamp.year+" "+dash.timestamp.hour+":"+dash.timestamp.minute;
+            }
             return (
               <TimelineEvent
-                title="Alessandro"
-                createdAt="2016-09-12 10:06 PM"
+                title={dash.user}
+                //createdAt="2016-09-12 10:06 PM"
+                createdAt={timestamp}
                 icon={<i />}
                 iconColor="#6fba1c"
                 key={dash.id}

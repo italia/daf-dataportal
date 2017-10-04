@@ -1,6 +1,6 @@
 export const serviceurl = {
   // DatasetBackend module configs
-  /*apiURLSSOManager: "http://localhost:9001/sso-manager/v1",
+  /*apiURLSSOManager: "http://localhost:9002/sso-manager",
   apiURLDatiGov: "http://localhost:9000/dati-gov/v1", 
   apiURLCatalog: "http://localhost:9001/catalog-manager/v1",
   apiURLIngestion: "http://localhost:9002/ingestion-manager/v1",
