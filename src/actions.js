@@ -296,7 +296,7 @@ export function setAuthToken(username, pw) {
   }
 }
 
-export function setApplicationCookie(token, nomeApp, nomeCookie) {
+export function setApplicationCookie(nomeApp) {
   console.log("Called setApplicationCookie");
   var url = serviceurl.apiURLSSOManager + '/secured/retriveCookie/' + nomeApp;
   return dispatch => {
@@ -305,23 +305,16 @@ export function setApplicationCookie(token, nomeApp, nomeCookie) {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         })
         .then(response => response.json())
-        .then(json => {
-                if(json.result){
-                  let cookie = json.result.split('=');
-                  console.log('Setto il seguente cookie: '+ cookie[1]);
-                  document.cookie = nomeCookie + "=" + cookie[1] + "; path=/; domain=.default.svc.cluster.local";
-                }
-        })
   }
 }
 
-export function loginAction(username, token) {
+export function loginAction() {
   console.log("Called action loginAction");
-  var url = serviceurl.apiURLSecurity + '/ipa/user/' + username;
+  var url = serviceurl.apiURLSecurity + '/ipa/user/' + localStorage.getItem('username')
   return dispatch => {
       dispatch(requestLogin())
       return fetch(url, {
@@ -329,7 +322,7 @@ export function loginAction(username, token) {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         })
         .then(response => response.json())
@@ -343,16 +336,16 @@ export function logout() {
   return dispatch => { dispatch(removeLoggedUser()) }
 }
 
-export function addUserOrganization(username, token) {
+export function addUserOrganization() {
   console.log("Called action addUserOrganization");
-  var url = serviceurl.apiURLCatalog + '/ckan/userOrganizations/' + username;
+  var url = serviceurl.apiURLCatalog + '/ckan/userOrganizations/' + localStorage.getItem('username');
   return dispatch => {
       return fetch(url, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         })
         .then(response => response.json())
