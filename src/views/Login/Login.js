@@ -53,12 +53,20 @@ class Login extends Component {
                                       console.log('2 - Setto il seguente cookie: '+ cookie[1] + ' per superset');
                                       document.cookie = "session=" + cookie[1] + "; path=/; domain=.default.svc.cluster.local";
                                       //document.cookie = "session=" + cookie[1];
-                                      console.log('3 - Cookie settato')
-                                      this.props.history.push('/dashboard')
-                                      console.log('4 - redirect effettuato')
-                                      dispatch(loginAction())
-                                      dispatch(addUserOrganization())
-                                      this.props.history.push('/dashboard')
+                                      console.log('3 - Cookie superset settato')
+                                      dispatch(setApplicationCookie('metabase'))
+                                      .then(json => { if(json.result){
+                                              let cookie = json.result;
+                                              console.log('4 - Setto il seguente cookie: '+ cookie + ' per metabase');
+                                              document.cookie = "metabase.SESSION_ID=" + cookie + "; path=/; domain=.default.svc.cluster.local";
+                                              //document.cookie = "session2=" + cookie;
+                                              console.log('5 - Cookie metabase settato')
+                                              dispatch(loginAction())
+                                              dispatch(addUserOrganization())
+                                              this.props.history.push('/dashboard')
+                                              console.log('6 - redirect effettuato')
+                                            }
+                                        })
                                     }
                     })
               }) 

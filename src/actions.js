@@ -282,7 +282,7 @@ export function activateUser(token) {
 /*********************************** LOGIN ************************************************ */
 export function setAuthToken(username, pw) {
   const base64 = require('base-64');
-  console.log("Called action setAuthToken");
+  console.log("1 - Called action setAuthToken");
   localStorage.setItem('username', username);
   var headers = new Headers();
   headers.append("Authorization", "Basic " + base64.encode(username + ":" + pw));
