@@ -56,9 +56,9 @@ class Login extends Component {
                                       console.log('3 - Cookie superset settato')
                                       dispatch(setApplicationCookie('metabase'))
                                       .then(json => { if(json.result){
-                                              let cookie = json.result;
-                                              console.log('4 - Setto il seguente cookie: '+ cookie + ' per metabase');
-                                              document.cookie = "metabase.SESSION_ID=" + cookie + "; path=/; domain=.default.svc.cluster.local";
+                                              let cookie = json.result.split('=');
+                                              console.log('4 - Setto il seguente cookie: '+ cookie[1] + ' per metabase');
+                                              document.cookie = "metabase.SESSION_ID=" + cookie[1] + "; path=/; domain=.default.svc.cluster.local";
                                               //document.cookie = "session2=" + cookie;
                                               console.log('5 - Cookie metabase settato')
                                               dispatch(loginAction())
