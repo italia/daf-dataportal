@@ -46,6 +46,9 @@ class IngestionForm extends Component {
   render() {
     return (
       <div className="animated fadeIn">
+        <div className="alert alert-danger" role="alert">
+          Attenzione, il seguente componente è in versione beta.
+        </div>
         {this.state.msgErr &&
             <div className="alert alert-danger" role="alert">
               {this.state.msgErr} 

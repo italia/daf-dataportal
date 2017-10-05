@@ -1,6 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import page from './data/dataset'
 import det from './data/datasetdetail'
+import ont from './data/ontologies'
+import voc from './data/vocabulary'
 import { serviceurl } from './config/serviceurl.js'
 
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
@@ -19,6 +21,7 @@ export const RECEIVE_ACTIVATION = 'RECEIVE_ACTIVATION'
 export const RECEIVE_ACTIVATION_ERROR = 'RECEIVE_ACTIVATION_ERROR'
 export const RECEIVE_ADD_DATASET = 'RECEIVE_ADD_DATASET'
 export const RECEIVE_ONTOLOGIES = 'RECEIVE_ONTOLOGIES'
+export const RECEIVE_VOCABULARY = 'RECEIVE_VOCABULARY'
 
 
 /*********************************** REDUX ************************************************ */
@@ -94,10 +97,22 @@ function receiveLogin(response) {
 function receiveOntologies(response) {
   return {
       type: RECEIVE_ONTOLOGIES,
-      ontologies: response,
+      //ontologies: response,
+      ontologies: ont,
       error: '',
       receivedAt: Date.now(),
       ope: 'RECEIVE_ONTOLOGIES'
+  }
+}
+
+function receiveVocabulary(response) {
+  return {
+      type: RECEIVE_VOCABULARY,
+      //ontologies: response,
+      vocabulary: voc,
+      error: '',
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_VOCABULARY'
   }
 }
 
@@ -359,8 +374,8 @@ function fetchDataset(query) {
   var queryurl='';
   var token = '';
   if(query)
-    queryurl='?q=name:*'+query+'*';
-  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset' + queryurl;  
+    queryurl='&q=name:*'+query+'*';
+  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=10&start=0' + queryurl;  
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
       token = localStorage.getItem('token')
@@ -446,7 +461,7 @@ export function addDataset(json, token) {
 
 export function loadOntologies() {
   console.log('Load Ontologies');
-  var url = 'http://localhost:3001/catalog-manager/v1/ontologies';  
+  /*var url = 'http://localhost:3001/catalog-manager/v1/ontologies';  
   return dispatch => {
       return fetch(url, {
         method: 'GET',
@@ -457,5 +472,27 @@ export function loadOntologies() {
       })
         .then(response => response.json())
         .then(json => dispatch(receiveOntologies(json)))
+    }*/
+    return dispatch => {
+      dispatch(receiveOntologies(undefined));
     }
   }
+
+  export function loadVocabulary() {
+    console.log('Load Vocabulary');
+    /*var url = 'http://localhost:3001/catalog-manager/v1/ontologies';  
+    return dispatch => {
+        return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => response.json())
+          .then(json => dispatch(receiveOntologies(json)))
+      }*/
+      return dispatch => {
+        dispatch(receiveVocabulary(undefined));
+      }
+    }

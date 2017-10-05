@@ -38,11 +38,17 @@ class Sidebar extends Component {
     });
   };
   
-  hideModal = () => {
+  hideModalAndRedirect = () => {
     this.setState({
       isOpen: false
     });
     window.open(this.state.url);
+  };
+
+  hideModal = () => {
+    this.setState({
+      isOpen: false
+    });
   };
 
   render() {
@@ -63,7 +69,7 @@ class Sidebar extends Component {
             <button className='btn btn-default' onClick={this.hideModal}>
               Chiudi
             </button>
-            <button className='btn btn-default' onClick={this.hideModal}>
+            <button className='btn btn-default' onClick={this.hideModalAndRedirect}>
               Vai a {this.state.name}
             </button>
           </ModalFooter>
@@ -82,7 +88,7 @@ class Sidebar extends Component {
                 <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-puzzle"></i> Dataset</a>
                 <ul className="nav-dropdown-items">
                   <li className="nav-item">
-                    <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica</NavLink>
+                    <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica <span className="badge badge-danger">beta</span></NavLink>
                   </li>
                 </ul>
               </li>
@@ -95,6 +101,9 @@ class Sidebar extends Component {
                 <ul className="nav-dropdown-items">
                   <li className="nav-item">
                     <NavLink to={'/ontologies/list'} className="nav-link" activeClassName="active"> Ontologie</NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink to={'/vocabulary/list'} className="nav-link" activeClassName="active"> Vocabolari</NavLink>
                   </li>
                 </ul>
               </li>

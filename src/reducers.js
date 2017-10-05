@@ -16,7 +16,8 @@ import {
   RECEIVE_ACTIVATION,
   RECEIVE_ACTIVATION_ERROR,
   RECEIVE_ADD_DATASET,
-  RECEIVE_ONTOLOGIES
+  RECEIVE_ONTOLOGIES,
+  RECEIVE_VOCABULARY
 } from './actions'
 
 //Object.assign({}, state, .. create a new copy of the state
@@ -130,7 +131,9 @@ function ontologiesReducer(state = {}, action) {
   switch (action.type) {
     case RECEIVE_ONTOLOGIES:
       return Object.assign({}, state, {'ont': {'ontologies': action.ontologies, 'error': action.error}})
-    default:
+    case RECEIVE_VOCABULARY:
+      return Object.assign({}, state, {'voc': {'vocabulary': action.vocabulary, 'error': action.error}})
+      default:
       return state
   }
 }

@@ -7,6 +7,7 @@ import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 import IngestionWizard from '../../views/IngestionWizard/';
 import Ontologies from '../../views/Ontologies/';
+import Vocabulary from '../../views/Vocabulary/';
 import Dashboard from '../../views/Dashboard/';
 import Dataset from '../../views/Dataset/';
 import UserStory from '../../views/UserStory/';
@@ -35,6 +36,7 @@ class Full extends Component {
                 <Route path="/home" name="Dashboard" exact component={Dashboard}/>
                 <Route path="/ingestionwizzard" name="Forms" component={IngestionWizard} />
                 <Route path="/ontologies" name="Ontologies" component={Ontologies} />
+                <Route path="/vocabulary" name="Vocabulary" component={Vocabulary} />
                 <Route path="/dashboard" name="Dashboard manager" component={DashboardManager} />
                 <Route path="/user_story" name="User Story" component={UserStory} />
                 <Route path="/dataset" name="Dataset" component={Dataset} />

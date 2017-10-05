@@ -11,6 +11,206 @@
                 "userpassword": null
             }
     },
+    "/sso-manager/secured/retriveCookie/superset": {
+        "get": {
+            "result": "session=sessionsuperset"
+        }
+    },
+    "/sso-manager/secured/retriveCookie/metabase": {
+        "get": {
+            "result": "session=sessionmetabase"
+        }
+    },
+    "/dati-gov/v1/dashboard/iframes": {
+        "get": [
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/1/?form_data=%7B%22collapsed_fieldsets%22%3A%20%22%22%2C%20%22groupby%22%3A%20%5B%22source%22%2C%20%22target%22%5D%2C%20%22having%22%3A%20%22%22%2C%20%22metric%22%3A%20%22sum__value%22%2C%20%22row_limit%22%3A%20%225000%22%2C%20%22slice_name%22%3A%20%22Energy%20Sankey%22%2C%20%22viz_type%22%3A%20%22sankey%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2037%2C%20%22datasource%22%3A%20%221__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "sankey"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/1/?form_data=%7B%22charge%22%3A%20%22-500%22%2C%20%22collapsed_fieldsets%22%3A%20%22%22%2C%20%22groupby%22%3A%20%5B%22source%22%2C%20%22target%22%5D%2C%20%22having%22%3A%20%22%22%2C%20%22link_length%22%3A%20%22200%22%2C%20%22metric%22%3A%20%22sum__value%22%2C%20%22row_limit%22%3A%20%225000%22%2C%20%22slice_name%22%3A%20%22Force%22%2C%20%22viz_type%22%3A%20%22directed_force%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2038%2C%20%22datasource%22%3A%20%221__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "directed_force"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/1/?form_data=%7B%22all_columns_x%22%3A%20%22source%22%2C%20%22all_columns_y%22%3A%20%22target%22%2C%20%22canvas_image_rendering%22%3A%20%22pixelated%22%2C%20%22collapsed_fieldsets%22%3A%20%22%22%2C%20%22having%22%3A%20%22%22%2C%20%22linear_color_scheme%22%3A%20%22blue_white_yellow%22%2C%20%22metric%22%3A%20%22sum__value%22%2C%20%22normalize_across%22%3A%20%22heatmap%22%2C%20%22slice_name%22%3A%20%22Heatmap%22%2C%20%22viz_type%22%3A%20%22heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22xscale_interval%22%3A%20%221%22%2C%20%22yscale_interval%22%3A%20%221%22%2C%20%22slice_id%22%3A%2039%2C%20%22datasource%22%3A%20%221__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%22region%22%2C%20%22country_name%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%222014-01-01%22%2C%20%22until%22%3A%20%222014-01-02%22%2C%20%22viz_type%22%3A%20%22filter_box%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2040%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "filter_box"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22over%2010Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%222000%22%2C%20%22until%22%3A%20%222014-01-02%22%2C%20%22viz_type%22%3A%20%22big_number%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2041%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "big_number"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%22country_name%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%222014-01-01%22%2C%20%22until%22%3A%20%222014-01-02%22%2C%20%22viz_type%22%3A%20%22table%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2042%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "table"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/7/?form_data=%7B%22domain_granularity%22%3A%20%22month%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22granularity_sqla%22%3A%20%22string2%22%2C%20%22metric%22%3A%20%22count%22%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%221%20year%20ago%22%2C%20%22subdomain_granularity%22%3A%20%22day%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22cal_heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2071%2C%20%22datasource%22%3A%20%227__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "cal_heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/7/?form_data=%7B%22domain_granularity%22%3A%20%22month%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22granularity_sqla%22%3A%20%22string3%22%2C%20%22metric%22%3A%20%22count%22%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%221%20year%20ago%22%2C%20%22subdomain_granularity%22%3A%20%22day%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22cal_heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2072%2C%20%22datasource%22%3A%20%227__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "cal_heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%22country_name%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22num_period_compare%22%3A%20%2210%22%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%221960-01-01%22%2C%20%22until%22%3A%20%222014-01-02%22%2C%20%22viz_type%22%3A%20%22line%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2043%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "line"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_RUR_TOTL_ZS%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22num_period_compare%22%3A%20%2210%22%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%222014-01-01%22%2C%20%22until%22%3A%20%222014-01-02%22%2C%20%22viz_type%22%3A%20%22world_map%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2044%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "world_map"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_name%22%2C%20%22filters%22%3A%20%5B%7B%22col%22%3A%20%22country_code%22%2C%20%22op%22%3A%20%22not%20in%22%2C%20%22val%22%3A%20%5B%22TCA%22%2C%20%22MNP%22%2C%20%22DMA%22%2C%20%22MHL%22%2C%20%22MCO%22%2C%20%22SXM%22%2C%20%22CYM%22%2C%20%22TUV%22%2C%20%22IMY%22%2C%20%22KNA%22%2C%20%22ASM%22%2C%20%22ADO%22%2C%20%22AMA%22%2C%20%22PLW%22%5D%7D%5D%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22limit%22%3A%200%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22max_bubble_size%22%3A%20%2250%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22series%22%3A%20%22region%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%222011-01-01%22%2C%20%22size%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22until%22%3A%20%222011-01-02%22%2C%20%22viz_type%22%3A%20%22bubble%22%2C%20%22where%22%3A%20%22%22%2C%20%22x%22%3A%20%22sum__SP_RUR_TOTL_ZS%22%2C%20%22y%22%3A%20%22sum__SP_DYN_LE00_IN%22%2C%20%22slice_id%22%3A%2045%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "bubble"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%22region%22%2C%20%22country_name%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_RUR_TOTL%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%222011-01-01%22%2C%20%22until%22%3A%20%222011-01-01%22%2C%20%22viz_type%22%3A%20%22sunburst%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2046%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "sunburst"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%22region%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%221960-01-01%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22area%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2047%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "area"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%22region%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%221960-01-01%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22box_plot%22%2C%20%22where%22%3A%20%22%22%2C%20%22whisker_options%22%3A%20%22Min/max%20%28no%20outliers%29%22%2C%20%22slice_id%22%3A%2048%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "box_plot"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%22region%22%2C%20%22country_code%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%221960-01-01%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22treemap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2049%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "treemap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/2/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22country_fieldtype%22%3A%20%22cca3%22%2C%20%22entity%22%3A%20%22country_code%22%2C%20%22granularity%22%3A%20%22year%22%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22limit%22%3A%20100%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22metrics%22%3A%20%5B%22sum__SP_POP_TOTL%22%2C%20%22sum__SP_RUR_TOTL_ZS%22%2C%20%22sum__SH_DYN_AIDS%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22secondary_metric%22%3A%20%22sum__SP_POP_TOTL%22%2C%20%22series%22%3A%20%22country_name%22%2C%20%22show_bubbles%22%3A%20true%2C%20%22since%22%3A%20%222011-01-01%22%2C%20%22until%22%3A%20%222011-01-01%22%2C%20%22viz_type%22%3A%20%22para%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2050%2C%20%22datasource%22%3A%20%222__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "para"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22filters%22%3A%20%5B%7B%22col%22%3A%20%22gender%22%2C%20%22op%22%3A%20%22in%22%2C%20%22val%22%3A%20%5B%22girl%22%5D%7D%5D%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%22name%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22row_limit%22%3A%2050%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22table%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2051%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "table"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22filters%22%3A%20%5B%7B%22col%22%3A%20%22gender%22%2C%20%22op%22%3A%20%22in%22%2C%20%22val%22%3A%20%5B%22boy%22%5D%7D%5D%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%22name%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22row_limit%22%3A%2050%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22table%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2052%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "table"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22compare_lag%22%3A%20%225%22%2C%20%22compare_suffix%22%3A%20%22over%205Y%22%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22big_number%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2053%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "big_number"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%22gender%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22pie%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2054%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "pie"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22filters%22%3A%20%5B%7B%22col%22%3A%20%22state%22%2C%20%22op%22%3A%20%22not%20in%22%2C%20%22val%22%3A%20%5B%22other%22%5D%7D%5D%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%22state%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__sum_girls%22%2C%20%22sum__sum_boys%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22dist_bar%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2055%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "dist_bar"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%22name%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22rich_tooltip%22%3A%20true%2C%20%22row_limit%22%3A%205000%2C%20%22show_legend%22%3A%20true%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22line%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2056%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "line"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22avg__num%22%2C%20%22metric_2%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22dual_line%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2057%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "dual_line"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22code%22%3A%20%22%3Cdiv%20style%3D%5C%22text-align%3Acenter%5C%22%3E%5Cn%20%20%20%20%3Ch1%3EBirth%20Names%20Dashboard%3C/h1%3E%5Cn%20%20%20%20%3Cp%3E%5Cn%20%20%20%20%20%20%20%20The%20source%20dataset%20came%20from%5Cn%20%20%20%20%20%20%20%20%3Ca%20href%3D%5C%22https%3A//github.com/hadley/babynames%5C%22%3E%5Bhere%5D%3C/a%3E%5Cn%20%20%20%20%3C/p%3E%5Cn%20%20%20%20%3Cimg%20src%3D%5C%22/static/assets/images/babytux.jpg%5C%22%3E%5Cn%3C/div%3E%5Cn%22%2C%20%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22html%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22markup%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2058%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "markup"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22limit%22%3A%20%22100%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22rotation%22%3A%20%22square%22%2C%20%22row_limit%22%3A%205000%2C%20%22series%22%3A%20%22name%22%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22size_from%22%3A%20%2210%22%2C%20%22size_to%22%3A%20%2270%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22word_cloud%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2059%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "word_cloud"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22columns%22%3A%20%5B%22state%22%5D%2C%20%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%22name%22%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22pivot_table%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2060%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "pivot_table"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/3/?form_data=%7B%22compare_lag%22%3A%20%2210%22%2C%20%22compare_suffix%22%3A%20%22o10Y%22%2C%20%22filters%22%3A%20%5B%7B%22col%22%3A%20%22gender%22%2C%20%22op%22%3A%20%22in%22%2C%20%22val%22%3A%20%5B%22girl%22%5D%7D%5D%2C%20%22granularity%22%3A%20%22ds%22%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22limit%22%3A%20%2225%22%2C%20%22markup_type%22%3A%20%22markdown%22%2C%20%22metric%22%3A%20%22sum__num%22%2C%20%22metrics%22%3A%20%5B%22sum__num%22%5D%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%22100%20years%20ago%22%2C%20%22subheader%22%3A%20%22total%20female%20participants%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22big_number_total%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2061%2C%20%22datasource%22%3A%20%223__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "big_number_total"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/4/?form_data=%7B%22domain_granularity%22%3A%20%22month%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22metric%22%3A%20%22count%22%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%221%20year%20ago%22%2C%20%22subdomain_granularity%22%3A%20%22day%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22cal_heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2062%2C%20%22datasource%22%3A%20%224__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "cal_heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/5/?form_data=%7B%22all_columns%22%3A%20%5B%22occupancy%22%5D%2C%20%22all_columns_x%22%3A%20%22LON%22%2C%20%22all_columns_y%22%3A%20%22LAT%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22mapbox_style%22%3A%20%22mapbox%3A//styles/mapbox/light-v9%22%2C%20%22row_limit%22%3A%20500000%2C%20%22since%22%3A%20%222014-01-01%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22mapbox%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2063%2C%20%22datasource%22%3A%20%225__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "mapbox"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/6/?form_data=%7B%22entity%22%3A%20%22DEPT_ID%22%2C%20%22granularity%22%3A%20%22%22%2C%20%22metric%22%3A%20%22avg__2004%22%2C%20%22row_limit%22%3A%20500000%2C%20%22since%22%3A%20%22%22%2C%20%22until%22%3A%20%22%22%2C%20%22viz_type%22%3A%20%22country_map%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2064%2C%20%22datasource%22%3A%20%226__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "country_map"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/7/?form_data=%7B%22domain_granularity%22%3A%20%22month%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22granularity_sqla%22%3A%20%22ds%22%2C%20%22metric%22%3A%20%22count%22%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%221%20year%20ago%22%2C%20%22subdomain_granularity%22%3A%20%22day%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22cal_heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2065%2C%20%22datasource%22%3A%20%227__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "cal_heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/7/?form_data=%7B%22domain_granularity%22%3A%20%22month%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22granularity_sqla%22%3A%20%22ds2%22%2C%20%22metric%22%3A%20%22count%22%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%221%20year%20ago%22%2C%20%22subdomain_granularity%22%3A%20%22day%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22cal_heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2066%2C%20%22datasource%22%3A%20%227__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "cal_heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/7/?form_data=%7B%22domain_granularity%22%3A%20%22month%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22granularity_sqla%22%3A%20%22epoch_ms%22%2C%20%22metric%22%3A%20%22count%22%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%221%20year%20ago%22%2C%20%22subdomain_granularity%22%3A%20%22day%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22cal_heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2067%2C%20%22datasource%22%3A%20%227__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "cal_heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/7/?form_data=%7B%22domain_granularity%22%3A%20%22month%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22granularity_sqla%22%3A%20%22epoch_s%22%2C%20%22metric%22%3A%20%22count%22%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%221%20year%20ago%22%2C%20%22subdomain_granularity%22%3A%20%22day%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22cal_heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2068%2C%20%22datasource%22%3A%20%227__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "cal_heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/7/?form_data=%7B%22domain_granularity%22%3A%20%22month%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22granularity_sqla%22%3A%20%22string0%22%2C%20%22metric%22%3A%20%22count%22%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%221%20year%20ago%22%2C%20%22subdomain_granularity%22%3A%20%22day%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22cal_heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2069%2C%20%22datasource%22%3A%20%227__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "cal_heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/7/?form_data=%7B%22domain_granularity%22%3A%20%22month%22%2C%20%22granularity%22%3A%20%22day%22%2C%20%22granularity_sqla%22%3A%20%22string1%22%2C%20%22metric%22%3A%20%22count%22%2C%20%22row_limit%22%3A%205000%2C%20%22since%22%3A%20%221%20year%20ago%22%2C%20%22subdomain_granularity%22%3A%20%22day%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viz_type%22%3A%20%22cal_heatmap%22%2C%20%22where%22%3A%20%22%22%2C%20%22slice_id%22%3A%2070%2C%20%22datasource%22%3A%20%227__table%22%7D&standalone=true",
+                "origin": "superset",
+                "title": "cal_heatmap"
+            },
+            {
+                "iframe_url": "http://supersetd.default.svc.cluster.local:8088//superset/explore/table/10/?form_data=%7B%22datasource%22%3A%20%2210__table%22%2C%20%22viz_type%22%3A%20%22mapbox%22%2C%20%22granularity_sqla%22%3A%20null%2C%20%22time_grain_sqla%22%3A%20%22Time%20Column%22%2C%20%22since%22%3A%20%227%20days%20ago%22%2C%20%22until%22%3A%20%22now%22%2C%20%22all_columns_x%22%3A%20%22lon%22%2C%20%22all_columns_y%22%3A%20%22lat%22%2C%20%22clustering_radius%22%3A%20%2260%22%2C%20%22row_limit%22%3A%20null%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22point_radius%22%3A%20%22Auto%22%2C%20%22point_radius_unit%22%3A%20%22Pixels%22%2C%20%22mapbox_label%22%3A%20%5B%22luogo%22%5D%2C%20%22pandas_aggfunc%22%3A%20%22sum%22%2C%20%22render_while_dragging%22%3A%20true%2C%20%22mapbox_style%22%3A%20%22mapbox%3A//styles/mapbox/streets-v9%22%2C%20%22global_opacity%22%3A%201%2C%20%22mapbox_color%22%3A%20%22rgb%280%2C%20122%2C%20135%29%22%2C%20%22viewport_longitude%22%3A%2016.596332481252915%2C%20%22viewport_latitude%22%3A%2040.66203008271751%2C%20%22viewport_zoom%22%3A%2012.53688392980137%2C%20%22where%22%3A%20%22%22%2C%20%22having%22%3A%20%22%22%2C%20%22filters%22%3A%20%5B%5D%2C%20%22slice_id%22%3A%2073%7D&standalone=true",
+                "origin": "superset",
+                "title": "mapbox"
+            }
+        ]
+        
+    }, 
     "/catalog-manager/v1/ckan/userOrganizations/test": {
         "get": [
             {
