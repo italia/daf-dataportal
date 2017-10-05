@@ -46,7 +46,7 @@ class Login extends Component {
     e.preventDefault()
     const { dispatch, selectDataset } = this.props
     dispatch(setAuthToken(this.email.value, this.pw.value))
-      .then(json => { localStorage.setItem('token', json); 
+    .then(json => { localStorage.setItem('token', json); 
                       dispatch(setApplicationCookie('superset'))
                       .then(json => { if(json.result){
                                       let cookie = json.result.split('=');
@@ -69,7 +69,7 @@ class Login extends Component {
                                         })
                                     }
                     })
-              }) 
+              })
       .catch((error) => {
         this.setState(setErrorMsg('Invalid username/password.'))
       })

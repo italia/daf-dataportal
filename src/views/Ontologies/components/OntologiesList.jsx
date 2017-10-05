@@ -46,29 +46,23 @@ class OntologiesList extends Component {
                         <table className="table table-bordered table-striped table-condensed">
                             <thead>
                                 <tr>
+                                    <th>Acronimo</th>
                                     <th>Nome</th>
-                                    <th>Descrizione</th>
-                                    <th>Classe</th>
-                                    <th>Tipo</th>
                                     <th>Risorsa</th>
-                                    <th>Sorgente</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 { ontologies.map(ontology => {
-                                    return (<tr key={ontology.ontologyName}>
-                                                <td>{ontology.ontologyName}</td>
-                                                <td>{ontology.ontologyDescription}</td>
-                                                <td>{ontology.owlClasses}</td>
-                                                <td>{ontology.datatypeProperties}</td>
-                                                <td><a className="page-link transparent-frame" target="_blank" href={ontology.ontologyIRI}><i className="fa fa-file-text-o fa-lg m-t-2"></i></a></td>
-                                                <td><a className="page-link transparent-frame" target="_blank" href={ontology.ontologySource}><i className="fa fa-code fa-lg m-t-2"></i></a></td>
+                                    return (<tr key={ontology.acronimo}>
+                                                <td>{ontology.acronimo}</td>
+                                                <td>{ontology.nome}</td>
+                                                <td><a className="page-link transparent-frame" target="_blank" href={ontology.risorsa}><i className="fa fa-code fa-lg m-t-2"></i></a></td>
                                             </tr> ) 
                                     })
                                 }
                             </tbody>  
                         </table>
-                        <nav>
+                        {/*<nav>
                             <ul className="pagination">
                                 <li className="page-item"><a className="page-link" href="#">Prev</a></li>
                                 <li className="page-item active">
@@ -79,7 +73,7 @@ class OntologiesList extends Component {
                                 <li className="page-item"><a className="page-link" href="#">4</a></li>
                                 <li className="page-item"><a className="page-link" href="#">Next</a></li>
                             </ul>
-                        </nav>
+                        </nav>*/}
                     </div>
                 </div>
             </div>
