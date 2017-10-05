@@ -55,9 +55,12 @@ class Dataset extends Component {
     console.log('ope: ' + ope)
     if (ope == 'RECEIVE_DATASETS')
       return datasets.map(dataset => {
-          return(
+        var title = dataset.title;
+        if(title.length>50)
+          title = title.substring(0,50).concat('...')  
+        return(
               <tr key={dataset.name}>
-                  <td>{dataset.title}</td>
+                  <td>{title}</td>
                   <td>{dataset.notes}</td>
                   <td>{dataset.organization.name}</td>
                   <td>{dataset.organization.state}</td>
@@ -120,14 +123,16 @@ class Dataset extends Component {
       if(dataset)
         return(
           <div className="row">
-            <div className="col-8">
+            <div className="col-12">
               <div className="card">
                 <div className="card-header">
                   Descrizione
                 </div>
                 <div className="card-block">
-                  <h4 className="card-title">{dataset.name}</h4>
-                  <p className="card-text">{dataset.notes}</p>
+                  <h2 className="card-title">{dataset.name}</h2>
+                  <h4 className="card-text">{dataset.notes}</h4>
+                  <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
+                  <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p>
                 </div>
               </div>
               <div className="card">
@@ -136,56 +141,30 @@ class Dataset extends Component {
                 </div>
                 <div className="card-block">
                   <div className="row">
-                    <div className="col-2">
-                    <i className="fa fa-download fa-lg m-t-2"> JSON</i>
+                    <div className="col-4">
+                    <i className="fa fa-pie-chart fa-lg m-t-2"> Grafici</i>
                     </div>
-                    <div className="col-10">
-                      <p><strong>Metadata JSON:</strong> Questa risorsa contiene i metadati relativi ai JSON del dataset come da...</p>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-2">
-                      <i className="fa fa-download fa-lg m-t-2"> CSV</i>
-                    </div>
-                    <div className="col-10">
-                    <p><strong>Metadata CSV:</strong> Questa risorsa contiene i metadati relativi ai CSV del dataset come da...</p>
+                    <div className="col-8">
+                      <p>Collegati a Metabase e cerca la tabella corrispondente a <strong>{dataset.name}</strong></p>
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-2">
-                    <i className="fa fa-download fa-lg m-t-2"> ZIP</i>
+                    <div className="col-4">
+                      <i className="fa fa-gears fa-lg m-t-2"> Business Intelligence</i>
                     </div>
-                    <div className="col-10">
-                      <p><strong>Metadata ZIP:</strong> Questa risorsa contiene i metadati relativi ai ZIP del dataset come da...</p>
+                    <div className="col-8">
+                    <p>Collegati a Superset e cerca la tabella corrispondente a <strong>{dataset.name}</strong>, se non la trovi segui le <a href="https://daf-docs.readthedocs.io/en/latest/manutente/datascience/superset.html" target="_blank">istruzioni</a> per crearla.</p>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-4">
+                    <i className="fa fa-university fa-lg m-t-2"> Data Science</i>
+                    </div>
+                    <div className="col-8">
+                      <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>/daf/opendata/{dataset.name}</strong>.</p>
                     </div>
                   </div>
                   </div>
-              </div>
-            </div>
-            <div className="col-4">
-            <div className="card">
-                <div className="card-header">
-                  Informazioni
-                </div>
-                <div className="card-block">
-                  <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
-                  <p className="card-text"><strong>Temi del dataset:</strong> Imprese</p>
-                  <p className="card-text"><strong>Parole chiave del dataset:</strong> assicurazioni autoautomobile autoveicoli circolazione mobilità moto motorizzazione motoveicoli parco circolante revisioni veicoli vettura</p>
-                  <p className="card-text"><strong>Data di rilascio:</strong> 2017-03-07</p>
-                  <p className="card-text"><strong>Identificativo del dataset:</strong> 60a57c60-758c-4bd9-8d87-c286b797c289</p>
-                  <p className="card-text"><strong>Data di ultima modifica:</strong> Lunedì 17 Luglio 2017</p>
-                  <p className="card-text"><strong>Lingua del dataset:</strong> Italian</p>
-                </div>
-              </div>
-              <div className="card">
-              <div className="card-header">
-                  Rifrimenti
-                </div>
-                <div className="card-block">
-                  <p className="card-text"><strong>Email Contatto:</strong>  mail@mail.it</p>
-                  <p className="card-text"><strong>Home page: :</strong> http://dati.mit.gov.it/catalog/dataset</p>
-                  <p className="card-text"><strong>URL AP:</strong> http://dati.mit.gov.it/catalog/api/3/a...</p>
-                </div>
               </div>
             </div>
         </div>

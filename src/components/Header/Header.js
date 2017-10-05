@@ -76,7 +76,7 @@ class Header extends Component {
         
       <ul className="nav navbar-nav d-md-down-none mr-auto">
         <li className="nav-item brand">
-          <a href=""><span>DAF </span></a>
+          <a href=""><img className="img-logo" src="http://designer.italia.it/assets/icons/logo-it.png" alt=""/><span>  DAF  </span></a>
         </li>
       </ul>
       <ul className="nav navbar-nav d-md-down-none">
