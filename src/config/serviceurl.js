@@ -12,15 +12,25 @@ export const serviceurl = {
   apiURLIngestion: "http://localhost:3001/ingestion-manager/v1",
   apiURLSecurity: "http://localhost:3001/catalog-manager/v1",
 */
-  // PRODUCTION
-  apiURLSSOManager: "http://security-manager.default.svc.cluster.local:9000/sso-manager",
-  apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000/dati-gov/v1", 
-  apiURLCatalog: "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
-  apiURLSecurity : "http://security-manager.default.svc.cluster.local:9000/security-manager/v1",
+  // INTERNAL
+ // apiURLSSOManager: "http://security-manager.default.svc.cluster.local:9000/security-manager/sso-manager",
+ // apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000/dati-gov/v1", 
+ // apiURLCatalog: "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
+ // apiURLSecurity : "http://security-manager.default.svc.cluster.local:9000/security-manager/v1",
+
+ //urlMetabase: 'http://metabase.default.svc.cluster.local:3000',
+ //urlSuperset: 'http://supersetd.default.svc.cluster.local:8088',
+ //urlJupiter: 'http://jupyterhub.default.svc.cluster.local:8000',
   
-  urlMetabase: 'http://metabase.default.svc.cluster.local:3000',
-  urlSuperset: 'http://superset.default.svc.cluster.local:3000',
-  urlJupiter: 'http://jupiter.default.svc.cluster.local:3000',
+ // EXTERNAL
+ apiURLSSOManager: "https://api.daf.teamdigitale.it/security-manager/sso-manager",
+ apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
+ apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
+ apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
+
+  urlMetabase: 'https://graph.daf.teamdigitale.it',
+  urlSuperset: 'https://bi.daf.teamdigitale.it',
+  urlJupiter: 'https://datascience.daf.teamdigitale.it',
 
   auth: "dGVzdDp0dWxsaWFlYmxp",
 
