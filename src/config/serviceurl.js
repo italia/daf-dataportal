@@ -23,7 +23,7 @@ export const serviceurl = {
  //urlJupiter: 'http://jupyterhub.default.svc.cluster.local:8000',
   
  // EXTERNAL
- apiURLSSOManager: "https://api.daf.teamdigitale.it/security-manager/sso-manager",
+ apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
  apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
  apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
  apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
