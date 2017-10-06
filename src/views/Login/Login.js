@@ -51,14 +51,14 @@ class Login extends Component {
                       .then(json => { if(json.result){
                                       let cookie = json.result.split('=');
                                       console.log('2 - Setto il seguente cookie: '+ cookie[1] + ' per superset');
-                                      document.cookie = "session=" + cookie[1] + "; path=/; domain=" + domain;
+                                      document.cookie = "session=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
                                       //document.cookie = "session=" + cookie[1];
                                       console.log('3 - Cookie superset settato')
                                       dispatch(setApplicationCookie('metabase'))
                                       .then(json => { if(json.result){
                                               let cookie = json.result.split('=');
                                               console.log('4 - Setto il seguente cookie: '+ cookie[1] + ' per metabase');
-                                              document.cookie = "metabase.SESSION_ID=" + cookie[1] + "; path=/; domain=" + domain;
+                                              document.cookie = "metabase.SESSION_ID=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
                                               //document.cookie = "session2=" + cookie;
                                               console.log('5 - Cookie metabase settato')
                                               dispatch(loginAction())
