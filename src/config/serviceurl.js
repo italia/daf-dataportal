@@ -33,6 +33,8 @@ export const serviceurl = {
   urlJupiter: 'https://datascience.daf.teamdigitale.it',
 
   auth: "dGVzdDp0dWxsaWFlYmxp",
+  
+  domain: ".daf.teamdigitale.it",
 
  "DatasetBackend": {
     "Search": {
