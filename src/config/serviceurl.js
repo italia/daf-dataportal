@@ -7,11 +7,11 @@ export const serviceurl = {
   apiURLSecurity: "http://localhost:9002/security-manager/v1",
 */
   //MOCK
-  /*apiURLDatiGov: "http://localhost:3001/dati-gov/v1", 
+  apiURLDatiGov: "http://localhost:3001/dati-gov/v1", 
   apiURLCatalog: "http://localhost:3001/catalog-manager/v1",
   apiURLIngestion: "http://localhost:3001/ingestion-manager/v1",
   apiURLSecurity: "http://localhost:3001/catalog-manager/v1",
-*/
+
   // INTERNAL
  // apiURLSSOManager: "http://security-manager.default.svc.cluster.local:9000/security-manager/sso-manager",
  // apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000/dati-gov/v1", 
@@ -23,10 +23,10 @@ export const serviceurl = {
  //urlJupiter: 'http://jupyterhub.default.svc.cluster.local:8000',
   
  // EXTERNAL
- apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
- apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
- apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
- apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
+ //apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
+ //apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
+ //apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
+ //apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
 
   urlMetabase: 'https://graph.daf.teamdigitale.it',
   urlSuperset: 'https://bi.daf.teamdigitale.it',
