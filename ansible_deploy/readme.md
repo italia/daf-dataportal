@@ -1,5 +1,6 @@
 # ReadMe
 Playbook per il deploy su vm ubuntu/centos.
+
 Requisiti
   - ansible installato sulla vm di controllo
   - accesso in ssh con chiave alla (o alle) vm di destinazione (non necessariamente root)
