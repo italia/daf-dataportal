@@ -4,7 +4,7 @@ Playbook per il deploy su vm ubuntu/centos.
 Requisiti
   - ansible installato sulla vm di controllo
   - accesso in ssh con chiave alla (o alle) vm di destinazione (non necessariamente root)
-  - utenza sudoer (l'utente deve poter fare sudo...)
+  - l'utente che accede in ssh non deve necessariamente essere root, ma deve poter fare sudo (almeno utenza sudoer...)
 
 Compilare in targets.yml la lista delle vm su cui deployare daf-dataportal. L'uso di ip o di hostname è indifferente, purchè la vm venga raggiunta correttamente. Se si usano porte non standard, specificarle con ":" dopo l'ip o l'hostname.
 ```
