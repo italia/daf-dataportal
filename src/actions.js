@@ -370,12 +370,12 @@ export function addUserOrganization() {
 /******************************************************************************* */
 
 /******************************** DATASET ************************************** */
-function fetchDataset(query) {
+function fetchDataset(query, start) {
   var queryurl='';
   var token = '';
   if(query)
     queryurl='&q=name:*'+query+'*';
-  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=10&start=0' + queryurl;  
+  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=10&start='+start+queryurl;  
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
       token = localStorage.getItem('token')
@@ -417,10 +417,10 @@ function fetchDatasetDetail(datasetname) {
     }
   }
 
-export function loadDatasets(query) {
+export function loadDatasets(query, start) {
   console.log('Load Dataset action');
   return (dispatch, getState) => {
-      return dispatch(fetchDataset(query))
+      return dispatch(fetchDataset(query, start))
   }
  
 }
