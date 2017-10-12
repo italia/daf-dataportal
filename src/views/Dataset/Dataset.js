@@ -23,13 +23,14 @@ class Dataset extends Component {
 
   //Action creators don't dispatch anything to the store; 
   //instead they return action object that a 'central dispatch' uses (action.js) 
-  handleLoadDatasetClick(e) {
+  handleLoadDatasetClick(start) {
     console.log('handleLoadDatasetClick');
-    console.log('querystring: ' + this.refs.auto.state.value );
-    var query = this.refs.auto.state.value;
-    e.preventDefault()
+    //console.log('querystring: ' + this.refs.auto.state.value );
+    //var query = this.refs.auto.state.value;
+    //e.preventDefault()
     const { dispatch, selectDataset } = this.props
-    dispatch(loadDatasets(query))
+    dispatch(loadDatasets(null, start))
+    this.props.history.push('/dataset');
   }
 
   handleUnloadDatasetClick(e) {
@@ -100,13 +101,11 @@ class Dataset extends Component {
                       <nav>
                           <ul className="pagination">
                               <li className="page-item"><a className="page-link" href="#">Prev</a></li>
-                              <li className="page-item active">
-                                  <a className="page-link" href="#">1</a>
-                              </li>
-                              <li className="page-item"><a className="page-link" href="#">2</a></li>
-                              <li className="page-item"><a className="page-link" href="#">3</a></li>
-                              <li className="page-item"><a className="page-link" href="#">4</a></li>
-                              <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                              <li className="page-item active"><a className="page-link" onClick={this.handleLoadDatasetClick.bind(this, 1)}>1</a></li>
+                              <li className="page-item"><a className="page-link" onClick={this.handleLoadDatasetClick.bind(this, 2)}>2</a></li>
+                              <li className="page-item"><a className="page-link" onClick={this.handleLoadDatasetClick.bind(this, 3)}>3</a></li>
+                              <li className="page-item"><a className="page-link" onClick={this.handleLoadDatasetClick.bind(this, 4)}>4</a></li>
+                              <li className="page-item"><a className="page-link" href="/dataset">Next</a></li>
                           </ul>
                       </nav>
                   </div>
