@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import AddWidgetDialog from '../AddWidgetDialog';
+import App from '../InfinityScrollWidgets/App.js'
 
 class EditBar extends React.Component {
     constructor(props) {
@@ -11,9 +12,7 @@ class EditBar extends React.Component {
         this.addWidgetOpenModal = this.addWidgetOpenModal.bind(this)
         this.addWidget = this.addWidget.bind(this)
     }
-
-  
-
+    
   addWidgetOpenModal = function() {
     this.setState({
       isModalOpen: true
@@ -41,7 +40,14 @@ class EditBar extends React.Component {
               <i className="fa fa-plus-circle fa-lg m-t-2"></i>
           </button>
         </div>
-
+        
+        <App 
+        widgets={this.props.widgets}
+          isModalOpen={this.state.isModalOpen}
+          onWidgetSelect={this.addWidget}
+          onRequestClose={this.onRequestClose}
+        />
+{/*
         <AddWidgetDialog
           widgets={this.props.widgets}
           isModalOpen={this.state.isModalOpen}
@@ -49,6 +55,7 @@ class EditBar extends React.Component {
           onRequestClose={this.onRequestClose}
         >
         </AddWidgetDialog>
+        */}
       </div>
 
     );
