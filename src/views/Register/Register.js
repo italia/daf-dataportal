@@ -28,10 +28,14 @@ class Register extends Component {
       
   }
   
-    handleSubmit = (e) => {
+  handleSubmit = (e) => {
       e.preventDefault()
       const { dispatch, selectDataset } = this.props
       dispatch(registerUser(this.nome.value, this.cognome.value, this.username.value, this.email.value, this.password.value, this.password2.value))
+  }
+
+  handleRedirect = (e) => {
+    this.props.history.push('/login')
   }
 
   render() {
@@ -83,7 +87,11 @@ class Register extends Component {
                     <i className="icon-lock"></i></span>
                   <input type="password" className="form-control" ref={(password2) => this.password2 = password2} placeholder="Ripeti password" />
                 </div>
-                <button type="button" className="btn btn-block btn-success" onClick={this.handleSubmit.bind(this)}>Crea Account</button>
+                <div className="input-group mb-1">
+                  <div className="g-recaptcha" data-sitekey="6LcUNjQUAAAAAG-jQyivW5xijDykXzslKqL2PMLr"></div>
+                </div>
+                <button type="button" className="btn btn-block btn-secondary" onClick={this.handleRedirect.bind(this)}>Torna al login</button>
+                <button type="button" className="btn btn-block btn-primary" onClick={this.handleSubmit.bind(this)}>Crea Account</button>
               </div>
             </div>
           </div>

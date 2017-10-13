@@ -74,45 +74,6 @@ class Login extends Component {
         this.setState(setErrorMsg('Invalid username/password.'))
       })
   }
-
-  /*
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const { dispatch, selectDataset } = this.props
-    dispatch(setAuthToken(this.email.value, this.pw.value))
-      .then(json => {localStorage.setItem('token', json); 
-                      //dispatch(loginAction(this.email.value, json))
-                      //dispatch(addUserOrganization(this.email.value, json))
-                      console.log('1 - Setto i cookie')
-                      this.setCookie(json, 'superset').then((json)=> {
-                        if(json.result){
-                          let cookie = json.result.split('=');
-                          console.log('2 - Setto il seguente cookie: '+ cookie[1] + ' per superset');
-                          document.cookie = "sessio=" + cookie[1] + "; path=/; domain=.default.svc.cluster.local";
-                          console.log('3 - Cookie settato')
-                          this.props.history.push('/dashboard')
-                          console.log('4 - redirect effettuato')
-                        }
-                      })
-                      //dispatch(setApplicationCookie(json, 'superset', 'session'))
-                      //dispatch(setApplicationCookie(json, 'metabase', 'metabase.SESSION_ID'))
-                    })
-      .catch((error) => {
-        this.setState(setErrorMsg('Invalid username/password.'))
-      })
-    console.log('login effettuato');
-  }*/
-
-
-  /*
-   .then(json => {
-                if(json.result){
-                  let cookie = json.result.split('=');
-                  console.log('Setto il seguente cookie: '+ cookie[1]);
-                  document.cookie = nomeCookie + "=" + cookie[1] + "; path=/; domain=.default.svc.cluster.local";
-                }
-        })
-  */
   
   openModal = () => {
     this.setState({
@@ -137,7 +98,7 @@ class Login extends Component {
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
-              <p>Se hai dimenticato la password contattaci al seguente indirizzo email: email@email.com</p>
+              <p>Se hai dimenticato la password contattaci al seguente indirizzo email: alessandro@teamdigitale.governo.it</p>
             </div>
 
             </ModalBody>

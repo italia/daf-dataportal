@@ -1,0 +1,60 @@
+  .scroll-y {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .white {
+    color: #FFF;
+  }
+
+  .App {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
+  }
+  
+  .App-header {
+    background-color: white;
+    height: 150px;
+    padding: 20px;
+    color: black;
+  }
+  
+  .App-intro {
+    font-size: large;
+  }
+  
+  @keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .List-load-more-button {
+    border: 2px solid #C8CDD3;
+    transition: border 0.2s;
+    padding: 0.75rem 1.5rem;
+    margin: 1rem;
+    color: #909AA5;
+    outline: none;
+    background-color: transparent;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  .List-load-more-button:disabled {
+    border: 2px solid #DEE2E6;
+  }
+  
+  .List-load-more-button:not([disabled]):hover {
+    border: 2px solid #909AA5;
+    cursor: pointer;
+  }
+  

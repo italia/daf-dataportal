@@ -1,9 +1,11 @@
 import fetch from 'isomorphic-fetch'
-import page from './data/dataset'
-import det from './data/datasetdetail'
+import { serviceurl } from './config/serviceurl.js'
+
+// MOCK
+//import page from './data/dataset'
+//import det from './data/datasetdetail'
 import ont from './data/ontologies'
 import voc from './data/vocabulary'
-import { serviceurl } from './config/serviceurl.js'
 
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
@@ -126,7 +128,7 @@ function receiveOrganization(response) {
 }
 
 function receiveActivationSuccess(ok, json) {  
-  if(ok=='ok')
+  if(ok==='ok')
   return {
       type: RECEIVE_ACTIVATION,
       message: 'Attivazione avvenuta con successo !!!',
@@ -135,7 +137,7 @@ function receiveActivationSuccess(ok, json) {
       ope: 'RECEIVE_ACTIVATION'
   }
   else{
-    if(json.code==1){
+    if(json.code===1){
       console.log("messaggio errore codificato: " + json.message);
       return {
           type: RECEIVE_ACTIVATION_ERROR,
@@ -168,7 +170,7 @@ function receiveActivationError(json) {
 }
 
 function receiveRegistrationSuccess(ok, json) {  
-  if(ok=='ok')
+  if(ok==='ok')
   return {
       type: RECEIVE_REGISTRATION,
       message: 'Registrazione avvenuta con successo, a breve riceverai una mail per l\'attivazione all\'indirizzo indicato',
@@ -177,7 +179,7 @@ function receiveRegistrationSuccess(ok, json) {
       ope: 'RECEIVE_REGISTRATION'
   }
   else{
-    if(json.code==1){
+    if(json.code===1){
       console.log("messaggio errore codificato: " + json.message);
       return {
           type: RECEIVE_REGISTRATION_ERROR,
@@ -233,7 +235,6 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
     'mail': email,
     'userpassword': pw,
   };
-  var ok = '';
   return dispatch => {
     if(pw===pw2){
     return fetch(url, {
@@ -375,9 +376,9 @@ function fetchDataset(query, start) {
   var token = '';
   if(query)
     queryurl='&q=name:*'+query+'*';
-  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=10&start='+start+queryurl;  
+  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=1000&start='+start+queryurl;  
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
-    localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
       token = localStorage.getItem('token')
     }
   return dispatch => {
@@ -399,7 +400,7 @@ function fetchDatasetDetail(datasetname) {
   var token = '';
   var url = serviceurl.apiURLCatalog + '/ckan/datasets/'  + datasetname;
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
-    localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
       token = localStorage.getItem('token')
     }
   return dispatch => {

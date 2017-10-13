@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Login from '../../views/Login/';
 import Register from '../../views/Register/';
 import ConfirmRegistration from '../../views/Register/ConfirmRegistration.js';
-import Appo from './Appo.js';
 
 const mapStateToProps = state => ({
   appName: state.appName

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Components from 'react';
 import UserStoryEditor from './components/UserStoryEditor';
 import UserStoryList from './components/UserStoryList';
 import UserStoryView from './components/UserStoryView';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 // Our styles
 import './styles/custom.css';

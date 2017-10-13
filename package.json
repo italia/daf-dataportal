@@ -16,6 +16,7 @@
     "papaparse": "^4.3.3",
     "prop-types": "^15.5.6",
     "react": "^15.6.1",
+    "react-autocomplete": "^1.7.2",
     "react-autosize-textarea": "^0.4.8",
     "react-autosuggest": "^9.3.1",
     "react-chartjs": "^0.8.0",
@@ -40,7 +41,7 @@
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.5",
-    "react-transition-group": "^2.2.0",
+    "react-transition-group": "^2.2.1",
     "reactstrap": "^4.8.0",
     "recharts": "^1.0.0-alpha.4",
     "redux": "^3.7.0",
@@ -49,6 +50,7 @@
     "redux-form-dropzone": "0.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "set-default-browser": "^1.0.1",
     "superagent": "^3.5.2",
     "superagent-mock": "^3.4.0",
     "superagent-promise": "^1.1.0"
@@ -59,7 +61,7 @@
     "react-scripts": "1.0.7"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=80 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
