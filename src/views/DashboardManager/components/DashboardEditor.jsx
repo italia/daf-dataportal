@@ -90,7 +90,7 @@ class DashboardEditor extends Component {
    */
   loadIframe = (iframes) => {
     iframes.map(iframe => {
-      this.widgetsTypes[iframe.title] = {
+      this.widgetsTypes[iframe.identifier] = {
         "type": IframeWidget,
         "title": iframe.title,
         "props":{
@@ -129,7 +129,7 @@ class DashboardEditor extends Component {
         let widget = dashboard.widgets[i];
 
         //assign instance to widget.type
-        let typeWid = i.split('_')[0];
+        let typeWid = i //.split('_')[0];
         if(this.widgetsTypes[typeWid]) {
           widget.type = this.widgetsTypes[typeWid].type;
           //last extends overrides previous
@@ -242,9 +242,9 @@ class DashboardEditor extends Component {
     let newWidget = this.widgetsTypes[widgetKey];
 
     //count widget of type
-    let progressive = this.getNextProgressive(widgetKey);
+    //let progressive = this.getNextProgressive(widgetKey);
     //assign key to widget
-    let newKey = widgetKey + "_" + progressive;
+    let newKey = widgetKey //+ "_" + progressive;
     if (!newWidget.props)
       newWidget.props = {};
     newWidget.props.wid_key = newKey;

@@ -73,7 +73,7 @@ class DashboardView extends Component {
    */
   loadIframe = (iframes) => {
     iframes.map(iframe => {
-      this.widgetsTypes[iframe.title] = {
+      this.widgetsTypes[iframe.identifier] = {
         "type": IframeWidget,
         "title": iframe.title,
         "props":{
@@ -101,7 +101,7 @@ class DashboardView extends Component {
         let widget = dashboard.widgets[i];
 
         //assign instance to widget.type
-        let typeWid = i.split('_')[0];
+        let typeWid = i //.split('_')[0]; //Test
         if(this.widgetsTypes[typeWid]) {
           widget.type = this.widgetsTypes[typeWid].type;
           //last extends overrides previous
