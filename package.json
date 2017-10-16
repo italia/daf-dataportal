@@ -53,7 +53,8 @@
     "set-default-browser": "^1.0.1",
     "superagent": "^3.5.2",
     "superagent-mock": "^3.4.0",
-    "superagent-promise": "^1.1.0"
+    "superagent-promise": "^1.1.0",
+    "throttle-debounce": "^1.0.1"
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
