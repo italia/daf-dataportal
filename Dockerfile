@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
   git-core 
 
 # Copy all local files into the image.
-RUN git clone https://github.com/giux78/daf-dataportal
+RUN git clone https://github.com/italia/daf-dataportal
 
 WORKDIR /daf-dataportal
 
