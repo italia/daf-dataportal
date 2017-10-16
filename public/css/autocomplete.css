@@ -1,9 +1,4 @@
-.react-autosuggest__container {
-  position: relative;
-  width: 74%
-}
-
-.react-autosuggest__input {
+input#states-autocomplete {
   width: 95%;
   height: 100%;
   padding: 10px 20px;
@@ -15,48 +10,26 @@
   color: #808080;
 }
 
-.react-autosuggest__input--focused {
-  outline: none;
-}
-
-.react-autosuggest__input--open {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.react-autosuggest__suggestions-container {
-  display: none;
-}
-
-.react-autosuggest__suggestions-container--open {
-  display: block;
+.menu {
   position: absolute;
-  top: 51px;
-  width: 330px;
-  border: 1px solid #aaa;
-  background-color: #fff;
-  font-family: Helvetica, sans-serif;
-  font-weight: 300;
-  font-size: 16px;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  max-height: 300px;
-  overflow-y: auto;
-  z-index: 2;
+  background-color: white;
+  /*box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #cccccc;*/
 }
 
-.react-autosuggest__suggestions-list {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  color: #808080;
+.item {
+  padding: 2px 6px;
+  cursor: default;
 }
 
-.react-autosuggest__suggestion {
-  cursor: pointer;
-  padding: 10px 20px;
+.item-highlighted {
+  color: white;
+  background-color: #4095bf;
 }
 
-.react-autosuggest__suggestion--highlighted {
-  background-color: #ddd;
+.item-header {
+  background-color: #eeeeee;
+  color: #454545;
+  font-weight: bold;
 }

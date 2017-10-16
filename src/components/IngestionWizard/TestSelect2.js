@@ -3,7 +3,7 @@ import createClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import fetch from 'isomorphic-fetch';
-
+import { serviceurl } from '../../config/serviceurl.js'
 
 function escapeRegexCharacters(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -97,13 +97,7 @@ const TestSelect2 = createClass({
 	}
     console.log('loadOntologies - newValue: ' + input);    
     var that = this;
-    // URL CNR
-    //var url = 'http://stlab.istc.cnr.it/ontonethub/api/find';
-
-    //TODO
-    // URL ONTONETHUB
-    var url = 'http://localhost:8000/stanbol/ontonethub/ontologies/find';
-
+    var url = serviceurl.urlSemantic;
 
    // if(process.env.NODE_ENV=='development'){
    //   that.setState({ ontologies: ontologiesFile });

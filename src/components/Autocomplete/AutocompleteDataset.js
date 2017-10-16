@@ -1,46 +1,13 @@
-import React, { Component } from 'react'
-import Autosuggest from 'react-autosuggest';
-import categoriesFile from '../../data/categories.js'
+import React from 'react'
+import DOM from 'react-dom'
+import Autocomplete from 'react-autocomplete'
 import { serviceurl } from '../../config/serviceurl.js'
 
-function escapeRegexCharacters(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+class AutocompleteDataset extends React.Component {
 
-function getSuggestions(value, categories, filterType) {
-  const escapedValue = escapeRegexCharacters(value.trim());
-  if (escapedValue === '') {
-    return [];
-  }
-  const regex = new RegExp('^' + escapedValue, 'i');
-  return categories.filter(category => regex.test(category.name));
-}
-
-function getSuggestionValue(suggestion) {
-  return suggestion.title;
-}
-
-function renderSuggestion(suggestion) {
-  return (
-    <span>{suggestion.title}</span>
-  );
-}
-
-class AutocompleteDataset extends Component {
-  constructor(props) {
-    super(props);
-    if(this.props.querystring)
-      this.state = {
-      value: this.props.querystring,
-      suggestions: [],
-      categories: []
-    };    
-    else
-    this.state = {
-      value: '',
-      suggestions: [],
-      categories: []
-    };    
+  state = {
+    value: '',
+    suggestions: [],
   }
 
   loadCkanSuggestion(newValue) {  
@@ -61,51 +28,45 @@ class AutocompleteDataset extends Component {
       }).then(response => response.json())
         .then(json => this.receiveAutocomplete(json))
   }
-  
+
   receiveAutocomplete(json){
-    this.setState({ categories: json });
+    this.setState({ suggestions: json });
   }
 
-  onChange = (event, { newValue, method }) => {
-    this.loadCkanSuggestion(newValue);
-    this.setState({
-      value: newValue
-    });
-  };
-  
-  onSuggestionsFetchRequested = ({ value }) => {
-    if(this.state.categories && this.state.categories.length >0)
-      this.setState({
-        suggestions: getSuggestions(value, this.state.categories, this.props.filterType)
-      });
-  };
-
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: []
-    });
-  };
-
   render() {
-    const { value, suggestions } = this.state;
-    const inputProps = {
-      placeholder: "Inserisci criteri",
-      value,
-      onChange: this.onChange
-    };
-
     return (
-           <Autosuggest 
-              suggestions={suggestions}
-              onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-              onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-              getSuggestionValue={getSuggestionValue}
-              renderSuggestion={renderSuggestion}
-              inputProps={inputProps} />
- 
-    );
+        <Autocomplete
+          inputProps={{ id: 'states-autocomplete' }}
+          wrapperStyle={{ position: 'relative', display: 'inline-block' }}
+          value={this.state.value}
+          items={this.state.suggestions}
+          getItemValue={(item) => item.name}
+          onSelect={(value, item) => {
+            // set the menu to only the selected item
+            this.setState({ value, suggestions: [ item ] })
+            // or you could reset it to a default list again
+            // this.setState({ suggestions: getStates() })
+          }}
+          onChange={(event, value) => {
+            console.log('value' + value)
+            this.setState({ value })
+            if(value!=='')
+                this.loadCkanSuggestion(value);
+            else this.setState({ suggestions: [] });
+          }}
+          renderMenu={children => (
+            <div className="menu">
+              {children}
+            </div>
+          )}
+          renderItem={(item, isHighlighted) => (
+            <div className={`item ${isHighlighted ? 'item-highlighted' : ''}`}
+              key={item.name}
+            >{item.name}</div>
+          )}
+        />
+    )
   }
 }
 
 export default AutocompleteDataset
-

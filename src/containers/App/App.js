@@ -2,16 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route, HashRouter, Redirect, Switch } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
-import { Provider } from 'react-redux';
-import configureStore from '../../configureStore'
 import Full from '../Full/'
 import Home from '../Home/'
 import PropTypes from 'prop-types'
 import { loginAction, addUserOrganization } from './../../actions.js'
 
 const history = createBrowserHistory();
-
-const store = configureStore();
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -49,7 +45,7 @@ class App extends Component {
           })
     }else{
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
-        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
         dispatch(loginAction(localStorage.getItem('username'), localStorage.getItem('token')))
         .then(dispatch(addUserOrganization(localStorage.getItem('username'), localStorage.getItem('token'))))
         .then(this.setState({
