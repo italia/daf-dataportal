@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setAuthToken, loginAction, addUserOrganization, loadDatasets, setApplicationCookie } from './../../actions.js'
+import { setAuthToken, loginAction, addUserOrganization, loadDatasets, setApplicationCookie, receiveLogin } from './../../actions.js'
 import PropTypes from 'prop-types'
 import {
   Modal,
@@ -62,9 +62,12 @@ class Login extends Component {
                                               //document.cookie = "session2=" + cookie;
                                               console.log('5 - Cookie metabase settato')
                                               dispatch(loginAction())
-                                              dispatch(addUserOrganization())
-                                              this.props.history.push('/dashboard')
-                                              console.log('6 - redirect effettuato')
+                                              .then(json => {
+                                                  dispatch(receiveLogin(json))
+                                                  dispatch(addUserOrganization())
+                                                  this.props.history.push('/dashboard')
+                                                  console.log('6 - redirect effettuato')
+                                              })
                                             }
                                         })
                                     }
