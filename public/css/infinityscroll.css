@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    background-color: #20a8d8;
   }
   
   .App-logo {
@@ -24,6 +25,7 @@
     height: 150px;
     padding: 20px;
     color: black;
+    background-color: #20a8d8;
   }
   
   .App-intro {

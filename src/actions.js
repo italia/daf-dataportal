@@ -87,7 +87,9 @@ function removeLoggedUser() {
   }
 }
 
-function receiveLogin(response) { 
+export function receiveLogin(response) {
+  // SET UID ON LOCAL STORAGE
+  localStorage.setItem('uid', response.uid); 
   return {
       type: RECEIVE_LOGIN,
       user: response,
@@ -342,19 +344,19 @@ export function loginAction() {
           }
         })
         .then(response => response.json())
-        .then(json => dispatch(receiveLogin(json)))
   }
 }
 
 export function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('username');
+  localStorage.removeItem('uid');
   return dispatch => { dispatch(removeLoggedUser()) }
 }
 
 export function addUserOrganization() {
   console.log("Called action addUserOrganization");
-  var url = serviceurl.apiURLCatalog + '/ckan/userOrganizations/' + localStorage.getItem('username');
+  var url = serviceurl.apiURLCatalog + '/ckan/userOrganizations/' + localStorage.getItem('uid');
   return dispatch => {
       return fetch(url, {
           method: 'GET',
