@@ -8,6 +8,14 @@ ENV NPM_CONFIG_LOGLEVEL warn
 RUN apt-get update && apt-get install -y \
   git-core 
 
+#RUN apt-get install sudo
+
+#RUN  sudo fallocate -l 1G /swapfile
+#RUN  sudo chmod 600 /swapfile
+#RUN  sudo mkswap /swapfile
+#RUN  sudo swapon /swapfile
+#RUN  "/swapfile   none    swap    sw    0   0" >> /etc/fstab
+
 # Copy all local files into the image.
 RUN git clone https://github.com/italia/daf-dataportal
 

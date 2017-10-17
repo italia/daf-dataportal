@@ -125,7 +125,7 @@ class Login extends Component {
                       <span className="input-group-addon">
                         <i className="icon-user"></i>
                       </span>
-                      <input className="form-control" ref={(email) => this.email = email} placeholder="Nome Utente"/>
+                      <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
                     </div>
                     <div className="input-group mb-2">
                       <span className="input-group-addon">
