@@ -71,7 +71,7 @@ class Login extends Component {
                     })
               })
       .catch((error) => {
-        this.setState(setErrorMsg('Invalid username/password.'))
+        this.setState(setErrorMsg('Invalid email/password.'))
       })
   }
   

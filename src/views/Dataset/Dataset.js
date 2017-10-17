@@ -141,6 +141,28 @@ renderDatasetDetail(dataset, ope){
                   </div>
                   <div className="col-8">
                     <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>/daf/opendata/{dataset.name}</strong>.</p>
+                    <strong> Pyspark </strong>
+                    <code>
+                    path_dataset = "/daf/opendata/<strong>{dataset.name}</strong>" <br/>
+                    df = (spark.read.format("parquet") <br/>
+                          .option("inferSchema", "true") <br/>
+                          .option("header", "true") <br/>
+                          .option("sep", "|")     <br/>
+                          .load(path_dataset) <br/>
+)
+                    </code>
+                    <strong> Hive table </strong>
+                    <code>
+                    from pyspark.sql import HiveContext <br/>
+                    hive_context = HiveContext(sc) <br/>
+                    hive_context.sql("use opendata") <br/>
+                    incidenti = hive_context.table('<strong>{dataset.name}</strong>') <br/>
+                    incidenti
+                      </code>                      
+                      <strong> Spark Sql </strong>
+                      <code>
+                      spark.sql("SELECT * FROM opendata.<strong>{dataset.name}</strong>").show()
+                      </code>
                   </div>
                 </div>
               </div>
