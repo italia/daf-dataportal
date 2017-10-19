@@ -3,6 +3,7 @@ import { Bar } from 'react-chartjs';
 import { getRandomInt } from './util';
 import Modal from 'react-modal';
 import AddWidgetDialog from '../AddWidgetDialog';
+import App from '../InfinityScrollWidgets/App.js'
 
 class BtnControlWidget extends React.Component {
     constructor() {
@@ -171,14 +172,20 @@ class BtnControlWidget extends React.Component {
                     <span className="fa fa-pencil" aria-hidden="true"></span>
                 </button>
 
+                <App 
+                widgets={this.props.widgets}
+                isModalOpen={this.state.isModalAddOpen}
+                onWidgetSelect={this.addWidget}
+                onRequestClose={this.onRequestClose}
+                    />*
 
-                <AddWidgetDialog
+                {/*<AddWidgetDialog
                     widgets={this.props.widgets}
                     isModalOpen={this.state.isModalAddOpen}
                     onWidgetSelect={this.addWidget}
                     onRequestClose={this.onRequestClose}
                     >
-                </AddWidgetDialog>
+                </AddWidgetDialog> */}
 
                 <Modal
                     contentLabel="Set width columns"

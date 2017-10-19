@@ -88,8 +88,6 @@ function removeLoggedUser() {
 }
 
 export function receiveLogin(response) {
-  // SET UID ON LOCAL STORAGE
-  localStorage.setItem('uid', response.uid); 
   return {
       type: RECEIVE_LOGIN,
       user: response,
@@ -298,7 +296,23 @@ export function activateUser(token) {
 /****************************************************************************************** */
 
 /*********************************** LOGIN ************************************************ */
-export function setAuthToken(username, pw) {
+export function isValidToken(token) {
+  console.log("Called isValidToken");
+  var url = serviceurl.apiURLSSOManager + '/secured/test';
+  return dispatch => {
+      return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then(response => response.ok)
+  }
+}
+
+export function getAuthToken(username, pw) {
   const base64 = require('base-64');
   console.log("1 - Called action setAuthToken");
   localStorage.setItem('username', username);
@@ -350,13 +364,12 @@ export function loginAction() {
 export function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('username');
-  localStorage.removeItem('uid');
   return dispatch => { dispatch(removeLoggedUser()) }
 }
 
-export function addUserOrganization() {
+export function addUserOrganization(uid) {
   console.log("Called action addUserOrganization");
-  var url = serviceurl.apiURLCatalog + '/ckan/userOrganizations/' + localStorage.getItem('uid');
+  var url = serviceurl.apiURLCatalog + '/ckan/userOrganizations/' + uid;
   return dispatch => {
       return fetch(url, {
           method: 'GET',
