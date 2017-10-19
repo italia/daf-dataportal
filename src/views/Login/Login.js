@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setAuthToken, loginAction, addUserOrganization, loadDatasets, setApplicationCookie, receiveLogin } from './../../actions.js'
+import { getAuthToken, loginAction, addUserOrganization, loadDatasets, setApplicationCookie, receiveLogin } from './../../actions.js'
 import PropTypes from 'prop-types'
 import {
   Modal,
@@ -21,23 +21,23 @@ function setErrorMsg(error) {
 
 class Login extends Component {
   constructor(props) {
-      super(props);
-      this.props = props;
-      this.state = {
-        isOpen: false,
-        loginMessage: null
-      }
+    super(props);
+    this.props = props;
+    this.state = {
+      isOpen: false,
+      loginMessage: null
+    }
   }
 
   async setCookie(token, nomeApp) {
     var url = serviceurl.apiURLSSOManager + '/secured/retriveCookie/' + nomeApp;
-    const response = await fetch( url, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
     })
     return response.json();
   }
@@ -45,45 +45,41 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch, selectDataset } = this.props
-    dispatch(setAuthToken(this.email.value, this.pw.value))
-    .then(json => { localStorage.setItem('token', json); 
-                      dispatch(setApplicationCookie('superset'))
-                      .then(json => { if(json.result){
-                                      let cookie = json.result.split('=');
-                                      console.log('2 - Setto il seguente cookie: '+ cookie[1] + ' per superset');
-                                      document.cookie = "session=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
-                                      //document.cookie = "session=" + cookie[1];
-                                      console.log('3 - Cookie superset settato')
-                                      dispatch(setApplicationCookie('metabase'))
-                                      .then(json => { if(json.result){
-                                              let cookie = json.result.split('=');
-                                              console.log('4 - Setto il seguente cookie: '+ cookie[1] + ' per metabase');
-                                              document.cookie = "metabase.SESSION_ID=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
-                                              //document.cookie = "session2=" + cookie;
-                                              console.log('5 - Cookie metabase settato')
-                                              dispatch(loginAction())
-                                              .then(json => {
-                                                  dispatch(receiveLogin(json))
-                                                  dispatch(addUserOrganization())
-                                                  this.props.history.push('/dashboard')
-                                                  console.log('6 - redirect effettuato')
-                                              })
-                                            }
-                                        })
-                                    }
-                    })
-              })
+    dispatch(getAuthToken(this.email.value, this.pw.value))
+      .then(json => {
+        localStorage.setItem('token', json);
+        dispatch(setApplicationCookie('superset'))
+          .then(json => {
+            if (json.result) {
+              let cookie = json.result.split('=');
+              document.cookie = "session=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
+              dispatch(setApplicationCookie('metabase'))
+                .then(json => {
+                  if (json.result) {
+                    let cookie = json.result.split('=');
+                    document.cookie = "metabase.SESSION_ID=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
+                    dispatch(loginAction())
+                      .then(json => {
+                        dispatch(receiveLogin(json))
+                        dispatch(addUserOrganization(json.uid))
+                        this.props.history.push('/home')
+                      })
+                  }
+                })
+            }
+          })
+      })
       .catch((error) => {
         this.setState(setErrorMsg('Invalid username/password.'))
       })
   }
-  
+
   openModal = () => {
     this.setState({
       isOpen: true
     });
   };
-  
+
   hideModal = () => {
     this.setState({
       isOpen: false
@@ -92,17 +88,17 @@ class Login extends Component {
 
   render() {
     return (
-        <div className="container">
+      <div className="container">
         <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
           <form>
             <ModalHeader>
-              <ModalClose onClick={this.hideModal}/>
+              <ModalClose onClick={this.hideModal} />
               <ModalTitle>Recupero password</ModalTitle>
             </ModalHeader>
             <ModalBody>
-            <div className="form-group">
-              <p>Se hai dimenticato la password contattaci al seguente indirizzo email: alessandro@teamdigitale.governo.it</p>
-            </div>
+              <div className="form-group">
+                <p>Se hai dimenticato la password contattaci al seguente indirizzo email: alessandro@teamdigitale.governo.it</p>
+              </div>
 
             </ModalBody>
             <ModalFooter>
@@ -112,49 +108,49 @@ class Login extends Component {
             </ModalFooter>
           </form>
         </Modal>
-          <div className="row justify-content-center">
-            <div className="col-md-8">
-              <div className="card-group mb-0">
-                <div className="card p-2">
-                  <div className="card-block">
-                    <h1>Login</h1>
-                    <p className="text-muted">Accedi alla tua area personale</p>
-                    {this.state.loginMessage && 
-                      <div className="alert alert-danger" role="alert">
-                        {this.state.loginMessage}
-                      </div>
-                      }
-                    <div className="input-group mb-1">
-                      <span className="input-group-addon">
-                        <i className="icon-user"></i>
-                      </span>
-                      <input className="form-control" ref={(email) => this.email = email} placeholder="Nome Utente"/>
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card-group mb-0">
+              <div className="card p-2">
+                <div className="card-block">
+                  <h1>Login</h1>
+                  <p className="text-muted">Accedi alla tua area personale</p>
+                  {this.state.loginMessage &&
+                    <div className="alert alert-danger" role="alert">
+                      {this.state.loginMessage}
                     </div>
-                    <div className="input-group mb-2">
-                      <span className="input-group-addon">
-                        <i className="icon-lock"></i>
-                      </span>
-                      <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
-                    </div><div className="row">
-                      <div className="col-6">
-                        <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
-                      </div><div className="col-6 text-right"><button type="button" className="btn btn-link px-0" onClick={this.openModal}>Password dimenticata?</button>
-                      </div>
+                  }
+                  <div className="input-group mb-1">
+                    <span className="input-group-addon">
+                      <i className="icon-user"></i>
+                    </span>
+                    <input className="form-control" ref={(email) => this.email = email} placeholder="Email" />
+                  </div>
+                  <div className="input-group mb-2">
+                    <span className="input-group-addon">
+                      <i className="icon-lock"></i>
+                    </span>
+                    <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+                  </div><div className="row">
+                    <div className="col-6">
+                      <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
+                    </div><div className="col-6 text-right"><button type="button" className="btn btn-link px-0" onClick={this.openModal}>Password dimenticata?</button>
                     </div>
                   </div>
                 </div>
-                <div className="card card-inverse card-primary py-3 hidden-md-down">
-                  <div className="card-block text-center"><div>
-                    <h2>Iscriviti</h2>
-                    <p>Per accedere all'area riservata del portale occorre registrarsi qui: </p>
-                    <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/register')} >Registrati!</button>
-                  </div>
-                  </div>
+              </div>
+              <div className="card card-inverse card-primary py-3 hidden-md-down">
+                <div className="card-block text-center"><div>
+                  <h2>Iscriviti</h2>
+                  <p>Per accedere all'area riservata del portale occorre registrarsi qui: </p>
+                  <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/register')} >Registrati!</button>
+                </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
     )
   }
 }
