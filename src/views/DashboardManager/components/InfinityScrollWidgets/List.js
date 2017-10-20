@@ -33,25 +33,36 @@ class List extends Component {
         }
         if(widget && widget =="TextWidget")
           return (
-            <div key={key} className="col-sm-12 col-md-12 col-lg-12 list-group mb-20">
-              <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
-                <h6 className="list-group-item-heading">
-                  {widgets[widget].title}
-                </h6>
-              </a>
-            </div>
+            //<div key={key} className="col-sm-12 col-md-12 col-lg-12 list-group mb-20">
+            <div className="col-sm-12" key={key}>
+                <div className="card text-center">
+                    <div className="card-body">  
+                      <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
+                      <h6 className="list-group-item-heading">
+                        {widgets[widget].title}
+                      </h6>
+                      </a>
+                  </div>
+                </div>
+              </div>
           );
         if(widget && widget.indexOf("BtnControlWidget") != 0 && widget !="TextWidget")
-          return (
-            <div key={key} className="col-sm-12 col-md-12 col-lg-12 list-group mb-20">
-              <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
-                <h6 className="list-group-item-heading" id={"title-preview-" + key}>
-                  {widgets[widget].title}
-                </h6>
-                <div className="preview-widget">
-                  {React.createElement(wid, {...widgets[widget].props, class: "no-click", onLoad: () => onLoadIframe(key)})}
+        return (
+            //<div key={key} className="col-sm-12 col-md-12 col-lg-12 list-group mb-20">
+            <div className="col-sm-12" key={key}>
+                <div className="card text-center">
+                    <div className="card-body">  
+              
+                      <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
+                        <h6 className="list-group-item-heading" id={"title-preview-" + key}>
+                          {widgets[widget].title}
+                        </h6>
+                        <div className="preview-widget">
+                          {React.createElement(wid, {...widgets[widget].props, class: "no-click", onLoad: () => onLoadIframe(key)})}
+                        </div>
+                      </a>
                 </div>
-              </a>
+              </div>
             </div>
           );
       }

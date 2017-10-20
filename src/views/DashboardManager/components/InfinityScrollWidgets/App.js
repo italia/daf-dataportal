@@ -16,11 +16,11 @@ class App extends Component {
       isOpen={isModalOpen}>
       <div className="App">
         <div className="App-header">
-        <button type="button" className="close" onClick={onRequestClose}>
-        <span aria-hidden="true">&times;</span>
-        <span className="sr-only">Chiudi</span>
-      </button>
-      <h4 className="modal-title">Aggiungi un widget</h4>
+          <button type="button" className="close" onClick={onRequestClose}>
+          <span aria-hidden="true">&times;</span>
+          <span className="sr-only">Chiudi</span>
+          </button>
+          <h4 className="modal-title">Aggiungi un widget</h4>
         </div>
         <List widgets={this.props.widgets}
             isModalOpen={this.props.isModalOpen}
