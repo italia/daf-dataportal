@@ -64,7 +64,7 @@ class Login extends Component {
                                               dispatch(loginAction())
                                               dispatch(addUserOrganization())
                                               this.props.history.push('/dashboard')
-                                              console.log('6 - redirect effettuato')
+                                              console.log('6 - redirecaptchat effettuato')
                                             }
                                         })
                                     }
