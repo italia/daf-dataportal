@@ -53,12 +53,12 @@ class App extends Component {
               .then(json => {
                 dispatch(setApplicationCookie('superset'))
                 .then(json => {
-                  if (json.result) {
+                  if (json && json.result) {
                     let cookie = json.result.split('=');
                     document.cookie = "session=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
                     dispatch(setApplicationCookie('metabase'))
                       .then(json => {
-                        if (json.result) {
+                        if (json && json.result) {
                           let cookie = json.result.split('=');
                           document.cookie = "metabase.SESSION_ID=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
                           dispatch(loginAction())

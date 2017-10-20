@@ -29,19 +29,6 @@ class Login extends Component {
     }
   }
 
-  async setCookie(token, nomeApp) {
-    var url = serviceurl.apiURLSSOManager + '/secured/retriveCookie/' + nomeApp;
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
-    })
-    return response.json();
-  }
-
   handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch, selectDataset } = this.props
@@ -50,20 +37,24 @@ class Login extends Component {
         localStorage.setItem('token', json);
         dispatch(setApplicationCookie('superset'))
           .then(json => {
-            if (json.result) {
-              let cookie = json.result.split('=');
-              document.cookie = "session=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
+            if (json && json.result) {
+              document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
               dispatch(setApplicationCookie('metabase'))
                 .then(json => {
-                  if (json.result) {
-                    let cookie = json.result.split('=');
-                    document.cookie = "metabase.SESSION_ID=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
-                    dispatch(loginAction())
-                      .then(json => {
-                        dispatch(receiveLogin(json))
-                        dispatch(addUserOrganization(json.uid))
-                        this.props.history.push('/home')
-                      })
+                  if (json && json.result) {
+                    document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
+                    dispatch(setApplicationCookie('jupyter'))
+                    .then(json => {
+                      if (json && json.result) {
+                        document.cookie = json.result + "; path=/hub/; domain=" + serviceurl.domain;
+                        dispatch(loginAction())
+                        .then(json => {
+                          dispatch(receiveLogin(json))
+                          dispatch(addUserOrganization(json.uid))
+                          this.props.history.push('/home')
+                        })
+                      }
+                    })
                   }
                 })
             }

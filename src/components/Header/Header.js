@@ -88,7 +88,7 @@ class Header extends Component {
           <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
             <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
               <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-              <span className="d-md-down-none">{loggedUser?loggedUser.sn:''}</span>
+              <span className="d-md-down-none">{loggedUser?loggedUser.givenname:''}</span>
             </button>
 
             <DropdownMenu className="dropdown-menu-right">

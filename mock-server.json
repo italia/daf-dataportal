@@ -11,12 +11,12 @@
                 "userpassword": null
             }
     },
-    "/sso-manager/secured/retriveCookie/superset": {
+    "/sso-manager/v1/secured/retriveCookie/superset": {
         "get": {
             "result": "session=sessionsuperset"
         }
     },
-    "/sso-manager/secured/retriveCookie/metabase": {
+    "/sso-manager/v1/secured/retriveCookie/metabase": {
         "get": {
             "result": "session=sessionmetabase"
         }
@@ -211,7 +211,7 @@
         ]
         
     }, 
-    "/catalog-manager/v1/ckan/userOrganizations/test": {
+    "/catalog-manager/v1/ckan/userOrganizations/test_uid": {
         "get": [
             {
               "name": "test-org",

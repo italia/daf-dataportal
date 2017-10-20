@@ -39,9 +39,21 @@ class BtnControlWidget extends React.Component {
 
     removeCol = function () {
         let rows = this.props.layout.rows;
+        this.removeWidgets(rows, this.props.index);
         rows.splice(this.props.index, 1);
-
         this.props.setLayout(this.props.layout);
+    }
+
+    
+    removeWidgets(rows, index){
+        console.log('remove Widgets of row number: ' + index);
+        /*let row = rows[this.props.index];
+        if(row){
+            let columns = row.columns;
+            if(columns){
+                console.log('aaaa');
+            }
+        }*/ 
     }
 
     openModal = function(e){
