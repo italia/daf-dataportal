@@ -21,6 +21,12 @@
             "result": "session=sessionmetabase"
         }
     },
+
+    "/sso-manager/v1/secured/retriveCookie/jupyter":{
+        "get": {
+            "result": "session=sessionjupyter"
+        }
+    }, 
     "/dati-gov/v1/dashboard/iframes": {
         "get": [
             {
