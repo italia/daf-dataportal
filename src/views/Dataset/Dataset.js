@@ -35,33 +35,29 @@ class Dataset extends Component {
   }
 
   handleUnloadDatasetClick(e) {
-    console.log('handleUnloadDatasetClick');
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(unloadDatasets())
   }
 
   handleLoadDatasetDetailClick(name, e) {
-    console.log('handleLoadDatasetDetailClick ' + name);
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(datasetDetail(name))
   }
 
   renderDataset() {
-    console.log('renderDataset');
     this.searchDataset(this.props.match.params.query);
   }
 
 renderDatasetList(datasets, ope, isLoading){
-  console.log('ope: ' + ope)
   if (ope === 'RECEIVE_DATASETS')
     return <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>
       {datasets.map(dataset => {
         var title = dataset.title;
         if (title.length > 50)
           title = title.substring(0, 50).concat('...')
-        return (<div className="card text-center" key={title}>
+        return (<div className="card text-center" key={dataset.name}>
               <div className="card-header"></div>
               <div className="card-body">
                 <h4 className="card-title">{title}</h4>
@@ -83,21 +79,26 @@ renderDatasetList(datasets, ope, isLoading){
     </InfiniteScroll>
 }
 
-renderDatasetSearchResult(datasets, ope, isLoading){
-  console.log('ope: ' + ope)
+renderDatasetSearchResult(length, datasets, ope, isLoading){
   if (ope === 'RECEIVE_DATASETS')
     if (datasets && datasets.length > 0)
-    return ( <div className="App">
-              <div className="App-header">
-                <h6 className="modal-title">Sono stati trovati {datasets.length} datasets</h6>
+    return ( <div className="col-md-8">
+                <div className="App">
+                <div className="App-header">
+                    {length > 999 ?
+                      <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
+                    :
+                      <div><h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
+                    }
+                      </div>
+                      {this.renderDatasetList(datasets, ope, isLoading)}
+                  
               </div>
-                {this.renderDatasetList(datasets, ope, isLoading)}
             </div>
     )
 }
 
 renderDatasetDetail(dataset, ope){
-  console.log('ope: ' + ope)
   if (ope === 'RECEIVE_DATASET_DETAIL') {
     if (dataset)
       return (
@@ -141,6 +142,7 @@ renderDatasetDetail(dataset, ope){
                   </div>
                   <div className="col-8">
                     <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>/daf/opendata/{dataset.name}</strong>.</p>
+                       
                     <strong> Pyspark </strong>
                     <code>
                     path_dataset = "/daf/opendata/<strong>{dataset.name}</strong>" <br/>
@@ -150,7 +152,7 @@ renderDatasetDetail(dataset, ope){
                           .option("sep", "|")     <br/>
                           .load(path_dataset) <br/>
 )
-                    </code>
+                    </code><br/>
                     <strong> Hive table </strong>
                     <code>
                     from pyspark.sql import HiveContext <br/>
@@ -158,7 +160,7 @@ renderDatasetDetail(dataset, ope){
                     hive_context.sql("use opendata") <br/>
                     incidenti = hive_context.table('<strong>{dataset.name}</strong>') <br/>
                     incidenti
-                      </code>                      
+                      </code><br/>              
                       <strong> Spark Sql </strong>
                       <code>
                       spark.sql("SELECT * FROM opendata.<strong>{dataset.name}</strong>").show()
@@ -180,7 +182,7 @@ render() {
     var subdatasets = datasets.slice(0, items)
   return (
     <div className="u-textCenter u-padding-r-all u-textCenter">
-      {this.renderDatasetSearchResult(subdatasets, ope, isLoading)}
+      {this.renderDatasetSearchResult(datasets?datasets.length:0, subdatasets, ope, isLoading)}
       {this.renderDatasetDetail(dataset, ope)}
     </div>
   )

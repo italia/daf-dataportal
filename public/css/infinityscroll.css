@@ -13,6 +13,7 @@
     flex-direction: column;
     height: 100vh;
     background-color:  #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.125);
   }
   
   .App-logo {
@@ -60,3 +61,14 @@
     cursor: pointer;
   }
   
+  .infinity-iframe-50 {
+    width: 50%;
+    padding-left: 10px; 
+    padding-right: 10px 
+  }
+  
+  .infinity-iframe-100 {
+    width: 100%;
+    padding-left: 10px; 
+    padding-right: 10px 
+  }
