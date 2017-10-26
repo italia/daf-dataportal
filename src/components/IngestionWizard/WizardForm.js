@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import WizardFormFirstPage from './WizardFormFirstPage'
 import WizardFormSecondPage from './WizardFormSecondPage'
 import WizardFormThirdPage from './WizardFormThirdPage'
+import WizardOperational from './WizardOperational'
 import WizardFormMetadata from './WizardFormMetadata'
 import {getJsonDataschema} from './inputform_reader.js'
 import { change } from 'redux-form';
@@ -72,7 +73,7 @@ class WizardForm extends Component {
                       organizations={organizations}
                   />}
                 {page === 3 &&
-                    <WizardFormThirdPage
+                    <WizardOperational
                       previousPage={this.previousPage}
                       onSubmit={onSubmit}
                     />}

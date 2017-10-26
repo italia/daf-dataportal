@@ -1,8 +1,9 @@
 export function createOperational (values, data) {
   var operational = 'operational'
   data[operational] = {}
-  data[operational]['uri'] = values.uri
+  data[operational]['logical_uri'] = "test1"  //values.uri
   data[operational]['group_own'] = values.ownership
+  data[operational]['dataset_type'] = (values.dataset_type) ? values.values.dataset_type  : 'batch'
   data[operational]['is_std'] = (values.is_std === 'true')
   if (!values.is_std){
     data[operational]['is_std'] = false
@@ -14,11 +15,64 @@ export function createOperational (values, data) {
   if (!values.read_type){
       data[operational]['read_type'] = 'update'
   }
-  data[operational]['push'] = values.pushOrPull
-  data[operational]['ftporws'] = values.ftporws
-  data[operational]['connection'] = values.dest_uri
+  //data[operational]['push'] = values.pushOrPull
+  //data[operational]['ftporws'] = values.ftporws
+  //data[operational]['connection'] = values.dest_uri
+  var input_src = 'input_src'
+  data[operational][input_src] = {}
+  console.log(values.sftps)
+  if(values.sfpts){
+    data[operational][input_src]['sftp'] = []
+    values.sfpts.map(function(sto){
+       data[operational][input_src]['sftp'].push(sto)
+  })
+  }
+  if (values.wss){
+    data[operational][input_src]['srv_pull'] = []
+    data[operational][input_src]['srv_push'] = []
+    values.wss.map((ws) => {
+      console.log(ws)
+      if(ws.push === 'false'){
+        var objPull = {}
+        objPull.name = ws.name
+        objPull.url = ws.url
+        objPull.username = ws.username
+        objPull.password = ws.password
+        data[operational][input_src]['srv_pull'].push(objPull)
+      }
+       if(ws.push === 'true'){
+        var objPull = {}
+        objPull.name = ws.name
+        objPull.url = ws.url
+        objPull.username = ws.username
+        objPull.password = ws.password
+        data[operational][input_src]['srv_pull'].push(objPull)
+      }  
+    })
+  }
+  if (values.dafs){
+    data[operational][input_src]['dataset_uri'] = []
+    values.dafs.map((daf) => {
+    console.log(daf);
+    var datasetUri = {}
+    datasetUri['sql'] = daf.sql
+    datasetUri['param'] = daf.param
+    datasetUri['uris'] = daf.uris.map(uri =>  { return uri})
+    data[operational][input_src]['dataset_uri'].push(datasetUri)
+    })
+  }
+  if (values.storages){
+    data[operational]['storage_info'] = {}
+    values.storages.map(storage => {
+      const db = storage.db
+      const storageObj = {name : storage.name, path : storage.path, param : storage.param}
+      data[operational]['storage_info'][db] = storageObj
+    })
+  }
+  console.log(data)
   return data
 }
+
 
 export function createDcat (values, data) {
   var dcatapit = 'dcatapit'
