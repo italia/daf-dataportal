@@ -5,10 +5,9 @@ import $ from 'jquery';
 class List extends Component {
   constructor(props) {
     super(props);
-    console.log('LIST widgets: ' + this.props.widgets)
   }
   state = {
-    items: 4
+    items: 6
   }
 
   loadMore = () => {
@@ -33,8 +32,7 @@ class List extends Component {
         }
         if(widget && widget =="TextWidget")
           return (
-            //<div key={key} className="col-sm-12 col-md-12 col-lg-12 list-group mb-20">
-            <div className="col-sm-12" key={key}>
+            <div className="infinity-iframe-100" key={key}>
                 <div className="card text-center">
                     <div className="card-body">  
                       <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
@@ -44,12 +42,11 @@ class List extends Component {
                       </a>
                   </div>
                 </div>
-              </div>
+            </div>
           );
         if(widget && widget.indexOf("BtnControlWidget") != 0 && widget !="TextWidget")
         return (
-            //<div key={key} className="col-sm-12 col-md-12 col-lg-12 list-group mb-20">
-            <div className="col-sm-12" key={key}>
+            <div className="infinity-iframe-50" key={key}>
                 <div className="card text-center">
                     <div className="card-body">  
               
@@ -68,9 +65,8 @@ class List extends Component {
       }
     });
     return (
-      <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>
+      <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="d-flex flex-wrap">
         {widgetItems}
-
         <button
           className="List-load-more-button"
           onClick={this.handleLoadMoreClick}
