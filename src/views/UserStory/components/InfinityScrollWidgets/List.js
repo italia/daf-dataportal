@@ -36,7 +36,7 @@ class List extends Component {
 
           if(widget)
             return (
-              <div className="col-sm-12" key={key}>
+              <div className="infinity-iframe-50" key={key}>
               <div className="card text-center">
                   <div className="card-body">  
                     <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
@@ -55,7 +55,7 @@ class List extends Component {
     });
 
     return (
-      <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>
+      <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="d-flex flex-wrap">
         {widgetItems}
 
         <button

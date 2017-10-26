@@ -110,7 +110,7 @@ function receiveOntologies(response) {
 function receiveVocabulary(response) {
   return {
       type: RECEIVE_VOCABULARY,
-      //ontologies: response,
+      //vocabulary: response,
       vocabulary: voc,
       error: '',
       receivedAt: Date.now(),
@@ -391,7 +391,7 @@ function fetchDataset(query, start) {
   var token = '';
   if(query)
     queryurl='&q=name:*'+query+'*';
-  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=1000&start='+start+queryurl;  
+  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=1001&start='+start+queryurl;  
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
       token = localStorage.getItem('token')

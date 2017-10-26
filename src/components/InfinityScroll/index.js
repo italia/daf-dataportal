@@ -3,9 +3,9 @@ import throttle from 'throttle-debounce/throttle';
 
 export default class InfiniteScroll extends Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
-    offsetBottomThreshold: PropTypes.number.isRequired,
-    onScrollToBottom: PropTypes.func.isRequired,
+    children: PropTypes.node,
+    offsetBottomThreshold: PropTypes.number,
+    onScrollToBottom: PropTypes.func,
   };
 
   static defaultProps = {
