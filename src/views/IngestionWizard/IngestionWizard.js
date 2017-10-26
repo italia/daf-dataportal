@@ -22,6 +22,13 @@ class IngestionForm extends Component {
     this.showResults = this.showResults.bind(this);
 }
 
+
+//showResults = values =>{
+//  const transformed = transformer(values)
+//  console.log(transformed)
+//  console.log(values)
+//}
+
  showResults = values =>{
   const transformed = transformer(values)
   //sendPostDataMeta(transformed, undefined)
@@ -39,8 +46,7 @@ class IngestionForm extends Component {
   } else {
     console.log('token non presente');
   }
-}
-
+} 
 
   render() {
     return (
@@ -58,7 +64,7 @@ class IngestionForm extends Component {
               {this.state.msg} 
             </div>
         }
-        <WizardForm onSubmit={this.showResults.bind(this)} />
+         <WizardForm onSubmit={this.showResults.bind(this)} />
       </div>
     )
   }

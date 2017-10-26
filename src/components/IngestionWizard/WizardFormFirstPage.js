@@ -102,7 +102,7 @@ const WizardFormFirstPage = props => {
 
 export default reduxForm({
   form: 'wizard', // <------ same form name
-  destroyOn: false, // <------ preserve form data
+  destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
   validate,
   asyncValidate,
