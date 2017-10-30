@@ -8,12 +8,12 @@
   }
 
   .App {
-    text-align: center;
+    /* text-align: center; */
     display: flex;
     flex-direction: column;
     height: 100vh;
     background-color:  #FFF;
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    /* border: 1px solid rgba(0, 0, 0, 0.125); */
   }
   
   .App-logo {

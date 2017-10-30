@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom'
+import { connect } from 'react-redux'
 import {
   Modal,
   ModalHeader,
@@ -7,7 +8,14 @@ import {
   ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'react-modal-bootstrap'
+import {
+  loadDatasets,
+  unloadDatasets,
+  datasetDetail,
+  logout
+} from '../../actions'
+import PropTypes from 'prop-types'
 import { serviceurl } from '../../config/serviceurl.js'
 
 class Sidebar extends Component {
@@ -19,6 +27,15 @@ class Sidebar extends Component {
         url: null,
         name: null
       }
+  }
+
+  handleLoadDatasetClick(event) {
+    /* console.log('Serach Dataset for: ' + this.props.loggedUser.uid); */
+    event.preventDefault();
+    const { dispatch, selectDataset, loggedUser } = this.props;
+    dispatch(loadDatasets('',0,loggedUser.uid));
+    this.props.history.push('/dataset');
+    
   }
 
   handleClick(e) {
@@ -90,6 +107,9 @@ class Sidebar extends Component {
                   <li className="nav-item">
                     <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica <span className="badge badge-danger">beta</span></NavLink>
                   </li>
+                  <li className="nav-item">
+                    <NavLink onClick={this.handleLoadDatasetClick.bind(this)} to={'/dataset'} className="nav-link" activeClassName="active">  I Miei Dataset {/* <span className="badge badge-danger">beta</span> */}</NavLink>
+                  </li>
                 </ul>
               </li>
 
@@ -139,4 +159,14 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar;
+Sidebar.propTypes = {
+  loggedUser: PropTypes.object,
+  value: PropTypes.string
+}
+
+function mapStateToProps(state) {
+  const { loggedUser } = state.userReducer['obj'] || { }
+  return { loggedUser }
+}
+
+export default connect(mapStateToProps)(Sidebar)

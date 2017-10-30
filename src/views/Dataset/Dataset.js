@@ -11,19 +11,21 @@ import InfiniteScroll from '../../components/InfinityScroll';
 class Dataset extends Component {
   constructor(props) {
     super(props)
-    this.setState({ isLoading: false })
+    /* this.setState({ isLoading: false }) */
+    this.state = {
+      items: 10,
+      visibility: 'visible'
+    }
+
     this.handleUnloadDatasetClick = this.handleUnloadDatasetClick.bind(this)
     this.handleLoadDatasetDetailClick = this.handleLoadDatasetDetailClick.bind(this)
-  }
-
-  state = {
-    items: 10
   }
 
   loadMore = () => {
     if (this.state.isLoading) { return }
     var totitems = this.state.items + 10;
-    this.setState({ items: totitems });
+    this.setState({ items: totitems,
+    visibility: "hidden" });
   }
 
   handleScrollToBottom = () => this.loadMore()
@@ -50,7 +52,9 @@ class Dataset extends Component {
     this.searchDataset(this.props.match.params.query);
   }
 
-renderDatasetList(datasets, ope, isLoading){
+renderDatasetList(length, datasets, ope, isLoading){
+  const { visibility, items } = this.state;
+  let visible = length<=items ? 'hidden':visibility;
   if (ope === 'RECEIVE_DATASETS')
     return <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>
       {datasets.map(dataset => {
@@ -73,7 +77,7 @@ renderDatasetList(datasets, ope, isLoading){
       <button
         className="List-load-more-button"
         onClick={this.handleLoadMoreClick}
-        disabled={isLoading}>
+        disabled={isLoading} style={{visibility: visible }}>
         {isLoading ? 'Loading...' : 'Load more'}
       </button>
     </InfiniteScroll>
@@ -91,7 +95,7 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
                       <div><h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
                     }
                       </div>
-                      {this.renderDatasetList(datasets, ope, isLoading)}
+                      {this.renderDatasetList(length, datasets, ope, isLoading)}
                   
               </div>
             </div>

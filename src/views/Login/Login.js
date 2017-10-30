@@ -37,16 +37,19 @@ class Login extends Component {
         localStorage.setItem('token', json);
         dispatch(setApplicationCookie('superset'))
           .then(json => {
-            if (json && json.result) {
-              document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
+            if (json) {
+              if(json.result)
+                document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
               dispatch(setApplicationCookie('metabase'))
                 .then(json => {
-                  if (json && json.result) {
-                    document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
+                  if (json) {
+                    if(json.result)
+                      document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
                     dispatch(setApplicationCookie('jupyter'))
                     .then(json => {
-                      if (json && json.result) {
-                        document.cookie = json.result + "; path=/hub/; domain=" + serviceurl.domain;
+                      if (json) {
+                        if(json.result)
+                          document.cookie = json.result + "; path=/hub/; domain=" + serviceurl.domain;
                         dispatch(loginAction())
                         .then(json => {
                           dispatch(receiveLogin(json))
