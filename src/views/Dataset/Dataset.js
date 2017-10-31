@@ -7,6 +7,7 @@ import {
   datasetDetail
 } from '../../actions'
 import InfiniteScroll from '../../components/InfinityScroll';
+import { transformName } from '../../utility'
 
 class Dataset extends Component {
   constructor(props) {
@@ -54,13 +55,10 @@ renderDatasetList(datasets, ope, isLoading){
   if (ope === 'RECEIVE_DATASETS')
     return <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>
       {datasets.map(dataset => {
-        var title = dataset.title;
-        if (title.length > 50)
-          title = title.substring(0, 50).concat('...')
         return (<div className="card text-center" key={dataset.name}>
               <div className="card-header"></div>
               <div className="card-body">
-                <h4 className="card-title">{title}</h4>
+                <h4 className="card-title">{transformName(dataset.name)}</h4>
                 <p className="card-text">{dataset.notes}</p>
                 <h6 className="card-subtitle mb-2 text-muted">Organizzazione: {dataset.organization.name}</h6>
                 <h6 className="card-subtitle mb-2 text-muted">Stato: {dataset.organization.state}</h6>
@@ -109,7 +107,7 @@ renderDatasetDetail(dataset, ope){
                 Descrizione
                 </div>
               <div className="card-block">
-                <h2 className="card-title">{dataset.name}</h2>
+                <h2 className="card-title">{transformName(dataset.name)}</h2>
                 <h4 className="card-text">{dataset.notes}</h4>
                 <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
                 <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p>

@@ -7,7 +7,7 @@ import WizardFormMetadata from './WizardFormMetadata'
 import {getJsonDataschema} from './inputform_reader.js'
 import { change } from 'redux-form';
 import { connect } from 'react-redux'
-
+import licenze from '../../data/licenze'
 
 class WizardForm extends Component {
   constructor(props) {
@@ -37,12 +37,21 @@ class WizardForm extends Component {
     this.setState({ page: this.state.page - 1 })
   }
 
-  //handleSubmit(){
-  //  console.log('ale')
-  //}
+  getLicenze(liv,notation){
+    console.log('liv: ' + liv);
+    console.log('notation: ' + notation);
+    var appo = [];
+    licenze.map((lic, index) => {
+      if(lic.rank==liv){
+        if(notation){
+          if(lic.notation.startsWith(notation))
+            appo.push(lic);
+        } else appo.push(lic);
+      }
+   })
+   return appo;
+  }
 
-              //    {page === 1 && <WizardFormFirstPage onSubmit={this.nextPage} />}
-// previousPage={this.previousPage}
   render() {
     const { onSubmit, organizations } = this.props
     const { page } = this.state
@@ -70,6 +79,7 @@ class WizardForm extends Component {
                       previousPage={this.previousPage}
                       onSubmit={this.nextPage}
                       organizations={organizations}
+                      getLicenze={this.getLicenze}
                   />}
                 {page === 3 &&
                     <WizardFormThirdPage

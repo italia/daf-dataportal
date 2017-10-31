@@ -94,10 +94,7 @@ class Header extends Component {
             <DropdownMenu className="dropdown-menu-right">
               <DropdownItem header className="text-center"><strong>Menu utente</strong></DropdownItem>
               <DropdownItem><a className="nav-link" href="/#/profile"><i className="fa fa-user"></i> Profilo</a></DropdownItem>
-              <DropdownItem> <a className="nav-link"  onClick={() => {
-              logout()
-              }} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
-
+              <DropdownItem> <a className="nav-link"  onClick={() => {logout()}} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </li>

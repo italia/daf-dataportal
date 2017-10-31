@@ -2,7 +2,7 @@ import React from 'react'
 import DOM from 'react-dom'
 import Autocomplete from 'react-autocomplete'
 import { serviceurl } from '../../config/serviceurl.js'
-
+import { transformName } from '../../utility'
 class AutocompleteDataset extends React.Component {
 
   state = {
@@ -59,10 +59,12 @@ class AutocompleteDataset extends React.Component {
               {children}
             </div>
           )}
+          
           renderItem={(item, isHighlighted) => (
             <div className={`item ${isHighlighted ? 'item-highlighted' : ''}`}
-              key={item.name}
-            >{item.name}</div>
+              key={item.name}>
+              { transformName(item.name) }
+            </div>
           )}
         />
     )
