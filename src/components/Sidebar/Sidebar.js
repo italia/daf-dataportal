@@ -38,14 +38,16 @@ class Sidebar extends Component {
     });
   };
   
-  hideModalAndRedirect = () => {
+  hideModalAndRedirect = (e) => {
+    e.preventDefault();
     this.setState({
       isOpen: false
     });
     window.open(this.state.url);
   };
 
-  hideModal = () => {
+  hideModal = (e) => {
+    e.preventDefault();
     this.setState({
       isOpen: false
     });

@@ -180,22 +180,38 @@ class WizardFormMetadata extends Component {
       {fields.length > -1 &&
         <div className="form-group">
          <div className="col-md-6 offset-md-3">
-          <label htmlFor='tests'>Carica il file max 50MB</label>
+          <label htmlFor='tests'>Carica il file max 10MB</label>
           <Dropzone
             name="input"
+            className="dropzone"
             multiple={false}
-            maxSize={52428800}
+            maxSize={10485760}
+            //onDropRejected={console.log('file non conforme')}
             onDrop={( filesToUpload, e ) => {
               const {dispatch} = this.props 
               this.setState({uploading: true})
-              calcDataFields(this, fields, filesToUpload)
-              let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
-              fileName = fileName.toLowerCase()
-              fileName.split(" ").join("-")
-              dispatch(change('wizard', 'title', fileName))
+              //console.log('filesToUpload: ' + filesToUpload)
+              if(filesToUpload.length>0){
+                this.setState({errorDrop:''})
+                calcDataFields(this, fields, filesToUpload)
+                let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
+                fileName = fileName.toLowerCase()
+                fileName.split(" ").join("-")
+                dispatch(change('wizard', 'title', fileName))
+              }else{
+                this.setState({errorDrop: 'Dimensioni file non consentite'})
+                this.setState({uploading: false})
               }
+            }
             }>
-            {this.state.uploading ? <div>Sto caricando il file ....</div>:<div>Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>}
+              <div className="container">
+                <div className="row" style={{"paddingTop": "10px"}}>
+                {this.state.uploading ? <div className="col">Sto caricando il file ....</div>:<div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>} 
+                </div>
+                <div className="row justify-content-md-center" style={{"paddingTop": "30px"}}>
+                {this.state.errorDrop && <div className="alert alert-danger">File non conforme alle specifiche, controllare la dimensione e l'estensione.</div>}
+                </div>
+              </div>
           </Dropzone>
         </div>
       </div>

@@ -36,7 +36,7 @@ export function createDcat (values, data) {
   data[dcatapit]['holder_name'] = values.ownership  //values.holder_name
   data[dcatapit]['holder_identifier'] = values.ownership  //values.holder_identifier
   data[dcatapit]['license_title'] = 'Altro (Non Commerciale)' //values.license_title
-  data[dcatapit]['license_id'] = 'other-nc'//values.license_identifier
+  data[dcatapit]['license_id'] = values.license3//values.license_identifier
   data[dcatapit]['owner_org'] = values.ownership //values.owner_org
   data[dcatapit]['frequency'] = 'unknown'//Not in form
   data[dcatapit]['creation_date'] = '2017-07-23' //Not in form
