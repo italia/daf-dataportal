@@ -26,7 +26,7 @@ class Profile extends Component {
                     <div className="form-group row">
                         <label htmlFor="example-search-input" className="col-2 col-form-label">Nome completo</label>
                         <div className="col-10">
-                            <input className="form-control" type="search" value={loggedUser?loggedUser.sn:''} id="example-search-input"/>
+                            <input className="form-control" type="search" value={loggedUser?loggedUser.sn + ' ' + loggedUser.givenname:''} id="example-search-input"/>
                         </div>
                     </div>
                     <div className="form-group row">

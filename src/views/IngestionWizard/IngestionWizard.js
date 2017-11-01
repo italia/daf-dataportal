@@ -67,7 +67,7 @@ class IngestionForm extends Component {
 IngestionForm.propTypes = {
   msg: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
-  resetForm: PropTypes.func.isRequired
+  resetForm: PropTypes.func
 }
 
 function mapStateToProps(state) {

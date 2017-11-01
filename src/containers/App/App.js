@@ -7,6 +7,7 @@ import Home from '../Home/'
 import PropTypes from 'prop-types'
 import { loginAction, addUserOrganization, isValidToken, receiveLogin, setApplicationCookie } from './../../actions.js'
 import { serviceurl } from '../../config/serviceurl.js'
+import { setCookie } from '../../utility'
 
 const history = createBrowserHistory();
 
@@ -49,35 +50,42 @@ class App extends Component {
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
         dispatch(isValidToken(localStorage.getItem('token'))).then(ok => {
           if (ok) {
-            dispatch(loginAction())
-              .then(json => {
                 dispatch(setApplicationCookie('superset'))
                 .then(json => {
-                  if (json && json.result) {
-                    let cookie = json.result.split('=');
-                    document.cookie = "session=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
+                  if (json) {
+                    setCookie('superset',json)
                     dispatch(setApplicationCookie('metabase'))
-                      .then(json => {
-                        if (json && json.result) {
-                          let cookie = json.result.split('=');
-                          document.cookie = "metabase.SESSION_ID=" + cookie[1] + "; path=/; domain=" + serviceurl.domain;
-                          dispatch(loginAction())
-                            .then(json => {
-                              dispatch(receiveLogin(json))
-                              dispatch(addUserOrganization(json.uid))
-                            })
+                    .then(json => {
+                        if (json) {
+                          setCookie('metabase',json)
+                          dispatch(setApplicationCookie('jupyter'))
+                          .then(json => {
+                                if (json) {
+                                  setCookie('jupyter',json)
+                                  dispatch(setApplicationCookie('grafana'))
+                                  .then(json => {
+                                    if (json) {
+                                      setCookie('grafana', json)
+                                      dispatch(loginAction())
+                                      .then(json => {
+                                        dispatch(receiveLogin(json))
+                                        dispatch(addUserOrganization(json.uid))
+                                        this.setState({
+                                          authed: true,
+                                          loading: false
+                                        })
+                                      })
+                                    }})
+                                }
+                              })
                         }
                       })
                   }
                 })
-              }).then(this.setState({
-                authed: true,
-                loading: false
-              }))
-            }else{
-              this.setState({
-                authed: false,
-                loading: false
+              } else { 
+                this.setState({
+                  authed: true,
+                  loading: false
               })
             }
           })

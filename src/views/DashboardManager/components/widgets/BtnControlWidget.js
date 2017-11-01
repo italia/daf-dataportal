@@ -39,8 +39,22 @@ class BtnControlWidget extends React.Component {
 
     removeCol = function () {
         let rows = this.props.layout.rows;
-        console.log('remove Widgets of row number: ' + this.props.index);
-       
+        let row = rows[this.props.index]
+        let columns = row.columns;
+        for(let i=0; i < columns.length; i++) {
+            let column = columns[i];
+            if(column.widgets){
+                for(let j=0; j < column.widgets.length; j++) {
+                    let widget = column.widgets[j];
+                    if(widget.key !='BtnControlWidget_0'){
+                        let widgetsArr = this.props.dashboardWidgets;
+                        if(widgetsArr[widget.key]){
+                            delete widgetsArr[widget.key];
+                        }
+                    }
+                }
+            }
+        }
         rows.splice(this.props.index, 1);
         this.props.setLayout(this.props.layout);
     }

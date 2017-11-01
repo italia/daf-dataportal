@@ -11,7 +11,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import { serviceurl } from '../../config/serviceurl.js'
-
+import { setCookie } from '../../utility'
 
 function setErrorMsg(error) {
   return {
@@ -28,6 +28,8 @@ class Login extends Component {
       loginMessage: null
     }
   }
+
+
 
   handleSubmit = (e) => {
     e.preventDefault()

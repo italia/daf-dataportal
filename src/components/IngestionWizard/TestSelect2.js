@@ -22,22 +22,23 @@ function getSuggestions(value, ontologies, filterType) {
 function ontologiesFilter(ontologies, regex){
       var res = [];
       // CNR
-      //ontologies.forEach(function(entry) {
-      //        //console.log('entry: ' + entry['http://www.w3.org/2000/01/rdf-schema#label']);
-      //        var obj = entry['http://www.w3.org/2000/01/rdf-schema#label'];
-      //        obj.forEach(function(lang) {
-      //          //console.log('lang: ' + lang['xml:lang']);
-      //          if(lang['xml:lang'] == 'it'){
-      //            //console.log('lang1: ' + lang['value']);
-      //            if(regex.test(lang['value'])){
-      //                //console.log('lang2: ' + lang['value']);
-      //                entry.name = lang['value'];
-      //                res.push(entry);
-      //            }
-      //          }
-      //        })
-      //      });
+      ontologies.forEach(function(entry) {
+              //console.log('entry: ' + entry['http://www.w3.org/2000/01/rdf-schema#label']);
+              var obj = entry['http://www.w3.org/2000/01/rdf-schema#label'];
+              obj.forEach(function(lang) {
+                //console.log('lang: ' + lang['xml:lang']);
+                if(lang['xml:lang'] == 'it'){
+                  //console.log('lang1: ' + lang['value']);
+                  if(regex.test(lang['value'])){
+                      //console.log('lang2: ' + lang['value']);
+                      entry.name = lang['value'];
+                      res.push(entry);
+                  }
+                }
+              })
+            });
       
+      /*
       ontologies.forEach(function(entry) {
         console.log('entry: ' + entry.label[0].value);
         if(regex.test(entry.label[0].value)){
@@ -46,7 +47,7 @@ function ontologiesFilter(ontologies, regex){
             entry.name = entry.label[0].value + ' [' + entry['label.ontology'][0].value + ']';
             res.push(entry);
         }
-      });
+      });*/
       
       return res; 
 }
