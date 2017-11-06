@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import App from './components/InfinityScroll/App'
 import InfiniteScroll from '../../components/InfinityScroll';
 
 // react-timeline....
@@ -79,10 +78,6 @@ class Dashboard extends Component {
 
           {/* BOXES */}
           <div className="col-sm-12 col-md-12">
-
-          {/* <App listDashboards={this.state.listDashboards}/> */}
-         
-          
             <Timeline>
             <div className="App">
             <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>

@@ -33,7 +33,7 @@ class Sidebar extends Component {
     /* console.log('Serach Dataset for: ' + this.props.loggedUser.uid); */
     event.preventDefault();
     const { dispatch, selectDataset, loggedUser } = this.props;
-    dispatch(loadDatasets('',0,loggedUser.uid));
+    dispatch(loadDatasets('', 0, loggedUser.givenname));
     this.props.history.push('/dataset');
     
   }
@@ -108,7 +108,7 @@ class Sidebar extends Component {
                     <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica <span className="badge badge-danger">beta</span></NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink onClick={this.handleLoadDatasetClick.bind(this)} to={'/dataset'} className="nav-link" activeClassName="active">  I Miei Dataset {/* <span className="badge badge-danger">beta</span> */}</NavLink>
+                    <NavLink onClick={this.handleLoadDatasetClick.bind(this)} to={'/dataset'} className="nav-link" activeClassName="active">  I Miei Dataset</NavLink>
                   </li>
                 </ul>
               </li>

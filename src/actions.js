@@ -28,7 +28,7 @@ export const RECEIVE_VOCABULARY = 'RECEIVE_VOCABULARY'
 
 /*********************************** REDUX ************************************************ */
 
-function receiveDataset(json) {
+function receiveDataset(json, value) {
   console.log('receiveDataset');
   //This function creates an action that a reducer can handle 
   //Action are payload of information that sends data from the application to the store
@@ -37,6 +37,7 @@ function receiveDataset(json) {
   return {
       type: RECEIVE_DATASETS,
       datasets: json,
+      query: value,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASETS'
   }
@@ -386,15 +387,89 @@ export function addUserOrganization(uid) {
 /******************************************************************************* */
 
 /******************************** DATASET ************************************** */
-function fetchDataset(query, start, owner) {
+function fetchDataset(query, start, owner, category_filter, group_filter, organization_filter, order_filter) {
   var queryurl='';
   var ownerurl='';
+  var categoryurl='';
+  var groupurl='';
+  var orgurl='';
   var token = '';
+  var orderurl='';
   if(owner)
     ownerurl='&q=publisher_identifier:'+owner
+  console.log('category: '+ category_filter);
+  if (category_filter) {
+    let first = true;
+    for (let i in category_filter) {
+      if (category_filter[i] == true) {
+        if (first) {
+          if (query) {
+            categoryurl += "%20AND%20(";
+          }
+        }
+        else
+          categoryurl += "%20OR%20";
+        categoryurl += "tags:" + i;
+        first = false;
+      }
+    }
+
+    if (!first)
+      categoryurl += ")";
+  }
+
+  if (group_filter) {
+    let first = true;
+    for (let i in group_filter) {
+      if (group_filter[i] == true) {
+        if (first) {
+          if (categoryurl || query) {
+            groupurl += "%20AND%20(";
+          }
+        }
+        else
+          groupurl += "%20OR%20";
+        groupurl += "res_format:" + i;
+        first = false;
+      }
+    }
+
+    if (!first)
+      groupurl += ")";
+  }
+  
+  if (organization_filter) {
+    let first = true;
+    for (let i in organization_filter) {
+      if (organization_filter[i] == true) {
+        if (first) {
+          if (categoryurl || groupurl || query) {
+            orgurl += "%20AND%20(";
+          }
+        }
+        else
+          orgurl += "%20OR%20";
+        orgurl += "organization:" + i;
+        first = false;
+      }
+    }
+
+    if (!first)
+      orgurl += ")";
+  }
+
   if(query)
-    queryurl='&q=name:*'+query+'*';
-  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=1001&start='+start+queryurl+ownerurl;  
+    queryurl='q=name:*'+query+'*';
+
+  if(order_filter)
+    orderurl='&sort='+order_filter
+
+  let stringaIniz = '';
+  if ((!queryurl) && (categoryurl || groupurl || orgurl))
+    stringaIniz = '&q=('
+
+  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=1001&start=' + start +"&"+ stringaIniz + queryurl + ownerurl+ categoryurl + groupurl + orgurl +orderurl;  
+  console.log(url)
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
       token = localStorage.getItem('token')
@@ -410,7 +485,7 @@ function fetchDataset(query, start, owner) {
         }
       })
         .then(response => response.json())
-        .then(json => dispatch(receiveDataset(json)))
+        .then(json => dispatch(receiveDataset(json, query)))
     }
   }
 
@@ -436,10 +511,10 @@ function fetchDatasetDetail(datasetname) {
     }
   }
 
-export function loadDatasets(query, start, owner) {
+export function loadDatasets(query, start, owner, category_filter, group_filter, organization_filter, order_filter) {
   console.log('Load Dataset action');
   return (dispatch, getState) => {
-      return dispatch(fetchDataset(query, start, owner))
+    return dispatch(fetchDataset(query, start, owner, category_filter, group_filter, organization_filter, order_filter))
   }
  
 }

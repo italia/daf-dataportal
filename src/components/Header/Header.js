@@ -63,7 +63,7 @@ class Header extends Component {
     console.log('Serach Dataset for: ' + this.refs.auto.state.value);
     event.preventDefault();
     const { dispatch, selectDataset } = this.props;
-    dispatch(loadDatasets(this.refs.auto.state.value,0, ''));
+    dispatch(loadDatasets(this.refs.auto.state.value, 0, '', '', '', '','metadata_modified%20desc'));
     this.props.history.push('/dataset');
   }
 
@@ -96,7 +96,7 @@ class Header extends Component {
               <DropdownItem><a className="nav-link" href="/#/profile"><i className="fa fa-user"></i> Profilo</a></DropdownItem>
               <DropdownItem> <a className="nav-link"  onClick={() => {
               logout()
-              }} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
+              }} href="/"><i className="fa fa-lock"></i> Logout</a></DropdownItem>
 
             </DropdownMenu>
           </Dropdown>
