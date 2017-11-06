@@ -3,14 +3,13 @@ export function createOperational (values, data) {
   data[operational] = {}
   data[operational]['logical_uri'] = "test1"  //values.uri
   data[operational]['group_own'] = values.ownership
-  data[operational]['dataset_type'] = (values.dataset_type) ? values.values.dataset_type  : 'batch'
+  data[operational]['dataset_type'] = (values.dataset_type) ? values.dataset_type  : 'batch'
   data[operational]['is_std'] = (values.is_std === 'true')
-  if (!values.is_std){
-    data[operational]['is_std'] = false
+  if (data[operational]['is_std']){
+   var std_schema = 'std_schema'
+   data[operational][std_schema] = {}
+   data[operational][std_schema]['std_uri'] = values.uri_associato
   }
-  var std_schema = 'std_schema'
-  data[operational][std_schema] = {}
-  data[operational][std_schema]['std_uri'] = values.uri_associato
   data[operational]['read_type'] = values.read_type
   if (!values.read_type){
       data[operational]['read_type'] = 'update'
@@ -57,7 +56,7 @@ export function createOperational (values, data) {
     var datasetUri = {}
     datasetUri['sql'] = daf.sql
     datasetUri['param'] = daf.param
-    datasetUri['uris'] = daf.uris.map(uri =>  { return uri})
+    datasetUri['uris'] = daf.uris.map(uri =>  { return uri.dataset_uri})
     data[operational][input_src]['dataset_uri'].push(datasetUri)
     })
   }

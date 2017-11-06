@@ -405,7 +405,7 @@ const renderStorageInfo = ({ fields, meta: { error, submitFailed } }) => (
    {fields.map((storage, index) => (
      <li key={index}>
      <div className="form-group">
-        <label>Esponi i dati o li invii?</label>
+        <label>Scegli storages?</label>
         <Field name={`${storage}.db`} component={storages} />
       </div>
      <div className="form-group">     

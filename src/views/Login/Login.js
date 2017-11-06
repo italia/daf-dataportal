@@ -37,15 +37,15 @@ class Login extends Component {
         localStorage.setItem('token', json);
         dispatch(setApplicationCookie('superset'))
           .then(json => {
-            if (json && json.result) {
+            if (json){// && json.result) {
               document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
               dispatch(setApplicationCookie('metabase'))
                 .then(json => {
-                  if (json && json.result) {
+                  if (json) { //&& json.result) {
                     document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
-                    dispatch(setApplicationCookie('jupyter'))
-                    .then(json => {
-                      if (json && json.result) {
+                   // dispatch(setApplicationCookie('jupyter'))
+                   // .then(json => {
+                      if (json) { // && json.result) {
                         document.cookie = json.result + "; path=/hub/; domain=" + serviceurl.domain;
                         dispatch(loginAction())
                         .then(json => {
@@ -54,7 +54,7 @@ class Login extends Component {
                           this.props.history.push('/home')
                         })
                       }
-                    })
+                   // })
                   }
                 })
             }
