@@ -55,14 +55,16 @@ class Sidebar extends Component {
     });
   };
   
-  hideModalAndRedirect = () => {
+  hideModalAndRedirect = (e) => {
+    e.preventDefault();
     this.setState({
       isOpen: false
     });
     window.open(this.state.url);
   };
 
-  hideModal = () => {
+  hideModal = (e) => {
+    e.preventDefault();
     this.setState({
       isOpen: false
     });
@@ -135,7 +137,7 @@ class Sidebar extends Component {
                 <a onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Grafici</a>
               </li>
               <li className="nav-item">
-                <a onClick={() => this.openModal('Superset', serviceurl.urlSuperset)} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Busness Intelligence</a>
+                <a onClick={() => this.openModal('Superset', serviceurl.urlSuperset)} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Business Intelligence</a>
               </li>
               <li className="nav-item">
                 <a onClick={() => this.openModal('Jupiter', serviceurl.urlJupiter)} className="nav-link" /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>

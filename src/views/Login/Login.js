@@ -11,7 +11,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import { serviceurl } from '../../config/serviceurl.js'
-
+import { setCookie } from '../../utility'
 
 function setErrorMsg(error) {
   return {
@@ -29,6 +29,8 @@ class Login extends Component {
     }
   }
 
+
+
   handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch, selectDataset } = this.props
@@ -38,26 +40,30 @@ class Login extends Component {
         dispatch(setApplicationCookie('superset'))
           .then(json => {
             if (json) {
-              if(json.result)
-                document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
+              setCookie('superset', json)
               dispatch(setApplicationCookie('metabase'))
                 .then(json => {
                   if (json) {
-                    if(json.result)
-                      document.cookie = json.result + "; path=/; domain=" + serviceurl.domain;
+                    setCookie('metabase', json)
                     dispatch(setApplicationCookie('jupyter'))
-                    .then(json => {
-                      if (json) {
-                        if(json.result)
-                          document.cookie = json.result + "; path=/hub/; domain=" + serviceurl.domain;
-                        dispatch(loginAction())
-                        .then(json => {
-                          dispatch(receiveLogin(json))
-                          dispatch(addUserOrganization(json.uid))
-                          this.props.history.push('/home')
-                        })
-                      }
-                    })
+                      .then(json => {
+                        if (json) {
+                          setCookie('jupyter', json)
+                          dispatch(setApplicationCookie('grafana'))
+                            .then(json => {
+                              if (json) {
+                                setCookie('grafana', json)
+                                dispatch(loginAction())
+                                  .then(json => {
+                                    dispatch(receiveLogin(json))
+                                    dispatch(addUserOrganization(json.uid))
+                                    this.props.history.push('/home')
+                                  })
+                              }
+                            })
+
+                        }
+                      })
                   }
                 })
             }

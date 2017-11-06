@@ -1,8 +1,9 @@
 import React from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 import renderField from './renderField'
+import { connect  } from 'react-redux';
 
 const themes = [
 {'val' : 'AGRI', 'name' : 'AGRICOLTURA'},
@@ -48,9 +49,27 @@ const renderOrganization = ({ input, label, type, organizations, meta: { touched
     </div>
  </div>
 );
- 
-const WizardFormFirstPage = props => {
-  const { handleSubmit, previousPage, organizations } = props
+
+const renderLicenze = ({ input, label, type, licenze, meta: { touched, error } }) => (
+  <div className="form-group">
+    <label className="form-control-label">{label}</label>
+    <div>
+       <div className="form-group">
+        <select className="form-control" {...input}>
+          <option value=""  key='organization' defaultValue></option>
+          {licenze.map(licenza => <option value={licenza.notation} key={licenza.notation}>{licenza.label}</option>)}
+        </select>
+      </div>
+      {touched && error && <span>{error}</span>}
+    </div>
+ </div>
+);
+
+let WizardFormFirstPage = props => {
+  const { handleSubmit, previousPage, organizations, getLicenze, license1, license2 } = props
+  var licLiv2Arr = getLicenze(2,license1)
+  var licLiv3Arr = getLicenze(3,license2)
+  
   return (
     <form  onSubmit={handleSubmit}>
         <div className="col-md-12">
@@ -74,11 +93,30 @@ const WizardFormFirstPage = props => {
             label="Temi"
           />
           <Field
-            name="license_title"
+            name="license1"
             type="text"
-            component={renderField}
+            component={renderLicenze}
             label="Licenza"
+            licenze={getLicenze(1,undefined)}
           />
+          {(license1 && licLiv2Arr.length > 0) &&
+              <Field
+              name="license2"
+              type="text"
+              component={renderLicenze}
+              label=""
+              licenze={licLiv2Arr}
+            />
+          }
+          {(license2 && licLiv3Arr.length > 0) &&
+              <Field
+              name="license3"
+              type="text"
+              component={renderLicenze}
+              label=""
+              licenze={licLiv3Arr}
+            />
+          }
           <Field
             name="ownership"
             type="text"
@@ -86,6 +124,7 @@ const WizardFormFirstPage = props => {
             label="Organizzazione"
             organizations={organizations}
           />
+          
         </div>
       <div className="form-group row justify-content-between">
         <div className="col-6">
@@ -99,6 +138,20 @@ const WizardFormFirstPage = props => {
     </form>
   )
 }
+
+// Decorate with connect to read form values
+const selector = formValueSelector('wizard') // <-- same as form name
+WizardFormFirstPage = connect(state => {
+  // can select values individually
+  const license1 = selector(state, 'license1')
+  const license2 = selector(state, 'license2')
+  const license3 = selector(state, 'license3')
+  return {
+    license1,
+    license2,
+    license3,
+  }
+})(WizardFormFirstPage)
 
 export default reduxForm({
   form: 'wizard', // <------ same form name

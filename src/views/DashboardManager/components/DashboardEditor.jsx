@@ -185,6 +185,7 @@ class DashboardEditor extends Component {
           props: {
             layout: layout,
             index: index,
+            dashboardWidgets: this.state.widgets,
             setLayout: this.setLayout,
             addWidget: this.addWidget,
             widgets: this.widgetsTypes

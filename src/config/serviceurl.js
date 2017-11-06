@@ -1,11 +1,12 @@
 export const serviceurl = {
   // Local
-  /*apiURLSSOManager: "http://localhost:9002/sso-manager",
-  apiURLDatiGov: "http://localhost:9000/dati-gov/v1", 
-  apiURLCatalog: "http://localhost:9001/catalog-manager/v1",
-  apiURLIngestion: "http://localhost:9002/ingestion-manager/v1",
-  apiURLSecurity: "http://localhost:9002/security-manager/v1",
+  //apiURLSSOManager: "http://localhost:9002/sso-manager",
+  //apiURLDatiGov: "http://localhost:9000/dati-gov/v1", 
+  //apiURLCatalog: "http://localhost:9001/catalog-manager/v1",
+  //apiURLIngestion: "http://localhost:9002/ingestion-manager/v1",
+  //apiURLSecurity: "http://localhost:9002/security-manager/v1",
 
+  /*
   //MOCK
   apiURLDatiGov: "http://localhost:3001/dati-gov/v1", 
   apiURLCatalog: "http://localhost:3001/catalog-manager/v1",

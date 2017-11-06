@@ -9167,3 +9167,12 @@ hr.transparent {
   width: 40px;
   height: 40px;
 }
+
+.dropzone {
+  width: 90%;
+  height: 200px;
+  border-width: 2px;
+  border-color: rgb(102, 102, 102);
+  border-style: dashed;
+  border-radius: 5px;
+}

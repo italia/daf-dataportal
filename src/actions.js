@@ -342,6 +342,7 @@ export function setApplicationCookie(nomeApp) {
           }
         })
         .then(response => response.json())
+        .catch(error => JSON.parse("{error: 1}"))
   }
 }
 
