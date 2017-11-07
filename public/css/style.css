@@ -9168,6 +9168,10 @@ hr.transparent {
   height: 40px;
 }
 
+::-webkit-scrollbar { 
+    display: none; 
+}
+
 .dropzone {
   width: 90%;
   height: 200px;
