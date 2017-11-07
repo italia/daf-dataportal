@@ -1,9 +1,10 @@
 import React from 'react';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { Field,FieldArray ,reduxForm, formValueSelector } from 'redux-form';
 import validate from './validate';
 import TestSelect from './TestSelect';
 import { connect  } from 'react-redux';
 import { serviceurl } from '../../config/serviceurl.js'
+
 
 
 import 'react-select/dist/react-select.css';
@@ -56,6 +57,19 @@ const pushOrPull = ({ input, meta: { touched, error } }) => (
   </div>
 );
 
+const storages = ({ input, meta: { touched, error } }) => (
+  <div>
+    <select className="form-control" {...input}>
+      <option value="hdfs" defaultValue>Hdfs</option>
+      <option value="kudu" >Kudu</option>
+      <option value="hbase" >Hbase</option>
+      <option value="textdb" >Textdb</option>
+      <option value="mongodb" >Mongodb</option>
+    </select>
+    {touched && error && <span>{error}</span>}
+  </div>
+);
+
 const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
@@ -66,31 +80,6 @@ const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
   </div>
 );
 
-/*       <div>
-        <label htmlFor="uri">Dataset Uri</label>
-        <div>
-          <Field
-            name="uri"
-            id="uri"
-            component="input"
-            type="text"
-          />
-        </div>
-       
-      </div>
-        <div>
-        <label>Ownership</label>
-        <div>
-          <Field name="ownership" component="input" type="text" placeholder="ownership" />
-        </div>
-      </div> */
-
-/*
-        {(isFtp === 'sftp') 
-            ? <div className="form-group"><Field name="sftp" component={renderField} type="text" placeholder="sftp://..." /></div>
-            : <div className="form-group"><Field name="https" component={renderField} type="text" placeholder="https://.." /></div>
-        }
-*/
 
 
 let WizardFormThirdPage = props => {
@@ -149,8 +138,6 @@ let WizardFormThirdPage = props => {
           <button type="submit" className="btn btn-primary float-right" disabled={pristine || submitting}>Invia</button>
         </div>
       </div>
-
-
 
       </div>
     </form>
