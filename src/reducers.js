@@ -33,6 +33,7 @@ function datasets( state = { isFetching: false, didInvalidate: false, items: [],
         isFetching: false,
         didInvalidate: false,
         items: action.datasets,
+        query: action.query,
         dataset: null,
         lastUpdated: action.receivedAt,
         ope: action.ope

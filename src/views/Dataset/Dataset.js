@@ -6,33 +6,51 @@ import {
   unloadDatasets,
   datasetDetail
 } from '../../actions'
-import InfiniteScroll from '../../components/InfinityScroll';
+import OrderFilter from '../../components/Dataset/OrderFilter'
+import CategoryFilter from '../../components/Dataset/CategoryFilter'
+import GroupFilter from '../../components/Dataset/GroupFilter'
+import OrganizationFilter from '../../components/Dataset/OrganizationFilter'
+import InfiniteScroll from '../../components/InfinityScroll'
 import { transformName } from '../../utility'
 
 class Dataset extends Component {
   constructor(props) {
     super(props)
-    this.setState({ isLoading: false })
+    /* this.setState({ isLoading: false }) */
+    this.state = {
+      items: 10,
+      visibility: 'visible',
+      filters: true,
+      order_filter: 'metadata_modified%20desc',
+      category_filter: props.history.location.state && props.history.location.state.category,
+      group_filter: props.history.location.state && props.history.location.state.group,
+      organization_filter: props.history.location.state && props.history.location.state.organization,
+      showDivCategory: false,
+      showDivGroup: false,
+      showDivOrganization: false,
+    }
+
     this.handleUnloadDatasetClick = this.handleUnloadDatasetClick.bind(this)
     this.handleLoadDatasetDetailClick = this.handleLoadDatasetDetailClick.bind(this)
-  }
-
-  state = {
-    items: 10
+    this.handleToggleClickCat = this.handleToggleClickCat.bind(this)
+    this.handleToggleClickGroup = this.handleToggleClickGroup.bind(this)
+    this.handleToggleClickOrganization = this.handleToggleClickOrganization.bind(this);
+    this.onSearch = this.onSearch.bind(this)    
   }
 
   loadMore = () => {
     if (this.state.isLoading) { return }
     var totitems = this.state.items + 10;
-    this.setState({ items: totitems });
+    this.setState({ items: totitems,
+    visibility: "hidden" });
   }
 
   handleScrollToBottom = () => this.loadMore()
   handleLoadMoreClick = () => this.loadMore()
 
-  searchDataset(query) {
-    const { dispatch } = this.props
-    dispatch(loadDatasets(query))
+  searchDataset(category, group, organization, order) {
+    const { dispatch, query } = this.props
+    dispatch(loadDatasets(query, 0, '', category, group, organization, order))
   }
 
   handleUnloadDatasetClick(e) {
@@ -43,6 +61,9 @@ class Dataset extends Component {
 
   handleLoadDatasetDetailClick(name, e) {
     e.preventDefault()
+    this.setState({
+      filters: false
+    })
     const { dispatch } = this.props
     dispatch(datasetDetail(name))
   }
@@ -51,7 +72,59 @@ class Dataset extends Component {
     this.searchDataset(this.props.match.params.query);
   }
 
-renderDatasetList(datasets, ope, isLoading){
+  handleToggleClickCat() {
+    this.setState(prevState => ({
+      showDivCategory: !prevState.showDivCategory
+    }));
+  }
+
+  handleToggleClickGroup() {
+    this.setState(prevState => ({
+      showDivGroup: !prevState.showDivGroup
+    }));
+  }
+
+  handleToggleClickOrganization() {
+    this.setState(prevState => ({
+      showDivOrganization: !prevState.showDivOrganization
+    }));
+  }
+
+  onSearch(category, group, organization, order) {
+    if (order){
+      this.setState({
+        order_filter: order
+      })
+    }else
+      order = this.state.order_filter;
+
+    if (category){
+      this.setState({
+        category_filter: category
+      });
+    }else
+      category = this.state.category_filter;
+    
+    if (group){
+      this.setState({
+        group_filter: group
+      });
+    }else
+      group = this.state.group_filter
+
+    if (organization){
+      this.setState({
+        organization_filter: organization
+      });
+    }else
+      organization = this.state.organization_filter
+
+    this.searchDataset(category, group, organization, order);
+  }
+
+renderDatasetList(length, datasets, ope, isLoading){
+  const { visibility, items } = this.state;
+  let visible = length<=items ? 'hidden':visibility;
   if (ope === 'RECEIVE_DATASETS')
     return <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>
       {datasets.map(dataset => {
@@ -71,7 +144,7 @@ renderDatasetList(datasets, ope, isLoading){
       <button
         className="List-load-more-button"
         onClick={this.handleLoadMoreClick}
-        disabled={isLoading}>
+        disabled={isLoading} style={{visibility: visible }}>
         {isLoading ? 'Loading...' : 'Load more'}
       </button>
     </InfiniteScroll>
@@ -79,28 +152,33 @@ renderDatasetList(datasets, ope, isLoading){
 
 renderDatasetSearchResult(length, datasets, ope, isLoading){
   if (ope === 'RECEIVE_DATASETS')
-    if (datasets && datasets.length > 0)
-    return ( <div className="col-md-8">
-                <div className="App">
-                <div className="App-header">
-                    {length > 999 ?
-                      <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
-                    :
-                      <div><h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
-                    }
-                      </div>
-                      {this.renderDatasetList(datasets, ope, isLoading)}
-                  
-              </div>
-            </div>
-    )
+    if (datasets && datasets.length > 0){
+      return ( 
+        <div className="App">
+          <div className="App-header">
+            {length > 999 ?
+              <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
+            :
+              <div><h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
+            }
+          </div>
+          {this.renderDatasetList(length, datasets, ope, isLoading)}
+        </div>
+      )
+    }else
+      return(
+        <div className="App">
+          <div className="App-header">
+            <div><h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6><h6 className="modal-title pull-right">Prova con un'altra ricerca</h6></div>
+          </div>
+        </div>
+      )
 }
 
 renderDatasetDetail(dataset, ope){
   if (ope === 'RECEIVE_DATASET_DETAIL') {
     if (dataset)
       return (
-        <div className="row">
           <div className="col-12">
             <div className="card">
               <div className="card-header">
@@ -168,20 +246,63 @@ renderDatasetDetail(dataset, ope){
               </div>
             </div>
           </div>
-        </div>
       );
   }
 }
 
+renderFilter(filters){
+  if(filters===true)
+    return(
+    
+      <div className="col-md-4" style={{paddingTop: '20px'}}>
+      <form className="form-group">
+        <fieldset className="Form-fieldset">
+          <h5><label htmlFor="ordinamento">Ordina risultato</label></h5>
+          <div className="Form-field">
+              <OrderFilter order_filter={this.state.order_filter} onSearchOrder={this.onSearch}/>
+          </div>
+        </fieldset>
+      </form>
+      
+        
+      <h5 onClick={this.handleToggleClickCat}>Filtra categorie</h5>  
+      {this.state.showDivCategory &&
+      <div className="u-sizeFull" id="subnav">
+        <CategoryFilter category_filter={this.state.category_filter} onSearch={this.onSearch}/>
+      </div> 
+      }
+      <h5 onClick={this.handleToggleClickGroup}>Filtra formati</h5>
+      {this.state.showDivGroup &&
+      <div className="u-sizeFull" id="subnav">
+        <GroupFilter group_filter={this.state.group_filter} onSearch={this.onSearch}/>
+      </div>
+      }
+      
+      <h5 onClick={this.handleToggleClickOrganization}>Filtra organizzazioni</h5>
+      
+      {this.state.showDivOrganization &&
+      <div className="u-sizeFull" id="subnav">
+        <OrganizationFilter organization_filter={this.state.organization_filter}  onSearch={this.onSearch}/>
+      </div>
+      }
+    </div>
+    )
+  else
+    return null;
+}
+
 render() {
   const { datasets, dataset, ope } = this.props
-  const { isLoading, items } = this.state;
+  const { isLoading, items, filters } = this.state;
   if(datasets)
     var subdatasets = datasets.slice(0, items)
   return (
-    <div className="u-textCenter u-padding-r-all u-textCenter">
+    <div className="row u-textCenter u-padding-r-all u-textCenter">
+      <div className="col-md-8">
       {this.renderDatasetSearchResult(datasets?datasets.length:0, subdatasets, ope, isLoading)}
+      </div>
       {this.renderDatasetDetail(dataset, ope)}
+      {this.renderFilter(filters)}
     </div>
   )
 }
@@ -189,6 +310,7 @@ render() {
 
 Dataset.propTypes = {
   selectDataset: PropTypes.string,
+  query: PropTypes.string,
   datasets: PropTypes.array,
   dataset: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
@@ -198,8 +320,8 @@ Dataset.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { isFetching, lastUpdated, dataset, items: datasets, ope } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
-  return { datasets, dataset, isFetching, lastUpdated, ope }
+  const { isFetching, lastUpdated, dataset, items: datasets, query, ope } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
+  return { datasets, dataset, isFetching, lastUpdated, query, ope }
 }
 
 export default connect(mapStateToProps)(Dataset)

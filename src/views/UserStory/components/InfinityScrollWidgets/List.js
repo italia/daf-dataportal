@@ -6,25 +6,26 @@ class List extends Component {
   constructor(props) {
     super(props);
     console.log('LIST widgets: ' + this.props.widgets)
-  }
-  state = {
-    items: 4
+    this.state = {
+      items: 4,
+      visibility: 'visible'
+    }
   }
 
   loadMore = () => {
     if (this.state.isLoading) { return }
     var totitems = this.state.items + 1;
-    this.setState({ items: totitems });
+    this.setState({ items: totitems, visibility: 'hidden' });
   }
 
   handleScrollToBottom = () => this.loadMore()
   handleLoadMoreClick = () => this.loadMore()
 
   render() {
-    const { items, isLoading } = this.state;
+    const { items, isLoading, visibility } = this.state;
     const { widgets, isModalOpen, onRequestClose, onWidgetSelect } = this.props;
     var count = 0;
-
+    let visible = Object.keys(widgets).length<=items ? 'hidden':visibility;
     const widgetItems = Object.keys(widgets).map((widget, key) => {
       if(count<items){
         count++;
@@ -61,7 +62,7 @@ class List extends Component {
         <button
           className="List-load-more-button"
           onClick={this.handleLoadMoreClick}
-          disabled={isLoading}>
+          disabled={isLoading} style={{visibility: visible }}>
           {isLoading ? 'Loading...' : 'Load more'}
         </button>
       </InfiniteScroll>

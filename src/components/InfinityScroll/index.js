@@ -9,7 +9,7 @@ export default class InfiniteScroll extends Component {
   };
 
   static defaultProps = {
-    offsetBottomThreshold: 400,
+    offsetBottomThreshold: 600,
   };
 
   constructor() {
@@ -38,7 +38,7 @@ export default class InfiniteScroll extends Component {
     const { children, className, ...rest } = this.props;
 
     return (
-      <div {...rest} className={`scroll-y ${className}`} ref="container">
+      <div className={`scroll-y ${className}`} ref="container">
         {children}
       </div>
     );

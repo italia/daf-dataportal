@@ -63,7 +63,7 @@ class Header extends Component {
     console.log('Serach Dataset for: ' + this.refs.auto.state.value);
     event.preventDefault();
     const { dispatch, selectDataset } = this.props;
-    dispatch(loadDatasets(this.refs.auto.state.value,0));
+    dispatch(loadDatasets(this.refs.auto.state.value, 0, '', '', '', '','metadata_modified%20desc'));
     this.props.history.push('/dataset');
   }
 
