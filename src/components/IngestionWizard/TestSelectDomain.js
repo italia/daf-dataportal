@@ -3,7 +3,7 @@ import fetch from 'isomorphic-fetch';
 import Select from 'react-select'
 import 'react-select/dist/react-select.css';
  
-class TestSelect extends Component {
+class TestSelectDomain extends Component {
     constructor(props) {
         super(props)
         this.url = this.props.url
@@ -13,7 +13,11 @@ class TestSelect extends Component {
       return fetch(this.url,{headers:  {'Authorization': 'Bearer ' + localStorage.getItem('token')}})
 		.then((response) => response.json())
 		.then((json) => {
-			return { options: json.map };
+            var result = json.map(function(item){
+                return {value : item.key, label: item.value}
+            })
+            var result2 = json.map( x =>  ({value : x.key, label: x.value}))
+			return { options: result2}
 		});
         
     }
@@ -40,4 +44,4 @@ class TestSelect extends Component {
     }
 }
  
-export default TestSelect;
+export default TestSelectDomain;
