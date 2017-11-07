@@ -5,6 +5,8 @@ export function createOperational (values, data) {
   data[operational]['group_own'] = values.ownership
   data[operational]['dataset_type'] = (values.dataset_type) ? values.dataset_type  : 'batch'
   data[operational]['is_std'] = (values.is_std === 'true')
+  data[operational]['theme'] = values.domain
+  data[operational]['subtheme'] = values.subdomain
   if (data[operational]['is_std']){
    var std_schema = 'std_schema'
    data[operational][std_schema] = {}
@@ -66,6 +68,15 @@ export function createOperational (values, data) {
       const db = storage.db
       const storageObj = {name : storage.name, path : storage.path, param : storage.param}
       data[operational]['storage_info'][db] = storageObj
+    })
+  }
+  if(values.accesses){
+    data[operational]['group_access'] = []
+    values.accesses.map((grs) => {
+      var group = {}
+      group['name'] = grs.name
+      group['role'] = grs.role
+      data[operational]['group_access'].push(group)
     })
   }
   console.log(data)

@@ -2,6 +2,7 @@ import React from 'react';
 import { Field,FieldArray ,reduxForm, formValueSelector } from 'redux-form';
 import validate from './validate';
 import TestSelect from './TestSelect';
+import TestSelectDomain from './TestSelectDomain';
 import { connect  } from 'react-redux';
 import { serviceurl } from '../../config/serviceurl.js'
 
@@ -518,7 +519,7 @@ const renderGroupAccess = ({ fields, meta: { error, submitFailed } }) => (
               <div className="form-group">
                 <label>Name</label>
                 <Field
-                  name={`${access}.lat`}
+                  name={`${access}.name`}
                   type="text"
                   component={renderField}
                   label="Name"
@@ -529,7 +530,7 @@ const renderGroupAccess = ({ fields, meta: { error, submitFailed } }) => (
               <div className="form-group">
                 <label>Role</label>
                 <Field
-                  name={`${access}.param`}
+                  name={`${access}.role`}
                   type="text"
                   component={renderField}
                   label="Role"
@@ -551,8 +552,10 @@ const renderGroupAccess = ({ fields, meta: { error, submitFailed } }) => (
 
 let WizardOperational = props => {
 
-  const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk = 'false', isPush = true, isFtp = 'sftp', followStandard = 'false' } = props;  
+  const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk = 'false', isPush = true,isFtp = 'sftp', followStandard = 'false' } = props;  
   let standards = serviceurl.apiURLCatalog + '/dataset-catalogs/standard-uris' ; 
+  let domainUrl = serviceurl.apiURLCatalog + '/voc/themes/getall';
+  let subdomainUrl = serviceurl.apiURLCatalog + '/voc/subthemes/getall' 
  
   return (
     <form  onSubmit={handleSubmit}>
@@ -569,6 +572,16 @@ let WizardOperational = props => {
         <Field name="uri_associato" component={TestSelect}  url={standards} />
         }
       </div>}
+
+      <div className="form-group">
+        <label>Dominio</label>
+        <Field name="domain" component={TestSelectDomain} url={domainUrl} /><br/>
+      </div>
+
+      <div className="form-group">
+        <label>Sotto dominio</label>
+        <Field name="subdomain" component={TestSelectDomain} url={subdomainUrl} /><br/>
+      </div>
 
 
       <div className="form-group">
@@ -629,7 +642,9 @@ WizardOperational = connect(state => {
   const isPush = selector(state, 'pushOrPull')
   const followStandard = selector(state, 'follow_standard')
   let isFtp = "sftp"
+  let reload = false
   isFtp = selector(state, 'ftporws')
+  reload = selector(state, '')
   return {
     isOk,
     isPush,
