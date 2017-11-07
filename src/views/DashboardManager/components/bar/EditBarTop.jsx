@@ -1,6 +1,14 @@
 import React, { PropTypes } from 'react';
 import AddWidgetDialog from '../AddWidgetDialog';
 import { Route, Link } from 'react-router-dom';
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap'
 import TextEditor from '../../../UserStory/components/editor/TextEditor'
 
 class EditBarTop extends React.Component {
@@ -8,9 +16,11 @@ class EditBarTop extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-      dashboard : this.props.dashboard
+      dashboard : this.props.dashboard,
+      isOpen: false
     }
     this.handleChange = this.handleChange.bind(this);
+    this.hideModal = this.hideModal.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -24,18 +34,44 @@ class EditBarTop extends React.Component {
       this.props.onChange(event.target.value);
   }
 
-  pubblica(){
+  openModal(){
+    this.setState({
+      isOpen: true
+    })
+  }
 
+  pubblica(){
     let status = 1;
 
     this.state.dashboard.status = status;
     this.setState({
-      dashboard : this.state.dashboard
+      dashboard : this.state.dashboard,
+      isOpen: false
     }); 
     
     if(this.props.onPublish)
       this.props.onPublish(status);
   }
+
+  condividi(){
+    let status = 2;
+
+    this.state.dashboard.status = status
+    this.setState({
+      dashboard: this.state.dashboard,
+      isOpen: false
+    });
+
+    if (this.props.onPublish)
+      this.props.onPublish(status)
+  }
+
+  hideModal(e){
+    e.preventDefault();
+    this.setState({
+      isOpen: false
+    });
+  };
 
   onRemove() {
     this.props.onRemove();
@@ -45,6 +81,27 @@ class EditBarTop extends React.Component {
 
     return (
           <div>
+            <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
+              <form>
+                <ModalHeader>
+                  <ModalTitle>Condivisione</ModalTitle>
+                  <ModalClose onClick={this.hideModal} />
+                </ModalHeader>
+                <ModalBody>
+                  <div className="form-group">
+                    <p>Come vuoi condividere la Dashboard <b>{this.state.dashboard.title}</b>?</p>
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <button className='btn btn-default' onClick={() => this.pubblica()}>
+                    Condividi con la tua Organizzazione
+                  </button>
+                  <button className='btn btn-default' onClick={() => this.condividi()}>
+                    Condividi con tutti
+                  </button>
+                </ModalFooter>
+              </form>
+            </Modal>
             <div className="row">
             {this.state.dashboard.id &&
             (!this.state.dashboard.status) &&
@@ -58,10 +115,19 @@ class EditBarTop extends React.Component {
                 (this.state.dashboard.status==1) &&
                   <div className="col-sm-10">
                     <div className="alert alert-success" role="alert">
-                      <i className="fa fa-check-circle fa-lg m-t-2"></i> Dashboard correttamente pubblicata
+                      <i className="fa fa-check-circle fa-lg m-t-2"></i> Dashboard correttamente pubblicata per la tua Organizzazione
                     </div>
                   </div>
                 
+              }
+              {
+                (this.state.dashboard.status == 2) &&
+                <div className="col-sm-10">
+              <div className="alert alert-info" role="alert">
+                    <i className="fa fa-check-circle fa-lg m-t-2"></i> Dashboard correttamente pubblicata e condivisa con tutti
+                    </div>
+                </div>
+
               }
               <div className="col-sm-2">
               {
@@ -99,12 +165,11 @@ class EditBarTop extends React.Component {
                     </Link>
                   }
                   {
-                   (!this.state.dashboard.status || this.state.dashboard.status==false) &&
-                    <button type="button" className="btn btn-link float-right" onClick={() => this.pubblica()} title="Pubblica">
+                  (!this.state.dashboard.status || this.state.dashboard.status == false || this.state.dashboard.status === 1) &&
+                    <button type="button" className="btn btn-link float-right" onClick={() => this.openModal()} title="Pubblica">
                     <i className="fa fa-paper-plane-o fa-lg m-t-2"></i>
                     </button>
                   }
-
                 </div>
               </div>
             </div>

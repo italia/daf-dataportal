@@ -96,8 +96,12 @@ class DashboardList extends Component {
                     />
                     }
                     {
-                      dash.status==true &&
+                      dash.status==1 &&
                       <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
+                    }
+                    {
+                      dash.status == 2 &&
+                      <div className="badge badge-info pull-right mt-20">CONDIVISO</div>
                     }
                     {
                       !dash.status &&
