@@ -85,7 +85,7 @@ class UserStoryEditor extends Component {
               title={this.state.dataStory.title}
               onPublish={this.onPublish}
               id={this.state.dataStory.id}
-              status={this.state.dataStory.status}
+              status={this.state.dataStory.published}
               onRemove={this.onRemove}
               saving={this.state.saving}
           ></EditBarTop>

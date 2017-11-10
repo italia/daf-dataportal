@@ -16,6 +16,7 @@ import {
   logout
 } from '../../actions'
 import PropTypes from 'prop-types'
+import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 import { serviceurl } from '../../config/serviceurl.js'
 
 class Sidebar extends Component {
@@ -29,7 +30,7 @@ class Sidebar extends Component {
       }
   }
 
-  handleLoadDatasetClick(event) {
+  handleLoadMyDatasetClick(event) {
     /* console.log('Serach Dataset for: ' + this.props.loggedUser.uid); */
     event.preventDefault();
     const { dispatch, selectDataset, loggedUser } = this.props;
@@ -70,6 +71,15 @@ class Sidebar extends Component {
     });
   };
 
+  handleLoadDatasetClick(event) {
+    console.log('Search Dataset for: ' + this.refs.auto.state.value);
+    event.preventDefault();
+    const { dispatch, selectDataset } = this.props;
+    dispatch(loadDatasets(this.refs.auto.state.value, 0, '', '', '', '', 'metadata_modified%20desc'));
+    this.props.history.push('/dataset');
+    document.body.classList.toggle('sidebar-mobile-show');
+  }
+
   render() {
     return (
       <div>
@@ -95,9 +105,21 @@ class Sidebar extends Component {
         </form>
       </Modal>
         <div className="sidebar">
+          <div className="col-sm-12 d-lg-none" style={{marginBottom: '5px', marginTop: '5px'}}>
+            <div className="input-group">
+              <span className="input-group-btn">
+                <button className="btn btn-default" type="submit" value="submit" onClick={this.handleLoadDatasetClick.bind(this)}>
+                  <i className="fa fa-search"></i>
+                </button>
+              </span>
+              <AutocompleteDataset ref="auto" className="form-control"/>
+            </div>
+          </div>
           <nav className="sidebar-nav">
             <ul className="nav">
-              <li className="nav-item">
+              <li className="nav-item" onClick={(e) => { 
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');}}>
                 <NavLink to={'/home'} className="nav-link" activeClassName="active"><i className="icon-home"></i> Home</NavLink>
               </li>
               <li className="nav-title">
@@ -106,11 +128,17 @@ class Sidebar extends Component {
               <li className={this.activeRoute("/components")}>
                 <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-puzzle"></i> Dataset</a>
                 <ul className="nav-dropdown-items">
-                  <li className="nav-item">
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
                     <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica <span className="badge badge-danger">beta</span></NavLink>
                   </li>
-                  <li className="nav-item">
-                    <NavLink onClick={this.handleLoadDatasetClick.bind(this)} to={'/dataset'} className="nav-link" activeClassName="active">  I Miei Dataset</NavLink>
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <NavLink onClick={this.handleLoadMyDatasetClick.bind(this)} to={'/dataset'} className="nav-link" activeClassName="active">  I Miei Dataset</NavLink>
                   </li>
                 </ul>
               </li>
@@ -121,10 +149,16 @@ class Sidebar extends Component {
               <li className={this.activeRoute("/icons")}>
                 <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
                 <ul className="nav-dropdown-items">
-                  <li className="nav-item">
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
                     <NavLink to={'/ontologies/list'} className="nav-link" activeClassName="active"> Ontologie</NavLink>
                   </li>
-                  <li className="nav-item">
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
                     <NavLink to={'/vocabulary/list'} className="nav-link" activeClassName="active"> Vocabolari</NavLink>
                   </li>
                 </ul>
@@ -146,11 +180,17 @@ class Sidebar extends Component {
               <li className="nav-title">
                 Dashboards
               </li>
-              <li className="nav-item">
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
                 <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Dashboard</NavLink>
               </li>
                   
-              <li className="nav-item">
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
                 <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Storia</NavLink>
               </li>
             </ul>
