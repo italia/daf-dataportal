@@ -185,8 +185,8 @@ renderDatasetDetail(dataset, ope){
                 Descrizione
                 </div>
               <div className="card-block">
-                <h2 className="card-title">{transformName(dataset.name)}</h2>
-                <h4 className="card-text">{dataset.notes}</h4>
+                <h2 className="card-text">{transformName(dataset.name)}</h2>
+                <h5 className="card-text">{dataset.notes}</h5>
                 <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
                 <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p>
               </div>
@@ -250,8 +250,8 @@ renderDatasetDetail(dataset, ope){
   }
 }
 
-renderFilter(filters){
-  if(filters===true)
+renderFilter(){
+  if(this.state.filters===true)
     return(
     
       <div className="col-md-4" style={{paddingTop: '20px'}}>
@@ -293,7 +293,7 @@ renderFilter(filters){
 
 render() {
   const { datasets, dataset, ope } = this.props
-  const { isLoading, items, filters } = this.state;
+  const { isLoading, items} = this.state;
   if(datasets)
     var subdatasets = datasets.slice(0, items)
   return (
@@ -302,7 +302,7 @@ render() {
       {this.renderDatasetSearchResult(datasets?datasets.length:0, subdatasets, ope, isLoading)}
       </div>
       {this.renderDatasetDetail(dataset, ope)}
-      {this.renderFilter(filters)}
+      {this.renderFilter()}
     </div>
   )
 }
