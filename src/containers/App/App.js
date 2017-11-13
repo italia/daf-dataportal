@@ -48,61 +48,64 @@ class App extends Component {
     } else {
       if (localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
-        dispatch(isValidToken(localStorage.getItem('token'))).then(ok => {
+        dispatch(isValidToken(localStorage.getItem('token')))
+        .then(ok => {
           if (ok) {
                 dispatch(setApplicationCookie('superset'))
                 .then(json => {
                   if (json) {
                     setCookie('superset',json)
-                    dispatch(setApplicationCookie('metabase'))
-                    .then(json => {
-                        if (json) {
-                          setCookie('metabase',json)
-                          dispatch(setApplicationCookie('jupyter'))
-                          .then(json => {
-                                if (json) {
-                                  setCookie('jupyter',json)
-                                  dispatch(setApplicationCookie('grafana'))
-                                  .then(json => {
-                                    if (json) {
-                                      setCookie('grafana', json)
-                                      dispatch(loginAction())
-                                      .then(json => {
-                                        dispatch(receiveLogin(json))
-                                        dispatch(addUserOrganization(json.uid))
-                                        this.setState({
-                                          authed: true,
-                                          loading: false
-                                        })
-                                      })
-                                    }})
-                                }
-                              })
-                        }
-                      })
                   }
                 })
-              } else { 
+                dispatch(setApplicationCookie('metabase'))
+                .then(json => {
+                  if (json) {
+                    setCookie('metabase',json)
+                  }
+                })
+                dispatch(setApplicationCookie('jupyter'))
+                .then(json => {
+                  if (json) {
+                    setCookie('jupyter',json)
+                  }
+                })
+                dispatch(setApplicationCookie('grafana'))
+                .then(json => {
+                  if (json) {
+                    setCookie('grafana', json)
+                  }
+                })
+                dispatch(loginAction())
+                  .then(json => {
+                      dispatch(receiveLogin(json))
+                      dispatch(addUserOrganization(json.uid))
+                      this.setState({
+                          authed: true,
+                          loading: false
+                        })
+                })
+              } else {
                 this.setState({
                   authed: true,
                   loading: false
               })
-            }
-          })
-          .catch((error) => {
+              }
+            })
+            .catch((error) => {
+              this.setState({
+                authed: false,
+                loading: false
+              })
+            })
+          } else {
             this.setState({
               authed: false,
               loading: false
             })
-          })
-      } else {
-        this.setState({
-          authed: false,
-          loading: false
-        })
+          }
+        }
       }
-    }
-  }
+      
   componentWillUnmount() {
     this.removeListener()
   }
