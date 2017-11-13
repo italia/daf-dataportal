@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
+import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 
 /*
 const calcDataFields = (obj, fields, files) =>
@@ -155,23 +156,31 @@ class WizardFormMetadata extends Component {
       files: [],
       uploading: false
     }
+    this.calcDataFields = this.calcDataFields.bind(this);
+    this.setUploading = this.setUploading.bind(this);
   }
 
+  setUploading(obj, state){
+    console.log('setUploading')
+    console.log(obj)
+    console.log('state: ' + state)
+    obj.setState({uploading: state})
+  }
 
   calcDataFields (obj, fields, files) {
-  processInputFileMetadata(files, (resData)=>{
-     console.log(JSON.stringify(resData))
-     resData.names.map((item, index) => {
-        console.log(item)
-        fields.push({nome : item, tipo : resData.props[index].type, concetto : '', 
-         desc : '', required : 0, field_type : '' , cat : '', tag : '', 
-         constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
-         data :  resData.data[item]})
-     } , 
-       fields.push({nome : 'file', tipo : files[0]})
-     )
-     obj.setState({uploading: false})
-  })
+    //this.setUploading(obj, true);
+    processInputFileMetadata(files, (resData)=>{
+      resData.names.map((item, index) => {
+          //console.log(item)
+          fields.push({nome : item, tipo : resData.props[index].type, concetto : '', 
+          desc : '', required : 0, field_type : '' , cat : '', tag : '', 
+          constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
+          data :  resData.data[item]})
+      } , 
+        fields.push({nome : 'file', tipo : files[0]}),
+      );
+      //this.setUploading(obj, false);
+    });
   }
 
 
@@ -181,38 +190,45 @@ class WizardFormMetadata extends Component {
         <div className="form-group">
          <div className="col-md-6 offset-md-3">
           <label htmlFor='tests'>Carica il file max 10MB</label>
-          <Dropzone
-            name="input"
-            className="dropzone"
-            multiple={false}
-            maxSize={10485760}
-            //onDropRejected={console.log('file non conforme')}
-            onDrop={( filesToUpload, e ) => {
-              const {dispatch} = this.props 
-              this.setState({uploading: true})
-              //console.log('filesToUpload: ' + filesToUpload)
-              if(filesToUpload.length>0){
-                this.setState({errorDrop:''})
-                calcDataFields(this, fields, filesToUpload)
-                let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
-                fileName = fileName.toLowerCase()
-                fileName.split(" ").join("-")
-                dispatch(change('wizard', 'title', fileName))
-              }else{
-                this.setState({errorDrop: 'Dimensioni file non consentite'})
-                this.setState({uploading: false})
-              }
-            }
-            }>
-              <div className="container">
-                <div className="row" style={{"paddingTop": "10px"}}>
-                {this.state.uploading ? <div className="col">Sto caricando il file ....</div>:<div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>} 
-                </div>
-                <div className="row justify-content-md-center" style={{"paddingTop": "30px"}}>
-                {this.state.errorDrop && <div className="alert alert-danger">File non conforme alle specifiche, controllare la dimensione e l'estensione.</div>}
-                </div>
-              </div>
-          </Dropzone>
+          <OverlayLoader 
+              color={'blue'} 
+              loader="PulseLoader" 
+              text="Caricamento in corso..." 
+              active={this.state.uploading} 
+              backgroundColor={'grey'}
+              >
+              <Dropzone
+                name="input"
+                className="dropzone"
+                multiple={false}
+                maxSize={10485760}
+                onDrop={( filesToUpload, e ) => {
+                  //this.setUploading(this, true)
+                  const {dispatch} = this.props 
+                  if(filesToUpload.length>0){
+                    this.setState({errorDrop:''})
+                    calcDataFields(this, fields, filesToUpload)
+                    //this.setUploading(this, false)
+                    let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
+                    fileName = fileName.toLowerCase()
+                    fileName.split(" ").join("-")
+                    dispatch(change('wizard', 'title', fileName))
+                  }else{
+                    this.setState({errorDrop: 'Dimensioni file non consentite'})
+                    this.setState({uploading: false})
+                  }
+                }
+                }>
+                  <div className="container">
+                    <div className="row" style={{"paddingTop": "10px"}}>
+                    <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+                    </div>
+                    <div className="row justify-content-md-center" style={{"paddingTop": "30px"}}>
+                    {this.state.errorDrop && <div className="alert alert-danger">File non conforme alle specifiche, controllare la dimensione e l'estensione.</div>}
+                    </div>
+                  </div>
+              </Dropzone>
+          </OverlayLoader>
         </div>
       </div>
       }
@@ -341,7 +357,7 @@ class WizardFormMetadata extends Component {
             title={title}
             reset={reset}
             columnCard={columnCard}
-            calcDataFields={this.calcDataFields.bind(this)}
+            calcDataFields={this.calcDataFields}
           />
         </div>
       </div>

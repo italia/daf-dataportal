@@ -37,6 +37,7 @@
     "react-medium-editor": "^1.8.1",
     "react-modal": "^2.2.2",
     "react-modal-bootstrap": "^1.1.1",
+    "react-overlay-loading": "^1.0.3",
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",

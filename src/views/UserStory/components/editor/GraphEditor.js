@@ -21,9 +21,7 @@ class GraphEditor extends Component {
     if (!this.state.graph) {
       this.state.graph = {
         "title": "",
-        "props": {
-            "url": null
-        }
+        "props": null
       }
     }
 
@@ -46,9 +44,7 @@ class GraphEditor extends Component {
       this.state.widgets[iframe.title] = {
         "type": IframeWidget,
         "title": iframe.title,
-        "props":{
-          "url": iframe.iframe_url
-        }
+        "props": iframe
       }
     }) 
   }

@@ -93,9 +93,7 @@ class DashboardEditor extends Component {
       this.widgetsTypes[iframe.identifier] = {
         "type": IframeWidget,
         "title": iframe.title,
-        "props":{
-          "url": iframe.iframe_url
-        }
+        "props": iframe
       }
     }) 
   }

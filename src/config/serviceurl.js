@@ -46,13 +46,11 @@ export const serviceurl = {
  // URL CNR
  urlSemantic: 'http://stlab.istc.cnr.it/ontonethub/api/find',
 
- //domain: ".daf.teamdigitale.it",
+ domain: ".daf.teamdigitale.it",
 
  //domain: ".daf.test.it",
 
   auth: "dGVzdDp0dWxsaWFlYmxp",
-
-  domain: "/",
 
  "DatasetBackend": {
     "Search": {
