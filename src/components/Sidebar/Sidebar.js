@@ -87,7 +87,7 @@ class Sidebar extends Component {
         <form>
           <ModalHeader>
             <ModalClose onClick={this.hideModal}/>
-            <ModalTitle>Reindirizzamento</ModalTitle>
+            <ModalTitle>Scegli il tema</ModalTitle>
           </ModalHeader>
           <ModalBody>
           <div className="form-group">
@@ -98,9 +98,7 @@ class Sidebar extends Component {
             <button className='btn btn-default' onClick={this.hideModal}>
               Chiudi
             </button>
-            <button className='btn btn-default' onClick={this.hideModalAndRedirect}>
-              Vai a {this.state.name}
-            </button>
+              <button className='btn btn-default' onClick={this.hideModalAndRedirect}>Scegli</button>
           </ModalFooter>
         </form>
       </Modal>

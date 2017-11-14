@@ -132,6 +132,7 @@ class App extends Component {
           <PrivateRoute authed={this.state.authed} path="/dashboard/list" name="Dash" component={Full} />
           <PrivateRoute authed={this.state.authed} path="/user_story" name="Storie" component={Full} />
           <PrivateRoute authed={this.state.authed} path="/profile" name="Profile" component={Full} />
+          <PrivateRoute authed={this.state.authed} path="/settings" name="Settings" component={Full} />
         </Switch>
       </HashRouter>
 

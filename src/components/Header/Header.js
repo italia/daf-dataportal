@@ -90,11 +90,11 @@ class Header extends Component {
               <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
               <span className="d-md-down-none">{loggedUser?loggedUser.givenname:''}</span>
             </button>
-
             <DropdownMenu className="dropdown-menu-right">
               <DropdownItem header className="text-center"><strong>Menu utente</strong></DropdownItem>
               <DropdownItem><a className="nav-link" href="/#/profile"><i className="fa fa-user"></i> Profilo</a></DropdownItem>
-              <DropdownItem> <a className="nav-link"  onClick={() => {logout()}} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
+              <DropdownItem><a className="nav-link" href="/#/settings"><i className="fa fa-gear"></i> Impostazioni</a></DropdownItem>
+              <DropdownItem><a className="nav-link"  onClick={() => {logout()}} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </li>

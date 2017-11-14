@@ -113,14 +113,15 @@ class Login extends Component {
               <div className="card-group mb-0">
                 <div className="card p-2">
                   <div className="card-block">
-                    <OverlayLoader 
-                      color={'blue'} 
-                      loader="PulseLoader" 
-                      text="Caricamento in corso..." 
-                      active={this.state.uploading} 
-                      backgroundColor={'grey'}
-                      
-                      >
+                  
+                  <OverlayLoader
+                    color={'blue'}
+                    loader="PulseLoader"
+                    text="Caricamento in corso..."
+                    active={this.state.uploading}
+                    backgroundColor={'grey'}
+
+                  >
                     <h1>Login</h1>
                     <p className="text-muted">Accedi alla tua area personale</p>
                     {this.state.loginMessage &&
@@ -128,32 +129,35 @@ class Login extends Component {
                         {this.state.loginMessage}
                       </div>
                     }
+                  
                     
-                      <div className="input-group mb-1">
+                      <div className="input-group mb-1" style={{position: 'initial'}}>
                         <span className="input-group-addon">
                           <i className="icon-user"></i>
                         </span>
-                        <input className="form-control" ref={(email) => this.email = email} placeholder="Email" />
+                        <input className="form-control" ref={(email) => this.email = email} placeholder="Email" 
+                          style={{position: 'initial', zIndex: 'initial'}}/>
                       </div>
                     
                     
-                      <div className="input-group mb-2">
+                    <div className="input-group mb-2" style={{ position: 'initial' }}>
                         <span className="input-group-addon">
                           <i className="icon-lock"></i>
                         </span>
-                        <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+                      <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw}
+                        style={{ position: 'initial', zIndex: 'initial' }}/>
                       </div>
                     
                    
                       <div className="row">
-                        <div className="col-6">
-                          <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
+                      <div className="col-6" style={{ position: 'initial' }}>
+                        <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
                         </div>
-                        <div className="col-6 text-right"><button type="button" className="btn btn-link px-0" onClick={this.openModal}>Password dimenticata?</button>
+                      <div className="col-6 text-right" style={{ position: 'initial' }}><button type="button" className="btn btn-link px-0" onClick={this.openModal} >Password dimenticata?</button>
                         </div>
                       </div>
+                  </OverlayLoader>
                     
-                </OverlayLoader>    
               </div>
                 </div>
                 <div className="card card-inverse card-primary py-3 hidden-md-down">
