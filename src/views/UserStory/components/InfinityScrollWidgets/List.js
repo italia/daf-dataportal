@@ -7,7 +7,7 @@ class List extends Component {
     super(props);
     console.log('LIST widgets: ' + this.props.widgets)
     this.state = {
-      items: 4,
+      items: 6,
       visibility: 'visible'
     }
   }

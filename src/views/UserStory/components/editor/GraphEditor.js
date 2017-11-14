@@ -21,7 +21,11 @@ class GraphEditor extends Component {
     if (!this.state.graph) {
       this.state.graph = {
         "title": "",
-        "props": null
+         "props": {
+            "url": null,
+            "identifier": null,
+            "origin": null
+        }
       }
     }
 
@@ -40,13 +44,19 @@ class GraphEditor extends Component {
    * Load all Iframe types
    */
   loadIframe = (iframes) => {
+    let widgetsAppo = {};
     iframes.map(iframe => {
-      this.state.widgets[iframe.title] = {
+        widgetsAppo[iframe.identifier] = {
         "type": IframeWidget,
         "title": iframe.title,
-        "props": iframe
+        "props":{
+          "url": iframe.iframe_url,
+          "identifier": iframe.identifier,
+          "origin": iframe.origin
+        }
       }
     }) 
+    this.setState({widgets: widgetsAppo})
   }
 
   /**

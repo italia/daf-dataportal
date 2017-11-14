@@ -40,7 +40,7 @@ class App extends Component {
   }
   componentDidMount() {
     const { dispatch } = this.props
-    if (this.props.loggedUser) {
+    if (this.props.loggedUser && this.props.loggedUser.mail) {
       this.setState({
         authed: true,
         loading: false
