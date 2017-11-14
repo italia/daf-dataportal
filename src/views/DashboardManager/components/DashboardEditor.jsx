@@ -93,12 +93,16 @@ class DashboardEditor extends Component {
       this.widgetsTypes[iframe.identifier] = {
         "type": IframeWidget,
         "title": iframe.title,
+        //"props": iframe
         "props":{
-          "url": iframe.iframe_url
-        }
+           "url": iframe.iframe_url,
+           "identifier": iframe.identifier,
+           "origin": iframe.origin
+         }
       }
     }) 
   }
+  
 
   /**
    * Method called for load stored user widget

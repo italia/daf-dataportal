@@ -20,7 +20,8 @@ export function transformName(name){
       if(json.length>0){
         for(let i in json) {
           let cookie = json[i];
-          document.cookie = cookie.name+"="+ cookie.value + "; path="+cookie.path+"; domain=" + serviceurl.domain;
+          if(cookie)
+            document.cookie = cookie.name+"="+ cookie.value + "; path="+cookie.path+"; domain=" + serviceurl.domain;
         }
       }
     }

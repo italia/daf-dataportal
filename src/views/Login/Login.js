@@ -39,7 +39,10 @@ class Login extends Component {
     this.setState({uploading: true})
     dispatch(getAuthToken(this.email.value, this.pw.value))
       .then(json => {
-        localStorage.setItem('token', json);
+            localStorage.setItem('token', json);
+            dispatch(setApplicationCookie('superset'))
+            .then(json => {
+              if (json) {
               setCookie('superset', json)
               dispatch(setApplicationCookie('metabase'))
                 .then(json => {
@@ -65,8 +68,9 @@ class Login extends Component {
                       })
                   }
                 })
+              }
             })
-            .catch((error) => {
+          }).catch((error) => {
               this.setState({
                 loginMessage: 'Nome utente o password non corretto.',
                 uploading: false
