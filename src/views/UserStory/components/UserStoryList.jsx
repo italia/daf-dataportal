@@ -92,8 +92,12 @@ class UserStoryList extends Component {
                     />
                     }
                     {
-                    story.published==true &&
+                    story.published===1 &&
                     <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>
+                    }
+                    {
+                      story.published === 2 &&
+                      <div className="badge badge-info pull-right mt-20">CONDIVISO</div>
                     }
                     {
                       !story.published &&

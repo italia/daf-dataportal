@@ -71,8 +71,8 @@ class Header extends Component {
     const { loggedUser } = this.props
     return (
       <header className="app-header navbar">
-      <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
-      <button className="nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}>&#9776;</button>
+      <button className="nav-link navbar-toggler sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
+      <button className="d-md-down-none nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}>&#9776;</button>
         
       <ul className="nav navbar-nav d-md-down-none mr-auto">
         <li className="nav-item brand">
@@ -90,16 +90,15 @@ class Header extends Component {
               <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
               <span className="d-md-down-none">{loggedUser?loggedUser.givenname:''}</span>
             </button>
-
             <DropdownMenu className="dropdown-menu-right">
               <DropdownItem header className="text-center"><strong>Menu utente</strong></DropdownItem>
               <DropdownItem><a className="nav-link" href="/#/profile"><i className="fa fa-user"></i> Profilo</a></DropdownItem>
-              <DropdownItem> <a className="nav-link"  onClick={() => {logout()}} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
+              <DropdownItem><a className="nav-link" href="/#/settings"><i className="fa fa-gear"></i> Impostazioni</a></DropdownItem>
+              <DropdownItem><a className="nav-link"  onClick={() => {logout()}} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </li>
-        
-        <li className="nav-item hidden-md-down">
+        <li className="nav-item d-md-down-none">
           <a className="nav-link navbar-toggler aside-menu-toggler" href="#"></a>
         </li>
       </ul>

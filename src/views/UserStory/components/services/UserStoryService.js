@@ -37,7 +37,7 @@ export default class UserStoryService {
     }
 
     async save(story) {
-
+        story['timestamp'] = new Date(); 
         const response = await fetch( this.baseUrl, {
             method: 'POST',
             headers: {
