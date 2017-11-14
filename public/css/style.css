@@ -7654,7 +7654,7 @@ base-chart.chart {
 .sidebar {
   padding: 0;
   overflow: hidden;
-  color: #fff;
+  /* color: #fff; */
   background: #263238; }
   .sidebar .sidebar-close {
     position: absolute;
@@ -8715,13 +8715,13 @@ app-root {
     margin-left: -220px; }
     .sidebar .sidebar-nav,
     .sidebar .nav {
-      width: 220px !important; }
+      width: auto !important; }
   .main, .app-footer {
     margin-left: 0 !important; }
   .aside-menu {
     margin-right: -250px; }
   .sidebar-mobile-show .sidebar {
-    width: 220px;
+    width: 100%;
     margin-left: 0; }
     .sidebar-mobile-show .sidebar .sidebar-nav {
       height: calc(100vh - 55px); }
