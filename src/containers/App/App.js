@@ -86,9 +86,10 @@ class App extends Component {
                 })
               } else {
                 this.setState({
-                  authed: true,
+                  authed: false,
                   loading: false
               })
+              this.props.history.push('/login')
               }
             })
             .catch((error) => {
