@@ -128,14 +128,14 @@ class GraphEditor extends Component {
             </button>
           </div>
         }
-        
+        <div style={{zIndex: '5'}}>
         <App 
         widgets={this.state.widgets}
           isModalOpen={this.state.isModalOpen}
           onWidgetSelect={this.changeGraph}
           onRequestClose={this.onRequestClose}
         />
-        
+        </div>
         {/*<ChangeGraphDialog
             widgets={this.state.widgets}
             isModalOpen={this.state.isModalOpen}
