@@ -319,6 +319,8 @@ export function getAuthToken(username, pw) {
   localStorage.setItem('username', username);
   var headers = new Headers();
   headers.append("Authorization", "Basic " + base64.encode(username + ":" + pw));
+  headers.append("Accept", "application/json");
+  headers.append("Content-Type", "application/json");
   var url = serviceurl.apiURLSecurity + '/token';
   return dispatch => {
       return fetch(url, {
