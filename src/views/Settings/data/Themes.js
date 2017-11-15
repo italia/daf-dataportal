@@ -1,11 +1,11 @@
 const themes = [
     {
         id: 1,
-        snapshot:''
+        snapshot:'image1.png'
     },
     {
         id: 2,
-        snapshot:''
+        snapshot:'image2.png'
     },
     {
         id: 3,
