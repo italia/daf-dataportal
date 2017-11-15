@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import List from './List';
-import Modal from 'react-modal';
+import {Modal} from 'react-modal-bootstrap';
 
 class App extends Component {
   constructor(props) {
