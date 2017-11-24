@@ -192,7 +192,7 @@ class BtnControlWidget extends React.Component {
                 isModalOpen={this.state.isModalAddOpen}
                 onWidgetSelect={this.addWidget}
                 onRequestClose={this.onRequestClose}
-                    />*
+                    />
 
                 {/*<AddWidgetDialog
                     widgets={this.props.widgets}

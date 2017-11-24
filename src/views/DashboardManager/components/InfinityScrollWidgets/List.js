@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import InfiniteScroll from '../../../../components/InfinityScroll';
+import WidgetImage from "./WidgetImage";
 import $ from 'jquery';
 
 class List extends Component {
@@ -20,26 +21,40 @@ class List extends Component {
   handleScrollToBottom = () => this.loadMore()
   handleLoadMoreClick = () => this.loadMore()
 
+  async imageLoad(widget){
+    /* console.log('identifier: ' + widget); */
+    let url = 'https://api.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    const response = await fetch(url, {
+        method: 'GET'
+    }).then(response => response.text())
+        .then(text => {
+          return text
+        })
+    /* console.log(response.text()) */
+	}
+
   render() {
     const { visibility, items, isLoading } = this.state;
     const { widgets, isModalOpen, onRequestClose, onWidgetSelect } = this.props;
     let visible = Object.keys(widgets).length<=items ? 'hidden':visibility;
     var count = 0;
     const widgetItems = Object.keys(widgets).map((widget, key) => {
+      this.imageLoad(widget)
       if(count<items){
         count++;
         let wid = widgets[widget].type;
-        let onLoadIframe = function(id) {
+        /* let onLoadIframe = function(id) {
           $("#title-preview-" + id).hide();
-        }
+        } */
         if(widget && widget =="TextWidget")
           return (
             <div className="infinity-iframe-100" key={key}>
                 <div className="card text-center">
-                    <div className="card-body">  
+                    <div className="card-body">
                       <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
                       <h6 className="list-group-item-heading">
-                        {widgets[widget].title}
+                      <i className="fa fa-font" aria-hidden="true"></i>  
+                        {" "+widgets[widget].title}
                       </h6>
                       </a>
                   </div>
@@ -57,7 +72,8 @@ class List extends Component {
                           {widgets[widget].title}
                         </h6>
                         <div className="preview-widget">
-                          {React.createElement(wid, {...widgets[widget].props, class: "no-click", onLoad: () => onLoadIframe(key)})}
+                          <WidgetImage widget={widget}/>
+                          {/* React.createElement(wid, {...widgets[widget].props, class: "no-click"}) */}
                         </div>
                       </a>
                 </div>

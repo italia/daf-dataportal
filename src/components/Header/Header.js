@@ -60,7 +60,7 @@ class Header extends Component {
   }
 
   handleLoadDatasetClick(event) {
-    console.log('Serach Dataset for: ' + this.refs.auto.state.value);
+    console.log('Search Dataset for: ' + this.refs.auto.state.value);
     event.preventDefault();
     const { dispatch, selectDataset } = this.props;
     dispatch(loadDatasets(this.refs.auto.state.value, 0, '', '', '', '','metadata_modified%20desc'));
@@ -69,6 +69,7 @@ class Header extends Component {
 
   render() {
     const { loggedUser } = this.props
+    let open = this.state.dropdownOpen ? "show" : "" 
     return (
       <header className="app-header navbar">
       <button className="nav-link navbar-toggler sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
@@ -85,7 +86,7 @@ class Header extends Component {
       </ul>
       <ul className="nav navbar-nav ml-auto">
         <li className="nav-item">
-          <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+{/*           <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
             <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
               <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
               <span className="d-md-down-none">{loggedUser?loggedUser.givenname:''}</span>
@@ -96,7 +97,20 @@ class Header extends Component {
               <DropdownItem><a className="nav-link" href="/#/settings"><i className="fa fa-gear"></i> Impostazioni</a></DropdownItem>
               <DropdownItem><a className="nav-link"  onClick={() => {logout()}} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
             </DropdownMenu>
-          </Dropdown>
+          </Dropdown> */}
+          <div className={"dropdown " + open}>
+              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+                aria-haspopup="true" aria-expanded="false" onClick={this.toggle}>
+                <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                <span className="d-md-down-none">{loggedUser ? loggedUser.givenname : ''}</span>
+            </button>
+              <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <h6 className="dropdown-header text-center">Menu utente</h6>
+                <a className="dropdown-item" href="/#/profile" onClick={this.toggle}><i className="fa fa-user"></i> Profilo</a>
+                <a className="dropdown-item" href="/#/settings" onClick={this.toggle}><i className="fa fa-gear"></i> Impostazioni</a>
+                <a className="dropdown-item" onClick={() => { logout(); this.toggle }} href="/"><i className="fa fa-lock"></i> Logout</a>
+            </div>
+          </div>
         </li>
         <li className="nav-item d-md-down-none">
           <a className="nav-link navbar-toggler aside-menu-toggler" href="#"></a>

@@ -1,6 +1,9 @@
   .scroll-y {
-    overflow-y: scroll;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
+    /* padding-right: -20px */
+    margin-right: -25px;
+    width: 100%
   }
   
   .white {
@@ -13,6 +16,7 @@
     flex-direction: column;
     height: 100vh;
     background-color:  #FFF;
+    overflow: hidden;
     /* border: 1px solid rgba(0, 0, 0, 0.125); */
   }
   

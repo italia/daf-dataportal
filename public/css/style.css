@@ -10,10 +10,13 @@ html {
   font-family: sans-serif;
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%; }
+  -webkit-text-size-adjust: 100%;
+  -ms-overflow-style: none; 
+}
 
 body {
-  margin: 0; }
+  margin:0px;
+}
 
 article,
 aside,
@@ -2174,10 +2177,10 @@ tbody.collapse.show {
   padding: 0 0;
   margin: 0.125rem 0 0;
   font-size: 0.875rem;
-  color: #263238;
+  color: #ffffff;
   text-align: left;
   list-style: none;
-  background-color: #CDCBCB;
+  background-color: #ffffff;
   background-clip: padding-box;
   border: 1px solid #cfd8dc; }
 
@@ -2229,7 +2232,7 @@ tbody.collapse.show {
   padding: 0 1.5rem;
   margin-bottom: 0;
   font-size: 0.875rem;
-  color: #b0bec5;
+  color: #000000;
   white-space: nowrap; }
 
 .dropup .dropdown-menu {
@@ -8607,7 +8610,7 @@ app-root {
   width: 200px;
   height: 100%; }
   .sidebar-fixed .sidebar .sidebar-nav {
-    height: calc(100vh - 55px); }
+    height: calc(100vh - 100px); }
 
 .sidebar-fixed .main, .sidebar-fixed .app-footer {
   margin-left: 200px; }
@@ -8620,7 +8623,7 @@ app-root {
   z-index: 1019;
   height: 100%; }
   .sidebar-off-canvas .sidebar .sidebar-nav {
-    height: calc(100vh - 55px); }
+    height: calc(100vh - 100px); }
 
 @media (min-width: 992px) {
   .sidebar-compact .sidebar {
@@ -8724,7 +8727,7 @@ app-root {
     width: 100%;
     margin-left: 0; }
     .sidebar-mobile-show .sidebar .sidebar-nav {
-      height: calc(100vh - 55px); }
+      height: calc(100vh - 100px); }
   .sidebar-mobile-show .main {
     margin-right: -220px !important;
     margin-left: 220px !important; } }
