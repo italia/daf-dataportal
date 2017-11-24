@@ -48,7 +48,7 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
           <select className="form-control" {...input}>
             {themes.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
           </select>
-        {touched && error && <span>{error}</span>}
+        {touched && error && <div className="text-danger">{error}</div>}
       </div>
    </div>
 );
@@ -74,8 +74,8 @@ const renderField = ({ input, label, type, value = '', readonly, meta: { touched
     <label className="col-md-3 form-control-label">{label}</label>
     <div className="col-md-9">
       <input {...input} placeholder={label} type={type} className="form-control"/>
-      {touched && error && <span>{error}</span>}
-    </div>
+      {touched && error && <div className="text-danger">{error}</div>}
+      </div>
   </div>
 )
 
@@ -87,7 +87,7 @@ const renderYesNoSelector = ({ input, type, label, value, meta: { touched, error
       <option value="0" defaultValue key='false'>No</option>
       <option value="1" key="1">Si</option>
     </select>
-    {touched && error && <span>{error}</span>}
+    {touched && error && <div className="text-danger">{error}</div>}
   </div>
   </div>
 );
@@ -102,7 +102,7 @@ const renderFieldType = ({ input, meta: { touched, error } }) => (
       <option value="numerical" key="numerical">Valore numerico</option>
       <option value="textual" key="textual">Valore testuale</option>
     </select>
-    {touched && error && <span>{error}</span>}
+    {touched && error && <div className="text-danger">{error}</div>}
 </div>
   </div>
 );
@@ -115,9 +115,7 @@ const addMetadataFromFile = ({ fields, meta: { error, submitFailed } }) =>
       </button>
       {submitFailed &&
         error &&
-        <span>
-          {error}
-        </span>}
+        <div className="text-danger">{error}</div>}
     </li>
 
     {fields.map((test, index) =>
@@ -168,10 +166,8 @@ class WizardFormMetadata extends Component {
   }
 
   calcDataFields (obj, fields, files) {
-    //this.setUploading(obj, true);
     processInputFileMetadata(files, (resData)=>{
       resData.names.map((item, index) => {
-          //console.log(item)
           fields.push({nome : item, tipo : resData.props[index].type, concetto : '', 
           desc : '', required : 0, field_type : '' , cat : '', tag : '', 
           constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
@@ -179,18 +175,34 @@ class WizardFormMetadata extends Component {
       } , 
         fields.push({nome : 'file', tipo : files[0]}),
       );
-      //this.setUploading(obj, false);
     });
   }
 
 
   renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, meta : {touched, error} }) => 
       <div>
-      {fields.length > -1 &&
-        <div className="form-group">
-         <div className="col-md-6 offset-md-3">
-          <label htmlFor='tests'>Carica il file max 10MB</label>
-          <OverlayLoader 
+      {fields.length === 0 &&
+        <div className="form-group row">
+          <div className="col-md-5">
+            <p className="text-justify">Benvenuto nel cruscotto per la registrazione di nuovi dataset.</p>
+            <p className="text-justify">Scegli se caricare il file tramite URL (PULL) oppure se caricare il file direttamente attraverso la dropbox (PUSH).</p>
+            <p className="text-justify">Nel caso scegliessi la seconda opzione se il file è minore di 10 mega verrà metadatato e caricato direttamente nel DAF altrimenti il file verrà lo stesso metadatato ma il contenuto dovrà essere caricato in un secondo momento.</p> 
+            <p className="text-justify">Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p>
+          </div>
+          <div className="col-md-7">
+          <div className="form-group">
+            <div className="col-md-12">
+            <label htmlFor='tests'>Inserisci un link al tuo file:</label>
+            </div>
+            <div className="col-md-12">
+              <input placeholder="http://" type="text" className="form-control-90"/>
+              <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off"><i className="fa fa-plus"></i></button>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="col-md-12">
+            <label htmlFor='tests'>Oppure carica il file (max 10MB):</label>
+            <OverlayLoader 
               color={'blue'} 
               loader="PulseLoader" 
               text="Caricamento in corso..." 
@@ -214,6 +226,7 @@ class WizardFormMetadata extends Component {
                     fileName.split(" ").join("-")
                     dispatch(change('wizard', 'title', fileName))
                   }else{
+                    alert('Dimensioni file non consentite')
                     this.setState({errorDrop: 'Dimensioni file non consentite'})
                     this.setState({uploading: false})
                   }
@@ -221,28 +234,27 @@ class WizardFormMetadata extends Component {
                 }>
                   <div className="container">
                     <div className="row" style={{"paddingTop": "10px"}}>
-                    <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+                      <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
                     </div>
                     <div className="row justify-content-md-center" style={{"paddingTop": "30px"}}>
-                    {this.state.errorDrop && <div className="alert alert-danger">File non conforme alle specifiche, controllare la dimensione e l'estensione.</div>}
+                      {this.state.errorDrop && 
+                          <div className="alert alert-danger">File non conforme alle specifiche, controllare la dimensione e l'estensione.</div>
+                      }
                     </div>
                   </div>
               </Dropzone>
           </OverlayLoader>
+          </div>
         </div>
+        </div>  
       </div>
       }
-      {touched &&
-        error &&
-        <span>
-          {error}
-        </span>}       
-
+      {touched && error && <div className="text-danger">{error}</div>}
       {fields.map((test, index) => 
       (index == 0) ?
       <div key={index}>
         <div className="form-group row justify-content-center">
-          <div className="col-6">
+          <div className="col-7">
             <Field
               name={`${test}.tipo.name`}
               type="text"
@@ -252,12 +264,12 @@ class WizardFormMetadata extends Component {
               readonly="readonly"
             />
           </div>
-          <div className="col-4">
+          <div className="col-3">
             <button type="button" className="btn btn-primary" onClick={reset}>Elimina</button>
           </div>
         </div>
         <div className="form-group row justify-content-center">
-          <div className="col-6">
+          <div className="col-7">
             <Field
               name={'private'}
               type="text"
@@ -265,7 +277,7 @@ class WizardFormMetadata extends Component {
               label="Privato"
             />
           </div>
-          <div className="col-4"></div>
+          <div className="col-3"></div>
         </div>
       </div>
       :
@@ -330,8 +342,8 @@ class WizardFormMetadata extends Component {
               label="Categoria"
               value={`${test}.cat`}
             />
-            <div className="col-md-9 offset-md-9">
-              <button type="button" onClick={() => fields.remove(index)} className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off">
+            <div className="col-md-12">
+              <button type="button" onClick={() => fields.remove(index)} className="btn btn-primary float-right" data-toggle="button" aria-pressed="false" autoComplete="off">
                 Rimuovi
               </button>
             </div>
@@ -339,9 +351,34 @@ class WizardFormMetadata extends Component {
           </div>
           </div>
         </div>
+        <div className="col-md-6">
+          <div className="form-group">
+            <div className="card">
+              <div className="card-header">
+                <strong>Dati colonna #{index}</strong>
+              </div>
+              <div className="card-block">
+                <p>RT-1364431454</p>
+                <p>RT1803171066</p>
+                <p>RT1116389446</p>
+                <p>RT-543437881</p>
+                <p>RT128053814</p>
+                <p>RT179531997</p>
+                <p>RT-1976941392</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       )}
+      {fields.length > 0 &&
+      <div className="form-group row">
+          <div className="col-12">
+            <button type="submit" className="btn btn-primary float-right">Avanti</button>
+          </div>
+      </div>}
     </div>
+
 
 
   render() {
@@ -349,26 +386,14 @@ class WizardFormMetadata extends Component {
     return (
     <div>
     <form onSubmit={handleSubmit}>
-      <div className="form-group row">
-        <div className="col-md-12">
         <FieldArray
-            name="tests"
-            component={this.renderDropzoneInput}
-            title={title}
-            reset={reset}
-            columnCard={columnCard}
-            calcDataFields={this.calcDataFields}
-          />
-        </div>
-      </div>
-      {this.state.files.length > 0 ? <div>
-          <h2>Uploading files...</h2>
-          </div> : null}
-      <div className="form-group row">
-            <div className="col-12">
-              <button type="submit" className="btn btn-primary float-right">Avanti</button>
-            </div>
-      </div>
+              name="tests"
+              component={this.renderDropzoneInput}
+              title={title}
+              reset={reset}
+              columnCard={columnCard}
+              calcDataFields={this.calcDataFields}
+            />
     </form>
     </div>
     )
