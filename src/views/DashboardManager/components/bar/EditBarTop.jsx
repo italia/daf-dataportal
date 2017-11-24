@@ -53,7 +53,8 @@ class EditBarTop extends React.Component {
       this.props.onPublish(status);
   }
 
-  condividi(){
+  condividi(e){
+    e.preventDefault();
     let status = 2;
 
     this.state.dashboard.status = status

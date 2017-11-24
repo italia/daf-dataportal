@@ -92,7 +92,15 @@ const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
   </div>
 );
 
-
+const renderDomain = ({ input, label, type, key, domains, meta: { touched, error } }) => (
+    <div>
+        <select className="form-control" {...input}>
+          <option value=""  key={key} defaultValue></option>
+          {domains.map(domain => <option value={domain.key} key={domain.key}>{domain.value}</option>)}
+        </select>
+      {touched && error && <div className="text-danger">{error}</div>}
+    </div>
+);
 
 const renderSftp = ({ fields, meta: { error, submitFailed } }) => (
    <div> 
@@ -552,11 +560,12 @@ const renderGroupAccess = ({ fields, meta: { error, submitFailed } }) => (
 
 let WizardOperational = props => {
 
-  const { handleSubmit, pristine, previousPage, submitting, isStandard, isOk = 'false', isPush = true,isFtp = 'sftp', followStandard = 'false' } = props;  
+  const { handleSubmit, pristine, previousPage, getDomain, domain, submitting, isStandard, isOk = 'false', isPush = true,isFtp = 'sftp', followStandard = 'false' } = props;  
   let standards = serviceurl.apiURLCatalog + '/dataset-catalogs/standard-uris' ; 
   let domainUrl = serviceurl.apiURLCatalog + '/voc/themes/getall';
   let subdomainUrl = serviceurl.apiURLCatalog + '/voc/subthemes/getall' 
- 
+  var subdomain = getDomain(2,domain)
+
   return (
     <form  onSubmit={handleSubmit}>
       <div className="col-md-12">
@@ -575,14 +584,14 @@ let WizardOperational = props => {
 
       <div className="form-group">
         <label>Dominio</label>
-        <Field name="domain" component={TestSelectDomain} url={domainUrl} /><br/>
+        <Field name="domain" component={renderDomain} domains={getDomain(1,undefined)} key='domain'/><br/>
       </div>
-
+      {(subdomain && subdomain.length >0) &&
       <div className="form-group">
         <label>Sotto dominio</label>
-        <Field name="subdomain" component={TestSelectDomain} url={subdomainUrl} /><br/>
+        <Field name="subdomain" component={renderDomain} domains={subdomain} /><br/>
       </div>
-
+      }
 
       <div className="form-group">
         <label>Tipo Lettura del dataset</label>
@@ -643,13 +652,15 @@ WizardOperational = connect(state => {
   const followStandard = selector(state, 'follow_standard')
   let isFtp = "sftp"
   let reload = false
+  let domain = selector(state, 'domain')
   isFtp = selector(state, 'ftporws')
   reload = selector(state, '')
   return {
     isOk,
     isPush,
     isFtp,
-    followStandard
+    followStandard,
+    domain
   }
 })(WizardOperational)
 

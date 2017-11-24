@@ -6,6 +6,9 @@ const validate = values => {
   if (!values.ownership) {
     errors.ownership = 'Campo obbligatorio'
   }
+  if (!values.theme) {
+    errors.theme = 'Campo obbligatorio'
+  }
   if (!values.editor) {
     errors.editor = 'Campo obbligatorio'
   }

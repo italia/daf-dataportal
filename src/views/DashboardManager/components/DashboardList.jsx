@@ -20,7 +20,9 @@ const dashboardService = new DashboardService();
 class DashboardList extends Component {
   constructor(props) {
     super(props);
-    this.state={isOpen: false};
+    this.state={ 
+      isOpen: false,
+    };
     this.load();
 
     this.filter = this.filter.bind(this);
@@ -31,7 +33,8 @@ class DashboardList extends Component {
    */
   load = (config) => {
     this.state = {
-      dashboards: []
+      dashboards: [],
+      isLoading: true
     };
     
     let response = dashboardService.list();
@@ -39,7 +42,8 @@ class DashboardList extends Component {
       
       this.originalDashboard = list;
       this.setState({
-        dashboards: list
+        dashboards: list,
+        isLoading: false
       });
     });
   }
@@ -114,9 +118,15 @@ class DashboardList extends Component {
           })
         }
       </div>
-
+      
       {
-        this.state.dashboards && this.state.dashboards.length == 0 &&
+        this.state.dashboards && this.state.dashboards.length == 0 && this.state.isLoading === true &&
+        <p>
+          <b className="ml-20">Caricamento delle dashboard in corso...</b>
+        </p>
+      }
+      {
+        this.state.dashboards && this.state.dashboards.length == 0 && this.state.dashboards.isLoading === false &&
         <p>
           <b className="ml-20">Nessuna dashboard trovata</b>
         </p>

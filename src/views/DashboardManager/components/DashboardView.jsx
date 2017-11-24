@@ -42,6 +42,7 @@ class DashboardView extends Component {
       id: this.props.match.params.id
     };
 
+    this.load()
     //get iframe from server
     let iframeTypes = widgetService.getIframe();
     iframeTypes.then(iframes => {
@@ -93,7 +94,6 @@ class DashboardView extends Component {
       let dashboard = config;
       if (dashboard.widgets)
         dashboard.widgets = JSON.parse(dashboard.widgets);
-  
       if (dashboard.layout)
         dashboard.layout = JSON.parse(dashboard.layout);
 
@@ -110,14 +110,16 @@ class DashboardView extends Component {
           console.error("Widget " + typeWid + " non trovato")
         }
       }
-
+      console.log(dashboard.widgets)
       //render widgets
       this.state.widgets = dashboard.widgets;
       this.setState({
         layout: dashboard.layout,
         title: dashboard.title,
-        subtitle: dashboard.subtitle
+        subtitle: dashboard.subtitle,
+        /* widgets: dashboard.widgets */
       });
+      console.log(this.state)
     });
 
   }
@@ -127,6 +129,7 @@ class DashboardView extends Component {
    * Render Function
    */
   render() {
+    
     return (
     <Container>
       <ViewBar title={this.state.title} subtitle={this.state.subtitle} id={this.state.id}></ViewBar>
