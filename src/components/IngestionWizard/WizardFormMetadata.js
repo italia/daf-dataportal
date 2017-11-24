@@ -358,13 +358,7 @@ class WizardFormMetadata extends Component {
                 <strong>Dati colonna #{index}</strong>
               </div>
               <div className="card-block">
-                <p>RT-1364431454</p>
-                <p>RT1803171066</p>
-                <p>RT1116389446</p>
-                <p>RT-543437881</p>
-                <p>RT128053814</p>
-                <p>RT179531997</p>
-                <p>RT-1976941392</p>
+                <p></p>
               </div>
             </div>
           </div>
