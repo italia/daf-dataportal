@@ -181,14 +181,25 @@ renderDatasetDetail(dataset, ope){
       return (
           <div className="col-12">
             <div className="card">
-              <div className="card-header">
+{/*               <div className="card-header">
                 Descrizione
-                </div>
+                </div> */}
+            
               <div className="card-block">
-                <h2 className="card-text">{transformName(dataset.name)}</h2>
-                <h5 className="card-text">{dataset.notes}</h5>
-                <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
-                <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p>
+                <div className="col-12">
+                  <h2 className="card-text">{transformName(dataset.name)+" "}<span className="badge badge-primary">{dataset.theme}</span></h2>
+                </div>
+              <div className="d-inline-flex b-t-1 mt-2 pt-1">
+                  <div className="col-8 b-r-1">
+                    <h6 className="card-text">{dataset.notes}</h6>
+                    <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
+                  </div>
+                  <div className="col-4">
+                    <p className="card-text"><strong>{"Aggiornato il"+" "}</strong> {dataset.modified}</p>
+                    <p className="card-text"><strong>{"Pubblicato da" + " "}</strong> {dataset.publisher_name}</p>
+                  </div>
+                </div>
+                {/* <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p> */}
               </div>
             </div>
             <div className="card">

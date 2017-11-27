@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { fetchProperties } from '../../actions';
 import {
     Modal,
     ModalHeader,
@@ -17,6 +18,7 @@ class Settings extends Component {
     constructor(props){
         super(props)
         this.state={
+            org: '',
             temi: themes,
             isOpen: false,
             theme: 1,
@@ -25,6 +27,8 @@ class Settings extends Component {
             logo: '',
             twitter: '',
             medium: '',
+            news:'',
+            forum: '',
             footer_logoA: '',
             footer_logoB: '',
             footerName: '',
@@ -34,8 +38,47 @@ class Settings extends Component {
         }
 
         this.onClick = this.onClick.bind(this)
-        
         this.onThemeSelect = this.onThemeSelect.bind(this)
+        this.load = this.load.bind(this)
+        this.save = this.save.bind(this)
+    }
+
+    async settings(org) {
+        var url = "http://10.100.82.180:9000/dati-gov/v1/settings?organization=" + org
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+
+        return response.json();
+    }
+
+    load(org){
+        let response = this.settings(org)
+        response.then((json)=> {
+            this.setState({
+                theme: json.theme,
+                title: json.headerSiglaTool,
+                desc: json.headerDescTool,
+                logo: json.headerLogo,
+                twitter: json.twitterURL,
+                medium: json.mediumURL,
+                news: json.notizieURL,
+                forum: json.forumURL,
+                footer_logoA: json.footerLogoAGID,
+                footer_logoB: json.footerLogoGov,
+                footerName: json.footerNomeEnte,
+                privacy: json.footerPrivacy,
+                legal: json.footerLegal,
+            });
+        });
+    }
+
+    save(){
+        
     }
 
     onClick() {
@@ -129,10 +172,30 @@ class Settings extends Component {
         });
     }
 
+    onNewsChange(value) {
+        this.setState({
+            news: value,
+            isChanged: true
+        });
+    }
 
+    onForumChange(value) {
+        this.setState({
+            forum: value,
+            isChanged: true
+        });
+    }
+
+    onOrgChange(value){
+        this.setState({
+            org: value,
+        })
+
+        this.load(value)
+    }
 
     render() {
-    const { loggedUser } = this.props
+    const { loggedUser} = this.props
     return (
         <div>
             <Modal
@@ -180,6 +243,14 @@ class Settings extends Component {
                 <div className="col-md-9">
                     <div className="card">
                         <div className="card-block">
+                            <div className="col-4 form-group row">
+                                <label htmlFor="example-search-input" className="col-2 col-form-label">Organizzazione</label>
+                                <select className="form-control" id="ordinamento" aria-required="true" onChange={(e)=> this.onOrgChange(e.target.value)} value={this.state.org}>
+                                    <option value=""></option>
+                                    <option value="daf">Daf</option>
+                                    <option value="roma">Comune di Roma</option>
+                                </select>
+                            </div>
                             <div className="form-group row">
                                 <label htmlFor="example-search-input" className="col-2 col-form-label">Tema</label>
                                 <div className="col-10">
@@ -225,6 +296,20 @@ class Settings extends Component {
                                 </div>
                             </div>
                             <div className="form-group row">
+                                <label htmlFor="example-text-input" className="col-2 col-form-label"><i className="fa fa-twitter"></i>{" "}Notizie</label>
+                                <div className="col-10">
+                                    <input className="form-control" type="text" value={this.state.news}
+                                        id="example-text-input" onChange={(e) => this.onTwitterChange(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label htmlFor="example-search-input" className="col-2 col-form-label"><i className="fa fa-medium"></i>{" "}Forum</label>
+                                <div className="col-10">
+                                    <input className="form-control" type="search" value={this.state.forum}
+                                        id="example-search-input" onChange={(e) => this.onMediumChange(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="form-group row">
                                 <label htmlFor="example-search-input" className="col-2 col-form-label">Footer Logo 1</label>
                                 <div className="col-10">
                                     <input className="form-control" type="search" value={this.state.footer_logoA} 
@@ -259,7 +344,8 @@ class Settings extends Component {
                                         id="example-search-input" onChange={(e) => this.onLegalChange(e.target.value)}/>
                                 </div>
                             </div>
-                            <button type="button" className={"btn btn-primary float-right " + (this.state.isChanged ? "" :"disabled")}>Save</button>
+                            <button type="button" className="btn btn-primary float-right"
+                                onClick={this.save} disabled={!this.state.isChanged}>Save</button>
                         </div>
                     </div>
                 </div>
@@ -271,11 +357,13 @@ class Settings extends Component {
 
 Settings.propTypes = {
   loggedUser: PropTypes.object,
+  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
-    const loggedUser = state.userReducer['obj'].loggedUser || { } 
-    return { loggedUser }
+    const loggedUser = state.userReducer['obj'].loggedUser || { }
+    const properties = state.propertiesReducer ? state.propertiesReducer['prop'] || {} : {} 
+    return { loggedUser, properties }
 }
 
 export default connect(mapStateToProps)(Settings)
