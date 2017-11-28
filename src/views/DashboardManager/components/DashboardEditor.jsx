@@ -40,6 +40,7 @@ class DashboardEditor extends Component {
   constructor(props) {
     super(props);
 
+    this.load();
     //get iframe from server
     let iframeTypes = widgetService.getIframe();
     iframeTypes.then(iframes => {
@@ -343,7 +344,7 @@ class DashboardEditor extends Component {
   widgetsTypes = {
     "TextWidget":{
       "type": TextWidget,
-      "title": "Contenuto Testuale",
+      "title": "Testo",
       "props":{
         "onSave": this.saveTextWidget.bind(this)
       }
