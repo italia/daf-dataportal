@@ -22,7 +22,7 @@ class Settings extends Component {
             temi: themes,
             isOpen: false,
             theme: 1,
-            title: '/Daf',
+            title: '',
             desc: '',
             logo: '',
             twitter: '',
@@ -44,7 +44,7 @@ class Settings extends Component {
     }
 
     async settings(org) {
-        var url = "http://10.100.82.180:9000/dati-gov/v1/settings?organization=" + org
+        var url = "http://service:9000/dati-gov/v1/settings?organization=" + org
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -77,8 +77,47 @@ class Settings extends Component {
         });
     }
 
-    save(){
-        
+   /**
+  * Save Settings
+  */
+  saveSettings = (settings) => {
+    console.log('save settings: ' + settings)
+    //save data
+    let json = {
+        theme: this.state.theme,
+        headerSiglaTool: this.state.title,
+        headerDescTool: this.state.desc,
+        headerLogo: this.state.logo,
+        twitterURL: this.state.twitter,
+        mediumURL: this.state.medium,
+        notizieURL: this.state.news,
+        forumURL: this.state.forum,
+        footerLogoAGID: this.state.footer_logoA,
+        footerLogoGov: this.state.footer_logoB,
+        footerNomeEnte: this.state.footerName,
+        footerPrivacy: this.state.privacy,
+        footerLegal: this.state.legal
+    }
+
+    const response = this.save(json, this.state.org);
+    this.setState({saving: true});
+    response.then((data)=> {
+      this.setState({
+        saving: false
+      })
+    })
+  }
+
+  async save(settings, org) {
+        const response = await fetch( 'http://service:9000/dati-gov/v1/settings?organization=' + org, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(settings)
+        })
+        return response.json();
     }
 
     onClick() {
@@ -100,6 +139,9 @@ class Settings extends Component {
             isOpen: false,
             isChanged: true
         })
+        let settings = this.state;
+        settings.theme = id;
+        this.saveSettings(settings);
     }
 
     onTitleChange(value){
@@ -107,6 +149,9 @@ class Settings extends Component {
             title: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.title = value;
+        this.saveSettings(settings);
     }
 
     onDescChange(value) {
@@ -114,6 +159,9 @@ class Settings extends Component {
             desc: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.desc = value;
+        this.saveSettings(settings);
     }
 
     onLogoChange(value) {
@@ -121,6 +169,9 @@ class Settings extends Component {
             logo: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.logo = value;
+        this.saveSettings(settings);
     }
 
     onTwitterChange(value) {
@@ -128,6 +179,9 @@ class Settings extends Component {
             twitter: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.twitter = value;
+        this.saveSettings(settings);
     }
 
     onMediumChange(value) {
@@ -135,6 +189,9 @@ class Settings extends Component {
             medium: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.medium = value;
+        this.saveSettings(settings);
     }
     
     onFootAChange(value) {
@@ -142,6 +199,9 @@ class Settings extends Component {
             footer_logoA: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.footer_logoA = value;
+        this.saveSettings(settings);
     }
 
     onFootBChange(value) {
@@ -149,6 +209,9 @@ class Settings extends Component {
             footer_logoB: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.footer_logoB = value;
+        this.saveSettings(settings);
     }
 
     onFootnameChange(value) {
@@ -156,6 +219,9 @@ class Settings extends Component {
             footerName: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.footerName = value;
+        this.saveSettings(settings);
     }
 
     onPrivacyChange(value) {
@@ -163,6 +229,9 @@ class Settings extends Component {
             privacy: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.privacy = value;
+        this.saveSettings(settings);
     }
 
     onLegalChange(value) {
@@ -170,6 +239,9 @@ class Settings extends Component {
             legal: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.legal = value;
+        this.saveSettings(settings);
     }
 
     onNewsChange(value) {
@@ -177,6 +249,9 @@ class Settings extends Component {
             news: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.news = value;
+        this.saveSettings(settings);
     }
 
     onForumChange(value) {
@@ -184,6 +259,9 @@ class Settings extends Component {
             forum: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.forum = value;
+        this.saveSettings(settings);
     }
 
     onOrgChange(value){
@@ -216,8 +294,8 @@ class Settings extends Component {
                             {
                                 this.state.temi.map((theme, key) => {
                                     return (
-                                        <div className="list-group">
-                                            <div key={key} className="col-sm-12 col-md-12 col-lg-12 mb-20">
+                                        <div key={key} className="list-group">
+                                            <div  className="col-sm-12 col-md-12 col-lg-12 mb-20">
                                                 <a className="list-group-item" onClick={() => this.onThemeSelect(theme.id)}>
                                                     <h6 className="list-group-item-heading">
                                                         {'Tema ' + theme.id}
@@ -344,8 +422,6 @@ class Settings extends Component {
                                         id="example-search-input" onChange={(e) => this.onLegalChange(e.target.value)}/>
                                 </div>
                             </div>
-                            <button type="button" className="btn btn-primary float-right"
-                                onClick={this.save} disabled={!this.state.isChanged}>Save</button>
                         </div>
                     </div>
                 </div>

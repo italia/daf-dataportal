@@ -3,8 +3,10 @@ import { Field, FieldArray, reduxForm, formValueSelector,  change  } from 'redux
 import validate from './validate'
 import {processInputFileMetadata} from './avroschema.js'
 import Dropzone from 'react-dropzone'
+import DropDownSelect from './DropDownSelect'
 import TestSelect2 from './TestSelect2';
 import { connect } from 'react-redux';
+import { getSchema } from '../../actions';
 import {
   Modal,
   ModalHeader,
@@ -53,6 +55,28 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
    </div>
 );
 
+
+const renderSelect = ({input, label, type, meta: { dispatch, touched, error, warning } }) => {
+  return (
+    <div className="box">
+      <label>
+        {label}
+        {touched && (error && <span className="control-label" htmlFor={label}>{error}</span>)}
+      </label>
+      <div className="select-box">
+        <select
+            value="one"
+            {...input}
+            onBlur={() => {
+              console.log(...input.value)
+            }
+          }
+        />
+      </div>
+    </div>
+  )
+}
+
 const renderField = ({ input, label, type, value = '', readonly, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
@@ -90,6 +114,18 @@ const renderYesNoSelector = ({ input, type, label, value, meta: { touched, error
     {touched && error && <div className="text-danger">{error}</div>}
   </div>
   </div>
+);
+
+const renderTipi = ({ input, label, type, tipi, meta: { touched, error } }) => (
+  <div className="form-group row">
+    <label className="col-md-3 form-control-label">{label}</label>
+    <div className="col-md-9">
+         <select className="form-control" {...input}>
+           {tipi.map(tipo => <option value={tipo} key={tipo}>{tipo}</option>)}
+         </select> 
+       {touched && error && <div className="text-danger">{error}</div>}
+    </div>
+ </div>
 );
 
 const renderFieldType = ({ input, meta: { touched, error } }) => (
@@ -165,7 +201,8 @@ class WizardFormMetadata extends Component {
     obj.setState({uploading: state})
   }
 
-  calcDataFields (obj, fields, files) {
+
+/*   calcDataFields (obj, fields, files) {
     processInputFileMetadata(files, (resData)=>{
       resData.names.map((item, index) => {
           fields.push({nome : item, tipo : resData.props[index].type, concetto : '', 
@@ -176,8 +213,29 @@ class WizardFormMetadata extends Component {
         fields.push({nome : 'file', tipo : files[0]}),
       );
     });
+  } */
+
+  calcDataFields (fields, json) {
+    console.log('calcDataFields: ' + json);
+    let inferred = json["inferredType"];
+    inferred.map((item, index) => {
+      fields.push({nome : item.column_name, tipo : item.inferredType[0], concetto : '', 
+      desc : '', required : 0, field_type : '' , cat : '', tag : '', 
+      constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
+      data :  item.data})
+    })
   }
 
+  transforToArray(input){
+    let array;
+    console.log('transforToArray: ' +  input)
+    if(input.indexOf(",") !== -1){
+      array = input.split(",")
+    }else{
+      array.push(input)
+    }
+    return array;
+  }
 
   renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, meta : {touched, error} }) => 
       <div>
@@ -219,7 +277,11 @@ class WizardFormMetadata extends Component {
                   const {dispatch} = this.props 
                   if(filesToUpload.length>0){
                     this.setState({errorDrop:''})
-                    calcDataFields(this, fields, filesToUpload)
+                    dispatch(getSchema(filesToUpload))
+                      .then(json => calcDataFields(fields, json))
+                      .catch(exception => console.log('Eccezione !!!'))
+                    
+                      //calcDataFields(this, fields, filesToUpload)
                     //this.setUploading(this, false)
                     let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
                     fileName = fileName.toLowerCase()
@@ -302,7 +364,16 @@ class WizardFormMetadata extends Component {
               component={renderField}
               label="Tipo"
               value={`${test}.tipo`}
+              //tipi={fields.get(index).tipo}
             />
+            {/* <Field
+              name="dropDownSelect"
+              // component="select"
+              label="dropDownSelect"
+              component={DropDownSelect}
+              people={`${test}.tipo`}
+              className="form-control"
+            /> */}
             <Field
               name={`${test}.concetto`}
               type="text"
@@ -358,7 +429,9 @@ class WizardFormMetadata extends Component {
                 <strong>Dati colonna #{index}</strong>
               </div>
               <div className="card-block">
-                <p></p>
+                {fields.get(0).data.map((row, index) => 
+                  <p>{row}</p>
+                )}
               </div>
             </div>
           </div>

@@ -624,3 +624,18 @@ export function loadOntologies() {
         dispatch(receiveVocabulary(undefined));
       }
     }
+
+    export function getSchema(filesToUpload) {
+      console.log('getSchema');
+      var url = 'http://localhost:3001/catalog-manager/v1/getschema';  
+      return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(response => response.json())
+        } 
+      }
