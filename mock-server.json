@@ -618,7 +618,7 @@
     },
     "/catalog-manager/v1/getschema":{
         "get": {
-            "separator": ",",
+            "separator": ";",
             "format": "csv",
             "inferredType": [
                 {
