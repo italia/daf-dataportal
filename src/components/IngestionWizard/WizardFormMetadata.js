@@ -176,15 +176,16 @@ class WizardFormMetadata extends Component {
     this.calcDataFields = this.calcDataFields.bind(this);
   }
 
-  calcDataFields (fields, json, tipi, files) {
+  calcDataFields (fields, json, tipi) {
     let inferred = json["inferredType"];
     inferred.map((item, index) => {
       tipi[index] =  item.inferredType;
       fields.push({nome : item.column_name, tipo : item.inferredType[0], concetto : '', 
       desc : '', required : 0, field_type : '' , cat : '', tag : '', 
       constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
-      data :  item.data, separator: item.separator});
+      data :  item.data});
     })
+   // fields.push({separator: json.separator})
   }
 
   renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, tipi, meta : {touched, error} }) => 
@@ -227,9 +228,11 @@ class WizardFormMetadata extends Component {
                   if(filesToUpload.length>0){
                     this.setState({errorDrop:''})
                     dispatch(getSchema(filesToUpload))
-                      .then(json => calcDataFields(fields, json, tipi, filesToUpload))
+                      .then(json => { calcDataFields(fields, json, tipi)
+                                      dispatch(change('wizard', 'separator', json.separator))
+                                    })
                       .catch(exception => console.log('Eccezione !!!'))
-                    
+            
                     let nomeFile = filesToUpload[0].name.toLowerCase().split(".")[0]
                     nomeFile = nomeFile.toLowerCase()
                     nomeFile.split(" ").join("-")
@@ -269,6 +272,7 @@ class WizardFormMetadata extends Component {
               component={renderField}
               label="Nome File"
               readonly="readonly"
+              hidden="true"
             />
           </div>
           <div className="col-3">
@@ -369,7 +373,7 @@ class WizardFormMetadata extends Component {
                   <strong>Dati colonna #{index}</strong>
                 </div>
                 <div className="card-block">
-                  {fields.get(0).data.map((row, index) => 
+                  {fields.get(index).data && fields.get(index).data.map((row, index) => 
                     <p key={index}>{row}</p>
                   )}
                 </div>

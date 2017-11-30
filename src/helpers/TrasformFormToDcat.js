@@ -132,6 +132,7 @@ export function createDataschema (values, data) {
   data[dataschema] = {}
   data[dataschema][avro] = {}
   data[dataschema][avro]['namespace'] = 'daf://'+ values.ownership  + '/' + theme +'/' + values.title
+  data[dataschema][avro]['separator'] = values.separator
   data[dataschema][avro]['name'] = values.title
   data[dataschema][avro]['aliases'] = values.title
   data[dataschema][avro]['fields'] =  []
