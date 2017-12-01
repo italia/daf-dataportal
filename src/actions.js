@@ -24,9 +24,21 @@ export const RECEIVE_ACTIVATION_ERROR = 'RECEIVE_ACTIVATION_ERROR'
 export const RECEIVE_ADD_DATASET = 'RECEIVE_ADD_DATASET'
 export const RECEIVE_ONTOLOGIES = 'RECEIVE_ONTOLOGIES'
 export const RECEIVE_VOCABULARY = 'RECEIVE_VOCABULARY'
+export const RECEIVE_PROPERTIES = 'RECEIVE_PROPERTIES'
+export const REQUEST_PROPERTIES = 'REQUEST_PROPERTIES'
 
 
 /*********************************** REDUX ************************************************ */
+function receiveProperties(json, org){
+  console.log('receiveProperties');
+  return {
+    type: RECEIVE_PROPERTIES,
+    properties: json,
+    organization: org,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_PROPERTIES'
+  }
+}
 
 function receiveDataset(json, value) {
   console.log('receiveDataset');
@@ -40,6 +52,12 @@ function receiveDataset(json, value) {
       query: value,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASETS'
+  }
+}
+
+function requestProperties(){
+  return {
+    type: REQUEST_PROPERTIES
   }
 }
 
@@ -388,6 +406,21 @@ export function addUserOrganization(uid) {
 /******************************************************************************* */
 
 /******************************** DATASET ************************************** */
+export function fetchProperties(org) {
+  var url = "http://10.100.82.180:9000/dati-gov/v1/settings?organization="+ org
+  return dispatch => {
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(json => dispatch(receiveProperties(json)))
+  }
+}
+
 function fetchDataset(query, start, owner, category_filter, group_filter, organization_filter, order_filter) {
   var queryurl='';
   var ownerurl='';
@@ -517,7 +550,7 @@ export function loadDatasets(query, start, owner, category_filter, group_filter,
   return (dispatch, getState) => {
     return dispatch(fetchDataset(query, start, owner, category_filter, group_filter, organization_filter, order_filter))
   }
- 
+
 }
 
 export function unloadDatasets() {
@@ -591,3 +624,33 @@ export function loadOntologies() {
         dispatch(receiveVocabulary(undefined));
       }
     }
+
+    export function getSchema(filesToUpload) {
+      console.log('getSchema');
+      //var url = 'http://localhost:3001/catalog-manager/v1/getschema';  
+      var url = 'http://localhost:9000/dati-gov/v1/infer/schema/csv'
+      //var formData  = new FormData();
+      // formData.append('upfile', new Blob(filesToUpload), "agency.csv");
+      
+      var token = '';
+      if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        const formData = new FormData()
+        formData.append('upfile', new Blob(filesToUpload), 'test')
+      
+      return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+        //      'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+        //      "Content-Type": 'multipart/formdata',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+            .then(response => response.json())
+        } 
+      }
