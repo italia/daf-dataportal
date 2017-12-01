@@ -157,9 +157,7 @@ export function createDataschema (values, data) {
   values.tests.map(function(item){
     if(item.nome !== 'file'){
     var name = item.nome
-    var tipo = item.tipo
-    console.log('item.nome: ' + item.nome);
-    console.log('item.tipo: ' + item.tipo);    
+    var tipo = item.tipo 
     if (Array.isArray( item.tipo)){
       if( item.tipo.indexOf("string") == 1){
         tipo = 'string'
@@ -172,7 +170,7 @@ export function createDataschema (values, data) {
       tipo = JSON.stringify(item.tipo);
     }
     var obj = {'name' : name, "`type`" : tipo}
-    var metadata = { "desc": "", "required": 0, "field_type": "","cat": "","tag": "","constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
+    var metadata = { "desc": item.desc, "required": 0, "field_type": "","cat": "","tag": item.tag,"constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
     data[dataschema][avro]['fields'].push(obj)
     var flat = {'name' : name, "`type`" : tipo, 'metadata' : metadata }
     data[dataschema][flatSchema].push(flat)

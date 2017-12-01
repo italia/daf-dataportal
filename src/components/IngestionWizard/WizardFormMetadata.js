@@ -7,6 +7,7 @@ import DropDownSelect from './DropDownSelect'
 import TestSelect2 from './TestSelect2';
 import { connect } from 'react-redux';
 import { getSchema } from '../../actions';
+import $ from 'jquery';
 import {
   Modal,
   ModalHeader,
@@ -16,6 +17,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
+import TagsInput from './TagsInput'
      
 //  var metadata = { "desc": "", "required": 0, "field_type": "","cat": "","tag": "","constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
 const themes = [
@@ -38,28 +40,6 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
    </div>
 );
 
-
-const renderSelect = ({input, label, type, meta: { dispatch, touched, error, warning } }) => {
-  return (
-    <div className="box">
-      <label>
-        {label}
-        {touched && (error && <span className="control-label" htmlFor={label}>{error}</span>)}
-      </label>
-      <div className="select-box">
-        <select
-            value="one"
-            {...input}
-            onBlur={() => {
-              console.log(...input.value)
-            }
-          }
-        />
-      </div>
-    </div>
-  )
-}
-
 const renderField = ({ input, label, type, value, readonly, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
@@ -76,11 +56,21 @@ const renderField = ({ input, label, type, value, readonly, meta: { touched, err
   </div>
 )
 
+const renderFieldTags = ({input, label, type, value, readonly, addTagsToForm, meta: { touched, error } }) => (
+<div className="form-group row">
+  <label className="col-md-3 form-control-label">{label}</label>
+    <div className="col-md-9"> 
+        <TagsInput {...input} name={input.name} addTagsToForm={addTagsToForm}/>
+        {touched && error && <div className="text-danger">{error}</div>}
+    </div>
+</div>
+)
+
   const renderFieldMeta = ({ input, label, type, value = '', meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
     <div className="col-md-9">
-      <input {...input} placeholder={label} type={type} className="form-control"/>
+      <textarea {...input} placeholder={label} type={type} className="form-control"/>
       {touched && error && <div className="text-danger">{error}</div>}
       </div>
   </div>
@@ -185,10 +175,22 @@ class WizardFormMetadata extends Component {
       constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
       data :  item.data});
     })
-   // fields.push({separator: json.separator})
   }
 
-  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, tipi, meta : {touched, error} }) => 
+  addTagsToForm(fieldName, tags){
+    var tagString=""
+    tags.map((tag) => {
+      tagString=tagString==''?tagString.concat(tag.text):tagString.concat("," + tag.text)
+    })
+    this.onChange(tagString)
+  }
+  
+  componentDidUpdate(){
+    document.activeElement.blur();
+   // this.setState({scrollTop: $(window).scrollTop()});
+  }
+
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, tipi, addTagsToForm, meta : {touched, error} }) => 
       <div>
       {fields.length === 0 &&
         <div className="form-group row">
@@ -299,7 +301,7 @@ class WizardFormMetadata extends Component {
             <div className="form-group">
             <div className="card">
               <div className="card-header">
-                <strong>Colonna #{index}</strong>
+                <strong>Metadata  Colonna #{index + 1}</strong>
               </div>
               <div className="card-block">
               <Field
@@ -325,16 +327,20 @@ class WizardFormMetadata extends Component {
                 label="Concetto"
                 value={`${test}.concetto`}
               />
-              <hr className="my-4"/>
-              <div className="form-group row">
-                <h6>Metadata  Colonna #{index}</h6>
-              </div>
               <Field
                 name={`${test}.desc`}
                 type="text"
                 component={renderFieldMeta}
                 label="Descrizione"
                 value={`${test}.desc`}
+              />
+              <Field
+                name={`${test}.tag`}
+                type="text"
+                component={renderFieldTags}
+                label="Tags"
+                value={`${test}.tag`}
+                addTagsToForm={addTagsToForm}
               />
               <Field
                 name={`${test}.required`}
@@ -350,13 +356,13 @@ class WizardFormMetadata extends Component {
                 label="Tipo Colonna"
                 value={`${test}.field_type`}
               />
-              <Field
+            {/*<Field
                 name={`${test}.cat`}
                 type="text"
                 component={renderFieldMeta}
                 label="Categoria"
                 value={`${test}.cat`}
-              />
+              />*/}
               <div className="col-md-12">
                 <button type="button" onClick={() => fields.remove(index)} className="btn btn-primary float-right" data-toggle="button" aria-pressed="false" autoComplete="off">
                   Rimuovi
@@ -404,6 +410,7 @@ class WizardFormMetadata extends Component {
               columnCard={columnCard}
               tipi={this.state.tipi}
               calcDataFields={this.calcDataFields}
+              addTagsToForm={this.addTagsToForm}
             />
     </form>
     </div>
