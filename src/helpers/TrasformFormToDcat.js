@@ -2,16 +2,18 @@ export function createOperational (values, data) {
   var operational = 'operational'
   data[operational] = {}
   data[operational]['logical_uri'] = "test1"  //values.uri
-  data[operational]['group_own'] = values.ownership
+  data[operational]['group_own'] = "alessandro" //values.ownership
   data[operational]['dataset_type'] = (values.dataset_type) ? values.dataset_type  : 'batch'
   data[operational]['is_std'] = (values.is_std === 'true')
   data[operational]['theme'] = values.domain
   data[operational]['subtheme'] = values.subdomain
-  if (data[operational]['is_std']){
-   var std_schema = 'std_schema'
-   data[operational][std_schema] = {}
-   data[operational][std_schema]['std_uri'] = values.uri_associato
-  }
+  data[operational]['std_schema'] = null
+  //if (data[operational]['is_std']){
+  // var std_schema = 'std_schema'
+  // data[operational][std_schema] = {}
+  // data[operational][std_schema]['std_uri'] = values.uri_associato
+  //}
+
   data[operational]['read_type'] = values.read_type
   if (!values.read_type){
       data[operational]['read_type'] = 'update'
@@ -20,8 +22,22 @@ export function createOperational (values, data) {
   //data[operational]['ftporws'] = values.ftporws
   //data[operational]['connection'] = values.dest_uri
   var input_src = 'input_src'
-  data[operational][input_src] = {}
-  console.log(values.sftps)
+
+  data[operational][input_src] = 
+    {"sftp": [{
+        "name": "sftp_daf",
+        "param": "format=csv, sep=,"
+      }]
+    }
+    data[operational]['storage_info'] = 
+    {
+			"hdfs": {
+				"name": "hdfs_daf"
+			}
+    }
+    
+//  console.log(values.sftps)
+  /*
   if(values.sfpts){
     data[operational][input_src]['sftp'] = []
     values.sfpts.map(function(sto){
@@ -78,7 +94,7 @@ export function createOperational (values, data) {
       group['role'] = grs.role
       data[operational]['group_access'].push(group)
     })
-  }
+  } */
   console.log(data)
   return data
 }
@@ -132,6 +148,7 @@ export function createDataschema (values, data) {
   data[dataschema] = {}
   data[dataschema][avro] = {}
   data[dataschema][avro]['namespace'] = 'daf://'+ values.ownership  + '/' + theme +'/' + values.title
+  data[dataschema][avro]['separator'] = values.separator
   data[dataschema][avro]['name'] = values.title
   data[dataschema][avro]['aliases'] = values.title
   data[dataschema][avro]['fields'] =  []
@@ -140,9 +157,7 @@ export function createDataschema (values, data) {
   values.tests.map(function(item){
     if(item.nome !== 'file'){
     var name = item.nome
-    var tipo = item.tipo
-    console.log('item.nome: ' + item.nome);
-    console.log('item.tipo: ' + item.tipo);    
+    var tipo = item.tipo 
     if (Array.isArray( item.tipo)){
       if( item.tipo.indexOf("string") == 1){
         tipo = 'string'
@@ -155,7 +170,7 @@ export function createDataschema (values, data) {
       tipo = JSON.stringify(item.tipo);
     }
     var obj = {'name' : name, "`type`" : tipo}
-    var metadata = { "desc": "", "required": 0, "field_type": "","cat": "","tag": "","constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
+    var metadata = { "desc": item.desc, "required": 0, "field_type": "","cat": "","tag": item.tag,"constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
     data[dataschema][avro]['fields'].push(obj)
     var flat = {'name' : name, "`type`" : tipo, 'metadata' : metadata }
     data[dataschema][flatSchema].push(flat)

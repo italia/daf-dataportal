@@ -16,7 +16,7 @@ input#states-autocomplete {
   z-index: 2;
   box-sizing: border-box;
   width: 100%;
-  border: 1px solid #cccccc;
+  border: 1px #cccccc;
 }
 
 .item {

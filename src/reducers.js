@@ -16,7 +16,9 @@ import {
   RECEIVE_ACTIVATION_ERROR,
   RECEIVE_ADD_DATASET,
   RECEIVE_ONTOLOGIES,
-  RECEIVE_VOCABULARY
+  RECEIVE_VOCABULARY,
+  RECEIVE_PROPERTIES,
+  REQUEST_PROPERTIES
 } from './actions'
 
 //Object.assign({}, state, .. create a new copy of the state
@@ -89,6 +91,15 @@ function org( state = { isFetching: false, didInvalidate: false, user }, action
   }
 }
 
+function propertiesReducer(state = {}, action) {
+  switch(action.type){
+    case RECEIVE_PROPERTIES:
+      return Object.assign({}, state, { 'prop': { 'properties': action.properties, 'organization': action.organization, 'error': action.error } })
+    default:
+      return state
+  }
+}
+
 //The reducer is just an action that take two parameter state and action
 //The reducer that handle the action will make a copy of the state,
 //modify it with the data from the action and then  returns the new state
@@ -144,7 +155,8 @@ const rootReducer = combineReducers({
   form: reduxFormReducer,
   datasetReducer,
   userReducer,
-  ontologiesReducer
+  ontologiesReducer,
+  propertiesReducer
 })
 
 export default rootReducer

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { fetchProperties } from '../../actions';
 import {
     Modal,
     ModalHeader,
@@ -17,14 +18,17 @@ class Settings extends Component {
     constructor(props){
         super(props)
         this.state={
+            org: '',
             temi: themes,
             isOpen: false,
             theme: 1,
-            title: '/Daf',
+            title: '',
             desc: '',
             logo: '',
             twitter: '',
             medium: '',
+            news:'',
+            forum: '',
             footer_logoA: '',
             footer_logoB: '',
             footerName: '',
@@ -34,8 +38,86 @@ class Settings extends Component {
         }
 
         this.onClick = this.onClick.bind(this)
-        
         this.onThemeSelect = this.onThemeSelect.bind(this)
+        this.load = this.load.bind(this)
+        this.save = this.save.bind(this)
+    }
+
+    async settings(org) {
+        var url = "http://service:9000/dati-gov/v1/settings?organization=" + org
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+
+        return response.json();
+    }
+
+    load(org){
+        let response = this.settings(org)
+        response.then((json)=> {
+            this.setState({
+                theme: json.theme,
+                title: json.headerSiglaTool,
+                desc: json.headerDescTool,
+                logo: json.headerLogo,
+                twitter: json.twitterURL,
+                medium: json.mediumURL,
+                news: json.notizieURL,
+                forum: json.forumURL,
+                footer_logoA: json.footerLogoAGID,
+                footer_logoB: json.footerLogoGov,
+                footerName: json.footerNomeEnte,
+                privacy: json.footerPrivacy,
+                legal: json.footerLegal,
+            });
+        });
+    }
+
+   /**
+  * Save Settings
+  */
+  saveSettings = (settings) => {
+    console.log('save settings: ' + settings)
+    //save data
+    let json = {
+        theme: this.state.theme,
+        headerSiglaTool: this.state.title,
+        headerDescTool: this.state.desc,
+        headerLogo: this.state.logo,
+        twitterURL: this.state.twitter,
+        mediumURL: this.state.medium,
+        notizieURL: this.state.news,
+        forumURL: this.state.forum,
+        footerLogoAGID: this.state.footer_logoA,
+        footerLogoGov: this.state.footer_logoB,
+        footerNomeEnte: this.state.footerName,
+        footerPrivacy: this.state.privacy,
+        footerLegal: this.state.legal
+    }
+
+    const response = this.save(json, this.state.org);
+    this.setState({saving: true});
+    response.then((data)=> {
+      this.setState({
+        saving: false
+      })
+    })
+  }
+
+  async save(settings, org) {
+        const response = await fetch( 'http://service:9000/dati-gov/v1/settings?organization=' + org, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(settings)
+        })
+        return response.json();
     }
 
     onClick() {
@@ -57,6 +139,9 @@ class Settings extends Component {
             isOpen: false,
             isChanged: true
         })
+        let settings = this.state;
+        settings.theme = id;
+        this.saveSettings(settings);
     }
 
     onTitleChange(value){
@@ -64,6 +149,9 @@ class Settings extends Component {
             title: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.title = value;
+        this.saveSettings(settings);
     }
 
     onDescChange(value) {
@@ -71,6 +159,9 @@ class Settings extends Component {
             desc: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.desc = value;
+        this.saveSettings(settings);
     }
 
     onLogoChange(value) {
@@ -78,6 +169,9 @@ class Settings extends Component {
             logo: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.logo = value;
+        this.saveSettings(settings);
     }
 
     onTwitterChange(value) {
@@ -85,6 +179,9 @@ class Settings extends Component {
             twitter: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.twitter = value;
+        this.saveSettings(settings);
     }
 
     onMediumChange(value) {
@@ -92,6 +189,9 @@ class Settings extends Component {
             medium: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.medium = value;
+        this.saveSettings(settings);
     }
     
     onFootAChange(value) {
@@ -99,6 +199,9 @@ class Settings extends Component {
             footer_logoA: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.footer_logoA = value;
+        this.saveSettings(settings);
     }
 
     onFootBChange(value) {
@@ -106,6 +209,9 @@ class Settings extends Component {
             footer_logoB: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.footer_logoB = value;
+        this.saveSettings(settings);
     }
 
     onFootnameChange(value) {
@@ -113,6 +219,9 @@ class Settings extends Component {
             footerName: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.footerName = value;
+        this.saveSettings(settings);
     }
 
     onPrivacyChange(value) {
@@ -120,6 +229,9 @@ class Settings extends Component {
             privacy: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.privacy = value;
+        this.saveSettings(settings);
     }
 
     onLegalChange(value) {
@@ -127,12 +239,41 @@ class Settings extends Component {
             legal: value,
             isChanged: true
         });
+        let settings = this.state;
+        settings.legal = value;
+        this.saveSettings(settings);
     }
 
+    onNewsChange(value) {
+        this.setState({
+            news: value,
+            isChanged: true
+        });
+        let settings = this.state;
+        settings.news = value;
+        this.saveSettings(settings);
+    }
 
+    onForumChange(value) {
+        this.setState({
+            forum: value,
+            isChanged: true
+        });
+        let settings = this.state;
+        settings.forum = value;
+        this.saveSettings(settings);
+    }
+
+    onOrgChange(value){
+        this.setState({
+            org: value,
+        })
+
+        this.load(value)
+    }
 
     render() {
-    const { loggedUser } = this.props
+    const { loggedUser} = this.props
     return (
         <div>
             <Modal
@@ -153,8 +294,8 @@ class Settings extends Component {
                             {
                                 this.state.temi.map((theme, key) => {
                                     return (
-                                        <div className="list-group">
-                                            <div key={key} className="col-sm-12 col-md-12 col-lg-12 mb-20">
+                                        <div key={key} className="list-group">
+                                            <div  className="col-sm-12 col-md-12 col-lg-12 mb-20">
                                                 <a className="list-group-item" onClick={() => this.onThemeSelect(theme.id)}>
                                                     <h6 className="list-group-item-heading">
                                                         {'Tema ' + theme.id}
@@ -180,6 +321,14 @@ class Settings extends Component {
                 <div className="col-md-9">
                     <div className="card">
                         <div className="card-block">
+                            <div className="col-4 form-group row">
+                                <label htmlFor="example-search-input" className="col-2 col-form-label">Organizzazione</label>
+                                <select className="form-control" id="ordinamento" aria-required="true" onChange={(e)=> this.onOrgChange(e.target.value)} value={this.state.org}>
+                                    <option value=""></option>
+                                    <option value="daf">Daf</option>
+                                    <option value="roma">Comune di Roma</option>
+                                </select>
+                            </div>
                             <div className="form-group row">
                                 <label htmlFor="example-search-input" className="col-2 col-form-label">Tema</label>
                                 <div className="col-10">
@@ -225,6 +374,20 @@ class Settings extends Component {
                                 </div>
                             </div>
                             <div className="form-group row">
+                                <label htmlFor="example-text-input" className="col-2 col-form-label"><i className="fa fa-twitter"></i>{" "}Notizie</label>
+                                <div className="col-10">
+                                    <input className="form-control" type="text" value={this.state.news}
+                                        id="example-text-input" onChange={(e) => this.onTwitterChange(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label htmlFor="example-search-input" className="col-2 col-form-label"><i className="fa fa-medium"></i>{" "}Forum</label>
+                                <div className="col-10">
+                                    <input className="form-control" type="search" value={this.state.forum}
+                                        id="example-search-input" onChange={(e) => this.onMediumChange(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="form-group row">
                                 <label htmlFor="example-search-input" className="col-2 col-form-label">Footer Logo 1</label>
                                 <div className="col-10">
                                     <input className="form-control" type="search" value={this.state.footer_logoA} 
@@ -259,7 +422,6 @@ class Settings extends Component {
                                         id="example-search-input" onChange={(e) => this.onLegalChange(e.target.value)}/>
                                 </div>
                             </div>
-                            <button type="button" className={"btn btn-primary float-right " + (this.state.isChanged ? "" :"disabled")}>Save</button>
                         </div>
                     </div>
                 </div>
@@ -271,11 +433,13 @@ class Settings extends Component {
 
 Settings.propTypes = {
   loggedUser: PropTypes.object,
+  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
-    const loggedUser = state.userReducer['obj'].loggedUser || { } 
-    return { loggedUser }
+    const loggedUser = state.userReducer['obj'].loggedUser || { }
+    const properties = state.propertiesReducer ? state.propertiesReducer['prop'] || {} : {} 
+    return { loggedUser, properties }
 }
 
 export default connect(mapStateToProps)(Settings)
