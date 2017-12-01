@@ -26,7 +26,7 @@ export function createOperational (values, data) {
   data[operational][input_src] = 
     {"sftp": [{
         "name": "sftp_daf",
-        "param": "format=csv sep=,"
+        "param": "format=csv, sep=,"
       }]
     }
     data[operational]['storage_info'] = 
