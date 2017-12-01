@@ -33,7 +33,7 @@ class IngestionForm extends Component {
   const transformed = transformer(values)
   console.log("transformed: " + transformed)
   //sendPostDataMeta(transformed, undefined)
-  /* const { dispatch } = this.props;
+  const { dispatch } = this.props;
   if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
   dispatch(addDataset(transformed, localStorage.getItem('token')))
     .then(() => {
@@ -46,7 +46,7 @@ class IngestionForm extends Component {
   console.log('login effettuato');
   } else {
     console.log('token non presente');
-  } */
+  }
 } 
 
   render() {
