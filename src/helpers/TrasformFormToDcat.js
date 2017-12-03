@@ -170,7 +170,8 @@ export function createDataschema (values, data) {
       tipo = JSON.stringify(item.tipo);
     }
     var obj = {'name' : name, "`type`" : tipo}
-    var metadata = { "desc": item.desc, "required": 0, "field_type": "","cat": "","tag": item.tag,"constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
+    var tag =  ((item.tag === '' || item.tag === undefined )  ? [] : item.tag.split(','))
+    var metadata = { "desc": item.desc, "required": 0, "field_type": "","cat": "","tag": tag,"constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
     data[dataschema][avro]['fields'].push(obj)
     var flat = {'name' : name, "`type`" : tipo, 'metadata' : metadata }
     data[dataschema][flatSchema].push(flat)
