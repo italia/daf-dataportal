@@ -12,6 +12,7 @@ import GroupFilter from '../../components/Dataset/GroupFilter'
 import OrganizationFilter from '../../components/Dataset/OrganizationFilter'
 import InfiniteScroll from '../../components/InfinityScroll'
 import { transformName } from '../../utility'
+import MetadataEditor from "../../components/Dataset/MetadataEditor";
 
 class Dataset extends Component {
   constructor(props) {
@@ -20,7 +21,6 @@ class Dataset extends Component {
     this.state = {
       items: 10,
       visibility: 'visible',
-      filters: true,
       order_filter: 'metadata_modified%20desc',
       category_filter: props.history.location.state && props.history.location.state.category,
       group_filter: props.history.location.state && props.history.location.state.group,
@@ -28,6 +28,7 @@ class Dataset extends Component {
       showDivCategory: false,
       showDivGroup: false,
       showDivOrganization: false,
+      edit: false
     }
 
     this.handleUnloadDatasetClick = this.handleUnloadDatasetClick.bind(this)
@@ -35,7 +36,18 @@ class Dataset extends Component {
     this.handleToggleClickCat = this.handleToggleClickCat.bind(this)
     this.handleToggleClickGroup = this.handleToggleClickGroup.bind(this)
     this.handleToggleClickOrganization = this.handleToggleClickOrganization.bind(this);
-    this.onSearch = this.onSearch.bind(this)    
+    this.onSearch = this.onSearch.bind(this) 
+    this.onClick = this.onClick.bind(this)   
+  }
+
+  onClick(name, e){
+    e.preventDefault()
+    this.setState({
+      edit: true
+    })
+    const { dispatch } = this.props
+    dispatch(datasetDetail(name))
+    .then(this.props.history.push('?edit='+name))
   }
 
   loadMore = () => {
@@ -135,7 +147,8 @@ renderDatasetList(length, datasets, ope, isLoading){
                 <p className="card-text">{dataset.notes}</p>
                 <h6 className="card-subtitle mb-2 text-muted">Organizzazione: {dataset.organization.name}</h6>
                 <h6 className="card-subtitle mb-2 text-muted">Stato: {dataset.organization.state}</h6>
-                <a href="#" className="card-link" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>Dettaglio Dataset</a>
+                <a href className="card-link text-center" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>Dettaglio Dataset</a>
+                <button type="button" className="btn btn-default float-right" onClick={this.onClick.bind(this, dataset.name)}><i className="fa fa-edit"></i></button>
               </div>
             </div>
         );
@@ -176,7 +189,7 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
 }
 
 renderDatasetDetail(dataset, ope){
-  if (ope === 'RECEIVE_DATASET_DETAIL') {
+  if (ope === 'RECEIVE_DATASET_DETAIL' && this.state.edit===false) {
     if (dataset)
       return (
           <div className="col-12">
@@ -261,10 +274,9 @@ renderDatasetDetail(dataset, ope){
   }
 }
 
-renderFilter(){
-  if(this.state.filters===true)
-    return(
-    
+renderFilter(ope){
+  if (ope === 'RECEIVE_DATASETS')
+      return(  
       <div className="col-md-4" style={{paddingTop: '20px'}}>
       <form className="form-group">
         <fieldset className="Form-fieldset">
@@ -302,9 +314,19 @@ renderFilter(){
     return null;
 }
 
+editDataset(ope){
+  if (ope != 'RECEIVE_DATASETS')
+  return(
+    <div className="col-12">
+      {/* <button onClick={(e) => {e.preventDefault();this.setState({edit:false})}}>Chiudi</button> */}
+      <MetadataEditor/>
+    </div>
+  )
+}
+
 render() {
   const { datasets, dataset, ope } = this.props
-  const { isLoading, items} = this.state;
+  const { isLoading, items, edit } = this.state;
   if(datasets)
     var subdatasets = datasets.slice(0, items)
   return (
@@ -313,7 +335,8 @@ render() {
       {this.renderDatasetSearchResult(datasets?datasets.length:0, subdatasets, ope, isLoading)}
       </div>
       {this.renderDatasetDetail(dataset, ope)}
-      {this.renderFilter()}
+      {this.renderFilter(ope)}
+      {edit && this.editDataset(ope)}
     </div>
   )
 }
