@@ -3,8 +3,11 @@ import { Field, FieldArray, reduxForm, formValueSelector,  change  } from 'redux
 import validate from './validate'
 import {processInputFileMetadata} from './avroschema.js'
 import Dropzone from 'react-dropzone'
+import DropDownSelect from './DropDownSelect'
 import TestSelect2 from './TestSelect2';
 import { connect } from 'react-redux';
+import { getSchema } from '../../actions';
+import $ from 'jquery';
 import {
   Modal,
   ModalHeader,
@@ -14,23 +17,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
-
-/*
-const calcDataFields = (obj, fields, files) =>
-     processInputFileMetadata(files, (resData)=>{
-        console.log(JSON.stringify(resData))
-        resData.names.map((item, index) => {
-           console.log(item)
-           fields.push({nome : item, tipo : resData.props[index].type, concetto : '', 
-            desc : '', required : 0, field_type : '' , cat : '', tag : '', 
-            constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
-            data :  resData.data[item]})
-        } , 
-          fields.push({nome : 'file', tipo : files[0]})
-        )
-        obj.setState({uploading: false})
-     })
-*/
+import TagsInput from './TagsInput'
      
 //  var metadata = { "desc": "", "required": 0, "field_type": "","cat": "","tag": "","constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
 const themes = [
@@ -53,7 +40,7 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
    </div>
 );
 
-const renderField = ({ input, label, type, value = '', readonly, meta: { touched, error } }) => (
+const renderField = ({ input, label, type, value, readonly, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
       {(touched && error) ?
@@ -69,11 +56,21 @@ const renderField = ({ input, label, type, value = '', readonly, meta: { touched
   </div>
 )
 
+const renderFieldTags = ({input, label, type, value, readonly, addTagsToForm, meta: { touched, error } }) => (
+<div className="form-group row">
+  <label className="col-md-3 form-control-label">{label}</label>
+    <div className="col-md-9"> 
+        <TagsInput {...input} name={input.name} addTagsToForm={addTagsToForm}/>
+        {touched && error && <div className="text-danger">{error}</div>}
+    </div>
+</div>
+)
+
   const renderFieldMeta = ({ input, label, type, value = '', meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
     <div className="col-md-9">
-      <input {...input} placeholder={label} type={type} className="form-control"/>
+      <textarea {...input} placeholder={label} type={type} className="form-control"/>
       {touched && error && <div className="text-danger">{error}</div>}
       </div>
   </div>
@@ -90,6 +87,18 @@ const renderYesNoSelector = ({ input, type, label, value, meta: { touched, error
     {touched && error && <div className="text-danger">{error}</div>}
   </div>
   </div>
+);
+
+const renderTipi = ({ input, label, type, tipi, index, meta: { touched, error } }) => (
+  <div className="form-group row">
+    <label className="col-md-3 form-control-label">{label}</label>
+    <div className="col-md-9">
+         {<select className="form-control" {...input}>
+           {tipi[index].map(tipo => <option value={tipo} key={tipo}>{tipo}</option>)}
+         </select>  }
+       {touched && error && <div className="text-danger">{error}</div>}
+    </div>
+ </div>
 );
 
 const renderFieldType = ({ input, meta: { touched, error } }) => (
@@ -123,7 +132,6 @@ const addMetadataFromFile = ({ fields, meta: { error, submitFailed } }) =>
         <button
           type="button"
           title="Remove Member"
-
           onClick={() => fields.remove(index)}
         />
         <h4>
@@ -152,34 +160,37 @@ class WizardFormMetadata extends Component {
     super(props);
     this.state = {
       files: [],
-      uploading: false
+      uploading: false,
+      tipi: new Object()
     }
     this.calcDataFields = this.calcDataFields.bind(this);
-    this.setUploading = this.setUploading.bind(this);
   }
 
-  setUploading(obj, state){
-    console.log('setUploading')
-    console.log(obj)
-    console.log('state: ' + state)
-    obj.setState({uploading: state})
+  calcDataFields (fields, json, tipi) {
+    let inferred = json["inferredType"];
+    inferred.map((item, index) => {
+      tipi[index] =  item.inferredType;
+      fields.push({nome : item.column_name, tipo : item.inferredType[0], concetto : '', 
+      desc : '', required : 0, field_type : '' , cat : '', tag : '', 
+      constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
+      data :  item.data});
+    })
   }
 
-  calcDataFields (obj, fields, files) {
-    processInputFileMetadata(files, (resData)=>{
-      resData.names.map((item, index) => {
-          fields.push({nome : item, tipo : resData.props[index].type, concetto : '', 
-          desc : '', required : 0, field_type : '' , cat : '', tag : '', 
-          constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
-          data :  resData.data[item]})
-      } , 
-        fields.push({nome : 'file', tipo : files[0]}),
-      );
-    });
+  addTagsToForm(fieldName, tags){
+    var tagString=""
+    tags.map((tag) => {
+      tagString=tagString==''?tagString.concat(tag.text):tagString.concat("," + tag.text)
+    })
+    this.onChange(tagString)
+  }
+  
+  componentDidUpdate(){
+    document.activeElement.blur();
+   // this.setState({scrollTop: $(window).scrollTop()});
   }
 
-
-  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, tipi, addTagsToForm, meta : {touched, error} }) => 
       <div>
       {fields.length === 0 &&
         <div className="form-group row">
@@ -215,16 +226,19 @@ class WizardFormMetadata extends Component {
                 multiple={false}
                 maxSize={10485760}
                 onDrop={( filesToUpload, e ) => {
-                  //this.setUploading(this, true)
                   const {dispatch} = this.props 
                   if(filesToUpload.length>0){
                     this.setState({errorDrop:''})
-                    calcDataFields(this, fields, filesToUpload)
-                    //this.setUploading(this, false)
-                    let fileName = filesToUpload[0].name.toLowerCase().split(".")[0]
-                    fileName = fileName.toLowerCase()
-                    fileName.split(" ").join("-")
-                    dispatch(change('wizard', 'title', fileName))
+                    dispatch(getSchema(filesToUpload))
+                      .then(json => { calcDataFields(fields, json, tipi)
+                                      dispatch(change('wizard', 'separator', json.separator))
+                                    })
+                      .catch(exception => console.log('Eccezione !!!'))
+            
+                    let nomeFile = filesToUpload[0].name.toLowerCase().split(".")[0]
+                    nomeFile = nomeFile.toLowerCase()
+                    nomeFile.split(" ").join("-")
+                    dispatch(change('wizard', 'title', nomeFile))
                   }else{
                     alert('Dimensioni file non consentite')
                     this.setState({errorDrop: 'Dimensioni file non consentite'})
@@ -250,18 +264,17 @@ class WizardFormMetadata extends Component {
       </div>
       }
       {touched && error && <div className="text-danger">{error}</div>}
-      {fields.map((test, index) => 
-      (index == 0) ?
-      <div key={index}>
+      {(fields && fields.length > 0) &&
+      <div key="FileName">
         <div className="form-group row justify-content-center">
           <div className="col-7">
             <Field
-              name={`${test}.tipo.name`}
+              name="title"
               type="text"
               component={renderField}
               label="Nome File"
-              value={`${test}.tipo.name`}
               readonly="readonly"
+              hidden="true"
             />
           </div>
           <div className="col-3">
@@ -280,85 +293,96 @@ class WizardFormMetadata extends Component {
           <div className="col-3"></div>
         </div>
       </div>
-      :
-      <div className="row" key={index}>
-        <div className="col-md-6">
-          <div className="form-group">
-          <div className="card">
-            <div className="card-header">
-              <strong>Colonna #{index}</strong>
-            </div>
-            <div className="card-block">
-            <Field
-              name={`${test}.nome`}
-              type="text"
-              component={renderField}
-              label="Nome Campo"
-              value={`${test}.nome`}
-            />
-            <Field
-              name={`${test}.tipo`}
-              type="text"
-              component={renderField}
-              label="Tipo"
-              value={`${test}.tipo`}
-            />
-            <Field
-              name={`${test}.concetto`}
-              type="text"
-              component={TestSelect2}
-              label="Concetto"
-              value={`${test}.concetto`}
-            />
-            <hr className="my-4"/>
-            <div className="form-group row">
-              <h6>Metadata  Colonna #{index}</h6>
-            </div>
-            <Field
-              name={`${test}.desc`}
-              type="text"
-              component={renderFieldMeta}
-              label="Descrizione"
-              value={`${test}.desc`}
-            />
-            <Field
-              name={`${test}.required`}
-              type="text"
-              component={renderYesNoSelector}
-              label="Obbligatorio"
-              value={`${test}.required`}
-            />
-            <Field
-              name={`${test}.field_type`}
-              type="text"
-              component={renderFieldType}
-              label="Tipo Colonna"
-              value={`${test}.field_type`}
-            />
-            <Field
-              name={`${test}.cat`}
-              type="text"
-              component={renderFieldMeta}
-              label="Categoria"
-              value={`${test}.cat`}
-            />
-            <div className="col-md-12">
-              <button type="button" onClick={() => fields.remove(index)} className="btn btn-primary float-right" data-toggle="button" aria-pressed="false" autoComplete="off">
-                Rimuovi
-              </button>
-            </div>
-          </div>
-          </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="form-group">
+      } 
+      {fields.map((test, index) => 
+      <div key={index}>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="form-group">
             <div className="card">
               <div className="card-header">
-                <strong>Dati colonna #{index}</strong>
+                <strong>Metadata  Colonna #{index + 1}</strong>
               </div>
               <div className="card-block">
-                <p></p>
+              <Field
+                name={`${test}.nome`}
+                type="text"
+                component={renderField}
+                label="Nome Campo"
+                value={`${test}.nome`}
+              />
+              <Field
+                name={`${test}.tipo`}
+                type="text"
+                component={renderTipi}
+                label="Tipo"
+                value={`${test}.tipo`}
+                tipi={tipi}
+                index={index}
+              />
+              <Field
+                name={`${test}.concetto`}
+                type="text"
+                component={TestSelect2}
+                label="Concetto"
+                value={`${test}.concetto`}
+              />
+              <Field
+                name={`${test}.desc`}
+                type="text"
+                component={renderFieldMeta}
+                label="Descrizione"
+                value={`${test}.desc`}
+              />
+              <Field
+                name={`${test}.tag`}
+                type="text"
+                component={renderFieldTags}
+                label="Tags"
+                value={`${test}.tag`}
+                addTagsToForm={addTagsToForm}
+              />
+              <Field
+                name={`${test}.required`}
+                type="text"
+                component={renderYesNoSelector}
+                label="Obbligatorio"
+                value={`${test}.required`}
+              />
+              <Field
+                name={`${test}.field_type`}
+                type="text"
+                component={renderFieldType}
+                label="Tipo Colonna"
+                value={`${test}.field_type`}
+              />
+            {/*<Field
+                name={`${test}.cat`}
+                type="text"
+                component={renderFieldMeta}
+                label="Categoria"
+                value={`${test}.cat`}
+              />*/}
+              <div className="col-md-12">
+                <button type="button" onClick={() => fields.remove(index)} className="btn btn-primary float-right" data-toggle="button" aria-pressed="false" autoComplete="off">
+                  Rimuovi
+                </button>
+              </div>
+            </div>
+            </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <div className="card">
+                <div className="card-header">
+                  <strong>Dati colonna #{index}</strong>
+                </div>
+                <div className="card-block">
+                  {fields.get(index).data && fields.get(index).data.map((row, index) => 
+                    <p key={index}>{row}</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -373,10 +397,8 @@ class WizardFormMetadata extends Component {
       </div>}
     </div>
 
-
-
   render() {
-    const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard } = this.props;
+    const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard, tipi } = this.props;
     return (
     <div>
     <form onSubmit={handleSubmit}>
@@ -386,7 +408,9 @@ class WizardFormMetadata extends Component {
               title={title}
               reset={reset}
               columnCard={columnCard}
+              tipi={this.state.tipi}
               calcDataFields={this.calcDataFields}
+              addTagsToForm={this.addTagsToForm}
             />
     </form>
     </div>
@@ -396,10 +420,12 @@ class WizardFormMetadata extends Component {
 
 WizardFormMetadata = connect(state => {
   // can select values individually
-  const nomefile = state.nomefile || 'prova';
+  const nomeFile = state.nomeFile || 'prova';
+  const tipi = state.tipi || []
   //const dataSample = state.dataSample || [];
   return {
-    nomefile
+    nomeFile,
+    tipi
     //,
  //   dataSample
   }

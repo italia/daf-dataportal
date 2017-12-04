@@ -603,7 +603,7 @@ let WizardOperational = props => {
         <Field name="dataset_type"  component={renderDatasetType} />
       </div>
       
-      <h4>Group Access</h4>
+      {/* <h4>Group Access</h4>
       <FieldArray name="accesses" component={renderGroupAccess} />
 
       <h4>Sorgenti</h4>
@@ -618,7 +618,7 @@ let WizardOperational = props => {
       <FieldArray name="storages" component={renderStorageInfo} />
 
       <h4>Geo Reference</h4>
-      <FieldArray name="geos" component={renderGeoRef} />
+      <FieldArray name="geos" component={renderGeoRef} /> */}
 
 
       <div className="form-group row justify-content-between">

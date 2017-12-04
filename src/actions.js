@@ -624,3 +624,33 @@ export function loadOntologies() {
         dispatch(receiveVocabulary(undefined));
       }
     }
+
+    export function getSchema(filesToUpload) {
+      console.log('getSchema');
+      var url = 'http://localhost:3001/catalog-manager/v1/getschema';  
+      //var url = 'http://localhost:9000/dati-gov/v1/infer/schema/csv'
+      //var formData  = new FormData();
+      // formData.append('upfile', new Blob(filesToUpload), "agency.csv");
+      
+      var token = '';
+      if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        const formData = new FormData()
+        formData.append('upfile', new Blob(filesToUpload), 'test')
+      
+      return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+        //      'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+        //      "Content-Type": 'multipart/formdata',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+            .then(response => response.json())
+        } 
+      }

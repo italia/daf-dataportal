@@ -31,6 +31,7 @@ class IngestionForm extends Component {
 
  showResults = values =>{
   const transformed = transformer(values)
+  console.log("transformed: " + transformed)
   //sendPostDataMeta(transformed, undefined)
   const { dispatch } = this.props;
   if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
