@@ -13,6 +13,7 @@ import OrganizationFilter from '../../components/Dataset/OrganizationFilter'
 import InfiniteScroll from '../../components/InfinityScroll'
 import { transformName } from '../../utility'
 import MetadataEditor from "../../components/Dataset/MetadataEditor";
+import { serviceurl } from '../../config/serviceurl'
 
 class Dataset extends Component {
   constructor(props) {
@@ -28,8 +29,11 @@ class Dataset extends Component {
       showDivCategory: false,
       showDivGroup: false,
       showDivOrganization: false,
-      edit: false
+      edit: false,
+      organizations: []
     }
+
+    this.load();
 
     this.handleUnloadDatasetClick = this.handleUnloadDatasetClick.bind(this)
     this.handleLoadDatasetDetailClick = this.handleLoadDatasetDetailClick.bind(this)
@@ -40,6 +44,29 @@ class Dataset extends Component {
     this.onClick = this.onClick.bind(this)   
   }
 
+  load() {
+
+    let response = this.organizations();
+    response.then((list) => {
+      this.setState({
+        organizations: list
+      })
+    })
+  }
+
+  async organizations() {
+    var url = serviceurl.apiURLCatalog + '/ckan/organizations'
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+    return response.json()
+  }
+
   onClick(name, e){
     e.preventDefault()
     this.setState({
@@ -47,7 +74,7 @@ class Dataset extends Component {
     })
     const { dispatch } = this.props
     dispatch(datasetDetail(name))
-    .then(this.props.history.push('?edit='+name))
+    this.props.history.push('?edit='+name)
   }
 
   loadMore = () => {
@@ -74,10 +101,11 @@ class Dataset extends Component {
   handleLoadDatasetDetailClick(name, e) {
     e.preventDefault()
     this.setState({
-      filters: false
+      edit: false
     })
     const { dispatch } = this.props
     dispatch(datasetDetail(name))
+    this.props.history.push('?detail='+name)
   }
 
   renderDataset() {
@@ -140,15 +168,24 @@ renderDatasetList(length, datasets, ope, isLoading){
   if (ope === 'RECEIVE_DATASETS')
     return <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>
       {datasets.map(dataset => {
-        return (<div className="card text-center" key={dataset.name}>
-              <div className="card-header"></div>
-              <div className="card-body">
-                <h4 className="card-title">{transformName(dataset.name)}</h4>
-                <p className="card-text">{dataset.notes}</p>
-                <h6 className="card-subtitle mb-2 text-muted">Organizzazione: {dataset.organization.name}</h6>
-                <h6 className="card-subtitle mb-2 text-muted">Stato: {dataset.organization.state}</h6>
-                <a href className="card-link text-center" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>Dettaglio Dataset</a>
-                <button type="button" className="btn btn-default float-right" onClick={this.onClick.bind(this, dataset.name)}><i className="fa fa-edit"></i></button>
+        return (<div className="card" key={dataset.name}>
+              <div className="card-body mt-2 b-b-1">
+                <a href className="card-link" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>
+                  <h5 className="card-text col-12">{transformName(dataset.name)}</h5>
+                </a>
+              <div className="d-inline-flex mt-2 b-t-1 col-12">
+                <div className="col-8 b-r-1">
+                  <p className="card-text mt-2">{dataset.notes}</p>
+                  <p className="card-subtitle mb-2 text-muted">Organizzazione: {dataset.organization.name}</p>
+                  <p className="card-subtitle mb-2 text-muted">Stato: {dataset.organization.state}</p>
+                </div>
+                <div className="col-4">
+                  <p className="card-subtitle mb-2 mt-2"><strong>{"Aggiornato il" + " "}</strong> {dataset.modified}</p>
+                  <p className="card-subtitle mb-2"><strong>{"Pubblicato da" + " "}</strong> {dataset.publisher_name}</p>
+                </div>
+                  {/* <a href className="card-link" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>Dettaglio Dataset</a> */}
+                  {/* <button type="button" className="btn btn-default float-right" onClick={this.onClick.bind(this, dataset.name)}><i className="fa fa-edit"></i></button> */}
+                </div>
               </div>
             </div>
         );
@@ -168,7 +205,7 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
     if (datasets && datasets.length > 0){
       return ( 
         <div className="App">
-          <div className="App-header">
+          <div className="App-header b-a-1">
             {length > 999 ?
               <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
             :
@@ -305,7 +342,7 @@ renderFilter(ope){
       
       {this.state.showDivOrganization &&
       <div className="u-sizeFull" id="subnav">
-        <OrganizationFilter organization_filter={this.state.organization_filter}  onSearch={this.onSearch}/>
+        <OrganizationFilter organizations={this.state.organizations} organization_filter={this.state.organization_filter}  onSearch={this.onSearch}/>
       </div>
       }
     </div>
