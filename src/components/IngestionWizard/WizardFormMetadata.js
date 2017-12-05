@@ -232,6 +232,7 @@ class WizardFormMetadata extends Component {
                     dispatch(getSchema(filesToUpload))
                       .then(json => { calcDataFields(fields, json, tipi)
                                       dispatch(change('wizard', 'separator', json.separator))
+                                      dispatch(change('wizard', 'filesToUpload', filesToUpload))
                                     })
                       .catch(exception => console.log('Eccezione !!!'))
             
