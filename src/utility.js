@@ -7,7 +7,10 @@ export function transformName(name){
       var name  = sp1[1];
       var find = '_d_';
       var re = new RegExp(find, 'g');
-      return org + ' - ' + name.replace(re," ");
+      if(name)
+        return org + ' - ' + name.replace(re, " ");
+      else
+        return org
     } catch(exception){
       return name;
     }
