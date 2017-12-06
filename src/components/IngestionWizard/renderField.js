@@ -10,7 +10,7 @@ const renderField = ({ input, label, type, openModal, meta: { touched, error } }
     }
    <div>
       <input {...input} placeholder={label} type={type} className="form-control"/>
-      {touched && error && <span>{error}</span>}
+      {touched && error && <div className="text-danger">{error}</div>}
     </div>
   </div>
 )
@@ -20,7 +20,7 @@ const renderTextArea = ({ input, label, type, meta: { touched, error } }) => (
     <label className="form-control-label">{label}</label>
    <div>
       <input {...input} placeholder={label} type='textarea' className="form-control"/>
-      {touched && error && <span>{error}</span>}
+      {touched && error && <div className="text-danger">{error}</div>}
     </div>
   </div>
 )

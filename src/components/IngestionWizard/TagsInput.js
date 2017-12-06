@@ -53,8 +53,9 @@ class TagsInput extends React.Component {
                     handleDelete={this.handleDelete}
                     handleAddition={this.handleAddition}
                     handleDrag={this.handleDrag} 
-                    placeholder=""
-                    name={this.props.name} 
+                    placeholder="Aggiungi nuovo tag"
+                    name={this.props.name}
+                    autofocus= {false} 
                     />
             </div>
         )

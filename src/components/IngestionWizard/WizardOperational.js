@@ -576,7 +576,7 @@ let WizardOperational = props => {
         {(isOk === 'false') &&
       <div className="form-group">
         <label>Segue uno standard?</label>
-        <Field name="follow_standard" component={renderYesNoSelector} /><br/>
+        <Field name="follow_standard" component={renderYesNoSelector} />
         {(followStandard === 'true') &&
         <Field name="uri_associato" component={TestSelect}  url={standards} />
         }
@@ -584,12 +584,12 @@ let WizardOperational = props => {
 
       <div className="form-group">
         <label>Dominio</label>
-        <Field name="domain" component={renderDomain} domains={getDomain(1,undefined)} key='domain'/><br/>
+        <Field name="domain" component={renderDomain} domains={getDomain(1,undefined)} key='domain'/>
       </div>
       {(subdomain && subdomain.length >0) &&
       <div className="form-group">
         <label>Sotto dominio</label>
-        <Field name="subdomain" component={renderDomain} domains={subdomain} /><br/>
+        <Field name="subdomain" component={renderDomain} domains={subdomain} />
       </div>
       }
 
