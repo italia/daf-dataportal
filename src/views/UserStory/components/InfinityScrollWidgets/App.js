@@ -1,14 +1,79 @@
 import React, { Component } from 'react';
 import List from './List';
-import {Modal} from 'react-modal-bootstrap';
+import { Modal } from 'react-modal-bootstrap';
 
 class App extends Component {
   constructor(props) {
     super(props);
-}
+    this.state = {
+      superset: false,
+      metabase: false,
+      query: '',
+      filteredWidget: this.props.widgets,
+      searched: this.props.widgets
+    }
+
+    this.onSupersetClick = this.onSupersetClick.bind(this);
+    this.onMetabaseClick = this.onMetabaseClick.bind(this);
+  }
+
+  onSupersetClick() {
+    this.setState({
+      superset: !this.state.superset,
+      metabase: false,
+      filteredWidget: this.state.superset ? this.props.widgets : this.filterBy("superset"),
+      searched: this.state.superset ? this.props.widgets : this.filterBy("superset"),
+    })
+  }
+
+  onMetabaseClick() {
+    this.setState({
+      superset: false,
+      metabase: !this.state.metabase,
+      filteredWidget: this.state.metabase ? this.props.widgets : this.filterBy("metabase"),
+      searched: this.state.metabase ? this.props.widgets : this.filterBy("metabase")
+    })
+  }
+
+  filterBy(val) {
+    const { widgets } = this.props
+    var result = Object.keys(widgets).reduce(function (r, e) {
+      if (e.toLowerCase().indexOf(val) != -1) {
+        r[e] = widgets[e];
+      } else {
+        Object.keys(widgets[e]).forEach(function (k) {
+          if (k.toLowerCase().indexOf(val) != -1) {
+            var object = {}
+            object[k] = widgets[e][k];
+            r[e] = object;
+          }
+        })
+      }
+      return r;
+    }, {})
+    return result;
+  }
+
+  searchBy(val) {
+    const { filteredWidget } = this.state;
+    var result = Object.keys(filteredWidget).reduce(function (r, e) {
+      if (filteredWidget[e].title.toLowerCase().indexOf(val) != -1) {
+        r[e] = filteredWidget[e];
+      }
+      return r;
+    }, {})
+
+    this.setState({
+      query: val,
+      searched: result
+    })
+    return result;
+  }
 
   render() {
     const { widgets, isModalOpen, onRequestClose, onWidgetSelect } = this.props;
+    const { superset, metabase, filteredWidget, searched } = this.state;
+
     return (
     <Modal
       contentLabel="Add a widget"
@@ -21,8 +86,15 @@ class App extends Component {
         <span className="sr-only">Chiudi</span>
       </button>
       <h4 className="modal-title">Aggiungi un widget</h4>
+        <div className="pt-2 btn-group">
+          <button type="button" className={"btn btn-" + (superset ? "primary" : "default")} onClick={this.onSupersetClick}>Superset</button>
+          <button type="button" className={"btn btn-" + (metabase ? "primary" : "default")} onClick={this.onMetabaseClick}>Metabase</button>
+          <input className="pl-4 form-control" placeholder="Cerca la dashboard" value={this.state.query}
+            onChange={(e) => this.searchBy(e.target.value)} />
         </div>
-        <List widgets={this.props.widgets}
+        </div>
+          <List 
+            widgets={searched}
             isModalOpen={this.props.isModalOpen}
             onWidgetSelect={this.props.onWidgetSelect}
             onRequestClose={this.props.onRequestClose}/>

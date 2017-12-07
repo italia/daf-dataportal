@@ -184,7 +184,6 @@ renderDatasetList(length, datasets, ope, isLoading){
                   <p className="card-subtitle mb-2"><strong>{"Pubblicato da" + " "}</strong> {dataset.publisher_name}</p>
                 </div>
                   {/* <a href className="card-link" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>Dettaglio Dataset</a> */}
-                  {/* <button type="button" className="btn btn-default float-right" onClick={this.onClick.bind(this, dataset.name)}><i className="fa fa-edit"></i></button> */}
                 </div>
               </div>
             </div>
@@ -230,11 +229,11 @@ renderDatasetDetail(dataset, ope){
     if (dataset)
       return (
           <div className="col-12">
+          
             <div className="card">
 {/*               <div className="card-header">
                 Descrizione
                 </div> */}
-            
               <div className="card-block">
                 <div className="col-12">
                   <h2 className="card-text">{transformName(dataset.name)+" "}<span className="badge badge-primary">{dataset.theme}</span></h2>
@@ -249,6 +248,7 @@ renderDatasetDetail(dataset, ope){
                     <p className="card-text"><strong>{"Pubblicato da" + " "}</strong> {dataset.publisher_name}</p>
                   </div>
                 </div>
+              <button type="button" className="btn btn-default float-right" onClick={this.onClick.bind(this, dataset.name)}><i className="fa fa-edit"></i></button>
                 {/* <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p> */}
               </div>
             </div>

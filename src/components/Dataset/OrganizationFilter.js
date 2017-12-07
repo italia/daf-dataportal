@@ -21,30 +21,6 @@ export default class OrganizationFilter extends React.Component {
             organization_filter: organization_filter
         };
 
-        /* this.load(); */
-    }
-
-    load(){
-
-        let response = this.organizations();
-        response.then((list)=>{
-            this.setState({
-                organizations: list
-            })
-        })
-    }
-
-    async organizations(){
-        var url = serviceurl.apiURLCatalog + '/ckan/organizations'
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        })
-        return response.json()
     }
 
     enableGroup(id_organization) {
