@@ -1,7 +1,6 @@
 import { serviceurl } from './config/serviceurl.js'
 
 export function transformName(name){
-    console.log('transform name ' + name);
     try{
       var sp1 = name.split('_o_');
       var org = sp1[0];
@@ -18,7 +17,6 @@ export function transformName(name){
   }
 
   export function setCookie(app, json){
-    console.log('setCookie - app: ' + app + ' json: ' + json)
     if(json.error!=1){
       if(json.length>0){
         for(let i in json) {

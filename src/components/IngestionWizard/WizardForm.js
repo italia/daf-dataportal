@@ -26,11 +26,26 @@ class WizardForm extends Component {
     this.nextPage = this.nextPage.bind(this)
     this.nextPage2 = this.nextPage2.bind(this)
     this.previousPage = this.previousPage.bind(this)
+    this.setUploading = this.setUploading.bind(this)
     this.state = {
       page: 1,
       dataschema : {},
-      isOpen: false
+      isOpen: false,
+      uploading: false,
+      tipi: new Object()
     }
+  }
+
+  setTipi = (value) => {
+    this.setState({
+      tipi: value
+    });
+  }
+
+  setUploading = (value) => {
+    this.setState({
+      uploading: value
+    });
   }
 
   openModal = () => {
@@ -62,8 +77,6 @@ class WizardForm extends Component {
   }
 
   getLicenze(liv,notation){
-    console.log('liv: ' + liv);
-    console.log('notation: ' + notation);
     var appo = [];
     licenze.map((lic, index) => {
       if(lic.rank==liv){
@@ -117,7 +130,11 @@ class WizardForm extends Component {
 
                 {page === 1 &&
                 <WizardFormMetadata
-                      onSubmit={this.nextPage}/>}
+                      onSubmit={this.nextPage}
+                      setUploading={this.setUploading}
+                      uploading={this.state.uploading}
+                      setTipi={this.setTipi}
+                      tipi={this.state.tipi}/>}
                 {page ===2 &&  <WizardFormFirstPage
                       previousPage={this.previousPage}
                       onSubmit={this.nextPage}

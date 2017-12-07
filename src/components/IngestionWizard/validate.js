@@ -6,8 +6,17 @@ const validate = values => {
   if (!values.ownership) {
     errors.ownership = 'Campo obbligatorio'
   }
+  if (!values.nome) {
+    errors.nome = 'Campo obbligatorio'
+  }
+  if (!values.notes) {
+    errors.notes = 'Campo obbligatorio'
+  }
   if (!values.theme) {
     errors.theme = 'Campo obbligatorio'
+  }
+  if (!values.license1) {
+    errors.license1 = 'Campo obbligatorio'
   }
   if (!values.editor) {
     errors.editor = 'Campo obbligatorio'

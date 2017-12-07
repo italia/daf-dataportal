@@ -18,7 +18,9 @@ import {
 } from 'react-modal-bootstrap';
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 import TagsInput from './TagsInput'
-     
+import AutocompleteSemantic from '../Autocomplete/AutocompleteSemantic'
+
+
 //  var metadata = { "desc": "", "required": 0, "field_type": "","cat": "","tag": "","constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
 const themes = [
 {'val' : 'AGRI', 'name' : 'AGRICOLTURA'},{'val' : 'EDUC', 'name' : 'EDUCAZIONE'},
@@ -70,7 +72,7 @@ const renderFieldTags = ({input, label, type, value, readonly, addTagsToForm, me
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
     <div className="col-md-9">
-      <textarea {...input} placeholder={label} type={type} className="form-control"/>
+      <textarea {...input} name={input.name} placeholder={label} type={type} className="form-control"/>
       {touched && error && <div className="text-danger">{error}</div>}
       </div>
   </div>
@@ -81,8 +83,8 @@ const renderYesNoSelector = ({ input, type, label, value, meta: { touched, error
     <label className="col-md-3 form-control-label">{label}</label>
    <div className="col-md-9">
     <select className="form-control" {...input}>
-      <option value="0" defaultValue key='false'>No</option>
-      <option value="1" key="1">Si</option>
+      <option value="1" defaultValue key="1">Si</option>
+      <option value="0" key='false'>No</option>
     </select>
     {touched && error && <div className="text-danger">{error}</div>}
   </div>
@@ -166,7 +168,7 @@ class WizardFormMetadata extends Component {
     this.calcDataFields = this.calcDataFields.bind(this);
   }
 
-  calcDataFields (fields, json, tipi) {
+  calcDataFields (fields, json, tipi, setTipi) {
     let inferred = json["inferredType"];
     inferred.map((item, index) => {
       tipi[index] =  item.inferredType;
@@ -175,6 +177,7 @@ class WizardFormMetadata extends Component {
       constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
       data :  item.data});
     })
+    setTipi(tipi)
   }
 
   addTagsToForm(fieldName, tags){
@@ -184,13 +187,8 @@ class WizardFormMetadata extends Component {
     })
     this.onChange(tagString)
   }
-  
-  componentDidUpdate(){
-    document.activeElement.blur();
-   // this.setState({scrollTop: $(window).scrollTop()});
-  }
 
-  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, tipi, addTagsToForm, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, setUploading, uploading, meta : {touched, error} }) => 
       <div>
       {fields.length === 0 &&
         <div className="form-group row">
@@ -215,10 +213,11 @@ class WizardFormMetadata extends Component {
             <label htmlFor='tests'>Oppure carica il file (max 10MB):</label>
             <OverlayLoader 
               color={'blue'} 
-              loader="PulseLoader" 
+              loader="ScaleLoader" 
               text="Caricamento in corso..." 
-              active={this.state.uploading} 
+              active={uploading} 
               backgroundColor={'grey'}
+              style={{"width": "85%"}}
               >
               <Dropzone
                 name="input"
@@ -226,14 +225,21 @@ class WizardFormMetadata extends Component {
                 multiple={false}
                 maxSize={10485760}
                 onDrop={( filesToUpload, e ) => {
+                  setUploading(true);
                   const {dispatch} = this.props 
                   if(filesToUpload.length>0){
                     this.setState({errorDrop:''})
                     dispatch(getSchema(filesToUpload))
-                      .then(json => { calcDataFields(fields, json, tipi)
+                      .then(json => { calcDataFields(fields, json, tipi, setTipi)
                                       dispatch(change('wizard', 'separator', json.separator))
+                                      dispatch(change('wizard', 'filesToUpload', filesToUpload))
+                                      dispatch(change('wizard', 'tipi', tipi))
+                                      setUploading(false);
                                     })
-                      .catch(exception => console.log('Eccezione !!!'))
+                      .catch(exception => {
+                                        console.log('Eccezione !!!')
+                                        setUploading(false);
+                                    })
             
                     let nomeFile = filesToUpload[0].name.toLowerCase().split(".")[0]
                     nomeFile = nomeFile.toLowerCase()
@@ -243,6 +249,7 @@ class WizardFormMetadata extends Component {
                     alert('Dimensioni file non consentite')
                     this.setState({errorDrop: 'Dimensioni file non consentite'})
                     this.setState({uploading: false})
+                    setUploading(false);
                   }
                 }
                 }>
@@ -301,7 +308,7 @@ class WizardFormMetadata extends Component {
             <div className="form-group">
             <div className="card">
               <div className="card-header">
-                <strong>Metadata  Colonna #{index + 1}</strong>
+                <strong>Metadata {fields.get(index).nome}</strong>
               </div>
               <div className="card-block">
               <Field
@@ -310,6 +317,7 @@ class WizardFormMetadata extends Component {
                 component={renderField}
                 label="Nome Campo"
                 value={`${test}.nome`}
+                readonly="readonly"
               />
               <Field
                 name={`${test}.tipo`}
@@ -323,7 +331,7 @@ class WizardFormMetadata extends Component {
               <Field
                 name={`${test}.concetto`}
                 type="text"
-                component={TestSelect2}
+                component={AutocompleteSemantic}
                 label="Concetto"
                 value={`${test}.concetto`}
               />
@@ -363,11 +371,11 @@ class WizardFormMetadata extends Component {
                 label="Categoria"
                 value={`${test}.cat`}
               />*/}
-              <div className="col-md-12">
+{/*               <div className="col-md-12">
                 <button type="button" onClick={() => fields.remove(index)} className="btn btn-primary float-right" data-toggle="button" aria-pressed="false" autoComplete="off">
                   Rimuovi
                 </button>
-              </div>
+              </div> */}
             </div>
             </div>
             </div>
@@ -376,7 +384,7 @@ class WizardFormMetadata extends Component {
             <div className="form-group">
               <div className="card">
                 <div className="card-header">
-                  <strong>Dati colonna #{index}</strong>
+                  <strong>Dati colonna {fields.get(index).nome}</strong>
                 </div>
                 <div className="card-block">
                   {fields.get(index).data && fields.get(index).data.map((row, index) => 
@@ -398,7 +406,7 @@ class WizardFormMetadata extends Component {
     </div>
 
   render() {
-    const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard, tipi } = this.props;
+    const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard, setTipi, tipi, setUploading, uploading } = this.props;
     return (
     <div>
     <form onSubmit={handleSubmit}>
@@ -408,9 +416,12 @@ class WizardFormMetadata extends Component {
               title={title}
               reset={reset}
               columnCard={columnCard}
-              tipi={this.state.tipi}
               calcDataFields={this.calcDataFields}
               addTagsToForm={this.addTagsToForm}
+              tipi={tipi}
+              setTipi={setTipi}
+              uploading={uploading}
+              setUploading={setUploading}
             />
     </form>
     </div>
@@ -420,12 +431,10 @@ class WizardFormMetadata extends Component {
 
 WizardFormMetadata = connect(state => {
   // can select values individually
-  const nomeFile = state.nomeFile || 'prova';
-  const tipi = state.tipi || []
+  const nomefile = state.nomefile || 'prova';
   //const dataSample = state.dataSample || [];
   return {
-    nomeFile,
-    tipi
+    nomefile
     //,
  //   dataSample
   }
