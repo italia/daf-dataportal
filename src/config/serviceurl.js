@@ -43,9 +43,9 @@ export const serviceurl = {
  //urlJupiter: 'http://datascience.daf.teamdigitale.governo.it',
 
  // URL ONTONETHUB
- urlSemantic: "http://localhost:8000/stanbol/ontonethub/ontologies/find",
+ //urlSemantic: "http://localhost:8000/stanbol/ontonethub/ontologies/find",
  // URL CNR
- //urlSemantic: 'http://stlab.istc.cnr.it/ontonethub/api/find',
+ urlSemantic: 'http://stlab.istc.cnr.it/ontonethub/api/find',
 
  domain: ".daf.teamdigitale.it",
 
