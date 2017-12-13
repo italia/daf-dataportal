@@ -40,16 +40,16 @@ class DashboardEditor extends Component {
   constructor(props) {
     super(props);
 
-    this.load();
+    
     //get iframe from server
     let iframeTypes = widgetService.getIframe();
     iframeTypes.then(iframes => {
       this.loadIframe(iframes);
       //get widget from server
-      this.load();
+      /* this.load(); */
     }, err => {
       //get widget from server
-      this.load();
+      /* this.load(); */
     })
 
     //set state
@@ -64,14 +64,14 @@ class DashboardEditor extends Component {
       isModalOpen: false,
       dashboard: {
         status: 0
-      }
+      },
+      id: this.props.match.params.id
     };
-    
-    //id of widget to edit
-    this.id= this.props.match.params.id,
+
+    this.load();
  
     //bind functions
-    this.load = this.load.bind(this);
+    /* this.load = this.load.bind(this); */
     this.setLayout = this.setLayout.bind(this);
     this.addRow = this.addRow.bind(this);
     this.addWidget = this.addWidget.bind(this);
@@ -111,9 +111,9 @@ class DashboardEditor extends Component {
   load = (config) => {
     
     //if is new
-    if(!this.id) return;
+    if(!this.state.id) return;
 
-    let response = dashboardService.get(this.id);
+    let response = dashboardService.get(this.state.id);
     
     response.then((config) => {
 
@@ -130,19 +130,21 @@ class DashboardEditor extends Component {
         dashboard: dashboard
       });
 
-      for(let i in dashboard.widgets) {
+      for (let i in dashboard.widgets) {
         let widget = dashboard.widgets[i];
 
         //assign instance to widget.type
-        let typeWid = i //.split('_')[0];
-        if(this.widgetsTypes[typeWid]) {
-          widget.type = this.widgetsTypes[typeWid].type;
+        /* let typeWid = i //.split('_')[0]; //Test */
+        if (widget.type === "t") {
+          /* widget.type = this.widgetsTypes[typeWid].type; */
+          widget.type = IframeWidget;
           //last extends overrides previous
-          widget.props = {...widget.props, ...this.widgetsTypes[typeWid].props,  wid_key: i};
-        } else {
+          /* widget.props = {...widget.props, ...this.widgetsTypes[typeWid].props,  wid_key: i}; */
+        } /* else {
           console.error("Widget " + typeWid + " non trovato")
-        }
+        } */
       }
+      console.log(dashboard.widgets)
 
       //render widgets
       this.setState( {

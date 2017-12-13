@@ -48,10 +48,10 @@ class DashboardView extends Component {
     iframeTypes.then(iframes => {
       this.loadIframe(iframes);
       //get widget from server
-      this.load();
+      /* this.load(); */
     }, err => {
       //get widget from server
-      this.load();
+      /* this.load(); */
     })
 
   }
@@ -81,7 +81,9 @@ class DashboardView extends Component {
           "url": iframe.iframe_url
         }
       }
-    }) 
+    })
+    
+    console.log(this.widgetsTypes)
   }
   
   /**
@@ -101,16 +103,17 @@ class DashboardView extends Component {
         let widget = dashboard.widgets[i];
 
         //assign instance to widget.type
-        let typeWid = i //.split('_')[0]; //Test
-        if(this.widgetsTypes[typeWid]) {
-          widget.type = this.widgetsTypes[typeWid].type;
+        /* let typeWid = i //.split('_')[0]; //Test */
+        if(widget.type === "t") {
+          /* widget.type = this.widgetsTypes[typeWid].type; */
+          widget.type = IframeWidget;
           //last extends overrides previous
-          widget.props = {...widget.props, ...this.widgetsTypes[typeWid].props,  wid_key: i};
-        } else {
+          /* widget.props = {...widget.props, ...this.widgetsTypes[typeWid].props,  wid_key: i}; */
+        } /* else {
           console.error("Widget " + typeWid + " non trovato")
-        }
+        } */
       }
-      console.log(dashboard.widgets)
+      /* console.log(dashboard.widgets) */
       //render widgets
       this.state.widgets = dashboard.widgets;
       this.setState({
