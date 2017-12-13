@@ -87,10 +87,10 @@ class App extends Component {
       </button>
       <h4 className="modal-title">Aggiungi un widget</h4>
         <div className="pt-2 btn-group">
-          <button type="button" className={"btn btn-" + (superset ? "primary" : "default")} onClick={this.onSupersetClick}>Superset</button>
-          <button type="button" className={"btn btn-" + (metabase ? "primary" : "default")} onClick={this.onMetabaseClick}>Metabase</button>
-          <input className="pl-4 form-control" placeholder="Cerca la dashboard" value={this.state.query}
-            onChange={(e) => this.searchBy(e.target.value)} />
+          {/* <button type="button" className={"btn btn-" + (superset ? "primary" : "default")} onClick={this.onSupersetClick}>Superset</button>
+          <button type="button" className={"btn btn-" + (metabase ? "primary" : "default")} onClick={this.onMetabaseClick}>Metabase</button> */}
+          {/* <input className="pl-4 form-control" placeholder="Cerca la dashboard" value={this.state.query}
+            onChange={(e) => this.searchBy(e.target.value)} /> */}
         </div>
         </div>
           <List 

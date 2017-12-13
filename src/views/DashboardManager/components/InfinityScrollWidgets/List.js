@@ -39,7 +39,6 @@ class List extends Component {
     let visible = Object.keys(widgets).length<=items ? 'hidden':visibility;
     var count = 0;
     const widgetItems = Object.keys(widgets).map((widget, key) => {
-      this.imageLoad(widget)
       if(count<items){
         count++;
         let wid = widgets[widget].type;
