@@ -199,74 +199,73 @@ class WizardFormMetadata extends Component {
             <p className="text-justify">Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p>
           </div>
           <div className="col-md-7">
-          <div className="form-group">
-            <div className="col-md-12">
-            <label htmlFor='tests'>Inserisci un link al tuo file:</label>
-            </div>
-            <div className="col-md-12">
-              <input placeholder="http://" type="text" className="form-control-90"/>
-              <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off"><i className="fa fa-plus"></i></button>
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="col-md-12">
-            <label htmlFor='tests'>Oppure carica il file (max 10MB):</label>
-            <OverlayLoader 
-              color={'blue'} 
+          <OverlayLoader 
+              color={'#06c'} 
               loader="ScaleLoader" 
               text="Caricamento in corso..." 
               active={uploading} 
               backgroundColor={'grey'}
-              style={{"width": "85%"}}
               >
-              <Dropzone
-                name="input"
-                className="dropzone"
-                multiple={false}
-                maxSize={10485760}
-                onDrop={( filesToUpload, e ) => {
-                  setUploading(true);
-                  const {dispatch} = this.props 
-                  if(filesToUpload.length>0){
-                    this.setState({errorDrop:''})
-                    dispatch(getSchema(filesToUpload))
-                      .then(json => { calcDataFields(fields, json, tipi, setTipi)
-                                      dispatch(change('wizard', 'separator', json.separator))
-                                      dispatch(change('wizard', 'filesToUpload', filesToUpload))
-                                      dispatch(change('wizard', 'tipi', tipi))
-                                      setUploading(false);
-                                    })
-                      .catch(exception => {
-                                        console.log('Eccezione !!!')
+            <div className="form-group">
+              <div className="col-md-12">
+              <label htmlFor='tests'>Inserisci un link al tuo file:</label>
+              </div>
+              <div className="col-md-12">
+                <input placeholder="http://" type="text" className="form-control-90"/>
+                <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off"><i className="fa fa-plus"></i></button>
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-md-12">
+              <label htmlFor='tests'>Oppure carica il file (max 10MB):</label>
+                <Dropzone
+                  name="input"
+                  className="dropzone"
+                  multiple={false}
+                  maxSize={10485760}
+                  onDrop={( filesToUpload, e ) => {
+                    setUploading(true);
+                    const {dispatch} = this.props 
+                    if(filesToUpload.length>0){
+                      this.setState({errorDrop:''})
+                      dispatch(getSchema(filesToUpload))
+                        .then(json => { calcDataFields(fields, json, tipi, setTipi)
+                                        dispatch(change('wizard', 'separator', json.separator))
+                                        dispatch(change('wizard', 'filesToUpload', filesToUpload))
+                                        dispatch(change('wizard', 'tipi', tipi))
                                         setUploading(false);
-                                    })
-            
-                    let nomeFile = filesToUpload[0].name.toLowerCase().split(".")[0]
-                    nomeFile = nomeFile.toLowerCase()
-                    nomeFile.split(" ").join("-")
-                    dispatch(change('wizard', 'title', nomeFile))
-                  }else{
-                    alert('Dimensioni file non consentite')
-                    this.setState({errorDrop: 'Dimensioni file non consentite'})
-                    this.setState({uploading: false})
-                    setUploading(false);
+                                      })
+                        .catch(exception => {
+                                          console.log('Eccezione !!!')
+                                          setUploading(false);
+                                      })
+              
+                      let nomeFile = filesToUpload[0].name.toLowerCase().split(".")[0]
+                      nomeFile = nomeFile.toLowerCase()
+                      nomeFile.split(" ").join("-")
+                      dispatch(change('wizard', 'title', nomeFile))
+                    }else{
+                      alert('Dimensioni file non consentite')
+                      this.setState({errorDrop: 'Dimensioni file non consentite'})
+                      this.setState({uploading: false})
+                      setUploading(false);
+                    }
                   }
-                }
-                }>
-                  <div className="container">
-                    <div className="row" style={{"paddingTop": "10px"}}>
-                      <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+                  }>
+                    <div className="container">
+                      <div className="row" style={{"paddingTop": "10px"}}>
+                        <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+                      </div>
+                      <div className="row justify-content-md-center" style={{"paddingTop": "30px"}}>
+                        {this.state.errorDrop && 
+                            <div className="alert alert-danger">File non conforme alle specifiche, controllare la dimensione e l'estensione.</div>
+                        }
+                      </div>
                     </div>
-                    <div className="row justify-content-md-center" style={{"paddingTop": "30px"}}>
-                      {this.state.errorDrop && 
-                          <div className="alert alert-danger">File non conforme alle specifiche, controllare la dimensione e l'estensione.</div>
-                      }
-                    </div>
-                  </div>
               </Dropzone>
-          </OverlayLoader>
+            </div>
           </div>
-        </div>
+        </OverlayLoader>
         </div>  
       </div>
       }
