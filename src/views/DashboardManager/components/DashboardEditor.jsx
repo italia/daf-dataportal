@@ -132,17 +132,17 @@ class DashboardEditor extends Component {
 
       for (let i in dashboard.widgets) {
         let widget = dashboard.widgets[i];
-
         //assign instance to widget.type
         /* let typeWid = i //.split('_')[0]; //Test */
-        if (widget.type === "t") {
+        if (i === "TextWidget") {
           /* widget.type = this.widgetsTypes[typeWid].type; */
-          widget.type = IframeWidget;
+          widget.type = TextWidget;
           //last extends overrides previous
           /* widget.props = {...widget.props, ...this.widgetsTypes[typeWid].props,  wid_key: i}; */
-        } /* else {
-          console.error("Widget " + typeWid + " non trovato")
-        } */
+        } else {
+          widget.type = IframeWidget;
+        }
+
       }
       console.log(dashboard.widgets)
 
