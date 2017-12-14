@@ -32,7 +32,8 @@ class WizardForm extends Component {
       dataschema : {},
       isOpen: false,
       uploading: false,
-      tipi: new Object()
+      tipi: new Object(),
+      errorUpload: undefined
     }
   }
 
@@ -42,9 +43,10 @@ class WizardForm extends Component {
     });
   }
 
-  setUploading = (value) => {
+  setUploading = (valueUploading, valueError) => {
     this.setState({
-      uploading: value
+      uploading: valueUploading,
+      errorUpload: valueError
     });
   }
 
@@ -133,6 +135,7 @@ class WizardForm extends Component {
                       onSubmit={this.nextPage}
                       setUploading={this.setUploading}
                       uploading={this.state.uploading}
+                      errorUpload={this.state.errorUpload}
                       setTipi={this.setTipi}
                       tipi={this.state.tipi}/>}
                 {page ===2 &&  <WizardFormFirstPage

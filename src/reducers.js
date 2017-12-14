@@ -18,7 +18,8 @@ import {
   RECEIVE_ONTOLOGIES,
   RECEIVE_VOCABULARY,
   RECEIVE_PROPERTIES,
-  REQUEST_PROPERTIES
+  REQUEST_PROPERTIES,
+  REQUEST_REGISTRATION
 } from './actions'
 
 //Object.assign({}, state, .. create a new copy of the state
@@ -126,6 +127,8 @@ function userReducer(state = {}, action) {
     case RECEIVE_REGISTRATION_ERROR:
     case RECEIVE_REGISTRATION:
       return Object.assign({}, state, {'msg': action.message, 'error': action.error})
+    case REQUEST_REGISTRATION:
+      return Object.assign({}, state, {'msg': undefined, 'error': undefined})
     case REQUEST_LOGIN:
     case RECEIVE_LOGIN:
       return Object.assign({}, state, {'obj': user(state[action], action)})

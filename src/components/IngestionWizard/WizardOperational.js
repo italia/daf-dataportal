@@ -571,36 +571,36 @@ let WizardOperational = props => {
       <div className="col-md-12">
       <div className="form-group">
         <label>Definisce uno standard?</label>
-        <Field name="is_std" component={renderYesNoSelector} />
+        <Field name="is_std" type="text" component={renderYesNoSelector} />
       </div>
         {(isOk === 'false') &&
       <div className="form-group">
         <label>Segue uno standard?</label>
-        <Field name="follow_standard" component={renderYesNoSelector} />
+        <Field name="follow_standard" type="text" component={renderYesNoSelector} />
         {(followStandard === 'true') &&
-        <Field name="uri_associato" component={TestSelect}  url={standards} />
+        <Field name="uri_associato" type="text" component={TestSelect}  url={standards} />
         }
       </div>}
 
       <div className="form-group">
         <label>Dominio</label>
-        <Field name="domain" component={renderDomain} domains={getDomain(1,undefined)} key='domain'/>
+        <Field name="domain" type="text" component={renderDomain} domains={getDomain(1,undefined)} key='domain'/>
       </div>
       {(subdomain && subdomain.length >0) &&
       <div className="form-group">
         <label>Sotto dominio</label>
-        <Field name="subdomain" component={renderDomain} domains={subdomain} />
+        <Field name="subdomain" type="text" component={renderDomain} domains={subdomain} />
       </div>
       }
 
       <div className="form-group">
         <label>Tipo Lettura del dataset</label>
-        <Field name="read_type"  component={renderTipoLettura} />
+        <Field name="read_type" type="text" component={renderTipoLettura} />
       </div>
 
       <div className="form-group">
         <label>Tipo Dataset</label>
-        <Field name="dataset_type"  component={renderDatasetType} />
+        <Field name="dataset_type" type="text" component={renderDatasetType} />
       </div>
       
       {/* <h4>Group Access</h4>

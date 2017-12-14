@@ -26,6 +26,7 @@ export const RECEIVE_ONTOLOGIES = 'RECEIVE_ONTOLOGIES'
 export const RECEIVE_VOCABULARY = 'RECEIVE_VOCABULARY'
 export const RECEIVE_PROPERTIES = 'RECEIVE_PROPERTIES'
 export const REQUEST_PROPERTIES = 'REQUEST_PROPERTIES'
+export const REQUEST_REGISTRATION = 'REQUEST_REGISTRATION'
 
 
 /*********************************** REDUX ************************************************ */
@@ -188,6 +189,12 @@ function receiveActivationError(json) {
   }
 }
 
+function requestRegistration (){
+  return {
+    type: REQUEST_REGISTRATION,
+  }
+}
+
 function receiveRegistrationSuccess(ok, json) {  
   if(ok==='ok')
   return {
@@ -255,6 +262,7 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
     'userpassword': pw,
   };
   return dispatch => {
+    dispatch(requestRegistration())
     if(pw===pw2){
     return fetch(url, {
       method: 'POST',
@@ -297,7 +305,7 @@ export function activateUser(token) {
         'Content-Type': 'application/json',
         'Authorization': 'Basic ' + serviceurl.auth
       }
-    }).then(response => {
+    })/* .then(response => {
       if (response.ok) {
          response.json().then(json => {
           console.log(json);
@@ -309,7 +317,7 @@ export function activateUser(token) {
           dispatch(receiveActivationError('ko', json))
         });
       }
-    }).catch(error => dispatch(receiveActivationError(error)))
+    }).catch(error => dispatch(receiveActivationError(error))) */
   }
 }
 /****************************************************************************************** */
@@ -571,7 +579,6 @@ export function addDataset(json, token) {
   console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
   return dispatch => {
-      dispatch(requestLogin())
       return fetch(url, {
           method: 'POST',
           headers: {

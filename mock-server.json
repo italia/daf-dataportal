@@ -26,6 +26,11 @@
         "get": {
             "result": "session=sessionjupyter"
         }
+    },
+    "/sso-manager/v1/secured/retriveCookie/grafana":{
+        "get": {
+            "result": "session=sessiongrafana"
+        }
     }, 
     "/dati-gov/v1/dashboard/iframes": {
         "get": [
@@ -236,6 +241,11 @@
             }
           ]
     },
+    "/catalog-manager/v1/catalog-ds/add": {
+        "post": {
+            "msg":"success"
+        }
+    }, 
     "/catalog-manager/v1/ckan/searchDataset": {
         "get": [
             {

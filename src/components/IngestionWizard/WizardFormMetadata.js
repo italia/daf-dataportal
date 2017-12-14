@@ -188,7 +188,7 @@ class WizardFormMetadata extends Component {
     this.onChange(tagString)
   }
 
-  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, setUploading, uploading, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, setUploading, uploading, errorUpload, meta : {touched, error} }) => 
       <div>
       {fields.length === 0 &&
         <div className="form-group row">
@@ -224,7 +224,7 @@ class WizardFormMetadata extends Component {
                   multiple={false}
                   maxSize={10485760}
                   onDrop={( filesToUpload, e ) => {
-                    setUploading(true);
+                    setUploading(true, undefined);
                     const {dispatch} = this.props 
                     if(filesToUpload.length>0){
                       this.setState({errorDrop:''})
@@ -233,22 +233,19 @@ class WizardFormMetadata extends Component {
                                         dispatch(change('wizard', 'separator', json.separator))
                                         dispatch(change('wizard', 'filesToUpload', filesToUpload))
                                         dispatch(change('wizard', 'tipi', tipi))
-                                        setUploading(false);
+                                        setUploading(false, undefined);
                                       })
                         .catch(exception => {
                                           console.log('Eccezione !!!')
-                                          setUploading(false);
-                                      })
+                                          setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+                                          })
               
                       let nomeFile = filesToUpload[0].name.toLowerCase().split(".")[0]
                       nomeFile = nomeFile.toLowerCase()
                       nomeFile.split(" ").join("-")
                       dispatch(change('wizard', 'title', nomeFile))
                     }else{
-                      alert('Dimensioni file non consentite')
-                      this.setState({errorDrop: 'Dimensioni file non consentite'})
-                      this.setState({uploading: false})
-                      setUploading(false);
+                      setUploading(false, 'Dimensioni file non consentite. Il file non può superare 10MB');
                     }
                   }
                   }>
@@ -256,13 +253,9 @@ class WizardFormMetadata extends Component {
                       <div className="row" style={{"paddingTop": "10px"}}>
                         <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
                       </div>
-                      <div className="row justify-content-md-center" style={{"paddingTop": "30px"}}>
-                        {this.state.errorDrop && 
-                            <div className="alert alert-danger">File non conforme alle specifiche, controllare la dimensione e l'estensione.</div>
-                        }
-                      </div>
                     </div>
               </Dropzone>
+              {errorUpload && <div className="text-danger">{errorUpload}</div>}
             </div>
           </div>
         </OverlayLoader>
@@ -405,7 +398,7 @@ class WizardFormMetadata extends Component {
     </div>
 
   render() {
-    const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard, setTipi, tipi, setUploading, uploading } = this.props;
+    const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard, setTipi, tipi, setUploading, uploading, errorUpload } = this.props;
     return (
     <div>
     <form onSubmit={handleSubmit}>
@@ -420,6 +413,7 @@ class WizardFormMetadata extends Component {
               tipi={tipi}
               setTipi={setTipi}
               uploading={uploading}
+              errorUpload={errorUpload}
               setUploading={setUploading}
             />
     </form>
