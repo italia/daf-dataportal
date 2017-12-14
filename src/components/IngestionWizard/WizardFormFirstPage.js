@@ -77,8 +77,13 @@ let WizardFormFirstPage = props => {
             type="text"
             component={renderField}
             label="Titolo"
-            readonly="readonly"
             openModal={openModal}
+          />
+          <Field
+            name="nome"
+            type="text"
+            component={renderField}
+            label="Nome"
           />
           <Field
             name="notes"

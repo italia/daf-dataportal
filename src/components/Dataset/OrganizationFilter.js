@@ -1,5 +1,6 @@
 import React from 'react';
 import organizationList from '../../data/organizationList'
+import {  serviceurl } from '../../config/serviceurl'
 
 import { Link } from 'react-router-dom';
 
@@ -16,9 +17,10 @@ export default class OrganizationFilter extends React.Component {
             organization_filter = props.organization_filter;
 
         this.state = {
-            organizations: organizationList,
+            organizations: props.organizations,
             organization_filter: organization_filter
         };
+
     }
 
     enableGroup(id_organization) {
@@ -32,6 +34,7 @@ export default class OrganizationFilter extends React.Component {
     }
 
     render() {
+        
         return (
             <ul className="list-group">
 

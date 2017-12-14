@@ -22,7 +22,7 @@ function getSuggestions(value, ontologies, filterType) {
 function ontologiesFilter(ontologies, regex){
       var res = [];
       // CNR
-      /*ontologies.forEach(function(entry) {
+      ontologies.forEach(function(entry) {
               //console.log('entry: ' + entry['http://www.w3.org/2000/01/rdf-schema#label']);
               var obj = entry['http://www.w3.org/2000/01/rdf-schema#label'];
               obj.forEach(function(lang) {
@@ -36,10 +36,10 @@ function ontologiesFilter(ontologies, regex){
                   }
                 }
               })
-            });*/
+            });
       
       
-      ontologies.forEach(function(entry) {
+  /*     ontologies.forEach(function(entry) {
         console.log('entry: ' + entry.label[0].value);
         //if(regex.test(entry.label[0].value)){
             //console.log('value: ' + entry.label[0].value);
@@ -48,7 +48,7 @@ function ontologiesFilter(ontologies, regex){
             console.log(entry.name);
             res.push(entry);
         //}
-      });
+      }); */
       
       return res; 
 }

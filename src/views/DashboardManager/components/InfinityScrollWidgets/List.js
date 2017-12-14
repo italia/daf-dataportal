@@ -39,13 +39,12 @@ class List extends Component {
     let visible = Object.keys(widgets).length<=items ? 'hidden':visibility;
     var count = 0;
     const widgetItems = Object.keys(widgets).map((widget, key) => {
-      this.imageLoad(widget)
       if(count<items){
         count++;
         let wid = widgets[widget].type;
-        /* let onLoadIframe = function(id) {
+        let onLoadIframe = function(id) {
           $("#title-preview-" + id).hide();
-        } */
+        } 
         if(widget && widget =="TextWidget")
           return (
             <div className="infinity-iframe-100" key={key}>
@@ -72,8 +71,7 @@ class List extends Component {
                           {widgets[widget].title}
                         </h6>
                         <div className="preview-widget">
-                          <WidgetImage widget={widget}/>
-                          {/* React.createElement(wid, {...widgets[widget].props, class: "no-click"}) */}
+                          <WidgetImage widget={widget} wid={wid} widgets={widgets} onLoadIframe={onLoadIframe} key={key}/>
                         </div>
                       </a>
                 </div>

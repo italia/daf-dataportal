@@ -119,8 +119,8 @@ class Login extends Component {
                   <div className="card-block">
                   
                   <OverlayLoader
-                    color={'grey'}
-                    loader="PulseLoader"
+                    color={'#06c'}
+                    loader="ScaleLoader"
                     text="Caricamento in corso..."
                     active={this.state.uploading}
                     backgroundColor={'grey'}

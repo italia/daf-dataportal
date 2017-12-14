@@ -10,6 +10,21 @@ input#states-autocomplete {
   color: #808080;
 }
 
+input#states-autocomplete-semantic {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  color: #607d8b;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
 .menu {
   position: absolute;
   background-color: white;
@@ -17,6 +32,7 @@ input#states-autocomplete {
   box-sizing: border-box;
   width: 100%;
   border: 1px #cccccc;
+  background: #e2e2e2;
 }
 
 .item {
