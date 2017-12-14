@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: data-portal
-        image: 10.98.74.120:5000/data-portal:1.0-alpha.1
+        image: 10.98.74.120:5000/data-portal:1.0.0-SNAPSHOT
         imagePullPolicy: Always
         lifecycle:
           postStart:

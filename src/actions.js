@@ -345,6 +345,8 @@ export function getAuthToken(username, pw) {
   localStorage.setItem('username', username);
   var headers = new Headers();
   headers.append("Authorization", "Basic " + base64.encode(username + ":" + pw));
+  headers.append("Accept", "application/json");
+  headers.append("Content-Type", "application/json");
   var url = serviceurl.apiURLSecurity + '/token';
   return dispatch => {
       return fetch(url, {
@@ -634,8 +636,8 @@ export function loadOntologies() {
 
     export function getSchema(filesToUpload) {
       console.log('getSchema');
-      var url = 'http://localhost:3001/catalog-manager/v1/getschema';  
-      //var url = 'http://localhost:9000/dati-gov/v1/infer/schema/csv'
+      //var url = 'http://localhost:3001/catalog-manager/v1/getschema';  
+      var url = serviceurl.apiURLDatiGov + "/infer/schema/csv"
       //var formData  = new FormData();
       // formData.append('upfile', new Blob(filesToUpload), "agency.csv");
       

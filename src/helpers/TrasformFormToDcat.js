@@ -2,7 +2,7 @@ export function createOperational (values, data) {
   var operational = 'operational'
   data[operational] = {}
   data[operational]['logical_uri'] = "test1"  //values.uri
-  data[operational]['group_own'] = "alessandro" //values.ownership
+  data[operational]['group_own'] = localStorage.getItem('username').split('@')[0].toLowerCase() //values.ownership
   data[operational]['dataset_type'] = (values.dataset_type) ? values.dataset_type  : 'batch'
   data[operational]['is_std'] = (values.is_std === 'true')
   data[operational]['theme'] = values.domain
@@ -22,11 +22,12 @@ export function createOperational (values, data) {
   //data[operational]['ftporws'] = values.ftporws
   //data[operational]['connection'] = values.dest_uri
   var input_src = 'input_src'
+  var separator = values.separator
 
   data[operational][input_src] = 
     {"sftp": [{
         "name": "sftp_daf",
-        "param": "format=csv, sep=,"
+        "param": "format=csv, sep=" + separator
       }]
     }
     data[operational]['storage_info'] = 
@@ -150,7 +151,7 @@ export function createDataschema (values, data) {
   data[dataschema][avro]['namespace'] = 'daf://'+ values.ownership  + '/' + theme +'/' + values.title
   data[dataschema][avro]['separator'] = values.separator
   data[dataschema][avro]['name'] = values.title
-  data[dataschema][avro]['aliases'] = values.title
+  data[dataschema][avro]['aliases'] = [values.title]
   data[dataschema][avro]['fields'] =  []
   data[dataschema][avro]["`type`"] = "record"
   data[dataschema][flatSchema] = []
@@ -170,7 +171,8 @@ export function createDataschema (values, data) {
       tipo = JSON.stringify(item.tipo);
     }
     var obj = {'name' : name, "`type`" : tipo}
-    var metadata = { "desc": item.desc, "required": 0, "field_type": "","cat": "","tag": item.tag,"constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
+    var tag =  ((item.tag === '' || item.tag === undefined )  ? [] : item.tag.split(','))
+    var metadata = { "desc": item.desc, "required": 0, "field_type": "","cat": "","tag": tag,"constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
     data[dataschema][avro]['fields'].push(obj)
     var flat = {'name' : name, "`type`" : tipo, 'metadata' : metadata }
     data[dataschema][flatSchema].push(flat)
