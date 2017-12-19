@@ -229,7 +229,8 @@ class WizardFormMetadata extends Component {
                   const {dispatch} = this.props 
                   if(filesToUpload.length>0){
                     this.setState({errorDrop:''})
-                    dispatch(getSchema(filesToUpload))
+                    let typeFile = filesToUpload[0].name.toLowerCase().split(".")[1]
+                    dispatch(getSchema(filesToUpload, typeFile))
                       .then(json => { calcDataFields(fields, json, tipi)
                                       dispatch(change('wizard', 'separator', json.separator))
                                       dispatch(change('wizard', 'filesToUpload', filesToUpload))

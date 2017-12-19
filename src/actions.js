@@ -627,10 +627,10 @@ export function loadOntologies() {
       }
     }
 
-    export function getSchema(filesToUpload) {
+    export function getSchema(filesToUpload, typeFile) {
       console.log('getSchema');
       //var url = 'http://localhost:3001/catalog-manager/v1/getschema';  
-      var url = serviceurl.apiURLDatiGov + "/infer/schema/csv"
+      var url = serviceurl.apiURLDatiGov + "/infer/schema/" + typeFile
       //var formData  = new FormData();
       // formData.append('upfile', new Blob(filesToUpload), "agency.csv");
       
