@@ -87,7 +87,7 @@ class Sidebar extends Component {
         <form>
           <ModalHeader>
             <ModalClose onClick={this.hideModal}/>
-            <ModalTitle>Scegli il tema</ModalTitle>
+            <ModalTitle>Reindirizzamento</ModalTitle>
           </ModalHeader>
           <ModalBody>
           <div className="form-group">

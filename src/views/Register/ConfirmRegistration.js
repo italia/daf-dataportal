@@ -2,18 +2,21 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { activateUser } from './../../actions.js'
 import PropTypes from 'prop-types'
+import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 
-function setErrorMsg(error) {
+function setErrorMsg(messaggio) {
     return {
-      registerError: error.message,
-      successMsg: null
+      msg: messaggio,
+      error: 1,
+      uploading: false
     }
   }
   
-  function setSuccessMsg(msg) {
+  function setSuccessMsg(messaggio) {
     return {
-      successMsg: msg.message,
-      registerError: null
+      msg: messaggio,
+      error: 1,
+      uploading: false
     }
   }
 
@@ -35,8 +38,9 @@ class ConfirmRegistration extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            registerError: null,
-            successMsg: null 
+            msg: null,
+            error: 0,
+            uploading: true 
         }
         var query = this.props.location.search;
         var params= getParams(query);
@@ -52,13 +56,21 @@ class ConfirmRegistration extends Component {
         console.log('attivo utente token: ' + this.token);
         const { dispatch } = this.props
          dispatch(activateUser(this.token))
-        .then(() => {
-          this.setState(setSuccessMsg('Attivazione avvenuta con successo.'))
-        })
-        .catch((error) => {
+         .then((response)=> {
+            if(response.ok){
+              this.setState(setSuccessMsg('Attivazione avvenuta con successo.'))
+            }else{
+              response.json().then(json => {
+                if(json.code===1){
+                  this.setState(setErrorMsg(json.message))
+                }else{
+                  this.setState(setErrorMsg('Errore durante l\' attivazione.'))
+                }
+              });
+            }
+         }).catch((error) => {
           this.setState(setErrorMsg('Errore durante l\' attivazione.'))
         })
-        console.log('attivazione effettuata');
   }
 
   render() {
@@ -67,20 +79,29 @@ class ConfirmRegistration extends Component {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">
-
-              {error===1 && 
+          <OverlayLoader 
+              color={'#06c'} 
+              loader="ScaleLoader" 
+              text="Conferma registrazione in corso..." 
+              active={this.state.uploading} 
+              backgroundColor={'grey'}
+              >
+              {this.state.error===1? 
+              <div>
                 <div className="alert alert-danger" role="alert">
-                  {messaggio}
+                  {this.state.msg}
                 </div>
-              }
-              {error===0 && 
+                <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/login')} >Indietro</button>
+              </div>
+              : 
+              <div>
                 <div className="alert alert-success" role="alert">
-                  {messaggio}
+                  {this.state.msg}
                 </div>
-              }   
-              <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/login')} >Login</button>         
-            
-            
+                <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/login')} >Login</button>     
+              </div>
+              }       
+            </OverlayLoader>
           </div>
         </div>
       </div>

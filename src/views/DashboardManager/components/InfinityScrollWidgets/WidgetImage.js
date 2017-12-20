@@ -15,14 +15,22 @@ class WidgetImage extends React.Component {
         let url = 'https://api.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
         const response = fetch(url, {
             method: 'GET'
-        }).then(response => response.text())
-            .then(text => {
+        }).then(response => {
+        if (response.ok) {
+            response.text().then(text => {
                 this.setState({
                     loading: false,
                     imageSrc: text
                 })
-            })
-        /* console.log(response) */
+          });
+        } else {
+            this.setState({
+                    loading: false,
+                    imageSrc: undefined
+                })
+        }
+      })
+
     }
 
     getQueryStringValue(url, key) {
@@ -30,6 +38,7 @@ class WidgetImage extends React.Component {
     }
 
     render() {
+        const { wid, widgets, widget, onLoadIframe, key} = this.props;
         const imgStyle = {
             width: '100%'
         }
@@ -39,10 +48,13 @@ class WidgetImage extends React.Component {
             base64Icon = "base64," + this.state.imageSrc.replace(/"/g, '')
         }
         return this.state.loading === true ? <p>Caricamento ...</p> : (
+            this.state.imageSrc ?
             <div style={imgStyle}>    
-                {this.state.imageSrc &&
-                    <img src={"data:image/jpg;" + base64Icon} />
-                }
+                {this.state.imageSrc && <img src={"data:image/jpg;" + base64Icon} />}
+            </div>
+            :
+            <div style={imgStyle}> 
+                {React.createElement(wid, {...widgets[widget].props, class: "no-click", onLoad: () => onLoadIframe(key)})}
             </div>
         );
     }

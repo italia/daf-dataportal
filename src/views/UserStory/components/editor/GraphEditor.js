@@ -44,9 +44,9 @@ class GraphEditor extends Component {
    * Load all Iframe types
    */
   loadIframe = (iframes) => {
-    let widgetsAppo = {};
+  //  let widgetsAppo = {};
     iframes.map(iframe => {
-        widgetsAppo[iframe.identifier] = {
+        this.widgetsTypes[iframe.identifier] = {
         "type": IframeWidget,
         "title": iframe.title,
         "props":{
@@ -56,8 +56,13 @@ class GraphEditor extends Component {
         }
       }
     }) 
-    this.setState({widgets: widgetsAppo})
+//    this.setState({widgets: widgetsAppo})
   }
+
+  /**
+   * Types of widgets avaible
+   */
+  widgetsTypes = {}
 
   /**
    * Open modal Change Graph
@@ -73,7 +78,7 @@ class GraphEditor extends Component {
    */
   changeGraph(widgetName) {
     this.onRequestClose();
-    this.state.graph = this.state.widgets[widgetName];
+    this.state.graph = this.widgetsTypes[widgetName];
     this.props.onChange(this.props.keyValue, this.state.graph)
   }
 
@@ -130,7 +135,7 @@ class GraphEditor extends Component {
         }
         <div style={{zIndex: '5'}}>
         <App 
-        widgets={this.state.widgets}
+          widgets={this.widgetsTypes}
           isModalOpen={this.state.isModalOpen}
           onWidgetSelect={this.changeGraph}
           onRequestClose={this.onRequestClose}
