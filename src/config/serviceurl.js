@@ -32,14 +32,15 @@ export const serviceurl = {
  urlJupiter: 'https://datascience.daf.teamdigitale.it',
 
  // TEST
- /*apiURLSSOManager: "http://service:9002/sso-manager",
- apiURLDatiGov: "http://service:9000/dati-gov/v1", 
- apiURLCatalog: "http://service:9001/catalog-manager/v1",
- apiURLIngestion: "http://service:9002/ingestion-manager/v1",
- apiURLSecurity: "http://service:9002/security-manager/v1",
- */
- //urlMetabase: 'http://metabase.daf.test.it',
- //urlSuperset: 'http://superset.daf.test.it',
+ //apiURLSSOManager: "http://datipubblici-private.integrazione.daf:9002/sso-manager",
+ //apiURLDatiGov: "http://datipubblici-private.integrazione.daf:9000/dati-gov/v1", 
+ //apiURLCatalog: "http://datipubblici-private.integrazione.daf:9001/catalog-manager/v1",
+ //apiURLIngestion: "http://service:9002/ingestion-manager/v1",
+ //apiURLSecurity: "http://datipubblici-private.integrazione.daf9002/security-manager/v1",
+ 
+
+ //urlMetabase: 'http://metabase.integrazione.daf',
+ //urlSuperset: 'http://superset.integrazione.daf',
  //urlJupiter: 'http://datascience.daf.teamdigitale.governo.it',
 
  // URL ONTONETHUB
@@ -48,10 +49,8 @@ export const serviceurl = {
  urlSemantic: 'http://stlab.istc.cnr.it/ontonethub/api/find',
 
  domain: ".daf.teamdigitale.it",
-
- //domain: ".daf.test.it",
-
-  auth: "dGVzdDp0dWxsaWFlYmxp",
+ //domain: ".integrazione.daf",
+ auth: "dGVzdDp0dWxsaWFlYmxp",
 
  "DatasetBackend": {
     "Search": {
