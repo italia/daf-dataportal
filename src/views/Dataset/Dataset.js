@@ -29,6 +29,9 @@ class Dataset extends Component {
       showDivCategory: false,
       showDivGroup: false,
       showDivOrganization: false,
+      showDivMetabase: false,
+      showDivSuperset: false,
+      showDivJupyter: false,
       edit: false,
       organizations: []
     }
@@ -40,6 +43,10 @@ class Dataset extends Component {
     this.handleToggleClickCat = this.handleToggleClickCat.bind(this)
     this.handleToggleClickGroup = this.handleToggleClickGroup.bind(this)
     this.handleToggleClickOrganization = this.handleToggleClickOrganization.bind(this);
+    this.handleToggleClickMetabase = this.handleToggleClickMetabase.bind(this);
+    this.handleToggleClickSuperset = this.handleToggleClickSuperset.bind(this);
+    this.handleToggleClickJupyter = this.handleToggleClickJupyter.bind(this);
+    
     this.onSearch = this.onSearch.bind(this) 
     this.onClick = this.onClick.bind(this)   
   }
@@ -130,6 +137,30 @@ class Dataset extends Component {
     }));
   }
 
+  handleToggleClickMetabase() {
+    this.setState(prevState => ({
+      showDivMetabase: !prevState.showDivMetabase,
+      showDivSuperset: false,
+      showDivJupyter: false
+    }));
+  }
+
+  handleToggleClickSuperset() {
+    this.setState(prevState => ({
+      showDivSuperset: !prevState.showDivSuperset,
+      showDivMetabase: false,
+      showDivJupyter: false
+    }));
+  }
+
+  handleToggleClickJupyter() {
+    this.setState(prevState => ({
+      showDivJupyter: !prevState.showDivJupyter,
+      showDivMetabase: false,
+      showDivSuperset: false
+    }));
+  }
+
   onSearch(category, group, organization, order) {
     if (order){
       this.setState({
@@ -170,20 +201,25 @@ renderDatasetList(length, datasets, ope, isLoading){
       {datasets.map(dataset => {
         return (<div className="card" key={dataset.name}>
               <div className="card-body mt-2 b-b-1">
-                <a href className="card-link" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>
-                  <h5 className="card-text col-12">{transformName(dataset.name)}</h5>
-                </a>
-              <div className="d-inline-flex mt-2 b-t-1 col-12">
-                <div className="col-8 b-r-1">
-                  <p className="card-text mt-2">{dataset.notes}</p>
-                  <p className="card-subtitle mb-2 text-muted">Organizzazione: {dataset.organization.name}</p>
-                  <p className="card-subtitle mb-2 text-muted">Stato: {dataset.organization.state}</p>
+                <div className="col-12">
+                    <a href className="card-link" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>
+                      <h3 className="card-text col-12">{transformName(dataset.name)}</h3>
+                    </a>
                 </div>
-                <div className="col-4">
-                  <p className="card-subtitle mb-2 mt-2"><strong>{"Aggiornato il" + " "}</strong> {dataset.modified}</p>
-                  <p className="card-subtitle mb-2"><strong>{"Pubblicato da" + " "}</strong> {dataset.publisher_name}</p>
-                </div>
-                  {/* <a href className="card-link" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>Dettaglio Dataset</a> */}
+                <div className="d-inline-flex mt-2 b-t-1 col-12">
+                  <div className="col-8 b-r-1">
+                    <p className="card-text mt-2 text-muted">{dataset.notes}</p>
+                    <p className="card-subtitle mb-2"><strong>Stato: </strong>{dataset.organization.state}</p>
+                  </div>
+                  <div className="col-4">
+                    <p className="card-subtitle mb-2 mt-2"><strong>Organizzazione: </strong>{dataset.organization.name}</p>
+                    <p className="card-subtitle mb-2"><strong>Tags: </strong> 
+                    {dataset.tags.map(tag => {
+                      return <span className="badge badge-pill badge-primary" key={tag.name}> {tag.name}</span>
+                      }
+                    )}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -208,7 +244,31 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
             {length > 999 ?
               <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
             :
-              <div><h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
+/*               <div>
+                <h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6>
+                <h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6>
+              </div> */
+
+              <div className="row">
+                <div className="col-sm-4">
+                  <div className="callout callout-info">
+                    <small className="text-muted">Dataset Totali</small><br/>
+                    <strong className="h4">14994</strong>
+                  </div>
+                </div>
+                <div className="col-sm-4">
+                  <div className="callout callout-warning">
+                    <small className="text-muted">Dataset Trovati</small><br/>
+                    <strong className="h4">{length}</strong>
+                  </div>
+                </div>
+                <div className="col-sm-4">
+                  <div className="callout callout-danger">
+                    <small className="text-muted">Dataset mostrati</small><br/>
+                    <strong className="h4">{datasets.length}</strong>
+                  </div>
+                </div>
+              </div>
             }
           </div>
           {this.renderDatasetList(length, datasets, ope, isLoading)}
@@ -228,26 +288,31 @@ renderDatasetDetail(dataset, ope){
   if (ope === 'RECEIVE_DATASET_DETAIL' && this.state.edit===false) {
     if (dataset)
       return (
-        <div className="col-8">
+        <div className="col-10">
           <div className="card">
-            {/*               <div className="card-header">
-                Descrizione
-                </div> */}
             <div className="card-block">
- {/*              <div className="col-12">
-                
-                <button type="button" className="btn btn-default float-right" onClick={this.onClick.bind(this, dataset.name)}><i className="fa fa-edit"></i></button>
-              </div> */}
-              <div className="row">
+            <div className="row">
+              <div className="col-12">
+                <h2 className="card-text">{transformName(dataset.dcatapit.title) + " "}</h2>
+              </div>
+            </div>
+            <div className="row mt-4">
                 <div className="col-8 b-r-1">
-                  <h2 className="card-text">{transformName(dataset.name) + " "}</h2>
-                  <h6 className="card-text">{dataset.notes}</h6>
-                  <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
+                  <p className="card-text text-muted">{dataset.dcatapit.notes}</p>
+                  <p className="card-text"><strong>Licenza:</strong>{dataset.dcatapit.license_title}</p>
+                  <p className="card-text"><strong>{"Categoria" + " "}</strong>
+                    <span className="badge badge-default"> {dataset.dcatapit.theme}</span>
+                  </p>
                 </div>
                 <div className="col-3">
-                  <p className="card-text"><strong>{"Aggiornato il" + " "}</strong> {dataset.modified}</p>
-                  <p className="card-text"><strong>{"Pubblicato da" + " "}</strong> {dataset.publisher_name}</p>
-                  <p className="card-text"><strong>{"Categoria" + " "}</strong><span className="badge badge-pill badge-primary">{dataset.theme}</span></p>
+                  <p className="card-text"><strong>{"Aggiornato il" + " "}</strong> {dataset.dcatapit.modified}</p>
+                  <p className="card-text"><strong>{"Pubblicato da" + " "}</strong> {dataset.dcatapit.publisher_name}</p>
+                  <p className="card-text"><strong>Tags: </strong> 
+                    {dataset.dcatapit.tags.map(tag => {
+                      return <span className="badge badge-pill badge-primary" key={tag.name}> {tag.name}</span>
+                      }
+                    )}
+                  </p>
                 </div>
               </div>
               {/* <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p> */}
@@ -260,51 +325,136 @@ renderDatasetDetail(dataset, ope){
             <div className="card-block">
               <div className="row">
                 <div className="col-4">
-                  <i className="fa fa-pie-chart fa-lg m-t-2"> Grafici</i>
+                  <strong><p>File</p></strong>
                 </div>
                 <div className="col-8">
-                  <p>Collegati a Metabase e cerca la tabella corrispondente a <strong>{dataset.name}</strong></p>
+                  <a href='#'><p></p></a>
                 </div>
               </div>
               <div className="row">
                 <div className="col-4">
-                  <i className="fa fa-gears fa-lg m-t-2"> Business Intelligence</i>
+                  <strong><p>Schema</p></strong>
                 </div>
                 <div className="col-8">
-                  <p>Collegati a Superset e cerca la tabella corrispondente a <strong>{dataset.name}</strong>, se non la trovi segui le <a href="https://daf-docs.readthedocs.io/en/latest/manutente/datascience/superset.html" target="_blank">istruzioni</a> per crearla.</p>
+                  <a href='#'><p></p></a>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="card">
+            <div className="card-header">
+              Collegamenti
+            </div>
+            <div className="card-block">
               <div className="row">
-                <div className="col-4">
-                  <i className="fa fa-university fa-lg m-t-2"> Data Science</i>
+                <div className="col-4 col-lg-4">
+                  <div className="card">
+                    <div className="card-block p-1 clearfix">
+                      <i className="fa fa-pie-chart bg-primary p-1 font-2xl mr-1 float-left"></i>
+                      <div className="h5 text-primary mb-0 mt-h">Grafici</div>
+                      <div className="text-muted text-uppercase font-weight-bold font-xs">Metabase</div>
+                    </div>
+                    <div className="card-footer p-x-1 py-h">
+                      <a className="font-weight-bold font-xs btn-block text-muted" onClick={this.handleToggleClickMetabase}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
+                    </div>
+                  </div>
                 </div>
-                <div className="col-8">
-                  <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>/daf/opendata/{dataset.name}</strong>.</p>
-
-                  <strong> Pyspark </strong>
-                  <code>
-                    path_dataset = "/daf/opendata/<strong>{dataset.name}</strong>" <br />
-                    df = (spark.read.format("parquet") <br />
-                    .option("inferSchema", "true") <br />
-                    .option("header", "true") <br />
-                    .option("sep", "|")     <br />
-                    .load(path_dataset) <br />
-                    )
-                    </code><br />
-                  <strong> Hive table </strong>
-                  <code>
-                    from pyspark.sql import HiveContext <br />
-                    hive_context = HiveContext(sc) <br />
-                    hive_context.sql("use opendata") <br />
-                    incidenti = hive_context.table('<strong>{dataset.name}</strong>') <br />
-                    incidenti
-                      </code><br />
-                  <strong> Spark Sql </strong>
-                  <code>
-                    spark.sql("SELECT * FROM opendata.<strong>{dataset.name}</strong>").show()
-                      </code>
+                <div className="col-4 col-lg-4">
+                  <div className="card">
+                    <div className="card-block p-1 clearfix">
+                      <i className="fa fa-gears bg-primary p-1 font-2xl mr-1 float-left"></i>
+                      <div className="h5 text-primary mb-0 mt-h">Business Intelligence</div>
+                      <div className="text-muted text-uppercase font-weight-bold font-xs">Superset</div>
+                    </div>
+                    <div className="card-footer p-x-1 py-h">
+                      <a className="font-weight-bold font-xs btn-block text-muted" onClick={this.handleToggleClickSuperset}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-4 col-lg-4">
+                  <div className="card">
+                    <div className="card-block p-1 clearfix">
+                      <i className="fa fa-university bg-primary p-1 font-2xl mr-1 float-left"></i>
+                      <div className="h5 text-primary mb-0 mt-h">Data Science</div>
+                      <div className="text-muted text-uppercase font-weight-bold font-xs">Jupyter</div>
+                    </div>
+                    <div className="card-footer p-x-1 py-h">
+                      <a className="font-weight-bold font-xs btn-block text-muted" onClick={this.handleToggleClickJupyter}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
+                    </div>
+                  </div>
                 </div>
               </div>
+              {this.state.showDivMetabase &&
+              <div className="row">
+                <div className="col">
+                    <div className="card card-block">
+                    <p>Collegati a Metabase e cerca la tabella corrispondente a <strong>{dataset.dcatapit.title}</strong></p>
+                    </div>
+                </div>
+              </div>
+              }
+              {this.state.showDivSuperset &&
+              <div className="row">
+                <div className="col">
+                    <div className="card card-block">
+                    <p>Collegati a Superset e cerca la tabella corrispondente a <strong>{dataset.dcatapit.title}</strong>, se non la trovi segui le <a href="https://daf-docs.readthedocs.io/en/latest/manutente/datascience/superset.html" target="_blank">istruzioni</a> per crearla.</p>
+                    </div>
+                </div>
+              </div>
+              }
+              {this.state.showDivJupyter &&
+              <div className="row">
+                <div className="col">
+                    <div className="card card-block">
+                    <div className="col-12">
+                        <div className="row">
+                          <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>/daf/opendata/{dataset.dcatapit.title}</strong>.</p>
+                        </div>
+                        <div className="row">
+                          <div className="col-2">
+                            <strong> Pyspark </strong>
+                          </div>
+                          <div className="col-10">
+                            <code>
+                              path_dataset = "/daf/opendata/<strong>{dataset.dcatapit.title}</strong>" <br />
+                              df = (spark.read.format("parquet") <br />
+                              .option("inferSchema", "true") <br />
+                              .option("header", "true") <br />
+                              .option("sep", "|")     <br />
+                              .load(path_dataset) <br />
+                              ) <br />
+                              </code>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-2">
+                            <strong> Hive table </strong>
+                          </div>
+                          <div className="col-10">
+                            <code>
+                              from pyspark.sql import HiveContext <br />
+                              hive_context = HiveContext(sc) <br />
+                              hive_context.sql("use opendata") <br />
+                              incidenti = hive_context.table('<strong>{dataset.dcatapit.title}</strong>') <br />
+                              incidenti <br />
+                              </code>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-2">
+                            <strong> Spark Sql </strong>
+                          </div>
+                          <div className="col-10">
+                            <code>
+                              spark.sql("SELECT * FROM opendata.<strong>{dataset.dcatapit.title}</strong>").show()
+                            </code>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              }
             </div>
           </div>
         </div>
@@ -325,27 +475,32 @@ renderFilter(ope){
         </fieldset>
       </form>
       
-        
-      <h5 onClick={this.handleToggleClickCat}>Filtra categorie</h5>  
-      {this.state.showDivCategory &&
-      <div className="u-sizeFull" id="subnav">
-        <CategoryFilter category_filter={this.state.category_filter} onSearch={this.onSearch}/>
-      </div> 
-      }
-      <h5 onClick={this.handleToggleClickGroup}>Filtra formati</h5>
-      {this.state.showDivGroup &&
-      <div className="u-sizeFull" id="subnav">
-        <GroupFilter group_filter={this.state.group_filter} onSearch={this.onSearch}/>
-      </div>
-      }
-      
-      <h5 onClick={this.handleToggleClickOrganization}>Filtra organizzazioni</h5>
-      
-      {this.state.showDivOrganization &&
-      <div className="u-sizeFull" id="subnav">
-        <OrganizationFilter organizations={this.state.organizations} organization_filter={this.state.organization_filter}  onSearch={this.onSearch}/>
-      </div>
-      }
+      <ul className="list-group">  
+        <li className="list-group-item-lev1" onClick={this.handleToggleClickCat}>
+          <h3 className="filter-title">Filtra categorie<i className="fa fa-angle-right float-right font-lg"></i></h3>
+        </li>  
+        {this.state.showDivCategory &&
+        <div className="u-sizeFull" id="subnav">
+          <CategoryFilter category_filter={this.state.category_filter} onSearch={this.onSearch}/>
+        </div> 
+        }
+        <li className="list-group-item-lev1" onClick={this.handleToggleClickGroup}>
+          <h3 className="filter-title">Filtra formati<i className="fa fa-angle-right float-right font-lg"></i></h3>
+        </li>
+        {this.state.showDivGroup &&
+        <div className="u-sizeFull" id="subnav">
+          <GroupFilter group_filter={this.state.group_filter} onSearch={this.onSearch}/>
+        </div>
+        }
+        <li className="list-group-item-lev1" onClick={this.handleToggleClickOrganization}>
+          <h3 className="filter-title">Filtra organizzazioni<i className="fa fa-angle-right float-right font-lg"></i></h3>
+        </li>
+        {this.state.showDivOrganization &&
+        <div className="u-sizeFull" id="subnav">
+          <OrganizationFilter organizations={this.state.organizations} organization_filter={this.state.organization_filter}  onSearch={this.onSearch}/>
+        </div>
+        }
+      </ul>
     </div>
     )
   else
