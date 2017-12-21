@@ -2,7 +2,7 @@ export function createOperational (values, data) {
   var operational = 'operational'
   data[operational] = {}
   data[operational]['logical_uri'] = "test1"  //values.uri
-  data[operational]['group_own'] = localStorage.getItem('username').split('@')[0].toLowerCase() //values.ownership
+  data[operational]['group_own'] = localStorage.getItem('user').toLowerCase() //values.ownership
   data[operational]['dataset_type'] = (values.dataset_type) ? values.dataset_type  : 'batch'
   data[operational]['is_std'] = (values.is_std === 'true')
   data[operational]['theme'] = values.domain
