@@ -33,6 +33,13 @@
     background-color: #FFF;
   }
   
+  .App-header-thin {
+    background-color: white;
+    padding: 20px;
+    color: black;
+    background-color: #FFF;
+  }
+  
   .App-intro {
     font-size: large;
   }

@@ -222,6 +222,9 @@
         ]
         
     }, 
+    "/catalog-manager/v1/ckan/organizations": {
+        "get": []
+    },
     "/catalog-manager/v1/ckan/userOrganizations/test_uid": {
         "get": [
             {
@@ -626,7 +629,7 @@
                 }
                 ]
     },
-    "/catalog-manager/v1/getschema":{
+    "/dati-gov/v1/infer/schema/csv":{
         "post": {
             "separator": ";",
             "format": "csv",
