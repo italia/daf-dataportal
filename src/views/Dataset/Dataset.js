@@ -204,7 +204,7 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
     if (datasets && datasets.length > 0){
       return ( 
         <div className="App">
-          <div className="App-header b-a-1">
+          <div className="App-header-thin">
             {length > 999 ?
               <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
             :
@@ -217,7 +217,7 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
     }else
       return(
         <div className="App">
-          <div className="App-header">
+          <div className="App-header-thin">
             <div><h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6><h6 className="modal-title pull-right">Prova con un'altra ricerca</h6></div>
           </div>
         </div>
@@ -228,85 +228,86 @@ renderDatasetDetail(dataset, ope){
   if (ope === 'RECEIVE_DATASET_DETAIL' && this.state.edit===false) {
     if (dataset)
       return (
-          <div className="col-12">
-          
-            <div className="card">
-{/*               <div className="card-header">
+        <div className="col-8">
+          <div className="card">
+            {/*               <div className="card-header">
                 Descrizione
                 </div> */}
-              <div className="card-block">
-                <div className="col-12">
-                  <h2 className="card-text">{transformName(dataset.name)+" "}<span className="badge badge-primary">{dataset.theme}</span></h2>
+            <div className="card-block">
+ {/*              <div className="col-12">
+                
+                <button type="button" className="btn btn-default float-right" onClick={this.onClick.bind(this, dataset.name)}><i className="fa fa-edit"></i></button>
+              </div> */}
+              <div className="row">
+                <div className="col-8 b-r-1">
+                  <h2 className="card-text">{transformName(dataset.name) + " "}</h2>
+                  <h6 className="card-text">{dataset.notes}</h6>
+                  <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
                 </div>
-              <div className="d-inline-flex b-t-1 mt-2 pt-1">
-                  <div className="col-8 b-r-1">
-                    <h6 className="card-text">{dataset.notes}</h6>
-                    <p className="card-text"><strong>Licenza:</strong> Creative Commons Attribution 4.0 International (CC-BY 4.0)</p>
-                  </div>
-                  <div className="col-4">
-                    <p className="card-text"><strong>{"Aggiornato il"+" "}</strong> {dataset.modified}</p>
-                    <p className="card-text"><strong>{"Pubblicato da" + " "}</strong> {dataset.publisher_name}</p>
-                  </div>
+                <div className="col-3">
+                  <p className="card-text"><strong>{"Aggiornato il" + " "}</strong> {dataset.modified}</p>
+                  <p className="card-text"><strong>{"Pubblicato da" + " "}</strong> {dataset.publisher_name}</p>
+                  <p className="card-text"><strong>{"Categoria" + " "}</strong><span className="badge badge-pill badge-primary">{dataset.theme}</span></p>
                 </div>
-              <button type="button" className="btn btn-default float-right" onClick={this.onClick.bind(this, dataset.name)}><i className="fa fa-edit"></i></button>
-                {/* <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p> */}
               </div>
+              {/* <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p> */}
             </div>
-            <div className="card">
-              <div className="card-header">
-                Risorse
+          </div>
+          <div className="card">
+            <div className="card-header">
+              Risorse
                 </div>
-              <div className="card-block">
-                <div className="row">
-                  <div className="col-4">
-                    <i className="fa fa-pie-chart fa-lg m-t-2"> Grafici</i>
-                  </div>
-                  <div className="col-8">
-                    <p>Collegati a Metabase e cerca la tabella corrispondente a <strong>{dataset.name}</strong></p>
-                  </div>
+            <div className="card-block">
+              <div className="row">
+                <div className="col-4">
+                  <i className="fa fa-pie-chart fa-lg m-t-2"> Grafici</i>
                 </div>
-                <div className="row">
-                  <div className="col-4">
-                    <i className="fa fa-gears fa-lg m-t-2"> Business Intelligence</i>
-                  </div>
-                  <div className="col-8">
-                    <p>Collegati a Superset e cerca la tabella corrispondente a <strong>{dataset.name}</strong>, se non la trovi segui le <a href="https://daf-docs.readthedocs.io/en/latest/manutente/datascience/superset.html" target="_blank">istruzioni</a> per crearla.</p>
-                  </div>
+                <div className="col-8">
+                  <p>Collegati a Metabase e cerca la tabella corrispondente a <strong>{dataset.name}</strong></p>
                 </div>
-                <div className="row">
-                  <div className="col-4">
-                    <i className="fa fa-university fa-lg m-t-2"> Data Science</i>
-                  </div>
-                  <div className="col-8">
-                    <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>/daf/opendata/{dataset.name}</strong>.</p>
-                       
-                    <strong> Pyspark </strong>
-                    <code>
-                    path_dataset = "/daf/opendata/<strong>{dataset.name}</strong>" <br/>
-                    df = (spark.read.format("parquet") <br/>
-                          .option("inferSchema", "true") <br/>
-                          .option("header", "true") <br/>
-                          .option("sep", "|")     <br/>
-                          .load(path_dataset) <br/>
-)
-                    </code><br/>
-                    <strong> Hive table </strong>
-                    <code>
-                    from pyspark.sql import HiveContext <br/>
-                    hive_context = HiveContext(sc) <br/>
-                    hive_context.sql("use opendata") <br/>
-                    incidenti = hive_context.table('<strong>{dataset.name}</strong>') <br/>
+              </div>
+              <div className="row">
+                <div className="col-4">
+                  <i className="fa fa-gears fa-lg m-t-2"> Business Intelligence</i>
+                </div>
+                <div className="col-8">
+                  <p>Collegati a Superset e cerca la tabella corrispondente a <strong>{dataset.name}</strong>, se non la trovi segui le <a href="https://daf-docs.readthedocs.io/en/latest/manutente/datascience/superset.html" target="_blank">istruzioni</a> per crearla.</p>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-4">
+                  <i className="fa fa-university fa-lg m-t-2"> Data Science</i>
+                </div>
+                <div className="col-8">
+                  <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>/daf/opendata/{dataset.name}</strong>.</p>
+
+                  <strong> Pyspark </strong>
+                  <code>
+                    path_dataset = "/daf/opendata/<strong>{dataset.name}</strong>" <br />
+                    df = (spark.read.format("parquet") <br />
+                    .option("inferSchema", "true") <br />
+                    .option("header", "true") <br />
+                    .option("sep", "|")     <br />
+                    .load(path_dataset) <br />
+                    )
+                    </code><br />
+                  <strong> Hive table </strong>
+                  <code>
+                    from pyspark.sql import HiveContext <br />
+                    hive_context = HiveContext(sc) <br />
+                    hive_context.sql("use opendata") <br />
+                    incidenti = hive_context.table('<strong>{dataset.name}</strong>') <br />
                     incidenti
-                      </code><br/>              
-                      <strong> Spark Sql </strong>
-                      <code>
-                      spark.sql("SELECT * FROM opendata.<strong>{dataset.name}</strong>").show()
+                      </code><br />
+                  <strong> Spark Sql </strong>
+                  <code>
+                    spark.sql("SELECT * FROM opendata.<strong>{dataset.name}</strong>").show()
                       </code>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
       );
   }
 }
