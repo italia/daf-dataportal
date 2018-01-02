@@ -8623,7 +8623,7 @@ app-root {
   z-index: 1019;
   height: 100%; }
   .sidebar-off-canvas .sidebar .sidebar-nav {
-    height: calc(100vh - 100px); }
+    height: calc(100vh - 50px); }
 
 @media (min-width: 992px) {
   .sidebar-compact .sidebar {

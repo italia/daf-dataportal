@@ -182,14 +182,24 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Dashboard</NavLink>
+                <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-graph"></i> Crea Dashboard</NavLink>
               </li>
                   
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Crea Storia</NavLink>
+                <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
+              </li>
+
+              <li className="nav-title">
+                Impostazioni
+              </li>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/administration'} className="nav-link" activeClassName="active"><i className="icon-people"></i> Gestione Utenti</NavLink>
               </li>
             </ul>
           </nav>
