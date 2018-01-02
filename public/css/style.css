@@ -9197,3 +9197,39 @@ hr.transparent {
 .pl-xl-50 {
   padding-left: 10rem; 
 }
+
+.list-group-item-lev1 {
+  position: relative;
+  display: block;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125); }
+  .list-group-item:last-child {
+    margin-bottom: 0; }
+  .list-group-item:focus, .list-group-item:hover {
+    text-decoration: none; }
+  .list-group-item.disabled, .list-group-item:disabled {
+    color: #b0bec5;
+    background-color: #fff; }
+  .list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #20a8d8;
+    border-color: #20a8d8; }
+
+.filter-title {
+  position: relative;
+  display: block;
+  padding: 1em 1em 1em 0.5em;
+  color: #474747;
+  border-top: none;
+  border-left: 5px solid #d6d6d6;
+  border-bottom: none;
+  font-size: 15px;
+  font-weight: 600;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}

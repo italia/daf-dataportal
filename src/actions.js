@@ -535,7 +535,8 @@ function fetchDataset(query, start, owner, category_filter, group_filter, organi
 
 function fetchDatasetDetail(datasetname) {
   var token = '';
-  var url = serviceurl.apiURLCatalog + '/ckan/datasets/'  + datasetname;
+  //https://api.daf.teamdigitale.it/catalog-manager/v1/catalog-ds/getbytitle/carsharing_entity_vehicle
+  var url = serviceurl.apiURLCatalog + '/catalog-ds/getbytitle/'  + datasetname;
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
       token = localStorage.getItem('token')
@@ -634,10 +635,10 @@ export function loadOntologies() {
       }
     }
 
-    export function getSchema(filesToUpload) {
+    export function getSchema(filesToUpload, typeFile) {
       console.log('getSchema');
       //var url = 'http://localhost:3001/catalog-manager/v1/getschema';  
-      var url = serviceurl.apiURLDatiGov + "/infer/schema/csv"
+      var url = serviceurl.apiURLDatiGov + "/infer/schema/" + typeFile
       //var formData  = new FormData();
       // formData.append('upfile', new Blob(filesToUpload), "agency.csv");
       

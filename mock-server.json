@@ -222,6 +222,9 @@
         ]
         
     }, 
+    "/catalog-manager/v1/ckan/organizations": {
+        "get": []
+    },
     "/catalog-manager/v1/ckan/userOrganizations/test_uid": {
         "get": [
             {
@@ -389,6 +392,226 @@
         ]
     },
     
+    "/catalog-manager/v1/catalog-ds/getbytitle/test1": {
+        "get": {
+                "dataschema": {
+                    "avro": {
+                        "name": "carsharing_entity_vehicle",
+                        "type": "record",
+                        "namespace": "daf://default_org/TRAN/carsharing_entity_vehicle",
+                        "aliases": [
+                            "carsharing_entity_vehicle"
+                        ],
+                        "fields": [
+                            {
+                                "name": "emission_class",
+                                "type": "string"
+                            },
+                            {
+                                "name": "fuel",
+                                "type": "string"
+                            },
+                            {
+                                "name": "vehicle_model",
+                                "type": "string"
+                            },
+                            {
+                                "name": "status",
+                                "type": "string"
+                            },
+                            {
+                                "name": "id_license_plate",
+                                "type": "string"
+                            },
+                            {
+                                "name": "vehicle_type",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "flatSchema": [
+                        {
+                            "name": "emission_class",
+                            "type": "string",
+                            "metadata": {
+                                "semantics": {
+                                    "id": "",
+                                    "context": ""
+                                },
+                                "desc": "",
+                                "tag": [],
+                                "field_type": "",
+                                "constr": [
+                                    {
+                                        "type": "",
+                                        "param": ""
+                                    }
+                                ],
+                                "required": 0,
+                                "cat": ""
+                            }
+                        },
+                        {
+                            "name": "fuel",
+                            "type": "string",
+                            "metadata": {
+                                "semantics": {
+                                    "id": "",
+                                    "context": ""
+                                },
+                                "desc": "",
+                                "tag": [],
+                                "field_type": "",
+                                "constr": [
+                                    {
+                                        "type": "",
+                                        "param": ""
+                                    }
+                                ],
+                                "required": 0,
+                                "cat": ""
+                            }
+                        },
+                        {
+                            "name": "vehicle_model",
+                            "type": "string",
+                            "metadata": {
+                                "semantics": {
+                                    "id": "",
+                                    "context": ""
+                                },
+                                "desc": "",
+                                "tag": [],
+                                "field_type": "",
+                                "constr": [
+                                    {
+                                        "type": "",
+                                        "param": ""
+                                    }
+                                ],
+                                "required": 0,
+                                "cat": ""
+                            }
+                        },
+                        {
+                            "name": "status",
+                            "type": "string",
+                            "metadata": {
+                                "semantics": {
+                                    "id": "",
+                                    "context": ""
+                                },
+                                "desc": "",
+                                "tag": [],
+                                "field_type": "",
+                                "constr": [
+                                    {
+                                        "type": "",
+                                        "param": ""
+                                    }
+                                ],
+                                "required": 0,
+                                "cat": ""
+                            }
+                        },
+                        {
+                            "name": "id_license_plate",
+                            "type": "string",
+                            "metadata": {
+                                "semantics": {
+                                    "id": "",
+                                    "context": ""
+                                },
+                                "desc": "",
+                                "tag": [],
+                                "field_type": "",
+                                "constr": [
+                                    {
+                                        "type": "",
+                                        "param": ""
+                                    }
+                                ],
+                                "required": 0,
+                                "cat": ""
+                            }
+                        },
+                        {
+                            "name": "vehicle_type",
+                            "type": "string",
+                            "metadata": {
+                                "semantics": {
+                                    "id": "",
+                                    "context": ""
+                                },
+                                "desc": "",
+                                "tag": [],
+                                "field_type": "",
+                                "constr": [
+                                    {
+                                        "type": "",
+                                        "param": ""
+                                    }
+                                ],
+                                "required": 0,
+                                "cat": ""
+                            }
+                        }
+                    ]
+                },
+                "operational": {
+                    "dataset_type": "batch",
+                    "read_type": "update",
+                    "is_std": false,
+                    "logical_uri": "daf://dataset/ord/ale.ercolani/default_org/TRAN/terrestre/carsharing_entity_vehicle",
+                    "theme": "TRAN",
+                    "subtheme": "terrestre",
+                    "group_own": "ale.ercolani",
+                    "storage_info": {
+                        "hdfs": {
+                            "name": "hdfs_daf"
+                        }
+                    },
+                    "physical_uri": "data/daf_testdatalake/ord/default_org/TRAN/terrestre/ale.ercolani/carsharing_entity_vehicle",
+                    "input_src": {
+                        "sftp": [
+                            {
+                                "name": "sftp_daf",
+                                "param": "format=csv, sep=,"
+                            }
+                        ]
+                    }
+                },
+                "dcatapit": {
+                    "name": "carsharing_entity_vehicle",
+                    "notes": "carsharing_entity_vehicle",
+                    "relationships_as_object": [],
+                    "holder_identifier": "default_org",
+                    "identifier": "carsharing_entity_vehicle",
+                    "license_title": "Altro (Non Commerciale)",
+                    "tags": [
+                        {
+                            "name": "TRAN",
+                            "state": "active",
+                            "display_name": "TRAN",
+                            "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                        }
+                    ],
+                    "groups": [],
+                    "modified": "2017-07-23",
+                    "alternate_identifier": "carsharing_entity_vehicle",
+                    "relationships_as_subject": [],
+                    "holder_name": "default_org",
+                    "publisher_identifier": "default_org",
+                    "resources": [],
+                    "frequency": "unknown",
+                    "title": "carsharing_entity_vehicle",
+                    "owner_org": "default_org",
+                    "theme": "TRAN",
+                    "publisher_name": "default_org"
+                }
+            
+        }
+    },
     "/catalog-manager/v1/ckan/datasets/test1": {
         "get": {
             "name": "colonnine_20170830074512_2",
@@ -626,7 +849,7 @@
                 }
                 ]
     },
-    "/catalog-manager/v1/getschema":{
+    "/dati-gov/v1/infer/schema/csv":{
         "post": {
             "separator": ";",
             "format": "csv",

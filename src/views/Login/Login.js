@@ -58,6 +58,7 @@ class Login extends Component {
                                 setCookie('grafana', json)
                                 dispatch(loginAction())
                                   .then(json => {
+                                    localStorage.setItem('user', json.uid);
                                     dispatch(receiveLogin(json))
                                     dispatch(addUserOrganization(json.uid))
                                     this.props.history.push('/home')
