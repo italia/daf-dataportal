@@ -169,13 +169,14 @@ class WizardFormMetadata extends Component {
   }
 
   calcDataFields (fields, json, tipi, setTipi) {
-    let inferred = json["inferredType"];
+    localStorage.setItem('kyloSchema', JSON.stringify(json));
+    let inferred = json["fields"];
     inferred.map((item, index) => {
-      tipi[index] =  item.inferredType;
-      fields.push({nome : item.column_name, tipo : item.inferredType[0], concetto : '', 
+      tipi[index] =  new Array(item.derivedDataType); //Only one type returned from the service !!!
+      fields.push({nome : item.name, tipo : item.derivedDataType, concetto : '', 
       desc : '', required : 0, field_type : '' , cat : '', tag : '', 
       constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
-      data :  item.data});
+      data :  item.sampleValues});
     })
     setTipi(tipi)
   }
@@ -230,7 +231,7 @@ class WizardFormMetadata extends Component {
                       this.setState({errorDrop:''})
                       let typeFile = filesToUpload[0].name.toLowerCase().split(".")[1]
                       dispatch(getSchema(filesToUpload, typeFile))
-                        .then(json => { calcDataFields(fields, json, tipi, setTipi)
+                        .then(json => { calcDataFields(fields, JSON.parse(json), tipi, setTipi)
                                         dispatch(change('wizard', 'separator', json.separator))
                                         dispatch(change('wizard', 'filesToUpload', filesToUpload))
                                         dispatch(change('wizard', 'tipi', tipi))
@@ -278,7 +279,7 @@ class WizardFormMetadata extends Component {
             />
           </div>
           <div className="col-3">
-            <button type="button" className="btn btn-primary" onClick={reset}>Elimina</button>
+            <button type="button" className="btn btn-primary" onclick={()=>{localStorage.removeItem('kyloSchema'); reset }} onClick={reset}>Elimina</button>
           </div>
         </div>
         <div className="form-group row justify-content-center">
