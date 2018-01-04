@@ -19,7 +19,8 @@ import {
   RECEIVE_VOCABULARY,
   RECEIVE_PROPERTIES,
   REQUEST_PROPERTIES,
-  REQUEST_REGISTRATION
+  REQUEST_REGISTRATION,
+  RECEIVE_FILE_STORAGEMANAGER
 } from './actions'
 
 //Object.assign({}, state, .. create a new copy of the state
@@ -52,9 +53,18 @@ function datasets( state = { isFetching: false, didInvalidate: false, items: [],
         didInvalidate: false,
         items: null,
         dataset: action.dataset,
+        json: action.json,
         lastUpdated: action.receivedAt,
         ope: action.ope
       })
+    case RECEIVE_FILE_STORAGEMANAGER:
+    return Object.assign({}, state, {
+      isFetching: false,
+      didInvalidate: false,
+      json: action.json,
+      lastUpdated: action.receivedAt,
+      ope: action.ope
+    })
     default:
       return state
   }
@@ -111,6 +121,7 @@ function datasetReducer(state = {}, action) {
     case DELETE_DATASETS:
     case RECEIVE_DATASETS:
     case REQUEST_DATASETS:
+    case RECEIVE_FILE_STORAGEMANAGER:
       return Object.assign({}, state, {'obj': datasets(state[action], action)
       })
     case RECEIVE_ADD_DATASET:

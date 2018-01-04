@@ -391,6 +391,7 @@
             }
         ]
     },
+   
     
     "/catalog-manager/v1/catalog-ds/getbytitle/test1": {
         "get": {
@@ -849,6 +850,57 @@
                 }
                 ]
     },
+    "/storage-manager/v1/dataset-manager/v1/dataset/daf": {
+        "get": 
+            [
+                {
+                    "agency_url": "http://www.gtt.to.it",
+                    "agency_name": "Gruppo Torinese Trasporti",
+                    "agency_phone": "800-019152",
+                    "num": 21,
+                    "agency_id": "GTT",
+                    "agency_timezone": "Europe/Rome",
+                    "agency_lang": "it"
+                },
+                {
+                    "agency_url": "http://www.gtt.to.it",
+                    "agency_name": "GTT servizio extraurbano",
+                    "agency_phone": "800-019152",
+                    "num": 43,
+                    "agency_id": "GTT_E",
+                    "agency_timezone": "Europe/Rome",
+                    "agency_lang": "it"
+                },
+                {
+                    "agency_url": "http://www.gtt.to.it",
+                    "agency_name": "Gruppo Torinese Trasporti",
+                    "agency_phone": "800-019152",
+                    "num": 0,
+                    "agency_id": "GTT_F",
+                    "agency_timezone": "Europe/Rome",
+                    "agency_lang": "it"
+                },
+                {
+                    "agency_url": "http://www.gtt.to.it",
+                    "agency_name": "GTT Servizi Turistici",
+                    "agency_phone": "800-019152",
+                    "num": 121,
+                    "agency_id": "GTT_T",
+                    "agency_timezone": "Europe/Rome",
+                    "agency_lang": "it"
+                },
+                {
+                    "agency_url": "http://www.trenitalia.com",
+                    "agency_name": "Trenitalia",
+                    "agency_phone": "199-892021",
+                    "num": 2,
+                    "agency_id": "FS",
+                    "agency_timezone": "Europe/Rome",
+                    "agency_lang": "it"
+                }
+            ]
+        
+    },
     "/dati-gov/v1/infer/schema/csv":{
         "post": {
             "separator": ";",
@@ -949,5 +1001,211 @@
                 }
             ]
         }
+    },
+    "/dati-gov/v1/infer/kylo/csv":{
+        "post": {
+                "name": null,
+                "description": null,
+                "charset": "UTF-8",
+                "properties": {
+                  
+                },
+                "fields": [
+                  {
+                    "sampleValues": [
+                      "GTT",
+                      "GTT_E",
+                      "GTT_F",
+                      "GTT_T",
+                      "FS"
+                    ],
+                    "name": "agency_id",
+                    "description": "",
+                    "nativeDataType": null,
+                    "derivedDataType": "string",
+                    "primaryKey": false,
+                    "nullable": true,
+                    "modifiable": true,
+                    "dataTypeDescriptor": {
+                      "numeric": false,
+                      "date": false,
+                      "complex": false
+                    },
+                    "updatedTracker": false,
+                    "precisionScale": null,
+                    "createdTracker": false,
+                    "tags": null,
+                    "descriptionWithoutNewLines": "",
+                    "dataTypeWithPrecisionAndScale": "string"
+                  },
+                  {
+                    "sampleValues": [
+                      "Gruppo Torinese Trasporti",
+                      "GTT servizio extraurbano",
+                      "Gruppo Torinese Trasporti",
+                      "GTT Servizi Turistici",
+                      "Trenitalia"
+                    ],
+                    "name": "agency_name",
+                    "description": "",
+                    "nativeDataType": null,
+                    "derivedDataType": "string",
+                    "primaryKey": false,
+                    "nullable": true,
+                    "modifiable": true,
+                    "dataTypeDescriptor": {
+                      "numeric": false,
+                      "date": false,
+                      "complex": false
+                    },
+                    "updatedTracker": false,
+                    "precisionScale": null,
+                    "createdTracker": false,
+                    "tags": null,
+                    "descriptionWithoutNewLines": "",
+                    "dataTypeWithPrecisionAndScale": "string"
+                  },
+                  {
+                    "sampleValues": [
+                      "http: \/\/www.gtt.to.it",
+                      "http: \/\/www.gtt.to.it",
+                      "http: \/\/www.gtt.to.it",
+                      "http: \/\/www.gtt.to.it",
+                      "http: \/\/www.trenitalia.com"
+                    ],
+                    "name": "agency_url",
+                    "description": "",
+                    "nativeDataType": null,
+                    "derivedDataType": "string",
+                    "primaryKey": false,
+                    "nullable": true,
+                    "modifiable": true,
+                    "dataTypeDescriptor": {
+                      "numeric": false,
+                      "date": false,
+                      "complex": false
+                    },
+                    "updatedTracker": false,
+                    "precisionScale": null,
+                    "createdTracker": false,
+                    "tags": null,
+                    "descriptionWithoutNewLines": "",
+                    "dataTypeWithPrecisionAndScale": "string"
+                  },
+                  {
+                    "sampleValues": [
+                      "Europe\/Rome",
+                      "Europe\/Rome",
+                      "Europe\/Rome",
+                      "Europe\/Rome",
+                      "Europe\/Rome"
+                    ],
+                    "name": "agency_timezone",
+                    "description": "",
+                    "nativeDataType": null,
+                    "derivedDataType": "string",
+                    "primaryKey": false,
+                    "nullable": true,
+                    "modifiable": true,
+                    "dataTypeDescriptor": {
+                      "numeric": false,
+                      "date": false,
+                      "complex": false
+                    },
+                    "updatedTracker": false,
+                    "precisionScale": null,
+                    "createdTracker": false,
+                    "tags": null,
+                    "descriptionWithoutNewLines": "",
+                    "dataTypeWithPrecisionAndScale": "string"
+                  },
+                  {
+                    "sampleValues": [
+                      "it",
+                      "it",
+                      "it",
+                      "it",
+                      "it"
+                    ],
+                    "name": "agency_lang",
+                    "description": "",
+                    "nativeDataType": null,
+                    "derivedDataType": "string",
+                    "primaryKey": false,
+                    "nullable": true,
+                    "modifiable": true,
+                    "dataTypeDescriptor": {
+                      "numeric": false,
+                      "date": false,
+                      "complex": false
+                    },
+                    "updatedTracker": false,
+                    "precisionScale": null,
+                    "createdTracker": false,
+                    "tags": null,
+                    "descriptionWithoutNewLines": "",
+                    "dataTypeWithPrecisionAndScale": "string"
+                  },
+                  {
+                    "sampleValues": [
+                      "800-019152",
+                      "800-019152",
+                      "800-019152",
+                      "800-019152",
+                      "199-892021"
+                    ],
+                    "name": "agency_phone",
+                    "description": "",
+                    "nativeDataType": null,
+                    "derivedDataType": "string",
+                    "primaryKey": false,
+                    "nullable": true,
+                    "modifiable": true,
+                    "dataTypeDescriptor": {
+                      "numeric": false,
+                      "date": false,
+                      "complex": false
+                    },
+                    "updatedTracker": false,
+                    "precisionScale": null,
+                    "createdTracker": false,
+                    "tags": null,
+                    "descriptionWithoutNewLines": "",
+                    "dataTypeWithPrecisionAndScale": "string"
+                  },
+                  {
+                    "sampleValues": [
+                      "21",
+                      "43",
+                      "0",
+                      "121",
+                      "2"
+                    ],
+                    "name": "num",
+                    "description": "",
+                    "nativeDataType": null,
+                    "derivedDataType": "int",
+                    "primaryKey": false,
+                    "nullable": true,
+                    "modifiable": true,
+                    "dataTypeDescriptor": {
+                      "numeric": true,
+                      "date": false,
+                      "complex": false
+                    },
+                    "updatedTracker": false,
+                    "precisionScale": null,
+                    "createdTracker": false,
+                    "tags": null,
+                    "descriptionWithoutNewLines": "",
+                    "dataTypeWithPrecisionAndScale": "int"
+                  }
+                ],
+                "schemaName": null,
+                "databaseName": null,
+                "hiveFormat": "ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'\\n WITH SERDEPROPERTIES ( 'separatorChar' = ',','escapeChar' = '\\\\\\\\' , 'quoteChar' = '\\\\\\') STORED AS TEXTFILE",
+                "structured": false,
+                "id": "30d6eb06-72fa-4aee-9ab1-aa1367f62cbc"
+              }
     }
 }
