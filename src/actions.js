@@ -569,7 +569,7 @@ export function datasetDetail(datasetname) {
 export function addDataset(json, token) {
   console.log("Called action addDataset");
   //var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
-  var url = serviceurl.apiURLCatalog + "/catalog-manager/v1/kylo/feed"
+  var url = serviceurl.apiURLCatalog + "/kylo/feed"
   return dispatch => {
       return fetch(url, {
           method: 'POST',
