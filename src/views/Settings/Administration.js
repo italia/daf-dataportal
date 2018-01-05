@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { fetchProperties } from '../../actions';
+import { serviceurl } from '../../config/serviceurl'
+import {
+    Modal,
+    ModalHeader,
+    ModalTitle,
+    ModalClose,
+    ModalBody,
+    ModalFooter 
+} from 'react-modal-bootstrap';
 
 class Administration extends Component {
 
@@ -12,29 +21,34 @@ class Administration extends Component {
             users: [],
             org: "",
             user: "",
+            orgModal: false,
         }
 
-        this.load = this.load.bind(this)
+        this.load()
         this.save = this.save.bind(this)
+        this.openOrgModal = this.openOrgModal.bind(this)
+        this.closeOrgModal = this.closeOrgModal.bind(this)
     }
 
-    async settings(org) {
-        var url = "http://service:9000/dati-gov/v1/settings?organization=" + org
+    async organizations() {
+        var url = serviceurl.apiURLCatalog + '/ckan/organizations'
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
 
         return response.json();
     }
 
-    load(org){
-        let response = this.settings(org)
+    load(){
+        let response = this.organizations()
         response.then((json)=> {
             this.setState({
+                organizations: json
             });
         });
     }
@@ -46,19 +60,6 @@ class Administration extends Component {
     console.log('save settings: ' + settings)
     //save data
     let json = {
-        theme: this.state.theme,
-        headerSiglaTool: this.state.title,
-        headerDescTool: this.state.desc,
-        headerLogo: this.state.logo,
-        twitterURL: this.state.twitter,
-        mediumURL: this.state.medium,
-        notizieURL: this.state.news,
-        forumURL: this.state.forum,
-        footerLogoAGID: this.state.footer_logoA,
-        footerLogoGov: this.state.footer_logoB,
-        footerNomeEnte: this.state.footerName,
-        footerPrivacy: this.state.privacy,
-        footerLegal: this.state.legal
     }
 
     const response = this.save(json, this.state.org);
@@ -86,35 +87,127 @@ class Administration extends Component {
         this.setState({
             org: value,
         })
+        this.getUsers(value);
+    }
+
+    async users(org) {
+        var url = serviceurl.apiURLSecurity + '/ipa/group/' + org
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+
+        return response.json();
+    }
+
+    getUsers(org) {
+        let response = this.users(org)
+        response.then((json) => {
+            this.setState({
+                users: json.member_user
+            });
+        });
     }
 
     onUserChange(value) {
         this.setState({
             user: value,
         })
+    }
 
-        this.load(value)
+    openOrgModal(){
+        this.setState({
+            orgModal: true,
+        })
+    }
+
+    closeOrgModal() {
+        this.setState({
+            orgModal: false,
+        })
     }
 
     render() {
     const { loggedUser} = this.props
+    const { users, organizations, user, org, orgModal} = this.state
+    
     return (
         <div>
-            <div className="col-6 form-group row">
-                <label htmlFor="example-search-input" className="col-2 col-form-label">Utente</label>
-                <select className="form-control" aria-required="true" onChange={(e) => this.onUserChange(e.target.value)} value={this.state.org}>
+        <Modal
+            contentLabel="Add a widget"
+            className="Modal__Bootstrap modal-dialog modal-80"
+            isOpen={orgModal}>
+            <form>
+                <ModalHeader>
+                    <ModalTitle>Crea una nuova Organizzazione</ModalTitle>
+                    <ModalClose onClick={this.closeOrgModal} />
+                </ModalHeader>
+                <ModalBody>
+                    <div className="form-group">
+                        <p>Nome dell'organizzazione:</p>
+                        <input></input>
+                    </div>
+                </ModalBody>
+                <ModalFooter>
+                <button className='btn btn-default'>
+                    Condividi con tutti
+                </button>
+                </ModalFooter>
+            </form>
+        </Modal>
+        <Modal
+            contentLabel="Add a widget"
+            className="Modal__Bootstrap modal-dialog modal-80"
+            isOpen={false}>
+            <form>
+                <ModalHeader>
+                    <ModalTitle>Crea una nuova Organizzazione</ModalTitle>
+                    <ModalClose onClick={this.closeOrgModal} />
+                </ModalHeader>
+                <ModalBody>
+                    <div className="form-group">
+                        <p></p>
+                    </div>
+                </ModalBody>
+                <ModalFooter>
+                    <button className='btn btn-default' >
+                        Condividi con tutti
+            </button>
+                </ModalFooter>
+            </form>
+        </Modal>
+        <div className="row">
+            <div className="col-5 form-group row ml-3">
+                <label htmlFor="example-search-input" className="col-2 col-form-label mb-2">Organizzazioni</label>
+                <select className="form-control" id="organizations" multiple onChange={(e) => this.onOrgChange(e.target.value)}>
                     <option value=""></option>
+                    {organizations && organizations.length > 0 && organizations.map(organization =>
+                        <option value={organization} key={organization}>{organization}</option>
+                    )
+                    }
                 </select>
+                <button type="button" className="btn-link mt-3" title="Crea nuova organizzazione" onClick={this.openOrgModal}>
+                    <i className="fa fa-plus-circle fa-lg"></i>
+                </button>
             </div>
-            <div className="col-6 form-group row">
-                <label htmlFor="example-search-input" className="col-2 col-form-label">Organizzazione</label>
-                <select className="form-control" aria-required="true" onChange={(e) => this.onOrgChange(e.target.value)} value={this.state.org}>
+            <div className="col-5 form-group row ml-3">
+                <label htmlFor="example-search-input" className="col-2 col-form-label mb-2">Utenti</label>
+                <select className="form-control" id="users" multiple onChange={(e) => this.onUserChange(e.target.value)}>
                     <option value=""></option>
-                    <option value="daf">Daf</option>
-                    <option value="roma">Comune di Roma</option>
+                    {users && users.length > 0 && users.map(users =>
+                        <option value={users} key={users}>{users}</option>
+                    )
+                    }
                 </select>
-            </div>
-            
+                <button type="button" className="btn-link mt-3" title="Aggiungi nuovo utente" >
+                    <i className="fa fa-plus-circle fa-lg"/> Aggiungi Utente
+                </button>
+            </div>            
+        </div>
         </div>
     )
   }

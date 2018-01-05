@@ -11,6 +11,7 @@ import {
     ModalFooter
 } from 'react-modal-bootstrap'
 import themes from './data/Themes'
+import { serviceurl } from '../../config/serviceurl'
 
 
 class Settings extends Component {
@@ -31,6 +32,7 @@ class Settings extends Component {
             forum: '',
             footer_logoA: '',
             footer_logoB: '',
+            footer_logoC: '',
             footerName: '',
             privacy: '',
             legal: '',
@@ -44,12 +46,14 @@ class Settings extends Component {
     }
 
     async settings(org) {
-        var url = "http://service:9000/dati-gov/v1/settings?organization=" + org
+        var url = serviceurl.apiURLDatiGov + "/settings?organization=" + org
+        let token = localStorage.getItem('token')
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             }
         })
 
@@ -70,6 +74,7 @@ class Settings extends Component {
                 forum: json.forumURL,
                 footer_logoA: json.footerLogoAGID,
                 footer_logoB: json.footerLogoGov,
+                footer_logoC: json.footerLogoDevITA,
                 footerName: json.footerNomeEnte,
                 privacy: json.footerPrivacy,
                 legal: json.footerLegal,
@@ -94,6 +99,7 @@ class Settings extends Component {
         forumURL: this.state.forum,
         footerLogoAGID: this.state.footer_logoA,
         footerLogoGov: this.state.footer_logoB,
+        footerLogoDevITA: this.state.footer_logoC,
         footerNomeEnte: this.state.footerName,
         footerPrivacy: this.state.privacy,
         footerLegal: this.state.legal
@@ -109,11 +115,13 @@ class Settings extends Component {
   }
 
   async save(settings, org) {
-        const response = await fetch( 'http://service:9000/dati-gov/v1/settings?organization=' + org, {
+      let token = localStorage.getItem('token')
+      const response = await fetch(serviceurl.apiURLDatiGov + '/settings?organization=' + org, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify(settings)
         })
@@ -211,6 +219,16 @@ class Settings extends Component {
         });
         let settings = this.state;
         settings.footer_logoB = value;
+        this.saveSettings(settings);
+    }
+
+    onFootCChange(value) {
+        this.setState({
+            footer_logoC: value,
+            isChanged: true
+        });
+        let settings = this.state;
+        settings.footer_logoC = value;
         this.saveSettings(settings);
     }
 
@@ -374,17 +392,17 @@ class Settings extends Component {
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label htmlFor="example-text-input" className="col-2 col-form-label"><i className="fa fa-twitter"></i>{" "}Notizie</label>
+                                <label htmlFor="example-text-input" className="col-2 col-form-label">Notizie</label>
                                 <div className="col-10">
                                     <input className="form-control" type="text" value={this.state.news}
-                                        id="example-text-input" onChange={(e) => this.onTwitterChange(e.target.value)} />
+                                        id="example-text-input" onChange={(e) => this.onNewsChange(e.target.value)} />
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label htmlFor="example-search-input" className="col-2 col-form-label"><i className="fa fa-medium"></i>{" "}Forum</label>
+                                <label htmlFor="example-search-input" className="col-2 col-form-label">Forum</label>
                                 <div className="col-10">
                                     <input className="form-control" type="search" value={this.state.forum}
-                                        id="example-search-input" onChange={(e) => this.onMediumChange(e.target.value)} />
+                                        id="example-search-input" onChange={(e) => this.onForumChange(e.target.value)} />
                                 </div>
                             </div>
                             <div className="form-group row">
@@ -397,8 +415,15 @@ class Settings extends Component {
                             <div className="form-group row">
                                 <label htmlFor="example-search-input" className="col-2 col-form-label">Footer Logo 2</label>
                                 <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.footer_logoB} 
-                                        id="example-search-input" onChange={(e) => this.onFootBChange(e.target.value)}/>
+                                    <input className="form-control" type="search" value={this.state.footer_logoB}
+                                        id="example-search-input" onChange={(e) => this.onFootBChange(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label htmlFor="example-search-input" className="col-2 col-form-label">Footer Logo 3</label>
+                                <div className="col-10">
+                                    <input className="form-control" type="search" value={this.state.footer_logoC} 
+                                        id="example-search-input" onChange={(e) => this.onFootCChange(e.target.value)}/>
                                 </div>
                             </div>
                             <div className="form-group row">

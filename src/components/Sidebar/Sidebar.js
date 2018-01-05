@@ -191,7 +191,7 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li>
-
+{/* 
               <li className="nav-title">
                 Impostazioni
               </li>
@@ -200,7 +200,7 @@ class Sidebar extends Component {
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
                 <NavLink to={'/administration'} className="nav-link" activeClassName="active"><i className="icon-people"></i> Gestione Utenti</NavLink>
-              </li>
+              </li> */}
             </ul>
           </nav>
         </div>
