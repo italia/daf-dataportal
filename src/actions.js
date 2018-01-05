@@ -566,9 +566,30 @@ export function datasetDetail(datasetname) {
   }
 }
 
-export function addDataset(json, token) {
+export function addDataset(inputJson, token) {
   console.log("Called action addDataset");
-  //var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
+  var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
+  return dispatch => {
+      return fetch(url, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(inputJson)
+        })
+        .then(response => response.json())
+        .then(json => {
+          console.log('Caricamento metadati avvenuto con successo')
+          dispatch(receiveAddDataset(json))
+          dispatch(addDatasetKylo(inputJson, token))
+        }).catch(error => console.log('Eccezione durante il caricamento dei metadati'))
+  }
+}
+
+export function addDatasetKylo(json, token) {
+  console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/kylo/feed"
   return dispatch => {
       return fetch(url, {
@@ -580,8 +601,13 @@ export function addDataset(json, token) {
           },
           body: JSON.stringify(json)
         })
-        .then(response => response.json())
-        .then(json => dispatch(receiveAddDataset(json)))
+        .then(response => {
+            if(response.ok){
+              console.log('Caricamento Kylo avvenuto con successo')
+            }else{
+              console.log('Errore durante il caricamento del dataset a Kylo')
+            }
+        }).catch(error => console.log('Eccezione durante il caricamento del file su Kylo '))
   }
 }
 

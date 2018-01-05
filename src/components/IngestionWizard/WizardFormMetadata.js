@@ -279,7 +279,7 @@ class WizardFormMetadata extends Component {
             />
           </div>
           <div className="col-3">
-            <button type="button" className="btn btn-primary" onclick={()=>{localStorage.removeItem('kyloSchema'); reset }} onClick={reset}>Elimina</button>
+            <button type="button" className="btn btn-primary" onClick={reset}>Elimina</button>
           </div>
         </div>
         <div className="form-group row justify-content-center">
