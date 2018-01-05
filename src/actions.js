@@ -27,6 +27,7 @@ export const RECEIVE_VOCABULARY = 'RECEIVE_VOCABULARY'
 export const RECEIVE_PROPERTIES = 'RECEIVE_PROPERTIES'
 export const REQUEST_PROPERTIES = 'REQUEST_PROPERTIES'
 export const REQUEST_REGISTRATION = 'REQUEST_REGISTRATION'
+export const RECEIVE_FILE_STORAGEMANAGER = 'RECEIVE_FILE_STORAGEMANAGER'
 
 
 /*********************************** REDUX ************************************************ */
@@ -80,10 +81,11 @@ function requestLogin() {
   }
 }
 
-function receiveDatasetDetail(json) {
+function receiveDatasetDetail(jsonDataset, jsonFile) {
   return {
       type: RECEIVE_DATASET_DETAIL,
-      dataset: json,
+      dataset: jsonDataset,
+      json: jsonFile,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_DETAIL'
   }
@@ -95,6 +97,15 @@ function receiveAddDataset(response) {
       user: response,
       receivedAt: Date.now(),
       ope: 'RECEIVE_ADD_DATASET'
+  }
+}
+
+function receiveFileFromStorageManager(json){
+  return {
+      type: RECEIVE_FILE_STORAGEMANAGER,
+      json: json,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_FILE_STORAGEMANAGER'
   }
 }
 
@@ -533,29 +544,6 @@ function fetchDataset(query, start, owner, category_filter, group_filter, organi
     }
   }
 
-function fetchDatasetDetail(datasetname) {
-  var token = '';
-  //https://api.daf.teamdigitale.it/catalog-manager/v1/catalog-ds/getbytitle/carsharing_entity_vehicle
-  var url = serviceurl.apiURLCatalog + '/catalog-ds/getbytitle/'  + datasetname;
-  if(localStorage.getItem('username') && localStorage.getItem('token') &&
-    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
-      token = localStorage.getItem('token')
-    }
-  return dispatch => {
-      dispatch(requestDatasetDetail())
-      return fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      })
-        .then(response => response.json())
-        .then(json => dispatch(receiveDatasetDetail(json)))
-    }
-  }
-
 export function loadDatasets(query, start, owner, category_filter, group_filter, organization_filter, order_filter) {
   console.log('Load Dataset action');
   return (dispatch, getState) => {
@@ -578,7 +566,7 @@ export function datasetDetail(datasetname) {
   }
 }
 
-export function addDataset(json, token) {
+export function addDataset(inputJson, token) {
   console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
   return dispatch => {
@@ -589,12 +577,88 @@ export function addDataset(json, token) {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
           },
-          body: JSON.stringify(json)
+          body: JSON.stringify(inputJson)
         })
         .then(response => response.json())
-        .then(json => dispatch(receiveAddDataset(json)))
+        .then(json => {
+          console.log('Caricamento metadati avvenuto con successo')
+          dispatch(receiveAddDataset(json))
+          dispatch(addDatasetKylo(inputJson, token))
+        }).catch(error => console.log('Eccezione durante il caricamento dei metadati'))
   }
 }
+
+export function addDatasetKylo(json, token) {
+  console.log("Called action addDataset");
+  var url = serviceurl.apiURLCatalog + "/kylo/feed"
+  return dispatch => {
+      return fetch(url, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(json)
+        })
+        .then(response => {
+            if(response.ok){
+              console.log('Caricamento Kylo avvenuto con successo')
+            }else{
+              console.log('Errore durante il caricamento del dataset a Kylo')
+            }
+        }).catch(error => console.log('Eccezione durante il caricamento del file su Kylo '))
+  }
+}
+
+function fetchDatasetDetail(datasetname) {
+  var token = '';
+  //https://api.daf.teamdigitale.it/catalog-manager/v1/catalog-ds/getbytitle/carsharing_entity_vehicle
+  var url = serviceurl.apiURLCatalog + '/catalog-ds/getbytitle/'  + datasetname;
+  if(localStorage.getItem('username') && localStorage.getItem('token') &&
+    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+      token = localStorage.getItem('token')
+    }
+  return dispatch => {
+      dispatch(requestDatasetDetail())
+      return fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(response => response.json())
+        .then(jsonDataset => dispatch(getFileFromStorageManager(jsonDataset))
+        .catch(error => console.log('Errore durante il caricamento del file dallo storage manager ' + jsonDataset))
+        .then(jsonFile => dispatch(receiveDatasetDetail(jsonDataset, jsonFile))) 
+      )
+    }
+  }
+
+export function getFileFromStorageManager(jsonDataset) {
+  var token = '';
+  var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(jsonDataset.operational.logical_uri);
+  //var url = 'https://api.daf.teamdigitale.it/dataset-manager/v1/dataset/daf%3A%2F%2Fdataset%2Ford%2Falessandro%2Fdefault_org%2FAGRI%2Forganizzazioni%2Fagency_infer_ale'
+  //var url = "http://localhost:3001/storage-manager/v1/dataset-manager/v1/dataset/daf"
+  if(localStorage.getItem('username') && localStorage.getItem('token') &&
+    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+      token = localStorage.getItem('token')
+    }
+  return dispatch => {
+      return fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(response => response.json())
+    }
+  }
+
 /******************************************************************************* */
 
 export function loadOntologies() {
@@ -636,12 +700,9 @@ export function loadOntologies() {
     }
 
     export function getSchema(filesToUpload, typeFile) {
-      console.log('getSchema');
-      //var url = 'http://localhost:3001/catalog-manager/v1/getschema';  
-      var url = serviceurl.apiURLDatiGov + "/infer/schema/" + typeFile
-      //var formData  = new FormData();
-      // formData.append('upfile', new Blob(filesToUpload), "agency.csv");
-      
+      console.log('getSchema'); 
+      var url = serviceurl.apiURLDatiGov + "/infer/kylo/" + typeFile
+      //var url = 'http://localhost:3001/dati-gov/v1/infer/kylo/csv'
       var token = '';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
@@ -656,8 +717,8 @@ export function loadOntologies() {
             method: 'POST',
             body: formData,
             headers: {
-        //      'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-        //      "Content-Type": 'multipart/formdata',
+                //'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                //"Content-Type": 'multipart/formdata',
               'Authorization': 'Bearer ' + token
             }
           })

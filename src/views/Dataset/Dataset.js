@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import {
   loadDatasets,
   unloadDatasets,
-  datasetDetail
+  datasetDetail,
+  getFileFromStorageManager
 } from '../../actions'
 import OrderFilter from '../../components/Dataset/OrderFilter'
 import CategoryFilter from '../../components/Dataset/CategoryFilter'
@@ -14,6 +15,8 @@ import InfiniteScroll from '../../components/InfinityScroll'
 import { transformName } from '../../utility'
 import MetadataEditor from "../../components/Dataset/MetadataEditor";
 import { serviceurl } from '../../config/serviceurl'
+import download from 'downloadjs'
+import ReactJson from 'react-json-view'
 
 class Dataset extends Component {
   constructor(props) {
@@ -33,7 +36,7 @@ class Dataset extends Component {
       showDivSuperset: false,
       showDivJupyter: false,
       edit: false,
-      organizations: []
+      organizations: []    
     }
 
     this.load();
@@ -46,7 +49,6 @@ class Dataset extends Component {
     this.handleToggleClickMetabase = this.handleToggleClickMetabase.bind(this);
     this.handleToggleClickSuperset = this.handleToggleClickSuperset.bind(this);
     this.handleToggleClickJupyter = this.handleToggleClickJupyter.bind(this);
-    
     this.onSearch = this.onSearch.bind(this) 
     this.onClick = this.onClick.bind(this)   
   }
@@ -94,6 +96,14 @@ class Dataset extends Component {
   handleScrollToBottom = () => this.loadMore()
   handleLoadMoreClick = () => this.loadMore()
 
+  handleDownloadFile(nomeFile, logical_uri, e){
+    e.preventDefault()
+    const { dispatch } = this.props
+    dispatch(getFileFromStorageManager(logical_uri))
+    .then(json => download(JSON.stringify(json), nomeFile + '.json', 'application/json'))
+    .catch(error => console.log('Errore durante il download del file ' + nomeFile))
+  }
+
   searchDataset(category, group, organization, order) {
     const { dispatch, query } = this.props
     dispatch(loadDatasets(query, 0, '', category, group, organization, order))
@@ -112,6 +122,7 @@ class Dataset extends Component {
     })
     const { dispatch } = this.props
     dispatch(datasetDetail(name))
+    .catch(error => console.log('Errore durante il caricamento del dataset ' + name))
     this.props.history.push('?detail='+name)
   }
 
@@ -284,8 +295,8 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
       )
 }
 
-renderDatasetDetail(dataset, ope){
-  if (ope === 'RECEIVE_DATASET_DETAIL' && this.state.edit===false) {
+renderDatasetDetail(dataset, ope, json){
+  if ((ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') && this.state.edit===false) {
     if (dataset)
       return (
         <div className="col-10">
@@ -299,14 +310,14 @@ renderDatasetDetail(dataset, ope){
             <div className="row mt-4">
                 <div className="col-8 b-r-1">
                   <p className="card-text text-muted">{dataset.dcatapit.notes}</p>
-                  <p className="card-text"><strong>Licenza:</strong>{dataset.dcatapit.license_title}</p>
-                  <p className="card-text"><strong>{"Categoria" + " "}</strong>
+                  <p className="card-text"><strong>Licenza: </strong>{dataset.dcatapit.license_title}</p>
+                  <p className="card-text"><strong>{"Categoria: " + " "}</strong>
                     <span className="badge badge-default"> {dataset.dcatapit.theme}</span>
                   </p>
                 </div>
                 <div className="col-3">
-                  <p className="card-text"><strong>{"Aggiornato il" + " "}</strong> {dataset.dcatapit.modified}</p>
-                  <p className="card-text"><strong>{"Pubblicato da" + " "}</strong> {dataset.dcatapit.publisher_name}</p>
+                  <p className="card-text"><strong>{"Aggiornato il: " + " "}</strong> {dataset.dcatapit.modified}</p>
+                  <p className="card-text"><strong>{"Pubblicato da: " + " "}</strong> {dataset.dcatapit.publisher_name}</p>
                   <p className="card-text"><strong>Tags: </strong> 
                     {dataset.dcatapit.tags.map(tag => {
                       return <span className="badge badge-pill badge-primary" key={tag.name}> {tag.name}</span>
@@ -325,18 +336,18 @@ renderDatasetDetail(dataset, ope){
             <div className="card-block">
               <div className="row">
                 <div className="col-4">
-                  <strong><p>File</p></strong>
+                  <strong><p>Download File: </p></strong>
                 </div>
                 <div className="col-8">
-                  <a href='#'><p></p></a>
+                <p>{dataset.dcatapit.name} <a onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="fa fa-download"></i></a></p>
                 </div>
               </div>
               <div className="row">
                 <div className="col-4">
-                  <strong><p>Schema</p></strong>
+                  <strong><p>Preview: </p></strong>
                 </div>
                 <div className="col-8">
-                  <a href='#'><p></p></a>
+                  <p><ReactJson src={json} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false"/></p>
                 </div>
               </div>
             </div>
@@ -518,7 +529,7 @@ editDataset(ope){
 }
 
 render() {
-  const { datasets, dataset, ope } = this.props
+  const { datasets, dataset, ope, json } = this.props
   const { isLoading, items, edit } = this.state;
   if(datasets)
     var subdatasets = datasets.slice(0, items)
@@ -527,7 +538,7 @@ render() {
       <div className="col-md-8">
       {this.renderDatasetSearchResult(datasets?datasets.length:0, subdatasets, ope, isLoading)}
       </div>
-      {this.renderDatasetDetail(dataset, ope)}
+      {this.renderDatasetDetail(dataset, ope, json)}
       {this.renderFilter(ope)}
       {edit && this.editDataset(ope)}
     </div>
@@ -543,12 +554,13 @@ Dataset.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   lastUpdated: PropTypes.number,
   dispatch: PropTypes.func.isRequired,
-  ope: PropTypes.string
+  ope: PropTypes.string,
+  json: PropTypes.array
 }
 
 function mapStateToProps(state) {
-  const { isFetching, lastUpdated, dataset, items: datasets, query, ope } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
-  return { datasets, dataset, isFetching, lastUpdated, query, ope }
+  const { isFetching, lastUpdated, dataset, items: datasets, query, ope, json } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
+  return { datasets, dataset, isFetching, lastUpdated, query, ope, json }
 }
 
 export default connect(mapStateToProps)(Dataset)

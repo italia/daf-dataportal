@@ -144,6 +144,7 @@ export function createDcat (values, data) {
 export function createDataschema (values, data) {
   var dataschema = 'dataschema'
   var avro = 'avro'
+  var kyloSchema= 'kyloSchema'
   var flatSchema = 'flatSchema'
   var theme = (values.theme) ? values.theme  : 'ECON'
   data[dataschema] = {}
@@ -154,6 +155,7 @@ export function createDataschema (values, data) {
   data[dataschema][avro]['aliases'] = [values.title]
   data[dataschema][avro]['fields'] =  []
   data[dataschema][avro]["`type`"] = "record"
+  data[dataschema][kyloSchema] = localStorage.getItem('kyloSchema') ? localStorage.getItem('kyloSchema') : ''
   data[dataschema][flatSchema] = []
   values.tests.map(function(item){
     if(item.nome !== 'file'){
@@ -188,4 +190,3 @@ export function createMetacatalog(values, data) {
     metacatalog = createOperational(values, data)
     return metacatalog
 }
-

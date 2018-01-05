@@ -62,6 +62,7 @@ hideModalAndRedirect = (e) => {
   dispatch(addDataset(transformed, localStorage.getItem('token')))
     .then(() => {
       dispatch(this.openModal())
+      localStorage.removeItem('kyloSchema')
     })
     .catch((error) => {
       this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
