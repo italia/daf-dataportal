@@ -333,6 +333,7 @@ renderDatasetDetail(dataset, ope, json){
             <div className="card-header">
               Risorse
                 </div>
+            {json?
             <div className="card-block">
               <div className="row">
                 <div className="col-4">
@@ -351,6 +352,15 @@ renderDatasetDetail(dataset, ope, json){
                 </div>
               </div>
             </div>
+            :
+            <div className="card-block">
+             <div className="row">
+                <div className="col-8">
+                  <p><i>Non ci sono risorse disponibili per questo Dataset.</i></p>
+                </div>
+              </div>
+            </div>
+            }
           </div>
           <div className="card">
             <div className="card-header">

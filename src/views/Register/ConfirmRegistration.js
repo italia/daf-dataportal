@@ -15,7 +15,7 @@ function setErrorMsg(messaggio) {
   function setSuccessMsg(messaggio) {
     return {
       msg: messaggio,
-      error: 1,
+      error: 0,
       uploading: false
     }
   }
@@ -49,7 +49,8 @@ class ConfirmRegistration extends Component {
     }
   
     componentDidMount() {
-        window.addEventListener('load', this.handleSubmit);
+        //window.addEventListener('load', this.handleSubmit);
+        this.handleSubmit();
      }
 
     handleSubmit(){

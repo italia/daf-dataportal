@@ -264,7 +264,6 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
   console.log("Called action registerUser");
   var url = serviceurl.apiURLSecurity + '/ipa/registration/request';
 
-  //TODO: remove basic authentication from register service 
   var input = {
     'uid': username,
     'givenname': nome,
@@ -279,8 +278,7 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + serviceurl.auth
+        'Content-Type': 'application/json'      
       },
       body: JSON.stringify(input)
     })
@@ -307,14 +305,12 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
 export function activateUser(token) {
   console.log("Called action activateUser");
   var url = serviceurl.apiURLSecurity + '/ipa/registration/confirm?token=' + token;
-  //TODO: remove basic authentication from register service 
   return dispatch => {
     return fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + serviceurl.auth
+        'Content-Type': 'application/json'
       }
     })/* .then(response => {
       if (response.ok) {
@@ -428,7 +424,7 @@ export function addUserOrganization(uid) {
 
 /******************************** DATASET ************************************** */
 export function fetchProperties(org) {
-  var url = "http://10.100.82.180:9000/dati-gov/v1/settings?organization="+ org
+  var url = serviceurl.apiURLDatiGov + "/settings?organization="+ org
   return dispatch => {
     return fetch(url, {
       method: 'GET',
