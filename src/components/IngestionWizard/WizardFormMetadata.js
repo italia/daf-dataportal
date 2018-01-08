@@ -94,12 +94,14 @@ const renderYesNoSelector = ({ input, type, label, value, meta: { touched, error
 const renderTipi = ({ input, label, type, tipi, index, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
+    {tipi &&
     <div className="col-md-9">
          {<select className="form-control" {...input}>
-           {tipi[index].map(tipo => <option value={tipo} key={tipo}>{tipo}</option>)}
+           {tipi[index] && tipi[index].map(tipo => <option value={tipo} key={tipo}>{tipo}</option>)}
          </select>  }
        {touched && error && <div className="text-danger">{error}</div>}
     </div>
+    }
  </div>
 );
 
