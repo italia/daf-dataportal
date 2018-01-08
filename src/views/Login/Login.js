@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getAuthToken, loginAction, addUserOrganization, loadDatasets, setApplicationCookie, receiveLogin } from './../../actions.js'
+import { getAuthToken, loginAction, addUserOrganization, loadDatasets, getApplicationCookie, receiveLogin } from './../../actions.js'
 import PropTypes from 'prop-types'
 import {
   Modal,
@@ -40,22 +40,23 @@ class Login extends Component {
     dispatch(getAuthToken(this.email.value, this.pw.value))
       .then(json => {
             localStorage.setItem('token', json);
-            dispatch(setApplicationCookie('superset'))
+            setCookie(JSON.parse('[{"name":"dataportal","value":"logged","path":"/"}]'))
+            dispatch(getApplicationCookie('superset'))
             .then(json => {
               if (json) {
-              setCookie('superset', json)
-              dispatch(setApplicationCookie('metabase'))
+              setCookie(json)
+              dispatch(getApplicationCookie('metabase'))
                 .then(json => {
                   if (json) {
-                    setCookie('metabase', json)
-                    dispatch(setApplicationCookie('jupyter'))
+                    setCookie(json)
+                    dispatch(getApplicationCookie('jupyter'))
                       .then(json => {
                         if (json) {
-                          setCookie('jupyter', json)
-                          dispatch(setApplicationCookie('grafana'))
+                          setCookie(json)
+                          dispatch(getApplicationCookie('grafana'))
                             .then(json => {
                               if (json) {
-                                setCookie('grafana', json)
+                                setCookie(json)
                                 dispatch(loginAction())
                                   .then(json => {
                                     localStorage.setItem('user', json.uid);

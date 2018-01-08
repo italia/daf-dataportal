@@ -103,7 +103,7 @@ class DashboardView extends Component {
         let widget = dashboard.widgets[i];
         //assign instance to widget.type
         /* let typeWid = i //.split('_')[0]; //Test */
-        if(i === "TextWidget") {
+        if(i.startsWith("TextWidget")) {
           /* widget.type = this.widgetsTypes[typeWid].type; */
           widget.type = TextWidget;
           //last extends overrides previous

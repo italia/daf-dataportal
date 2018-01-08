@@ -94,12 +94,14 @@ const renderYesNoSelector = ({ input, type, label, value, meta: { touched, error
 const renderTipi = ({ input, label, type, tipi, index, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
+    {tipi &&
     <div className="col-md-9">
          {<select className="form-control" {...input}>
-           {tipi[index].map(tipo => <option value={tipo} key={tipo}>{tipo}</option>)}
+           {tipi[index] && tipi[index].map(tipo => <option value={tipo} key={tipo}>{tipo}</option>)}
          </select>  }
        {touched && error && <div className="text-danger">{error}</div>}
     </div>
+    }
  </div>
 );
 
@@ -181,6 +183,10 @@ class WizardFormMetadata extends Component {
     setTipi(tipi)
   }
 
+  addSemanticToForm(semantics){
+    this.input.onChange(semantics)
+  }
+
   addTagsToForm(fieldName, tags){
     var tagString=""
     tags.map((tag) => {
@@ -189,7 +195,7 @@ class WizardFormMetadata extends Component {
     this.onChange(tagString)
   }
 
-  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, setUploading, uploading, errorUpload, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, addSemanticToForm, setUploading, uploading, errorUpload, meta : {touched, error} }) => 
       <div>
       {fields.length === 0 &&
         <div className="form-group row">
@@ -328,6 +334,7 @@ class WizardFormMetadata extends Component {
                 component={AutocompleteSemantic}
                 label="Concetto"
                 value={`${test}.concetto`}
+                addSemanticToForm={addSemanticToForm}
               />
               <Field
                 name={`${test}.desc`}
@@ -412,6 +419,7 @@ class WizardFormMetadata extends Component {
               columnCard={columnCard}
               calcDataFields={this.calcDataFields}
               addTagsToForm={this.addTagsToForm}
+              addSemanticToForm={this.addSemanticToForm}
               tipi={tipi}
               setTipi={setTipi}
               uploading={uploading}

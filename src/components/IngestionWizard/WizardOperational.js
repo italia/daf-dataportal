@@ -30,7 +30,7 @@ const renderField = ({ input, label, type, value = '', meta: { touched, error } 
 const renderTipoLettura = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
-      <option value="update" selected key='update'>Ultimo Aggiornamento</option>
+      <option value="update" defaultValue key='update'>Ultimo Aggiornamento</option>
       {tipo_lettura.map(val => <option value={val} key={val}>Time Series</option>)}
     </select>
     {touched && error && <span>{error}</span>}
@@ -40,7 +40,7 @@ const renderTipoLettura = ({ input, meta: { touched, error } }) => (
 const renderDatasetType = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
-      <option value="batch" selected key='batch'>Batch</option>
+      <option value="batch" defaultValue key='batch'>Batch</option>
       <option value="stream"  key='stream'>Realtime Stream</option>
     </select>
     {touched && error && <span>{error}</span>}
@@ -85,7 +85,7 @@ const storages = ({ input, meta: { touched, error } }) => (
 const ftpOrWebservice = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
-      <option value='sftp' defaultValue='sftp' selected>sFTP</option>
+      <option value='sftp' defaultValue>sFTP</option>
       <option value='webservice' >Webservice</option>)}
     </select>
     {touched && error && <span>{error}</span>}

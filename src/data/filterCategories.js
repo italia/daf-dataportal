@@ -2,67 +2,67 @@ const filterCategories = [
     {
         "id": 1,
         "name": "Agricoltura, pesca, silvicoltura e prodotti alimentari",
-        "tag": "Agricoltura"
+        "tag": "AGRI"
     },
     {
         "id": 2,
         "name": "Economia e finanze",
-        "tag": "Economia"
+        "tag": "ECON"
     },
     {
         "id": 3,
         "name": "Istruzione, cultura e sport",
-        "tag": "Istruzione"
+        "tag": "EDUC"
     },
     {
         "id": 4,
         "name": "Energia",
-        "tag": "Energia"
+        "tag": "ENER"
     },
     {
         "id": 5,
         "name": "Ambiente",
-        "tag": "Ambiente"
+        "tag": "ENVI"
     },
     {
         "id": 6,
         "name": "Governo e settore pubblico",
-        "tag": "Governo"
+        "tag": "GOVE"
     },
     {
         "id": 7,
         "name": "Salute",
-        "tag": "Salute"
+        "tag": "HEAL"
     },
     {
         "id": 8,
         "name": "Tematiche internazionali",
-        "tag": "Internazionali"
+        "tag": "INTR"
     },
     {
         "id": 9,
         "name": "Giustizia, sistema giuridico e sicurezza pubblica",
-        "tag": "Giustizia"
+        "tag": "JUST"
     },
     {
         "id": 10,
         "name": "Regioni e città",
-        "tag": "Regioni"
+        "tag": "REGI"
     },
     {
         "id": 11,
         "name": "Popolazione e società",
-        "tag": "Società"
+        "tag": "SOCI"
     },
     {
         "id": 12,
         "name": "Scienza e tecnologia",
-        "tag": "Scienza"
+        "tag": "TECH"
     },
     {
         "id": 13,
         "name": "Trasporti",
-        "tag": "Trasporti"
+        "tag": "TRAN"
     }
 ];
 

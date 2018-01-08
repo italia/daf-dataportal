@@ -36,14 +36,12 @@ function ontologiesFilter(semantics, regex){
               })
             }); */
         semantics.forEach(function(entry) {
-        console.log('entry: ' + entry.label[0].value);
         //if(regex.test(entry.label[0].value)){
             //console.log('value: ' + entry.label[0].value);
             //console.log('ontology: ' + entry['label.ontology'][0].value)
             var label = entry.label?entry.label[0].value:''
             var ontology = entry['label.ontology']?entry['label.ontology'][0].value:''
             entry.name = label + ' [' + ontology + ']';
-            console.log(entry.name);
             res.push(entry);
         //}
       });
@@ -103,19 +101,16 @@ class AutocompleteSemantic extends React.Component {
       <label className="col-md-3 form-control-label">Concetto Semantico</label>
      <div className="col-md-9">
         <Autocomplete
-          inputProps={{ id: 'states-autocomplete-semantic' }}
+          inputProps={{ id: 'states-autocomplete-semantic', name: this.props.input.name, type: 'text' }}
           wrapperStyle={{ position: 'relative', display: 'block' }}
           value={this.state.value}
           items={this.state.suggestions}
           getItemValue={(item) => item.name}
           onSelect={(value, item) => {
-            // set the menu to only the selected item
             this.setState({ value, suggestions: [ item ] })
-            // or you could reset it to a default list again
-            // this.setState({ suggestions: getStates() })
+            this.props.addSemanticToForm(value)
           }}
           onChange={(event, value) => {
-            console.log('value' + value)
             this.setState({ value })
             if(value!==''){
               var suggestion = this.getSuggestion(value);

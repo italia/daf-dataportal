@@ -57,7 +57,7 @@ function sendPostDataMeta(json, file) {
     }
     })
   } else {
-    console.log('No basic auth string');
+    console.log('Auth Token non trovato');
   }
 
 }

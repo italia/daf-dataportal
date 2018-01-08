@@ -174,7 +174,10 @@ export function createDataschema (values, data) {
     }
     var obj = {'name' : name, "`type`" : tipo}
     var tag =  ((item.tag === '' || item.tag === undefined )  ? [] : item.tag.split(','))
-    var metadata = { "desc": item.desc, "required": 0, "field_type": "","cat": "","tag": tag,"constr": [{"`type`": "","param": ""}],"semantics": {"id": "","context": ""}}
+    var concetto = item.concetto // i.e. latitudine [Indirizzi(Luoghi)]
+    var id = item.concetto.substring(0, item.concetto.indexOf('[')-1) 
+    var context = item.concetto.substring(item.concetto.indexOf('['),item.concetto.indexOf(']')+1)
+    var metadata = { "desc": item.desc, "required": 0, "field_type": "","cat": "","tag": tag,"constr": [{"`type`": "","param": ""}],"semantics": {"id": id,"context": context}}
     data[dataschema][avro]['fields'].push(obj)
     var flat = {'name' : name, "`type`" : tipo, 'metadata' : metadata }
     data[dataschema][flatSchema].push(flat)

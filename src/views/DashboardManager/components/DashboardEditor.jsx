@@ -134,9 +134,10 @@ class DashboardEditor extends Component {
         let widget = dashboard.widgets[i];
         //assign instance to widget.type
         /* let typeWid = i //.split('_')[0]; //Test */
-        if (i === "TextWidget") {
+        if (i.startsWith("TextWidget")) {
           /* widget.type = this.widgetsTypes[typeWid].type; */
           widget.type = TextWidget;
+          widget.props.onSave = this.saveTextWidget.bind(this);
           //last extends overrides previous
           /* widget.props = {...widget.props, ...this.widgetsTypes[typeWid].props,  wid_key: i}; */
         } else {
@@ -248,14 +249,20 @@ class DashboardEditor extends Component {
     }
 
     let newWidget = this.widgetsTypes[widgetKey];
-
+    let newKey = ""
     //count widget of type
-    //let progressive = this.getNextProgressive(widgetKey);
-    //assign key to widget
-    let newKey = widgetKey //+ "_" + progressive;
+    if(widgetKey==="TextWidget"){
+      let progressive = this.getNextProgressive(widgetKey);
+      //assign key to widget
+      newKey = widgetKey + "_" + progressive;
+      newWidget.props.onSave = this.saveTextWidget.bind(this)
+    }else{
+      newKey = widgetKey
+    }
     if (!newWidget.props)
       newWidget.props = {};
     newWidget.props.wid_key = newKey;
+    
 
     //add widget to list
     this.state.widgets[newKey] = newWidget;
@@ -287,9 +294,11 @@ class DashboardEditor extends Component {
   save = () => {
     //clean layout from control button
     let layoutOld = JSON.parse(JSON.stringify(this.state.layout));
+    console.log(layoutOld);
     let layout = {};
 
     for(let i in layoutOld) {
+      console.log(i)
       let rows = layoutOld[i];
       if (rows) {
         rows.filter(row => {
@@ -307,16 +316,23 @@ class DashboardEditor extends Component {
     //clean widgets from control button
     let widgetsOld = this.state.widgets;
     let widgets = {};
-
+    /* console.log(widgetsOld); */
     for(let i in widgetsOld) {
       let widget = widgetsOld[i];
+      /* console.log(i)
+      console.log(widget) */
       if(!i.startsWith("BtnControlWidget")) {
         if (widget.type) {
+/*           console.log(widgets[i])
+          console.log(widget) */
           widgets[i] = JSON.parse(JSON.stringify(widget));
+          /* console.log(widgets[i].type + ' ' + widget.type.name) */
           widgets[i].type = widget.type.name
         }
       }
     }
+
+    console.log(widgets)
 
     //save data
     let request = this.state.dashboard;
@@ -337,6 +353,7 @@ class DashboardEditor extends Component {
    */
   saveTextWidget = function (key, html) {
     this.state.widgets[key].props.text = html;
+    
     this.save();
   }
 

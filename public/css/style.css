@@ -8623,7 +8623,7 @@ app-root {
   z-index: 1019;
   height: 100%; }
   .sidebar-off-canvas .sidebar .sidebar-nav {
-    height: calc(100vh - 100px); }
+    height: calc(100vh - 50px); }
 
 @media (min-width: 992px) {
   .sidebar-compact .sidebar {
@@ -9045,7 +9045,8 @@ hr.transparent {
 }
 
 .col-w-30 {
-  z-index: 0;
+  /*Commentato per problema Modal dei widgets non sovrapposta*/
+  /* z-index: 0; */ 
   border: none!important;
   width: 30px;
   margin-left: -38px;
