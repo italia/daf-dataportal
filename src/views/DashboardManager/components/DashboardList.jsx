@@ -79,10 +79,32 @@ class DashboardList extends Component {
         {
           this.state.dashboards.map((dash, index) => {
             let chartUrl = undefined
-            if (dash.widgets && dash.widgets !== '{}'){
-              const dashJson = JSON.parse(dash.widgets)
-              const firstWidget = dashJson[Object.keys(dashJson)[0]];
-              chartUrl = firstWidget['props']['url']
+            if ((dash.widgets && dash.widgets !== '{}') && (dash.layout && dash.layout !== '{}')){
+              const dashLayout = JSON.parse(dash.layout)
+              let firstLayout = ''
+              
+              let righe = dashLayout.rows
+              for(let i = 0; i<righe.length; i++){
+                let colonne = righe[i].columns;
+                for(let j = 0; j<colonne.length; j++) {
+                  let wids = colonne[j].widgets
+                  wids.map((index) => {
+                    if (!index.key.startsWith('TextWidget')) {
+                      firstLayout = index.key
+                    }
+                  })
+                  if (firstLayout != '')
+                    break
+                }
+                if (firstLayout != '')
+                  break
+              }
+
+              const dashWidgets = JSON.parse(dash.widgets)
+              if(firstLayout!= ''){
+                const firstWidget = dashWidgets[firstLayout];
+                chartUrl = firstWidget['props']['url']
+              }
             }
             return (
               <div className="col-sm-4" key={index}>
