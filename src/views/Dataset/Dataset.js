@@ -104,8 +104,8 @@ class Dataset extends Component {
     .catch(error => console.log('Errore durante il download del file ' + nomeFile))
   }
 
-  searchDataset(category, group, organization, order) {
-    const { dispatch, query } = this.props
+  searchDataset(query, category, group, organization, order) {
+    const { dispatch } = this.props
     dispatch(loadDatasets(query, 0, '', category, group, organization, order))
   }
 
@@ -120,8 +120,8 @@ class Dataset extends Component {
     this.setState({
       edit: false
     })
-    const { dispatch } = this.props
-    dispatch(datasetDetail(name))
+    const { dispatch, query } = this.props
+    dispatch(datasetDetail(name, query))
     .catch(error => console.log('Errore durante il caricamento del dataset ' + name))
     this.props.history.push('?detail='+name)
   }
@@ -173,6 +173,7 @@ class Dataset extends Component {
   }
 
   onSearch(category, group, organization, order) {
+    const { query } = this.props
     if (order){
       this.setState({
         order_filter: order
@@ -201,7 +202,7 @@ class Dataset extends Component {
     }else
       organization = this.state.organization_filter
 
-    this.searchDataset(category, group, organization, order);
+    this.searchDataset(query, category, group, organization, order);
   }
 
 renderDatasetList(length, datasets, ope, isLoading){
@@ -478,6 +479,8 @@ renderDatasetDetail(dataset, ope, json){
               }
             </div>
           </div>
+          <div>
+          <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, this.props.query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla ricerca"><i className="fa fa-search fa-lg mt-2"></i> Torna alla ricerca</button></div>
         </div>
       );
   }

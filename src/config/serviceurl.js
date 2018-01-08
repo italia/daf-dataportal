@@ -46,19 +46,9 @@ export const serviceurl = {
  //urlJupiter: 'http://datascience.daf.teamdigitale.governo.it',
 
  // URL ONTONETHUB
- urlSemantic: "http://localhost:8000/stanbol/ontonethub/ontologies/find",
+ urlSemantic: "https://api.daf.teamdigitale.it/stanbol/ontonethub/ontologies/find",
  // URL CNR
  //urlSemantic: 'http://stlab.istc.cnr.it/ontonethub/api/find',
 
- domain: ".daf.teamdigitale.it",
- //domain: ".integrazione.daf",
-
- "DatasetBackend": {
-    "Search": {
-      "host": "catalog-manager.default.svc.cluster.local",
-      "port": 9000,
-      "nameSearch": "/catalog-manager/v1/ckan/searchDataset",
-      "nameDetail": "/catalog-manager/v1/ckan/datasets/"
-    }
-  }
+ domain: ".daf.teamdigitale.it"
 }

@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import Full from '../Full/'
 import Home from '../Home/'
 import PropTypes from 'prop-types'
-import { loginAction, addUserOrganization, isValidToken, receiveLogin, setApplicationCookie } from './../../actions.js'
+import { loginAction, addUserOrganization, isValidToken, receiveLogin, getApplicationCookie } from './../../actions.js'
 import { serviceurl } from '../../config/serviceurl.js'
 import { setCookie } from '../../utility'
 
@@ -51,28 +51,28 @@ class App extends Component {
         dispatch(isValidToken(localStorage.getItem('token')))
         .then(ok => {
           if (ok) {
-                dispatch(setApplicationCookie('superset'))
+                dispatch(getApplicationCookie('superset'))
                 .then(json => {
                   if (json) {
-                    setCookie('superset',json)
+                    setCookie(json)
                   }
                 })
-                dispatch(setApplicationCookie('metabase'))
+                dispatch(getApplicationCookie('metabase'))
                 .then(json => {
                   if (json) {
-                    setCookie('metabase',json)
+                    setCookie(json)
                   }
                 })
-                dispatch(setApplicationCookie('jupyter'))
+                dispatch(getApplicationCookie('jupyter'))
                 .then(json => {
                   if (json) {
-                    setCookie('jupyter',json)
+                    setCookie(json)
                   }
                 })
-                dispatch(setApplicationCookie('grafana'))
+                dispatch(getApplicationCookie('grafana'))
                 .then(json => {
                   if (json) {
-                    setCookie('grafana', json)
+                    setCookie(json)
                   }
                 })
                 dispatch(loginAction())

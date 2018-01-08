@@ -16,7 +16,7 @@ export function transformName(name){
     }
   }
 
-  export function setCookie(app, json){
+  export function setCookie(json){
     if(json.error!=1){
       if(json.length>0){
         for(let i in json) {

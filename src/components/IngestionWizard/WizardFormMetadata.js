@@ -181,6 +181,10 @@ class WizardFormMetadata extends Component {
     setTipi(tipi)
   }
 
+  addSemanticToForm(semantics){
+    this.input.onChange(semantics)
+  }
+
   addTagsToForm(fieldName, tags){
     var tagString=""
     tags.map((tag) => {
@@ -189,7 +193,7 @@ class WizardFormMetadata extends Component {
     this.onChange(tagString)
   }
 
-  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, setUploading, uploading, errorUpload, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, addSemanticToForm, setUploading, uploading, errorUpload, meta : {touched, error} }) => 
       <div>
       {fields.length === 0 &&
         <div className="form-group row">
@@ -328,6 +332,7 @@ class WizardFormMetadata extends Component {
                 component={AutocompleteSemantic}
                 label="Concetto"
                 value={`${test}.concetto`}
+                addSemanticToForm={addSemanticToForm}
               />
               <Field
                 name={`${test}.desc`}
@@ -412,6 +417,7 @@ class WizardFormMetadata extends Component {
               columnCard={columnCard}
               calcDataFields={this.calcDataFields}
               addTagsToForm={this.addTagsToForm}
+              addSemanticToForm={this.addSemanticToForm}
               tipi={tipi}
               setTipi={setTipi}
               uploading={uploading}

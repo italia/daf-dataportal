@@ -81,11 +81,12 @@ function requestLogin() {
   }
 }
 
-function receiveDatasetDetail(jsonDataset, jsonFile) {
+function receiveDatasetDetail(jsonDataset, jsonFile, query) {
   return {
       type: RECEIVE_DATASET_DETAIL,
       dataset: jsonDataset,
       json: jsonFile,
+      query: query,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_DETAIL'
   }
@@ -364,7 +365,7 @@ export function getAuthToken(username, pw) {
   }
 }
 
-export function setApplicationCookie(nomeApp) {
+export function getApplicationCookie(nomeApp) {
   console.log("Called setApplicationCookie");
   var url = serviceurl.apiURLSSOManager + '/secured/retriveCookie/' + nomeApp;
   return dispatch => {
@@ -555,10 +556,10 @@ export function unloadDatasets() {
   }
 }
 
-export function datasetDetail(datasetname) {
+export function datasetDetail(datasetname, query) {
   console.log('Dataset Detail action');
   return (dispatch, getState) => {
-      return dispatch(fetchDatasetDetail(datasetname))
+      return dispatch(fetchDatasetDetail(datasetname, query))
   }
 }
 
@@ -607,7 +608,7 @@ export function addDatasetKylo(json, token) {
   }
 }
 
-function fetchDatasetDetail(datasetname) {
+function fetchDatasetDetail(datasetname, query) {
   var token = '';
   //https://api.daf.teamdigitale.it/catalog-manager/v1/catalog-ds/getbytitle/carsharing_entity_vehicle
   var url = serviceurl.apiURLCatalog + '/catalog-ds/getbytitle/'  + datasetname;
@@ -628,7 +629,7 @@ function fetchDatasetDetail(datasetname) {
         .then(response => response.json())
         .then(jsonDataset => dispatch(getFileFromStorageManager(jsonDataset))
         .catch(error => console.log('Errore durante il caricamento del file dallo storage manager ' + jsonDataset))
-        .then(jsonFile => dispatch(receiveDatasetDetail(jsonDataset, jsonFile))) 
+        .then(jsonFile => dispatch(receiveDatasetDetail(jsonDataset, jsonFile, query))) 
       )
     }
   }
@@ -698,7 +699,6 @@ export function loadOntologies() {
     export function getSchema(filesToUpload, typeFile) {
       console.log('getSchema'); 
       var url = serviceurl.apiURLDatiGov + "/infer/kylo/" + typeFile
-      //var url = 'http://localhost:3001/dati-gov/v1/infer/kylo/csv'
       var token = '';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
