@@ -9045,7 +9045,8 @@ hr.transparent {
 }
 
 .col-w-30 {
-  z-index: 0;
+  /*Commentato per problema Modal dei widgets non sovrapposta*/
+  /* z-index: 0; */ 
   border: none!important;
   width: 30px;
   margin-left: -38px;
