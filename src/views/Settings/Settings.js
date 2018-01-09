@@ -36,7 +36,8 @@ class Settings extends Component {
             footerName: '',
             privacy: '',
             legal: '',
-            isChanged: false
+            isChanged: false,
+            showDiv: true
         }
 
         this.onClick = this.onClick.bind(this)
@@ -286,7 +287,16 @@ class Settings extends Component {
         this.setState({
             org: value,
         })
-
+        console.log("value: " + value)
+        if(value==''){
+            this.setState({
+                showDiv: true
+            })
+        }else{
+            this.setState({
+                showDiv: false
+            })
+        }
         this.load(value)
     }
 
@@ -339,112 +349,118 @@ class Settings extends Component {
                 <div className="col-md-9">
                     <div className="card">
                         <div className="card-block">
-                            <div className="col-4 form-group row">
-                                <label className="col-2 col-form-label">Organizzazione</label>
-                                <select className="form-control" id="ordinamento" aria-required="true" onChange={(e)=> this.onOrgChange(e.target.value)} value={this.state.org}>
-                                    <option value=""></option>
-                                    <option value="daf">Daf</option>
-                                    <option value="roma">Comune di Roma</option>
-                                </select>
-                            </div>
                             <div className="form-group row">
-                                <label className="col-2 col-form-label">Tema</label>
+                                <label className="col-2 col-form-label">Organizzazione</label>
                                 <div className="col-10">
                                     <div className="form-inline">
-                                        <input className="form-control" type="text" value={'Tema ' + this.state.theme} id="example-search-input" onClick={this.onClick}/>
-                                        <button type="button" className="btn btn-primary" onClick={this.onClick}><i className="fa fa-edit"></i></button>
+                                        <select className="form-control" id="ordinamento" aria-required="true" onChange={(e)=> this.onOrgChange(e.target.value)} value={this.state.org}>
+                                            <option value=""></option>
+                                            <option value="daf">Daf</option>
+                                            <option value="roma">Comune di Roma</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                            <div className="form-group row">
-                                <label className="col-2 col-form-label">Titolo</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.title} 
-                                        onChange= {(e) => this.onTitleChange(e.target.value)}/>
+                            <div hidden={this.state.showDiv}>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Tema</label>
+                                    <div className="col-10">
+                                        <div className="form-inline">
+                                            <input className="form-control" type="text" value={'Tema ' + this.state.theme} id="example-search-input" onClick={this.onClick}/>
+                                            <button type="button" className="btn btn-primary" onClick={this.onClick}><i className="fa fa-edit"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label  className="col-2 col-form-label">Descrizione</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.desc} 
-                                         onChange={(e) => this.onDescChange(e.target.value)}/>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Titolo</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.title} 
+                                            onChange= {(e) => this.onTitleChange(e.target.value)}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label  className="col-2 col-form-label">Logo</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.logo} 
-                                         onChange={(e) => this.onLogoChange(e.target.value)}/>
+                                <div className="form-group row">
+                                    <label  className="col-2 col-form-label">Descrizione</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.desc} 
+                                            onChange={(e) => this.onDescChange(e.target.value)}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                    <label className="col-2 col-form-label"><i className="fa fa-twitter"></i>{" "}Twitter</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="text" value={this.state.twitter} 
-                                         onChange={(e) => this.onTwitterChange(e.target.value)}/>
+                                <div className="form-group row">
+                                    <label  className="col-2 col-form-label">Logo</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.logo} 
+                                            onChange={(e) => this.onLogoChange(e.target.value)}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                    <label className="col-2 col-form-label"><i className="fa fa-medium"></i>{" "}Medium</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.medium} 
-                                        onChange={(e) => this.onMediumChange(e.target.value)}/>
+                                <div className="form-group row">
+                                        <label className="col-2 col-form-label"><i className="fa fa-twitter"></i>{" "}Twitter</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="text" value={this.state.twitter} 
+                                            onChange={(e) => this.onTwitterChange(e.target.value)}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-2 col-form-label">Notizie</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="text" value={this.state.news}
-                                         onChange={(e) => this.onNewsChange(e.target.value)} />
+                                <div className="form-group row">
+                                        <label className="col-2 col-form-label"><i className="fa fa-medium"></i>{" "}Medium</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.medium} 
+                                            onChange={(e) => this.onMediumChange(e.target.value)}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-2 col-form-label">Forum</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.forum}
-                                        onChange={(e) => this.onForumChange(e.target.value)} />
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Notizie</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="text" value={this.state.news}
+                                            onChange={(e) => this.onNewsChange(e.target.value)} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-2 col-form-label">Footer Logo 1</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.footer_logoA} 
-                                         onChange={(e) => this.onFootAChange(e.target.value)}/>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Forum</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.forum}
+                                            onChange={(e) => this.onForumChange(e.target.value)} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-2 col-form-label">Footer Logo 2</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.footer_logoB}
-                                        id="example-search-input" onChange={(e) => this.onFootBChange(e.target.value)} />
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Footer Logo 1</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.footer_logoA} 
+                                            onChange={(e) => this.onFootAChange(e.target.value)}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-2 col-form-label">Footer Logo 3</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.footer_logoC} 
-                                        onChange={(e) => this.onFootCChange(e.target.value)}/>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Footer Logo 2</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.footer_logoB}
+                                            id="example-search-input" onChange={(e) => this.onFootBChange(e.target.value)} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-2 col-form-label">Footer Nome</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.footerName} 
-                                        onChange={(e) => this.onFootnameChange(e.target.value)}/>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Footer Logo 3</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.footer_logoC} 
+                                            onChange={(e) => this.onFootCChange(e.target.value)}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-2 col-form-label">Privacy Policy</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.privacy} 
-                                        onChange={(e) => this.onPrivacyChange(e.target.value)}/>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Footer Nome</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.footerName} 
+                                            onChange={(e) => this.onFootnameChange(e.target.value)}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-2 col-form-label">Note Legali</label>
-                                <div className="col-10">
-                                    <input className="form-control" type="search" value={this.state.legal} 
-                                        onChange={(e) => this.onLegalChange(e.target.value)}/>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Privacy Policy</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.privacy} 
+                                            onChange={(e) => this.onPrivacyChange(e.target.value)}/>
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Note Legali</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.legal} 
+                                            onChange={(e) => this.onLegalChange(e.target.value)}/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
