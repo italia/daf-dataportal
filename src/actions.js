@@ -627,16 +627,16 @@ function fetchDatasetDetail(datasetname, query) {
         }
       })
         .then(response => response.json())
-        .then(jsonDataset => dispatch(getFileFromStorageManager(jsonDataset))
+        .then(jsonDataset => dispatch(getFileFromStorageManager(jsonDataset.operational.logical_uri))
         .catch(error => console.log('Errore durante il caricamento del file dallo storage manager ' + jsonDataset))
         .then(jsonFile => dispatch(receiveDatasetDetail(jsonDataset, jsonFile, query))) 
       )
     }
   }
 
-export function getFileFromStorageManager(jsonDataset) {
+export function getFileFromStorageManager(logical_uri) {
   var token = '';
-  var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(jsonDataset.operational.logical_uri);
+  var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
   //var url = 'https://api.daf.teamdigitale.it/dataset-manager/v1/dataset/daf%3A%2F%2Fdataset%2Ford%2Falessandro%2Fdefault_org%2FAGRI%2Forganizzazioni%2Fagency_infer_ale'
   //var url = "http://localhost:3001/storage-manager/v1/dataset-manager/v1/dataset/daf"
   if(localStorage.getItem('username') && localStorage.getItem('token') &&

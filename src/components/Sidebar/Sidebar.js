@@ -130,7 +130,7 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica <span className="badge badge-danger">beta</span></NavLink>
+                    <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica</NavLink>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();

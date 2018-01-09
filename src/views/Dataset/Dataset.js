@@ -341,8 +341,8 @@ renderDatasetDetail(dataset, ope, json){
                   <strong><p>Download File: </p></strong>
                 </div>
                 <div className="col-8">
-                <p>{dataset.dcatapit.name} <a onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="fa fa-download"></i></a></p>
-                </div>
+                  <button type="button" className="btn-link" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)} title="Download"><i className="fa fa-download fa-lg mt-2"></i> {dataset.dcatapit.name}</button>
+              </div>
               </div>
               <div className="row">
                 <div className="col-4">
@@ -480,7 +480,7 @@ renderDatasetDetail(dataset, ope, json){
             </div>
           </div>
           <div>
-          <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, this.props.query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla ricerca"><i className="fa fa-search fa-lg mt-2"></i> Torna alla ricerca</button></div>
+          <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, this.props.query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button></div>
         </div>
       );
   }
