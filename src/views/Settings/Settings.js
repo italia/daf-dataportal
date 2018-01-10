@@ -117,7 +117,7 @@ class Settings extends Component {
 
   async save(settings, org) {
       let token = localStorage.getItem('token')
-      const response = await fetch(serviceurl.apiURLDatiGov + '/settings?organization=' + org, {
+      const response = await fetch(serviceurl.apiURLDatiGov + '/settings/' + org, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

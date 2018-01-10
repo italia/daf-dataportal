@@ -5,7 +5,8 @@ export default class UserStoryService {
 
     urlIframe = serviceurl.apiURLDatiGov + "/dashboard/iframes?apikey=test";
     baseUrl = serviceurl.apiURLDatiGov  + "/user-stories";
-
+    baseUrlSave = serviceurl.apiURLDatiGov  + "/save/user-stories";
+    baseUrlRemove = serviceurl.apiURLDatiGov  + "/delete/user-stories";
     constructor() {
 
     }
@@ -38,7 +39,7 @@ export default class UserStoryService {
 
     async save(story) {
         story['timestamp'] = new Date(); 
-        const response = await fetch( this.baseUrl, {
+        const response = await fetch( this.baseUrlSave, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -53,7 +54,7 @@ export default class UserStoryService {
     
     async remove(id) {
 
-        const response = await fetch( this.baseUrl + "/" + id , {
+        const response = await fetch( this.baseUrlRemove + "/" + id , {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
