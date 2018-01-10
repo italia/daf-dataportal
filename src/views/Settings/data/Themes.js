@@ -9,7 +9,7 @@ const themes = [
     },
     {
         id: "3",
-        snapshot: '',
+        snapshot: 'image3.png',
     }
 
 ]

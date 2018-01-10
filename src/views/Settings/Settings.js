@@ -19,11 +19,11 @@ class Settings extends Component {
     constructor(props){
         super(props)
         this.state={
-            org: '',
             temi: themes,
             isOpen: false,
             theme: 1,
             title: '',
+            organization: '',
             desc: '',
             logo: '',
             twitter: '',
@@ -47,7 +47,7 @@ class Settings extends Component {
     }
 
     async settings(org) {
-        var url = serviceurl.apiURLDatiGov + "/settings?organization=" + org
+        var url = serviceurl.apiURLDatiGov + "/settings?domain=" + org
         let token = localStorage.getItem('token')
         const response = await fetch(url, {
             method: 'GET',
@@ -65,20 +65,21 @@ class Settings extends Component {
         let response = this.settings(org)
         response.then((json)=> {
             this.setState({
-                theme: json.theme,
-                title: json.headerSiglaTool,
-                desc: json.headerDescTool,
-                logo: json.headerLogo,
-                twitter: json.twitterURL,
-                medium: json.mediumURL,
-                news: json.notizieURL,
-                forum: json.forumURL,
-                footer_logoA: json.footerLogoAGID,
-                footer_logoB: json.footerLogoGov,
-                footer_logoC: json.footerLogoDevITA,
-                footerName: json.footerNomeEnte,
-                privacy: json.footerPrivacy,
-                legal: json.footerLegal,
+                theme: json.theme?json.theme:1,
+                title: json.headerSiglaTool?json.headerSiglaTool:'',
+                organization: json.organization?json.organization:'',
+                desc: json.headerDescTool?json.headerDescTool:'',
+                logo: json.headerLogo?json.headerLogo:'',
+                twitter: json.twitterURL?json.twitterURL:'',
+                medium: json.mediumURL?json.mediumURL:'',
+                news: json.notizieURL?json.notizieURL:'',
+                forum: json.forumURL?json.forumURL:'',
+                footer_logoA: json.footerLogoAGID?json.footerLogoAGID:'',
+                footer_logoB: json.footerLogoGov?json.footerLogoGov:'',
+                footer_logoC: json.footerLogoDevITA?json.footerLogoDevITA:'',
+                footerName: json.footerNomeEnte?json.footerNomeEnte:'',
+                privacy: json.footerPrivacy?json.footerPrivacy:'',
+                legal: json.footerLegal?json.footerLegal:'',
             });
         });
     }
@@ -90,6 +91,7 @@ class Settings extends Component {
     console.log('save settings: ' + settings)
     //save data
     let json = {
+        organization: this.state.organization,
         theme: this.state.theme,
         headerSiglaTool: this.state.title,
         headerDescTool: this.state.desc,
@@ -106,7 +108,7 @@ class Settings extends Component {
         footerLegal: this.state.legal
     }
 
-    const response = this.save(json, this.state.org);
+    const response = this.save(json, this.state.domain);
     this.setState({saving: true});
     response.then((data)=> {
       this.setState({
@@ -160,6 +162,16 @@ class Settings extends Component {
         });
         let settings = this.state;
         settings.title = value;
+        this.saveSettings(settings);
+    }
+
+    onOrganizationChange(value){
+        this.setState({
+            organization: value,
+            isChanged: true
+        });
+        let settings = this.state;
+        settings.organization = value;
         this.saveSettings(settings);
     }
 
@@ -283,9 +295,9 @@ class Settings extends Component {
         this.saveSettings(settings);
     }
 
-    onOrgChange(value){
+    onDomainChange(value){
         this.setState({
-            org: value,
+            domain: value,
         })
         console.log("value: " + value)
         if(value==''){
@@ -350,13 +362,14 @@ class Settings extends Component {
                     <div className="card">
                         <div className="card-block">
                             <div className="form-group row">
-                                <label className="col-2 col-form-label">Organizzazione</label>
+                                <label className="col-2 col-form-label">Dominio</label>
                                 <div className="col-10">
                                     <div className="form-inline">
-                                        <select className="form-control" id="ordinamento" aria-required="true" onChange={(e)=> this.onOrgChange(e.target.value)} value={this.state.org}>
+                                        <select className="form-control" id="ordinamento" aria-required="true" onChange={(e)=> this.onDomainChange(e.target.value)} value={this.state.domain}>
                                             <option value=""></option>
-                                            <option value="daf">Daf</option>
-                                            <option value="roma">Comune di Roma</option>
+                                            <option value="dataportal">dataportal</option>
+                                            <option value="roma">roma</option>
+                                            <option value="firenze">firenze</option>
                                         </select>
                                     </div>
                                 </div>
@@ -369,6 +382,13 @@ class Settings extends Component {
                                             <input className="form-control" type="text" value={'Tema ' + this.state.theme} id="example-search-input" onClick={this.onClick}/>
                                             <button type="button" className="btn btn-primary" onClick={this.onClick}><i className="fa fa-edit"></i></button>
                                         </div>
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Organizzazione</label>
+                                    <div className="col-10">
+                                        <input className="form-control" type="search" value={this.state.organization} 
+                                            onChange= {(e) => this.onOrganizationChange(e.target.value)}/>
                                     </div>
                                 </div>
                                 <div className="form-group row">
