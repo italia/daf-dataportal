@@ -3,7 +3,8 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 export default class DashboardService {
     
     baseUrl = serviceurl.apiURLDatiGov + "/dashboards";
-
+    baseUrlSave = serviceurl.apiURLDatiGov + "/save/dashboards";
+    baseUrlRemove = serviceurl.apiURLDatiGov + "/delete/dashboards";
     constructor() {
 
     }
@@ -36,7 +37,7 @@ export default class DashboardService {
 
         let id = dashboard.id || "save"
         dashboard['timestamp'] = new Date(); 
-        const response = await fetch( this.baseUrl, {
+        const response = await fetch( this.baseUrlSave, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -51,7 +52,7 @@ export default class DashboardService {
     
     async remove(id) {
 
-        const response = await fetch( this.baseUrl + "/" + id , {
+        const response = await fetch( this.baseUrlRemove + "/" + id , {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
