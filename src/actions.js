@@ -384,7 +384,7 @@ export function getApplicationCookie(nomeApp) {
 
 export function loginAction() {
   console.log("Called action loginAction");
-  var url = serviceurl.apiURLSecurity + '/ipa/user/' + localStorage.getItem('username')
+  var url = serviceurl.apiURLSecurity + '/ipa/userbymail/' + localStorage.getItem('username')
   return dispatch => {
       dispatch(requestLogin())
       return fetch(url, {

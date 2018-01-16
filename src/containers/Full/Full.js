@@ -14,7 +14,8 @@ import UserStory from '../../views/UserStory/';
 import Profile from '../../views/Profile/';
 import Settings from '../../views/Settings/';
 import DashboardManager from '../../views/DashboardManager/DashboardManager';
-import Administration from '../../views/Settings/Administration';
+import Organizations from '../../views/Settings/Organizations';
+import Users from '../../views/Settings/Users';
 
 class Full extends Component {
   render() {
@@ -44,7 +45,8 @@ class Full extends Component {
                 <Route path="/dataset" name="Dataset" component={Dataset} />
                 <Route path="/profile" name="Profile" component={Profile} />
                 <Route path="/settings" name="Settings" component={Settings} />
-                <Route path="/administration" name="Administration" component={Administration} />
+                <Route path="/organizations" name="Organizations" component={Organizations} />
+                <Route path="/users" name="Users" component={Users} />
                 <Redirect from="/" to="/home"/>
               </Switch>
             </div>

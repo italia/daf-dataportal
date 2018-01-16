@@ -2099,6 +2099,25 @@ fieldset[disabled] a.btn {
     .btn-link:disabled:focus, .btn-link:disabled:hover {
       text-decoration: none; }
 
+.btn-active {
+  font-weight: normal;
+  color: #ffffff;
+  border-radius: 0; }
+  .btn-active, .btn-active:active, .btn-active.active, .btn-active:disabled {
+    background-color: transparent; }
+  .btn-active, .btn-active:focus, .btn-active:active {
+    border-color: transparent; }
+  .btn-link:hover {
+    border-color: transparent; }
+  .btn-active:focus, .btn-active:hover {
+    color: #ffffff;
+    text-decoration: underline;
+    background-color: transparent; }
+  .btn-active:disabled {
+    color: #b0bec5; }
+    .btn-active:disabled:focus, .btn-active:disabled:hover {
+      text-decoration: none; }
+
 .btn-lg, .btn-group-lg > .btn {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
@@ -3511,7 +3530,7 @@ button.close {
   margin: 10px; }
 
 .modal-content {
-  position: relative;
+  position: fixed;
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -9098,6 +9117,11 @@ hr.transparent {
 
 .modal-80 {
   width: 80%;
+  max-width: none;
+}
+
+.modal-60 {
+  width: 60%;
   max-width: none;
 }
 

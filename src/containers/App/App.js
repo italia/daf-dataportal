@@ -78,7 +78,7 @@ class App extends Component {
                 dispatch(loginAction())
                   .then(json => {
                       dispatch(receiveLogin(json))
-                      dispatch(addUserOrganization(json.uid))
+                      /* dispatch(addUserOrganization(json.uid)) */
                       this.setState({
                           authed: true,
                           loading: false
@@ -134,7 +134,8 @@ class App extends Component {
           <PrivateRoute authed={this.state.authed} path="/user_story" name="Storie" component={Full} />
           <PrivateRoute authed={this.state.authed} path="/profile" name="Profile" component={Full} />
           <PrivateRoute authed={this.state.authed} path="/settings" name="Settings" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/administration" name="Administration" component={Full} />
+          <PrivateRoute authed={this.state.authed} path="/organizations" name="Organizations" component={Full} />
+          <PrivateRoute authed={this.state.authed} path="/users" name="Users" component={Full} />
         </Switch>
       </HashRouter>
 

@@ -107,7 +107,6 @@ class Header extends Component {
               <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                 <h6 className="dropdown-header text-center">Menu utente</h6>
                 <a className="dropdown-item" href="/#/profile" onClick={this.toggle}><i className="fa fa-user"></i> Profilo</a>
-                <a className="dropdown-item" href="/#/settings" onClick={this.toggle}><i className="fa fa-gear"></i> Impostazioni</a>
                 <a className="dropdown-item" onClick={() => { logout(); this.toggle }} href="/"><i className="fa fa-lock"></i> Logout</a>
             </div>
           </div>

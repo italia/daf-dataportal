@@ -61,7 +61,6 @@ class Login extends Component {
                                   .then(json => {
                                     localStorage.setItem('user', json.uid);
                                     dispatch(receiveLogin(json))
-                                    dispatch(addUserOrganization(json.uid))
                                     this.props.history.push('/home')
                                   })
                               }
