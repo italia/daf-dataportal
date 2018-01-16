@@ -1,11 +1,11 @@
 export const serviceurl = {
   // Local
   
-  apiURLSSOManager: "http://localhost:9002/sso-manager",
+/*   apiURLSSOManager: "http://localhost:9002/sso-manager",
   apiURLDatiGov: "http://localhost:9000/dati-gov/v1", 
   apiURLCatalog: "http://localhost:9001/catalog-manager/v1",
   apiURLIngestion: "http://localhost:9002/ingestion-manager/v1",
-  apiURLSecurity: "http://localhost:9002/security-manager/v1",
+  apiURLSecurity: "http://localhost:9002/security-manager/v1", */
 
   
   //MOCK
@@ -23,12 +23,12 @@ export const serviceurl = {
 
   
  // EXTERNAL
-/*  apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
+ apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
  apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
  apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
  apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
  apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1",
- */
+
  urlMetabase: 'https://graph.daf.teamdigitale.it',
  urlSuperset: 'https://bi.daf.teamdigitale.it',
  urlJupiter: 'https://datascience.daf.teamdigitale.it',
@@ -50,6 +50,6 @@ export const serviceurl = {
  // URL CNR
  //urlSemantic: 'http://stlab.istc.cnr.it/ontonethub/api/find',
 
- /* domain: ".daf.teamdigitale.it" */
- domain: ".integrazione.daf",
+ domain: ".daf.teamdigitale.it"
+ /* domain: ".integrazione.daf", */
 }
