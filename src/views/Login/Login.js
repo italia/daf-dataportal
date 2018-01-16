@@ -40,7 +40,6 @@ class Login extends Component {
     dispatch(getAuthToken(this.email.value, this.pw.value))
       .then(json => {
             localStorage.setItem('token', json);
-            setCookie(JSON.parse('[{"name":"dataportal","value":"logged","path":"/"}]'))
             dispatch(getApplicationCookie('superset'))
             .then(json => {
               if (json) {
@@ -60,6 +59,7 @@ class Login extends Component {
                                 dispatch(loginAction())
                                   .then(json => {
                                     localStorage.setItem('user', json.uid);
+                                    setCookie(JSON.parse('[{"name":"dataportal","value":"'+ json.givenname +'","path":"/"}]'))
                                     dispatch(receiveLogin(json))
                                     this.props.history.push('/home')
                                   })
