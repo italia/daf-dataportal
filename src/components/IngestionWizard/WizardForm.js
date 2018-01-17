@@ -110,7 +110,7 @@ class WizardForm extends Component {
   }
 
   render() {
-    const { onSubmit, organizations } = this.props
+    const { onSubmit, loggedUser } = this.props
     const { page } = this.state
     return (
       <div>
@@ -141,7 +141,7 @@ class WizardForm extends Component {
                 {page ===2 &&  <WizardFormFirstPage
                       previousPage={this.previousPage}
                       onSubmit={this.nextPage}
-                      organizations={organizations}
+                      organizations={loggedUser.organizations}
                       licenze={licenze}
                       openModal={this.openModal}
                   />}
