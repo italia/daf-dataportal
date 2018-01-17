@@ -193,11 +193,11 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li>
-              {role != 'daf_viewer' && <div>
+              {role && role != 'daf_viewer' && <div>
               <li className="nav-title">
                 Impostazioni
               </li>
-              {role === 'daf_admins' &&
+              {role && role === 'daf_admins' &&
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');

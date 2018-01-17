@@ -4532,6 +4532,13 @@ a.bg-inverse:focus, a.bg-inverse:hover {
   left: 0;
   z-index: 1030; }
 
+  .fixed-middle {
+  position: fixed;
+  right: 0;
+  bottom: 50%;
+  left: 0;
+  z-index: 1030; }
+
 .fixed-bottom {
   position: fixed;
   right: 0;

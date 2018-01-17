@@ -22,6 +22,28 @@ function PrivateRoute({ component: Component, authed, ...rest }) {
   )
 }
 
+function PrivateRouteAdmin({ component: Component, authed, role, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => (authed === true && role==='daf_admins')
+        ? <Component {...props} />
+        : <Redirect to={{ pathname: '/home', state: { from: props.location } }} />}
+    />
+  )
+}
+
+function PrivateRouteEditor({ component: Component, authed, role, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => (authed === true && (role === 'daf_editors' || role === 'daf_admins'))
+        ? <Component {...props} />
+        : <Redirect to={{ pathname: '/home', state: { from: props.location } }} />}
+    />
+  )
+}
+
 function PublicRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
@@ -111,11 +133,13 @@ class App extends Component {
     this.removeListener()
   }
   render() {
-
+    var role = ''
+    if(this.props.loggedUser)
+      role = this.props.loggedUser.role
     if (this.props.authed)
       this.state.authed = true;
 
-    return this.state.loading === true ? <h1 className="m-20">Loading</h1> : (
+    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (
 
       <HashRouter history={history}>
         <Switch>
@@ -133,9 +157,9 @@ class App extends Component {
           <PrivateRoute authed={this.state.authed} path="/dashboard/list" name="Dash" component={Full} />
           <PrivateRoute authed={this.state.authed} path="/user_story" name="Storie" component={Full} />
           <PrivateRoute authed={this.state.authed} path="/profile" name="Profile" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/settings" name="Settings" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/organizations" name="Organizations" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/users" name="Users" component={Full} />
+          <PrivateRoute authed={this.state.authed} role={role} path="/settings" name="Settings" component={Full} />
+          <PrivateRouteEditor authed={this.state.authed} role={role} path="/organizations" name="Organizations" component={Full} />
+          <PrivateRouteAdmin authed={this.state.authed} role={role} path="/users" name="Users" component={Full} />
         </Switch>
       </HashRouter>
 
