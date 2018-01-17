@@ -61,7 +61,6 @@ class Login extends Component {
                                     localStorage.setItem('user', json.uid);
                                     setCookie(JSON.parse('[{"name":"dataportal","value":"'+ json.givenname +'","path":"/"}]'))
                                     dispatch(receiveLogin(json))
-                                    dispatch(addUserOrganization(json.uid))
                                     this.props.history.push('/home')
                                   })
                               }

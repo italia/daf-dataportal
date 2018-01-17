@@ -81,6 +81,8 @@ class Sidebar extends Component {
   }
 
   render() {
+    const { loggedUser } = this.props
+    let role = loggedUser.role 
     return (
       <div>
         <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
@@ -191,16 +193,30 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li>
-{/* 
+              {role && role != 'daf_viewer' && <div>
               <li className="nav-title">
                 Impostazioni
+              </li>
+              {role && role === 'daf_admins' &&
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/users'} className="nav-link" activeClassName="active"><i className="fa fa-user-plus"></i> Gestione Utenti</NavLink>
+              </li>}
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/organizations'} className="nav-link" activeClassName="active"><i className="fa fa-group"></i> Organizzazioni</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/administration'} className="nav-link" activeClassName="active"><i className="icon-people"></i> Gestione Utenti</NavLink>
-              </li> */}
+                <NavLink to={'/settings'} className="nav-link" activeClassName="active"><i className="fa fa-picture-o"></i> Interfaccia</NavLink>
+              </li>
+              </div>}
             </ul>
           </nav>
         </div>

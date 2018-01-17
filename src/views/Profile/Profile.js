@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 class Profile extends Component {
 
   render() {
-    const { loggedUser, organizations } = this.props
+    const { loggedUser } = this.props
     return (
     <div className="form-group row">
         <div className="col-md-9">
@@ -30,11 +30,17 @@ class Profile extends Component {
                         </div>
                     </div>
                     <div className="form-group row">
+                        <label htmlFor="example-search-input" className="col-2 col-form-label">Ruolo</label>
+                        <div className="col-10">
+                            <input className="form-control" type="search" value={loggedUser ? loggedUser.role  : ''} id="example-search-input" />
+                        </div>
+                    </div>
+                    <div className="form-group row">
                         <label htmlFor="example-search-input" className="col-2 col-form-label">Organizzazioni</label>
                         <div className="col-10">
                             <select className="form-control" id="organizations" size="5" multiple>
-                                {organizations && organizations.length > 0 && organizations.map(organization => 
-                                    <option value={organization.name} key={organization.name}>{organization.name}</option>
+                                {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => 
+                                    <option value={organization} key={organization}>{organization}</option>
                                 )
                                 }
                             </select>
@@ -56,9 +62,8 @@ Profile.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const organizations = state.userReducer['org'] ? state.userReducer['org'].organizations || { } : { };
     const loggedUser = state.userReducer['obj'].loggedUser || { } 
-    return { loggedUser, organizations }
+    return { loggedUser }
 }
 
 export default connect(mapStateToProps)(Profile)
