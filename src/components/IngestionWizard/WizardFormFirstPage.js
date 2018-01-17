@@ -43,7 +43,7 @@ const renderOrganization = ({ input, label, type, organizations, meta: { touched
        <div className="form-group">
         <select className="form-control" {...input}>
           <option value=""  key='organization' defaultValue></option>
-          {organizations.map(organization => <option value={organization.name} key={organization.name}>{organization.name}</option>)}
+          {organizations.map(organization => <option value={organization} key={organization}>{organization}</option>)}
         </select>
       </div>
       {touched && error && <div className="text-danger">{error}</div>}
