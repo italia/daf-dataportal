@@ -193,7 +193,7 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li>
-              {role && role != 'daf_viewer' && <div>
+              {role && role != 'daf_viewers' && <div>
               <li className="nav-title">
                 Impostazioni
               </li>

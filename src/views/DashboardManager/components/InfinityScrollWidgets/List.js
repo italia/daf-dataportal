@@ -23,7 +23,7 @@ class List extends Component {
 
   async imageLoad(widget){
     /* console.log('identifier: ' + widget); */
-    let url = 'https://api.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
     const response = await fetch(url, {
         method: 'GET'
     }).then(response => response.text())

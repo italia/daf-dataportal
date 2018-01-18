@@ -12,7 +12,7 @@ class WidgetImage extends React.Component {
 
     componentDidMount() {
         const { widget } = this.props
-        let url = 'https://api.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+        let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
         const response = fetch(url, {
             method: 'GET'
         }).then(response => {
