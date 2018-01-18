@@ -11,6 +11,7 @@ import {
     ModalFooter
 } from 'react-modal-bootstrap'
 import themes from './data/Themes'
+import Select from "react-select";
 import { serviceurl } from '../../config/serviceurl'
 
 
@@ -37,13 +38,16 @@ class Settings extends Component {
             privacy: '',
             legal: '',
             isChanged: false,
-            showDiv: true
+            showDiv: true,
+            newDomain: true
         }
 
         this.onClick = this.onClick.bind(this)
         this.onThemeSelect = this.onThemeSelect.bind(this)
         this.load = this.load.bind(this)
         this.save = this.save.bind(this)
+        this.onDomainChange = this.onDomainChange.bind(this)
+        this.addDomain = this.addDomain.bind(this)
     }
 
     async settings(org) {
@@ -54,7 +58,6 @@ class Settings extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
             }
         })
 
@@ -295,12 +298,13 @@ class Settings extends Component {
         this.saveSettings(settings);
     }
 
-    onDomainChange(value){
+    onDomainChange(newValue){
         this.setState({
-            domain: value,
+            domain: newValue,
+            newDomain: true
         })
-        console.log("value: " + value)
-        if(value==''){
+        console.log("value: " + newValue)
+        if (newValue=='' || !newValue){
             this.setState({
                 showDiv: true
             })
@@ -309,11 +313,43 @@ class Settings extends Component {
                 showDiv: false
             })
         }
-        this.load(value)
+        this.load(newValue)
+    }
+
+    addDomain(){
+        const response = this.settings('dataportal')
+        response.then((json)=>{
+            var settings = json;
+            const save = this.save(json, this.state.domain)
+            save.then((json)=>{
+                this.setState({
+                    newDomain: true,
+                })
+            })
+        })
     }
 
     render() {
-    const { loggedUser} = this.props
+        const { loggedUser} = this.props
+        const { newDomain } = this.state
+        const domains = [
+            {
+                'value': 'dataportal',
+                'label': 'dataportal'
+            },
+            {
+                'value': 'roma',
+                'label': 'roma'
+            },
+            {
+                'value': 'firenze',
+                'label': 'firenze'
+            },
+            {
+                'value': 'torino',
+                'label': 'torino'
+            }
+        ]
     return (
         <div>
             <Modal
@@ -363,16 +399,22 @@ class Settings extends Component {
                         <div className="card-block">
                             <div className="form-group row">
                                 <label className="col-2 col-form-label">Dominio</label>
-                                <div className="col-10">
-                                    <div className="form-inline">
-                                        <select className="form-control" id="ordinamento" aria-required="true" onChange={(e)=> this.onDomainChange(e.target.value)} value={this.state.domain}>
-                                            <option value=""></option>
-                                            <option value="dataportal">dataportal</option>
-                                            <option value="roma">roma</option>
-                                            <option value="firenze">firenze</option>
-                                        </select>
-                                    </div>
+                                <div className="col-4">
+                                    <Select
+                                        id="state-select"
+                                        onBlurResetsInput={false}
+                                        onSelectResetsInput={true}
+                                        options={domains}
+                                        simpleValue
+                                        clearable={true}
+                                        name="selected-user"
+                                        value={this.state.domain}
+                                        onChange={this.onDomainChange}
+                                        rtl={false}
+                                        searchable={true}
+                                    />
                                 </div>
+                                {/* <button className="btn btn-link" onClick={()=>this.setState({newDomain: false, showDiv: true, domain: ''})}><i className="fa fa-plus"/></button> */}
                             </div>
                             <div hidden={this.state.showDiv}>
                                 <div className="form-group row">
@@ -481,6 +523,16 @@ class Settings extends Component {
                                         <input className="form-control" type="search" value={this.state.legal} 
                                             onChange={(e) => this.onLegalChange(e.target.value)}/>
                                     </div>
+                                </div>
+                            </div>
+                            <div hidden={newDomain}>
+                                <div className="form-group row">
+                                    <label className="col-2 col-form-label">Nuovo Dominio</label>
+                                    <div className="col-4">
+                                        <input className="form-control" type="search" value={this.state.domain}
+                                            onChange={(e) => {this.setState({domain: e.target.value}); console.log(this.state.domain)}} />
+                                    </div>
+                                    <button className="btn btn-primary" title="Aggiungi il dominio" onClick={this.addDomain}><i className="fa fa-check"/></button>
                                 </div>
                             </div>
                         </div>

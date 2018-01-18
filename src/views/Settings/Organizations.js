@@ -120,6 +120,7 @@ class Organizations extends Component {
     add(){
         const { user, org } = this.state;
         let response = organizationService.userAdd(org, user)
+        this.setState({ saving: true })
         response.then((json) =>{
             if(json.code!= '0'){
                 this.getUsers(org)
@@ -129,7 +130,8 @@ class Organizations extends Component {
                     remove: '',
                     delete: '',
                     user: '',
-                    userModal: false
+                    userModal: false,
+                    saving: false
                 })
             }else{
                 this.getUsers(org);
@@ -139,7 +141,8 @@ class Organizations extends Component {
                     remove: '',
                     delete: '',
                     user: '',
-                    userModal: false
+                    userModal: false,
+                    saving: false
                 })
                 console.log('User Add error: '+json.message)
             }   
@@ -155,6 +158,7 @@ class Organizations extends Component {
             supSetConnectedDbName: "default"
         }
         let response = organizationService.create(organization);
+        this.setState({saving: true})
         response.then((json) => {
             if(json.code!='0'){
                 this.setState({
@@ -165,6 +169,7 @@ class Organizations extends Component {
                     nome: '',
                     mail: '',
                     psw: '',
+                    saving: false
                 });
                 this.load();
                 }else{
@@ -173,6 +178,7 @@ class Organizations extends Component {
                         add: '',
                         create: 'ko',
                         delete: '',
+                        saving: false
                     })
                     console.log('Create org error: '+ json.message)
                 }
@@ -183,6 +189,7 @@ class Organizations extends Component {
     deleteOrg(){
         const { org } = this.state
         let response = organizationService.delete(org);
+        this.setState({ saving: true })
         response.then((json) => {
             if (!json.code) {
                 this.setState({
@@ -191,7 +198,8 @@ class Organizations extends Component {
                     add: '',
                     create: '',
                     delete: 'ok',
-                    message: json.message
+                    message: json.message,
+                    saving: false
                 })
                 this.load();
             }else{
@@ -201,7 +209,8 @@ class Organizations extends Component {
                     add: '',
                     create: '',
                     delete: 'ko',
-                    message: json.message
+                    message: json.message,
+                    saving: false
                 })
                 this.load();
             }
@@ -323,7 +332,7 @@ class Organizations extends Component {
                         </ModalBody>
                         <ModalFooter>
                         <button className='btn btn-danger' onClick={this.deleteOrg.bind(this)}>
-                            Cancella l'organizzazione
+                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Cancella l'organizzazione"} 
                         </button>
                             <button className='btn btn-secondary' onClick={this.closeOrgModal.bind(this)}>
                                 Annulla
@@ -356,7 +365,7 @@ class Organizations extends Component {
                         </ModalBody>
                         <ModalFooter>
                             <button className='btn btn-primary' onClick={this.add.bind(this)}>
-                                Aggiungi utente
+                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Aggiungi utente"}
                             </button>
                             <button className='btn btn-secondary' onClick={this.closeUserModal}>
                                 Annulla
@@ -364,7 +373,7 @@ class Organizations extends Component {
                         </ModalFooter>
                 </Modal>
                 <div className="row">
-                    <div className="form-group ml-3">
+                    <div className="form-group col-5 ml-3">
                         <label htmlFor="example-search-input" className="col-2 mb-3">Organizzazioni</label>
                         <ul className="list-group">
                             <li className="list-group-item"><input className="form-control" onChange={(e)=>{this.searchBy(e.target.value)}}></input></li>
@@ -404,7 +413,7 @@ class Organizations extends Component {
                                     <input className="form-control" type="password" value={this.state.psw} onChange={(e) => { this.setState({ psw: e.target.value }) }}/>
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" onClick={this.createOrg.bind(this)}>Crea</button>
+                            <button type="submit" className="btn btn-primary" onClick={this.createOrg.bind(this)}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Crea"}</button>
                         </div>
                     </div>}  
                     {userEdit && 
