@@ -430,7 +430,7 @@ renderDatasetDetail(dataset, ope, json){
                     <div className="card card-block">
                     <div className="col-12">
                         <div className="row">
-                          <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>/daf/opendata/{dataset.dcatapit.title}</strong>.</p>
+                          <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>{dataset.operational.physical_uri}</strong>.</p>
                         </div>
                         <div className="row">
                           <div className="col-2">
@@ -438,7 +438,7 @@ renderDatasetDetail(dataset, ope, json){
                           </div>
                           <div className="col-10">
                             <code>
-                              path_dataset = "/daf/opendata/<strong>{dataset.dcatapit.title}</strong>" <br />
+                              path_dataset = "/daf/opendata/<strong>{dataset.operational.physical_uri}</strong>" <br />
                               df = (spark.read.format("parquet") <br />
                               .option("inferSchema", "true") <br />
                               .option("header", "true") <br />
