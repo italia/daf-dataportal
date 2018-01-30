@@ -3,7 +3,7 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 export default class UserStoryService {
     
 
-    urlIframe = serviceurl.apiURLDatiGov + "/dashboard/iframes?apikey=test";
+    urlIframe = serviceurl.apiURLDatiGov + "/dashboard/iframes";
     baseUrl = serviceurl.apiURLDatiGov  + "/user-stories";
     baseUrlSave = serviceurl.apiURLDatiGov  + "/save/user-stories";
     baseUrlRemove = serviceurl.apiURLDatiGov  + "/delete/user-stories";
@@ -39,6 +39,7 @@ export default class UserStoryService {
 
     async save(story) {
         story['timestamp'] = new Date(); 
+        console.log('Salvataggio story: ' + story);
         const response = await fetch( this.baseUrlSave, {
             method: 'POST',
             headers: {

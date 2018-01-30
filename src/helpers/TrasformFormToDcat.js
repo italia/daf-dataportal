@@ -104,6 +104,7 @@ export function createOperational (values, data) {
 export function createDcat (values, data) {
   var dcatapit = 'dcatapit'
   data[dcatapit] = {}
+  data[dcatapit]['privatex'] = values.private==1?true:false
   data[dcatapit]['name'] = values.title
   data[dcatapit]['title'] = values.title
   data[dcatapit]['identifier'] = values.title //values.identifier

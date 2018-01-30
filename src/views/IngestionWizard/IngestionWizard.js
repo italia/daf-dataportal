@@ -74,6 +74,7 @@ hideModalAndRedirect = (e) => {
 } 
 
   render() {
+    const { loggedUser } = this.props
     return (
       <div>
       <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
@@ -83,8 +84,10 @@ hideModalAndRedirect = (e) => {
         </ModalHeader>
         <ModalBody>
         <div className="form-group">
-          <p>Il dataset è stato caricato con successo. Di seguito il riepilogo dei metadati:</p>
+          <p>Il dataset è stato creato con successo.</p> 
           {this.state.transformed && <div>
+            <p>Puoi caricare i dati collegati all'indirizzo sftp: <strong>daf.teamdigitale.governo.it</strong> al percorso: <strong>/home/{loggedUser.sn}/{this.state.transformed.operational.theme}/{this.state.transformed.operational.subtheme}/{this.state.transformed.dcatapit.alternate_identifier}</strong></p>
+            <p>Di seguito il riepilogo dei metadati:</p>
             <div className="card">
               <h4 className="card-header">Dataschema</h4>
               <div className="card-block">
@@ -154,11 +157,13 @@ hideModalAndRedirect = (e) => {
 IngestionForm.propTypes = {
   msg: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
-  resetForm: PropTypes.func
+  resetForm: PropTypes.func,
+  loggedUser: PropTypes.object
 }
 
 function mapStateToProps(state) {
-  return { msg: state.userReducer.msg }
+  const { loggedUser } = state.userReducer['obj'] || { }
+  return { msg: state.userReducer.msg,  loggedUser}
 }
 
 export default connect(mapStateToProps)(IngestionForm)

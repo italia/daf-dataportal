@@ -100,7 +100,7 @@ class App extends Component {
           </button>
           <div className="inline">
             <h4 className="modal-title">Aggiungi un widget</h4>
-            {/* <div className="pt-2 btn-group">
+{/*             <div className="pt-2 btn-group">
               <button type="button" className={"btn btn-" + (text ? "primary" : "default")} onClick={this.onTextClick}>Testuale</button>
               <button type="button" className={"btn btn-" + (superset ? "primary" : "default")} onClick={this.onSupersetClick}>Superset</button>
               <button type="button" className={"btn btn-" + (metabase ? "primary" : "default")} onClick={this.onMetabaseClick}>Metabase</button>

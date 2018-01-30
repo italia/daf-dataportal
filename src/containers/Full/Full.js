@@ -10,6 +10,7 @@ import Ontologies from '../../views/Ontologies/';
 import Vocabulary from '../../views/Vocabulary/';
 import Dashboard from '../../views/Dashboard/';
 import Dataset from '../../views/Dataset/';
+import DatasetDetail from '../../views/DatasetDetail/DatasetDetail';
 import UserStory from '../../views/UserStory/';
 import Profile from '../../views/Profile/';
 import Settings from '../../views/Settings/';
@@ -42,7 +43,8 @@ class Full extends Component {
                 <Route path="/vocabulary" name="Vocabulary" component={Vocabulary} />
                 <Route path="/dashboard" name="Dashboard manager" component={DashboardManager} />
                 <Route path="/user_story" name="User Story" component={UserStory} />
-                <Route path="/dataset" name="Dataset" component={Dataset} />
+                <Route exact path="/dataset" name="Dataset" component={Dataset} />
+                <Route exact path="/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <Route path="/profile" name="Profile" component={Profile} />
                 <Route path="/settings" name="Settings" component={Settings} />
                 <Route path="/organizations" name="Organizations" component={Organizations} />
