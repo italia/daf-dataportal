@@ -3,6 +3,8 @@ const routes = {
   '/home': 'Home',
   '/dashboard': 'Dashboard',
   '/ingestionform': 'Ingestion',
-  '/ontologies': 'Ontologies'
+  '/ontologies': 'Ontologies',
+  '/dataset':'Datasets',
+  '/dataset/:id' : ':id'
 };
 export default routes;
