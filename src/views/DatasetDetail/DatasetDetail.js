@@ -140,7 +140,7 @@ class DatasetDetail extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-10 b-r-1">
-                                        <p> dataset.dcatapit.notes {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. */}</p>
+                                        <p> {dataset.dcatapit.notes} {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. */}</p>
                                         <p className="card-text"><strong>Tags </strong>
                                             {dataset.dcatapit.tags.map(tag => {
                                                 return <span className="badge badge-pill badge-primary" key={tag.name}> {tag.name}</span>
