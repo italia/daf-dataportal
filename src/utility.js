@@ -27,3 +27,39 @@ export function transformName(name){
       }
     }
   }
+
+  export function isEditor(){
+    var isEditor = false;
+    var token = localStorage.getItem('token')
+    var jwtDecode = require('jwt-decode');
+    var decoded = jwtDecode(token);
+    console.log(decoded);
+    try{
+      decoded['memberOf'].map((elem) => {
+        if(elem.indexOf('cn=daf_editors') !== -1)
+          isEditor = true
+      })
+    }catch(error){
+      console.log('error isEditor: ' + error)
+    }
+
+    return isEditor
+  }
+
+  export function isAdmin(){
+    var isEditor = false;
+    var token = localStorage.getItem('token')
+    var jwtDecode = require('jwt-decode');
+    var decoded = jwtDecode(token);
+    console.log(decoded);
+    try{
+      decoded['memberOf'].map((elem) => {
+        if(elem.indexOf('cn=daf_admins') !== -1)
+          isEditor = true
+      })
+    }catch(error){
+      console.log('error isEditor: ' + error)
+    }
+
+    return isEditor
+  }

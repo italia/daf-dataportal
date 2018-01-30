@@ -438,7 +438,7 @@ renderDatasetDetail(dataset, ope, json){
                           </div>
                           <div className="col-10">
                             <code>
-                              path_dataset = "/daf/opendata/<strong>{dataset.operational.physical_uri}</strong>" <br />
+                              path_dataset = "<strong>{dataset.operational.physical_uri}</strong>" <br />
                               df = (spark.read.format("parquet") <br />
                               .option("inferSchema", "true") <br />
                               .option("header", "true") <br />
