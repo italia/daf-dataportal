@@ -9265,3 +9265,11 @@ hr.transparent {
   user-select: none;
   cursor: pointer;
 }
+
+.dataset-summary {
+    border-left: 6px solid #e0e0e0;
+    border-right: 6px solid #e0e0e0;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-bottom: 30px;
+}

@@ -530,7 +530,7 @@ class Settings extends Component {
                                     <label className="col-2 col-form-label">Nuovo Dominio</label>
                                     <div className="col-4">
                                         <input className="form-control" type="search" value={this.state.domain}
-                                            onChange={(e) => {this.setState({domain: e.target.value}); console.log(this.state.domain)}} />
+                                            onChange={(e) => {this.setState({domain: e.target.value})}} />
                                     </div>
                                     <button className="btn btn-primary" title="Aggiungi il dominio" onClick={this.addDomain}><i className="fa fa-check"/></button>
                                 </div>
