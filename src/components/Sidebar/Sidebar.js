@@ -174,7 +174,7 @@ class Sidebar extends Component {
                 <a onClick={() => this.openModal('Superset', serviceurl.urlSuperset)} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Business Intelligence</a>
               </li>
               <li className="nav-item">
-                <a onClick={() => this.openModal('Jupiter', serviceurl.urlJupiter)} className="nav-link" /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>
+                <a onClick={() => this.openModal('Jupyter', serviceurl.urlJupiter)} className="nav-link" /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>
               </li>
 
               <li className="nav-title">
