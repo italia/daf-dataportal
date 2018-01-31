@@ -210,6 +210,9 @@ class Users extends Component {
     delete(){
         const { userAct } = this.state
         let response = userService.deleteUser(userAct)
+        this.setState({
+            saving: true
+        })
         response.then((json)=>{
             if(json.fields){
                 this.setState({
@@ -218,6 +221,7 @@ class Users extends Component {
                     delete: json.fields,
                     create: '',
                     edit: '',
+                    saving: false
                 })
                 this.load();
             }else{
@@ -228,6 +232,7 @@ class Users extends Component {
                     message: json.message,
                     create: '',
                     edit: '',
+                    saving: false
                 })
             }
         })
@@ -283,7 +288,7 @@ class Users extends Component {
                         </ModalBody>
                         <ModalFooter>
                         <button className='btn btn-danger' onClick={this.delete}>
-                            Cancella l'utente
+                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Cancella l'utente"}
                         </button>
                         <button className='btn btn-secondary' onClick={this.closeUserModal}>
                             Annulla
@@ -346,6 +351,7 @@ class Users extends Component {
                                 <label className="col-3 col-form-label">Ruolo</label>
                                 <div className="col-6">
                                     <select className="form-control" value={role} onChange={(e) => { this.setState({ role: e.target.value }) }}>
+                                        <option value=""></option>
                                         <option value="daf_admins">daf_admins</option>
                                         <option value="daf_editors">daf_editors</option>
                                         <option value="daf_viewers">daf_viewers</option>

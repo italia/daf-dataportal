@@ -23,11 +23,17 @@ export const serviceurl = {
  apiURLDataset : "http://storage-manager.default.svc.cluster.local:9000/dataset-manager/v1",
   
  // EXTERNAL
- //apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
- //apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
- //apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
- //apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
- //apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1",
+/*  apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
+ apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
+ apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
+ apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
+ apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1", */
+
+ apiURLSSOManager: "https://security-manager.daf.teamdigitale.it/sso-manager",
+ apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1", 
+ apiURLCatalog: "https://catalog-manager.daf.teamdigitale.it/catalog-manager/v1",
+ apiURLSecurity : "https://security-manager.daf.teamdigitale.it/security-manager/v1",
+ apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1", 
 
  urlMetabase: 'https://graph.daf.teamdigitale.it',
  urlSuperset: 'https://bi.daf.teamdigitale.it',

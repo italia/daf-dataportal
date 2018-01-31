@@ -36,14 +36,17 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
    </div>
 );
 
-const renderOrganization = ({ input, label, type, organizations, meta: { touched, error } }) => (
+const renderOrganization = ({ input, label, type, organizations, pvt, meta: { touched, error } }) => (
   <div className="form-group">
     <label className="form-control-label">{label}</label>
     <div>
        <div className="form-group">
         <select className="form-control" {...input}>
           <option value=""  key='organization' defaultValue></option>
-          {organizations.map(organization => <option value={organization} key={organization}>{organization}</option>)}
+          {pvt == 1 && organizations.map(organization => 
+              organization != 'default_org' && <option value={organization} key={organization}>{organization}</option>
+              )}
+          {pvt == 0 && <option value='default_org' key='default_org'>default_org</option>}
         </select>
       </div>
       {touched && error && <div className="text-danger">{error}</div>}
@@ -67,7 +70,7 @@ const renderLicenze = ({ input, label, type, licenze, meta: { touched, error } }
 );
 
 let WizardFormFirstPage = props => {
-  const { handleSubmit, previousPage, organizations, licenze, openModal} = props
+  const { handleSubmit, previousPage, organizations, licenze, openModal, pvt} = props
   
   return (
     <form  onSubmit={handleSubmit}>
@@ -110,6 +113,7 @@ let WizardFormFirstPage = props => {
             component={renderOrganization}
             label="Organizzazione"
             organizations={organizations}
+            pvt={pvt}
           />
           
         </div>
@@ -128,6 +132,10 @@ let WizardFormFirstPage = props => {
 // Decorate with connect to read form values
 const selector = formValueSelector('wizard') // <-- same as form name
 WizardFormFirstPage = connect(state => {
+  const pvt = state.form.wizard.values.private?state.form.wizard.values.private:-1
+  return {
+    pvt
+  }
 })(WizardFormFirstPage)
 
 export default reduxForm({

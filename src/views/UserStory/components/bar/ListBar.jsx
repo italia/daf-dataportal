@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Route, Link } from 'react-router-dom';
+import { connect } from 'react-redux'
 
 import {
   Modal,
@@ -24,8 +25,25 @@ class ViewBar extends React.Component {
 
       this.state = {
         isOpen: false,
-        validationMSg: 'Campo obbligatorio'
+        validationMSg: 'Campo obbligatorio',
+        validationMSgOrg: 'Campo obbligatorio',
+        pvt: 0,
+        org: undefined
       }
+  }
+  
+  onPvtChange(e, value){
+    this.setState({
+        pvt: value
+    });
+    this.validate(e);
+  }
+
+  onOrganizationChange(e, value){
+    this.setState({
+      org: value
+    });
+    this.validate(e);
   }
 
   validate = (e) => {
@@ -37,6 +55,16 @@ class ViewBar extends React.Component {
     }else{
       this.setState({
         validationMSg: null
+      });
+    }
+
+     if(this.pvt.value == 1 && (!this.org || this.org.value == '')){
+      this.setState({
+        validationMSgOrg: 'Campo obbligatorio'
+      });
+    }else{
+      this.setState({
+        validationMSgOrg: null
       });
     }
   }
@@ -58,26 +86,32 @@ class ViewBar extends React.Component {
   */
   handleSave = (e) => {
     e.preventDefault()
-
     if(this.title.value){
-    //save data
-    let request = {
-      title: this.title.value
-    };
-    
-    userStoryService.save(request).then((data)=> {
-        this.props.history.push('/user_story/list/'+ data.message + '/edit');
-    });
-  }else{
-    this.setState({
-        validationMSg: 'Campo obbligatorio'
-      });
-  }
+      if(this.pvt.value == 1 && (!this.org || this.org.value == '')){
+        this.setState({
+          validationMSgOrg: 'Campo obbligatorio'
+        });
+      }else{
+        //save data
+        let request = {
+          title: this.title.value,
+          pvt: this.state.pvt,
+          org: this.state.org
+        };
+        userStoryService.save(request).then((data)=> {
+            this.props.history.push('/user_story/list/'+ data.message + '/edit');
+        });
+      }
+    }else{
+      this.setState({
+          validationMSg: 'Campo obbligatorio'
+        });
+    }
 
   }
   
   render = function(){
-
+    const { loggedUser } = this.props
     return (
       <div>
         
@@ -89,8 +123,37 @@ class ViewBar extends React.Component {
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
-              <input type="text" className="form-control" ref={(title) => this.title = title} onChange={this.validate.bind(this)} id="title" placeholder="Titolo"/>
-              {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
+                <div className="form-group row">
+                  <label className="col-md-2 form-control-label">Titolo</label>
+                  <div className="col-md-8">
+                    <input type="text" className="form-control" ref={(title) => this.title = title} onChange={this.validate.bind(this)} id="title" placeholder="Titolo"/>
+                    {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-md-2 form-control-label">Privata</label>
+                  <div className="col-md-8">
+                    <select className="form-control" ref={(pvt) => this.pvt = pvt} onChange= {(e) => this.onPvtChange(e, e.target.value)} id="pvt" >
+                      <option value="0" defaultValue key="0">No</option>
+                      <option value="1" key='1'>Si</option>
+                    </select>
+                  </div>
+                </div>
+                {this.state.pvt == 1 &&
+                <div className="form-group row">
+                  <label className="col-md-2 form-control-label">Organizzazione</label>
+                  <div className="col-md-8">
+                    <select className="form-control" ref={(org) => this.org = org} onChange= {(e) => this.onOrganizationChange(e, e.target.value)} id="org" >
+                        <option value=""  key='organization' defaultValue></option>
+                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => 
+                            <option value={organization} key={organization}>{organization}</option>
+                        )
+                        }
+                    </select>
+                    {this.state.validationMSgOrg && <span>{this.state.validationMSgOrg}</span>}
+                  </div>
+                </div>
+                }
             </div>
             </ModalBody>
             <ModalFooter>
@@ -135,6 +198,18 @@ ViewBar.propTypes = {
   setLayout: PropTypes.func,
   layout: PropTypes.object,
   widgets: PropTypes.object
-}; */
+}; 
 
-export default ViewBar;
+export default ViewBar;*/
+
+ViewBar.propTypes = {
+  loggedUser: PropTypes.object,
+  organizations: PropTypes.array
+}
+
+function mapStateToProps(state) {
+    const loggedUser = state.userReducer['obj'].loggedUser || { } 
+    return { loggedUser }
+}
+
+export default connect(mapStateToProps)(ViewBar)

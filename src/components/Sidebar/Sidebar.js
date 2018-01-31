@@ -18,6 +18,7 @@ import {
 import PropTypes from 'prop-types'
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 import { serviceurl } from '../../config/serviceurl.js'
+import { isEditor, isAdmin } from '../../utility'
 
 class Sidebar extends Component {
   constructor(props) {
@@ -132,7 +133,9 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
+                  {(isEditor() || isAdmin()) &&
                     <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica</NavLink>
+                  }
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();

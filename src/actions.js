@@ -650,8 +650,6 @@ function fetchDatasetDetail(datasetname, query) {
 export function getFileFromStorageManager(logical_uri) {
   var token = '';
   var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
-  //var url = 'https://api.daf.teamdigitale.it/dataset-manager/v1/dataset/daf%3A%2F%2Fdataset%2Ford%2Falessandro%2Fdefault_org%2FAGRI%2Forganizzazioni%2Fagency_infer_ale'
-  //var url = "http://localhost:3001/storage-manager/v1/dataset-manager/v1/dataset/daf"
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
       token = localStorage.getItem('token')

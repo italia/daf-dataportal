@@ -32,9 +32,6 @@ class Dataset extends Component {
       showDivCategory: false,
       showDivGroup: false,
       showDivOrganization: false,
-      showDivMetabase: false,
-      showDivSuperset: false,
-      showDivJupyter: false,
       edit: false,
       organizations: []    
     }
@@ -46,11 +43,16 @@ class Dataset extends Component {
     this.handleToggleClickCat = this.handleToggleClickCat.bind(this)
     this.handleToggleClickGroup = this.handleToggleClickGroup.bind(this)
     this.handleToggleClickOrganization = this.handleToggleClickOrganization.bind(this);
-    this.handleToggleClickMetabase = this.handleToggleClickMetabase.bind(this);
-    this.handleToggleClickSuperset = this.handleToggleClickSuperset.bind(this);
-    this.handleToggleClickJupyter = this.handleToggleClickJupyter.bind(this);
     this.onSearch = this.onSearch.bind(this) 
     this.onClick = this.onClick.bind(this)   
+  }
+
+  componentDidMount(){
+    const { query, datasets } = this.props
+    const { order_filter, category_filter, organization_filter, group_filter } = this.state
+    if(datasets != [] && query===undefined){
+      this.searchDataset(query, category_filter, group_filter, organization_filter, order_filter)
+    }
   }
 
   load() {
@@ -96,14 +98,6 @@ class Dataset extends Component {
   handleScrollToBottom = () => this.loadMore()
   handleLoadMoreClick = () => this.loadMore()
 
-  handleDownloadFile(nomeFile, logical_uri, e){
-    e.preventDefault()
-    const { dispatch } = this.props
-    dispatch(getFileFromStorageManager(logical_uri))
-    .then(json => download(JSON.stringify(json), nomeFile + '.json', 'application/json'))
-    .catch(error => console.log('Errore durante il download del file ' + nomeFile))
-  }
-
   searchDataset(query, category, group, organization, order) {
     const { dispatch } = this.props
     dispatch(loadDatasets(query, 0, '', category, group, organization, order))
@@ -123,7 +117,7 @@ class Dataset extends Component {
     const { dispatch, query } = this.props
     dispatch(datasetDetail(name, query))
     .catch(error => console.log('Errore durante il caricamento del dataset ' + name))
-    this.props.history.push('?detail='+name)
+    .then(()=>this.props.history.push('/dataset/'+name))
   }
 
   renderDataset() {
@@ -145,30 +139,6 @@ class Dataset extends Component {
   handleToggleClickOrganization() {
     this.setState(prevState => ({
       showDivOrganization: !prevState.showDivOrganization
-    }));
-  }
-
-  handleToggleClickMetabase() {
-    this.setState(prevState => ({
-      showDivMetabase: !prevState.showDivMetabase,
-      showDivSuperset: false,
-      showDivJupyter: false
-    }));
-  }
-
-  handleToggleClickSuperset() {
-    this.setState(prevState => ({
-      showDivSuperset: !prevState.showDivSuperset,
-      showDivMetabase: false,
-      showDivJupyter: false
-    }));
-  }
-
-  handleToggleClickJupyter() {
-    this.setState(prevState => ({
-      showDivJupyter: !prevState.showDivJupyter,
-      showDivMetabase: false,
-      showDivSuperset: false
     }));
   }
 
@@ -211,26 +181,33 @@ renderDatasetList(length, datasets, ope, isLoading){
   if (ope === 'RECEIVE_DATASETS')
     return <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>
       {datasets.map(dataset => {
-        return (<div className="card" key={dataset.name}>
-              <div className="card-body mt-2 b-b-1">
-                <div className="col-12">
-                    <a href className="card-link" onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)}>
-                      <h3 className="card-text col-12">{transformName(dataset.name)}</h3>
+        return (
+            <div className="dataset-summary" key={dataset.name}>
+              <div className="card-body mt-2">
+                <div className="row">
+                  <div className="col-9">
+                    <a href onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)} style={{color: 'black'}}>
+                      <h3 className="card-text">{transformName(dataset.name)}</h3>
                     </a>
-                </div>
-                <div className="d-inline-flex mt-2 b-t-1 col-12">
-                  <div className="col-8 b-r-1">
-                    <p className="card-text mt-2 text-muted">{dataset.notes}</p>
-                    <p className="card-subtitle mb-2"><strong>Stato: </strong>{dataset.organization.state}</p>
                   </div>
-                  <div className="col-4">
-                    <p className="card-subtitle mb-2 mt-2"><strong>Organizzazione: </strong>{dataset.organization.name}</p>
-                    <p className="card-subtitle mb-2"><strong>Tags: </strong> 
+                  <p className="card-subtitle col-3 mt-2">
                     {dataset.tags.map(tag => {
-                      return <span className="badge badge-pill badge-primary" key={tag.name}> {tag.name}</span>
-                      }
+                      return <span className="badge badge-pill badge-primary float-right" key={tag.name}> {tag.name}</span>
+                    }
                     )}
-                    </p>
+                  </p>
+                </div>
+                <div className="mt-2 row">
+                  <div className="col-9">
+                    <p className="mb-0 text-muted">{dataset.organization.name}</p>
+                    <p className="text-left">{dataset.notes}</p>
+                    {/* <p className="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.  
+                    </p>*/}
+
+                  </div>
+                  <div className="col-3">
+                    <span className="badge badge-default float-right m-1" key="CSV"> CSV</span>
+                  <span className="badge badge-default float-right m-1" key="JSON"> JSON</span>
                   </div>
                 </div>
               </div>
@@ -251,7 +228,7 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
   if (ope === 'RECEIVE_DATASETS')
     if (datasets && datasets.length > 0){
       return ( 
-        <div className="App">
+        <div className="App" style={{"paddingLeft": "10px"}}>
           <div className="App-header-thin">
             {length > 999 ?
               <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
@@ -262,12 +239,6 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
               </div> */
 
               <div className="row">
-                <div className="col-sm-4">
-                  <div className="callout callout-info">
-                    <small className="text-muted">Dataset Totali</small><br/>
-                    <strong className="h4">14994</strong>
-                  </div>
-                </div>
                 <div className="col-sm-4">
                   <div className="callout callout-warning">
                     <small className="text-muted">Dataset Trovati</small><br/>
@@ -280,7 +251,12 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
                     <strong className="h4">{datasets.length}</strong>
                   </div>
                 </div>
+                <div className="col-sm-4">
+                    <strong>Ordina i risultati</strong>
+                    <OrderFilter order_filter={this.state.order_filter} onSearchOrder={this.onSearch} />
+                </div>
               </div>
+
             }
           </div>
           {this.renderDatasetList(length, datasets, ope, isLoading)}
@@ -296,212 +272,15 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
       )
 }
 
-renderDatasetDetail(dataset, ope, json){
-  if ((ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') && this.state.edit===false) {
-    if (dataset)
-      return (
-        <div className="col-10">
-          <div className="card">
-            <div className="card-block">
-            <div className="row">
-              <div className="col-12">
-                <h2 className="card-text">{transformName(dataset.dcatapit.title) + " "}</h2>
-              </div>
-            </div>
-            <div className="row mt-4">
-                <div className="col-8 b-r-1">
-                  <p className="card-text text-muted">{dataset.dcatapit.notes}</p>
-                  <p className="card-text"><strong>Licenza: </strong>{dataset.dcatapit.license_title}</p>
-                  <p className="card-text"><strong>{"Categoria: " + " "}</strong>
-                    <span className="badge badge-default"> {dataset.dcatapit.theme}</span>
-                  </p>
-                </div>
-                <div className="col-3">
-                  <p className="card-text"><strong>{"Aggiornato il: " + " "}</strong> {dataset.dcatapit.modified}</p>
-                  <p className="card-text"><strong>{"Pubblicato da: " + " "}</strong> {dataset.dcatapit.publisher_name}</p>
-                  <p className="card-text"><strong>Tags: </strong> 
-                    {dataset.dcatapit.tags.map(tag => {
-                      return <span className="badge badge-pill badge-primary" key={tag.name}> {tag.name}</span>
-                      }
-                    )}
-                  </p>
-                </div>
-              </div>
-              {/* <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p> */}
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-header">
-              Risorse
-                </div>
-            {json?
-            <div className="card-block">
-              <div className="row">
-                <div className="col-4">
-                  <strong><p>Download File: </p></strong>
-                </div>
-                <div className="col-8">
-                  <button type="button" className="btn-link" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)} title="Download"><i className="fa fa-download fa-lg mt-2"></i> {dataset.dcatapit.name}</button>
-              </div>
-              </div>
-              <div className="row">
-                <div className="col-4">
-                  <strong><p>Preview: </p></strong>
-                </div>
-                <div className="col-8">
-                  <p><ReactJson src={json} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false"/></p>
-                </div>
-              </div>
-            </div>
-            :
-            <div className="card-block">
-             <div className="row">
-                <div className="col-8">
-                  <p><i>Non ci sono risorse disponibili per questo Dataset.</i></p>
-                </div>
-              </div>
-            </div>
-            }
-          </div>
-          <div className="card">
-            <div className="card-header">
-              Collegamenti
-            </div>
-            <div className="card-block">
-              <div className="row">
-                <div className="col-4 col-lg-4">
-                  <div className="card">
-                    <div className="card-block p-1 clearfix">
-                      <i className="fa fa-pie-chart bg-primary p-1 font-2xl mr-1 float-left"></i>
-                      <div className="h5 text-primary mb-0 mt-h">Grafici</div>
-                      <div className="text-muted text-uppercase font-weight-bold font-xs">Metabase</div>
-                    </div>
-                    <div className="card-footer p-x-1 py-h">
-                      <a className="font-weight-bold font-xs btn-block text-muted" onClick={this.handleToggleClickMetabase}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-4 col-lg-4">
-                  <div className="card">
-                    <div className="card-block p-1 clearfix">
-                      <i className="fa fa-gears bg-primary p-1 font-2xl mr-1 float-left"></i>
-                      <div className="h5 text-primary mb-0 mt-h">Business Intelligence</div>
-                      <div className="text-muted text-uppercase font-weight-bold font-xs">Superset</div>
-                    </div>
-                    <div className="card-footer p-x-1 py-h">
-                      <a className="font-weight-bold font-xs btn-block text-muted" onClick={this.handleToggleClickSuperset}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-4 col-lg-4">
-                  <div className="card">
-                    <div className="card-block p-1 clearfix">
-                      <i className="fa fa-university bg-primary p-1 font-2xl mr-1 float-left"></i>
-                      <div className="h5 text-primary mb-0 mt-h">Data Science</div>
-                      <div className="text-muted text-uppercase font-weight-bold font-xs">Jupyter</div>
-                    </div>
-                    <div className="card-footer p-x-1 py-h">
-                      <a className="font-weight-bold font-xs btn-block text-muted" onClick={this.handleToggleClickJupyter}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {this.state.showDivMetabase &&
-              <div className="row">
-                <div className="col">
-                    <div className="card card-block">
-                    <p>Collegati a Metabase e cerca la tabella corrispondente a <strong>{dataset.dcatapit.title}</strong></p>
-                    </div>
-                </div>
-              </div>
-              }
-              {this.state.showDivSuperset &&
-              <div className="row">
-                <div className="col">
-                    <div className="card card-block">
-                    <p>Collegati a Superset e cerca la tabella corrispondente a <strong>{dataset.dcatapit.title}</strong>, se non la trovi segui le <a href="https://daf-docs.readthedocs.io/en/latest/manutente/datascience/superset.html" target="_blank">istruzioni</a> per crearla.</p>
-                    </div>
-                </div>
-              </div>
-              }
-              {this.state.showDivJupyter &&
-              <div className="row">
-                <div className="col">
-                    <div className="card card-block">
-                    <div className="col-12">
-                        <div className="row">
-                          <p>Collegati a Jupyter e segui le istruzioni. Il path del file è <strong>/daf/opendata/{dataset.dcatapit.title}</strong>.</p>
-                        </div>
-                        <div className="row">
-                          <div className="col-2">
-                            <strong> Pyspark </strong>
-                          </div>
-                          <div className="col-10">
-                            <code>
-                              path_dataset = "/daf/opendata/<strong>{dataset.dcatapit.title}</strong>" <br />
-                              df = (spark.read.format("parquet") <br />
-                              .option("inferSchema", "true") <br />
-                              .option("header", "true") <br />
-                              .option("sep", "|")     <br />
-                              .load(path_dataset) <br />
-                              ) <br />
-                              </code>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-2">
-                            <strong> Hive table </strong>
-                          </div>
-                          <div className="col-10">
-                            <code>
-                              from pyspark.sql import HiveContext <br />
-                              hive_context = HiveContext(sc) <br />
-                              hive_context.sql("use opendata") <br />
-                              incidenti = hive_context.table('<strong>{dataset.dcatapit.title}</strong>') <br />
-                              incidenti <br />
-                              </code>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-2">
-                            <strong> Spark Sql </strong>
-                          </div>
-                          <div className="col-10">
-                            <code>
-                              spark.sql("SELECT * FROM opendata.<strong>{dataset.dcatapit.title}</strong>").show()
-                            </code>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-              </div>
-              }
-            </div>
-          </div>
-          <div>
-          <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, this.props.query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button></div>
-        </div>
-      );
-  }
-}
-
 renderFilter(ope){
+  console.log(this.state.showDivCategory ? "fa-angle-down" : "fa-angle-right")
   if (ope === 'RECEIVE_DATASETS')
       return(  
       <div className="col-md-4" style={{paddingTop: '20px'}}>
-      <form className="form-group">
-        <fieldset className="Form-fieldset">
-          <h5><label htmlFor="ordinamento">Ordina risultato</label></h5>
-          <div className="Form-field">
-              <OrderFilter order_filter={this.state.order_filter} onSearchOrder={this.onSearch}/>
-          </div>
-        </fieldset>
-      </form>
       
       <ul className="list-group">  
         <li className="list-group-item-lev1" onClick={this.handleToggleClickCat}>
-          <h3 className="filter-title">Filtra categorie<i className="fa fa-angle-right float-right font-lg"></i></h3>
+          <h3 className="filter-title">Filtra categorie<i className={"fa float-right fa-lg " + (this.state.showDivCategory ? "fa-angle-down" : "fa-angle-right")}></i></h3>
         </li>  
         {this.state.showDivCategory &&
         <div className="u-sizeFull" id="subnav">
@@ -509,7 +288,7 @@ renderFilter(ope){
         </div> 
         }
         <li className="list-group-item-lev1" onClick={this.handleToggleClickGroup}>
-          <h3 className="filter-title">Filtra formati<i className="fa fa-angle-right float-right font-lg"></i></h3>
+          <h3 className="filter-title">Filtra formati<i className={"fa float-right fa-lg " + (this.state.showDivGroup ? "fa-angle-down" : "fa-angle-right")}></i></h3>
         </li>
         {this.state.showDivGroup &&
         <div className="u-sizeFull" id="subnav">
@@ -517,7 +296,7 @@ renderFilter(ope){
         </div>
         }
         <li className="list-group-item-lev1" onClick={this.handleToggleClickOrganization}>
-          <h3 className="filter-title">Filtra organizzazioni<i className="fa fa-angle-right float-right font-lg"></i></h3>
+          <h3 className="filter-title">Filtra organizzazioni<i className={"fa float-right fa-lg " + (this.state.showDivOrganization ? "fa-angle-down" : "fa-angle-right")}></i></h3>
         </li>
         {this.state.showDivOrganization &&
         <div className="u-sizeFull" id="subnav">
@@ -551,7 +330,6 @@ render() {
       <div className="col-md-8">
       {this.renderDatasetSearchResult(datasets?datasets.length:0, subdatasets, ope, isLoading)}
       </div>
-      {this.renderDatasetDetail(dataset, ope, json)}
       {this.renderFilter(ope)}
       {edit && this.editDataset(ope)}
     </div>
