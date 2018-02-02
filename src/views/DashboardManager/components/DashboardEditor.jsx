@@ -433,6 +433,7 @@ class DashboardEditor extends Component {
           onChange={this.onChangeTitle}
           onPublish={this.onPublish}
           onRemove={this.onRemove}
+          org={this.state.dashboard.org}
       ></EditBarTop>
       <Dashboard
         frameComponent={CustomFrame}

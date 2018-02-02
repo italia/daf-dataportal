@@ -120,6 +120,7 @@ class DashboardView extends Component {
         layout: dashboard.layout,
         title: dashboard.title,
         subtitle: dashboard.subtitle,
+        org: dashboard.org
         /* widgets: dashboard.widgets */
       });
       console.log(this.state)
@@ -135,7 +136,7 @@ class DashboardView extends Component {
     
     return (
     <Container>
-      <ViewBar title={this.state.title} subtitle={this.state.subtitle} id={this.state.id}></ViewBar>
+      <ViewBar title={this.state.title} subtitle={this.state.subtitle} id={this.state.id} org={this.state.org}></ViewBar>
       <Dashboard
         frameComponent={CustomFrame}
         layout={this.state.layout}

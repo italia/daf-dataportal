@@ -133,7 +133,7 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                  {(isEditor() || isAdmin()) &&
+                  {(true /* isEditor() || isAdmin() */) &&
                     <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica</NavLink>
                   }
                   </li>

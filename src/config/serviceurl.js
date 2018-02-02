@@ -1,11 +1,11 @@
 export const serviceurl = {
   // Local
   
-/*   apiURLSSOManager: "http://localhost:9002/sso-manager",
+  apiURLSSOManager: "http://localhost:9002/sso-manager",
   apiURLDatiGov: "http://localhost:9000/dati-gov/v1", 
   apiURLCatalog: "http://localhost:9001/catalog-manager/v1",
   apiURLIngestion: "http://localhost:9002/ingestion-manager/v1",
-  apiURLSecurity: "http://localhost:9002/security-manager/v1", */
+  apiURLSecurity: "http://localhost:9002/security-manager/v1",
 
   
   //MOCK
@@ -29,11 +29,11 @@ export const serviceurl = {
  apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
  apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1", */
 
- apiURLSSOManager: "https://security-manager.daf.teamdigitale.it/sso-manager",
+/*  apiURLSSOManager: "https://security-manager.daf.teamdigitale.it/sso-manager",
  apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1", 
  apiURLCatalog: "https://catalog-manager.daf.teamdigitale.it/catalog-manager/v1",
  apiURLSecurity : "https://security-manager.daf.teamdigitale.it/security-manager/v1",
- apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1", 
+ apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1",  */
 
  urlMetabase: 'https://graph.daf.teamdigitale.it',
  urlSuperset: 'https://bi.daf.teamdigitale.it',
