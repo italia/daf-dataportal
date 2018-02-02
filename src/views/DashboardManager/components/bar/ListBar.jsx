@@ -33,6 +33,11 @@ class ListBar extends React.Component {
   }
 
   onPvtChange(e, value){
+    if(this.pvt.value == 0){
+      this.setState({
+        org: 'default_org'
+      });
+    }
     this.setState({
         pvt: value
     });
@@ -126,6 +131,8 @@ class ListBar extends React.Component {
         let widgets = {};
         let request = {
           title : this.title.value,
+          pvt: this.state.pvt,
+          org: this.state.org,
           subtitle : this.subtitle.value,
           layout : JSON.stringify(layout),
           widgets : JSON.stringify(widgets),
