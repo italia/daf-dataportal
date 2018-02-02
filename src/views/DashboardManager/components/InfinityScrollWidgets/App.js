@@ -104,8 +104,8 @@ class App extends Component {
               <button type="button" className={"btn btn-" + (text ? "primary" : "default")} onClick={this.onTextClick}>Testuale</button>
               <button type="button" className={"btn btn-" + (superset ? "primary" : "default")} onClick={this.onSupersetClick}>Superset</button>
               <button type="button" className={"btn btn-" + (metabase ? "primary" : "default")} onClick={this.onMetabaseClick}>Metabase</button>
-                <input className="pl-4 form-control" placeholder="Cerca la dashboard" value={this.state.query}
-                  onChange={(e) => this.searchBy(e.target.value)} />
+              <input className="pl-4 form-control" placeholder="Cerca la dashboard" value={this.state.query}
+                onChange={(e) => this.searchBy(e.target.value)} />
             </div>
           </div>
         </div>
