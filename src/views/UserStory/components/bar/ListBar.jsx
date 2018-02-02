@@ -33,6 +33,11 @@ class ViewBar extends React.Component {
   }
   
   onPvtChange(e, value){
+    if(this.pvt.value == 0){
+      this.setState({
+        org: 'default_org'
+      });
+    }
     this.setState({
         pvt: value
     });
