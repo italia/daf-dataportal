@@ -40,13 +40,11 @@ class UserStoryEditor extends Component {
   render() {
     return (
     <Container>
-      <Header title="La Tua Storia" />
       {
         this.state.dataStory &&
-        
         <div>
+        <Header title="La Tua Storia" org={this.state.dataStory.org}/>
           <ViewBar title={this.state.dataStory.title} id={this.state.id}></ViewBar>
-      
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory}
             readonly={true}

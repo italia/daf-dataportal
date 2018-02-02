@@ -177,6 +177,9 @@ class EditBarTop extends React.Component {
                 </div>
               </div>
             </div>
+            <div className="col-sm-7">
+              <span className="badge badge-info">{this.props.org}</span>
+            </div>
           </div>
         </div>
     );
