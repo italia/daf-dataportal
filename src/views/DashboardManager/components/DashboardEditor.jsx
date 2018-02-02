@@ -86,22 +86,50 @@ class DashboardEditor extends Component {
   componentDidMount(){
   }
 
+  async loadImage(widget){
+    let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    const response = await fetch(url, {
+      method: 'GET'
+    })
+    
+    return response
+  }
+
   /**
    * Load all Iframe types
    */
   loadIframe = (iframes) => {
     iframes.map(iframe => {
-      this.widgetsTypes[iframe.identifier] = {
-        "type": IframeWidget,
-        "title": iframe.title,
-        //"props": iframe
-        "props":{
-           "url": iframe.iframe_url,
-           "identifier": iframe.identifier,
-           "origin": iframe.origin
-         }
-      }
-    }) 
+      const response = this.loadImage(iframe.identifier)
+      response.then(response => {
+        if(response.ok)
+          response.text().then(text => {
+            this.widgetsTypes[iframe.identifier] = {
+              "type": IframeWidget,
+              "title": iframe.title,
+              "image": text.replace(/"/g, ''),
+              //"props": iframe
+              "props":{
+                "url": iframe.iframe_url,
+                "identifier": iframe.identifier,
+                "origin": iframe.origin
+              }
+            }
+          })
+        else
+          this.widgetsTypes[iframe.identifier] = {
+            "type": IframeWidget,
+            "title": iframe.title,
+            "image": undefined,
+            //"props": iframe
+            "props": {
+              "url": iframe.iframe_url,
+              "identifier": iframe.identifier,
+              "origin": iframe.origin
+            }
+          }
+      })
+    })
   }
   
 
@@ -433,6 +461,7 @@ class DashboardEditor extends Component {
           onChange={this.onChangeTitle}
           onPublish={this.onPublish}
           onRemove={this.onRemove}
+          org={this.state.dashboard.org}
       ></EditBarTop>
       <Dashboard
         frameComponent={CustomFrame}

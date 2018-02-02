@@ -6,6 +6,7 @@ const Header = (props) => {
         <div className="nav_menu">
             <nav className="dashboardHeader">
                 <h2>{props.title}</h2>
+                <span className="badge badge-info">{props.org}</span>
             </nav>
         </div>
     </div>

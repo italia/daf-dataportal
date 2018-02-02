@@ -71,7 +71,15 @@ class List extends Component {
                           {widgets[widget].title}
                         </h6>
                         <div className="preview-widget">
-                          <WidgetImage widget={widget} wid={wid} widgets={widgets} onLoadIframe={onLoadIframe} key={key}/>
+                          {/* <WidgetImage widget={widget} wid={wid} widgets={widgets} onLoadIframe={onLoadIframe} key={key}/> */}
+                        {widgets[widget].image ? 
+                        <div style={{width: '100%'}}>
+                          <img src={"data:image/jpg;base64," + widgets[widget].image} />
+                        </div>
+                        :
+                        <div style={{ width: '100%' }}>
+                          {React.createElement(wid, { ...widgets[widget].props, class: "no-click", onLoad: () => onLoadIframe(key) })}
+                        </div>}
                         </div>
                       </a>
                 </div>
