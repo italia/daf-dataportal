@@ -27,8 +27,8 @@ class ListBar extends React.Component {
         isOpen: false,
         validationMSg: 'Campo obbligatorio',
         validationMSgOrg: 'Campo obbligatorio',
-        pvt: 0,
-        org: undefined
+        pvt: '0',
+        org: 'default_org'
       }
   }
 
@@ -194,9 +194,10 @@ class ListBar extends React.Component {
                   <div className="col-md-8">
                     <select className="form-control" ref={(org) => this.org = org} onChange={(e) => this.onOrganizationChange(e, e.target.value)} id="org" >
                         <option value=""  key='organization' defaultValue></option>
-                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => 
-                            <option value={organization} key={organization}>{organization}</option>
-                        )
+                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
+                          if(organization!=='default_org')
+                            return (<option value={organization} key={organization}>{organization}</option>)
+                        })
                         }
                     </select>
                     {this.state.validationMSgOrg && <span>{this.state.validationMSgOrg}</span>}

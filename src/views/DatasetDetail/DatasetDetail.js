@@ -12,7 +12,7 @@ import { transformName } from '../../utility'
 import download from 'downloadjs'
 import StarRatingComponent from 'react-star-rating-component';
 import { Link } from 'react-router-dom'
-
+import {serviceurl} from "../../config/serviceurl";
 // Services
 import UserStoryService from '../UserStory/components/services/UserStoryService';
 import DatasetService from './services/DatasetService';
@@ -32,7 +32,8 @@ class DatasetDetail extends Component {
             hidden: true,
             showSources: true,
             showDatastories: true,
-            showPreview: true
+            showPreview: true,
+            showAPI: true
         }
         
         this.handleDownloadFile = this.handleDownloadFile.bind(this)
@@ -166,7 +167,7 @@ class DatasetDetail extends Component {
                                 <i className={"fa float-right fa-lg " + (this.state.showSources ? "fa-angle-right" : "fa-angle-down")}/>
                             </div>
                             <div hidden={this.state.showSources}>
-                            {json ?
+                            {true ?
                                 <div className="card-block">
                                     <div className="row">
                                         <div className="col-6">
@@ -179,12 +180,14 @@ class DatasetDetail extends Component {
                                                 </div>
                                                 <div className="col-8">
                                                     <button type="button" className="btn btn-secondary btn-sm w-100" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)} title="Download"><i className="fa fa-download fa-lg"></i> Download{/*dataset.dcatapit.name*/}</button>
-                                                    <button type="button" className="btn btn-secondary btn-sm mt-2 w-100" onClick={() => { this.setState(prevState => ({ showPreview: !prevState.showPreview })) }} title="Preview"> <i className="fa fa-play-circle-o fa-lg"/> Preview </button>
+                                                        <button type="button" className="btn btn-secondary btn-sm mt-2 w-100" onClick={() => { this.setState(prevState => ({ showPreview: !prevState.showPreview, showAPI: true})) }} title="Preview"> <i className="fa fa-play-circle-o fa-lg"/> Preview </button>
+                                                        <button type="button" className="btn btn-secondary btn-sm mt-2 w-100" onClick={() => { this.setState(prevState => ({ showAPI: !prevState.showAPI, showPreview: true })) }} title="Preview"> <i className="fa fa-puzzle-piece fa-lg" /> Endpoint API </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-6" hidden={this.state.showPreview}>
-                                            <p><ReactJson src={json} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" /></p>
+                                        <div className="col-6">
+                                            <p hidden={this.state.showPreview}><ReactJson src={json} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" /></p>
+                                                <textarea className="w-100" style={{ resize: 'none', height: '100%' }} hidden={this.state.showAPI} value={serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri)}/>
                                         </div>
                                     </div>
                                     <div className="row">
