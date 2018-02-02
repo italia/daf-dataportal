@@ -1,15 +1,12 @@
-import { serviceurl } from '../../../../config/serviceurl.js'
+import { serviceurl } from '../../../config/serviceurl.js'
 
-export default class WidgetService {
-    
-    urlIframe = serviceurl.apiURLDatiGov + "/dashboard/iframes";
-
+export default class DatasetService {
+    baseUrl = serviceurl.apiURLCatalog  + "/ckan/searchDataset?rows=5";
     constructor() {
-
     }
 
-    async getIframe() {
-        const response = await fetch( this.urlIframe , {
+    async listCorrelati() {
+        const response = await fetch( this.baseUrl, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -19,5 +16,4 @@ export default class WidgetService {
         })
         return response.json();
     }
-
-} 
+}

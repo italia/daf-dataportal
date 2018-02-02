@@ -32,9 +32,6 @@ class Dataset extends Component {
       showDivCategory: false,
       showDivGroup: false,
       showDivOrganization: false,
-      showDivMetabase: false,
-      showDivSuperset: false,
-      showDivJupyter: false,
       edit: false,
       organizations: []    
     }
@@ -46,9 +43,6 @@ class Dataset extends Component {
     this.handleToggleClickCat = this.handleToggleClickCat.bind(this)
     this.handleToggleClickGroup = this.handleToggleClickGroup.bind(this)
     this.handleToggleClickOrganization = this.handleToggleClickOrganization.bind(this);
-    this.handleToggleClickMetabase = this.handleToggleClickMetabase.bind(this);
-    this.handleToggleClickSuperset = this.handleToggleClickSuperset.bind(this);
-    this.handleToggleClickJupyter = this.handleToggleClickJupyter.bind(this);
     this.onSearch = this.onSearch.bind(this) 
     this.onClick = this.onClick.bind(this)   
   }
@@ -148,30 +142,6 @@ class Dataset extends Component {
     }));
   }
 
-  handleToggleClickMetabase() {
-    this.setState(prevState => ({
-      showDivMetabase: !prevState.showDivMetabase,
-      showDivSuperset: false,
-      showDivJupyter: false
-    }));
-  }
-
-  handleToggleClickSuperset() {
-    this.setState(prevState => ({
-      showDivSuperset: !prevState.showDivSuperset,
-      showDivMetabase: false,
-      showDivJupyter: false
-    }));
-  }
-
-  handleToggleClickJupyter() {
-    this.setState(prevState => ({
-      showDivJupyter: !prevState.showDivJupyter,
-      showDivMetabase: false,
-      showDivSuperset: false
-    }));
-  }
-
   onSearch(category, group, organization, order) {
     const { query } = this.props
     if (order){
@@ -231,8 +201,8 @@ renderDatasetList(length, datasets, ope, isLoading){
                   <div className="col-9">
                     <p className="mb-0 text-muted">{dataset.organization.name}</p>
                     <p className="text-left">{dataset.notes}</p>
-                  {/* <p className="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. 
-                    </p> */}
+                    {/* <p className="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.  
+                    </p>*/}
 
                   </div>
                   <div className="col-3">
@@ -258,7 +228,7 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
   if (ope === 'RECEIVE_DATASETS')
     if (datasets && datasets.length > 0){
       return ( 
-        <div className="App">
+        <div className="App" style={{"paddingLeft": "10px"}}>
           <div className="App-header-thin">
             {length > 999 ?
               <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
@@ -282,10 +252,8 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
                   </div>
                 </div>
                 <div className="col-sm-4">
-                  <p>Ordina i risultati</p>
-                  <div>
+                    <strong>Ordina i risultati</strong>
                     <OrderFilter order_filter={this.state.order_filter} onSearchOrder={this.onSearch} />
-                  </div>
                 </div>
               </div>
 

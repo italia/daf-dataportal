@@ -8,6 +8,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap'
+import { isEditor, isAdmin } from '../../../../utility'
 
 class EditBarTop extends React.Component {
 
@@ -100,9 +101,11 @@ class EditBarTop extends React.Component {
               <button className='btn btn-default' onClick={this.pubblica}>
                 Condividi con la tua Organizzazione
                   </button>
+              {(isEditor() || isAdmin()) &&
               <button className='btn btn-default' onClick={this.condividi}>
                 Condividi con tutti
-                  </button>
+              </button>
+              }
             </ModalFooter>
           </form>
         </Modal>

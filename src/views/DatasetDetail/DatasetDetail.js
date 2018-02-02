@@ -15,19 +15,22 @@ import { Link } from 'react-router-dom'
 
 // Services
 import UserStoryService from '../UserStory/components/services/UserStoryService';
+import DatasetService from './services/DatasetService';
 
 const userStoryService = new UserStoryService();
+const datasetService = new DatasetService();
 
 class DatasetDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {
             datastories: [],
+            datasets: [],
             showDivMetabase: false,
             showDivSuperset: false,
             showDivJupyter: false,
             hidden: true,
-            showSources: false,
+            showSources: true,
             showDatastories: true,
             showPreview: true
         }
@@ -52,7 +55,39 @@ class DatasetDetail extends Component {
                 datastories: list
             });
         });
+
+        let responseDataset = datasetService.listCorrelati();
+        responseDataset.then((list) => {
+            this.setState({
+                datasets: list
+            });
+        });
+
     }
+
+    handleToggleClickMetabase() {
+        this.setState(prevState => ({
+          showDivMetabase: !prevState.showDivMetabase,
+          showDivSuperset: false,
+          showDivJupyter: false
+        }));
+      }
+    
+      handleToggleClickSuperset() {
+        this.setState(prevState => ({
+          showDivSuperset: !prevState.showDivSuperset,
+          showDivMetabase: false,
+          showDivJupyter: false
+        }));
+      }
+    
+      handleToggleClickJupyter() {
+        this.setState(prevState => ({
+          showDivJupyter: !prevState.showDivJupyter,
+          showDivMetabase: false,
+          showDivSuperset: false
+        }));
+      }
 
     handleDownloadFile(nomeFile, logical_uri, e) {
         e.preventDefault()
@@ -85,7 +120,7 @@ class DatasetDetail extends Component {
                                         <h1 className="card-text">{transformName(dataset.dcatapit.title) + " "}</h1>
                                     </div>
                                     <div className="col-4">
-                                        <h2 className="float-right"><span className="badge badge-default"> {dataset.dcatapit.theme}</span></h2>
+                                        <h4 className="float-right"><span className="badge badge-default"> {dataset.dcatapit.theme}</span></h4>
                                     </div>
                                     <div className="col-12">
                                         <p className="text-muted">{"Pubblicato da " + " "}<b className="mr-3">{dataset.dcatapit.publisher_name + " "}  </b>{"Organizzazione " + " "}<b className="mr-3">{dataset.dcatapit.owner_org + " "}    </b>{"Licenza " + " "}<b>{dataset.dcatapit.license_title} </b></p>
@@ -101,16 +136,11 @@ class DatasetDetail extends Component {
                                             />
                                         </h4>
                                     </div>
-                                    <div className="col-8">
-                                        <div className="float-right">
-                                            <button className="btn btn-link " title="Collabora"><i className="fa fa-lg fa-chain"/></button>
-                                            <button className="btn btn-link " title="Segnala un problema"><i className="fa fa-lg fa-exclamation"/></button>
-                                        </div>
-                                    </div>
+                                    <div className="col-8"></div>
                                 </div>
                                 <div className="row">
                                     <div className="col-10 b-r-1">
-                                        <p> {dataset.dcatapit.notes} {/*Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.*/}</p>
+                                        <p> {dataset.dcatapit.notes} {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. */}</p>
                                         <p className="card-text"><strong>Tags </strong>
                                             {dataset.dcatapit.tags.map(tag => {
                                                 return <span className="badge badge-pill badge-primary" key={tag.name}> {tag.name}</span>
@@ -120,6 +150,11 @@ class DatasetDetail extends Component {
                                     </div>
                                     <div className="col-2">
                                         <p className="card-text"><strong>{"Aggiornato il: " + " "}</strong> {dataset.dcatapit.modified}</p>
+                                        <div className="float-right">
+                                            <button className="btn btn-link " title="Collabora"><i className="fa fa-lg fa-chain"/></button>
+                                            <button className="btn btn-link " title="Segnala un problema"><i className="fa fa-lg fa-exclamation"/></button>
+                                        </div>
+                                    
                                     </div>
                                 </div>
                                 {/* <p className="card-text"><strong>Categorie:</strong> <span className="badge badge-pill badge-primary">{dataset.theme}</span></p> */}
@@ -134,27 +169,23 @@ class DatasetDetail extends Component {
                             {json ?
                                 <div className="card-block">
                                     <div className="row">
-                                        <div className="col-1">
-                                            <span className="badge badge-default">
-                                                    <h2><i className="fa fa-lg fa-file-text pt-3" /></h2>
-                                                    <h2>JSON</h2>
-                                            </span>
-                                        </div>
-                                            {/*                                        <div className="col-8">
-                                            <button type="button" className="btn-link" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)} title="Download"><i className="fa fa-download fa-lg mt-2"></i> {dataset.dcatapit.name}</button>
-                                        </div>
-                                         <div className="col-4">
-                                            <strong><p>Download File: </p></strong>
-                                        </div> */}
-                                        <div className="col-2 pt-3 b-a-1">
-                                            <div className="ml-2">
-                                            <button type="button" className="btn btn-secondary btn-sm w-100" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)} title="Download"><i className="fa fa-download fa-lg"></i> Download{/*dataset.dcatapit.name*/}</button>
-                                            <button type="button" className="btn btn-secondary btn-sm mt-2 w-100" onClick={() => { this.setState(prevState => ({ showPreview: !prevState.showPreview })) }} title="Preview"> <i className="fa fa-play-circle-o fa-lg"/> Preview </button>
+                                        <div className="col-6">
+                                            <div className="row ml-2 pt-3 pb-3 b-a-1">
+                                                <div className="col-4">
+                                                    <span className="badge badge-default">
+                                                        <h2><i className="fa fa-lg fa-file-text pt-3" /></h2>
+                                                        <h2>JSON</h2>
+                                                    </span>
+                                                </div>
+                                                <div className="col-8">
+                                                    <button type="button" className="btn btn-secondary btn-sm w-100" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)} title="Download"><i className="fa fa-download fa-lg"></i> Download{/*dataset.dcatapit.name*/}</button>
+                                                    <button type="button" className="btn btn-secondary btn-sm mt-2 w-100" onClick={() => { this.setState(prevState => ({ showPreview: !prevState.showPreview })) }} title="Preview"> <i className="fa fa-play-circle-o fa-lg"/> Preview </button>
+                                                </div>
                                             </div>
                                         </div>
-                                            <div className="col-8" hidden={this.state.showPreview}>
-                                                <p><ReactJson src={json} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" /></p>
-                                            </div>
+                                        <div className="col-6" hidden={this.state.showPreview}>
+                                            <p><ReactJson src={json} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" /></p>
+                                        </div>
                                     </div>
                                     <div className="row">
                                         <div className="col-4">
@@ -182,7 +213,7 @@ class DatasetDetail extends Component {
                                                 <div className="text-muted text-uppercase font-weight-bold font-xs">Metabase</div>
                                             </div>
                                             <div className="card-footer p-x-1 py-h">
-                                                <a className="font-weight-bold font-xs btn-block text-muted" onClick={this.handleToggleClickMetabase}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
+                                                <a className="font-weight-bold font-xs btn-block text-muted" onClick={() => { this.setState(prevState => ({ showDivMetabase: !prevState.showDivMetabase, showDivSuperset: false, showDivJupyter: false  })) }}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -194,7 +225,7 @@ class DatasetDetail extends Component {
                                                 <div className="text-muted text-uppercase font-weight-bold font-xs">Superset</div>
                                             </div>
                                             <div className="card-footer p-x-1 py-h">
-                                                <a className="font-weight-bold font-xs btn-block text-muted" onClick={this.handleToggleClickSuperset}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
+                                                <a className="font-weight-bold font-xs btn-block text-muted" onClick={() => { this.setState(prevState => ({ showDivSuperset: !prevState.showDivSuperset, showDivMetabase: false, showDivJupyter: false  })) }}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -206,7 +237,7 @@ class DatasetDetail extends Component {
                                                 <div className="text-muted text-uppercase font-weight-bold font-xs">Jupyter</div>
                                             </div>
                                             <div className="card-footer p-x-1 py-h">
-                                                <a className="font-weight-bold font-xs btn-block text-muted" onClick={this.handleToggleClickJupyter}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
+                                                <a className="font-weight-bold font-xs btn-block text-muted" onClick={() => { this.setState(prevState => ({ showDivJupyter: !prevState.showDivJupyter, showDivMetabase: false, showDivSuperset: false  })) }}>Impostazioni<i className="fa fa-angle-right float-right font-lg"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -243,7 +274,7 @@ class DatasetDetail extends Component {
                                                         </div>
                                                         <div className="col-10">
                                                             <code>
-                                                                path_dataset = "/daf/opendata/<strong>{dataset.operational.physical_uri}</strong>" <br />
+                                                                path_dataset = "<strong>{dataset.operational.physical_uri}</strong>" <br />
                                                                 df = (spark.read.format("parquet") <br />
                                                                 .option("inferSchema", "true") <br />
                                                                 .option("header", "true") <br />
@@ -287,38 +318,69 @@ class DatasetDetail extends Component {
                         </div>
                         <div className="card">
                             <div className="card-header" onClick={() => { this.setState(prevState => ({ showDatastories: !prevState.showDatastories })) }}>
-                                Datastories collegate
+                                Collegamenti
                                 <i className={"fa float-right fa-lg " + (this.state.showDatastories ? "fa-angle-right" : "fa-angle-down")} />
                             </div>
                             <div hidden={this.state.showDatastories}>
-                                <div className="card-block">
-                                    <div className="row">
-                                    {this.state.datastories.slice(0,4).map((story, index) => {
-                                        let chartUrl = undefined
-                                        if (story.graph1) {
-                                            chartUrl = story.graph1['props']['url']
-                                        }
-                                        return (
-                                            <div className="col-3" key={index}>
-                                                <div className="card text-center">
-                                                    <div className="card-body">
-                                                        <Link to={"/user_story/list/" + story.id}>
-                                                            <h4 className="card-title">{story.title}</h4>
-                                                        </Link>
-                                                        <h6 className="card-subtitle mb-2 text-muted" dangerouslySetInnerHTML={{ __html: story.subtitle }}></h6>
-                                                        {chartUrl && <iframe
-                                                            ref="iframe"
-                                                            frameBorder={'0'}
-                                                            style={iframeStyle}
-                                                            src={chartUrl}
-                                                        />
-                                                        }
+                                <div className="row">
+                                    <div className="col-sm-6">
+                                        <div className="card" style={{"border": "0px"}}>
+                                        <div className="card-body">
+                                            <h4 className="card-title">Dataset</h4>
+                                            {this.state.datasets.slice(0,4).map((dataset, index) => {
+                                                return (
+                                                    <div className="row" key={index}>
+                                                    <div className="col-12">
+                                                        <div className="card text-center">
+                                                            <div className="card-body">
+                                                                <Link to={"/dataset/" + dataset.name}>
+                                                                    <h6 className="card-title">{dataset.title}</h6>
+                                                                </Link>
+                                                                <h8 className="card-subtitle mb-2 text-muted" dangerouslySetInnerHTML={{ __html: dataset.notes }}></h8>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        )
-                                        })
-                                    }
+                                                    </div>
+                                                )
+                                                })
+                                            }
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-6">
+                                        <div className="card" style={{"border": "0px"}}>
+                                        <div className="card-body">
+                                            <h4 className="card-title">Data Stories</h4>
+                                            {this.state.datastories.slice(0,4).map((story, index) => {
+                                                let chartUrl = undefined
+                                                if (story.graph1) {
+                                                    chartUrl = story.graph1['props']['url']
+                                                }
+                                                return (
+                                                    <div className="row" key={index}>
+                                                        <div className="col-12" key={index}>
+                                                            <div className="card text-center">
+                                                                <div className="card-body">
+                                                                    <Link to={"/user_story/list/" + story.id}>
+                                                                        <h6 className="card-title">{story.title}</h6>
+                                                                    </Link>
+                                                                    <h8 className="card-subtitle mb-2 text-muted" dangerouslySetInnerHTML={{ __html: story.subtitle }}></h8>
+                                                                {/*  {chartUrl && <iframe
+                                                                        ref="iframe"
+                                                                        frameBorder={'0'}
+                                                                        style={iframeStyle}
+                                                                        src={chartUrl}
+                                                                    />
+                                                                    } */}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                                })
+                                            }
+                                        </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

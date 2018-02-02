@@ -37,9 +37,11 @@ class Login extends Component {
     e.preventDefault()
     const { dispatch, selectDataset } = this.props
     this.setState({uploading: true})
+    var token=''
     dispatch(getAuthToken(this.email.value, this.pw.value))
       .then(json => {
             localStorage.setItem('token', json);
+            token = json;
             dispatch(getApplicationCookie('superset'))
             .then(json => {
               if (json) {
@@ -59,7 +61,8 @@ class Login extends Component {
                                 dispatch(loginAction())
                                   .then(json => {
                                     localStorage.setItem('user', json.uid);
-                                    setCookie(JSON.parse('[{"name":"dataportal","value":"'+ json.givenname +'","path":"/"}]'))
+                                    let dataportalCookie = json.givenname +'/'+token;
+                                    setCookie(JSON.parse('[{"name":"dataportal","value":"'+ dataportalCookie +'","path":"/"}]'))
                                     dispatch(receiveLogin(json))
                                     this.props.history.push('/home')
                                   })
