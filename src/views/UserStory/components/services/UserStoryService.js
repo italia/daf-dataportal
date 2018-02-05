@@ -3,7 +3,6 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 export default class UserStoryService {
     
 
-    urlIframe = serviceurl.apiURLDatiGov + "/dashboard/iframes";
     baseUrl = serviceurl.apiURLDatiGov  + "/user-stories";
     baseUrlSave = serviceurl.apiURLDatiGov  + "/save/user-stories";
     baseUrlRemove = serviceurl.apiURLDatiGov  + "/delete/user-stories";
