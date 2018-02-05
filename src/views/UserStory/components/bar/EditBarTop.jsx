@@ -18,7 +18,8 @@ class EditBarTop extends React.Component {
     this.state= {
       title : this.props.title,
       status : this.props.status || false,
-      isOpen : false
+      isOpen : false,
+      pvt : this.props.pvt
     }
 
     // bind functions
@@ -101,7 +102,7 @@ class EditBarTop extends React.Component {
               <button className='btn btn-default' onClick={this.pubblica}>
                 Condividi con la tua Organizzazione
                   </button>
-              {(isEditor() || isAdmin()) &&
+              {this.state.pvt != 1 &&(isEditor() || isAdmin()) &&
               <button className='btn btn-default' onClick={this.condividi}>
                 Condividi con tutti
               </button>
