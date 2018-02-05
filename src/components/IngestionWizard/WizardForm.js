@@ -185,8 +185,8 @@ class WizardForm extends Component {
           </ModalHeader>
           <ModalBody>
           <p>Il titolo deve essere univoco nel DAF. </p>
-          <p>Il valore di defaul sar il nome del file.</p>
-          <p>Un servizio controllera l'univocita del titolo.</p>
+          <p>Il valore di default sarà il nome del file.</p>
+          <p>Un servizio controllerà l'univocita del titolo.</p>
           </ModalBody>
           <ModalFooter>
             <button className='btn btn-default' onClick={this.hideModal}>
