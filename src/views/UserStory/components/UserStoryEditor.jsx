@@ -76,11 +76,11 @@ class UserStoryEditor extends Component {
    */
   render() {
     return (
+      
     <Container>
-      <Header title="La Tua Storia" />
-      {
-        this.state.dataStory &&
-        <div>
+    {this.state.dataStory &&
+      <div>
+      <Header title="La Tua Storia" org={this.state.dataStory.org}/>
           <EditBarTop 
               title={this.state.dataStory.title}
               onPublish={this.onPublish}
@@ -88,14 +88,16 @@ class UserStoryEditor extends Component {
               status={this.state.dataStory.published}
               onRemove={this.onRemove}
               saving={this.state.saving}
+              pvt={this.state.dataStory.pvt}
           ></EditBarTop>
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory} 
             onChange={this.save}
           />
-        </div>
-      }
+      </div>
+      }    
     </Container>
+  
     );
   }
 

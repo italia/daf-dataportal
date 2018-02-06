@@ -43,17 +43,6 @@ class DashboardView extends Component {
     };
 
     this.load()
-    //get iframe from server
-    let iframeTypes = widgetService.getIframe();
-    iframeTypes.then(iframes => {
-      this.loadIframe(iframes);
-      //get widget from server
-      /* this.load(); */
-    }, err => {
-      //get widget from server
-      /* this.load(); */
-    })
-
   }
   
   /**
@@ -120,9 +109,22 @@ class DashboardView extends Component {
         layout: dashboard.layout,
         title: dashboard.title,
         subtitle: dashboard.subtitle,
+        org: dashboard.org
         /* widgets: dashboard.widgets */
       });
       console.log(this.state)
+
+          //get iframe from server
+      let iframeTypes = widgetService.getIframe(dashboard.org);
+      iframeTypes.then(iframes => {
+        this.loadIframe(iframes);
+        //get widget from server
+        /* this.load(); */
+      }, err => {
+        //get widget from server
+        /* this.load(); */
+      })
+
     });
 
   }
@@ -135,7 +137,7 @@ class DashboardView extends Component {
     
     return (
     <Container>
-      <ViewBar title={this.state.title} subtitle={this.state.subtitle} id={this.state.id}></ViewBar>
+      <ViewBar title={this.state.title} subtitle={this.state.subtitle} id={this.state.id} org={this.state.org}></ViewBar>
       <Dashboard
         frameComponent={CustomFrame}
         layout={this.state.layout}

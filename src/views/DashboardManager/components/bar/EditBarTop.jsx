@@ -80,6 +80,7 @@ class EditBarTop extends React.Component {
   }
 
   render = function(){
+    const { dashboard } = this.state
 
     return (
           <div>
@@ -98,7 +99,7 @@ class EditBarTop extends React.Component {
                   <button className='btn btn-default' onClick={() => this.pubblica()}>
                     Condividi con la tua Organizzazione
                   </button>
-                  {(isEditor() || isAdmin()) &&
+                  {dashboard.pvt!=1 &&(isEditor() || isAdmin()) &&
                   <button className='btn btn-default' onClick={() => this.condividi()}>
                     Condividi con tutti
                   </button>
@@ -176,6 +177,9 @@ class EditBarTop extends React.Component {
                   }
                 </div>
               </div>
+            </div>
+            <div className="col-sm-7">
+              <span className="badge badge-info">{this.props.org}</span>
             </div>
           </div>
         </div>

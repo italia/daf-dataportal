@@ -30,7 +30,7 @@ input#states-autocomplete-semantic {
   background-color: white;
   z-index: 2;
   box-sizing: border-box;
-  width: 100%;
+  /*width: 100%;*/  
   border: 1px #cccccc;
   background: #e2e2e2;
 }
