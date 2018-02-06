@@ -40,18 +40,6 @@ class DashboardEditor extends Component {
   constructor(props) {
     super(props);
 
-    
-    //get iframe from server
-    let iframeTypes = widgetService.getIframe();
-    iframeTypes.then(iframes => {
-      this.loadIframe(iframes);
-      //get widget from server
-      /* this.load(); */
-    }, err => {
-      //get widget from server
-      /* this.load(); */
-    })
-
     //set state
     this.state = {
       // Widgets that are available in the dashboard
@@ -181,6 +169,18 @@ class DashboardEditor extends Component {
       });
       
       this.setLayout(dashboard.layout, true);
+
+      //get iframe from server
+      let iframeTypes = widgetService.getIframe(dashboard.org);
+      iframeTypes.then(iframes => {
+        this.loadIframe(iframes);
+        //get widget from server
+        /* this.load(); */
+      }, err => {
+        //get widget from server
+        /* this.load(); */
+      })
+
     });
 
   }
