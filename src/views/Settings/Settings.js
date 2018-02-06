@@ -39,8 +39,25 @@ class Settings extends Component {
             legal: '',
             isChanged: false,
             showDiv: true,
-            newDomain: true
+            newDomain: true,
+            domains: []
         }
+
+        let allDomains = []
+        let tmp = {}
+        let response = this.domains()
+        response.then(json => {
+            json.map(domain => {
+                tmp ={
+                    'value' : domain,
+                    'label' : domain
+                }
+                allDomains.push(tmp)
+            })
+            this.setState({
+                domains: allDomains
+            })
+        })
 
         this.onClick = this.onClick.bind(this)
         this.onThemeSelect = this.onThemeSelect.bind(this)
@@ -53,6 +70,19 @@ class Settings extends Component {
     async settings(org) {
         var url = serviceurl.apiURLDatiGov + "/settings?domain=" + org
         let token = localStorage.getItem('token')
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+
+        return response.json();
+    }
+
+    async domains() {
+        var url = serviceurl.apiURLDatiGov + "/domain"
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -325,31 +355,30 @@ class Settings extends Component {
                 this.setState({
                     newDomain: true,
                 })
+                let allDomains = []
+                let tmp = {}
+                let domains = this.domains()
+                domains.then(json => {
+                    json.map(domain => {
+                        tmp = {
+                            'value': domain,
+                            'label': domain
+                        }
+                        allDomains.push(tmp)
+                    })
+                    this.setState({
+                        domains: allDomains,
+                        showDiv: false
+                    })
+                    this.load(this.state.domain)
+                })
             })
         })
     }
 
     render() {
         const { loggedUser} = this.props
-        const { newDomain } = this.state
-        const domains = [
-            {
-                'value': 'dataportal',
-                'label': 'dataportal'
-            },
-            {
-                'value': 'roma',
-                'label': 'roma'
-            },
-            {
-                'value': 'firenze',
-                'label': 'firenze'
-            },
-            {
-                'value': 'torino',
-                'label': 'torino'
-            }
-        ]
+        const { newDomain, domains } = this.state
     return (
         <div>
             <Modal
@@ -414,7 +443,7 @@ class Settings extends Component {
                                         searchable={true}
                                     />
                                 </div>
-                                {/* <button className="btn btn-link" onClick={()=>this.setState({newDomain: false, showDiv: true, domain: ''})}><i className="fa fa-plus"/></button> */}
+                                {loggedUser.role==="daf_admins" && <button className="btn btn-link" title="Aggiungi un nuovo dominio" onClick={()=>this.setState({newDomain: false, showDiv: true, domain: ''})}><i className="fa fa-plus"/></button>}
                             </div>
                             <div hidden={this.state.showDiv}>
                                 <div className="form-group row">
@@ -525,6 +554,7 @@ class Settings extends Component {
                                     </div>
                                 </div>
                             </div>
+                            {loggedUser.role==="daf_admins" &&
                             <div hidden={newDomain}>
                                 <div className="form-group row">
                                     <label className="col-2 col-form-label">Nuovo Dominio</label>
@@ -534,7 +564,7 @@ class Settings extends Component {
                                     </div>
                                     <button className="btn btn-primary" title="Aggiungi il dominio" onClick={this.addDomain}><i className="fa fa-check"/></button>
                                 </div>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                 </div>
