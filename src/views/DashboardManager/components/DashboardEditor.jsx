@@ -152,7 +152,8 @@ class DashboardEditor extends Component {
         let widget = dashboard.widgets[i];
         //assign instance to widget.type
         /* let typeWid = i //.split('_')[0]; //Test */
-        if (i.startsWith("TextWidget")) {
+        /* if (i.startsWith("TextWidget")) { */
+          if (i.indexOf('TextWidget')!=-1) {
           /* widget.type = this.widgetsTypes[typeWid].type; */
           widget.type = TextWidget;
           widget.props.onSave = this.saveTextWidget.bind(this);
@@ -351,7 +352,8 @@ class DashboardEditor extends Component {
       let widget = widgetsOld[i];
       /* console.log(i)
       console.log(widget) */
-      if(!i.startsWith("BtnControlWidget")) {
+      /* if(!i.startsWith("BtnControlWidget")) { */
+        if (i.indexOf('BtnControlWidget')==-1) {
         if (widget.type) {
 /*           console.log(widgets[i])
           console.log(widget) */
