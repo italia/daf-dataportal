@@ -14,6 +14,7 @@ class GraphEditor extends Component {
     super(props);
     this.state = {
       graph: props.graph,
+      org: props.org,
       widgets : {},
       isModalAddOpen: false
     };
@@ -33,30 +34,59 @@ class GraphEditor extends Component {
     this.changeGraph = this.changeGraph.bind(this);
 
     //get iframe from server
-    let iframeTypes = widgetService.getIframe();
+    let iframeTypes = widgetService.getIframe(this.state.org);
     iframeTypes.then(iframes => {
       this.loadIframe(iframes);
     })
 
+  }
+
+  async loadImage(widget) {
+    let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    const response = await fetch(url, {
+      method: 'GET'
+    })
+
+    return response
   }
   
   /**
    * Load all Iframe types
    */
   loadIframe = (iframes) => {
-  //  let widgetsAppo = {};
     iframes.map(iframe => {
-        this.widgetsTypes[iframe.identifier] = {
-        "type": IframeWidget,
-        "title": iframe.title,
-        "props":{
-          "url": iframe.iframe_url,
-          "identifier": iframe.identifier,
-          "origin": iframe.origin
-        }
-      }
-    }) 
-//    this.setState({widgets: widgetsAppo})
+      const response = this.loadImage(iframe.identifier)
+      response.then(response => {
+        if (response.ok)
+          response.text().then(text => {
+            this.widgetsTypes[iframe.identifier] = {
+              "type": IframeWidget,
+              "title": iframe.title,
+              "image": text.replace(/"/g, ''),
+              //"props": iframe
+              "table": iframe.table,
+              "props": {
+                "url": iframe.iframe_url,
+                "identifier": iframe.identifier,
+                "origin": iframe.origin
+              }
+            }
+          })
+        else
+          this.widgetsTypes[iframe.identifier] = {
+            "type": IframeWidget,
+            "title": iframe.title,
+            "image": undefined,
+            "table": iframe.table,
+            //"props": iframe
+            "props": {
+              "url": iframe.iframe_url,
+              "identifier": iframe.identifier,
+              "origin": iframe.origin
+            }
+          }
+      })
+    })
   }
 
   /**
