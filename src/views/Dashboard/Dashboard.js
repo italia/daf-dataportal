@@ -99,7 +99,8 @@ class Dashboard extends Component {
                   for (let j = 0; j < colonne.length; j++) {
                     let wids = colonne[j].widgets
                     wids.map((index) => {
-                      if (!index.key.startsWith('TextWidget')) {
+                     /*  if (!index.key.startsWith('TextWidget')) { */
+                      if (index.key.indexOf('TextWidget')==-1) {
                         firstLayout = index.key
                       }
                     })
