@@ -97,6 +97,7 @@ class DashboardEditor extends Component {
               "title": iframe.title,
               "image": text.replace(/"/g, ''),
               //"props": iframe
+              "table": iframe.table,
               "props":{
                 "url": iframe.iframe_url,
                 "identifier": iframe.identifier,
@@ -109,6 +110,7 @@ class DashboardEditor extends Component {
             "type": IframeWidget,
             "title": iframe.title,
             "image": undefined,
+            "table": iframe.table,
             //"props": iframe
             "props": {
               "url": iframe.iframe_url,

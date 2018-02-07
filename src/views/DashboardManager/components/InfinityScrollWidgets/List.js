@@ -3,6 +3,7 @@ import InfiniteScroll from '../../../../components/InfinityScroll';
 import WidgetImage from "./WidgetImage";
 import $ from 'jquery';
 
+
 class List extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +11,14 @@ class List extends Component {
       items: 6,
       visibility: 'visible'
     }
+  }
+
+  transformName(name){
+    var sp1 = name.split('_o_')
+    if(sp1[1])
+    return sp1[1]
+    else 
+    return name
   }
 
   loadMore = () => {
@@ -30,7 +39,6 @@ class List extends Component {
         .then(text => {
           return text
         })
-    /* console.log(response.text()) */
 	}
 
   render() {
@@ -68,7 +76,7 @@ class List extends Component {
               
                       <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
                         <h6 className="list-group-item-heading" id={"title-preview-" + key}>
-                          {widgets[widget].title}
+                    {" [" + this.transformName(widgets[widget].table) + "] " + widgets[widget].title}
                         </h6>
                         <div className="preview-widget">
                           {/* <WidgetImage widget={widget} wid={wid} widgets={widgets} onLoadIframe={onLoadIframe} key={key}/> */}

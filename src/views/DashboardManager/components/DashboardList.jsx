@@ -110,16 +110,23 @@ class DashboardList extends Component {
               <div className="col-sm-4" key={index}>
                 <div className="card text-center">
                     <div className="card-body">
-                    <Link to={"/dashboard/list/" + dash.id}>
-                      <h4 className="card-title">{dash.title}</h4>
-                    </Link>
-                    <h6 className="card-subtitle mb-2 text-muted">{dash.subtitle}</h6>
+                    <div className="row">
+                        <div className="col-sm-11">
+                          <Link to={"/dashboard/list/" + dash.id}>
+                            <h4 className="card-title">{dash.title}</h4>
+                          </Link>
+                          <h6 className="card-subtitle mb-2 text-muted">{dash.subtitle}</h6>
+                        </div>
+                    </div>
                     { chartUrl && <iframe
                       ref="iframe"
                       frameBorder={'0'}
                       style={iframeStyle}
                       src={chartUrl}
                     />
+                    }
+                    {dash.pvt==1 &&
+                    <div className="badge badge-danger pull-left mt-20"><i className="fa fa-lock fa-lg m-t-2"></i> PRIVATA</div>
                     }
                     {
                       dash.status==1 &&

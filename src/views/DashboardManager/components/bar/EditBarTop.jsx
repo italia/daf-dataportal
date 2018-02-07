@@ -140,9 +140,14 @@ class EditBarTop extends React.Component {
               }
               </div>
               </div>
-          <div className="row bar-border">
+          <div className="row">
             <div className="col-sm-7">
             <h3 className="card-title">{this.state.dashboard.title}</h3>
+            </div>
+            <div className="col-sm-5 hidden-sm-down">
+            {this.state.dashboard.pvt==1 &&
+               <div className="badge badge-danger pull-right mt-20"><i className="fa fa-lock fa-lg m-t-2"></i> PRIVATA</div>
+            }
             </div>
             <div className="col-sm-7">
               <h7 className="card-title">{this.state.dashboard.subtitle}</h7>
