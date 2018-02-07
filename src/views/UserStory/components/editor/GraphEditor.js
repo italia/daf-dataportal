@@ -33,7 +33,7 @@ class GraphEditor extends Component {
     this.changeGraph = this.changeGraph.bind(this);
 
     //get iframe from server
-    let iframeTypes = widgetService.getIframe();
+    let iframeTypes = widgetService.getIframe(props.org);
     iframeTypes.then(iframes => {
       this.loadIframe(iframes);
     })

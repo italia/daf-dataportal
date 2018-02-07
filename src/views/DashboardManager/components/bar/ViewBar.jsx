@@ -10,14 +10,25 @@ class ViewBar extends React.Component {
   render = function(){
 
     return (
-      <div className="row">
-        <div className="col-sm-7">
-          <h3 className="card-title">{this.props.title}</h3>
+      <div>
+        <div className="row">
+          <div className="col-10 p-0">
+            <h3 className="card-title">{this.props.title}</h3>
+          </div>
+          <div className="col-2">
+            {this.props.pvt==1 &&
+            <div className="badge badge-danger pull-right mt-20"><i className="fa fa-lock fa-lg m-t-2"></i> PRIVATA</div>
+            }
+          </div>
         </div>
-        <div className="col-sm-7">
+        <div className="row">
           <h7 className="card-title">{this.props.subtitle}</h7>
         </div>
-        <div className="col-sm-5 hidden-sm-down">
+        <div className="row">
+          <div className="col-6">
+          <span className="badge badge-info">{this.props.org}</span>
+        </div>
+          <div className="col-6">
           <div className="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">
             <div className="btn-group mr-1" data-toggle="buttons" aria-label="First group">
               <Link role="button" to="/dashboard/list">
@@ -35,11 +46,9 @@ class ViewBar extends React.Component {
               </Link>
             </div>
           </div>
+          </div>
+          </div>
         </div>
-        <div className="col-sm-7">
-          <span className="badge badge-info">{this.props.org}</span>
-        </div>
-      </div>
 
     );
   }
