@@ -73,6 +73,10 @@ class App extends Component {
     var result = Object.keys(filteredWidget).reduce(function (r, e) {
       if (filteredWidget[e].title.toLowerCase().indexOf(val) != -1) {
         r[e] = filteredWidget[e];
+      } else if (filteredWidget[e].table){
+        if (filteredWidget[e].table.toLowerCase().indexOf(val) != -1) {
+          r[e] = filteredWidget[e];
+        }
       }
       return r;
     }, {})

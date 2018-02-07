@@ -33,7 +33,6 @@ export function transformName(name){
     var token = localStorage.getItem('token')
     var jwtDecode = require('jwt-decode');
     var decoded = jwtDecode(token);
-    console.log(decoded);
     try{
       decoded['memberOf'].map((elem) => {
         if(elem.indexOf('cn=daf_editors') !== -1)
@@ -51,7 +50,6 @@ export function transformName(name){
     var token = localStorage.getItem('token')
     var jwtDecode = require('jwt-decode');
     var decoded = jwtDecode(token);
-    console.log(decoded);
     try{
       decoded['memberOf'].map((elem) => {
         if(elem.indexOf('cn=daf_admins') !== -1)

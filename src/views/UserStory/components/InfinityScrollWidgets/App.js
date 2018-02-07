@@ -59,6 +59,10 @@ class App extends Component {
     var result = Object.keys(filteredWidget).reduce(function (r, e) {
       if (filteredWidget[e].title.toLowerCase().indexOf(val) != -1) {
         r[e] = filteredWidget[e];
+      } else if (filteredWidget[e].table) {
+        if (filteredWidget[e].table.toLowerCase().indexOf(val) != -1) {
+          r[e] = filteredWidget[e];
+        }
       }
       return r;
     }, {})
@@ -89,8 +93,8 @@ class App extends Component {
         <div className="pt-2 btn-group">
           {/* <button type="button" className={"btn btn-" + (superset ? "primary" : "default")} onClick={this.onSupersetClick}>Superset</button>
           <button type="button" className={"btn btn-" + (metabase ? "primary" : "default")} onClick={this.onMetabaseClick}>Metabase</button> */}
-          {/* <input className="pl-4 form-control" placeholder="Cerca la dashboard" value={this.state.query}
-            onChange={(e) => this.searchBy(e.target.value)} /> */}
+          {<input className="pl-4 form-control" placeholder="Cerca la dashboard" value={this.state.query}
+            onChange={(e) => this.searchBy(e.target.value)} />}
         </div>
         </div>
           <List 
