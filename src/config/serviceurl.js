@@ -30,8 +30,7 @@ export const serviceurl = {
  apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1", */
 
  apiURLSSOManager: "https://security-manager.daf.teamdigitale.it/sso-manager",
- //apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1",
- apiURLDatiGov: "http://localhost:9000/dati-gov/v1", 
+ apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1",
  apiURLCatalog: "https://catalog-manager.daf.teamdigitale.it/catalog-manager/v1",
  apiURLSecurity : "https://security-manager.daf.teamdigitale.it/security-manager/v1",
  apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1", 

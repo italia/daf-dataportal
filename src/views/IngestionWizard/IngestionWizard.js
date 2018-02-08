@@ -59,7 +59,8 @@ hideModalAndRedirect = (e) => {
   this.setState({transformed:transformed})
   const { dispatch } = this.props;
   if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
-  dispatch(addDataset(transformed, localStorage.getItem('token')))
+  const fileType = values.filesToUpload[0].name.toLowerCase().split(".")[1]
+  dispatch(addDataset(transformed, localStorage.getItem('token'), fileType))
     .then(() => {
       dispatch(this.openModal())
       localStorage.removeItem('kyloSchema')
