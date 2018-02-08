@@ -275,7 +275,8 @@ class Dash extends Component {
 
     for(let i in widgetsOld) {
       let widget = widgetsOld[i];
-      if(!i.startsWith("BtnControlWidget")) {
+      /* if(!i.startsWith("BtnControlWidget")) { */
+        if (i.indexOf('BtnControlWidget')==-1) {
         if (widget.type) {
           widgets[i] = JSON.parse(JSON.stringify(widget));
           widgets[i].type = widget.type.name

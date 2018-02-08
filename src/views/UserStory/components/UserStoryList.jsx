@@ -91,6 +91,9 @@ class UserStoryList extends Component {
                       src={chartUrl}
                     />
                     }
+                    {story.pvt==1 &&
+                    <div className="badge badge-danger pull-left mt-20"><i className="fa fa-lock fa-lg m-t-2"></i> PRIVATA</div>
+                    }
                     {
                     story.published===1 &&
                     <div className="badge badge-success pull-right mt-20">PUBBLICATO</div>

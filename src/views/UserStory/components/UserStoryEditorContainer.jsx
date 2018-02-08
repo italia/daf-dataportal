@@ -65,6 +65,7 @@ class UserStoryEditorContainer extends Component {
           keyValue="graph1"
           graph={this.state.dataStory.graph1}
           onChange={this.onChange}
+          org={this.state.dataStory.org}
         ></GraphEditor>
 
         <SectionTitle readonly={this.props.readonly} title="La Tua Storia"/>
@@ -83,6 +84,7 @@ class UserStoryEditorContainer extends Component {
           keyValue="graph2"
           graph={this.state.dataStory.graph2}
           onChange={this.onChange}
+          org={this.state.dataStory.org}
         ></GraphEditor>
 
         <SectionTitle readonly={this.props.readonly} title="Footer"/>

@@ -78,7 +78,7 @@ class WizardForm extends Component {
     this.setState({ page: this.state.page - 1 })
   }
 
-  getLicenze(liv,notation){
+/*   getLicenze(liv,notation){
     var appo = [];
     licenze.map((lic, index) => {
       if(lic.rank==liv){
@@ -89,7 +89,7 @@ class WizardForm extends Component {
       }
    })
    return appo;
-  }
+  } */
 
   getDomain(liv,domain){
     var appo = [];

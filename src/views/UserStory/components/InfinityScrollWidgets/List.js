@@ -12,6 +12,14 @@ class List extends Component {
     }
   }
 
+  transformName(name) {
+    var sp1 = name.split('_o_')
+    if (sp1[1])
+      return sp1[1]
+    else
+      return name
+  }
+
   loadMore = () => {
     if (this.state.isLoading) { return }
     var totitems = this.state.items + 1;
@@ -42,10 +50,17 @@ class List extends Component {
                   <div className="card-body">  
                     <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
                       <h6 className="list-group-item-heading" id={"title-preview-" + key}>
-                        {widgets[widget].title}
+                        {" [" + this.transformName(widgets[widget].table) + "] " + widgets[widget].title}
                       </h6>
                       <div className="preview-widget">
-                        {React.createElement(wid, {...widgets[widget].props, class: "no-click", onLoad: () => onLoadIframe(key)})}
+                      {widgets[widget].image ?
+                        <div style={{ width: '100%' }}>
+                          <img src={"data:image/jpg;base64," + widgets[widget].image} />
+                        </div>
+                        :
+                        <div style={{ width: '100%' }}>
+                          {React.createElement(wid, { ...widgets[widget].props, class: "no-click", onLoad: () => onLoadIframe(key) })}
+                        </div>}
                       </div>
                     </a>
                   </div>

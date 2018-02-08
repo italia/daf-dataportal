@@ -167,7 +167,7 @@ class DatasetDetail extends Component {
                                 <i className={"fa float-right fa-lg " + (this.state.showSources ? "fa-angle-right" : "fa-angle-down")}/>
                             </div>
                             <div hidden={this.state.showSources}>
-                            {true ?
+                            {json ?
                                 <div className="card-block">
                                     <div className="row">
                                         <div className="col-6">
