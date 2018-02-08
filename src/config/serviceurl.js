@@ -16,11 +16,11 @@ export const serviceurl = {
   apiURLSSOManager: "http://localhost:3001/sso-manager/v1", 
 */
   // INTERNAL
-/*  apiURLSSOManager: "http://security-manager.default.svc.cluster.local:9000/security-manager/sso-manager",
- apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000/dati-gov/v1", 
- apiURLCatalog: "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
- apiURLSecurity : "http://security-manager.default.svc.cluster.local:9000/security-manager/v1", */
-
+ //apiURLSSOManager: "http://security-manager.default.svc.cluster.local:9000/sso-manager",
+ //apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000/dati-gov/v1", 
+ //apiURLCatalog: "http://catalog-manager.default.svc.cluster.local:9000/catalog-manager/v1",
+ //apiURLSecurity : "http://security-manager.default.svc.cluster.local:9000/security-manager/v1", 
+ //apiURLDataset : "http://storage-manager.default.svc.cluster.local:9000/dataset-manager/v1",
   
  // EXTERNAL
 /*  apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
@@ -30,7 +30,7 @@ export const serviceurl = {
  apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1", */
 
  apiURLSSOManager: "https://security-manager.daf.teamdigitale.it/sso-manager",
- apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1", 
+ apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1",
  apiURLCatalog: "https://catalog-manager.daf.teamdigitale.it/catalog-manager/v1",
  apiURLSecurity : "https://security-manager.daf.teamdigitale.it/security-manager/v1",
  apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1", 
@@ -46,7 +46,6 @@ export const serviceurl = {
  //apiURLIngestion: "http://service:9002/ingestion-manager/v1",
  //apiURLSecurity: "http://datipubblici-private.integrazione.daf9002/security-manager/v1",
  
-
 /*  urlMetabase: 'http://metabase.integrazione.daf',
  urlSuperset: 'http://superset.integrazione.daf',
  urlJupiter: 'http://datascience.daf.teamdigitale.governo.it', */

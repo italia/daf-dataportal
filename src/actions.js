@@ -576,7 +576,7 @@ export function datasetDetail(datasetname, query) {
   }
 }
 
-export function addDataset(inputJson, token) {
+export function addDataset(inputJson, token, fileType) {
   console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
   return dispatch => {
@@ -593,14 +593,14 @@ export function addDataset(inputJson, token) {
         .then(json => {
           console.log('Caricamento metadati avvenuto con successo')
           dispatch(receiveAddDataset(json))
-          dispatch(addDatasetKylo(inputJson, token))
+          dispatch(addDatasetKylo(inputJson, token, fileType))
         }).catch(error => console.log('Eccezione durante il caricamento dei metadati'))
   }
 }
 
-export function addDatasetKylo(json, token) {
+export function addDatasetKylo(json, token, fileType) {
   console.log("Called action addDataset");
-  var url = serviceurl.apiURLCatalog + "/kylo/feed"
+  var url = serviceurl.apiURLCatalog + "/kylo/feed/" + fileType
   return dispatch => {
       return fetch(url, {
           method: 'POST',
