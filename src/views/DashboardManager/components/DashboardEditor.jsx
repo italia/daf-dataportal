@@ -164,7 +164,6 @@ class DashboardEditor extends Component {
         }
 
       }
-      console.log(dashboard.widgets)
 
       //render widgets
       this.setState( {
@@ -184,6 +183,7 @@ class DashboardEditor extends Component {
         /* this.load(); */
       })
 
+      console.log(this.widgetsTypes)
     });
 
   }
@@ -273,33 +273,42 @@ class DashboardEditor extends Component {
   * Add widget
   */
   addWidget = function (widgetKey, row) {
-    
     if (row == undefined) {
       row = this.state.layout.rows.length;
       this.addRow();
     }
 
-    let newWidget = this.widgetsTypes[widgetKey];
+    let newWidget = {};
     let newKey = ""
     //count widget of type
     if(widgetKey==="TextWidget"){
       let progressive = this.getNextProgressive(widgetKey);
       //assign key to widget
       newKey = widgetKey + "_" + progressive;
-      newWidget.props.onSave = this.saveTextWidget.bind(this)
+      
+      newWidget = {
+        "type": TextWidget,
+        "title": "Testo",
+        "props": {
+          "onSave": this.saveTextWidget.bind(this),
+          "wid_key": newKey
+        }
+      }
     }else{
+      newWidget = this.widgetsTypes[widgetKey];
       newKey = widgetKey
     }
     if (!newWidget.props)
       newWidget.props = {};
     newWidget.props.wid_key = newKey;
     
-
+    console.log(this.widgetsTypes)
     //add widget to list
     this.state.widgets[newKey] = newWidget;
     //add widget to layout
     this.state.layout.rows[row].columns[0].widgets.push({key: newKey});
     this.setLayout(this.state.layout);
+
   }
 
   /**
@@ -325,11 +334,11 @@ class DashboardEditor extends Component {
   save = () => {
     //clean layout from control button
     let layoutOld = JSON.parse(JSON.stringify(this.state.layout));
-    console.log(layoutOld);
+    
     let layout = {};
 
     for(let i in layoutOld) {
-      console.log(i)
+      
       let rows = layoutOld[i];
       if (rows) {
         rows.filter(row => {
@@ -364,7 +373,6 @@ class DashboardEditor extends Component {
       }
     }
 
-    console.log(widgets)
 
     //save data
     let request = this.state.dashboard;
@@ -385,7 +393,9 @@ class DashboardEditor extends Component {
    */
   saveTextWidget = function (key, html) {
     this.state.widgets[key].props.text = html;
-    
+    console.log(key)
+    console.log(this.state.widgets)
+    console.log(this.state.widgets[key])
     this.save();
   }
 

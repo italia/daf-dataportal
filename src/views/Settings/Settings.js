@@ -83,11 +83,13 @@ class Settings extends Component {
 
     async domains() {
         var url = serviceurl.apiURLDatiGov + "/domain"
+        let token = localStorage.getItem('token')
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             }
         })
 
