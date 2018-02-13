@@ -106,7 +106,7 @@ class Header extends Component {
                 <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
                 <span className="d-md-down-none">{loggedUser ? loggedUser.givenname : ''}</span>
             </button>
-              <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              <div className={"dropdown-menu dropdown-menu-right "+ open} aria-labelledby="dropdownMenuButton">
                 <h6 className="dropdown-header text-center">Menu utente</h6>
                 <a className="dropdown-item" href="/#/profile" onClick={this.toggle}><i className="fa fa-user"></i> Profilo</a>
                 <a className="dropdown-item" onClick={() => { logout(); this.toggle }} href="/"><i className="fa fa-lock"></i> Logout</a>

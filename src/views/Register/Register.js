@@ -59,31 +59,31 @@ class Register extends Component {
                   </div>
                 }   
                 <div className="input-group mb-1">
-                  <span className="input-group-addon">
+                  <span className="input-group-text">
                     <i className="icon-user"></i></span>
                   <input type="text" className="form-control" ref={(username) => this.username = username} placeholder="Nome Utente" />
                 </div>
                 <div className="input-group mb-1">
-                  <span className="input-group-addon">
+                  <span className="input-group-text">
                     <i className="icon-user"></i></span>
                   <input type="text" className="form-control" ref={(nome) => this.nome = nome} placeholder="Nome" />
                 </div>
                 <div className="input-group mb-1">
-                  <span className="input-group-addon">
+                  <span className="input-group-text">
                     <i className="icon-user"></i></span>
                   <input type="text" className="form-control" ref={(cognome) => this.cognome = cognome} placeholder="Cognome" />
                 </div>
                 <div className="input-group mb-1">
-                  <span className="input-group-addon">@</span>
+                  <span className="input-group-text">@</span>
                   <input type="text" className="form-control" ref={(email) => this.email = email} placeholder="Email" />
                 </div>
                 <div className="input-group mb-1">
-                  <span className="input-group-addon">
+                  <span className="input-group-text">
                     <i className="icon-lock"></i></span>
                   <input type="password" className="form-control" ref={(password) => this.password = password} placeholder="Password" />
                 </div>
                 <div className="input-group mb-2">
-                  <span className="input-group-addon">
+                  <span className="input-group-text">
                     <i className="icon-lock"></i></span>
                   <input type="password" className="form-control" ref={(password2) => this.password2 = password2} placeholder="Ripeti password" />
                 </div>
