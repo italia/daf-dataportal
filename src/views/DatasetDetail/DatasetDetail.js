@@ -121,7 +121,7 @@ class DatasetDetail extends Component {
                                         <h1 className="card-text">{transformName(dataset.dcatapit.title) + " "}</h1>
                                     </div>
                                     <div className="col-4">
-                                        <h4 className="float-right"><span className="badge badge-default"> {dataset.dcatapit.theme}</span></h4>
+                                        <h4 className="float-right"><span className="badge badge-secondary"> {dataset.dcatapit.theme}</span></h4>
                                     </div>
                                     <div className="col-12">
                                         <p className="text-muted">{"Pubblicato da " + " "}<b className="mr-3">{dataset.dcatapit.publisher_name + " "}  </b>{"Organizzazione " + " "}<b className="mr-3">{dataset.dcatapit.owner_org + " "}    </b>{"Licenza " + " "}<b>{dataset.dcatapit.license_title} </b></p>
@@ -173,15 +173,15 @@ class DatasetDetail extends Component {
                                         <div className="col-6">
                                             <div className="row ml-2 pt-3 pb-3 b-a-1">
                                                 <div className="col-4">
-                                                    <span className="badge badge-default">
+                                                    <span className="badge badge-light">
                                                         <h2><i className="fa fa-lg fa-file-text pt-3" /></h2>
                                                         <h2>JSON</h2>
                                                     </span>
                                                 </div>
                                                 <div className="col-8">
-                                                    <button type="button" className="btn btn-secondary btn-sm w-100" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)} title="Download"><i className="fa fa-download fa-lg"></i> Download{/*dataset.dcatapit.name*/}</button>
-                                                        <button type="button" className="btn btn-secondary btn-sm mt-2 w-100" onClick={() => { this.setState(prevState => ({ showPreview: !prevState.showPreview, showAPI: true})) }} title="Preview"> <i className="fa fa-play-circle-o fa-lg"/> Preview </button>
-                                                        <button type="button" className="btn btn-secondary btn-sm mt-2 w-100" onClick={() => { this.setState(prevState => ({ showAPI: !prevState.showAPI, showPreview: true })) }} title="Preview"> <i className="fa fa-puzzle-piece fa-lg" /> Endpoint API </button>
+                                                        <button type="button" className="btn btn-light btn-sm w-100" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)} title="Download"><i className="fa fa-download fa-lg"></i> Download{/*dataset.dcatapit.name*/}</button>
+                                                        <button type="button" className="btn btn-light btn-sm mt-2 w-100" onClick={() => { this.setState(prevState => ({ showPreview: !prevState.showPreview, showAPI: true})) }} title="Preview"> <i className="fa fa-play-circle-o fa-lg"/> Preview </button>
+                                                        <button type="button" className="btn btn-light btn-sm mt-2 w-100" onClick={() => { this.setState(prevState => ({ showAPI: !prevState.showAPI, showPreview: true })) }} title="Preview"> <i className="fa fa-puzzle-piece fa-lg" /> Endpoint API </button>
                                                 </div>
                                             </div>
                                         </div>

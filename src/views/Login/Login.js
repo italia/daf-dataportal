@@ -140,7 +140,7 @@ class Login extends Component {
                   
                     
                       <div className="input-group mb-1" style={{position: 'initial'}}>
-                        <span className="input-group-addon">
+                        <span className="input-group-text">
                           <i className="icon-user"></i>
                         </span>
                         <input className="form-control" ref={(email) => this.email = email} placeholder="Email" 
@@ -149,7 +149,7 @@ class Login extends Component {
                     
                     
                     <div className="input-group mb-2" style={{ position: 'initial' }}>
-                        <span className="input-group-addon">
+                        <span className="input-group-text">
                           <i className="icon-lock"></i>
                         </span>
                       <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw}
@@ -168,7 +168,7 @@ class Login extends Component {
                     
               </div>
                 </div>
-                <div className="card card-inverse card-primary py-3 hidden-md-down">
+              <div className="card bg-primary py-3 hidden-md-down">
                   <div className="card-block text-center"><div>
                     <h2>Iscriviti</h2>
                     <p>Per accedere all'area riservata del portale occorre registrarsi qui: </p>

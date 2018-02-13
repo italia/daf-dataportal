@@ -206,8 +206,8 @@ renderDatasetList(length, datasets, ope, isLoading){
 
                   </div>
                   <div className="col-3">
-                    <span className="badge badge-default float-right m-1" key="CSV"> CSV</span>
-                  <span className="badge badge-default float-right m-1" key="JSON"> JSON</span>
+                    <span className="badge badge-secondary float-right m-1" key="CSV"> CSV</span>
+                  <span className="badge badge-secondary float-right m-1" key="JSON"> JSON</span>
                   </div>
                 </div>
               </div>

@@ -123,8 +123,8 @@ class ViewBar extends React.Component {
         <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
           <form onSubmit={this.save}>
             <ModalHeader>
-              <ModalClose onClick={this.hideModal}/>
               <ModalTitle>Crea una Storia</ModalTitle>
+              <ModalClose onClick={this.hideModal}/>
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
@@ -180,7 +180,7 @@ class ViewBar extends React.Component {
           <div className="row">
             <div className="col-10">
               <div className="input-prepend input-group mb-20">
-                  <i className="fa fa-search input-group-addon transparent-frame"></i>
+                  <i className="fa fa-search input-group-text transparent-frame"></i>
                   <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" onChange={this.props.onChange} placeholder="Filtra la lista ..."/>
               </div>
             </div>

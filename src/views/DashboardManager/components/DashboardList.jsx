@@ -139,7 +139,7 @@ class DashboardList extends Component {
                     }
                     {
                       !dash.status &&
-                      <div className="badge badge-default pull-right mt-20">IN BOZZA</div>
+                      <div className="badge badge-secondary pull-right mt-20">IN BOZZA</div>
                     }
                   </div>
                 </div>
