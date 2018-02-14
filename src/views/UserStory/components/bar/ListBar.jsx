@@ -97,11 +97,15 @@ class ViewBar extends React.Component {
           validationMSgOrg: 'Campo obbligatorio'
         });
       }else{
+        let layout = { rows: [] };
+        let widgets = {};
         //save data
         let request = {
           title: this.title.value,
           pvt: this.state.pvt,
-          org: this.state.org
+          org: this.state.org,
+          layout: JSON.stringify(layout),
+          widgets: JSON.stringify(widgets)
         };
         userStoryService.save(request).then((data)=> {
             this.props.history.push('/user_story/list/'+ data.message + '/edit');
