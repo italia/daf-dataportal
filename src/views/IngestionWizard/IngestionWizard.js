@@ -87,7 +87,7 @@ hideModalAndRedirect = (e) => {
         <div className="form-group">
           <p>Il dataset è stato creato con successo.</p> 
           {this.state.transformed && <div>
-            <p>Per caricare i dati collegati all'indirizzo sftp: <strong>daf.teamdigitale.governo.it</strong> al percorso: <strong>/home/{loggedUser.sn}/{this.state.transformed.operational.theme}/{this.state.transformed.operational.subtheme}/{this.state.transformed.dcatapit.alternate_identifier}</strong></p>
+            <p>Per caricare i dati collegati all'indirizzo sftp: <strong>daf.teamdigitale.governo.it</strong> al percorso: <strong>/home/{loggedUser.uid}/{this.state.transformed.operational.theme}/{this.state.transformed.operational.subtheme}/{this.state.transformed.dcatapit.alternate_identifier}</strong></p>
             
            {/*  <p>Di seguito il riepilogo dei metadati:</p>
             <div className="card">
