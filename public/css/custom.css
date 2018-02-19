@@ -5,7 +5,7 @@
 }
 
 .sidebar {
-    background: white;
+    background: #FFFFFF;
     border-right: 1px solid #cfd8dc;
 }
 
@@ -17,16 +17,11 @@
 .sidebar .nav .nav-item .nav-link.active i {
     color: #304047;
 }
-
+/* 
 .sidebar .nav .nav-title {
     color: #304047;
-}
+} */
 
 .sidebar .nav .nav-item.nav-dropdown.open, .sidebar .nav .nav-item.nav-dropdown.open .nav-link {
-    background: initial;
     color: #304047;
-}
-
-.sidebar .nav .nav-item ul li {
-    padding-left: 40px;
 }

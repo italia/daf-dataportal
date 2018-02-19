@@ -49,6 +49,7 @@ class Full extends Component {
                 <Route path="/settings" name="Settings" component={Settings} />
                 <Route path="/organizations" name="Organizations" component={Organizations} />
                 <Route path="/users" name="Users" component={Users} />
+                <Route path="/crea" name="Users" component={Users} />
                 <Redirect from="/" to="/home"/>
               </Switch>
             </div>

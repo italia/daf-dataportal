@@ -279,6 +279,8 @@ class UserStoryEditorContainer extends Component {
  * When a widget is removed, this will be called. Layout should be given back.
  */
   onRemoveWidget = (layout) => {
+    console.log(layout)
+    console.log(this.state.widgets)
     this.setLayout(layout);
   }
 
@@ -326,8 +328,7 @@ class UserStoryEditorContainer extends Component {
       });
 
       if (!notSave)
-        if (this.props.onChange)
-          this.props.onChange(this.state.dataStory);
+        this.save();
     }
   }
 

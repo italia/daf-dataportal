@@ -32,8 +32,8 @@ export const serviceurl = {
 /*  apiURLSSOManager: "https://security-manager.daf.teamdigitale.it/sso-manager",
  apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1",
  apiURLCatalog: "https://catalog-manager.daf.teamdigitale.it/catalog-manager/v1",
- apiURLSecurity : "https://security-manager.daf.teamdigitale.it/security-manager/v1", */
- apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1", 
+ apiURLSecurity : "https://security-manager.daf.teamdigitale.it/security-manager/v1",*/
+ apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1",  
 
  urlMetabase: 'https://graph.daf.teamdigitale.it',
  urlSuperset: 'https://bi.daf.teamdigitale.it',
@@ -47,10 +47,10 @@ export const serviceurl = {
  //apiURLSecurity: "http://datipubblici-private.integrazione.daf9002/security-manager/v1",
 
  //LUCA
-  apiURLSSOManager: "http://10.100.208.162:9002/sso-manager",
-  apiURLDatiGov: "http://10.100.208.162:9000/dati-gov/v1",
-  apiURLCatalog: "http://10.100.208.162:9001/catalog-manager/v1",
-  apiURLSecurity: "http://10.100.208.162:9002/security-manager/v1",
+  apiURLSSOManager: "http://10.100.208.161:9002/sso-manager",
+  apiURLDatiGov: "http://10.100.208.161:9000/dati-gov/v1",
+  apiURLCatalog: "http://10.100.208.161:9001/catalog-manager/v1",
+  apiURLSecurity: "http://10.100.208.161:9002/security-manager/v1",
 
 
 /*  urlMetabase: 'http://metabase.integrazione.daf',

@@ -1,9 +1,10 @@
 const routes = {
   '/': 'Home',
   '/home': 'Home',
-  '/dashboard': 'Dashboard',
+  '/dashboard/list': 'Dashboard',
+  '/user_story/list': 'Storie',
   '/ingestionform': 'Ingestion',
-  '/ontologies': 'Ontologies',
+  '/vocabulary/list': 'Vocabolari e standard',
   '/dataset':'Datasets',
   '/dataset/:id' : ':id'
 };

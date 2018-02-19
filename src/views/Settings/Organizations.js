@@ -381,13 +381,13 @@ class Organizations extends Component {
                                 if(organization!="default_org")
                                     return(
                                 <li className={"list-group-item "+ (org===organization?"active":"")} key={organization}>{organization}
-                                    <button type="button" className={"float-right " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.getUsers(organization)}}><i className="fa fa-user-plus fa-lg" /></button>
-                                    {loggedUser.role==='daf_admins'&&<button type="button" className={"float-right " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.openOrgModal(organization)}}><i className="fa fa-trash fa-lg" /></button>}
+                                    <button type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.getUsers(organization)}}><i className="fa fa-user-plus fa-lg" /></button>
+                                    {loggedUser.role==='daf_admins'&&<button type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.openOrgModal(organization)}}><i className="fa fa-trash fa-lg" /></button>}
                                 </li>);
                                 })
                             }
                         </ul>
-                        {loggedUser.role==='daf_admins'&&<button type="button" className="btn-link float-right mt-3" title="Crea nuova organizzazione" onClick={this.openOrgCreate}>
+                        {loggedUser.role==='daf_admins'&&<button type="button" className="btn btn-link float-right mt-3" title="Crea nuova organizzazione" onClick={this.openOrgCreate}>
                             <i className="fa fa-plus-circle fa-lg"></i>
                         </button>}
                     </div>
@@ -430,7 +430,7 @@ class Organizations extends Component {
                             )
                             }
                         </ul>
-                        <button type="button" className="btn-link mt-3" title="Aggiungi nuovo utente" onClick={this.openUserModal}>
+                        <button type="button" className="btn btn-link mt-3" title="Aggiungi nuovo utente" onClick={this.openUserModal}>
                             <i className="fa fa-plus-circle fa-lg" /> Aggiungi Utente
                         </button>
                     </div>}        
