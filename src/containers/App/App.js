@@ -91,12 +91,12 @@ class App extends Component {
                     setCookie(json)
                   }
                 })
-                dispatch(getApplicationCookie('grafana'))
+                /* dispatch(getApplicationCookie('grafana'))
                 .then(json => {
                   if (json) {
                     setCookie(json)
                   }
-                })
+                }) */
                 dispatch(loginAction())
                   .then(json => {
                       dispatch(receiveLogin(json))

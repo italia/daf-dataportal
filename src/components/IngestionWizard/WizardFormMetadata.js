@@ -91,14 +91,46 @@ const renderYesNoSelector = ({ input, type, label, value, meta: { touched, error
   </div>
 );
 
+const renderCsvJsonSelector = ({ input, type, label, value, meta: { touched, error } }) => (
+  <div className="form-group row">
+    <label className="col-md-3 form-control-label">{label}</label>
+   <div className="col-md-9">
+    <select className="form-control" {...input}>
+      <option value="csv" defaultValue key="csv">CSV</option>
+      <option value="json" key='json'>Json</option>
+    </select>
+    {touched && error && <div className="text-danger">{error}</div>}
+  </div>
+  </div>
+);
+
+const renderModalitaSelector = ({ input, type, label, value, meta: { touched, error } }) => (
+  <div className="form-group row">
+    <label className="col-md-3 form-control-label">{label}</label>
+   <div className="col-md-9">
+    <select className="form-control" {...input}>
+      <option value="0" defaultValue key="0"></option>
+      <option value="1" key='1'>Drag and Drop </option>
+      <option value="2" key='2'>Web Service</option>
+    </select>
+    {touched && error && <div className="text-danger">{error}</div>}
+  </div>
+  </div>
+);
+
 const renderTipi = ({ input, label, type, tipi, index, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
     {tipi &&
     <div className="col-md-9">
          {<select className="form-control" {...input}>
-           {tipi[index] && tipi[index].map(tipo => <option value={tipo} key={tipo}>{tipo}</option>)}
-         </select>  }
+           {tipi[index] && tipi[index].map(tipo => tipo!='string' &&
+              <option value={tipo} key={tipo} defaultValue>{tipo}</option>
+           )
+           }
+           <option value='string' key='string'>string</option>
+         </select>  
+        }
        {touched && error && <div className="text-danger">{error}</div>}
     </div>
     }
@@ -195,7 +227,7 @@ class WizardFormMetadata extends Component {
     this.onChange(tagString)
   }
 
-  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, addSemanticToForm, setUploading, uploading, errorUpload, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, addSemanticToForm, setUploading, uploading, errorUpload, modalitacaricamento, filetype, meta : {touched, error} }) => 
       <div>
       {fields.length === 0 &&
         <div className="form-group row">
@@ -206,67 +238,83 @@ class WizardFormMetadata extends Component {
             <p className="text-justify">Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p>
           </div>
           <div className="col-md-7">
-          <OverlayLoader 
-              color={'#06c'} 
-              loader="ScaleLoader" 
-              text="Caricamento in corso..." 
-              active={uploading} 
-              backgroundColor={'grey'}
-              >
-            <div className="form-group">
-              <div className="col-md-12">
-              <label htmlFor='tests'>Inserisci un link al tuo file:</label>
+          <Field
+              name={'filetype'}
+              type="text"
+              component={renderCsvJsonSelector}
+              label="Tipo File"
+            />
+            <Field
+              name={'modalitacaricamento'}
+              type="text"
+              component={renderModalitaSelector}
+              label="Modalità caricamento"
+            />
+            {modalitacaricamento==2 &&
+              <div className="form-group">
+                <div className="col-md-12">
+                <label htmlFor='tests'>Inserisci un link al tuo file:</label>
+                </div>
+                <div className="col-md-12">
+                  <input placeholder="http://" type="text" className="form-control-90"/>
+                  <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off"><i className="fa fa-plus"></i></button>
+                </div>
               </div>
-              <div className="col-md-12">
-                <input placeholder="http://" type="text" className="form-control-90"/>
-                <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off"><i className="fa fa-plus"></i></button>
-              </div>
-            </div>
-            <div className="form-group">
-              <div className="col-md-12">
-              <label htmlFor='tests'>Oppure carica il file (max 10MB):</label>
-                <Dropzone
-                  name="input"
-                  className="dropzone"
-                  multiple={false}
-                  maxSize={10485760}
-                  onDrop={( filesToUpload, e ) => {
-                    setUploading(true, undefined);
-                    const {dispatch} = this.props 
-                    if(filesToUpload.length>0){
-                      this.setState({errorDrop:''})
-                      let typeFile = filesToUpload[0].name.toLowerCase().split(".")[1]
-                      dispatch(getSchema(filesToUpload, typeFile))
-                        .then(json => { calcDataFields(fields, JSON.parse(json), tipi, setTipi)
-                                        dispatch(change('wizard', 'separator', json.separator))
-                                        dispatch(change('wizard', 'filesToUpload', filesToUpload))
-                                        dispatch(change('wizard', 'tipi', tipi))
-                                        setUploading(false, undefined);
-                                      })
-                        .catch(exception => {
-                                          console.log('Eccezione !!!')
-                                          setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
-                                          })
-              
-                      let nomeFile = filesToUpload[0].name.toLowerCase().split(".")[0]
-                      nomeFile = nomeFile.toLowerCase()
-                      nomeFile.split(" ").join("-")
-                      dispatch(change('wizard', 'title', nomeFile))
-                    }else{
-                      setUploading(false, 'Dimensioni file non consentite. Il file non può superare 10MB');
+            }
+            {modalitacaricamento==1 &&
+            <OverlayLoader 
+                color={'#06c'} 
+                loader="ScaleLoader" 
+                text="Caricamento in corso..." 
+                active={uploading} 
+                backgroundColor={'grey'}
+                >
+              <div className="form-group">
+                <div className="col-md-12">
+                <label htmlFor='tests'>Carica il file (max 10MB):</label>
+                  <Dropzone
+                    name="input"
+                    className="dropzone"
+                    multiple={false}
+                    maxSize={10485760}
+                    onDrop={( filesToUpload, e ) => {
+                      setUploading(true, undefined);
+                      const {dispatch} = this.props 
+                      if(filesToUpload.length>0){
+                        this.setState({errorDrop:''})
+                        //let typeFile = filesToUpload[0].name.toLowerCase().split(".")[1]
+                        dispatch(getSchema(filesToUpload, filetype?filetype:'csv'))//defaul value is csv
+                          .then(json => { calcDataFields(fields, JSON.parse(json), tipi, setTipi)
+                                          dispatch(change('wizard', 'separator', json.separator))
+                                          dispatch(change('wizard', 'filesToUpload', filesToUpload))
+                                          dispatch(change('wizard', 'tipi', tipi))
+                                          setUploading(false, undefined);
+                                        })
+                          .catch(exception => {
+                                            console.log('Eccezione !!!')
+                                            setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+                                            })
+                
+                        let nomeFile = filesToUpload[0].name.toLowerCase().split(".")[0]
+                        nomeFile = nomeFile.toLowerCase()
+                        nomeFile.split(" ").join("-")
+                        dispatch(change('wizard', 'title', nomeFile))
+                      }else{
+                        setUploading(false, 'Dimensioni file non consentite. Il file non può superare 10MB');
+                      }
                     }
-                  }
-                  }>
-                    <div className="container">
-                      <div className="row" style={{"paddingTop": "10px"}}>
-                        <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+                    }>
+                      <div className="container">
+                        <div className="row" style={{"paddingTop": "10px"}}>
+                          <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+                        </div>
                       </div>
-                    </div>
-              </Dropzone>
-              {errorUpload && <div className="text-danger">{errorUpload}</div>}
+                </Dropzone>
+                {errorUpload && <div className="text-danger">{errorUpload}</div>}
+              </div>
             </div>
-          </div>
-        </OverlayLoader>
+          </OverlayLoader>
+          }
         </div>  
       </div>
       }
@@ -407,7 +455,7 @@ class WizardFormMetadata extends Component {
     </div>
 
   render() {
-    const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard, setTipi, tipi, setUploading, uploading, errorUpload } = this.props;
+    const { handleSubmit, previousPage, pristine, submitting, reset, title, columnCard, setTipi, tipi, setUploading, uploading, errorUpload, modalitacaricamento, filetype } = this.props;
     return (
     <div>
     <form onSubmit={handleSubmit}>
@@ -425,6 +473,8 @@ class WizardFormMetadata extends Component {
               uploading={uploading}
               errorUpload={errorUpload}
               setUploading={setUploading}
+              modalitacaricamento={modalitacaricamento}
+              filetype={filetype}
             />
     </form>
     </div>
@@ -432,14 +482,16 @@ class WizardFormMetadata extends Component {
   }
 }
 
+const selector = formValueSelector('wizard') // <-- same as form name
 WizardFormMetadata = connect(state => {
   // can select values individually
   const nomefile = state.nomefile || 'prova';
-  //const dataSample = state.dataSample || [];
+  const modalitacaricamento = selector(state, 'modalitacaricamento')
+  const filetype = selector(state, 'filetype')
   return {
-    nomefile
-    //,
- //   dataSample
+    nomefile,
+    modalitacaricamento,
+    filetype
   }
 })(WizardFormMetadata)
 
