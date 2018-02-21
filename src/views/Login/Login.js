@@ -54,10 +54,11 @@ class Login extends Component {
                       .then(json => {
                         if (json) {
                           setCookie(json)
-                          dispatch(getApplicationCookie('grafana'))
+                          // GRAFANA DISABLED
+                          /* dispatch(getApplicationCookie('grafana'))
                             .then(json => {
                               if (json) {
-                                setCookie(json)
+                                setCookie(json) */
                                 dispatch(loginAction())
                                   .then(json => {
                                     localStorage.setItem('user', json.uid);
@@ -66,8 +67,8 @@ class Login extends Component {
                                     dispatch(receiveLogin(json))
                                     this.props.history.push('/home')
                                   })
-                              }
-                            })
+                              //}
+                            //})
                         }
                       })
                   }

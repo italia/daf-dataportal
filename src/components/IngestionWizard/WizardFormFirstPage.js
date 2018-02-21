@@ -1,9 +1,10 @@
-import React from 'react'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import React, { Component } from 'react'
+import { Field, reduxForm, formValueSelector, change } from 'redux-form'
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 import renderField from './renderField'
 import { connect  } from 'react-redux';
+import { getSystemNameKylo } from '../../actions'
 
 const themes = [
 {'val' : 'AGRI', 'name' : 'AGRICOLTURA'},
@@ -69,9 +70,22 @@ const renderLicenze = ({ input, label, type, licenze, meta: { touched, error } }
  </div>
 );
 
-let WizardFormFirstPage = props => {
-  const { handleSubmit, previousPage, organizations, licenze, openModal, pvt} = props
-  
+
+class WizardFormFirstPage extends Component {
+  constructor(props) {
+    super(props);
+    this.setName = this.setName.bind(this); 
+  }
+
+  setName(e){
+    console.log(e.target.value)
+    const { dispatch } = this.props;
+    dispatch(getSystemNameKylo(e.target.value))
+    .then(json => dispatch(change('wizard', 'nome', json.system_name)))
+  }
+
+render(){
+  const { handleSubmit, previousPage, organizations, licenze, openModal, pvt} = this.props
   return (
     <form  onSubmit={handleSubmit}>
         <div className="col-md-12">
@@ -81,12 +95,14 @@ let WizardFormFirstPage = props => {
             component={renderField}
             label="Titolo"
             openModal={openModal}
+            onChange={this.setName}
           />
           <Field
             name="nome"
             type="text"
             component={renderField}
             label="Nome"
+            readonly="readonly"
           />
           <Field
             name="notes"
@@ -128,7 +144,7 @@ let WizardFormFirstPage = props => {
     </form>
   )
 }
-
+}
 // Decorate with connect to read form values
 const selector = formValueSelector('wizard') // <-- same as form name
 WizardFormFirstPage = connect(state => {
