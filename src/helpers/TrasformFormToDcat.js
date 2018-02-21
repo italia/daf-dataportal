@@ -1,3 +1,5 @@
+import { getKyloSchema } from '../utility'
+
 export function createOperational (values, data) {
   var operational = 'operational'
   data[operational] = {}
@@ -22,15 +24,27 @@ export function createOperational (values, data) {
   //data[operational]['ftporws'] = values.ftporws
   //data[operational]['connection'] = values.dest_uri
   var input_src = 'input_src'
-  var separator = values.separator
-
-  data[operational][input_src] = 
-    {"sftp": [{
-        "name": "sftp_daf",
-        "param": "format=csv, sep=" + separator
+  //var separator = values.separator
+  if(values.modalitacaricamento==1){
+    data[operational][input_src] = {"sftp": [{
+        "name": "sftp_local",
+        "param": "format="+ values.filetype?values.filetype:'csv' + ", path=/home/"+localStorage.getItem('user').toLowerCase()+"/"+values.domain+"/"+values.subdomain+"/"+values.title
       }]
     }
-    data[operational]['storage_info'] = 
+  }
+
+  if(values.modalitacaricamento==2){
+    data[operational][input_src] = {"srv_pull": [{
+      "name": "ws_remote",
+      "url": values.ws_url,
+      "username": "test",
+      "password": "test",
+      "param": ""
+    }]
+  }
+}
+  
+  data[operational]['storage_info'] = 
     {
 			"hdfs": {
 				"name": "hdfs_daf"
@@ -156,7 +170,7 @@ export function createDataschema (values, data) {
   data[dataschema][avro]['aliases'] = [values.title]
   data[dataschema][avro]['fields'] =  []
   data[dataschema][avro]["`type`"] = "record"
-  data[dataschema][kyloSchema] = localStorage.getItem('kyloSchema') ? localStorage.getItem('kyloSchema') : ''
+  data[dataschema][kyloSchema] = getKyloSchema(localStorage.getItem('kyloSchema') ? JSON.parse(localStorage.getItem('kyloSchema')) : '', values)
   data[dataschema][flatSchema] = []
   values.tests.map(function(item){
     if(item.nome !== 'file'){

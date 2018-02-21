@@ -6,7 +6,7 @@ import Dropzone from 'react-dropzone'
 import DropDownSelect from './DropDownSelect'
 import TestSelect2 from './TestSelect2';
 import { connect } from 'react-redux';
-import { getSchema } from '../../actions';
+import { getSchema, getSchemaWS, getSystemNameKylo } from '../../actions';
 import $ from 'jquery';
 import {
   Modal,
@@ -29,6 +29,8 @@ const themes = [
 {'val' : 'INTR', 'name' : 'INTERNAZIONALE'},{'val' : 'JUST', 'name' : 'GIUSTIZIA'},
 {'val' : 'SOCI', 'name' : 'REGIONE'},{'val' : 'TECH', 'name' : 'TECNOLOGIA'},
 {'val' : 'TRAN', 'name' : 'TRASPORTO'}]
+
+const tipiKylo = ['bigint','binary','boolean','date','decimal','double','float','int','string','timestamp','tinyint']
 
 const renderThemes = ({ input, meta: { touched, error } }) => (
     <div className="form-group row">
@@ -119,9 +121,8 @@ const renderModalitaSelector = ({ input, type, label, value, meta: { touched, er
 );
 
 const renderTipi = ({ input, label, type, tipi, index, meta: { touched, error } }) => (
-  <div className="form-group row">
+/*   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
-    {tipi &&
     <div className="col-md-9">
          {<select className="form-control" {...input}>
            {tipi[index] && tipi[index].map(tipo => tipo!='string' &&
@@ -133,8 +134,16 @@ const renderTipi = ({ input, label, type, tipi, index, meta: { touched, error } 
         }
        {touched && error && <div className="text-danger">{error}</div>}
     </div>
-    }
+ </div> */
+ <div className="form-group row">
+ <label className="col-md-3 form-control-label">{label}</label>
+ <div className="col-md-9">
+     <select className="form-control" {...input}>
+       {tipiKylo.map(value => <option value={value} key={value}>{value}</option>)}
+     </select>
+   {touched && error && <div className="text-danger">{error}</div>}
  </div>
+</div>
 );
 
 const renderFieldType = ({ input, meta: { touched, error } }) => (
@@ -215,6 +224,28 @@ class WizardFormMetadata extends Component {
     setTipi(tipi)
   }
 
+  getSchemaFromWS(dispatch, calcDataFields, fields, tipi, setTipi, filetype,setUploading){
+    console.log('getSchemaFromWS') 
+    setUploading(true, undefined);
+    dispatch(change('wizard', 'ws_url', this.url.value))
+    dispatch(change('wizard', 'title', this.url.value))
+    dispatch(getSystemNameKylo(this.url.value))
+    .then(json => dispatch(change('wizard', 'nome', json.system_name)))
+    dispatch(getSchemaWS( this.url.value, filetype))
+    .then(json => { 
+      if(json.status=='error'){
+        setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+        console.log('error: ' + json.message);
+      }else{
+        calcDataFields(fields, json, tipi, setTipi)
+        //dispatch(change('wizard', 'separator', json.separator))
+        //dispatch(change('wizard', 'filesToUpload', filesToUpload))
+        dispatch(change('wizard', 'tipi', tipi))
+        setUploading(false, undefined);
+      }
+    })
+  }
+
   addSemanticToForm(semantics){
     this.input.onChange(semantics)
   }
@@ -227,7 +258,7 @@ class WizardFormMetadata extends Component {
     this.onChange(tagString)
   }
 
-  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, addSemanticToForm, setUploading, uploading, errorUpload, modalitacaricamento, filetype, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, addSemanticToForm, getSchemaFromWS, setUploading, uploading, errorUpload, modalitacaricamento, filetype, meta : {touched, error} }) => 
       <div>
       {fields.length === 0 &&
         <div className="form-group row">
@@ -250,18 +281,6 @@ class WizardFormMetadata extends Component {
               component={renderModalitaSelector}
               label="Modalità caricamento"
             />
-            {modalitacaricamento==2 &&
-              <div className="form-group">
-                <div className="col-md-12">
-                <label htmlFor='tests'>Inserisci un link al tuo file:</label>
-                </div>
-                <div className="col-md-12">
-                  <input placeholder="http://" type="text" className="form-control-90"/>
-                  <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off"><i className="fa fa-plus"></i></button>
-                </div>
-              </div>
-            }
-            {modalitacaricamento==1 &&
             <OverlayLoader 
                 color={'#06c'} 
                 loader="ScaleLoader" 
@@ -269,6 +288,18 @@ class WizardFormMetadata extends Component {
                 active={uploading} 
                 backgroundColor={'grey'}
                 >
+            {modalitacaricamento==2 &&
+              <div className="form-group">
+                <div className="col-md-12">
+                <label htmlFor='tests'>Inserisci un link al tuo file:</label>
+                </div>
+                <div className="col-md-12">
+                  <input placeholder="http://" type="text" ref={(url) => this.url = url} id="url" className="form-control-90"/>
+                  <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off" onClick={this.getSchemaFromWS.bind(this, this.props.dispatch, calcDataFields, fields, tipi, setTipi, filetype?filetype:'csv', setUploading)}><i className="fa fa-plus"></i></button>
+                </div>
+              </div>
+            }
+            {modalitacaricamento==1 &&
               <div className="form-group">
                 <div className="col-md-12">
                 <label htmlFor='tests'>Carica il file (max 10MB):</label>
@@ -282,7 +313,6 @@ class WizardFormMetadata extends Component {
                       const {dispatch} = this.props 
                       if(filesToUpload.length>0){
                         this.setState({errorDrop:''})
-                        //let typeFile = filesToUpload[0].name.toLowerCase().split(".")[1]
                         dispatch(getSchema(filesToUpload, filetype?filetype:'csv'))//defaul value is csv
                           .then(json => { calcDataFields(fields, JSON.parse(json), tipi, setTipi)
                                           dispatch(change('wizard', 'separator', json.separator))
@@ -299,22 +329,24 @@ class WizardFormMetadata extends Component {
                         nomeFile = nomeFile.toLowerCase()
                         nomeFile.split(" ").join("-")
                         dispatch(change('wizard', 'title', nomeFile))
+                        dispatch(getSystemNameKylo(nomeFile))
+                        .then(json => dispatch(change('wizard', 'nome', json.system_name)))
                       }else{
                         setUploading(false, 'Dimensioni file non consentite. Il file non può superare 10MB');
                       }
                     }
-                    }>
+                    }> 
                       <div className="container">
                         <div className="row" style={{"paddingTop": "10px"}}>
                           <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
                         </div>
                       </div>
                 </Dropzone>
-                {errorUpload && <div className="text-danger">{errorUpload}</div>}
               </div>
             </div>
-          </OverlayLoader>
           }
+          {errorUpload && <div className="text-danger">{errorUpload}</div>}
+          </OverlayLoader>
         </div>  
       </div>
       }
@@ -468,6 +500,7 @@ class WizardFormMetadata extends Component {
               calcDataFields={this.calcDataFields}
               addTagsToForm={this.addTagsToForm}
               addSemanticToForm={this.addSemanticToForm}
+              getSchemaFromWS={this.getSchemaFromWS}
               tipi={tipi}
               setTipi={setTipi}
               uploading={uploading}

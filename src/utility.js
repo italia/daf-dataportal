@@ -61,3 +61,21 @@ export function transformName(name){
 
     return isEditor
   }
+
+  export function getKyloSchema(kyloSchema, value){
+    kyloSchema.fields.map((field) => {
+      value.tests.map((value) =>{
+        if(value.nome==field.name){
+          field.dataTypeWithPrecisionAndScale=value.tipo
+          field.derivedDataType=value.tipo
+          if(value.tipo=='int' || value.tipo=='bigint' || value.tipo=='decimal'
+            || value.tipo=='double' || value.tipo=='float' || value.tipo=='tinyint'){
+              field.dataTypeDescriptor.numeric=true
+            }else{
+              field.dataTypeDescriptor.numeric=false
+            }
+        }
+      })
+    })
+    return JSON.stringify(kyloSchema)
+  }
