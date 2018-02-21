@@ -135,12 +135,12 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/dataset'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-table fa-lg text-secondary"></i> Dataset</NavLink>
               </li>
-              <li className="nav-item" onClick={(e) => {
+{/*               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
                 <NavLink to={'/home'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-bar-chart fa-lg text-secondary"></i> Widget</NavLink>
-              </li>
+              </li> */}
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
