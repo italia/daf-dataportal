@@ -75,7 +75,7 @@ class Header extends Component {
     return (
       <header className="app-header navbar">
       <button className="nav-link navbar-toggler sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
-      <button className="d-md-down-none nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}>&#9776;</button>
+        {/* <button className="d-md-down-none nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarMinimize}>&#9776;</button> */}
         
       <ul className="nav navbar-nav d-md-down-none mr-auto">
         <li className="nav-item brand">

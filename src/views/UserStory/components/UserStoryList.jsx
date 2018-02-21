@@ -73,9 +73,33 @@ class UserStoryList extends Component {
         {
           this.state.userStories.map((story, index) => {
             let chartUrl = undefined
-            if (story.graph1){
-              chartUrl = story.graph1['props']['url']
-            }
+              if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
+                const dashLayout = JSON.parse(story.layout)
+                let firstLayout = ''
+
+                let righe = dashLayout.rows
+                for (let i = 0; i < righe.length; i++) {
+                  let colonne = righe[i].columns;
+                  for (let j = 0; j < colonne.length; j++) {
+                    let wids = colonne[j].widgets
+                    wids.map((index) => {
+                      /*  if (!index.key.startsWith('TextWidget')) { */
+                      if (index.key.indexOf('TextWidget') == -1) {
+                        firstLayout = index.key
+                      }
+                    })
+                    if (firstLayout != '')
+                      break
+                  }
+                  if (firstLayout != '')
+                    break
+                }
+                const dashWidgets = JSON.parse(story.widgets)
+                if (firstLayout != '') {
+                  const firstWidget = dashWidgets[firstLayout];
+                  chartUrl = firstWidget['props']['url']
+                }
+              }
             return (
               <div className="col-sm-4" key={index}>
                 <div className="card text-center">

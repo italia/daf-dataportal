@@ -6,6 +6,8 @@ import Header from './Header';
 import Container from './Container';
 import ViewBar from './bar/ViewBar';
 import UserStoryEditorContainer from './UserStoryEditorContainer';
+import IframeWidget from './widgets/IframeWidget';
+import TextWidget from './widgets/TextWidget';
 
 // SERVICES
 import UserStoryService from './services/UserStoryService';
@@ -27,6 +29,19 @@ class UserStoryEditor extends Component {
     //load data
     let response = userStoryService.get(this.state.id);
     response.then((story) => {
+      let wids = JSON.parse(story.widgets)
+
+      Object.keys(wids).map(wid => {
+        if (wids[wid].type === "TextWidget")
+          wids[wid].type = TextWidget
+        if (wids[wid].type === "IframeWidget")
+          wids[wid].type = IframeWidget
+      })
+
+      this.setState({
+        dataStory: story,
+        widgets: wids
+      });
       this.setState({
         dataStory: story
       });
@@ -38,6 +53,7 @@ class UserStoryEditor extends Component {
    * Render Function
    */
   render() {
+    console.log(this.state.dataStory)
     return (
     <Container>
       {
@@ -47,6 +63,7 @@ class UserStoryEditor extends Component {
           <ViewBar title={this.state.dataStory.title} id={this.state.id}></ViewBar>
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory}
+            widgets={this.state.widgets}
             readonly={true}
           />
         </div>

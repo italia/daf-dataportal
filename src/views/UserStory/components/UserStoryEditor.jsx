@@ -6,6 +6,8 @@ import Header from './Header';
 import Container from './Container';
 import UserStoryEditorContainer from './UserStoryEditorContainer';
 import EditBarTop from './bar/EditBarTop';
+import IframeWidget from './widgets/IframeWidget';
+import TextWidget from './widgets/TextWidget';
 
 // SERVICES
 import UserStoryService from './services/UserStoryService';
@@ -31,8 +33,18 @@ class UserStoryEditor extends Component {
     if (this.state.id) {
       let response = userStoryService.get(this.state.id);
       response.then((story) => {
+        let wids = JSON.parse(story.widgets)
+
+        Object.keys(wids).map(wid => {
+          if (wids[wid].type === "TextWidget")
+            wids[wid].type = TextWidget
+          if (wids[wid].type === "IframeWidget")
+            wids[wid].type = IframeWidget
+        })
+
         this.setState({
-          dataStory: story
+          dataStory: story,
+          widgets: wids
         });
       });
     } else {
@@ -93,6 +105,8 @@ class UserStoryEditor extends Component {
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory} 
             onChange={this.save}
+            widgets={this.state.widgets}
+            readonly={false}
           />
       </div>
       }    

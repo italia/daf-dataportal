@@ -44,7 +44,23 @@ class List extends Component {
         }
 
           if(widget)
-            return (
+              if (widget && widget == "TextWidget")
+          return (
+            <div className="infinity-iframe-100" key={key}>
+              <div className="card text-center">
+                <div className="card-body">
+                  <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
+                    <h6 className="list-group-item-heading">
+                      <i className="fa fa-font" aria-hidden="true"></i>
+                      {" " + widgets[widget].title}
+                    </h6>
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        if (widget && widget.indexOf("BtnControlWidget") != 0 && widget != "TextWidget")
+          return (
               <div className="infinity-iframe-50" key={key}>
               <div className="card text-center">
                   <div className="card-body">  

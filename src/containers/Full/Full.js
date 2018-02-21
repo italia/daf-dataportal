@@ -17,6 +17,7 @@ import Settings from '../../views/Settings/';
 import DashboardManager from '../../views/DashboardManager/DashboardManager';
 import Organizations from '../../views/Settings/Organizations';
 import Users from '../../views/Settings/Users';
+import Crea from "../../views/Crea/Crea";
 
 class Full extends Component {
   render() {
@@ -49,6 +50,7 @@ class Full extends Component {
                 <Route path="/settings" name="Settings" component={Settings} />
                 <Route path="/organizations" name="Organizations" component={Organizations} />
                 <Route path="/users" name="Users" component={Users} />
+                <Route path="/crea" name="Crea" component={Crea} />
                 <Redirect from="/" to="/home"/>
               </Switch>
             </div>
