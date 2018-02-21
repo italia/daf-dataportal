@@ -158,6 +158,7 @@ class App extends Component {
           <PrivateRoute authed={this.state.authed} path="/dashboard/list" name="Dash" component={Full} />
           <PrivateRoute authed={this.state.authed} path="/user_story" name="Storie" component={Full} />
           <PrivateRoute authed={this.state.authed} path="/profile" name="Profile" component={Full} />
+          <PrivateRoute authed={this.state.authed} path="/crea" name="Crea" component={Full} />
           <PrivateRoute authed={this.state.authed} role={role} path="/settings" name="Settings" component={Full} />
           <PrivateRouteEditor authed={this.state.authed} role={role} path="/organizations" name="Organizations" component={Full} />
           <PrivateRouteAdmin authed={this.state.authed} role={role} path="/users" name="Users" component={Full} />

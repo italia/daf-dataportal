@@ -1,27 +1,209 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import Dashboard, { addWidget } from 'react-dazzle';
 
 import SectionTitle from './SectionTitle';
 import TextEditor from './editor/TextEditor';
-import TextWidget from '../../DashboardManager/components/widgets/TextWidget';
+/* import TextWidget from '../../DashboardManager/components/widgets/TextWidget';
 import ProfileView from './editor/ProfileView';
 import GraphEditor from './editor/GraphEditor';
-import ImageEditor from './editor/ImageEditor';
+import ImageEditor from './editor/ImageEditor'; */
+import CustomFrame from './CustomFrame';
+import IframeWidget from './widgets/IframeWidget';
+import TextWidget from './widgets/TextWidget';
+import BtnControlWidget from './widgets/BtnControlWidget';
+import WidgetService from '../../DashboardManager/components/services/WidgetService';
+import EditBar from './bar/EditBar'
+
+// Default styes of dazzle.
+import 'react-dazzle/lib/style/style.css';
+
+// Our styles
+import '../styles/custom.css';
+
+const widgetService = new WidgetService();
 
 class UserStoryEditorContainer extends Component {
   constructor(props) {
     super(props);
+    
     this.state = {
-      dataStory: props.dataStory
+      dataStory: props.dataStory,
+      widgets: props.widgets,
+      layout: JSON.parse(props.dataStory.layout)
     };
 
+    let response = widgetService.getIframe(props.dataStory.org)
+    response.then(iframes => {
+      this.loadIframe(iframes);
+    })
+
     this.onChange = this.onChange.bind(this);
+    this.setLayout = this.setLayout.bind(this);
+    this.addRow = this.addRow.bind(this);
+    this.addWidget = this.addWidget.bind(this);
+    this.saveTextWidget = this.saveTextWidget.bind(this);
+    this.save = this.save.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      dataStory : nextProps.dataStory
-    });
+/*   componentDidMount(){
+    const {widgets} = this.state
+    if(widgets)
+    Object.keys(widgets).map(wid => {
+      if (widgets[wid].type === "TextWidget")
+        widgets[wid].type = TextWidget
+      if (widgets[wid].type === "IframeWidget")
+        widgets[wid].type = IframeWidget
+    })
+  } */
+
+  async loadImage(widget) {
+    let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    const response = await fetch(url, {
+      method: 'GET'
+    })
+
+    return response
+  }
+
+  /**
+* Count widget of type
+*/
+  getNextProgressive = function (type) {
+    let counter = 0;
+    Object.keys(this.state.widgets).map((name, wid) => {
+      let nameArr = name.split('_');
+      if (nameArr[0] == type) {
+        let count = Number.parseInt(nameArr[1]);
+        if (count > counter)
+          counter = count;
+      }
+    })
+
+    return counter + 1;
+  }
+
+  /**
+   * Load all Iframe types
+   */
+  loadIframe = (iframes) => {
+    iframes.map(iframe => {
+      const response = this.loadImage(iframe.identifier)
+      response.then(response => {
+        if (response.ok)
+          response.text().then(text => {
+            this.widgetsTypes[iframe.identifier] = {
+              "type": IframeWidget,
+              "title": iframe.title,
+              "image": text.replace(/"/g, ''),
+              //"props": iframe
+              "table": iframe.table,
+              "props": {
+                "url": iframe.iframe_url,
+                "identifier": iframe.identifier,
+                "origin": iframe.origin
+              }
+            }
+          })
+        else
+          this.widgetsTypes[iframe.identifier] = {
+            "type": IframeWidget,
+            "title": iframe.title,
+            "image": undefined,
+            "table": iframe.table,
+            //"props": iframe
+            "props": {
+              "url": iframe.iframe_url,
+              "identifier": iframe.identifier,
+              "origin": iframe.origin
+            }
+          }
+      })
+    })
+  }
+  /**
+* Add row
+*/
+  addRow = function (widgetKey) {
+    let columns = [{
+      className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12',
+      widgets: [],
+    }];
+
+    let row = { columns: columns }
+
+    this.state.layout.rows.push(row);
+    this.setLayout(this.state.layout);
+  }
+
+  /**
+* Add widget
+*/
+  addWidget = function (widgetKey, row) {
+    console.log(this)
+    if (row == undefined) {
+      row = this.state.layout.rows.length
+      this.addRow();
+    }
+
+    let newWidget = {};
+    let newKey = ""
+    //count widget of type
+    if (widgetKey === "TextWidget") {
+      let progressive = this.getNextProgressive(widgetKey);
+      //assign key to widget
+      newKey = widgetKey + "_" + progressive;
+
+      newWidget = {
+        "type": TextWidget,
+        "title": "Testo",
+        "props": {
+          "onSave": this.saveTextWidget.bind(this),
+          "wid_key": newKey
+        }
+      }
+    } else {
+      newWidget = this.widgetsTypes[widgetKey];
+      newKey = widgetKey
+    }
+    if (!newWidget.props)
+      newWidget.props = {};
+    newWidget.props.wid_key = newKey;
+
+    console.log(this.widgetsTypes)
+    //add widget to list
+    this.state.widgets[newKey] = newWidget;
+    //add widget to layout
+    this.state.layout.rows[row].columns[0].widgets.push({ key: newKey });
+    this.setLayout(this.state.layout);
+
+  }
+
+/**
+ * Save text of TextWidget
+ */
+  saveTextWidget = function (key, html) {
+    this.state.widgets[key].props.text = html;
+    console.log(key)
+    console.log(this.state.widgets)
+    console.log(this.state.widgets[key])
+    this.save();
+  }
+
+  /**
+   * Types of widgets avaible
+   */
+  widgetsTypes = {
+    "TextWidget": {
+      "type": TextWidget,
+      "title": "Testo",
+      "props": {
+        "onSave": this.saveTextWidget.bind(this)
+      }
+    },
+  }
+
+  componentWillReceiveProps() {
   }
 
   onChange = function(key, value) {
@@ -30,6 +212,128 @@ class UserStoryEditorContainer extends Component {
     if(this.props.onChange)
       this.props.onChange(this.state.dataStory);
   }
+
+  /**
+  * Save Layout and widgets
+  */
+  save = () => {
+    //clean layout from control button
+    let layoutOld = JSON.parse(JSON.stringify(this.state.layout));
+
+    let layout = {};
+
+    for (let i in layoutOld) {
+
+      let rows = layoutOld[i];
+      if (rows) {
+        rows.filter(row => {
+          row.columns = row.columns.filter(col => {
+            if (col.className == "col-w-30")
+              return false;
+            else
+              return true;
+          })
+        })
+        layout[i] = rows;
+      }
+    };
+
+    //clean widgets from control button
+    let widgetsOld = this.state.widgets;
+    let widgets = {};
+    /* console.log(widgetsOld); */
+    for (let i in widgetsOld) {
+      let widget = widgetsOld[i];
+      /* console.log(i)
+      console.log(widget) */
+      /* if(!i.startsWith("BtnControlWidget")) { */
+      if (i.indexOf('BtnControlWidget') == -1) {
+        if (widget.type) {
+          /*           console.log(widgets[i])
+                    console.log(widget) */
+          widgets[i] = JSON.parse(JSON.stringify(widget));
+          /* console.log(widgets[i].type + ' ' + widget.type.name) */
+          widgets[i].type = widget.type.name
+        }
+      }
+    }
+
+
+    //save data
+    let request = this.state.dataStory;
+    request.layout = JSON.stringify(layout);
+    request.widgets = JSON.stringify(widgets);
+    /* const response = dashboardService.save(request); */
+    if (this.props.onChange)
+      this.props.onChange(request);
+  }
+
+  /**
+ * When a widget moved, this will be called. Layout should be given back.
+ */
+  onMove = (layout) => {
+    this.setLayout(layout);
+  }
+
+  /**
+ * When a widget is removed, this will be called. Layout should be given back.
+ */
+  onRemoveWidget = (layout) => {
+    console.log(layout)
+    console.log(this.state.widgets)
+    this.setLayout(layout);
+  }
+
+  setLayout = (layout, notSave) => {
+    // add control button
+    if (layout) {
+
+      layout.rows.map((row, index) => {
+
+        //remove old widget control
+        if (this.state.widgets['BtnControlWidget_' + index]) {
+          this.state.widgets['BtnControlWidget_' + index] = null;
+        }
+
+        //create new widget control
+        this.state.widgets['BtnControlWidget_' + index] = {
+          type: BtnControlWidget,
+          title: '',
+          props: {
+            layout: layout,
+            index: index,
+            dashboardWidgets: this.state.widgets,
+            setLayout: this.setLayout,
+            addWidget: this.addWidget,
+            widgets: this.widgetsTypes
+          }
+        }
+
+        //remove widget control from layout
+        if (row.columns.length > 0 && row.columns[row.columns.length - 1].className == "col-w-30")
+          row.columns.pop();
+
+        //insert new widget control in layout
+        row.columns.push({
+          className: 'col-w-30',
+          widgets: [{ key: 'BtnControlWidget_' + index }],
+        })
+
+      })
+
+      /* this.state.layout = layout; */
+
+      this.setState({
+        layout: layout
+      });
+
+      if (!notSave)
+        this.save();
+    }
+  }
+
+
+
 
   /**
    * Render Function
@@ -57,9 +361,8 @@ class UserStoryEditorContainer extends Component {
           onChange={this.onChange}
           placeholder="Subtitle"
         ></TextEditor>
-        <ProfileView></ProfileView>
-
-        <SectionTitle readonly={this.props.readonly} title="Grafico"/>
+        <SectionTitle readonly={this.props.readonly} title="Contenuto della Storia" />
+        {/* <SectionTitle readonly={this.props.readonly} title="Grafico"/>
         <GraphEditor 
           readonly={this.props.readonly}
           keyValue="graph1"
@@ -95,7 +398,23 @@ class UserStoryEditorContainer extends Component {
           className="text-editor-footer"
           onChange={this.onChange}
           placeholder="Footer"
-        ></TextEditor>
+        ></TextEditor> */}
+        <Dashboard
+          frameComponent={CustomFrame}
+          onRemove={this.onRemoveWidget}
+          layout={this.state.layout}
+          widgets={this.state.widgets}
+          editable={!this.props.readonly}
+          onAdd={this.onAdd}
+          onMove={this.onMove}
+          />
+        {!this.props.readonly && 
+        <EditBar
+          onEdit={this.toggleEdit}
+          addRow={this.addRow}
+          widgets={this.widgetsTypes}
+          addWidget={this.addWidget}
+        />}
         
     </div>
     );

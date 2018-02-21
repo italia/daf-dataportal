@@ -144,6 +144,7 @@ function receiveVocabulary(response) {
       type: RECEIVE_VOCABULARY,
       //vocabulary: response,
       vocabulary: voc,
+      ontologies: ont,
       error: '',
       receivedAt: Date.now(),
       ope: 'RECEIVE_VOCABULARY'

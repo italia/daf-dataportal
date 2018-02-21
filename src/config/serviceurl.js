@@ -1,11 +1,10 @@
 export const serviceurl = {
-  // Local
-  
-/*   apiURLSSOManager: "http://localhost:9002/sso-manager",
-  apiURLDatiGov: "http://localhost:9000/dati-gov/v1", 
-  apiURLCatalog: "http://localhost:9001/catalog-manager/v1",
-  apiURLIngestion: "http://localhost:9002/ingestion-manager/v1",
-  apiURLSecurity: "http://localhost:9002/security-manager/v1", */
+  // Lucal
+/*   apiURLSSOManager: "http://10.100.208.161:9002/sso-manager",
+  apiURLDatiGov: "http://10.100.208.161:9000/dati-gov/v1",
+  apiURLCatalog: "http://10.100.208.161:9001/catalog-manager/v1",
+  apiURLIngestion: "http://10.100.208.161:9002/ingestion-manager/v1",
+  apiURLSecurity: "http://10.100.208.161:9002/security-manager/v1", */
 
   
   //MOCK
@@ -33,7 +32,7 @@ export const serviceurl = {
  apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1",
  apiURLCatalog: "https://catalog-manager.daf.teamdigitale.it/catalog-manager/v1",
  apiURLSecurity : "https://security-manager.daf.teamdigitale.it/security-manager/v1",
- apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1", 
+ apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1",  
 
  urlMetabase: 'https://graph.daf.teamdigitale.it',
  urlSuperset: 'https://bi.daf.teamdigitale.it',
@@ -45,7 +44,14 @@ export const serviceurl = {
  //apiURLCatalog: "http://datipubblici-private.integrazione.daf:9001/catalog-manager/v1",
  //apiURLIngestion: "http://service:9002/ingestion-manager/v1",
  //apiURLSecurity: "http://datipubblici-private.integrazione.daf9002/security-manager/v1",
- 
+
+ //LUCAL
+/*   apiURLSSOManager: "http://10.100.208.161:9002/sso-manager",
+  apiURLDatiGov: "http://10.100.208.161:9000/dati-gov/v1",
+  apiURLCatalog: "http://10.100.208.161:9001/catalog-manager/v1",
+  apiURLSecurity: "http://10.100.208.161:9002/security-manager/v1", */
+
+
 /*  urlMetabase: 'http://metabase.integrazione.daf',
  urlSuperset: 'http://superset.integrazione.daf',
  urlJupiter: 'http://datascience.daf.teamdigitale.governo.it', */
