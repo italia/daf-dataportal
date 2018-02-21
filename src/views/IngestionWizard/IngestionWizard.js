@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {createMetacatalog} from '../../helpers/TrasformFormToDcat.js'
 import WizardForm from '../../components/IngestionWizard/WizardForm'
-import { addDataset } from './../../actions.js'
+import { addDataset, addDatasetKylo } from './../../actions.js'
 import {reset} from 'redux-form';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -47,28 +47,43 @@ hideModalAndRedirect = (e) => {
   this.props.history.push('/home')
 };
 
-//showResults = values =>{
-//  const transformed = transformer(values)
-//  console.log(transformed)
-//  console.log(values)
-//}
+/*   showResults = values =>{
+    const transformed = transformer(values)
+    console.log(transformed)
+    console.log(values)
+  } */
 
- showResults = values =>{
+  showResults = values =>{
   const transformed = transformer(values)
   console.log("transformed: " + transformed)
   this.setState({transformed:transformed})
   const { dispatch } = this.props;
   if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
-  const fileType = values.filesToUpload[0].name.toLowerCase().split(".")[1]
+  console.log("values: " + values.filetype)
+  const fileType = values.filetype?values.filetype:'csv'
   dispatch(addDataset(transformed, localStorage.getItem('token'), fileType))
-    .then(() => {
-      dispatch(this.openModal())
-      localStorage.removeItem('kyloSchema')
-    })
-    .catch((error) => {
+  .then(response => {
+    if(response.ok){
+      console.log('Caricamento metadati avvenuto con successo')
+      dispatch(addDatasetKylo(transformed, localStorage.getItem('token'), fileType))
+      .then((response) => {
+        if(response.ok){
+          this.openModal()
+          localStorage.removeItem('kyloSchema')
+        }else{
+          console.log('errore durante il caricamento su kylo')
+          this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
+        }
+      })
+      .catch((error) => {
+        this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
+      })
+      console.log('invio effettuato');
+    }else{
+      console.log('Errore durante il caricamento dei metadati')
       this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
-    })
-    console.log('invio effettuato');
+    }
+  })
   } else {
     console.log('token non presente');
   }
@@ -85,52 +100,17 @@ hideModalAndRedirect = (e) => {
         </ModalHeader>
         <ModalBody>
         <div className="form-group">
-          <p>Il dataset è stato creato con successo.</p> 
-          {this.state.transformed && <div>
+           
+          {this.state.transformed && this.state.transformed.operational.input_src.sftp && <div>
+            <p>Il dataset è stato creato con successo.</p>
             <p>Per caricare i dati collegati all'indirizzo sftp: <strong>daf.teamdigitale.governo.it</strong> al percorso: <strong>/home/{loggedUser.uid}/{this.state.transformed.operational.theme}/{this.state.transformed.operational.subtheme}/{this.state.transformed.dcatapit.alternate_identifier}</strong></p>
-            
-           {/*  <p>Di seguito il riepilogo dei metadati:</p>
-            <div className="card">
-              <h4 className="card-header">Dataschema</h4>
-              <div className="card-block">
-              <div>
-                {this.state.transformed.dataschema.flatSchema.map((field, key) => 
-                  <p className="card-text" key={key}><b>Nome Campo: </b>{field.name}, <b>Tipo: </b>{field.type}, <b>Concetto Semantico: </b>{field.metadata.semantics.id}, <b>Descrizione: </b> {field.metadata.desc}, <b>Tags: </b>{field.metadata.tag}, <b>Obbligatorio: </b>{field.metadata.required}, <b>Tipo Colonna: </b>{field.metadata.field_type} </p>
-                )}
-              </div>
-              </div>
-            </div>
-            <div className="card">
-              <h4 className="card-header">DCAT-AP_IT</h4>
-              <div className="card-block">
-                {this.state.transformed.dcatapit && 
-                <div>
-                  <p className="card-text"><b>Titolo: </b>{this.state.transformed.dcatapit.alternate_identifier}</p>
-                  <p className="card-text"><b>Nome: </b>{this.state.transformed.dcatapit.name}</p>
-                  <p className="card-text"><b>Descrizione: </b>{this.state.transformed.dcatapit.notes}</p>
-                  <p className="card-text"><b>Categoria: </b>{this.state.transformed.dcatapit.theme}</p>
-                  <p className="card-text"><b>Licenza: </b>{this.state.transformed.dcatapit.license_title}</p>
-                  <p className="card-text"><b>Organizzazione: </b>{this.state.transformed.dcatapit.owner_org}</p>
-                </div>
-                }
-              </div>
-            </div>
-            <div className="card">
-              <h4 className="card-header">OPERATIONAL</h4>
-              <div className="card-block">
-                {this.state.transformed.operational && 
-                <div>
-                  <p className="card-text"><b>Definisce uno standard? </b>{this.state.transformed.operational.std_schema}</p>
-                  <p className="card-text"><b>Segue uno standard? </b>{this.state.transformed.operational.is_std?"Si":"No"}</p>
-                  <p className="card-text"><b>Dominio: </b>{this.state.transformed.operational.theme}</p>
-                  <p className="card-text"><b>Sottodominio: </b>{this.state.transformed.operational.subtheme}</p>
-                  <p className="card-text"><b>Tipo Lettura del dataset: </b>{this.state.transformed.operational.read_type}</p>
-                  <p className="card-text"><b>Tipo Dataset: </b>{this.state.transformed.operational.dataset_type}</p>
-                </div>
-                }
-              </div>
-            </div> */}
           </div>}
+
+          {this.state.transformed && this.state.transformed.operational.input_src.srv_pull && <div>
+            <p>Il dataset all'indirizzo <strong>{this.state.transformed.operational.input_src.srv_pull[0].url}</strong> è stato creato con successo.</p>
+            <p>A breve verrà caricato nel sistema.</p> 
+          </div>}
+
         </div>
         </ModalBody>
         <ModalFooter>

@@ -589,13 +589,8 @@ export function addDataset(inputJson, token, fileType) {
             'Authorization': 'Bearer ' + token
           },
           body: JSON.stringify(inputJson)
-        })
-        .then(response => response.json())
-        .then(json => {
-          console.log('Caricamento metadati avvenuto con successo')
-          dispatch(receiveAddDataset(json))
-          dispatch(addDatasetKylo(inputJson, token, fileType))
-        }).catch(error => console.log('Eccezione durante il caricamento dei metadati'))
+        }).then(response => response)
+      .catch(error => console.log('Eccezione durante il caricamento dei metafati '))
   }
 }
 
@@ -611,14 +606,8 @@ export function addDatasetKylo(json, token, fileType) {
             'Authorization': 'Bearer ' + token
           },
           body: JSON.stringify(json)
-        })
-        .then(response => {
-            if(response.ok){
-              console.log('Caricamento Kylo avvenuto con successo')
-            }else{
-              console.log('Errore durante il caricamento del dataset a Kylo')
-            }
-        }).catch(error => console.log('Eccezione durante il caricamento del file su Kylo '))
+        }).then(response => response)
+        .catch(error => console.log('Eccezione durante il caricamento del file su Kylo ')) 
   }
 }
 
@@ -733,3 +722,50 @@ export function loadOntologies() {
             .then(response => response.json())
         } 
       }
+
+      export function getSchemaWS(url, typeFile) {
+        console.log('getSchemaWS'); 
+        var url = serviceurl.apiURLDatiGov + "/infer/ws/kylo/" + encodeURIComponent(url) + "/" + typeFile
+        var token = '';
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+        return dispatch => {
+            return fetch(url, {
+              method: 'POST',
+              body: JSON.stringify({username: 'test', password: 'test'}),
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              }
+            })
+            .then(response => response.json())
+            .then(json => JSON.parse(json))
+          }
+        }
+
+      export function getSystemNameKylo(title) {
+        console.log('getSchemaWS'); 
+        var token = '';
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+          localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+            token = localStorage.getItem('token')
+          }
+
+        //Generate System name from kylo
+        var url = serviceurl.apiURLDatiGov + '/infer/system_name/kylo?name=' + title
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .then(response => response.json())
+        }
+      }
+      

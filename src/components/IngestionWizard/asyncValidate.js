@@ -4,10 +4,10 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const asyncValidate = (values) => {
   return sleep(100).then(() => {
-    console.log('Controllo se il titolo è gia presente: ' + values.title);
+    console.log('Controllo se il titolo è gia presente: ' + values.nome);
     var that = this;
     var token = '';
-    var queryurl='?q=title:'+values.title;
+    var queryurl='?q=name:'+values.nome;
     var url = serviceurl.apiURLCatalog + '/ckan/searchDataset' + queryurl;  
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
