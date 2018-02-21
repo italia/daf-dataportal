@@ -373,8 +373,17 @@ class Organizations extends Component {
                         </ModalFooter>
                 </Modal>
                 <div className="row">
-                    <div className="form-group col-5 ml-3">
-                        <label htmlFor="example-search-input" className="col-2 mb-3">Organizzazioni</label>
+                    <div className="form-group  ml-3">
+                        <div className="row m-0">
+                            <div className="col-5">
+                                <label htmlFor="example-search-input">Organizzazioni</label>
+                            </div>
+                            <div className="col-7">
+                                <button type="button" className="btn btn-link pull-right p-0" title="Crea nuova organizzazione" onClick={this.openOrgCreate}>
+                                    <i className="fa fa-plus-circle fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
                         <ul className="list-group">
                             <li className="list-group-item"><input className="form-control" onChange={(e)=>{this.searchBy(e.target.value)}}></input></li>
                             {filter && filter.length > 0 && filter.map(organization => {

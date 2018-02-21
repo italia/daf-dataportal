@@ -298,7 +298,16 @@ class Users extends Component {
                 </Modal>
                 <div className="row">
                     <div className="form-group ml-3">
-                        <label htmlFor="example-search-input" className="mb-3">Utenti</label>
+                        <div className="row m-0">
+                            <div className="col-5">
+                                <label htmlFor="example-search-input">Utenti</label>
+                            </div>
+                            <div className="col-7">
+                                <button type="button" className="btn btn-link pull-right p-0" title="Crea nuovo utente" onClick={this.openUserCreate}>
+                                    <i className="fa fa-plus-circle fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
                         <ul className="list-group">
                             <li className="list-group-item"><input className="form-control" onChange={(e)=>{this.searchBy(e.target.value)}}></input></li>
                             {filter && filter.length > 0 && filter.map(user =>

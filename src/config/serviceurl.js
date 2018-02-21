@@ -1,11 +1,10 @@
 export const serviceurl = {
-  // Local
-  
-/*   apiURLSSOManager: "http://localhost:9002/sso-manager",
-  apiURLDatiGov: "http://localhost:9000/dati-gov/v1", 
-  apiURLCatalog: "http://localhost:9001/catalog-manager/v1",
-  apiURLIngestion: "http://localhost:9002/ingestion-manager/v1",
-  apiURLSecurity: "http://localhost:9002/security-manager/v1", */
+  // Lucal
+/*   apiURLSSOManager: "http://10.100.208.161:9002/sso-manager",
+  apiURLDatiGov: "http://10.100.208.161:9000/dati-gov/v1",
+  apiURLCatalog: "http://10.100.208.161:9001/catalog-manager/v1",
+  apiURLIngestion: "http://10.100.208.161:9002/ingestion-manager/v1",
+  apiURLSecurity: "http://10.100.208.161:9002/security-manager/v1", */
 
   
   //MOCK
@@ -46,7 +45,7 @@ export const serviceurl = {
  //apiURLIngestion: "http://service:9002/ingestion-manager/v1",
  //apiURLSecurity: "http://datipubblici-private.integrazione.daf9002/security-manager/v1",
 
- //LUCA
+ //LUCAL
 /*   apiURLSSOManager: "http://10.100.208.161:9002/sso-manager",
   apiURLDatiGov: "http://10.100.208.161:9000/dati-gov/v1",
   apiURLCatalog: "http://10.100.208.161:9001/catalog-manager/v1",
