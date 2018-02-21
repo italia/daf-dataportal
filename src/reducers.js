@@ -158,7 +158,7 @@ function ontologiesReducer(state = {}, action) {
     case RECEIVE_ONTOLOGIES:
       return Object.assign({}, state, {'ont': {'ontologies': action.ontologies, 'error': action.error}})
     case RECEIVE_VOCABULARY:
-      return Object.assign({}, state, {'voc': {'vocabulary': action.vocabulary, 'error': action.error}})
+      return Object.assign({}, state, {'voc': { 'ontologies': action.ontologies, 'vocabulary': action.vocabulary, 'error': action.error}})
       default:
       return state
   }

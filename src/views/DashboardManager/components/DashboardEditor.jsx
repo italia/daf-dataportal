@@ -183,7 +183,7 @@ class DashboardEditor extends Component {
         /* this.load(); */
       })
 
-      console.log(this.widgetsTypes)
+      /* console.log(this.widgetsTypes) */
     });
 
   }
@@ -243,6 +243,7 @@ class DashboardEditor extends Component {
   
       }) 
       
+
       this.state.layout = layout;
   
       this.setState({
@@ -328,6 +329,25 @@ class DashboardEditor extends Component {
     return counter + 1;
   }
 
+  cleanWidgets(layout) {
+    const { widgets } = this.state;
+    var output = {};
+    if (layout && widgets) {
+      let righe = layout.rows;
+      for (let i = 0; i < righe.length; i++) {
+        let colonne = righe[i].columns;
+        for (let j = 0; j < colonne.length; j++) {
+          let wids = colonne[j].widgets
+          for (let k = 0; k < wids.length; k++) {
+            output[wids[k].key] = widgets[wids[k].key]
+          }
+        }
+      }
+    console.log(output)
+    return output;
+    }
+  }
+
   /**
   * Save Layout and widgets
   */
@@ -373,11 +393,11 @@ class DashboardEditor extends Component {
       }
     }
 
-
     //save data
     let request = this.state.dashboard;
     request.layout = JSON.stringify(layout);
-    request.widgets = JSON.stringify(widgets);
+    /* request.widgets = JSON.stringify(widgets); */
+    request.widgets = JSON.stringify(this.cleanWidgets(layout));
     const response = dashboardService.save(request);
     this.setState({saving: true});
     response.then((data)=> {

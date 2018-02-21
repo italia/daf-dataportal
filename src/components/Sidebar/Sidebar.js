@@ -43,6 +43,12 @@ class Sidebar extends Component {
   handleClick(e) {
     e.preventDefault();
     e.target.parentElement.classList.toggle('open');
+    e.target.classList.toggle('nav-link-primary')
+  }
+
+  handleMinimizer(e) {
+    e.preventDefault();
+    document.body.classList.toggle('sidebar-minimized');
   }
 
   activeRoute(routeName) {
@@ -109,7 +115,7 @@ class Sidebar extends Component {
           <div className="col-sm-12 d-lg-none" style={{marginBottom: '5px', marginTop: '5px'}}>
             <div className="input-group">
               <span className="input-group-btn">
-                <button className="btn btn-default" type="submit" value="submit" onClick={this.handleLoadDatasetClick.bind(this)}>
+                <button className="btn btn-primary" type="submit" value="submit" onClick={this.handleLoadDatasetClick.bind(this)}>
                   <i className="fa fa-search"></i>
                 </button>
               </span>
@@ -121,35 +127,81 @@ class Sidebar extends Component {
               <li className="nav-item" onClick={(e) => { 
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');}}>
-                <NavLink to={'/home'} className="nav-link" activeClassName="active"><i className="icon-home"></i> Home</NavLink>
+                <NavLink to={'/home'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-home fa-lg text-secondary"></i> Home</NavLink>
               </li>
-              <li className="nav-title">
-                Azioni
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/dataset'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-table fa-lg text-secondary"></i> Dataset</NavLink>
               </li>
-              <li className={this.activeRoute("/components")}>
-                <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-puzzle"></i> Dataset</a>
-                <ul className="nav-dropdown-items">
+{/*               <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/home'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-bar-chart fa-lg text-secondary"></i> Widget</NavLink>
+              </li> */}
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-columns fa-lg text-secondary"></i> Dashboard</NavLink>
+              </li>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/user_story/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Storie</NavLink>
+              </li>
+              <li className="nav-title text-secondary">
+                TOOLKIT
+              </li>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/crea'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
+              </li>
+              <li className="nav-item nav-dropdown">
+                <a className="nav-link nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-wrench fa-lg text-secondary"></i> Strumenti</a>
+                <ul className="nav-dropdown-items bg-light">
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                  {(true /* isEditor() || isAdmin() */) &&
-                    <NavLink to={'/ingestionwizzard'} className="nav-link" activeClassName="active">  Carica</NavLink>
-                  }
+                    <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-pie-chart fa-lg text-secondary"/>  Metabase</a>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <NavLink onClick={this.handleLoadMyDatasetClick.bind(this)} to={'/dataset'} className="nav-link" activeClassName="active">  I Miei Dataset</NavLink>
+                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSuperset)}><i className="fa fa-database fa-lg text-secondary" />  Superset</a>
+                  </li>
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <a href className="nav-link" onClick={() => this.openModal('Jupiter', serviceurl.urlJupiter)}><i className="fa fa-sticky-note fa-lg text-secondary" />  Jupyter</a>
                   </li>
                 </ul>
               </li>
 
-              <li className="nav-title">
-                Standards
+              <li className="nav-title text-secondary">
+                INFO
               </li>
-              <li className={this.activeRoute("/icons")}>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/vocabulary/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-book text-secondary"></i> Dizionari e standard</NavLink>
+              </li>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/home'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-info text-secondary"></i> Documentazione</NavLink>
+              </li>
+              {/* <li className={this.activeRoute("/icons")}>
                 <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
                 <ul className="nav-dropdown-items">
                   <li className="nav-item" onClick={(e) => {
@@ -171,13 +223,13 @@ class Sidebar extends Component {
                 Strumenti
               </li>
               <li className="nav-item">
-                <a onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Grafici</a>
+                <a onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="icon-pie-chart"></i> Grafici</a>
               </li>
               <li className="nav-item">
-                <a onClick={() => this.openModal('Superset', serviceurl.urlSuperset)} className="nav-link"  /* activeClassName="active" */><i className="icon-pie-chart"></i> Business Intelligence</a>
+                <a onClick={() => this.openModal('Superset', serviceurl.urlSuperset)} className="nav-link"><i className="icon-pie-chart"></i> Business Intelligence</a>
               </li>
               <li className="nav-item">
-                <a onClick={() => this.openModal('Jupyter', serviceurl.urlJupiter)} className="nav-link" /* activeClassName="active" */><i className="icon-pie-chart"></i> Data Science</a>
+                <a onClick={() => this.openModal('Jupyter', serviceurl.urlJupiter)} className="nav-link"><i className="icon-pie-chart"></i> Data Science</a>
               </li>
 
               <li className="nav-title">
@@ -195,33 +247,34 @@ class Sidebar extends Component {
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
                 <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
-              </li>
+              </li> */}
               {role && role != 'daf_viewers' && <div>
-              <li className="nav-title">
-                Impostazioni
+              <li className="nav-title text-secondary">
+                Amministrazione
               </li>
               {role && role === 'daf_admins' &&
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/users'} className="nav-link" activeClassName="active"><i className="fa fa-user-plus"></i> Gestione Utenti</NavLink>
+                  <NavLink to={'/users'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-user-plus text-secondary"></i> Gestione Utenti</NavLink>
               </li>}
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/organizations'} className="nav-link" activeClassName="active"><i className="fa fa-group"></i> Organizzazioni</NavLink>
+                  <NavLink to={'/organizations'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-group text-secondary"></i> Organizzazioni</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/settings'} className="nav-link" activeClassName="active"><i className="fa fa-picture-o"></i> Interfaccia</NavLink>
+                  <NavLink to={'/settings'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-picture-o text-secondary"></i> Interfaccia</NavLink>
               </li>
               </div>}
             </ul>
           </nav>
+          <button className="sidebar-minimizer brand-minimizer bg-secondary" type="button" onClick={this.handleMinimizer.bind(this)}/>
         </div>
       </div>
     )

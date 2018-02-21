@@ -5,7 +5,7 @@
 }
 
 .sidebar {
-    background: white;
+    background: #FFFFFF;
     border-right: 1px solid #cfd8dc;
 }
 
@@ -17,16 +17,60 @@
 .sidebar .nav .nav-item .nav-link.active i {
     color: #304047;
 }
-
+/* 
 .sidebar .nav .nav-title {
     color: #304047;
-}
+} */
 
 .sidebar .nav .nav-item.nav-dropdown.open, .sidebar .nav .nav-item.nav-dropdown.open .nav-link {
-    background: initial;
     color: #304047;
 }
 
-.sidebar .nav .nav-item ul li {
-    padding-left: 40px;
+/* Custom Badge */
+.badge-dash {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+.card-dash {
+    height: 403px;
+    width: 320px;
+}
+
+.title-dash {
+    height: 5.4rem;
+    width: 15.9375rem;
+}
+
+.bg-cards-2 {
+    background-color: #E6EBEF !important
+}
+
+.bn-dash {
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+  filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+}
+
+.b-r-dash{
+    border-right: 1px solid #CAD4DC;
+}
+.b-t-3 {
+  border-top: 3px solid #151B1E !important; }
+
+.crop {
+    width: 320px;
+    height: 160px;
+    overflow: hidden;
+}
+
+.crop img {
+    width: 150%;
+    height: 150%;
+    margin: 0 -50px 0 -50px;
+}
+.crop.col-6 img {
+    width: 200%;
+    height: 200%;
+    margin: -50px -50px 0 -70px;
 }

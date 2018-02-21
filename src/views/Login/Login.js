@@ -173,7 +173,7 @@ class Login extends Component {
                   <div className="card-block text-center"><div>
                     <h2>Iscriviti</h2>
                     <p>Per accedere all'area riservata del portale occorre registrarsi qui: </p>
-                    <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/register')} >Registrati!</button>
+                    <button type="button" className="btn btn-light active mt-1" onClick={() => this.props.history.push('/register')} >Registrati!</button>
                   </div>
                   </div>
                 </div>
