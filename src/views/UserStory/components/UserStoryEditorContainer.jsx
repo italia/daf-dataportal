@@ -165,6 +165,7 @@ class UserStoryEditorContainer extends Component {
     } else {
       newWidget = this.widgetsTypes[widgetKey];
       newKey = widgetKey
+      newWidget.type = IframeWidget
     }
     if (!newWidget.props)
       newWidget.props = {};
@@ -253,7 +254,7 @@ class UserStoryEditorContainer extends Component {
                     console.log(widget) */
           widgets[i] = JSON.parse(JSON.stringify(widget));
           /* console.log(widgets[i].type + ' ' + widget.type.name) */
-          widgets[i].type = widget.type.name
+          widgets[i].type = widget.type
         }
       }
     }

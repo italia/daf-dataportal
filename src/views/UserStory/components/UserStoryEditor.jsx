@@ -36,9 +36,9 @@ class UserStoryEditor extends Component {
         let wids = JSON.parse(story.widgets)
 
         Object.keys(wids).map(wid => {
-          if (wids[wid].type === "TextWidget")
+          if (wids[wid].props.wid_key.indexOf("TextWidget")!=-1)
             wids[wid].type = TextWidget
-          if (wids[wid].type === "IframeWidget")
+          else
             wids[wid].type = IframeWidget
         })
 
