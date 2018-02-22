@@ -36,7 +36,10 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch, selectDataset } = this.props
-    this.setState({uploading: true})
+    this.setState({
+      loginMessage:undefined,
+      uploading: true
+    })
     var token=''
     dispatch(getAuthToken(this.email.value, this.pw.value))
       .then(json => {
