@@ -121,25 +121,17 @@ const renderModalitaSelector = ({ input, type, label, value, meta: { touched, er
 );
 
 const renderTipi = ({ input, label, type, tipi, index, meta: { touched, error } }) => (
-/*   <div className="form-group row">
-    <label className="col-md-3 form-control-label">{label}</label>
-    <div className="col-md-9">
-         {<select className="form-control" {...input}>
-           {tipi[index] && tipi[index].map(tipo => tipo!='string' &&
-              <option value={tipo} key={tipo} defaultValue>{tipo}</option>
-           )
-           }
-           <option value='string' key='string'>string</option>
-         </select>  
-        }
-       {touched && error && <div className="text-danger">{error}</div>}
-    </div>
- </div> */
  <div className="form-group row">
  <label className="col-md-3 form-control-label">{label}</label>
  <div className="col-md-9">
      <select className="form-control" {...input}>
-       {tipiKylo.map(value => <option value={value} key={value}>{value}</option>)}
+       {tipiKylo.map(value => {
+        return(<option value={value} key={value}>{value}</option>)
+       }
+      )}
+      {(tipiKylo.indexOf(tipi[index][0])==-1) &&
+          <option value={tipi[index]} key={tipi[index]}>{tipi[index]}</option>
+      }
      </select>
    {touched && error && <div className="text-danger">{error}</div>}
  </div>
