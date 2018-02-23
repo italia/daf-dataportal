@@ -255,9 +255,10 @@ class WizardFormMetadata extends Component {
       {fields.length === 0 &&
         <div className="form-group row">
           <div className="col-md-5">
-            <p className="text-justify">Benvenuto nel cruscotto per la registrazione di nuovi dataset.</p>
-            <p className="text-justify">Scegli se caricare il file tramite URL (PULL) oppure se caricare il file direttamente attraverso la dropbox (PUSH).</p>
-            <p className="text-justify">Nel caso scegliessi la seconda opzione se il file è minore di 10 mega verrà metadatato e caricato direttamente nel DAF altrimenti il file verrà lo stesso metadatato ma il contenuto dovrà essere caricato in un secondo momento.</p> 
+            <p className="text-justify"><b>Benvenuto</b> ricordati che a grandi poteri derivano grandi responsabilità</p>
+            <p className="text-justify">Carica un file tramite <b>URL</b> oppure se caricare il file direttamente attraverso la dropbox. </p>
+            <p className="text-justify">Nel caso scegli la dropbox trascina un <b>file di esempio</b> di piccole dimensioni max 1MB </p> 
+            <p className="text-justify">Il file vero e proprio lo dovrai caricare all'indirizzo <b>SFTP</b> che ti abbiamo comunicato </p> 
             <p className="text-justify">Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p>
           </div>
           <div className="col-md-7">
@@ -294,7 +295,7 @@ class WizardFormMetadata extends Component {
             {modalitacaricamento==1 &&
               <div className="form-group">
                 <div className="col-md-12">
-                <label htmlFor='tests'>Carica il file (max 10MB):</label>
+                <label htmlFor='tests'>Carica il file (max 1gitMB):</label>
                   <Dropzone
                     name="input"
                     className="dropzone"
