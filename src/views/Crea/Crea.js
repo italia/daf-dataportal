@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux'
 import DashboardService from '../DashboardManager/components/services/DashboardService'
 import UserStoryService from '../UserStory/components/services/UserStoryService'
-import { isAdmin } from '../../utility'
+import { isEditor, isAdmin } from '../../utility'
 
 const dashboardService = new DashboardService();
 const userStoryService = new UserStoryService();
@@ -303,7 +303,7 @@ class Crea extends Component {
                 
                 <h3 className="card-title">Cosa vuoi creare?</h3>
                 <div className="row">
-                    {(isAdmin()) &&
+                    {(isEditor() || isAdmin()) &&
                     <div className="col-3">
                         <div className="card text-center">
                             <h5 className="card-title">Carica un nuovo Dataset</h5>
