@@ -13,6 +13,7 @@ import {
 } from 'react-modal-bootstrap';
 import Select from 'react-select'
 import OrganizationService from "./services/OrganizationService";
+import { isEditor, isAdmin } from '../../utility'
 
 const organizationService = new OrganizationService()
 
@@ -378,11 +379,13 @@ class Organizations extends Component {
                             <div className="col-5">
                                 <label htmlFor="example-search-input">Organizzazioni</label>
                             </div>
+                            {isAdmin() &&
                             <div className="col-7">
                                 <button type="button" className="btn btn-link pull-right p-0" title="Crea nuova organizzazione" onClick={this.openOrgCreate}>
                                     <i className="fa fa-plus-circle fa-lg"></i>
                                 </button>
                             </div>
+                            }
                         </div>
                         <ul className="list-group">
                             <li className="list-group-item"><input className="form-control" onChange={(e)=>{this.searchBy(e.target.value)}}></input></li>
@@ -396,7 +399,7 @@ class Organizations extends Component {
                                 })
                             }
                         </ul>
-                        {loggedUser.role==='daf_admins'&&<button type="button" className="btn btn-link float-right mt-3" title="Crea nuova organizzazione" onClick={this.openOrgCreate}>
+                        {isAdmin() && <button type="button" className="btn btn-link float-right mt-3" title="Crea nuova organizzazione" onClick={this.openOrgCreate}>
                             <i className="fa fa-plus-circle fa-lg"></i>
                         </button>}
                     </div>
