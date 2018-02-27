@@ -46,16 +46,21 @@ class UserStoryEditorContainer extends Component {
     this.save = this.save.bind(this);
   }
 
-/*   componentDidMount(){
-    const {widgets} = this.state
-    if(widgets)
-    Object.keys(widgets).map(wid => {
-      if (widgets[wid].type === "TextWidget")
-        widgets[wid].type = TextWidget
-      if (widgets[wid].type === "IframeWidget")
-        widgets[wid].type = IframeWidget
+  componentDidMount(){
+    let wids = this.state.widgets
+
+    Object.keys(wids).map(wid => {
+      if (wids[wid].props.wid_key.indexOf("TextWidget") != -1) {
+        wids[wid].props.onSave = this.saveTextWidget.bind(this)
+      }
     })
-  } */
+
+    this.setState({
+      widgets: wids
+    })
+    if (!this.props.readonly)
+      this.setLayout(this.state.layout, true)
+  }
 
   async loadImage(widget) {
     let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
@@ -185,9 +190,6 @@ class UserStoryEditorContainer extends Component {
  */
   saveTextWidget = function (key, html) {
     this.state.widgets[key].props.text = html;
-    console.log(key)
-    console.log(this.state.widgets)
-    console.log(this.state.widgets[key])
     this.save();
   }
 
@@ -252,12 +254,15 @@ class UserStoryEditorContainer extends Component {
         if (widget.type) {
           /*           console.log(widgets[i])
                     console.log(widget) */
-          widgets[i] = JSON.parse(JSON.stringify(widget));
+          widgets[i] = widget;
           /* console.log(widgets[i].type + ' ' + widget.type.name) */
           widgets[i].type = widget.type
         }
       }
     }
+
+    console.log(widgets)
+    console.log(widgetsOld)
 
 
     //save data
