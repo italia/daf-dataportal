@@ -10666,7 +10666,8 @@ base-chart.chart {
       .sidebar .nav-link.nav-link-light i, .sidebar .navbar .nav-link-light.dropdown-toggle i, .navbar .sidebar .nav-link-light.dropdown-toggle i {
         color: rgba(255, 255, 255, 0.7); }
       .sidebar .nav-link.nav-link-light:hover, .sidebar .navbar .nav-link-light.dropdown-toggle:hover, .navbar .sidebar .nav-link-light.dropdown-toggle:hover {
-        background: #e1e7eb !important; }
+        background: #e1e7eb !important;
+        color: #304047 !important; }
         .sidebar .nav-link.nav-link-light:hover i, .sidebar .navbar .nav-link-light.dropdown-toggle:hover i, .navbar .sidebar .nav-link-light.dropdown-toggle:hover i {
           color: #fff; }
     .sidebar .nav-link.nav-link-dark, .sidebar .navbar .nav-link-dark.dropdown-toggle, .navbar .sidebar .nav-link-dark.dropdown-toggle {
