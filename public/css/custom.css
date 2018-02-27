@@ -32,10 +32,11 @@
     height: 0.875rem;
 }
 
-.card-dash {
-    height: 403px;
-    width: 320px;
+/* .card-dash {
+    height: 44.73%;
+    width: 18.32%;
 }
+ */
 
 .title-dash {
     height: 5.4rem;
@@ -55,6 +56,12 @@
 .b-r-dash{
     border-right: 1px solid #CAD4DC;
 }
+
+.border-dash{
+    box-shadow: 0 0 8px 0 rgba(50,50,50,0.15);
+    border:  1px solid #CAD4DC!important;
+}
+
 .b-t-3 {
   border-top: 3px solid #151B1E !important; }
 
@@ -71,6 +78,12 @@
 }
 .crop.col-6 img {
     width: 200%;
-    height: 200%;
-    margin: -50px -50px 0 -70px;
+    height: auto;
+    margin: -10px -70px 0 -75px;
+}
+
+.crop.col-12 img {
+    width: 150%;
+    height: auto;
+    margin: -40px 0 0 -65px;
 }

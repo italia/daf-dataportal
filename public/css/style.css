@@ -10967,6 +10967,7 @@ base-chart.chart {
       border-left: 0 !important; }
       .sidebar-minimized .sidebar .nav-link i, .sidebar-minimized .sidebar .navbar .dropdown-toggle i, .navbar .sidebar-minimized .sidebar .dropdown-toggle i {
         display: block;
+        margin: 0.2rem 0.5rem 0 0;
         float: left;
         width: 50px;
         font-size: 18px; }

@@ -132,7 +132,7 @@ class DashboardList extends Component {
             }
             return (
               <div className="col-sm-4" key={index}>
-                <div className="card b-a-1 b-t-3 bg-gray-100 card-dash">
+                <div className="card b-a-1 b-t-3 bg-gray-100 border-dash">
                   <div className="card-img-top" style={iframeStyle}>
                     <div className="row m-0">
                     {/* chartUrl && <iframe
