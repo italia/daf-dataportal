@@ -246,19 +246,19 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                  <NavLink to={'/users'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-user-plus text-secondary"></i> Gestione Utenti</NavLink>
+                  <NavLink to={'/users'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fa fa-user-plus text-secondary"></i> Gestione Utenti</NavLink>
               </li>}
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                  <NavLink to={'/organizations'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-group text-secondary"></i> Organizzazioni</NavLink>
+                  <NavLink to={'/organizations'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fa fa-group text-secondary"></i> Organizzazioni</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                  <NavLink to={'/settings'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-picture-o text-secondary"></i> Interfaccia</NavLink>
+                  <NavLink to={'/settings'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fa fa-picture-o text-secondary"></i> Interfaccia</NavLink>
               </li>
               </div>}
             </ul>
