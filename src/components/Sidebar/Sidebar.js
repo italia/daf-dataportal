@@ -43,7 +43,6 @@ class Sidebar extends Component {
   handleClick(e) {
     e.preventDefault();
     e.target.parentElement.classList.toggle('open');
-    e.target.classList.toggle('nav-link-primary')
   }
 
   handleMinimizer(e) {
@@ -100,34 +99,27 @@ class Sidebar extends Component {
           </ModalHeader>
           <ModalBody>
           <div className="form-group">
-            <p>Stai per essere renidirizzato nell'applicazione {this.state.name}.</p>
+            {this.state.name==='Metabase' ? 
+            <h3 className="text-center"><i className="fa fa-exclamation-triangle fa-lg"/> Lavori in corso! {this.state.name} sarà presto disponibile</h3>
+            :
+            <p>Stai per essere renidirizzato nell'applicazione {this.state.name}.</p>}
           </div>
           </ModalBody>
           <ModalFooter>
             <button className='btn btn-default' onClick={this.hideModal}>
               Chiudi
             </button>
-              <button className='btn btn-default' onClick={this.hideModalAndRedirect}>Scegli</button>
+              {this.state.name !== 'Metabase' && <button className='btn btn-default' onClick={this.hideModalAndRedirect}>Scegli</button>}
           </ModalFooter>
         </form>
       </Modal>
         <div className="sidebar">
-          <div className="col-sm-12 d-lg-none" style={{marginBottom: '5px', marginTop: '5px'}}>
-            <div className="input-group">
-              <span className="input-group-btn">
-                <button className="btn btn-primary" type="submit" value="submit" onClick={this.handleLoadDatasetClick.bind(this)}>
-                  <i className="fa fa-search"></i>
-                </button>
-              </span>
-              <AutocompleteDataset ref="auto" className="form-control"/>
-            </div>
-          </div>
           <nav className="sidebar-nav">
             <ul className="nav">
               <li className="nav-item" onClick={(e) => { 
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');}}>
-                <NavLink to={'/home'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-home fa-lg text-secondary"></i> Home</NavLink>
+                <NavLink to={'/home'} className="nav-link nav-link-light " activeClassName="nav-link-light"><i className="fa fa-home fa-lg text-secondary"></i> Home</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
@@ -156,14 +148,14 @@ class Sidebar extends Component {
               <li className="nav-title text-secondary">
                 TOOLKIT
               </li>
-              <li className="nav-item" onClick={(e) => {
+              <li className="nav-item " onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/crea'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
+                <NavLink to={'/crea'} className="nav-link nav-link-light " activeClassName="nav-link-light"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
               </li>
               <li className="nav-item nav-dropdown">
-                <a className="nav-link nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-wrench fa-lg text-secondary"></i> Strumenti</a>
+                <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-wrench fa-lg text-secondary"></i> Strumenti</a>
                 <ul className="nav-dropdown-items bg-light">
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
@@ -257,19 +249,19 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                  <NavLink to={'/users'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-user-plus text-secondary"></i> Gestione Utenti</NavLink>
+                  <NavLink to={'/users'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fa fa-user-plus text-secondary"></i> Gestione Utenti</NavLink>
               </li>}
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                  <NavLink to={'/organizations'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-group text-secondary"></i> Organizzazioni</NavLink>
+                  <NavLink to={'/organizations'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fa fa-group text-secondary"></i> Organizzazioni</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                  <NavLink to={'/settings'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-picture-o text-secondary"></i> Interfaccia</NavLink>
+                  <NavLink to={'/settings'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fa fa-picture-o text-secondary"></i> Interfaccia</NavLink>
               </li>
               </div>}
             </ul>

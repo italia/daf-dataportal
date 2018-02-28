@@ -29,6 +29,7 @@ class UserStoryEditor extends Component {
     this.onPublish = this.onPublish.bind(this);
     this.onRemove = this.onRemove.bind(this);
     
+    
     //load data
     if (this.state.id) {
       let response = userStoryService.get(this.state.id);
@@ -36,9 +37,11 @@ class UserStoryEditor extends Component {
         let wids = JSON.parse(story.widgets)
 
         Object.keys(wids).map(wid => {
-          if (wids[wid].props.wid_key.indexOf("TextWidget")!=-1)
+          if (wids[wid].props.wid_key.indexOf("TextWidget")!=-1){
+            /* wids[wid].props.onSave = this.saveTextWidget.bind(this) */
             wids[wid].type = TextWidget
-          else
+            wids[wid].props.readOnly = false
+          }else
             wids[wid].type = IframeWidget
         })
 
@@ -50,6 +53,15 @@ class UserStoryEditor extends Component {
     } else {
       this.state.dataStory= {};
     }
+  }
+
+
+  /**
+   * Save text of TextWidget
+   */
+  saveTextWidget = function (key, html) {
+    this.state.widgets[key].props.text = html;
+    this.save();
   }
 
   save(story) {

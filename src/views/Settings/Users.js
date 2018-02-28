@@ -27,7 +27,9 @@ class Users extends Component {
             sn: '',
             mail: '',
             userpassword: '',
+            repeatPassword: '',
             role: '',
+            checked: true,
             userModal: false,
             createUser: false,
             userEdit: false,
@@ -37,6 +39,8 @@ class Users extends Component {
             edit: '',
             delete: '',
             message: '',
+            pswok: true,
+            enableSave: true,
             saving: false
         }
 
@@ -48,6 +52,8 @@ class Users extends Component {
         this.delete = this.delete.bind(this)
         this.save = this.save.bind(this)
         this.edit = this.edit.bind(this)
+        this.checkDoublePassword = this.checkDoublePassword.bind(this)
+        this.validatePsw = this.validatePsw.bind(this)
     }
 
     save(){
@@ -72,6 +78,7 @@ class Users extends Component {
                     sn: '',
                     mail: '',
                     userpassword: '',
+                    repeatPassword: '',
                     role: '',
                     createUser: false,
                     create: json.fields,
@@ -119,6 +126,7 @@ class Users extends Component {
             sn: '',
             mail: '',
             userpassword: '',
+            repeatPassword: '',
             role: '',
         })
     }
@@ -238,9 +246,47 @@ class Users extends Component {
         })
     }
 
+    checkDoublePassword(repeatPassword){
+        const { userpassword } = this.state;
+        if(userpassword === repeatPassword){
+            this.setState({
+                checked: true,
+                enableSave: false
+            })
+        }
+        else{
+            this.setState({
+                checked: false,
+                enableSave: true,
+            })
+        }
+    }
+
+    validatePsw(val){
+        // pattern to match : Atleast one capital letter, one number and 8 chars length
+        if(val!==''){
+            var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+            if (reg.test(val)) {
+                this.setState({
+                    pswok: true,
+                })
+            }
+            else {
+                this.setState({
+                    pswok: false,
+                    enableSave: true,
+                })
+            }
+        }else
+            this.setState({
+                pswok: true,
+                enableSave: true
+            })
+    }
+
     render() {
         const { loggedUser } = this.props
-        const { users, filter, userAct, userModal, userEdit, createUser, uid, givenname, sn, mail, userpassword, role} = this.state
+        const { users, filter, userAct, userModal, userEdit, createUser, uid, givenname, sn, mail, userpassword, repeatPassword, checked, role} = this.state
     
         return (
             <div>
@@ -351,9 +397,15 @@ class Users extends Component {
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label className="col-3 col-form-label">Password</label>
+                                <label className="col-3 col-form-label">Password <button className="btn btn-link p-0" data-toggle="tooltip" data-placement="top" title="La password deve essere lunga almeno 8 caratteri e contenere almeno un lettera maiuscola e un numero"><i className="fa fa-info-circle"/></button></label>
                                 <div className="col-6">
-                                    <input className="form-control" type="password" value={userpassword} onChange={(e)=>{this.setState({ userpassword: e.target.value})}}/>
+                                    <input className="form-control" type="password" value={userpassword} onChange={(e) => { this.setState({ userpassword: e.target.value, checked: e.target.value === '' ? true : false}); this.validatePsw(e.target.value) }}/>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-3 col-form-label">Ripeti Password</label>
+                                <div className="col-6">
+                                    <input className="form-control" type="password" value={repeatPassword} onChange={(e) => { this.setState({ repeatPassword: e.target.value }); this.checkDoublePassword(e.target.value) }} />
                                 </div>
                             </div>
                             <div className="form-group row">
@@ -367,7 +419,22 @@ class Users extends Component {
                                     </select>                                
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" onClick={this.save}>{this.state.saving&&<i className="fa fa-spinner fa-spin fa-lg"/>}{!this.state.saving&&"Crea"}</button>
+                            <button type="submit" className="btn btn-primary" disabled={this.state.enableSave} onClick={this.save}>{this.state.saving&&<i className="fa fa-spinner fa-spin fa-lg"/>}{!this.state.saving&&"Crea"}</button>
+                        </div>
+                        <div hidden={checked} className="ml-5 w-100">
+                            <div className="alert alert-danger" role="alert">
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> Le password inserite non corrispondono, verificare il corretto inserimento
+                            </div>
+                        </div>
+                        <div hidden={this.state.pswok} className="ml-5 w-100">
+                            <div className="alert alert-warning" role="alert">
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> La password inserita non rispetta le linee guida: <br/>
+                                <ul>
+                                    <li>Almeno 8 caratteri</li>
+                                    <li>Almeno una lettera maiuscola</li>
+                                    <li>Almeno un numero</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>}
                     {userEdit && 

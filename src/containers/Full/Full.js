@@ -26,15 +26,17 @@ class Full extends Component {
       'paddingLeft': '10px',
       'paddingRigth': '0px',
     };
-    const mainDiv = {
-      'backgroundColor' : 'white'
-    }
+    let mainDiv = 'bg-white'
+
+    if (history.location.pathname ==='/user_story/list')
+      mainDiv='bg-light'
+    
     return (
       <div className="app">
         <Header history={history}/>
         <div className="app-body">
           <Sidebar {...this.props}/>
-          <main className="main" style={mainDiv}>
+          <main className={"main "+mainDiv} >
             <Breadcrumb />
             <div className="container-fluid" style={divStyle}>
               <Switch>
