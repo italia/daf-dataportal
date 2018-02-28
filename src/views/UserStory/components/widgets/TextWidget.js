@@ -64,7 +64,7 @@ class TextWidget extends Component {
           <div>
             <div dangerouslySetInnerHTML={{__html: this.state.text}}></div>
             {
-              this.props.readOnly!==false &&
+              !this.props.readOnly &&
               <div className="mt-20">
                 <button onClick={() => this.edit()} type="button" className="btn btn-link" >Edita testo</button>
               </div>

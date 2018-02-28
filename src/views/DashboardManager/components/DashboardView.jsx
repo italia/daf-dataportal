@@ -53,7 +53,7 @@ class DashboardView extends Component {
       "type": TextWidget,
       "title": "Contenuto Testuale",
       "props":{
-        readOnly: false
+        "readOnly": true
       }
     }
   };
@@ -97,6 +97,7 @@ class DashboardView extends Component {
 
           /* widget.type = this.widgetsTypes[typeWid].type; */
           widget.type = TextWidget;
+          widget.props.readOnly = true
           //last extends overrides previous
           /* widget.props = {...widget.props, ...this.widgetsTypes[typeWid].props,  wid_key: i}; */
         } else {

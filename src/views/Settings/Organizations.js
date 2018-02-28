@@ -35,10 +35,14 @@ class Organizations extends Component {
             nome:'',
             mail:'',
             psw:'',
+            repeatPassword: '',
+            checked: true,
+            pswok: true,
             create: '',
             add: '',
             remove: '',
             delete: '',
+            enableSave: true
         }
 
         this.load()
@@ -49,6 +53,8 @@ class Organizations extends Component {
         this.openUserModal = this.openUserModal.bind(this)
         this.closeUserModal = this.closeUserModal.bind(this)
         this.updateValue = this.updateValue.bind(this)
+        this.validatePsw = this.validatePsw.bind(this)
+        this.checkDoublePassword = this.checkDoublePassword.bind(this)
     }
 
     load(){
@@ -273,9 +279,47 @@ class Organizations extends Component {
         });
     }
 
+    checkDoublePassword(repeatPassword) {
+        const { psw } = this.state;
+        if (psw === repeatPassword) {
+            this.setState({
+                checked: true,
+                enableSave: false
+            })
+        }
+        else {
+            this.setState({
+                checked: false,
+                enableSave: true,
+            })
+        }
+    }
+
+    validatePsw(val) {
+        // pattern to match : Atleast one capital letter, one number and 8 chars length
+        if (val !== '') {
+            var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+            if (reg.test(val)) {
+                this.setState({
+                    pswok: true,
+                })
+            }
+            else {
+                this.setState({
+                    pswok: false,
+                    enableSave: true,
+                })
+            }
+        } else
+            this.setState({
+                pswok: true,
+                enableSave: true
+            })
+    }
+
     render() {
         const { loggedUser } = this.props
-        const { users, allUsers, organizations, filter, user, org, orgModal, userModal, userEdit, createOrg} = this.state
+        const { users, allUsers, organizations, filter, user, org, orgModal, userModal, userEdit, createOrg, checked} = this.state
     
         return (
             <div>
@@ -420,12 +464,33 @@ class Organizations extends Component {
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label className="col-3 col-form-label">Password amministratore</label>
+                                <label className="col-3 col-form-label">Password amministratore <button className="btn btn-link p-0" data-toggle="tooltip" data-placement="top" title="La password deve essere lunga almeno 8 caratteri e contenere almeno un lettera maiuscola e un numero"><i className="fa fa-info-circle" /></button></label>
                                 <div className="col-6">
-                                    <input className="form-control" type="password" value={this.state.psw} onChange={(e) => { this.setState({ psw: e.target.value }) }}/>
+                                    <input className="form-control" type="password" value={this.state.psw} onChange={(e) => { this.setState({ psw: e.target.value, checked: e.target.value === '' ? true : false }); this.validatePsw(e.target.value) }}/>
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" onClick={this.createOrg.bind(this)}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Crea"}</button>
+                            <div className="form-group row">
+                                <label className="col-3 col-form-label">Ripeti Password amministratore</label>
+                                <div className="col-6">
+                                    <input className="form-control" type="password" value={this.state.repeatPassword} onChange={(e) => { this.setState({ repeatPassword: e.target.value }); this.checkDoublePassword(e.target.value) }} />
+                                </div>
+                            </div>
+                            <button type="submit" className="btn btn-primary" disabled={this.state.enableSave} onClick={this.createOrg.bind(this)}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Crea"}</button>
+                        </div>
+                        <div hidden={checked} className="ml-5 w-100">
+                            <div className="alert alert-danger" role="alert">
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> Le password inserite non corrispondono, verificare il corretto inserimento
+                            </div>
+                        </div>
+                        <div hidden={this.state.pswok} className="ml-5 w-100">
+                            <div className="alert alert-warning" role="alert">
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> La password inserita non rispetta le linee guida: <br />
+                                <ul>
+                                    <li>Almeno 8 caratteri</li>
+                                    <li>Almeno una lettera maiuscola</li>
+                                    <li>Almeno un numero</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>}  
                     {userEdit && 
@@ -436,7 +501,7 @@ class Organizations extends Component {
                                 if (users.indexOf("default_admin") === -1)
                                     return(
                                         <li className="list-group-item" key={users}>{users}
-                                            <button type="button" className="btn-link float-right" onClick={this.removeUser.bind(this, users)}><i className="fa fa-times fa-1" /></button>
+                                            <button type="button" className="btn btn-link float-right" onClick={this.removeUser.bind(this, users)}><i className="fa fa-times fa-1" /></button>
                                         </li>)
                                 }
                             )
