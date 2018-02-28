@@ -27,90 +27,135 @@ class Crea extends Component {
             isOpenStory: false,
             validationMSg: 'Campo obbligatorio',
             validationMSgOrg: 'Campo obbligatorio',
-            pvt: '0',
-            org: 'default_org'
+            pvtStory: '0',
+            orgStory: 'default_org',
+            pvtDash: '0',
+            orgDash: 'default_org'
         }
     }
 
     openModalDash = () => {
         this.setState({
             isOpenDash: true,
-            pvt: '0',
-            org: 'default_org'
+            pvtDash: '0',
+            orgDash: 'default_org'
         });
     };
 
     hideModalDash = () => {
         this.setState({
             isOpenDash: false,
-            pvt: '0',
-            org: 'default_org'
+            pvtDash: '0',
+            orgDash: 'default_org'
         });
     };
 
     openModalStory = () => {
         this.setState({
             isOpenStory: true,
-            pvt: '0',
-            org: 'default_org'
+            pvtStory: '0',
+            orgStory: 'default_org'
         });
     };
 
     hideModalStory = () => {
         this.setState({
             isOpenStory: false,
-            pvt: '0',
-            org: 'default_org'
+            pvtStory: '0',
+            orgStory: 'default_org'
         });
     };
 
-    onPvtChange(e, value) {
-        if (this.pvt.value == 0) {
+    onPvtChange(e, value, mode) {
+        if(mode==0){
+            if (this.pvtStory.value == 0) {
+                this.setState({
+                    orgStory: 'default_org'
+                });
+            }
             this.setState({
-                org: 'default_org'
+                pvtStory: value
+            });
+            this.validate(mode, e);
+        }
+        if(mode==1){
+            if (this.pvtDash.value == 0) {
+                this.setState({
+                    orgDash: 'default_org'
+                });
+            }
+            this.setState({
+                pvtDash: value
+            });
+            this.validate(mode, e);
+        }
+    }
+
+    onOrganizationChange(e, value, mode) {
+        if(mode==0){
+            this.setState({
+                orgStory: value
             });
         }
-        this.setState({
-            pvt: value
-        });
-        this.validate(e);
+        if(mode==1){
+            this.setState({
+                orgDash: value
+            });
+        }
+        this.validate(mode, e);
     }
 
-    onOrganizationChange(e, value) {
-        this.setState({
-            org: value
-        });
-        this.validate(e);
-    }
-
-    validate = (e) => {
+    validate = (mode, e) => {
         e.preventDefault()
-        var title;
 
-        if(this.titleDash)
-            title = this.titleDash
-        else if(this.titleStory)
-            title = this.titleStory
-
-        if (!title.value) {
-            this.setState({
-                validationMSg: 'Campo obbligatorio'
-            });
-        } else {
-            this.setState({
-                validationMSg: null
-            });
+        if(mode==0){
+            this.titleDash
+            if (!this.titleStory.value) {
+                this.setState({
+                    validationMSg: 'Campo obbligatorio'
+                });
+            } else {
+                this.setState({
+                    validationMSg: null
+                });
+            }
+    
+            if (this.pvtStory.value == 1 && (!this.orgStory || this.orgStory.value == '')) {
+                this.setState({
+                    validationMSgOrg: 'Campo obbligatorio'
+                });
+            } else {
+                this.setState({
+                    validationMSgOrg: null
+                });
+            }
+        
+        }
+        
+        if(mode==1){
+            if (!this.titleDash.value) {
+                this.setState({
+                    validationMSg: 'Campo obbligatorio'
+                });
+            } else {
+                this.setState({
+                    validationMSg: null
+                });
+            }
+    
+            if (this.pvtDash.value == 1 && (!this.orgDash || this.orgDash.value == '')) {
+                this.setState({
+                    validationMSgOrg: 'Campo obbligatorio'
+                });
+            } else {
+                this.setState({
+                    validationMSgOrg: null
+                });
+            }
+        
         }
 
-        if (this.pvt.value == 1 && (!this.org || this.org.value == '')) {
-            this.setState({
-                validationMSgOrg: 'Campo obbligatorio'
-            });
-        } else {
-            this.setState({
-                validationMSgOrg: null
-            });
-        }
+
     }
 
     /**
@@ -120,7 +165,7 @@ class Crea extends Component {
         e.preventDefault()
 
         if (this.titleDash.value) {
-            if (this.pvt.value == 1 && (!this.org || this.org.value == '')) {
+            if (this.pvtDash.value == 1 && (!this.orgDash || this.orgDash.value == '')) {
                 this.setState({
                     validationMSgOrg: 'Campo obbligatorio'
                 });
@@ -130,9 +175,9 @@ class Crea extends Component {
                 let widgets = {};
                 let request = {
                     title: this.titleDash.value,
-                    pvt: this.state.pvt,
-                    org: this.state.org,
-                    subtitle: this.subtitle.value,
+                    pvt: this.state.pvtDash,
+                    org: this.state.orgDash,
+                    subtitle: this.subtitleDash.value,
                     layout: JSON.stringify(layout),
                     widgets: JSON.stringify(widgets),
                     status: 0
@@ -155,8 +200,8 @@ class Crea extends Component {
     */
     handleSaveStory = (e) => {
         e.preventDefault()
-        if (this.title.value) {
-            if (this.pvt.value == 1 && (!this.org || this.org.value == '')) {
+        if (this.titleStory.value) {
+            if (this.pvtStory.value == 1 && (!this.orgStory || this.orgStory.value == '')) {
                 this.setState({
                     validationMSgOrg: 'Campo obbligatorio'
                 });
@@ -166,8 +211,8 @@ class Crea extends Component {
                 //save data
                 let request = {
                     title: this.titleStory.value,
-                    pvt: this.state.pvt,
-                    org: this.state.org,
+                    pvt: this.state.pvtStory,
+                    org: this.state.orgStory,
                     layout: JSON.stringify(layout),
                     widgets: JSON.stringify(widgets)
                 };
@@ -198,24 +243,33 @@ class Crea extends Component {
                                 <div className="form-group row">
                                     <label className="col-md-2 form-control-label">Titolo</label>
                                     <div className="col-md-8">
-                                        <input type="text" className="form-control" ref={(titleStory) => this.titleStory = titleStory} onChange={this.validate.bind(this)} id="title" placeholder="Titolo" />
+                                        <input type="text" className="form-control" ref={(titleStory) => this.titleStory = titleStory} onChange={this.validate.bind(this, 0)} id="titleStory" placeholder="Titolo" />
                                         {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
                                     </div>
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-md-2 form-control-label">Privata</label>
                                     <div className="col-md-8">
-                                        <select className="form-control" ref={(pvt) => this.pvt = pvt} onChange={(e) => this.onPvtChange(e, e.target.value)} id="pvt" >
+                                        {loggedUser.organizations && loggedUser.organizations.length > 1 ?
+                                        <select className="form-control" ref={(pvtStory) => this.pvtStory = pvtStory} onChange={(e) => this.onPvtChange(e, e.target.value, 0)} id="pvtStory" >
                                             <option value="0" defaultValue key="0">No</option>
                                             <option value="1" key='1'>Si</option>
                                         </select>
+                                        :
+                                        <div>
+                                            <select className="form-control" ref={(pvtStory) => this.pvtStory = pvtStory} id="pvtStory" >
+                                                <option value="0" defaultValue key="0">No</option>
+                                            </select>
+                                            <span>Puoi creare soltanto storie pubbliche in quanto non hai nessuna organizzazione associata</span>
+                                        </div>
+                                        }
                                     </div>
                                 </div>
-                                {this.state.pvt == 1 &&
+                                {this.state.pvtStory == 1 &&
                                     <div className="form-group row">
                                         <label className="col-md-2 form-control-label">Organizzazione</label>
                                         <div className="col-md-8">
-                                            <select className="form-control" ref={(org) => this.org = org} onChange={(e) => this.onOrganizationChange(e, e.target.value)} id="org" >
+                                            <select className="form-control" ref={(orgStory) => this.orgStory = orgStory} onChange={(e) => this.onOrganizationChange(e, e.target.value, 0)} id="orgStory" >
                                                 <option value="" key='organization' defaultValue></option>
                                                 {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
                                                     if (organization !== 'default_org')
@@ -234,7 +288,7 @@ class Crea extends Component {
                             <button className='btn btn-default' onClick={this.hideModalStory.bind(this)}>
                                 Close
                             </button>
-                            <button type="button" className="btn btn-primary px-2" onClick={/* this.handleSaveStory.bind(this) */()=>{}}>
+                            <button type="button" className="btn btn-primary px-2" onClick={this.handleSaveStory.bind(this)}>
                                 <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                 Crea
                             </button>
@@ -252,30 +306,39 @@ class Crea extends Component {
                                 <div className="form-group row">
                                     <label className="col-md-2 form-control-label">Titolo</label>
                                     <div className="col-md-8">
-                                        <input type="text" className="form-control" ref={(titleDash) => this.titleDash = titleDash} onChange={this.validate.bind(this)} id="title" placeholder="Titolo" />
+                                        <input type="text" className="form-control" ref={(titleDash) => this.titleDash = titleDash} onChange={this.validate.bind(this,1)} id="titleDash" placeholder="Titolo" />
                                         {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
                                     </div>
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-md-2 form-control-label">Sottotitolo</label>
                                     <div className="col-md-8">
-                                        <input type="text" className="form-control" ref={(subtitle) => this.subtitle = subtitle} id="subtitle" placeholder="Sottotitolo" />
+                                        <input type="text" className="form-control" ref={(subtitleDash) => this.subtitleDash = subtitleDash} id="subtitleDash" placeholder="Sottotitolo" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-md-2 form-control-label">Privata</label>
                                     <div className="col-md-8">
-                                        <select className="form-control" ref={(pvt) => this.pvt = pvt} onChange={(e) => this.onPvtChange(e, e.target.value)} id="pvt" >
+                                    {loggedUser.organizations && loggedUser.organizations.length > 1 ?
+                                        <select className="form-control" ref={(pvtDash) => this.pvtDash = pvtDash} onChange={(e) => this.onPvtChange(e, e.target.value, 1)} id="pvtDash" >
                                             <option value="0" defaultValue key="0">No</option>
                                             <option value="1" key='1'>Si</option>
                                         </select>
+                                    :
+                                        <div>
+                                            <select className="form-control" ref={(pvtDash) => this.pvtDash = pvtDash} onChange={(e) => this.onPvtChange(e, e.target.value, 1)} id="pvtDash" >
+                                                <option value="0" defaultValue key="0">No</option>
+                                            </select>
+                                            <span>Puoi creare soltanto dashboards pubbliche in quanto non hai nessuna organizzazione associata</span>
+                                        </div>
+                                    }
                                     </div>
                                 </div>
-                                {this.state.pvt == 1 &&
+                                {this.state.pvtDash == 1 &&
                                     <div className="form-group row">
                                         <label className="col-md-2 form-control-label">Organizzazione</label>
                                         <div className="col-md-8">
-                                            <select className="form-control" ref={(org) => this.org = org} onChange={(e) => this.onOrganizationChange(e, e.target.value)} id="org" >
+                                            <select className="form-control" ref={(orgDash) => this.orgDash = orgDash} onChange={(e) => this.onOrganizationChange(e, e.target.value, 1)} id="orgDash" >
                                                 <option value="" key='organization' defaultValue></option>
                                                 {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
                                                     if (organization !== 'default_org')

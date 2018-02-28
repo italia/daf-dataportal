@@ -560,7 +560,7 @@ const renderGroupAccess = ({ fields, meta: { error, submitFailed } }) => (
 
 let WizardOperational = props => {
 
-  const { handleSubmit, pristine, previousPage, getDomain, domain, submitting, isStandard, isOk = 'false', isPush = true,isFtp = 'sftp', followStandard = 'false' } = props;  
+  const { handleSubmit, saving, pristine, previousPage, getDomain, domain, submitting, isStandard, isOk = 'false', isPush = true,isFtp = 'sftp', followStandard = 'false' } = props;  
   let standards = serviceurl.apiURLCatalog + '/dataset-catalogs/standard-uris' ; 
   let domainUrl = serviceurl.apiURLCatalog + '/voc/themes/getall';
   let subdomainUrl = serviceurl.apiURLCatalog + '/voc/subthemes/getall' 
@@ -626,7 +626,8 @@ let WizardOperational = props => {
           <button type="button" className="btn btn-primary float-left" onClick={previousPage}>Indietro</button>
         </div>
         <div className="col-6">
-          <button type="submit" className="btn btn-primary float-right" disabled={pristine || submitting}>Invia</button>
+          {/* <button type="submit" className="btn btn-primary float-right" disabled={pristine || submitting}>Invia</button> */}
+              <button type="submit" className="btn btn-primary float-right">{saving&&<i className="fa fa-spinner fa-spin fa-lg"/>}{!saving&&"Invia"}</button>
         </div>
       </div>
 
