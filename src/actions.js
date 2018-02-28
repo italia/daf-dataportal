@@ -275,31 +275,36 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
   };
   return dispatch => {
     dispatch(requestRegistration())
-    if(pw===pw2){
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'      
-      },
-      body: JSON.stringify(input)
-    })
-    .then(response => {
-        if (response.ok) {
-           response.json().then(json => {
-            console.log(json);
-            dispatch(receiveRegistrationSuccess('ok', json))
-          });
-        } else {
-          response.json().then(json => {
-            console.log(json);
-            dispatch(receiveRegistrationSuccess('ko', json))
-          });
-        }
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+    if(reg.test(pw)){
+      if(pw===pw2){
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'      
+        },
+        body: JSON.stringify(input)
       })
-    .catch(error => dispatch(receiveRegistrationError(error)))
+      .then(response => {
+          if (response.ok) {
+            response.json().then(json => {
+              console.log(json);
+              dispatch(receiveRegistrationSuccess('ok', json))
+            });
+          } else {
+            response.json().then(json => {
+              console.log(json);
+              dispatch(receiveRegistrationSuccess('ko', json))
+            });
+          }
+        })
+      .catch(error => dispatch(receiveRegistrationError(error)))
+      } else{
+        dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
+      }
     } else{
-      dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
+      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
     }
   }
 }

@@ -119,10 +119,10 @@ export function createDcat (values, data) {
   var dcatapit = 'dcatapit'
   data[dcatapit] = {}
   data[dcatapit]['privatex'] = values.private==1?true:false
-  data[dcatapit]['name'] = values.title
+  data[dcatapit]['name'] = values.nome
   data[dcatapit]['title'] = values.title
-  data[dcatapit]['identifier'] = values.title //values.identifier
-  data[dcatapit]['alternate_identifier'] = values.title //values.identifier
+  data[dcatapit]['identifier'] = values.nome //values.identifier
+  data[dcatapit]['alternate_identifier'] = values.nome //values.identifier
   data[dcatapit]['notes'] = values.notes
   data[dcatapit]['theme'] =  (values.theme) ? values.theme  : 'ECON'
   data[dcatapit]['publisher_name'] = values.ownership //values.publisher_editor
