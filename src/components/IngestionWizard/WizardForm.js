@@ -110,7 +110,7 @@ class WizardForm extends Component {
   }
 
   render() {
-    const { onSubmit, loggedUser } = this.props
+    const { onSubmit, loggedUser, saving } = this.props
     const { page } = this.state
     return (
       <div>
@@ -150,6 +150,7 @@ class WizardForm extends Component {
                       previousPage={this.previousPage}
                       onSubmit={onSubmit}
                       getDomain={this.getDomain}
+                      saving={saving}
                     />}
               </div>
             </div>
@@ -202,7 +203,8 @@ class WizardForm extends Component {
 WizardForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   loggedUser: PropTypes.object,
-  organizations: PropTypes.array
+  organizations: PropTypes.array,
+  saving: PropTypes.bool
 }
 
 function mapStateToProps(state) {

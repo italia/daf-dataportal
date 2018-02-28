@@ -14,6 +14,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap'
 
+
 const transformer = values => {
   var metacatalog = {}
   metacatalog = createMetacatalog(values, metacatalog)
@@ -25,7 +26,8 @@ class IngestionForm extends Component {
     super(props);
     this.state = { msg: null,
                    msgErr: null,
-                   isOpen: false 
+                   isOpen: false,
+                   saving: false
                   }
     this.showResults = this.showResults.bind(this);
 }
@@ -35,6 +37,12 @@ openModal(){
     isOpen: true
   });
 };
+
+setSending = (valueSending, valueError) => {
+  this.setState({
+    sending: valueSending
+  });
+}
 
 hideModalAndRedirect = (e) => {
   const { dispatch } = this.props;
@@ -47,47 +55,60 @@ hideModalAndRedirect = (e) => {
   this.props.history.push('/home')
 };
 
-/*   showResults = values =>{
+/*    showResults = values =>{
     const transformed = transformer(values)
     console.log(transformed)
-    console.log(values)
-  } */
+  }  */
 
-  showResults = values =>{
-    const transformed = transformer(values)
-    console.log("transformed: " + transformed)
-    this.setState({transformed:transformed})
-    const { dispatch } = this.props;
-    if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
-    console.log("values: " + values.filetype)
-    const fileType = values.filetype?values.filetype:'csv'
-    dispatch(addDataset(transformed, localStorage.getItem('token'), fileType))
-    .then(response => {
-      if(response.ok){
-        console.log('Caricamento metadati avvenuto con successo')
-        dispatch(addDatasetKylo(transformed, localStorage.getItem('token'), fileType))
-        .then((response) => {
+    showResults = values =>{
+      this.setState({
+        saving: true
+      })
+      const transformed = transformer(values)
+      console.log("transformed: " + transformed)
+      this.setState({transformed:transformed})
+      const { dispatch } = this.props;
+      if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
+        console.log("values: " + values.filetype)
+        const fileType = values.filetype?values.filetype:'csv'
+        dispatch(addDataset(transformed, localStorage.getItem('token'), fileType))
+        .then(response => {
           if(response.ok){
-            this.openModal()
-            localStorage.removeItem('kyloSchema')
+            console.log('Caricamento metadati avvenuto con successo')
+            dispatch(addDatasetKylo(transformed, localStorage.getItem('token'), fileType))
+            .then((response) => {
+              if(response.ok){
+                this.setSending(false, undefined);
+                this.openModal()
+                localStorage.removeItem('kyloSchema')
+                this.setState({saving: false})
+              }else{
+                this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
+                console.log('Errore durante il caricamento su kylo')
+                this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
+                this.setState({saving: false})
+              }
+            })
+            .catch((error) => {
+              this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
+              this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
+              this.setState({saving: false})
+            })
+            console.log('invio effettuato');
           }else{
-            console.log('errore durante il caricamento su kylo')
+            this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
+            console.log('Errore durante il caricamento dei metadati')
             this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
+            this.setState({saving: false})
           }
         })
-        .catch((error) => {
-          this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
-        })
-        console.log('invio effettuato');
-      }else{
-        console.log('Errore durante il caricamento dei metadati')
-        this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
+        } else {
+          this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
+          console.log('token non presente');
+          this.setState({saving: false})
+        }
       }
-    })
-    } else {
-      console.log('token non presente');
-    }
-  } 
+
 
   render() {
     const { loggedUser } = this.props
@@ -129,7 +150,7 @@ hideModalAndRedirect = (e) => {
               {this.state.msg} 
             </div>
         }
-         <WizardForm onSubmit={this.showResults.bind(this)} />
+         <WizardForm onSubmit={this.showResults} saving={this.state.saving}/>
       </div>
     </div>
     )
