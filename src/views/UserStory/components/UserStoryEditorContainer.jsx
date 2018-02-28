@@ -71,6 +71,25 @@ class UserStoryEditorContainer extends Component {
     return response
   }
 
+  cleanWidgets(layout) {
+    const { widgets } = this.state;
+    var output = {};
+    if (layout && widgets) {
+      let righe = layout.rows;
+      for (let i = 0; i < righe.length; i++) {
+        let colonne = righe[i].columns;
+        for (let j = 0; j < colonne.length; j++) {
+          let wids = colonne[j].widgets
+          for (let k = 0; k < wids.length; k++) {
+            output[wids[k].key] = widgets[wids[k].key]
+          }
+        }
+      }
+      console.log(output)
+      return output;
+    }
+  }
+
   /**
 * Count widget of type
 */
@@ -268,7 +287,8 @@ class UserStoryEditorContainer extends Component {
     //save data
     let request = this.state.dataStory;
     request.layout = JSON.stringify(layout);
-    request.widgets = JSON.stringify(widgets);
+    request.widgets = JSON.stringify(this.cleanWidgets(layout));
+    console.log(JSON.parse(request.widgets))
     /* const response = dashboardService.save(request); */
     if (this.props.onChange)
       this.props.onChange(request);

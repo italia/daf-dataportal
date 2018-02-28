@@ -114,8 +114,6 @@ class DashboardList extends Component {
               }
 
               const dashWidgets = JSON.parse(dash.widgets)
-              console.log(dashWidgets)
-              console.log(preview)
               var imageA = undefined;
               var imageB = undefined;
               

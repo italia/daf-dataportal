@@ -1,6 +1,6 @@
 const routes = {
   '/': 'Home',
-  '/home': 'Home',
+  '/home': 'DAF - Data Analytics Framework',
   '/dashboard/list': 'Dashboard',
   '/user_story/list': 'Storie',
   '/ingestionform': 'Ingestion',

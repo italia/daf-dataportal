@@ -63,11 +63,23 @@
 .b-t-dash{
     border-top: 1px solid #CAD4DC;
 }
+
+.b-t-story{
+    border-top: 1px solid #F0F3F5;
+}
+
 .card-dash{
     width: 320px;
     height: 423px;
     box-shadow: 0 0 8px 0 rgba(50,50,50,0.15);
     border:  1px solid #CAD4DC!important;
+}
+
+.card-story{
+    width: 320px;
+    height: 383px;
+    box-shadow: 0 0 8px 0 rgba(50,50,50,0.15);
+    border-top: 3px solid #0066CC!important;
 }
 
 .b-t-3 {
