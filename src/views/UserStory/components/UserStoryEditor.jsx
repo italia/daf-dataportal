@@ -40,6 +40,7 @@ class UserStoryEditor extends Component {
           if (wids[wid].props.wid_key.indexOf("TextWidget")!=-1){
             /* wids[wid].props.onSave = this.saveTextWidget.bind(this) */
             wids[wid].type = TextWidget
+            wids[wid].props.readOnly = false
           }else
             wids[wid].type = IframeWidget
         })
