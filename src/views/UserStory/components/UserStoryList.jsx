@@ -106,7 +106,7 @@ class UserStoryList extends Component {
                 for (let k = 0; k < widgets.length; k++){
                   if(widgets[k].indexOf('TextWidget')!==-1){
                     var text = dashWidgets[widgets[k]].props.text
-                    var array = text.split(' ')
+                    var array = text?text.split(' '):[]
                     
                     time = time + (array.length/275)
                   }
