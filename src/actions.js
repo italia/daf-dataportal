@@ -81,11 +81,13 @@ function requestLogin() {
   }
 }
 
-function receiveDatasetDetail(jsonDataset, jsonFile, query) {
+function receiveDatasetDetail(jsonDataset, jsonFile, jsonFeed, jsonIFrames, query) {
   return {
       type: RECEIVE_DATASET_DETAIL,
       dataset: jsonDataset,
       json: jsonFile,
+      feed: jsonFeed,
+      iframes: jsonIFrames,
       query: query,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_DETAIL'
@@ -635,12 +637,64 @@ function fetchDatasetDetail(datasetname, query) {
         }
       })
         .then(response => response.json())
-        .then(jsonDataset => dispatch(getFileFromStorageManager(jsonDataset.operational.logical_uri))
-        .catch(error => console.log('Errore durante il caricamento del file dallo storage manager ' + jsonDataset))
-        .then(jsonFile => dispatch(receiveDatasetDetail(jsonDataset, jsonFile, query))) 
-      )
-    }
+        .then(jsonDataset => {
+              dispatch(getFileFromStorageManager(jsonDataset.operational.logical_uri))
+              .catch(error => console.log('Errore durante il caricamento del file dallo storage manager'))
+              .then(jsonFile => {
+                    dispatch(getFeedDetail(jsonDataset.dcatapit.owner_org, jsonDataset.dcatapit.name))
+                    .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
+                    .then(jsonFeed => {
+                      dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
+                      .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
+                      .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFile, jsonFeed, jsonIFrames, query)))
+                      })
+                    }) 
+              })
+      }
   }
+
+  export function getDatasetIframes(nomeDataset) {
+    var token = '';
+    console.log('richiedo gli iframes per il dataset: ' + nomeDataset) 
+    var url = serviceurl.apiURLDatiGov + '/dashboard/iframesByName/' + nomeDataset;
+    if(localStorage.getItem('username') && localStorage.getItem('token') &&
+      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+        token = localStorage.getItem('token')
+      }
+    return dispatch => {
+        return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then(response => response.json())
+      }
+    }
+
+  export function getFeedDetail(org, nomeDataset) {
+    var token = '';
+    var name = org + '.' + org + '_o_' + nomeDataset;
+    console.log('richiedo lo stato del feed per il dataset: ' + name) 
+    var url = serviceurl.apiURLDatiGov + '/kylo/feeds/' + name;
+    if(localStorage.getItem('username') && localStorage.getItem('token') &&
+      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+        token = localStorage.getItem('token')
+      }
+    return dispatch => {
+        return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then(response => response.json())
+      }
+    }
 
 export function getFileFromStorageManager(logical_uri) {
   var token = '';

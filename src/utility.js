@@ -79,3 +79,11 @@ export function transformName(name){
     })
     return JSON.stringify(kyloSchema)
   }
+
+  export function transformWidgetName(name){
+    var sp1 = name.split('_o_')
+    if(sp1[1])
+    return sp1[1]
+    else 
+    return name
+  }
