@@ -55,12 +55,12 @@ hideModalAndRedirect = (e) => {
   this.props.history.push('/home')
 };
 
-   showResults = values =>{
+/*    showResults = values =>{
     const transformed = transformer(values)
     console.log(transformed)
-  } 
+  }  */
 
-   /*  showResults = values =>{
+     showResults = values =>{
       this.setState({
         saving: true
       })
@@ -107,7 +107,7 @@ hideModalAndRedirect = (e) => {
           console.log('token non presente');
           this.setState({saving: false})
         }
-      } */
+      } 
 
 
   render() {
