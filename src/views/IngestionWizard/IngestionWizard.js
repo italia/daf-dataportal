@@ -79,9 +79,9 @@ hideModalAndRedirect = (e) => {
             .then((response) => {
               if(response.ok){
                 this.setSending(false, undefined);
-                this.openModal()
                 localStorage.removeItem('kyloSchema')
                 this.setState({saving: false})
+                this.props.history.push('/dataset/' + transformed.dcatapit.name)
               }else{
                 this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
                 console.log('Errore durante il caricamento su kylo')
