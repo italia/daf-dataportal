@@ -26,9 +26,14 @@ export function createOperational (values, data) {
   var input_src = 'input_src'
   //var separator = values.separator
   if(values.modalitacaricamento==1){
+    var param = "format=".concat(values.filetype?values.filetype:'csv')
+    var url = "/home/".concat(localStorage.getItem('user').toLowerCase()).concat("/").concat(values.domain).concat("/").concat(values.subdomain).concat("/").concat(values.nome)
+    console.log('param: ' + param)
     data[operational][input_src] = {"sftp": [{
         "name": "sftp_local",
-        "param": "format="+ values.filetype?values.filetype:'csv' + ", path=/home/"+localStorage.getItem('user').toLowerCase()+"/"+values.domain+"/"+values.subdomain+"/"+values.title
+        "url": url,
+        "username": localStorage.getItem('user').toLowerCase(),
+        "param": param
       }]
     }
   }

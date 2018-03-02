@@ -55,6 +55,8 @@ function datasets( state = { isFetching: false, didInvalidate: false, items: [],
         query: action.query,
         dataset: action.dataset,
         json: action.json,
+        feed: action.feed,
+        iframes: action.iframes,
         lastUpdated: action.receivedAt,
         ope: action.ope
       })
