@@ -243,13 +243,27 @@ class DatasetDetail extends Component {
                                             </div> 
                                                         <div hidden={!this.state.showPreview}>{json?<ReactJson src={json} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />:<p>Anteprima non disponibile.</p>}</div>
                                             <div hidden={!this.state.showAPI} className="card-text">
-                                                <label>API Endpoint</label><br/>
-                                                <input className='w-75' value={this.state.value} onChange={({target: {value}}) => this.setState({value, copied: false})} disabled='true' />
-                                                <CopyToClipboard text={this.state.value}
-                                                    onCopy={() => this.setState({copied: true})}>
-                                                    <button><i className="fa fa-clipboard"></i></button>
-                                                </CopyToClipboard>
-                                                {this.state.copied ? <span className="badge badge-pill badge-success"> Copiato</span> : null}
+                                                <div className="row">
+                                                    <div className="col-12">
+                                                        <label>API Endpoint</label><br/>
+                                                        <input className='w-75' value={this.state.value} onChange={({target: {value}}) => this.setState({value, copied: false})} disabled='true' />
+                                                        <CopyToClipboard text={this.state.value}
+                                                            onCopy={() => this.setState({copied: true})}>
+                                                            <button><i className="fa fa-clipboard"></i></button>
+                                                        </CopyToClipboard>
+                                                        {this.state.copied ? <span className="badge badge-pill badge-success"> Copiato</span> : null}
+                                                    </div>
+                                                </div>
+                                                <br/><br/><br/>
+                                                <div className="row">
+                                                    <div className="col-12">
+                                                        <p>Ti ricordiamo che per poter effettuare la chiamata alla REST API occorre fornire i seguenti parametri di Basic Authentication:</p>
+                                                        <div>
+                                                            <p><strong>Utente: </strong>{localStorage.getItem('user')}</p>
+                                                            <p><strong>Password: </strong>XXXXXXXXXX</p>      
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div> 
                                             <div hidden={!this.state.showSuperset} className="card-text">Apri Superset <strong><a href={serviceurl.urlSuperset} target='_blank'>qui</a></strong>.</div> 
                                             <div hidden={!this.state.showJupyter} className="card-text">
@@ -339,26 +353,32 @@ class DatasetDetail extends Component {
                                     </div>
                                 </div>
                             </div>
+                            <div className="col-12">
+                                <div>
+                                    <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, this.props.query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
+                                </div>
+                            </div>
                     </div>)}
         }
     }
     render() {
         const { dataset, ope, json, feed, iframes } = this.props
-        return (
-            <div className="row">
-                {this.renderDatasetDetail(dataset, ope, json, feed, iframes)}
-                {!dataset && 
-                <div className="col-10" hidden={this.state.hidden}>
-                    <div className="alert alert-danger col-" role="alert">
-                        Il dataset cercato non esiste
+        return (<div>
+                    <div className="row">
+                        {this.renderDatasetDetail(dataset, ope, json, feed, iframes)}
+                        {!dataset && 
+                        <div className="col-10" hidden={this.state.hidden}>
+                            <div className="alert alert-danger col-" role="alert">
+                                Il dataset cercato non esiste
+                            </div>
+                            <div>
+                                <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, this.props.query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
+                            </div>
+                        </div>}
                     </div>
-                    <div>
-                        <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, this.props.query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
-                    </div>
-                </div>}
-            </div>
-        )
-    }
+                </div>
+            )
+        }
 }
 
 DatasetDetail.propTypes = {

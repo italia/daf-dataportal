@@ -620,8 +620,7 @@ export function addDatasetKylo(json, token, fileType) {
 
 function fetchDatasetDetail(datasetname, query) {
   var token = '';
-  //https://api.daf.teamdigitale.it/catalog-manager/v1/catalog-ds/getbytitle/carsharing_entity_vehicle
-  var url = serviceurl.apiURLCatalog + '/catalog-ds/getbytitle/'  + datasetname;
+  var url = serviceurl.apiURLCatalog + '/catalog-ds/getbyname/'  + datasetname;
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
       token = localStorage.getItem('token')
