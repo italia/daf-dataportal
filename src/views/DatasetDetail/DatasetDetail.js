@@ -298,7 +298,7 @@ class DatasetDetail extends Component {
                                                             <code>
                                                                 df.createOrReplaceTempView("{dataset.dcatapit.title}") <br />
                                                                 %%spark -c sql <br />
-                                                                select count(sesso), sesso from {dataset.dcatapit.title} group by sesso <br />
+                                                                select * from  {dataset.dcatapit.title} limit 10 <br />
                                                             </code>
                                                         </div>
                                                     </div>
