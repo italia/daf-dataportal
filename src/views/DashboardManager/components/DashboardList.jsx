@@ -78,7 +78,7 @@ class DashboardList extends Component {
       height: '160px',
     }
 
-    return (
+    return this.state.isLoading === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (
     <Container>
       <Header title="Le Mie Dashboards" />
       

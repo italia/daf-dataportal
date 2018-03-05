@@ -321,12 +321,12 @@ editDataset(ope){
 }
 
 render() {
-  const { datasets, dataset, ope, json } = this.props
+  const { datasets, dataset, ope, json, isFetching } = this.props
   const { isLoading, items, edit } = this.state;
   if(datasets)
     var subdatasets = datasets.slice(0, items)
-  return (
-    <div className="row u-textCenter u-padding-r-all u-textCenter">
+  return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (
+      <div className="row u-textCenter u-padding-r-all u-textCenter">
       <div className="col-md-8">
       {this.renderDatasetSearchResult(datasets?datasets.length:0, subdatasets, ope, isLoading)}
       </div>

@@ -44,7 +44,8 @@ class DatasetDetail extends Component {
             showAPI: false,
             showSuperset: false,
             showJupyter: false,
-            downloadState: 3 // 1-Success, 2-Error, 3-loading
+            downloadState: 3, // 1-Success, 2-Error, 3-loading
+            loading: true
         }
         
         this.handleDownloadFile = this.handleDownloadFile.bind(this)
@@ -61,19 +62,6 @@ class DatasetDetail extends Component {
             dispatch(datasetDetail(nome, query))
             .catch(error => {console.log('Errore durante il caricamento del dataset ' + nome); this.setState({hidden: false})})
         }
-        /* let response = userStoryService.list();
-        response.then((list) => {
-            this.setState({
-                datastories: list
-            });
-        });
-
-        let responseDataset = datasetService.listCorrelati();
-        responseDataset.then((list) => {
-            this.setState({
-                datasets: list
-            });
-        }); */
 
     }
 
@@ -362,8 +350,8 @@ class DatasetDetail extends Component {
         }
     }
     render() {
-        const { dataset, ope, json, feed, iframes } = this.props
-        return (<div>
+        const { dataset, ope, json, feed, iframes, isFetching } = this.props
+        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (<div>
                     <div className="row">
                         {this.renderDatasetDetail(dataset, ope, json, feed, iframes)}
                         {!dataset && 
