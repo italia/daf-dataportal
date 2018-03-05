@@ -295,7 +295,7 @@ class WizardFormMetadata extends Component {
             {modalitacaricamento==1 &&
               <div className="form-group">
                 <div className="col-md-12">
-                <label htmlFor='tests'>Carica il file (max 1gitMB):</label>
+                <label htmlFor='tests'>Carica il file (max 1MB):</label>
                   <Dropzone
                     name="input"
                     className="dropzone"

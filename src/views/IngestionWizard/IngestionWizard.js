@@ -55,12 +55,12 @@ hideModalAndRedirect = (e) => {
   this.props.history.push('/home')
 };
 
-   showResults = values =>{
+/*    showResults = values =>{
     const transformed = transformer(values)
     console.log(transformed)
-  } 
+  }  */
 
-   /*  showResults = values =>{
+     showResults = values =>{
       this.setState({
         saving: true
       })
@@ -79,9 +79,9 @@ hideModalAndRedirect = (e) => {
             .then((response) => {
               if(response.ok){
                 this.setSending(false, undefined);
-                this.openModal()
                 localStorage.removeItem('kyloSchema')
                 this.setState({saving: false})
+                this.props.history.push('/dataset/' + transformed.dcatapit.name)
               }else{
                 this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
                 console.log('Errore durante il caricamento su kylo')
@@ -107,7 +107,7 @@ hideModalAndRedirect = (e) => {
           console.log('token non presente');
           this.setState({saving: false})
         }
-      } */
+      } 
 
 
   render() {
