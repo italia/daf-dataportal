@@ -256,9 +256,14 @@ class WizardFormMetadata extends Component {
         <div className="form-group row">
           <div className="col-md-5">
             <p className="text-justify"><b>Benvenuto</b> ricordati che a grandi poteri derivano grandi responsabilità</p>
-            <p className="text-justify">Carica un file tramite <b>URL</b> oppure se caricare il file direttamente attraverso la dropbox. </p>
-            <p className="text-justify">Nel caso scegli la dropbox trascina un <b>file di esempio</b> di piccole dimensioni max 1MB </p> 
+            <h4> Caricamento SFTP </h4>
+            <p className="text-justify">Carica un file di esempio minore di 1MB scegliendo Drag and Drop. </p>
+            <p className="text-justify">Inserisci le informazioni seguendo la procedura guidata</p> 
             <p className="text-justify">Il file vero e proprio lo dovrai caricare all'indirizzo <b>SFTP</b> che ti abbiamo comunicato </p> 
+            <h4> Caricamento web service (alpha version)</h4>
+            <p className="text-justify">Inserisci l'url dei dati da caricare </p>
+            <p className="text-justify">Inserisci le informazioni seguendo la procedura guidata</p> 
+            <p className="text-justify">Il caricamento del file parte in automatico a intervalli regolari</p> 
             <p className="text-justify">Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p>
           </div>
           <div className="col-md-7">
