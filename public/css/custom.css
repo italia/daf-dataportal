@@ -113,3 +113,23 @@
     width: 100%;
     padding: 1.25rem;
 }
+
+.widget-card{
+	height: 253px;
+	width: 320px;
+    border: 1px solid #CAD4DC;
+    box-shadow: 0 0 8px 0 rgba(50,50,50,0.15);
+}
+
+.header-widget{
+    width: 100%;
+    height: 46px;
+}
+
+.title-widget{
+	height: 20px;
+	width: 255px;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 19px;
+}
