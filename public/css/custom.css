@@ -124,6 +124,7 @@
 .header-widget{
     width: 100%;
     height: 46px;
+    border-bottom: 1px solid #CAD4DC;
 }
 
 .title-widget{
@@ -132,4 +133,21 @@
 	font-size: 14px;
 	font-weight: bold;
 	line-height: 19px;
+}
+
+.text-icon{
+    color: #b0bec5 !important
+}
+.b-b-card{
+    border-bottom: 1px solid #CAD4DC;
+}
+
+.footer-widget{
+    height: 45px;
+    width: 100%;
+}
+
+.tool{
+    height: 45px;
+    width: 52px;
 }
