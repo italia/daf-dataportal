@@ -25,13 +25,16 @@ class Dataset extends Component {
     this.state = {
       items: 10,
       visibility: 'visible',
-      order_filter: 'metadata_modified%20desc',
-      category_filter: props.history.location.state && props.history.location.state.category,
-      group_filter: props.history.location.state && props.history.location.state.group,
-      organization_filter: props.history.location.state && props.history.location.state.organization,
-      showDivCategory: false,
-      showDivGroup: false,
-      showDivOrganization: false,
+      order_filter: props.history.location.state?props.history.location.state.order_filter:'metadata_modified%20desc',
+      
+      category_filter: props.history.location.state && props.history.location.state.category_filter,
+      group_filter: props.history.location.state && props.history.location.state.group_filter,
+      organization_filter: props.history.location.state && props.history.location.state.organization_filter,
+      
+      showDivCategory: props.history.location.state && props.history.location.state.category_filter?true:false,
+      showDivGroup: props.history.location.state && props.history.location.state.group_filter?true:false,
+      showDivOrganization: props.history.location.state && props.history.location.state.organization_filter?true:false,
+      
       edit: false,
       organizations: []    
     }
@@ -115,9 +118,20 @@ class Dataset extends Component {
       edit: false
     })
     const { dispatch, query } = this.props
-    dispatch(datasetDetail(name, query))
+    const { order_filter, category_filter, organization_filter, group_filter } = this.state
+/*     dispatch(datasetDetail(name, query, category_filter, group_filter, organization_filter, order_filter))
     .catch(error => console.log('Errore durante il caricamento del dataset ' + name))
-    .then(()=>this.props.history.push('/dataset/'+name))
+    .then(()=>this.props.history.push('/dataset/'+name)) */
+    //this.props.history.push('/dataset/'+name)
+    this.props.history.push({
+      pathname: '/dataset/'+name,
+      state: {'query': query,
+              'category_filter': category_filter,
+              'organization_filter': organization_filter,
+              'order_filter': order_filter,
+              'group_filter': group_filter
+      }
+    })
   }
 
   renderDataset() {

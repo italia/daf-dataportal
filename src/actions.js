@@ -81,14 +81,17 @@ function requestLogin() {
   }
 }
 
-function receiveDatasetDetail(jsonDataset, jsonFile, jsonFeed, jsonIFrames, query) {
+function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter) {
   return {
       type: RECEIVE_DATASET_DETAIL,
       dataset: jsonDataset,
-      json: jsonFile,
       feed: jsonFeed,
       iframes: jsonIFrames,
       query: query,
+      category_filter: category_filter,
+      group_filter: group_filter,
+      organization_filter: organization_filter,
+      order_filter: order_filter,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_DETAIL'
   }
@@ -577,10 +580,10 @@ export function unloadDatasets() {
   }
 }
 
-export function datasetDetail(datasetname, query) {
+export function datasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
   console.log('Dataset Detail action');
   return (dispatch, getState) => {
-      return dispatch(fetchDatasetDetail(datasetname, query))
+      return dispatch(fetchDatasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter))
   }
 }
 
@@ -618,7 +621,7 @@ export function addDatasetKylo(json, token, fileType) {
   }
 }
 
-function fetchDatasetDetail(datasetname, query) {
+function fetchDatasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
   var token = '';
   var url = serviceurl.apiURLCatalog + '/catalog-ds/getbyname/'  + datasetname;
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
@@ -637,18 +640,14 @@ function fetchDatasetDetail(datasetname, query) {
       })
         .then(response => response.json())
         .then(jsonDataset => {
-              dispatch(getFileFromStorageManager(jsonDataset.operational.logical_uri))
-              .catch(error => console.log('Errore durante il caricamento del file dallo storage manager'))
-              .then(jsonFile => {
-                    dispatch(getFeedDetail(jsonDataset.dcatapit.owner_org, jsonDataset.dcatapit.name))
-                    .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
-                    .then(jsonFeed => {
-                      dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
-                      .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                      .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFile, jsonFeed, jsonIFrames, query)))
-                      })
-                    }) 
-              })
+              dispatch(getFeedDetail(jsonDataset.dcatapit.owner_org, jsonDataset.dcatapit.name))
+              .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
+              .then(jsonFeed => {
+                dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
+                .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
+                .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter)))
+                })
+              }) 
       }
   }
 
@@ -670,6 +669,7 @@ function fetchDatasetDetail(datasetname, query) {
           }
         })
         .then(response => response.json())
+        .then(json => json)
       }
     }
 
@@ -692,28 +692,57 @@ function fetchDatasetDetail(datasetname, query) {
           }
         })
         .then(response => response.json())
+        .then(json => json)
       }
     }
 
-export function getFileFromStorageManager(logical_uri) {
-  var token = '';
-  var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
-  if(localStorage.getItem('username') && localStorage.getItem('token') &&
-    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
-      token = localStorage.getItem('token')
-    }
-  return dispatch => {
-      return fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
+    export function getFileFromStorageManager(logical_uri) {
+      var token = '';
+
+      var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
+      if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
         }
-      })
-      .then(response => response.json())
+      return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .then(response => response.json())
+          .then(json => json)
+        }
+      }
+
+
+
+
+
+
+  export function getSupersetUrl(nomeDataset, org) {
+    var token = '';
+    var url = serviceurl.apiURLDatiGov + '/superset/table/' + org + '_o_' + nomeDataset;
+    //https://datipubblici.daf.teamdigitale.it/dati-gov/v1/superset/table/default_org_o_sample_ciclisti_test_2    
+    if(localStorage.getItem('username') && localStorage.getItem('token') &&
+      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+        token = localStorage.getItem('token')
+      }
+    return dispatch => {
+        return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then(response => response.json())
+      }
     }
-  }
 
 /******************************************************************************* */
 
