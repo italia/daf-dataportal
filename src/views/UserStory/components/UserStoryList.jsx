@@ -32,14 +32,16 @@ class UserStoryList extends Component {
    */
   load = (config) => {
     this.state = {
-      userStories: []
+      userStories: [],
+      loading:true
     };
     
     let response = userStoryService.list();
     response.then((list) => {
       this.originalUserStories = list;
       this.setState({
-        userStories: list
+        userStories: list,
+        loading:false
       });
     });
   }
@@ -64,13 +66,13 @@ class UserStoryList extends Component {
       height: '160px',
       border: '0'
     }
-    return (
+    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (
     <Container>
 
       <Header title="Le Mie Storie" />
       
       <ListBar onChange={this.filter} history={this.props.history} ></ListBar>
-
+      
       <div className="row">
         {
           this.state.userStories.map((story, index) => {

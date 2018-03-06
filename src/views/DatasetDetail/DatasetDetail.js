@@ -5,7 +5,8 @@ import {
     loadDatasets,
     unloadDatasets,
     datasetDetail,
-    getFileFromStorageManager
+    getFileFromStorageManager,
+    getSupersetUrl
 } from '../../actions'
 import ReactJson from 'react-json-view'
 import { transformName } from '../../utility'
@@ -45,10 +46,22 @@ class DatasetDetail extends Component {
             showAPI: false,
             showSuperset: false,
             showJupyter: false,
-            downloadState: 3 // 1-Success, 2-Error, 3-loading
+            downloadState: 3, // 1-Success, 2-Error, 3-loading
+            supersetState: 3,
+            previewState: 3,
+            supersetLink: undefined,
+            loading: true,
+            jsonPreview: undefined,
+            category_filter: props.history.location.state?props.history.location.state.category_filter:undefined, 
+            group_filter: props.history.location.state?props.history.location.state.group_filter:undefined,  
+            organization_filter: props.history.location.state?props.history.location.state.organization_filter:undefined, 
+            order_filter: props.history.location.state?props.history.location.state.order_filter:undefined, 
+
         }
         
+        this.handlePreview = this.handlePreview.bind(this)
         this.handleDownloadFile = this.handleDownloadFile.bind(this)
+        this.handleSuperset = this.handleSuperset.bind(this)
         this.searchDataset = this.searchDataset.bind(this)
     }
 
@@ -62,19 +75,6 @@ class DatasetDetail extends Component {
             dispatch(datasetDetail(nome, query))
             .catch(error => {console.log('Errore durante il caricamento del dataset ' + nome); this.setState({hidden: false})})
         }
-        /* let response = userStoryService.list();
-        response.then((list) => {
-            this.setState({
-                datastories: list
-            });
-        });
-
-        let responseDataset = datasetService.listCorrelati();
-        responseDataset.then((list) => {
-            this.setState({
-                datasets: list
-            });
-        }); */
 
     }
 
@@ -115,20 +115,62 @@ class DatasetDetail extends Component {
             showDownload: true 
         })
         dispatch(getFileFromStorageManager(logical_uri))
-            .then(json => {
-                            download(JSON.stringify(json), nomeFile + '.json', 'application/json')
-                            this.setState({downloadState: 1})  
-                        })
+            .then(json => {download(JSON.stringify(json), nomeFile + '.json', 'application/json')
+                            this.setState({downloadState: 1})})
             .catch(error => {this.setState({downloadState: 2})})  
     }
 
-    searchDataset(query, category, group, organization, order) {
+    handlePreview(nomeFile, logical_uri, e) {
+        e.preventDefault()
         const { dispatch } = this.props
-        dispatch(loadDatasets(query, 0, '', category, group, organization, order))
-        .then(() => this.props.history.push('/dataset'))
+        this.setState({
+            showPreview: true,
+            showAPI:false, 
+            showSuperset:false, 
+            showJupyter:false, 
+            showDownload:false, 
+            showDett:false,
+            previewState: 3
+        })
+        dispatch(getFileFromStorageManager(logical_uri))
+            .then(json => {this.setState({previewState: 1, jsonPreview: json})})
+            .catch(error => {this.setState({previewState: 2})})  
     }
 
-    renderDatasetDetail(dataset, ope, json, feed, iframes){
+
+    handleSuperset(nomeFile, org, e) {
+        e.preventDefault()
+        const { dispatch } = this.props
+        this.setState({
+            showSuperset: true, 
+            showAPI: false, 
+            showPreview:false, 
+            showJupyter:false, 
+            showDownload:false, 
+            showDett:false,
+            supersetState: 3,
+            supersetLink: undefined
+        })
+        dispatch(getSupersetUrl(nomeFile, org))
+            .then(json => {this.setState({ supersetLink: json, supersetState: 1})})
+            .catch(error => {this.setState({ supersetState: 2 })})  
+    }
+
+    searchDataset(query, category_filter, group_filter, organization_filter, order_filter) {
+        const { dispatch } = this.props
+        dispatch(loadDatasets(query, 0, '', category_filter, group_filter, organization_filter, order_filter))
+        .then(() =>  this.props.history.push({
+            pathname: '/dataset',
+            state: {'query': query,
+                    'category_filter': category_filter,
+                    'organization_filter': organization_filter,
+                    'order_filter': order_filter,
+                    'group_filter': group_filter
+            }
+          }))
+    }
+
+    renderDatasetDetail(dataset, ope, feed, iframes, query){
         const iframeStyle = {
             width: '100%',
             height: '250px',
@@ -184,9 +226,9 @@ class DatasetDetail extends Component {
                                         <div className="btn-group" role="group" aria-label="Basic example">
                                             <button type="button" className={!this.state.showDett ? 'btn btn-default' : 'btn btn-primary'} onClick={() => { this.setState({showDett:true, showPreview: false, showAPI:false, showSuperset:false, showJupyter:false, showDownload:false})}}>Dettaglio</button>
                                             <button type="button" className={!this.state.showDownload ? 'btn btn-default' : 'btn btn-primary'} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download</button>
-                                            <button type="button" className={!this.state.showPreview ? 'btn btn-default' : 'btn btn-primary'} onClick={() => { this.setState({showPreview: true, showAPI:false, showSuperset:false, showJupyter:false, showDownload:false, showDett:false})}}>Preview</button>
+                                            <button type="button" className={!this.state.showPreview ? 'btn btn-default' : 'btn btn-primary'} onClick={this.handlePreview.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Preview</button>
                                             <button type="button" className={!this.state.showAPI ? 'btn btn-default' : 'btn btn-primary'} onClick={() => { this.setState({showAPI: true, showPreview:false, showSuperset:false, showJupyter:false, showDownload:false, showDett:false, copied:false ,value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri)})}}>API</button>
-                                            <button type="button" className={!this.state.showSuperset ? 'btn btn-default' : 'btn btn-primary'} onClick={() => { this.setState({showSuperset: true, showAPI: false, showPreview:false, showJupyter:false, showDownload:false, showDett:false})}}>Superset</button>
+                                            <button type="button" className={!this.state.showSuperset ? 'btn btn-default' : 'btn btn-primary'} onClick={this.handleSuperset.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}>Superset</button>
                                             <button type="button" className={!this.state.showJupyter ? 'btn btn-default' : 'btn btn-primary'} onClick={() => { this.setState({showJupyter: true, showSuperset: false, showAPI: false, showPreview:false, showDownload:false, showDett:false })}}>Jupyter</button>
                                         </div>
                                     </div>
@@ -242,7 +284,17 @@ class DatasetDetail extends Component {
                                                 {this.state.downloadState===2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il download del file, contatta l'assistenza.</div>}
                                                 {this.state.downloadState===3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1"/> Download in corso..</div>}
                                             </div> 
-                                                        <div hidden={!this.state.showPreview}>{json?<ReactJson src={json} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />:<p>Anteprima non disponibile.</p>}</div>
+                                
+                                            
+                                            <div hidden={!this.state.showPreview} className="card-text">
+                                                {this.state.previewState===1 && <div>{this.state.jsonPreview?<ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />:<p>Anteprima non disponibile.</p>}</div>}
+                                                {this.state.previewState===2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il caricamento della risorsa, contatta l'assistenza.</div>}
+                                                {this.state.previewState===3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1"/> Caricamento in corso..</div>}
+                                            </div> 
+                                            
+                                            
+                                            
+                                            
                                             <div hidden={!this.state.showAPI} className="card-text">
                                                 <div className="row">
                                                     <div className="col-12">
@@ -266,11 +318,32 @@ class DatasetDetail extends Component {
                                                     </div>
                                                 </div>
                                             </div> 
-                                            <div hidden={!this.state.showSuperset} className="card-text">Apri Superset <strong><a href={serviceurl.urlSuperset} target='_blank'>qui</a></strong>.</div> 
+                                            <div hidden={!this.state.showSuperset} className="card-text">
+                                              {this.state.supersetState===1 && 
+                                               <div>
+                                                    {this.state.supersetLink.length>0?
+                                                        <div>
+                                                            {this.state.supersetLink.map((link, index) => {
+                                                                    return(
+                                                                        <div>
+                                                                            <p>Accedi alla tabella <strong><a href={link.url} target='_blank'>{link.name}</a></strong> su Superset.</p>
+                                                                        </div>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </div>
+                                                    :
+                                                        <p>La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso.</p>
+                                                    }
+                                                </div>
+                                                }
+                                                {this.state.supersetState===2 && <div className="alert alert-danger">Ci sono stati dei problemi durante l'accesso a Superset, contatta l'assistenza.</div>}
+                                                {this.state.supersetState===3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1"/> Caricamento in corso..</div>}
+                                            </div> 
                                             <div hidden={!this.state.showJupyter} className="card-text">
                                                 <div className="col-12">
                                                     <div className="row">
-                                                        <p>Leggi attentamente le <a href="http://daf-docs.readthedocs.io/en/latest/manutente/datascience/jupyter.html">istruzioni </a> e collegati a <a href={serviceurl.urlJupiter}>Jupyter</a>. </p>
+                                                        <p>Leggi attentamente le <a href="http://daf-docs.readthedocs.io/en/latest/manutente/datascience/jupyter.html" target='_blank'>istruzioni </a> e collegati a <a href={serviceurl.urlJupiter} target='_blank'>Jupyter</a>.  </p>
                                                         <p>Dopo aver attivato la sessione seguendo le istruzioni potrai analizzare il file al percorso:</p>
                                                         <p><strong>{dataset.operational.physical_uri}</strong>.</p>
                                                         <p>Usa i seguenti comandi per caricare il file nel notebook:</p>
@@ -313,11 +386,11 @@ class DatasetDetail extends Component {
                                                         </div>
                                                     </div>
                                                     <br /><br />
-                                                    <div className="row">
+{/*                                                     <div className="row">
                                                         <div className="col-md-2">
                                                             <p>Apri Jupyter <strong><a href={serviceurl.urlJupiter} target='_blank'>qui</a></strong>.</p>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </div> 
                                         </div>
@@ -344,24 +417,24 @@ class DatasetDetail extends Component {
                             </div>
                             <div className="col-12">
                                 <div>
-                                    <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, this.props.query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
+                                    <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
                                 </div>
                             </div>
                     </div>)}
         }
     }
     render() {
-        const { dataset, ope, json, feed, iframes } = this.props
-        return (<div>
+        const { dataset, ope, feed, iframes, isFetching, query } = this.props
+        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (<div>
                     <div className="row">
-                        {this.renderDatasetDetail(dataset, ope, json, feed, iframes)}
+                        {this.renderDatasetDetail(dataset, ope, feed, iframes, query)}
                         {!dataset && 
                         <div className="col-10" hidden={this.state.hidden}>
                             <div className="alert alert-danger col-" role="alert">
                                 Il dataset cercato non esiste
                             </div>
                             <div>
-                                <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, this.props.query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
+                                <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
                             </div>
                         </div>}
                     </div>
@@ -379,14 +452,13 @@ DatasetDetail.propTypes = {
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     ope: PropTypes.string,
-    json: PropTypes.array,
     feed: PropTypes.object,
     iframes: PropTypes.array
 }
 
 function mapStateToProps(state) {
-    const { isFetching, lastUpdated, dataset, items: datasets, query, ope, json, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
-    return { datasets, dataset, isFetching, lastUpdated, query, ope, json, feed, iframes }
+    const { isFetching, lastUpdated, dataset, items: datasets, query, ope, feed, iframes  } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
+    return { datasets, dataset, isFetching, lastUpdated, query, ope, feed, iframes }
 }
 
 export default connect(mapStateToProps)(DatasetDetail)

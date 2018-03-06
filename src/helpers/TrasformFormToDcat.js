@@ -1,4 +1,4 @@
-import { getKyloSchema } from '../utility'
+import { getKyloSchema, getCurrentDate } from '../utility'
 
 export function createOperational (values, data) {
   var operational = 'operational'
@@ -133,14 +133,14 @@ export function createDcat (values, data) {
   data[dcatapit]['publisher_name'] = values.ownership //values.publisher_editor
   data[dcatapit]['publisher_editor'] = values.ownership //values.publisher_editor
   data[dcatapit]['publisher_identifier'] = values.ownership //values.publisher_editor
-  data[dcatapit]['modified'] = '2017-07-23' //values.creation_date
+  data[dcatapit]['modified'] = getCurrentDate() //values.creation_date
   data[dcatapit]['holder_name'] = values.ownership  //values.holder_name
   data[dcatapit]['holder_identifier'] = values.ownership  //values.holder_identifier
   data[dcatapit]['license_title'] = 'Altro (Non Commerciale)' //values.license_title
   data[dcatapit]['license_id'] = values.license3//values.license_identifier
   data[dcatapit]['owner_org'] = values.ownership //values.owner_org
   data[dcatapit]['frequency'] = 'unknown'//Not in form
-  data[dcatapit]['creation_date'] = '2017-07-23' //Not in form
+  data[dcatapit]['creation_date'] = getCurrentDate() //Not in form
   data[dcatapit]["groups"] = []
   data[dcatapit]["resources"] = []
   data[dcatapit]["relationships_as_object"] = []
