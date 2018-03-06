@@ -151,3 +151,12 @@
     height: 45px;
     width: 52px;
 }
+
+.top-home{
+    margin-top: -1.5rem !important;
+    height: 114px
+}
+
+.bg-grey-n{
+    background-color: #CAD4DC !important
+}

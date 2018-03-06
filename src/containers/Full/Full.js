@@ -5,6 +5,7 @@ import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
+import Home from '../../views/Home/Home';
 import IngestionWizard from '../../views/IngestionWizard/';
 import Ontologies from '../../views/Ontologies/';
 import Vocabulary from '../../views/Vocabulary/';
@@ -27,10 +28,13 @@ class Full extends Component {
       'paddingRigth': '0px',
     };
     let mainDiv = 'bg-white'
+    let home = ''
 
     if (history.location.pathname ==='/user_story/list')
       mainDiv='bg-light'
     
+    if (history.location.pathname === '/home' )
+      home = 'p-0'
     return (
       <div className="app">
         <Header history={history}/>
@@ -38,9 +42,10 @@ class Full extends Component {
           <Sidebar {...this.props}/>
           <main className={"main "+mainDiv} >
             <Breadcrumb />
-            <div className="container-fluid" style={divStyle}>
+            <div className={"container-fluid "+home} style={divStyle}>
               <Switch>
-                <Route path="/home" name="Dashboard" exact component={Dashboard}/>
+                {<Route path="/home" name="Home" exact component={Home}/>}
+                {/* <Route path="/prova" name="Home" exact component={Home} /> */}
                 <Route path="/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
                 <Route path="/ontologies" name="Ontologies" component={Ontologies} />
                 <Route path="/vocabulary" name="Vocabulary" component={Vocabulary} />

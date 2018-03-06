@@ -16,7 +16,7 @@ class DashboardCard extends Component {
         }
 
         return(
-            <div className=".col-md-auto px-2">
+            <div className="pr-4">
                 <div className="card b-a-1 b-t-3 bg-gray-100 card-dash">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">

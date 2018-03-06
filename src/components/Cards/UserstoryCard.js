@@ -16,7 +16,7 @@ class UserstoryCard extends Component {
             border: '0'
         }
         return(
-            <div className = ".col-md-auto px-2">
+            <div className = "pr-4">
                 <div className="card b-a-0 border-primary bg-white card-story">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">

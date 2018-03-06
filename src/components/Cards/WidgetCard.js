@@ -69,7 +69,7 @@ class WidgetCard extends Component {
         console.log(org)
 
         return(
-            <div className=".col-md-auto px-2">
+            <div className="pr-4">
                 <div className="card widget-card">
                     <div className="header-widget py-1">
                         <div className="row m-0">
@@ -94,7 +94,7 @@ class WidgetCard extends Component {
                         <div className="row m-0 b-b-card">
                             <div className="crop col-12 w-100">
                                 <div>
-                                    {this.state.imageSrc ? <img src={"data:image/jpg;base64," + this.state.imageSrc} alt={transformWidgetName(iframe.table)}/> :
+                                    {this.state.imageSrc && this.state.imageSrc !== 'noimage' ? <img src={"data:image/jpg;base64," + this.state.imageSrc} alt={transformWidgetName(iframe.table)}/> :
                                     
                                         React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click" })
                                     }
