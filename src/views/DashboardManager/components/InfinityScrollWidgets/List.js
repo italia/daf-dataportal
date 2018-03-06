@@ -80,7 +80,7 @@ class List extends Component {
                         </h6>
                         <div className="preview-widget">
                           {/* <WidgetImage widget={widget} wid={wid} widgets={widgets} onLoadIframe={onLoadIframe} key={key}/> */}
-                        {widgets[widget].image ? 
+                      {widgets[widget].image && widgets[widget].image !== 'noimage' ? 
                         <div style={{width: '100%'}}>
                           <img src={"data:image/jpg;base64," + widgets[widget].image} />
                         </div>

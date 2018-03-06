@@ -113,3 +113,50 @@
     width: 100%;
     padding: 1.25rem;
 }
+
+.widget-card{
+	height: 253px;
+	width: 320px;
+    border: 1px solid #CAD4DC;
+    box-shadow: 0 0 8px 0 rgba(50,50,50,0.15);
+}
+
+.header-widget{
+    width: 100%;
+    height: 46px;
+    border-bottom: 1px solid #CAD4DC;
+}
+
+.title-widget{
+	height: 20px;
+	width: 255px;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 19px;
+}
+
+.text-icon{
+    color: #b0bec5 !important
+}
+.b-b-card{
+    border-bottom: 1px solid #CAD4DC;
+}
+
+.footer-widget{
+    height: 45px;
+    width: 100%;
+}
+
+.tool{
+    height: 45px;
+    width: 52px;
+}
+
+.top-home{
+    margin-top: -1.5rem !important;
+    height: 114px
+}
+
+.bg-grey-n{
+    background-color: #CAD4DC !important
+}
