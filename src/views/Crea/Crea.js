@@ -369,26 +369,26 @@ class Crea extends Component {
                     {(isEditor() || isAdmin()) &&
                     <div className="col-3">
                         <div className="card text-center">
-                            <h5 className="card-title">Carica un nuovo Dataset</h5>
-                            <div className="card-body">
-                                <button className="btn btn-primary" onClick={() => { this.props.history.push("/ingestionwizzard")}}>Carica Dataset</button>
+                            <h3 className="card-title pt-4">Dataset</h3>
+                            <div className="card-body pb-4">
+                                <button className="btn btn-primary" onClick={() => { this.props.history.push("/ingestionwizzard")}}>Crea scheda e carica</button>
                             </div>
                         </div>
                     </div>
                     }
                     <div className="col-3">
                         <div className="card text-center">
-                            <h5 className="card-title">Crea una nuova Dashboard</h5>
-                            <div className="card-body">
-                                <button className="btn btn-primary" onClick={this.openModalDash.bind(this)}>Crea Dashboard</button>
+                            <h3 className="card-title pt-4">Dashboard</h3>
+                            <div className="card-body pb-4">
+                                <button className="btn btn-primary" onClick={this.openModalDash.bind(this)}>Crea</button>
                             </div>
                         </div>
                     </div>
                     <div className="col-3">
                         <div className="card text-center">
-                            <h5 className="card-title">Crea una nuova Storia</h5>
-                            <div className="card-body">
-                                <button className="btn btn-primary" onClick={this.openModalStory.bind(this)}>Crea Storia</button>
+                            <h3 className="card-title pt-4">Storia</h3>
+                            <div className="card-body pb-4">
+                                <button className="btn btn-primary" onClick={this.openModalStory.bind(this)}>Crea</button>
                             </div>
                         </div>
                     </div>

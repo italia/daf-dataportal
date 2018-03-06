@@ -19,6 +19,7 @@ import DatasetService from './services/DatasetService';
 import { transformWidgetName } from '../../utility'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import IframeWidget from './widgets/IframeWidget';
+import WidgetCard from '../../components/Cards/WidgetCard';
 
 const userStoryService = new UserStoryService();
 const datasetService = new DatasetService();
@@ -329,24 +330,12 @@ class DatasetDetail extends Component {
                                     <div className="row">
                                             {iframes&&iframes.length>0?iframes.map((iframe, key) => {
                                                 if (key > 2) return;
-                                                return <div className=".col-md-auto px-3" key={key}>
-                                                    <div className="card text-center">
-                                                        <div className="card-body">  
-                                                            <a className="list-group-item">
-                                                                <h6 className="list-group-item-heading" id={"title-preview-" + key}>
-                                                                {" [" + transformWidgetName(iframe.table) + "] " + iframe.title}
-                                                                </h6>
-                                                                <div className="preview-widget">
-                                                                <div style={{ width: '100%' }}>
-                                                                    {
-                                                                        React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click"})
-                                                                    }
-                                                                </div>
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>})
+                                                return (
+                                                    <WidgetCard
+                                                        iframe = {iframe}
+                                                        key = {key}
+                                                        />)
+                                                    })
                                             :
                                                 <i>Non sono stati creati IFrames con questo dataset, se vuoi essere il primo a crearli clicca qui</i>
                                             }
