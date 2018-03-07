@@ -85,14 +85,14 @@ class DashboardList extends Component {
       
       <ListBar onChange={this.filter} history={this.props.history} ></ListBar>
       
-      <div className="row">
+      <div className="row pl-3">
         {
           this.state.dashboards.map((dash, index) => {
             let chartUrl = undefined
             if ((dash.widgets && dash.widgets !== '{}') && (dash.layout && dash.layout !== '{}')){
               const dashLayout = JSON.parse(dash.layout)
               let firstLayout = ''
-              let preview = []
+              var preview = []
               let righe = dashLayout.rows
               for(let i = 0; i<righe.length; i++){
                 let colonne = righe[i].columns;
@@ -130,10 +130,13 @@ class DashboardList extends Component {
               }
             }
             return (
-              <DashboardCard 
+              <DashboardCard
+                widgetA={preview[0] ? preview[0] : undefined}
+                widgetB={preview[1] ? preview[1] : undefined} 
                 imageA = {imageA}
                 imageB = {imageB}
                 dash = {dash}
+                key = {index}
                 />
             )
           })

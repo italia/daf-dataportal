@@ -76,9 +76,9 @@ class Home extends Component {
     }
 
     render(){
-        const { datasets } = this.props
+        const { datasets, isFetching } = this.props
         const { listDashboards, listStories, items } = this.state
-        return(
+        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2" />Loading</h1> : (
             <div>
                 <div className="top-home w-100 bg-grey-n d-md-down-none">
                     <div className="row m-auto container body">
@@ -147,7 +147,7 @@ class Home extends Component {
                                 if ((dash.widgets && dash.widgets !== '{}') && (dash.layout && dash.layout !== '{}')) {
                                     const dashLayout = JSON.parse(dash.layout)
                                     let firstLayout = ''
-                                    let preview = []
+                                    var preview = []
                                     let righe = dashLayout.rows
                                     for (let i = 0; i < righe.length; i++) {
                                         let colonne = righe[i].columns;
@@ -186,9 +186,12 @@ class Home extends Component {
                                 }
                                 return (
                                     <DashboardCard
+                                        widgetA={preview[0]?preview[0]:undefined}
+                                        widgetB={preview[1]?preview[1]:undefined}
                                         imageA={imageA}
                                         imageB={imageB}
                                         dash={dash}
+                                        key={index}
                                     />
                                 )
                             })
@@ -211,7 +214,7 @@ class Home extends Component {
                                 let chartUrl = undefined
                                 if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
                                     const dashLayout = JSON.parse(story.layout)
-                                    let firstLayout = ''
+                                    var firstLayout = ''
 
                                     let righe = dashLayout.rows
                                     for (let i = 0; i < righe.length; i++) {
@@ -252,8 +255,10 @@ class Home extends Component {
                                 return (
                                     <UserstoryCard
                                         story={story}
+                                        widgetA={firstLayout}
                                         imageA={imageA}
                                         time={time}
+                                        key={index}
                                     />
 
                                 )

@@ -6,22 +6,80 @@ import { Route, Link } from 'react-router-dom';
 class DashboardCard extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            image1: '',
+            image2: ''
+        }
+    }
+
+    async loadImage(widget) {
+        let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+        const response = await fetch(url, {
+            method: 'GET'
+        })
+
+        return response
+    }
+
+    componentDidMount(){
+        const {widgetA, widgetB } = this.props
+        const responseA = this.loadImage(widgetA)
+        .then(response => {
+            if (response.ok) {
+                response.text().then(text => {
+                    this.setState({
+                        loading: false,
+                        image1: text.replace(/"/g, '')
+                    })
+                });
+            } else {
+                this.setState({
+                    loading: false,
+                    image1: undefined
+                })
+            }
+        })
+        const responseB = this.loadImage(widgetB)
+        .then(response => {
+            if (response.ok) {
+                response.text().then(text => {
+                    this.setState({
+                        loading: false,
+                        image2: text.replace(/"/g, '')
+                    })
+                });
+            } else {
+                this.setState({
+                    loading: false,
+                    image2: undefined
+                })
+            }
+        })
     }
 
     render(){
-        const {dash, imageA, imageB } = this.props;
+        const { image1, image2 } = this.state;
+        const { dash, imageA, imageB, key } = this.props;
         const iframeStyle = {
             width: '100%',
             height: '160px',
         }
 
+        let prima = imageA
+        let seconda = imageB
+
+        if(imageA==='noimage' || !imageA)
+            prima = image1
+        if(imageB==='noimage' || !imageB && image2!=='noimage')
+            seconda = image2
+        
         return(
-            <div className="pr-4">
+            <div className="pr-4" key={key}>
                 <div className="card b-a-1 b-t-3 bg-gray-100 card-dash">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {imageA && <div className={"crop " + (imageB ? "pr-0 b-r-dash col-6" : "col-12")}><img className="bn-dash" src={"data:image/jpg;base64," + imageA} /></div>}
-                            {imageB && <div className="crop col-6 pl-0"><img className="bn-dash" src={"data:image/jpg;base64," + imageB} /></div>}
+                            {prima && <div className={"crop " + (seconda ? "pr-0 b-r-dash col-6" : "col-12")}><img className="bn-dash" src={"data:image/jpg;base64," + prima} /></div>}
+                            {seconda && <div className="crop col-6 pl-0"><img className="bn-dash" src={"data:image/jpg;base64," + seconda} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0 b-t-dash">

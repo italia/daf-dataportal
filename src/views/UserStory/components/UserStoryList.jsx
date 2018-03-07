@@ -73,13 +73,13 @@ class UserStoryList extends Component {
       
       <ListBar onChange={this.filter} history={this.props.history} ></ListBar>
       
-      <div className="row">
+      <div className="row pl-3">
         {
           this.state.userStories.map((story, index) => {
             let chartUrl = undefined
               if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
                 const dashLayout = JSON.parse(story.layout)
-                let firstLayout = ''
+                var firstLayout = ''
 
                 let righe = dashLayout.rows
                 for (let i = 0; i < righe.length; i++) {
@@ -120,8 +120,10 @@ class UserStoryList extends Component {
             return (
               <UserstoryCard 
                 story = {story}
+                widgetA={firstLayout}
                 imageA = {imageA}
                 time = {time}
+                key = {index}
                 />
             
             )
