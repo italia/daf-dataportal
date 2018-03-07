@@ -91,7 +91,7 @@ class TextWidget extends Component {
               onEditorStateChange={this.onEditorStateChange}
             /> */}
             
-            <button onClick={() => this.close()} type="button" className="btn btn-default" >Annulla</button>
+          <button onClick={() => this.close()} type="button" className="btn btn-gray-200" >Annulla</button>
             <button onClick={() => this.save()} type="button" className="btn btn-primary" >Salva</button>
             <div className="clearfix"></div>
           </div>

@@ -147,7 +147,7 @@ class GraphEditor extends Component {
             {
               this.props.readonly!=true &&
               <div className="text-center mt-20">
-                <button type="button" className="btn btn-default" onClick={() => this.openModalChangeGraph()}>
+                <button type="button" className="btn btn-gray-200" onClick={() => this.openModalChangeGraph()}>
                     Cambia grafico
                 </button>
               </div>
@@ -158,7 +158,7 @@ class GraphEditor extends Component {
           //if graph not selected
           !this.state.graph.props.url && this.props.readonly!=true &&
           <div className="text-center mt-20 mb-40">
-            <button type="button" className="btn btn-default" onClick={() => this.openModalChangeGraph()}>
+            <button type="button" className="btn btn-gray-200" onClick={() => this.openModalChangeGraph()}>
                 Seleziona grafico
             </button>
           </div>
