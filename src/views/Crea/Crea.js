@@ -285,7 +285,7 @@ class Crea extends Component {
                             </div>
                         </ModalBody>
                         <ModalFooter>
-                            <button className='btn btn-default' onClick={this.hideModalStory.bind(this)}>
+                            <button className='btn btn-gray-200' onClick={this.hideModalStory.bind(this)}>
                                 Close
                             </button>
                             <button type="button" className="btn btn-primary px-2" onClick={this.handleSaveStory.bind(this)}>
@@ -353,7 +353,7 @@ class Crea extends Component {
                             </div>
                         </ModalBody>
                         <ModalFooter>
-                            <button className='btn btn-default' onClick={this.hideModalDash}>
+                            <button className='btn btn-gray-200' onClick={this.hideModalDash}>
                                 Chiudi
                             </button>
                             <button type="button" className="btn btn-primary px-2" onClick={this.handleSaveDash.bind(this)}>

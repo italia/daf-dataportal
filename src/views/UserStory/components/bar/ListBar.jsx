@@ -177,7 +177,7 @@ class ViewBar extends React.Component {
             </div>
             </ModalBody>
             <ModalFooter>
-              <button className='btn btn-default' onClick={this.hideModal}>
+              <button className='btn btn-gray-200' onClick={this.hideModal}>
                 Close
               </button>
               <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>

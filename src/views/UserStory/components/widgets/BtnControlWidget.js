@@ -85,24 +85,24 @@ class BtnControlWidget extends React.Component {
     render() {
         return (
             <div className="btn-control-widget">
-                <button type="button" className="btn btn-sm btn-default" aria-label="Add Widget"
+                <button type="button" className="btn btn-sm btn-gray-200" aria-label="Add Widget"
                     onClick={this.addWidgetOpenModal}>
                     <span className="fa fa-plus" aria-hidden="true"></span>
                 </button>
 
                 { this.props.index != 0 &&
-                    <button type="button" className="btn btn-sm btn-default" aria-label="Move Up"
+                    <button type="button" className="btn btn-sm btn-gray-200" aria-label="Move Up"
                         onClick={() => this.moveUp(this.props.index)}>
                         <span className="fa fa-chevron-up" aria-hidden="true"></span>
                     </button>
                 }
                 { this.props.index != this.props.layout.rows.length - 1 &&
-                    <button type="button" className="btn btn-sm btn-default" aria-label="Move Down"
+                    <button type="button" className="btn btn-sm btn-gray-200" aria-label="Move Down"
                         onClick={() => this.moveDown(this.props.index)}>
                         <span className="fa fa-chevron-down" aria-hidden="true"></span>
                     </button>
                 }
-                <button type="button" className="btn btn-sm btn-default" aria-label="Remove"
+                <button type="button" className="btn btn-sm btn-gray-200" aria-label="Remove"
                     onClick={() => this.removeCol()}>
                     <span className="fa fa-trash" aria-hidden="true"></span>
                 </button>

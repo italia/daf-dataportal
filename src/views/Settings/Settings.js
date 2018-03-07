@@ -420,7 +420,7 @@ class Settings extends Component {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-default" onClick={this.hideModal.bind(this)}>Chiudi</button>
+                        <button type="button" className="btn btn-gray-200" onClick={this.hideModal.bind(this)}>Chiudi</button>
                     </div>
                 </div>
             </Modal>

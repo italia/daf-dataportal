@@ -138,7 +138,7 @@ hideModalAndRedirect = (e) => {
         </div>
         </ModalBody>
         <ModalFooter>
-          <button className='btn btn-default' onClick={this.hideModalAndRedirect}>Vai alla home</button>
+              <button className='btn btn-gray-200' onClick={this.hideModalAndRedirect}>Vai alla home</button>
         </ModalFooter>
       </form>
       </Modal>
