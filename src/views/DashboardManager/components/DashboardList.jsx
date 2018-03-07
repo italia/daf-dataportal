@@ -131,8 +131,8 @@ class DashboardList extends Component {
             }
             return (
               <DashboardCard
-                widgetA={preview[0] ? preview[0] : undefined}
-                widgetB={preview[1] ? preview[1] : undefined} 
+                widgetA={preview&&preview[0] ? preview[0] : undefined}
+                widgetB={preview&&preview[1] ? preview[1] : undefined} 
                 imageA = {imageA}
                 imageB = {imageB}
                 dash = {dash}
