@@ -84,7 +84,7 @@ class Header extends Component {
       </ul>
       <ul className="nav navbar-nav d-md-down-none">
         <AutocompleteDataset ref="auto"/>
-        <button className="btn btn-default" type="submit" value="submit" onClick={this.handleLoadDatasetClick}>Cerca</button>
+        <button className="btn btn-gray-200" type="submit" value="submit" onClick={this.handleLoadDatasetClick}>Cerca</button>
       </ul>
       <ul className="nav navbar-nav ml-auto">
         <li className="nav-item">

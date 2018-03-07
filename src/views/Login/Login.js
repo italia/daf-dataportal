@@ -114,7 +114,7 @@ class Login extends Component {
 
             </ModalBody>
             <ModalFooter>
-              <button className='btn btn-default' onClick={this.hideModal}>
+              <button className='btn btn-gray-200' onClick={this.hideModal}>
                 Chiudi
               </button>
             </ModalFooter>

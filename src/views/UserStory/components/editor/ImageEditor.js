@@ -82,7 +82,7 @@ class ImageEditor extends Component {
       {
         this.props.readonly!=true &&
         <div className="text-center mt-20 mb-20">
-          <button type="button" className="btn btn-default" onClick={() => this.openModal()}>
+            <button type="button" className="btn btn-gray-200" onClick={() => this.openModal()}>
               Seleziona immagine
           </button>
         </div>
@@ -118,7 +118,7 @@ class ImageEditor extends Component {
 
          </div>
          <div className="modal-footer">
-           <button type="button" className="btn btn-default" onClick={this.saveUrl}>Salva</button>
+              <button type="button" className="btn btn-gray-200" onClick={this.saveUrl}>Salva</button>
          </div>
         </div>
       </Modal>

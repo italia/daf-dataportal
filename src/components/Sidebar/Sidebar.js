@@ -106,10 +106,10 @@ class Sidebar extends Component {
           </div>
           </ModalBody>
           <ModalFooter>
-            <button className='btn btn-default' onClick={this.hideModal}>
+            <button className='btn btn-gray-200' onClick={this.hideModal}>
               Chiudi
             </button>
-              {this.state.name !== 'Metabase' && <button className='btn btn-default' onClick={this.hideModalAndRedirect}>Scegli</button>}
+              {this.state.name !== 'Metabase' && <button className='btn btn-gray-200' onClick={this.hideModalAndRedirect}>Scegli</button>}
           </ModalFooter>
         </form>
       </Modal>

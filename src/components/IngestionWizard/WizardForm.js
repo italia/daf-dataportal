@@ -190,7 +190,7 @@ class WizardForm extends Component {
           <p>Un servizio controllerà l'univocita del titolo.</p>
           </ModalBody>
           <ModalFooter>
-            <button className='btn btn-default' onClick={this.hideModal}>
+            <button className='btn btn-gray-200' onClick={this.hideModal}>
               Chiudi
             </button>
           </ModalFooter>

@@ -99,11 +99,11 @@ class EditBarTop extends React.Component {
               </div>
             </ModalBody>
             <ModalFooter>
-              <button className='btn btn-default' onClick={this.pubblica}>
+              <button className='btn btn-gray-200' onClick={this.pubblica}>
                 Condividi con la tua Organizzazione
                   </button>
               {this.state.pvt != 1 &&(isEditor() || isAdmin()) &&
-              <button className='btn btn-default' onClick={this.condividi}>
+                <button className='btn btn-gray-200' onClick={this.condividi}>
                 Condividi con tutti
               </button>
               }
