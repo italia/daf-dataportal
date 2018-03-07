@@ -6,7 +6,7 @@ const Header = (props) => {
         <div className="nav_menu">
             <nav className="dashboardHeader">
                 <div className="row">
-                    <div className="col-10 p-0">
+                    <div className="col-10">
                         <h3 className="card-title">{props.title}</h3>
                     </div>
                     <div className="col-2">

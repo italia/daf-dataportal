@@ -6,21 +6,57 @@ import { Route, Link } from 'react-router-dom';
 class UserstoryCard extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            image: props.imageA
+        }
+    }
+
+    async loadImage(widget) {
+        let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+        const response = await fetch(url, {
+            method: 'GET'
+        })
+
+        return response
+    }
+
+    componentDidMount(){
+        const { imageA, widgetA } = this.props
+        if (imageA === 'noimage'){
+            const responseA = this.loadImage(widgetA)
+                .then(response => {
+                    if (response.ok) {
+                        response.text().then(text => {
+                            this.setState({
+                                loading: false,
+                                image: text.replace(/"/g, '')
+                            })
+                        });
+                    } else {
+                        this.setState({
+                            loading: false,
+                            image: imageA
+                        })
+                    }
+                })
+        }
+
     }
 
     render(){
-        const { story, imageA, time } = this.props
+        const { story, imageA, time, key } = this.props
+        const { image } = this.state
         const iframeStyle = {
             width: '100%',
             height: '160px',
             border: '0'
         }
         return(
-            <div className = "pr-4">
+            <div className="pr-4" key={key}>
                 <div className="card b-a-0 border-primary bg-white card-story">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {imageA && <div className="crop col-12"><img src={"data:image/jpg;base64," + imageA} /></div>}
+                            {imageA && <div className="crop col-12"><img src={"data:image/jpg;base64," + image} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0">
