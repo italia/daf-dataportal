@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import IframeWidget from '../../views/DatasetDetail/widgets/IframeWidget';
 import { transformWidgetName } from "../../utility";
+import { serviceurl } from "../../config/serviceurl";
+
 
 
 class WidgetCard extends Component {
@@ -14,7 +16,7 @@ class WidgetCard extends Component {
     }
 
     async loadImage(widget) {
-        let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+        let url = serviceurl.apiURLDatiGov + '/plot/' + widget + '/330x280';
         const response = await fetch(url, {
             method: 'GET'
         })
@@ -38,9 +40,17 @@ class WidgetCard extends Component {
             return false
     }
 
+    //remove &standalone=true from original link
+    getLink(url){
+        if(url.indexOf('&standalone=true') !== -1){
+            url = url.substring(0, url.length - 16);
+        }
+        return url
+    }
+
     componentDidMount(){
         const { iframe } = this.props
-        let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + iframe.identifier + '/330x280';
+        let url = serviceurl.apiURLDatiGov + '/plot/' + iframe.identifier + '/330x280';
         const response = fetch(url, {
             method: 'GET'
         }).then(response => {
@@ -66,17 +76,13 @@ class WidgetCard extends Component {
         let sp2 = sp1[0].split('.')
         var org = sp2[1]
 
-        console.log(org)
-
         return(
             <div className="pr-4">
                 <div className="card widget-card">
                     <div className="header-widget py-1">
                         <div className="row m-0">
                             <div className="col-9 title-widget my-2 pl-3">
-                                <Link to={''}>
-                                    <p className="text-primary">{iframe.title}</p>
-                                </Link>
+                                <a href={this.getLink(iframe.iframe_url)} target='_blank' rel="noopener noreferrer"><p className="text-primary">{iframe.title}</p></a>
                             </div>
                             <div className="col-3 my-2">
                                 {

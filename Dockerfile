@@ -5,24 +5,23 @@ FROM node:7.10.0
 # The base node image sets a very verbose log level.
 ENV NPM_CONFIG_LOGLEVEL warn
 
-RUN apt-get update && apt-get install -y git-core
+RUN apt-get update && apt-get install -y \
+  git-core 
 
-# Install apt-transport-https
-RUN wget http://http.us.debian.org/debian/pool/main/a/apt/apt-transport-https_1.0.9.8.4_amd64.deb
-RUN dpkg -i apt-transport-https_1.0.9.8.4_amd64.deb
-# Install yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt update && apt install -y yarn
+#RUN apt-get install sudo
 
+#RUN  sudo fallocate -l 1G /swapfile
+#RUN  sudo chmod 600 /swapfile
+#RUN  sudo mkswap /swapfile
+#RUN  sudo swapon /swapfile
+#RUN  "/swapfile   none    swap    sw    0   0" >> /etc/fstab
 
 # Copy all local files into the image.
 RUN git clone https://github.com/italia/daf-dataportal
 
 WORKDIR /daf-dataportal
 
-# install packages
-RUN yarn
+RUN npm install
 
 # Build for production.
 RUN npm run build --production

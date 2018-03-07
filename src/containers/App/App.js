@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import { loginAction, addUserOrganization, isValidToken, receiveLogin, getApplicationCookie } from './../../actions.js'
 import { serviceurl } from '../../config/serviceurl.js'
 import { setCookie } from '../../utility'
+import ReduxToastr from 'react-redux-toastr'
 
 const history = createBrowserHistory();
 
@@ -140,31 +141,40 @@ class App extends Component {
       this.state.authed = true;
 
     return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (
-
-      <HashRouter history={history}>
-        <Switch>
-          <PublicRoute authed={this.state.authed} path='/' exact component={Home} />
-          <PublicRoute authed={this.state.authed} path="/login" component={Home} />
-          <PublicRoute authed={this.state.authed} path="/register" component={Home} />
-          <PublicRoute authed={this.state.authed} path="/confirmregistration" component={Home} />
-          <PrivateRoute authed={this.state.authed} path="/home" name="Dashboard" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/prova" name="Home" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/dashboard" name="Dashboard" component={Full} />
-          <PrivateRouteEditor authed={this.state.authed} role={role} path="/ingestionwizzard" name="Ingestion" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/ontologies" name="Ontologies" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/vocabulary" name="Vocabulary" component={Full} />
-          <PrivateRoute authed={this.state.authed} exact path="/dataset" name="Dataset" component={Full} />
-          <PrivateRoute authed={this.state.authed} exact path="/dataset/:id" name="Dataset Detail" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/dashboard/manager" name="Dash" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/dashboard/list" name="Dash" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/user_story" name="Storie" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/profile" name="Profile" component={Full} />
-          <PrivateRoute authed={this.state.authed} path="/crea" name="Crea" component={Full} />
-          <PrivateRoute authed={this.state.authed} role={role} path="/settings" name="Settings" component={Full} />
-          <PrivateRouteEditor authed={this.state.authed} role={role} path="/organizations" name="Organizations" component={Full} />
-          <PrivateRouteAdmin authed={this.state.authed} role={role} path="/users" name="Users" component={Full} />
-        </Switch>
-      </HashRouter>
+      <div>
+        <HashRouter history={history}>
+          <Switch>
+            <PublicRoute authed={this.state.authed} path='/' exact component={Home} />
+            <PublicRoute authed={this.state.authed} path="/login" component={Home} />
+            <PublicRoute authed={this.state.authed} path="/register" component={Home} />
+            <PublicRoute authed={this.state.authed} path="/confirmregistration" component={Home} />
+            <PrivateRoute authed={this.state.authed} path="/home" name="Dashboard" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/prova" name="Home" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/dashboard" name="Dashboard" component={Full} />
+            <PrivateRouteEditor authed={this.state.authed} role={role} path="/ingestionwizzard" name="Ingestion" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/ontologies" name="Ontologies" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/vocabulary" name="Vocabulary" component={Full} />
+            <PrivateRoute authed={this.state.authed} exact path="/dataset" name="Dataset" component={Full} />
+            <PrivateRoute authed={this.state.authed} exact path="/dataset/:id" name="Dataset Detail" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/dashboard/manager" name="Dash" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/dashboard/list" name="Dash" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/user_story" name="Storie" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/profile" name="Profile" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/crea" name="Crea" component={Full} />
+            <PrivateRoute authed={this.state.authed} role={role} path="/settings" name="Settings" component={Full} />
+            <PrivateRouteEditor authed={this.state.authed} role={role} path="/organizations" name="Organizations" component={Full} />
+            <PrivateRouteAdmin authed={this.state.authed} role={role} path="/users" name="Users" component={Full} />
+          </Switch>
+        </HashRouter>
+        <ReduxToastr
+          timeOut={6000}
+          newestOnTop={true}
+          preventDuplicates
+          position="top-right"
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+          progressBar/>
+      </div>
 
     );
   }
