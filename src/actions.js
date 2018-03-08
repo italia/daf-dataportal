@@ -19,6 +19,10 @@ export const REMOVE_LOGGED_USER = 'REMOVE_LOGGED_USER'
 export const RECEIVE_ORGANIZATION = 'RECEIVE_ORGANIZATION'
 export const RECEIVE_REGISTRATION = 'RECEIVE_REGISTRATION'
 export const RECEIVE_REGISTRATION_ERROR = 'RECEIVE_REGISTRATION_ERROR'
+export const REQUEST_RESET = 'REQUEST_RESET'
+export const RECEIVE_RESET = 'RECEIVE_RESET'
+export const REQUEST_RESET_ERROR = 'REQUEST_RESET_ERROR'
+export const RECEIVE_RESET_ERROR = 'RECEIVE_RESET_ERROR'
 export const RECEIVE_ACTIVATION = 'RECEIVE_ACTIVATION'
 export const RECEIVE_ACTIVATION_ERROR = 'RECEIVE_ACTIVATION_ERROR'
 export const RECEIVE_ADD_DATASET = 'RECEIVE_ADD_DATASET'
@@ -213,6 +217,8 @@ function requestRegistration (){
   }
 }
 
+
+
 function receiveRegistrationSuccess(ok, json) {  
   if(ok==='ok')
   return {
@@ -252,6 +258,12 @@ function receiveRegistrationError(json) {
       message: json,
       receivedAt: Date.now(),
       ope: 'RECEIVE_REGISTRATION_ERROR'
+  }
+}
+
+function requestResetPwd() {
+  return {
+    type: REQUEST_RESET,
   }
 }
 
@@ -446,6 +458,117 @@ export function addUserOrganization(uid) {
   }
 }
 /******************************************************************************* */
+
+/******************************** RESET PASSWORD ******************************* */
+
+export function resetPwd(email) {
+  console.log("Called action reset password");
+  var url = serviceurl.apiURLSecurity + '/ipa/resetpwd/request';
+
+  var input = {
+    "mail": email,
+  };
+
+  console.log(input)
+
+  return dispatch => {
+    dispatch(requestResetPwd())
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(input)
+    })
+    .then(response => {
+      if (response.ok) {
+        response.json().then(json => {
+          console.log(json);
+          dispatch(receiveResetSuccess('ok', json))
+        });
+      } else {
+        response.json().then(json => {
+          console.log(json);
+          dispatch(receiveResetSuccess('ko', json))
+        });
+      }
+    })
+    .catch(error => dispatch(receiveResetError(error)))
+  }
+}
+
+export function changePwd(token, pwd1, pwd2) {
+  console.log("Called action changePwd");
+  var url = serviceurl.apiURLSecurity + '/ipa/resetpwd/confirm';
+
+  var input = {
+    'token': token,
+    'newpwd': pwd1,
+  }
+
+  return dispatch => {
+    dispatch(requestRegistration())
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+    if (reg.test(pwd1)) {
+      if (pwd1 === pwd2) {
+        return fetch(url, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(input),
+        })
+      } else {
+        dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
+      }
+    } else {
+      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+    }
+  }
+}
+
+function receiveResetSuccess(ok, json) {
+  if (ok === 'ok')
+    return {
+      type: RECEIVE_RESET,
+      message: 'Reset della password avvenuta con successo, a breve riceverai una mail per inserire la nuova password all\'indirizzo indicato',
+      error: 0,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_RESET'
+    }
+  else {
+    if (json.code === 1) {
+      console.log("messaggio errore codificato: " + json.message);
+      return {
+        type: RECEIVE_RESET_ERROR,
+        error: 1,
+        message: json.message,
+        receivedAt: Date.now(),
+        ope: 'RECEIVE_RESET_ERROR'
+      }
+    } else {
+      console.log("messaggio errore non codificato !!!");
+      return {
+        type: RECEIVE_RESET_ERROR,
+        error: 1,
+        message: 'Errore durante la registrazione riprovare più tardi',
+        receivedAt: Date.now(),
+        ope: 'RECEIVE_RESET_ERROR'
+      }
+    }
+  }
+}
+
+function receiveResetError(json) {
+  return {
+    type: RECEIVE_RESET_ERROR,
+    error: 1,
+    message: json,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_RESET_ERROR'
+  }
+}
 
 /******************************** DATASET ************************************** */
 export function fetchProperties(org) {

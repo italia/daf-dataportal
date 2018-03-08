@@ -162,10 +162,11 @@ class Login extends Component {
                     
                    
                       <div className="row">
-                      <div className="col-6" style={{ position: 'initial' }}>
-                        <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
+                        <div className="col-6" style={{ position: 'initial' }}>
+                          <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
                         </div>
-                      <div className="col-6 text-right" style={{ position: 'initial' }}><button type="button" className="btn btn-link px-0" onClick={this.openModal} >Password dimenticata?</button>
+                        <div className="col-6 text-right" style={{ position: 'initial' }}>
+                        <button type="button" className="btn btn-link px-0" onClick={() => this.props.history.push('/requestreset')}>Password dimenticata?</button>
                         </div>
                       </div>
                   </OverlayLoader>

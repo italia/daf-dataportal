@@ -20,7 +20,10 @@ import {
   RECEIVE_PROPERTIES,
   REQUEST_PROPERTIES,
   REQUEST_REGISTRATION,
-  RECEIVE_FILE_STORAGEMANAGER
+  RECEIVE_FILE_STORAGEMANAGER,
+  REQUEST_RESET,
+  RECEIVE_RESET,
+  RECEIVE_RESET_ERROR
 } from './actions'
 import {reducer as toastrReducer} from 'react-redux-toastr'
 
@@ -148,6 +151,11 @@ function userReducer(state = {}, action) {
       return Object.assign({}, state, {'msg': action.message, 'error': action.error})
     case REQUEST_REGISTRATION:
       return Object.assign({}, state, {'msg': undefined, 'error': undefined})
+    case RECEIVE_RESET_ERROR:
+    case REQUEST_RESET:
+      return Object.assign({}, state, { 'msg': undefined, 'error': undefined })
+    case RECEIVE_RESET:
+      return Object.assign({}, state, { 'msg': action.message, 'error': action.error })
     case REQUEST_LOGIN:
     case RECEIVE_LOGIN:
       return Object.assign({}, state, {'obj': user(state[action], action)})

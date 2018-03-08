@@ -1,0 +1,141 @@
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { changePwd } from './../../actions.js'
+import PropTypes from 'prop-types'
+import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
+import { toastr } from 'react-redux-toastr'
+
+function setErrorMsg(messaggio) {
+    return {
+      msg: messaggio,
+      error: 1,
+      uploading: false
+    }
+  }
+  
+  function setSuccessMsg(messaggio) {
+    return {
+      msg: messaggio,
+      error: 0,
+      uploading: false,
+      showLink: false
+    }
+  }
+
+  function getParams(query) {
+    if (!query) {
+      return { };
+    }
+  
+    return (/^[?#]/.test(query) ? query.slice(1) : query)
+      .split('&')
+      .reduce((params, param) => {
+        let [ key, value ] = param.split('=');
+        params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
+        return params;
+      }, { });
+  };
+
+class ConfirmReset extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            msg: null,
+            error: 0,
+            uploading: false,
+            showLink: true 
+        }
+        var query = this.props.location.search;
+        var params= getParams(query);
+        this.token=params['t'];
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+  
+    componentDidMount() {
+        //window.addEventListener('load', this.handleSubmit);
+        /* this.handleSubmit(); */
+     }
+
+    handleSubmit(){
+        console.log('Cambio password utente token: ' + this.token);
+        const { dispatch } = this.props
+        this.setState({uploading: true})
+        dispatch(changePwd(this.token, this.password.value, this.password2.value))
+         .then((response)=> {
+            if(response.ok){
+              //this.setState(setSuccessMsg('Cambio password avvenuto con successo.'))
+              toastr.success('Complimenti', 'Cambio password avvenuto con successo.', { timeOut: 9000,})
+              this.props.history.push('/login')
+            }else{
+              response.json().then(json => {
+                if(json.code===1){
+                  toastr.danger('Errore', json.message, {timeOut:0})
+                  /* this.setState(setErrorMsg(json.message)) */
+                }else{
+                  /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
+                  toastr.danger('Errore', 'Errore durante il salvataggio.', {timeOut: 0 })
+                }
+              });
+            }
+         }).catch((error) => {
+          /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
+           toastr.danger('Errore', 'Errore durante il salvataggio.')
+        })
+  }
+
+  render() {
+    const { msg, error } = this.state
+    return (
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-md-6">
+            <div className="card mx-2">
+              <div className="card-block p-2">
+                <h1>Cambio Password</h1>
+                <p className="text-muted">Inserisci la nuova Password</p>
+                {msg && error === 1 &&
+                  <div className="alert alert-danger" role="alert">
+                    {msg}
+                  </div>
+                }
+                {msg && error === 0 &&
+                  <div className="alert alert-success" role="alert">
+                    {msg}
+                  </div>
+                }
+                <div className="input-group mb-1">
+                  <span className="input-group-text">
+                    <i className="icon-lock"></i></span>
+                  <input type="password" className="form-control" ref={(password) => this.password = password} placeholder="Password" />
+                </div>
+                <div className="input-group mb-2">
+                  <span className="input-group-text">
+                    <i className="icon-lock"></i></span>
+                  <input type="password" className="form-control" ref={(password2) => this.password2 = password2} placeholder="Ripeti password" />
+                </div>
+                {/* <div className="input-group mb-1">
+                  <div className="g-recaptcha" data-sitekey="6LcUNjQUAAAAAG-jQyivW5xijDykXzslKqL2PMLr"></div>
+                </div> */}
+                <button type="button" className="btn btn-block btn-primary" onClick={this.handleSubmit.bind(this)}>{this.state.uploading ? <i className="fa fa-spinner fa-spin fa-lg"/>:'Cambia Password'}</button>
+                <button hidden={this.state.showLink} type="button" className="btn btn-block btn-secondary" onClick={() => this.props.history.push('/login')}>Vai al login</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+ConfirmReset.propTypes = {
+  messaggio: PropTypes.string,
+  error: PropTypes.number,
+  dispatch: PropTypes.func.isRequired
+}
+
+function mapStateToProps(state) {
+  return { messaggio: state.userReducer.msg,
+           error: state.userReducer.error }
+}
+
+export default connect(mapStateToProps)(ConfirmReset)

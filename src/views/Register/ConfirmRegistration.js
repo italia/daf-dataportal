@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { activateUser } from './../../actions.js'
 import PropTypes from 'prop-types'
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
+import { toastr } from 'react-redux-toastr'
 
 function setErrorMsg(messaggio) {
     return {
@@ -59,13 +60,17 @@ class ConfirmRegistration extends Component {
          dispatch(activateUser(this.token))
          .then((response)=> {
             if(response.ok){
-              this.setState(setSuccessMsg('Attivazione avvenuta con successo.'))
+              /* this.setState(setSuccessMsg('Attivazione avvenuta con successo.')) */
+              toastr.success('Complimenti', 'Attivazione avvenuta con successo')
+              this.props.history.push('/login')
             }else{
               response.json().then(json => {
                 if(json.code===1){
-                  this.setState(setErrorMsg(json.message))
+                  /* this.setState(setErrorMsg(json.message)) */
+                  toastr.danger('Errore', json.message, { timeOut: 0 })
                 }else{
                   this.setState(setErrorMsg('Errore durante l\' attivazione.'))
+                  toastr.danger('Errore', 'Errore durante l\' attivazione.', { timeOut: 0 })
                 }
               });
             }
