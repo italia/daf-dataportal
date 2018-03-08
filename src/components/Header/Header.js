@@ -22,8 +22,10 @@ class Header extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleLoadDatasetClick = this.handleLoadDatasetClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    
+    this.toggleSearch = this.toggleSearch.bind(this)
+
     this.state = {
+      revealed: false,
       dropdownOpen: false,
       value: ''
     };
@@ -60,18 +62,25 @@ class Header extends Component {
   }
 
   handleLoadDatasetClick(event) {
-    console.log('Search Dataset for: ' + this.refs.auto.state.value);
+    console.log('Search Dataset for: ' + this.refs.auto.value);
     event.preventDefault();
     const { dispatch, selectDataset } = this.props;
-    dispatch(loadDatasets(this.refs.auto.state.value, 0, '', '', '', '','metadata_modified%20desc'))
+    dispatch(loadDatasets(this.refs.auto.value, 0, '', '', '', '','metadata_modified%20desc'))
       .then(json => {
         this.props.history.push('/dataset');
       })
   }
 
+  toggleSearch(){
+    this.setState({
+      revealed: !this.state.revealed
+    })
+  }
+
   render() {
     const { loggedUser } = this.props
     let open = this.state.dropdownOpen ? "show" : "" 
+    let revealed = this.state.revealed ? "revealed" : ""
     return (
       <header className="app-header navbar">
       <button className="nav-link navbar-toggler sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
@@ -83,8 +92,13 @@ class Header extends Component {
         </li>
       </ul>
       <ul className="nav navbar-nav d-md-down-none">
-        <AutocompleteDataset ref="auto"/>
-        <button className="btn btn-gray-200" type="submit" value="submit" onClick={this.handleLoadDatasetClick}>Cerca</button>
+        {/* <AutocompleteDataset ref="auto"/> */}
+        <button className="btn btn-gray-200" onClick={this.toggleSearch}>Cerca</button>
+          <div className={"search-bar " + revealed}>
+          <form onSubmit={this.handleLoadDatasetClick}>
+              <input className="search-input" placeholder="Cerca" ref="auto" name="s" id="search_mobile" tabindex="-1" type="text"/>
+          </form>
+        </div>
       </ul>
       <ul className="nav navbar-nav ml-auto">
         <li className="nav-item">
