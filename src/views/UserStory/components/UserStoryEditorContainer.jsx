@@ -14,6 +14,7 @@ import TextWidget from './widgets/TextWidget';
 import BtnControlWidget from './widgets/BtnControlWidget';
 import WidgetService from '../../DashboardManager/components/services/WidgetService';
 import EditBar from './bar/EditBar'
+import { serviceurl } from "../../../config/serviceurl";
 
 // Default styes of dazzle.
 import 'react-dazzle/lib/style/style.css';
@@ -63,7 +64,7 @@ class UserStoryEditorContainer extends Component {
   }
 
   async loadImage(widget) {
-    let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    let url = serviceurl.apiURLDatiGov + '/plot/' + widget + '/330x280';
     const response = await fetch(url, {
       method: 'GET'
     })

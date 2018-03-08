@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import Components from 'react';
 import { Route, Link } from 'react-router-dom';
+import { serviceurl } from "../../config/serviceurl";
 
 class DashboardCard extends Component {
     constructor(props){
@@ -13,7 +14,7 @@ class DashboardCard extends Component {
     }
 
     async loadImage(widget) {
-        let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+        let url = serviceurl.apiURLDatiGov + '/plot/' + widget + '/330x280';
         const response = await fetch(url, {
             method: 'GET'
         })

@@ -22,6 +22,8 @@ import IframeWidget from './widgets/IframeWidget';
 import WidgetService from './services/WidgetService';
 import DashboardService from './services/DashboardService';
 
+import { serviceurl } from "../../../config/serviceurl";
+
 // We are using bootstrap as the UI library
 // Removed for conflicts
 //import 'bootstrap/dist/css/bootstrap.css';
@@ -75,7 +77,7 @@ class DashboardEditor extends Component {
   }
 
   async loadImage(widget){
-    let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    let url =  serviceurl.apiURLDatiGov + '/plot/' + widget + '/330x280';
     const response = await fetch(url, {
       method: 'GET'
     })
