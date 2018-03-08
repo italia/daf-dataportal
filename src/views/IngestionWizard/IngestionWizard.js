@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap'
+import {toastr} from 'react-redux-toastr'
 
 
 const transformer = values => {
@@ -55,12 +56,13 @@ hideModalAndRedirect = (e) => {
   this.props.history.push('/home')
 };
 
-/*    showResults = values =>{
+    /* showResults = values =>{
     const transformed = transformer(values)
     console.log(transformed)
-  }  */
+    toastr.success('Complimenti', 'Il caricamento dei metadati è avvenuto con successo')
+  }  */ 
 
-     showResults = values =>{
+    showResults = values =>{
       this.setState({
         saving: true
       })
@@ -81,6 +83,7 @@ hideModalAndRedirect = (e) => {
                 this.setSending(false, undefined);
                 localStorage.removeItem('kyloSchema')
                 this.setState({saving: false})
+                toastr.success('Complimenti', 'Il caricamento dei metadati è avvenuto con successo')
                 this.props.history.push('/dataset/' + transformed.dcatapit.name)
               }else{
                 this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
@@ -107,7 +110,7 @@ hideModalAndRedirect = (e) => {
           console.log('token non presente');
           this.setState({saving: false})
         }
-      } 
+      }
 
 
   render() {

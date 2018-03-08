@@ -22,6 +22,8 @@ import {
   REQUEST_REGISTRATION,
   RECEIVE_FILE_STORAGEMANAGER
 } from './actions'
+import {reducer as toastrReducer} from 'react-redux-toastr'
+
 
 //Object.assign({}, state, .. create a new copy of the state
 function datasets( state = { isFetching: false, didInvalidate: false, items: [], dataset: null, ope:'' }, action
@@ -176,7 +178,8 @@ const rootReducer = combineReducers({
   datasetReducer,
   userReducer,
   ontologiesReducer,
-  propertiesReducer
+  propertiesReducer,
+  toastr: toastrReducer // <- Mounted at toastr.
 })
 
 export default rootReducer

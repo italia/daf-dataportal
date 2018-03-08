@@ -243,7 +243,7 @@ class DatasetDetail extends Component {
                                                             <p><strong>Informazioni sul caricamento </strong></p>
                                                         </div>
                                                         <div className="col-9">
-                                                            {dataset.operational.input_src.sftp?
+                                                            {dataset.operational.input_src.sftp &&
                                                             <div>
                                                                 <p><strong>Tipo: </strong>SFTP</p>
                                                                 <p><strong>Indirizzo: </strong>Comunicato</p>
@@ -252,10 +252,13 @@ class DatasetDetail extends Component {
                                                                 <p><strong>Password: </strong>XXXXXXXXXX</p>
                                                                 <p><strong>Percorso: </strong>{dataset.operational.input_src.sftp[0].url}</p>
                                                             </div>
-                                                            :
-                                                            <div>
-                                                                <p>{dataset.operational.input_src.srv_pull[0]}</p>
-                                                            </div>
+                                                            }
+                                                            {dataset.operational.input_src.srv_pull &&
+                                                                <div>
+                                                                <p><strong>Tipo: </strong>Web Services</p>
+                                                                <p><strong>Indirizzo: </strong>{dataset.operational.input_src.srv_pull[0].url}</p>
+                                                                <p><strong>Utente: </strong>XXXXXXXXXX</p>
+                                                                <p><strong>Password: </strong>XXXXXXXXXX</p>                                                            </div>
                                                             }
                                                         </div>
                                                 </div>
