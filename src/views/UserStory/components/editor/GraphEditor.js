@@ -3,6 +3,7 @@ import Components from 'react';
 import ChangeGraphDialog from '../ChangeGraphDialog';
 import IframeWidget from '../../../DashboardManager/components/widgets/IframeWidget';
 import App from '../InfinityScrollWidgets/App.js'
+import { serviceurl } from "../../config/serviceurl";
 
 // Services
 import WidgetService from '../../../DashboardManager/components/services/WidgetService';
@@ -42,7 +43,7 @@ class GraphEditor extends Component {
   }
 
   async loadImage(widget) {
-    let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    let url = serviceurl.apiURLDatiGov + '/plot/' + widget + '/330x280';
     const response = await fetch(url, {
       method: 'GET'
     })

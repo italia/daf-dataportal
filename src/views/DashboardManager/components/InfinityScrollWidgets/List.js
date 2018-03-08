@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import InfiniteScroll from '../../../../components/InfinityScroll';
 import WidgetImage from "./WidgetImage";
 import $ from 'jquery';
+import { serviceurl } from "../../../../config/serviceurl";
 
 
 class List extends Component {
@@ -32,7 +33,7 @@ class List extends Component {
 
   async imageLoad(widget){
     /* console.log('identifier: ' + widget); */
-    let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    let url = serviceurl.apiURLDatiGov + '/plot/' + widget + '/330x280';
     const response = await fetch(url, {
         method: 'GET'
     }).then(response => response.text())
