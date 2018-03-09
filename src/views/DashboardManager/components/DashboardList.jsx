@@ -3,6 +3,7 @@ import Components from 'react';
 import { Route, Link } from 'react-router-dom';
 import ListBar from './bar/ListBar';
 import Dimensions from 'react-dimensions'
+import { serviceurl } from "../../../config/serviceurl";
 
 // App components
 import Header from './Header';
@@ -30,7 +31,7 @@ class DashboardList extends Component {
   }
 
   async loadImage(widget) {
-    let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+    let url =  serviceurl.apiURLDatiGov + '/plot/' + widget + '/330x280';
     const response = await fetch(url, {
       method: 'GET'
     })

@@ -849,7 +849,6 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
   export function getSupersetUrl(nomeDataset, org) {
     var token = '';
     var url = serviceurl.apiURLDatiGov + '/superset/table/' + org + '_o_' + nomeDataset;
-    //https://datipubblici.daf.teamdigitale.it/dati-gov/v1/superset/table/default_org_o_sample_ciclisti_test_2    
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
         token = localStorage.getItem('token')

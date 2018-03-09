@@ -1,4 +1,5 @@
 import React from 'react';
+import { serviceurl } from "../../../../config/serviceurl";
 
 class WidgetImage extends React.Component {
 
@@ -12,7 +13,7 @@ class WidgetImage extends React.Component {
 
     componentDidMount() {
         const { widget } = this.props
-        let url = 'https://datipubblici.daf.teamdigitale.it/dati-gov/v1/plot/' + widget + '/330x280';
+        let url = serviceurl.apiURLDatiGov + '/plot/' + widget + '/330x280';
         const response = fetch(url, {
             method: 'GET'
         }).then(response => {
