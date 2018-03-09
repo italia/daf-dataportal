@@ -47,6 +47,7 @@ class UserstoryCard extends Component {
     render(){
         const { story, imageA, time, key } = this.props
         const { image } = this.state
+
         const iframeStyle = {
             width: '100%',
             height: '160px',
@@ -89,7 +90,7 @@ class UserstoryCard extends Component {
                     </div>
                     <div className="b-t-story py-2 footer-dash">
                         <div className="pt-1 row">
-                            <div className="card-text col-8"><i className="fa fa-clock-o fa-lg text-secondary pr-2"></i> {Math.ceil(time)} min. di lettura</div>
+                            <div className="card-text col-8"><i className="fa fa-clock-o fa-lg text-secondary pr-2"></i> {time?Math.ceil(time):0} min. di lettura</div>
                         </div>
                     </div>
                 </div>

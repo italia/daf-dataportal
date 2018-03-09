@@ -4527,6 +4527,14 @@ tbody.collapse.show {
     text-decoration: none;
     background-color: #39b2d5; }
 
+.badge-accento {
+  color: #151b1e;
+  background-color: var(--accento); }
+  .badge-accento[href]:hover, .badge-accento[href]:focus {
+    color: #151b1e;
+    text-decoration: none;
+    background-color: #39b2d5; }
+
 .badge-warning {
   color: #151b1e;
   background-color: #ffc107; }
@@ -10620,7 +10628,7 @@ base-chart.chart {
         background: var(--primary) !important;
         color: var(--white) !important; }
         .sidebar .nav-link.nav-link-primary:hover i, .sidebar .navbar .nav-link-primary.dropdown-toggle:hover i, .navbar .sidebar .nav-link-primary.dropdown-toggle:hover i {
-          color: var(--white) !important; }
+          color: var(--white); }
     .sidebar .nav-link.nav-link-secondary, .sidebar .navbar .nav-link-secondary.dropdown-toggle, .navbar .sidebar .nav-link-secondary.dropdown-toggle {
       background: #a4b7c1; }
       .sidebar .nav-link.nav-link-secondary i, .sidebar .navbar .nav-link-secondary.dropdown-toggle i, .navbar .sidebar .nav-link-secondary.dropdown-toggle i {
