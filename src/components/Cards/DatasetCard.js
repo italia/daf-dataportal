@@ -25,11 +25,11 @@ class DatasetCard extends Component{
                         </div>
                         <div className="col-2 my-2">
                             {
-                                dataset.owner_org !== 'default_org' &&
+                                dataset.organization.name !== 'default_org' &&
                                 <span className="badge badge-pill badge-danger pull-right badge-dash my-1" title="Il dataset è privato"> </span>
                             }
                             {
-                                dataset.owner_org === 'default_org' &&
+                                dataset.organization.name === 'default_org' &&
                                 <span className="badge badge-pill badge-success pull-right badge-dash my-1" title="Il dataset è pubblico"> </span>
                             }
                         </div>
@@ -42,7 +42,7 @@ class DatasetCard extends Component{
                             {/* <h6 className="card-subtitle mb-2 text-muted">{dash.subtitle}</h6> */}
                         </div>
                         <div className="card-text row m-0 mt-3 ml-4">
-                            <p className="col-8 pl-0 m-0">{dataset.owner_org}</p>
+                            <p className="col-8 pl-0 m-0">{dataset.organization.name}</p>
                         </div>
                     </div>
                     <div className="header-dataset row m-0 b-b-card">
