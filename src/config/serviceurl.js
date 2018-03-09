@@ -32,11 +32,7 @@ export const serviceurl = {
  apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1",
  apiURLCatalog: "https://catalog-manager.daf.teamdigitale.it/catalog-manager/v1",
  apiURLSecurity : "https://security-manager.daf.teamdigitale.it/security-manager/v1",
-<<<<<<< HEAD
  apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1",   */
-=======
- apiURLDataset : "https://dataset-manager.daf.teamdigitale.it/dataset-manager/v1",  */ 
->>>>>>> 0a7ef179f415010f8ae4b806bdf1ef1746021141
 
  urlMetabase: 'https://graph.daf.teamdigitale.it',
  urlSuperset: 'https://bi.daf.teamdigitale.it',
