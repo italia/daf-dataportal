@@ -72,10 +72,15 @@ class WidgetCard extends Component {
 
     render(){
         const { iframe } = this.props
-        var sp1 = iframe.table.split('_o_')
-        let sp2 = sp1[0].split('.')
-        var org = sp2[1]
-
+        var org = ''
+        if(iframe.table.indexOf('_o_')!==-1){
+            var sp1 = iframe.table.split('_o_')
+            let sp2 = sp1[0].split('.')
+            org = sp2[1]
+        } else {
+        org = 'default_org'
+        }
+        
         return(
             <div className="pr-4">
                 <div className="card widget-card">
@@ -110,7 +115,7 @@ class WidgetCard extends Component {
                     </div>
                     <div className="row m-0 footer-widget">
                         <div className="col-2 p-0 h-100">
-                            <div className="tool text-icon text-center bg-light b-r-dash">
+                            <div className="tool text-icon text-center bg-light b-b-card b-r-dash">
                                 {this.isSuperset() && <i className="fa fa-database py-3" title="Realizzato con Superset"/>}
                                 {this.isMetabase() && <i className="fa fa-pie-chart py-3" title="Realizzato con Metabase" />}
                             </div>

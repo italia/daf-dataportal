@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 import { toastr } from 'react-redux-toastr'
 
-function setErrorMsg(messaggio) {
+  function setErrorMsg(messaggio) {
     return {
       msg: messaggio,
       error: 1,
@@ -13,6 +13,14 @@ function setErrorMsg(messaggio) {
     }
   }
   
+  function setErrorMsg2(messaggio) {
+    return {
+      msg2: messaggio,
+      error: 1,
+      uploading: false
+    }
+  }
+
   function setSuccessMsg(messaggio) {
     return {
       msg: messaggio,
@@ -41,6 +49,7 @@ class ConfirmReset extends Component {
         super(props);
         this.state = { 
             msg: null,
+            msg2: null,
             error: 0,
             uploading: false,
             showLink: true 
@@ -49,6 +58,8 @@ class ConfirmReset extends Component {
         var params= getParams(query);
         this.token=params['t'];
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.validate = this.validate.bind(this)
+        this.validateEqual = this.validateEqual.bind(this)
     }
   
     componentDidMount() {
@@ -60,31 +71,72 @@ class ConfirmReset extends Component {
         console.log('Cambio password utente token: ' + this.token);
         const { dispatch } = this.props
         this.setState({uploading: true})
-        dispatch(changePwd(this.token, this.password.value, this.password2.value))
-         .then((response)=> {
-            if(response.ok){
-              //this.setState(setSuccessMsg('Cambio password avvenuto con successo.'))
-              toastr.success('Complimenti', 'Cambio password avvenuto con successo.', { timeOut: 9000,})
-              this.props.history.push('/login')
-            }else{
-              response.json().then(json => {
-                if(json.code===1){
-                  toastr.danger('Errore', json.message, {timeOut:0})
-                  /* this.setState(setErrorMsg(json.message)) */
+        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+        if (reg.test(this.password.value)){
+          if(this.password.value === this.password2.value){
+            dispatch(changePwd(this.token, this.password.value, this.password2.value))
+            .then((response)=> {
+                if(response.ok){
+                  this.setState(setSuccessMsg('Cambio password avvenuto con successo.'))
+                  toastr.success('Complimenti', 'Cambio password avvenuto con successo.', { timeOut: 9000,})
+                  this.props.history.push('/login')
                 }else{
-                  /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
-                  toastr.danger('Errore', 'Errore durante il salvataggio.', {timeOut: 0 })
+                  response.json().then(json => {
+                    if(json.code===1){
+                      toastr.danger('Errore', json.message, {timeOut:0})
+                      /* this.setState(setErrorMsg(json.message)) */
+                    }else{
+                      /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
+                      toastr.danger('Errore', 'Errore durante il salvataggio.', {timeOut: 0 })
+                    }
+                  });
                 }
-              });
-            }
-         }).catch((error) => {
-          /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
-           toastr.danger('Errore', 'Errore durante il salvataggio.')
+            }).catch((error) => {
+              /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
+              toastr.danger('Errore', 'Errore durante il salvataggio.')
+            })
+          }else{
+            this.setState(setErrorMsg('Le password inserite non corrispondono'))
+          }
+        }else{
+          this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+        }
+    }
+
+    validate(){
+      if(this.password.value){
+        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+        if(reg.test(this.password.value)){
+          this.setState({
+            msg: null,
+          })
+        }else{
+          this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+        }
+      }else{
+        this.setState({
+          msg: null,
         })
-  }
+      }
+      this.validateEqual();
+    }
+
+    validateEqual(){
+      if(this.password.value && this.password2.value){
+        if(this.password.value===this.password2.value){
+          this.setState({
+            msg2: null,
+          })
+        }else{
+          this.setState(setErrorMsg2('Le password inserite non corrispondono'))
+        }
+      }else{
+        this.setState({ msg2: null,})
+      }
+    }
 
   render() {
-    const { msg, error } = this.state
+    const { msg, msg2, error } = this.state
     return (
       <div className="container">
         <div className="row justify-content-center">
@@ -98,6 +150,11 @@ class ConfirmReset extends Component {
                     {msg}
                   </div>
                 }
+                {msg2 && error === 1 &&
+                  <div className="alert alert-danger" role="alert">
+                    {msg2}
+                  </div>
+                }
                 {msg && error === 0 &&
                   <div className="alert alert-success" role="alert">
                     {msg}
@@ -106,12 +163,12 @@ class ConfirmReset extends Component {
                 <div className="input-group mb-1">
                   <span className="input-group-text">
                     <i className="icon-lock"></i></span>
-                  <input type="password" className="form-control" ref={(password) => this.password = password} placeholder="Password" />
+                  <input type="password" className="form-control" ref={(password) => this.password = password} onChange={this.validate} placeholder="Password" />
                 </div>
                 <div className="input-group mb-2">
                   <span className="input-group-text">
                     <i className="icon-lock"></i></span>
-                  <input type="password" className="form-control" ref={(password2) => this.password2 = password2} placeholder="Ripeti password" />
+                  <input type="password" className="form-control" ref={(password2) => this.password2 = password2} onChange={this.validateEqual} placeholder="Ripeti password" />
                 </div>
                 {/* <div className="input-group mb-1">
                   <div className="g-recaptcha" data-sitekey="6LcUNjQUAAAAAG-jQyivW5xijDykXzslKqL2PMLr"></div>

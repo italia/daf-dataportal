@@ -138,6 +138,7 @@
 .text-icon{
     color: #b0bec5 !important
 }
+
 .b-b-card{
     border-bottom: 1px solid #CAD4DC;
 }
@@ -168,7 +169,7 @@
     top: 46px;
     left: 0;
     z-index: 250;
-    background: #1276dc;
+    background: #0066CC;
     height: 0;
     padding: 0;
     overflow: hidden;
@@ -192,4 +193,27 @@
     margin: 0;
     font-size: 20px;
     padding: 0 8px;
+}
+
+.card-dataset {
+	height: 307px;
+	width: 320px;
+	border: 1px solid #CAD4DC;
+}
+
+.slug-dataset {
+	height: 20px;
+	width: 255px;
+	color: #151B1E;
+	font-size: 14px;
+	line-height: 19px;
+}
+.dataset-body{
+    height: 169px;
+    widows: 100%;
+}
+.header-dataset {
+	height: 45px;
+    width: 100%;
+    background-color: #E7ECEF;
 }

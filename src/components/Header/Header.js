@@ -65,7 +65,7 @@ class Header extends Component {
     console.log('Search Dataset for: ' + this.refs.auto.value);
     event.preventDefault();
     const { dispatch, selectDataset } = this.props;
-    dispatch(loadDatasets(this.refs.auto.value, 0, '', '', '', '','metadata_modified%20desc'))
+    dispatch(loadDatasets(this.refs.auto.state.value, 0, '', '', '', '','metadata_modified%20desc'))
       .then(json => {
         this.props.history.push('/dataset');
       })
@@ -90,15 +90,18 @@ class Header extends Component {
         <li className="nav-item brand">
           <a href=""><img className="img-logo" src="http://designer.italia.it/assets/icons/logo-it.png" alt=""/><span>  DAF  </span></a>
         </li>
+        <li>
+          {/* <button className="btn btn-gray-200" onClick={this.toggleSearch}><i className="fa fa-search fa-lg" /></button> */}
+{/*           <div className={"search-bar " + revealed}>
+            <form onSubmit={this.handleLoadDatasetClick}>
+              <input className="search-input" placeholder="Cerca" ref="auto" name="s" id="search_mobile" tabindex="-1" type="text" />
+            </form>
+          </div> */}
+        </li>
       </ul>
-      <ul className="nav navbar-nav d-md-down-none">
-        {/* <AutocompleteDataset ref="auto"/> */}
-        <button className="btn btn-gray-200" onClick={this.toggleSearch}>Cerca</button>
-          <div className={"search-bar " + revealed}>
-          <form onSubmit={this.handleLoadDatasetClick}>
-              <input className="search-input" placeholder="Cerca" ref="auto" name="s" id="search_mobile" tabindex="-1" type="text"/>
-          </form>
-        </div>
+      <ul className="nav navbar-nav">
+        <AutocompleteDataset ref="auto"/>
+        <button className="btn btn-gray-200" onClick={this.handleLoadDatasetClick}>{/* <i className="fa fa-search fa-lg" /> */}Cerca</button>
       </ul>
       <ul className="nav navbar-nav ml-auto">
         <li className="nav-item">
@@ -115,13 +118,13 @@ class Header extends Component {
             </DropdownMenu>
           </Dropdown> */}
           <div className={"dropdown " + open}>
-              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+              <a className="nav-link" role="button" id="dropdownMenuButton" data-toggle="dropdown" 
                 aria-haspopup="true" aria-expanded="false" onClick={this.toggle}>
                 <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
-                <span className="d-md-down-none">{loggedUser ? loggedUser.givenname : ''}</span>
-            </button>
+                {/* <span className="d-md-down-none">{loggedUser ? loggedUser.givenname : ''}</span> */}
+            </a>
               <div className={"dropdown-menu dropdown-menu-right "+ open} aria-labelledby="dropdownMenuButton">
-                <h6 className="dropdown-header text-center">Menu utente</h6>
+                <h6 className="dropdown-header text-center">{loggedUser ? loggedUser.givenname : ''}</h6>
                 <a className="dropdown-item" href="/#/profile" onClick={this.toggle}><i className="fa fa-user"></i> Profilo</a>
                 <a className="dropdown-item" onClick={() => { logout(); this.toggle }} href="/"><i className="fa fa-lock"></i> Logout</a>
             </div>

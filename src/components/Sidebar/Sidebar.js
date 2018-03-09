@@ -119,7 +119,7 @@ class Sidebar extends Component {
               <li className="nav-item" onClick={(e) => { 
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');}}>
-                <NavLink to={'/home'} className="nav-link nav-link-light " activeClassName="nav-link-light"><i className="fa fa-home fa-lg text-secondary"></i> Home</NavLink>
+                <NavLink to={'/home'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fa fa-home fa-lg text-secondary"></i> Home</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
@@ -127,12 +127,12 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/dataset'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-table fa-lg text-secondary"></i> Dataset</NavLink>
               </li>
-{/*               <li className="nav-item" onClick={(e) => {
+              <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/home'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-bar-chart fa-lg text-secondary"></i> Widget</NavLink>
-              </li> */}
+                <NavLink to={'/widget'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-bar-chart fa-lg text-secondary"></i> Widget</NavLink>
+              </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
@@ -152,7 +152,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/crea'} className="nav-link nav-link-light " activeClassName="nav-link-light"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
+                <NavLink to={'/crea'} className="nav-link nav-link-light " activeClassName="nav-link-primary"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
               </li>
               <li className="nav-item nav-dropdown">
                 <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-wrench fa-lg text-secondary"></i> Strumenti</a>

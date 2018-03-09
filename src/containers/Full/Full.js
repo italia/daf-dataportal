@@ -19,6 +19,7 @@ import DashboardManager from '../../views/DashboardManager/DashboardManager';
 import Organizations from '../../views/Settings/Organizations';
 import Users from '../../views/Settings/Users';
 import Crea from "../../views/Crea/Crea";
+import Widgets from '../../views/Widgets/Widgets';
 
 class Full extends Component {
   render() {
@@ -51,6 +52,7 @@ class Full extends Component {
                 <Route path="/vocabulary" name="Vocabulary" component={Vocabulary} />
                 <Route path="/dashboard" name="Dashboard manager" component={DashboardManager} />
                 <Route path="/user_story" name="User Story" component={UserStory} />
+                <Route path="/widget" name="Widget" component={Widgets} />
                 <Route exact path="/dataset" name="Dataset" component={Dataset} />
                 <Route exact path="/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <Route path="/profile" name="Profile" component={Profile} />
