@@ -201,7 +201,7 @@ renderDatasetList(length, datasets, ope, isLoading){
                 <div className="row">
                   <div className="col-9">
                     <a href onClick={this.handleLoadDatasetDetailClick.bind(this, dataset.name)} style={{color: 'black'}}>
-                      <h3 className="card-text">{transformName(dataset.name)}</h3>
+                      <h3 className="card-text">{dataset.title}</h3>
                     </a>
                   </div>
                   <p className="card-subtitle col-3 mt-2">

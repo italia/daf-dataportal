@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Field, FieldArray, reduxForm, formValueSelector,  change  } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector,  change, reset  } from 'redux-form'
 import validate from './validate'
 import {processInputFileMetadata} from './avroschema.js'
 import Dropzone from 'react-dropzone'
@@ -201,6 +201,12 @@ class WizardFormMetadata extends Component {
       tipi: new Object()
     }
     this.calcDataFields = this.calcDataFields.bind(this);
+    this.cleanReduxForm()
+  }
+
+  cleanReduxForm(){
+    const {dispatch} = this.props 
+    dispatch(reset('wizard'));  // requires form name
   }
 
   calcDataFields (fields, json, tipi, setTipi) {
