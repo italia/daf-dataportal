@@ -70,12 +70,8 @@ class DatasetDetail extends Component {
         const path = window.location.hash
         let nome = path.substring(10)
         console.log(nome)
-
-        if(!dataset){
-            dispatch(datasetDetail(nome, query))
-            .catch(error => {console.log('Errore durante il caricamento del dataset ' + nome); this.setState({hidden: false})})
-        }
-
+        dispatch(datasetDetail(nome, query))
+        .catch(error => {console.log('Errore durante il caricamento del dataset ' + nome); this.setState({hidden: false})})
     }
 
     handleToggleClickMetabase() {
