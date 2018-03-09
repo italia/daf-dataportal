@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import WidgetCard from '../../components/Cards/WidgetCard';
 import UserstoryCard from '../../components/Cards/UserstoryCard';
 import DashboardCard from '../../components/Cards/DashboardCard';
+import DatasetCard from '../../components/Cards/DatasetCard';
 
 import {
     loadDatasets,
@@ -27,6 +28,7 @@ class Home extends Component {
         this.state = {
             listStories: [],
             listDashboards: [],
+            listIframes: [],
             items: 3,
         }
         
@@ -44,6 +46,13 @@ class Home extends Component {
         stories.then(json => {
             this.setState({
                 listStories: json
+            })
+        })
+
+        let iframes = homeService.iframes();
+        iframes.then(json => {
+            this.setState({
+                listIframes: json
             })
         })
 
@@ -77,7 +86,7 @@ class Home extends Component {
 
     render(){
         const { datasets, isFetching } = this.props
-        const { listDashboards, listStories, items } = this.state
+        const { listDashboards, listStories, listIframes, items } = this.state
         return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2" />Loading</h1> : (
             <div>
                 <div className="top-home w-100 bg-grey-n d-md-down-none">
@@ -103,7 +112,7 @@ class Home extends Component {
                                         </button>
                                     </div>
                                     <i className="fa fa-bar-chart bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">0</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{listIframes.length}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Widgets</div>
                                 </div>
                             </div>
@@ -136,9 +145,54 @@ class Home extends Component {
                         </div>
                     </div>
                 </div>
-                <div className=" py-4 container body w-100">
+                <div className="py-3 container body w-100">
                     <div className="row m-0 text-muted">
-                        <i className="fa fa-columns fa-lg m-4" /><h2 className="mt-3 mb-4">Dashboard</h2>
+                        <i className="fa fa-table fa-lg m-4" style={{lineHeight:'1'}} /><h2 className="mt-3 mb-4">Dataset</h2>
+                    </div>
+                    <div className="row ml-4 m-0">
+                        {
+                            datasets.slice(0, items).map((dataset, index) => {
+                                return (
+                                    <DatasetCard
+                                        dataset={dataset}
+                                        key={index}
+                                    />
+                                )
+                            })
+                        }
+                    </div>
+                    <div className="w-100 text-center">
+                        <Link to={'/dataset'}>
+                            <h4 className="text-primary"><u>Vedi tutte</u></h4>
+                        </Link>
+                    </div>
+                </div>
+                <div className="py-4 bg-light">
+                    <div className="container body w-100">
+                        <div className="row m-0 text-muted">
+                            <i className="fa fa-bar-chart fa-lg m-4" style={{ lineHeight: '1' }} /><h2 className="mt-3 mb-4">Widgets</h2>
+                        </div>
+                        <div className="row ml-4 m-0">
+                            {
+                                this.state.listIframes.slice(0, items).map((iframe, index) => {
+                                    return (
+                                        <WidgetCard
+                                            iframe={iframe}
+                                            key={index}
+                                        />)
+                                })
+                            }
+                        </div>
+                        <div className="w-100 text-center">
+                            <Link to={'/widget'}>
+                                <h4 className="text-primary"><u>Vedi tutte</u></h4>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+                <div className="py-3 container body w-100">
+                    <div className="row m-0 text-muted">
+                        <i className="fa fa-columns fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Dashboard</h2>
                     </div>
                     <div className="row ml-4 m-0">
                         {
@@ -203,10 +257,10 @@ class Home extends Component {
                         </Link>
                     </div>
                 </div>
-                <div className="py-2 bg-light">
+                <div className="py-3 bg-light">
                 <div className="container body w-100">
                     <div className="row m-0 text-muted">
-                        <i className="fa fa-font fa-lg m-4" /><h2 className="mt-3 mb-4">Storie</h2>
+                        <i className="fa fa-font fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Storie</h2>
                     </div>
                     <div className="row ml-4 m-0">
                         {

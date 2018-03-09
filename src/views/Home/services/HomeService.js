@@ -6,6 +6,7 @@ export default class HomeService {
     
     dashboardUrl = serviceurl.apiURLDatiGov + "/dashboards";
     storyUrl =  serviceurl.apiURLDatiGov + "/user-stories";
+    iframesUrl = serviceurl.apiURLDatiGov + '/dashboard/iframesbyorg/default_org'
 
     constructor() {
 
@@ -26,6 +27,18 @@ export default class HomeService {
 
     async stories() {
         const response = await fetch( this.storyUrl , {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+        return response.json();
+    }
+
+    async iframes() {
+        const response = await fetch(this.iframesUrl, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

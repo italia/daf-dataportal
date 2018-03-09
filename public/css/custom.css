@@ -138,6 +138,7 @@
 .text-icon{
     color: #b0bec5 !important
 }
+
 .b-b-card{
     border-bottom: 1px solid #CAD4DC;
 }
@@ -159,4 +160,60 @@
 
 .bg-grey-n{
     background-color: #CAD4DC !important
+}
+
+.search-bar{
+    position: fixed;
+    width: calc(100% - 200px);
+    margin-left: 200px;
+    top: 46px;
+    left: 0;
+    z-index: 250;
+    background: #0066CC;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-transition: height 0.25s ease, top 0.25s ease, padding 0.25s ease;
+    transition: height 0.25s ease, top 0.25s ease, padding 0.25s ease;
+}
+
+.search-bar.revealed {
+    height: 68px;
+    padding: 10px;
+    width: calc(100% - 200px);
+    margin-left: 200px;
+}
+
+.search-input {
+    position: relative;
+    border: 0;
+    background: #FFFFFF;
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    font-size: 20px;
+    padding: 0 8px;
+}
+
+.card-dataset {
+	height: 307px;
+	width: 320px;
+	border: 1px solid #CAD4DC;
+}
+
+.slug-dataset {
+	height: 20px;
+	width: 255px;
+	color: #151B1E;
+	font-size: 14px;
+	line-height: 19px;
+}
+.dataset-body{
+    height: 169px;
+    widows: 100%;
+}
+.header-dataset {
+	height: 45px;
+    width: 100%;
+    background-color: #E7ECEF;
 }

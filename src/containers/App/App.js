@@ -148,9 +148,12 @@ class App extends Component {
             <PublicRoute authed={this.state.authed} path="/login" component={Home} />
             <PublicRoute authed={this.state.authed} path="/register" component={Home} />
             <PublicRoute authed={this.state.authed} path="/confirmregistration" component={Home} />
+            <PublicRoute authed={this.state.authed} path="/requestreset" component={Home} />
+            <PublicRoute authed={this.state.authed} path="/resetpwd" component={Home} />
             <PrivateRoute authed={this.state.authed} path="/home" name="Dashboard" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/prova" name="Home" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/dashboard" name="Dashboard" component={Full} />
+            <PrivateRoute authed={this.state.authed} path="/widget" name="Widget" component={Full} />
             <PrivateRouteEditor authed={this.state.authed} role={role} path="/ingestionwizzard" name="Ingestion" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/ontologies" name="Ontologies" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/vocabulary" name="Vocabulary" component={Full} />
