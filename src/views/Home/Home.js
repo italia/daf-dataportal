@@ -99,7 +99,7 @@ class Home extends Component {
                                         </button>
                                     </div>
                                     <i className="fa fa-table bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{datasets.length}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{datasets?datasets.length:0}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dataset</div>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@ class Home extends Component {
                     </div>
                     <div className="row ml-4 m-0">
                         {
-                            datasets.slice(0, items).map((dataset, index) => {
+                            datasets&&datasets.slice(0, items).map((dataset, index) => {
                                 return (
                                     <DatasetCard
                                         dataset={dataset}
