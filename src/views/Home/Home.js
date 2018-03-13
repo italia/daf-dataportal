@@ -71,11 +71,11 @@ class Home extends Component {
     }
 
     updatePredicate() {
-        if (window.innerWidth <= 1285)
+        if (window.innerWidth <= 1200)
             this.setState({ items: 2 });
-        if (window.innerWidth <= 991)
+        if (window.innerWidth <= 767)
             this.setState({ items: 1});
-        if (window.innerWidth > 1285)
+        if (window.innerWidth > 1200)
             this.setState({ items: 3 });
     }
 
@@ -149,7 +149,7 @@ class Home extends Component {
                     <div className="row m-0 text-muted">
                         <i className="fa fa-table fa-lg m-4" style={{lineHeight:'1'}} /><h2 className="mt-3 mb-4">Dataset</h2>
                     </div>
-                    <div className="row ml-4 m-0">
+                    <div className="row mx-auto m-0">
                         {
                             datasets&&datasets.slice(0, items).map((dataset, index) => {
                                 return (
@@ -167,12 +167,12 @@ class Home extends Component {
                         </Link>
                     </div>
                 </div>
-                <div className="py-4 bg-light">
+                <div className="py-3 bg-light">
                     <div className="container body w-100">
-                        <div className="row m-0 text-muted">
+                        <div className="row mx-auto text-muted">
                             <i className="fa fa-bar-chart fa-lg m-4" style={{ lineHeight: '1' }} /><h2 className="mt-3 mb-4">Widgets</h2>
                         </div>
-                        <div className="row ml-4 m-0">
+                        <div className="row mx-auto m-0">
                             {
                                 this.state.listIframes.slice(0, items).map((iframe, index) => {
                                     return (
@@ -191,10 +191,10 @@ class Home extends Component {
                     </div>
                 </div>
                 <div className="py-3 container body w-100">
-                    <div className="row m-0 text-muted">
+                    <div className="row mx-auto text-muted">
                         <i className="fa fa-columns fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Dashboard</h2>
                     </div>
-                    <div className="row ml-4 m-0">
+                    <div className="row mx-auto m-0">
                         {
                             this.state.listDashboards.slice(0, items).map((dash, index) => {
                                 let chartUrl = undefined
@@ -259,10 +259,10 @@ class Home extends Component {
                 </div>
                 <div className="py-3 bg-light">
                 <div className="container body w-100">
-                    <div className="row m-0 text-muted">
+                    <div className="row mx-auto text-muted">
                         <i className="fa fa-font fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Storie</h2>
                     </div>
-                    <div className="row ml-4 m-0">
+                    <div className="row mx-auto m-0">
                         {
                             this.state.listStories.slice(0, items).map((story, index) => {
                                 let chartUrl = undefined

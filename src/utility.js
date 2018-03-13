@@ -1,4 +1,10 @@
 import { serviceurl } from './config/serviceurl.js'
+import { truncate } from 'fs';
+
+String.prototype.replaceAll = function (search, replacement) {
+  var target = this;
+  return target.replace(new RegExp(search, 'g'), replacement);
+};
 
 export function transformName(name){
     try{
@@ -86,6 +92,24 @@ export function transformName(name){
     return sp1[1]
     else 
     return name
+  }
+
+  export function truncateWidgetTitle(name) {
+    var result = ''
+    if(name.length>=29)
+      result=name.substring(0,25)+'...'
+    else
+      result = name
+
+    return result
+  }
+
+  export function truncateDatasetName(name) {
+    var result = name.replaceAll('_',' ')
+    if (name.length >= 22)
+      result = result.substring(0, 20) + '...'
+
+    return result
   }
 
   export function getCurrentDate(){

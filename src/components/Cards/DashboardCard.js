@@ -75,7 +75,7 @@ class DashboardCard extends Component {
             seconda = image2
         
         return(
-            <div className="pr-4" key={key}>
+            <div className="mx-auto" key={key}>
                 <div className="card b-a-1 b-t-3 bg-gray-100 card-dash">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">

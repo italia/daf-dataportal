@@ -42,7 +42,7 @@ class Widgets extends Component{
                                 this.state.listWidgets.map((iframe, index) => {
                                     
                                     return (
-                                        iframe.identifier && iframe.table &&
+                                        iframe.identifier &&
                                         <WidgetCard
                                             iframe={iframe}
                                             key={index}

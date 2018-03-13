@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import IframeWidget from '../../views/DatasetDetail/widgets/IframeWidget';
-import { transformWidgetName } from "../../utility";
+import { transformWidgetName, truncateWidgetTitle, truncateDatasetName } from "../../utility";
 import { serviceurl } from "../../config/serviceurl";
 
 
@@ -42,9 +42,10 @@ class WidgetCard extends Component {
 
     //remove &standalone=true from original link
     getLink(url){
-        if(url.indexOf('&standalone=true') !== -1){
-            url = url.substring(0, url.length - 16);
-        }
+        if(url)
+            if(url.indexOf('&standalone=true') !== -1){
+                url = url.substring(0, url.length - 16);
+            }
         return url
     }
 
@@ -70,24 +71,30 @@ class WidgetCard extends Component {
         })
     }
 
+    linkTo(nome){
+        this.props.history.push('/dataset/'+nome)
+    }
+
     render(){
         const { iframe } = this.props
         var org = ''
-        if(iframe.table.indexOf('_o_')!==-1){
-            var sp1 = iframe.table.split('_o_')
-            let sp2 = sp1[0].split('.')
-            org = sp2[1]
+        if(iframe.table){
+            if(iframe.table.indexOf('_o_')!==-1){
+                var sp1 = iframe.table.split('_o_')
+                let sp2 = sp1[0].split('.')
+                org = sp2[1]
+            }
         } else {
-        org = 'default_org'
+            org = 'default_org'
         }
         
         return(
-            <div className="pr-4">
+            <div className="mx-auto">
                 <div className="card widget-card">
                     <div className="header-widget py-1">
                         <div className="row m-0">
                             <div className="col-9 title-widget my-2 pl-3">
-                                <a href={this.getLink(iframe.iframe_url)} target='_blank' rel="noopener noreferrer"><p className="text-primary">{iframe.title}</p></a>
+                                <a href={this.getLink(iframe.iframe_url)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary">{truncateWidgetTitle(iframe.title)}</p></a>
                             </div>
                             <div className="col-3 my-2">
                                 {
@@ -105,7 +112,7 @@ class WidgetCard extends Component {
                         <div className="row m-0 b-b-card">
                             <div className="crop col-12 w-100">
                                 <div>
-                                    {this.state.imageSrc && this.state.imageSrc !== 'noimage' ? <img src={"data:image/jpg;base64," + this.state.imageSrc} alt={transformWidgetName(iframe.table)}/> :
+                                    {this.state.imageSrc && this.state.imageSrc !== 'noimage' ? <img src={"data:image/jpg;base64," + this.state.imageSrc} alt={iframe.table?transformWidgetName(iframe.table):''}/> :
                                     
                                         React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click" })
                                     }
@@ -120,11 +127,16 @@ class WidgetCard extends Component {
                                 {this.isMetabase() && <i className="fa fa-pie-chart py-3" title="Realizzato con Metabase" />}
                             </div>
                         </div>
-                        <div className="col-9 pr-0 h-100">
-                            <div className>
-                                <i className="text-icon fa fa-table py-3 pr-2"/> Dataset
+                        <div className="col-8 pr-0 h-100">
+                            <div title={sp1 ? (sp1[1]) : ''}>
+                                <i className="text-icon fa fa-table py-3 pr-2" /> {sp1 ? truncateDatasetName(sp1[1]):''}
                             </div>
                         </div>
+                        {sp1 && <div className="col-2 p-0 h-100">
+                            <Link to={'/dataset/'+sp1[1]}>
+                                <i className="text-primary fa fa-arrow-circle-right pull-right fa-lg py-3 pr-3" title="Vai al Dataset"/>
+                            </Link>
+                        </div>}
                     </div>
                 </div>
             </div>

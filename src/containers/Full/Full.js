@@ -20,8 +20,25 @@ import Organizations from '../../views/Settings/Organizations';
 import Users from '../../views/Settings/Users';
 import Crea from "../../views/Crea/Crea";
 import Widgets from '../../views/Widgets/Widgets';
+import SearchBar from '../../components/SearchBar/SearchBar';
 
 class Full extends Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+      open: false
+    }
+
+    this.openSearch = this.openSearch.bind(this)
+  }
+
+  openSearch(){
+    this.setState({
+      open: !this.state.open
+    })
+  }
+
   render() {
     const { history } = this.props
     const divStyle = {
@@ -31,22 +48,22 @@ class Full extends Component {
     let mainDiv = 'bg-white'
     let home = ''
 
-    if (history.location.pathname ==='/user_story/list')
+    if (history.location.pathname === '/user_story/list' || history.location.pathname === '/widget')
       mainDiv='bg-light'
     
     if (history.location.pathname === '/home' )
       home = 'p-0'
     return (
       <div className="app">
-        <Header history={history}/>
+        <Header history={history} openSearch={this.openSearch}/>
         <div className="app-body">
           <Sidebar {...this.props}/>
           <main className={"main "+mainDiv} >
+            {this.state.open && <SearchBar history={history} open={this.state.open}/>}
             <Breadcrumb />
             <div className={"container-fluid "+home} style={divStyle}>
               <Switch>
-                {<Route path="/home" name="Home" exact component={Home}/>}
-                {/* <Route path="/prova" name="Home" exact component={Home} /> */}
+                <Route path="/home" name="Home" exact component={Home}/>
                 <Route path="/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
                 <Route path="/ontologies" name="Ontologies" component={Ontologies} />
                 <Route path="/vocabulary" name="Vocabulary" component={Vocabulary} />
