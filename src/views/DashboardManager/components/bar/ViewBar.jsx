@@ -17,7 +17,7 @@ class ViewBar extends React.Component {
           </div>
           <div className="col-2">
             {this.props.pvt==1 &&
-            <div className="badge badge-danger pull-right mt-20"><i className="fa fa-lock fa-lg m-t-2"></i> PRIVATA</div>
+            <div className="badge badge-danger fa-pull-right mt-20"><i className="fa fa-lock fa-lg m-t-2"></i> PRIVATA</div>
             }
           </div>
         </div>

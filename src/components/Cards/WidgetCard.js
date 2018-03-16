@@ -102,22 +102,22 @@ class WidgetCard extends Component {
             <div className="mx-auto">
                 <div className="card widget-card">
                     <div className="header-widget py-1">
-                        <div className="row m-0">
-                            <div className="col-9 title-widget my-2 pl-3">
-                                <a href={this.getLink(iframe.iframe_url)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary">{truncateWidgetTitle(iframe.title)}</p></a>
+                        <div className="row my-1 mx-0">
+                            <div className="col-9 title-widget my-1 pl-3">
+                                <a href={this.getLink(iframe.iframe_url)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
                             </div>
                             <div className="col-3 my-2">
                                 {
                                     org !== 'default_org' &&
-                                    //<span className="badge badge-pill badge-danger pull-right badge-dash" title="Il widget è privato"> </span>
-                                    //<i className="fa fa-lock fa-lg pull-right text-icon my-1 pointer" title="Il widget è privato"/>
-                                    <span className="pointer" title='Il widget è privato'><FontAwesomeIcon icon={faLock} className="pull-right text-icon pointer" size="lg"/></span>
+                                    //<span className="badge badge-pill badge-danger fa-pull-right badge-dash" title="Il widget è privato"> </span>
+                                    //<i className="fa fa-lock fa-lg fa-pull-right text-icon my-1 pointer" title="Il widget è privato"/>
+                                    <span className="pointer" title='Il widget è privato'><i className="fas fa-lock fa-pull-right text-icon pointer" style={{fontSize: '16px'}}/></span>
                                 }
                                 {
                                     org === 'default_org' &&
-                                    //<span className="badge badge-pill badge-success pull-right badge-dash" title="Il widget è pubblico"> </span>
-                                    //<i className="fa fa-globe pull-right fa-lg text-icon my-1 pointer" title='Il widget è pubblico'/>
-                                    <span className="pointer" title='Il widget è privato'><FontAwesomeIcon icon={faGlobe} className="pull-right text-icon pointer" size="lg"/></span>
+                                    //<span className="badge badge-pill badge-success fa-pull-right badge-dash" title="Il widget è pubblico"> </span>
+                                    //<i className="fa fa-globe fa-pull-right fa-lg text-icon my-1 pointer" title='Il widget è pubblico'/>
+                                    <span className="pointer" title='Il widget è pubblico'><i className="fas fa-globe fa-pull-right text-icon pointer" style={{ fontSize: '16px' }}/></span>
                                 }
                             </div>
                         </div>
@@ -148,7 +148,7 @@ class WidgetCard extends Component {
                         </div>
                         {sp1 && <div className="col-2 p-0 h-100">
                             <Link to={'/dataset/'+sp1[1]}>
-                                <i className="text-primary fa fa-arrow-circle-right pull-right fa-lg py-3 pr-3" title="Vai al Dataset"/>
+                                <i className="text-primary fa fa-arrow-circle-right fa-pull-right fa-lg py-3 pr-3" title="Vai al Dataset"/>
                             </Link>
                         </div>}
                     </div>

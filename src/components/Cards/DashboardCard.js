@@ -165,28 +165,28 @@ class DashboardCard extends Component {
                         <div className="card-text row m-0 mt-3 ml-4">
                             <p className="col-8 pl-0 m-0">{dash.user}</p>
                             <div className="col-4">
-                                <div className={"pull-right dropdown" + show }>
-                                {this.state.saving ? <i className="fa fa-spin fa-circle-o-notch text-icon"/> :
+                                <div className={"fa-pull-right dropdown" + show }>
+                                {this.state.saving ? <i className="fas fa-spin fa-circle-notch text-icon"/> :
                                     <button className={"btn-status bg-cards-2 text-icon text-center"+active} id={'dropdown_'+id} data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.openVisibility.bind(this)}>
 
                                         <FontAwesomeIcon icon={faSortDown} className="pull-left"/>
                                         
                                     {
                                         published == 2 &&
-                                        //<span className="badge badge-pill badge-warning pull-right badge-dash" title="Pubblica"> </span>
-                                        //<i className="fa fa-globe pull-right fa-lg text-icon" title='Pubblica'/>
+                                        //<span className="badge badge-pill badge-warning fa-pull-right badge-dash" title="Pubblica"> </span>
+                                        //<i className="fa fa-globe fa-pull-right fa-lg text-icon" title='Pubblica'/>
                                         <span title="Open Data" className="ml-2"><FontAwesomeIcon icon={faGlobe} className="mx-auto" /></span>
                                     }
                                     {
                                         published == 1 &&
-                                        //<span className="badge badge-pill badge-success pull-right badge-dash" title="Condivisa"> </span>
-                                        //<i className="fa fa-users fa-lg pull-right text-icon" title="Condivisa"/>
+                                        //<span className="badge badge-pill badge-success fa-pull-right badge-dash" title="Condivisa"> </span>
+                                        //<i className="fa fa-users fa-lg fa-pull-right text-icon" title="Condivisa"/>
                                         <span title="Organizzazione" className="ml-2"><FontAwesomeIcon icon={faUsers} className="mx-auto" /></span>
                                     }
                                     {
                                         published == 0 &&
-                                        //<span className="badge badge-pill badge-secondary pull-right badge-dash" title="In bozza"> </span>
-                                        //<i className="fa fa-lock fa-lg pull-right text-icon" title="In Bozza"/>
+                                        //<span className="badge badge-pill badge-secondary fa-pull-right badge-dash" title="In bozza"> </span>
+                                        //<i className="fa fa-lock fa-lg fa-pull-right text-icon" title="In Bozza"/>
                                         <span title="Privata" className="ml-2"><FontAwesomeIcon icon={faLock} className="mx-auto"/></span>
                                     }
 
@@ -238,14 +238,14 @@ class DashboardCard extends Component {
                     </div>
                     <div className="b-t-1 py-2 bg-cards-2 footer-dash">
                         <div className="pt-1 row">
-                            <div className="card-text col-8"><i className="fa fa-bar-chart text-secondary pr-2"></i> Widget</div>
-                            <div className="col-4 my-1 pr-2"><span className="badge badge-pill badge-secondary pull-right" style={{ height: '16px' }}>{Object.keys(JSON.parse(dash.widgets)).length} </span></div>
+                            <div className="card-text col-8"><i className="fa fa-chart-bar text-secondary pr-2"></i> Widget</div>
+                            <div className="col-4 my-1 pr-2"><span className="badge badge-pill badge-secondary fa-pull-right" style={{ height: '16px' }}>{Object.keys(JSON.parse(dash.widgets)).length} </span></div>
                         </div>
                     </div>
                     <div className="b-t-1 py-2 bg-cards-2 footer-dash">
                         <div className="pt-1 row">
                             <div className="card-text col-8"><i className="fa fa-table text-secondary pr-2"></i> Dataset</div>
-                            {/* <div className="col-4"><span className="badge badge-pill badge-secondary pull-right" style={{ height: '16px' }}>{Object.keys(JSON.parse(dash.widgets)).length} </span></div> */}
+                            {/* <div className="col-4"><span className="badge badge-pill badge-secondary fa-pull-right" style={{ height: '16px' }}>{Object.keys(JSON.parse(dash.widgets)).length} </span></div> */}
                         </div>
                     </div>
                 </div>

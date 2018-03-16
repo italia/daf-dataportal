@@ -140,7 +140,7 @@ class App extends Component {
     if (this.props.authed)
       this.state.authed = true;
 
-    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (
+    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Loading</h1> : (
       <div>
         <HashRouter history={history}>
           <Switch>

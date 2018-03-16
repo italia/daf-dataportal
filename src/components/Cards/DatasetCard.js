@@ -39,22 +39,22 @@ class DatasetCard extends Component{
         return (
             <div className="mx-auto">
                 <div className="card bg-gray-100 card-dataset">
-                    <div className="header-dataset row m-0 b-b-card">
-                        <div className="col-10 slug-dataset my-2 pl-3">
+                    <div className="header-dataset row mx-0 py-1 b-b-card">
+                        <div className="col-10 slug-dataset my-1 pl-3">
                             <div className="my-1">{dataset.name}</div>
                         </div>
                         <div className="col-2 my-2">
                             {
                                 dataset.organization.name !== 'default_org' &&
-                                //<span className="badge badge-pill badge-danger pull-right badge-dash my-1" title="Il dataset è privato"> </span>
-                                //<i className="fa fa-lock pull-right fa-lg text-icon my-1 pointer" title='Il dataset è privato'/>
-                                <span className="pointer" title='Il dataset è privato'><FontAwesomeIcon icon={faLock} className="my-1 pull-right text-icon pointer" size="lg"/></span>
+                                //<span className="badge badge-pill badge-danger fa-pull-right badge-dash my-1" title="Il dataset è privato"> </span>
+                                //<i className="fa fa-lock fa-pull-right fa-lg text-icon my-1 pointer" title='Il dataset è privato'/>
+                                <span className="pointer" title='Il dataset è privato'><i icon={faLock} className="fas fa-lock fa-pull-right text-icon pointer" style={{fontSize: '16px'}}/></span>
                             }
                             {
                                 dataset.organization.name === 'default_org' &&
-                                //<span className="badge badge-pill badge-success pull-right badge-dash my-1" title="Il dataset è pubblico"> </span>
-                                //<i className="fa fa-globe pull-right fa-lg text-icon my-1 pointer" title='Il dataset è pubblico'/>
-                                <span className="pointer" title='Il dataset è pubblico'><FontAwesomeIcon icon={faGlobe} className="my-1 pull-right text-icon pointer" size="lg"/></span>
+                                //<span className="badge badge-pill badge-success fa-pull-right badge-dash my-1" title="Il dataset è pubblico"> </span>
+                                //<i className="fa fa-globe fa-pull-right fa-lg text-icon my-1 pointer" title='Il dataset è pubblico'/>
+                                <span className="pointer" title='Il dataset è pubblico'><i icon={faGlobe} className="fas fa-globe fa-pull-right text-icon pointer" style={{fontSize: '16px'}}/></span>
                             }
                         </div>
                     </div>
@@ -79,7 +79,7 @@ class DatasetCard extends Component{
                     </div>
                     <div className="header-dataset row m-0 py-1">
                         <div className="col-2 my-2 text-center">
-                            <i className="fa fa-calendar-o"/>
+                            <i className="text-icon fas fa-calendar"/>
                         </div>
                         <div className="col-10 my-2 p-0">
                             Creato il {detail?detail.dcatapit.modified:''}

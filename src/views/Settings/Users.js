@@ -349,7 +349,7 @@ class Users extends Component {
                                 <label htmlFor="example-search-input">Utenti</label>
                             </div>
                             <div className="col-7">
-                                <button type="button" className="btn btn-link pull-right p-0" title="Crea nuovo utente" onClick={this.openUserCreate}>
+                                <button type="button" className="btn btn-link fa-pull-right p-0" title="Crea nuovo utente" onClick={this.openUserCreate}>
                                     <i className="fa fa-plus-circle fa-lg"></i>
                                 </button>
                             </div>
