@@ -124,6 +124,7 @@ class UserStoryList extends Component {
                 imageA = {imageA}
                 time = {time}
                 key = {index}
+                id = {index}
                 />
             
             )

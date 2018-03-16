@@ -32,7 +32,6 @@ class Home extends Component {
             items: 3,
         }
         
-        this.updatePredicate()
         this.searchDataset();
 
         let dash = homeService.dashboards();
@@ -62,7 +61,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.updatePredicate();
+        this.updatePredicate()
         window.addEventListener("resize", this.updatePredicate);
     }
 
@@ -72,11 +71,11 @@ class Home extends Component {
 
     updatePredicate() {
         if (window.innerWidth <= 1200)
-            this.setState({ items: 2 });
+            this.setState({items: 2});
         if (window.innerWidth <= 767)
-            this.setState({ items: 1});
+            this.setState({items: 1});
         if (window.innerWidth > 1200)
-            this.setState({ items: 3 });
+            this.setState({items: 3});
     }
 
     searchDataset(query, category, group, organization, order) {
@@ -245,6 +244,7 @@ class Home extends Component {
                                         imageA={imageA}
                                         imageB={imageB}
                                         dash={dash}
+                                        id={index}
                                         key={index}
                                     />
                                 )
@@ -312,6 +312,7 @@ class Home extends Component {
                                         widgetA={firstLayout}
                                         imageA={imageA}
                                         time={time}
+                                        id={index}
                                         key={index}
                                     />
 

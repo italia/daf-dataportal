@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import IframeWidget from '../../views/DatasetDetail/widgets/IframeWidget';
 import { transformWidgetName, truncateWidgetTitle, truncateDatasetName } from "../../utility";
 import { serviceurl } from "../../config/serviceurl";
+import fontawesome from '@fortawesome/fontawesome'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { faLock, faGlobe, faUsers } from '@fortawesome/fontawesome-free-solid'
 
 
 
@@ -71,6 +74,13 @@ class WidgetCard extends Component {
         })
     }
 
+    componentWillUnmount(){
+        this.setState({
+            loading: false,
+            imageSrc: undefined
+        })
+    }
+
     linkTo(nome){
         this.props.history.push('/dataset/'+nome)
     }
@@ -99,11 +109,15 @@ class WidgetCard extends Component {
                             <div className="col-3 my-2">
                                 {
                                     org !== 'default_org' &&
-                                    <span className="badge badge-pill badge-danger pull-right badge-dash" title="Il widget è privato"> </span>
+                                    //<span className="badge badge-pill badge-danger pull-right badge-dash" title="Il widget è privato"> </span>
+                                    //<i className="fa fa-lock fa-lg pull-right text-icon my-1 pointer" title="Il widget è privato"/>
+                                    <span className="pointer" title='Il widget è privato'><FontAwesomeIcon icon={faLock} className="pull-right text-icon pointer" size="lg"/></span>
                                 }
                                 {
                                     org === 'default_org' &&
-                                    <span className="badge badge-pill badge-success pull-right badge-dash" title="Il widget è pubblico"> </span>
+                                    //<span className="badge badge-pill badge-success pull-right badge-dash" title="Il widget è pubblico"> </span>
+                                    //<i className="fa fa-globe pull-right fa-lg text-icon my-1 pointer" title='Il widget è pubblico'/>
+                                    <span className="pointer" title='Il widget è privato'><FontAwesomeIcon icon={faGlobe} className="pull-right text-icon pointer" size="lg"/></span>
                                 }
                             </div>
                         </div>

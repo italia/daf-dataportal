@@ -150,11 +150,11 @@ class Header extends Component {
           <div className={"dropdown " + open}>
               <a className="nav-link" role="button" id="dropdownMenuButton" data-toggle="dropdown" 
                 aria-haspopup="true" aria-expanded="false" onClick={this.toggle}>
-                <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" style={{cursor: 'pointer'}}/>
+                <img src={'img/avatars/7.jpg'} className="img-avatar pointer" alt="admin@bootstrapmaster.com"/>
                 {/* <span className="d-md-down-none">{loggedUser ? loggedUser.givenname : ''}</span> */}
             </a>
               <div className={"dropdown-menu dropdown-menu-right "+ open} aria-labelledby="dropdownMenuButton">
-                <h6 className="dropdown-header text-center">{loggedUser ? loggedUser.givenname : ''}</h6>
+                <h6 className="dropdown-header text-center"><b>{loggedUser ? loggedUser.givenname : ''}</b></h6>
                 <a className="dropdown-item" href="/#/profile" onClick={this.toggle}><i className="fa fa-user"></i> Profilo</a>
                 <a className="dropdown-item" onClick={() => { logout(); this.toggle }} href="/"><i className="fa fa-lock"></i> Logout</a>
             </div>

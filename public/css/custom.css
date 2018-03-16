@@ -292,3 +292,38 @@
     .btn-accento:not(:disabled):not(.disabled):active:focus, .btn-accento:not(:disabled):not(.disabled).active:focus,
     .show > .btn-accento.dropdown-toggle:focus {
       box-shadow: 0 0 0 0 #0BD9D3; }
+
+.pointer{
+    cursor: pointer;
+}
+
+.btn-status{
+    height: 30px;
+    width: 52px;
+    border: 0;
+    color: #B0BEC5;
+    background-color: #F0F3F5;
+    border: 1px solid #F0F3F5;
+}
+
+.btn-status:hover{
+    border-color: #CAD4DC !important;
+    color: #536C79 !important;
+}
+
+.btn-status.active{
+    border-color: #CAD4DC !important;
+    color: #536C79 !important;
+}
+
+.b-l-pvt{
+    border-left: 6px solid #B0BEC5;
+}
+
+.b-l-org{
+    border-left: 6px solid #4DBD74;
+}
+
+.b-l-open{
+    border-left: 6px solid #FFC107;
+}

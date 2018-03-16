@@ -6,6 +6,7 @@ const routes = {
   '/ingestionform': 'Ingestion',
   '/vocabulary/list': 'Vocabolari e standard',
   '/dataset':'Datasets',
+  '/widget' : 'Widget',
   '/dataset/:id' : ':id'
 };
 export default routes;

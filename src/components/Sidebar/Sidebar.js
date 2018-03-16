@@ -88,7 +88,14 @@ class Sidebar extends Component {
 
   render() {
     const { loggedUser } = this.props
-    let role = loggedUser.role 
+    let role = loggedUser.role
+    var crea = 'nav-link-light'
+    var home = 'nav-link-light'
+    let open = this.state.dropdownOpen ? "show" : "" 
+    if(window.location.hash==='#/crea')
+      crea = 'nav-link-primary'
+    if(window.location.hash==='#/home')
+      home = 'nav-link-primary'
     return (
       <div>
         <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
@@ -113,13 +120,13 @@ class Sidebar extends Component {
           </ModalFooter>
         </form>
       </Modal>
-        <div className="sidebar">
-          <nav className="sidebar-nav">
+        <div className="sidebar ">
+          <nav className="sidebar-nav b-t-1">
             <ul className="nav">
               <li className="nav-item" onClick={(e) => { 
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');}}>
-                <NavLink to={'/home'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fa fa-home fa-lg text-secondary"></i> Home</NavLink>
+                <NavLink to={'/home'} className={"nav-link "+home} activeClassName="nav-link-primary"><i className="fa fa-home fa-lg text-secondary"></i> Home</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
@@ -152,7 +159,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/crea'} className="nav-link nav-link-light " activeClassName="nav-link-primary"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
+                <NavLink to={'/crea'} className={"nav-link "+crea} activeClassName="nav-link-primary"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
               </li>
               <li className="nav-item nav-dropdown">
                 <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-wrench fa-lg text-secondary"></i> Strumenti</a>
