@@ -32,6 +32,8 @@ export const RECEIVE_PROPERTIES = 'RECEIVE_PROPERTIES'
 export const REQUEST_PROPERTIES = 'REQUEST_PROPERTIES'
 export const REQUEST_REGISTRATION = 'REQUEST_REGISTRATION'
 export const RECEIVE_FILE_STORAGEMANAGER = 'RECEIVE_FILE_STORAGEMANAGER'
+export const REQUEST_SEARCH = 'REQUEST_SEARCH'
+export const RECEIVE_SEARCH = 'RECEIVE_SEARCH'
 
 
 /*********************************** REDUX ************************************************ */
@@ -98,6 +100,22 @@ function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, categor
       order_filter: order_filter,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_DETAIL'
+  }
+}
+
+function requestSearch() { 
+  return {
+    type: REQUEST_SEARCH
+  }
+}
+
+function receiveSearch(json, query) { 
+  return {
+    type: RECEIVE_SEARCH,
+    results: json,
+    query: query,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_SEARCH'
   }
 }
 
@@ -772,6 +790,22 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
                 })
               }) 
       }
+  }
+
+  export function search(query) {
+    var url = 'http://localhost:3001/dati-gov/v1/search'
+    return dispatch => {
+      dispatch(requestSearch())
+      return fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(json => dispatch(receiveSearch(json, query)))
+    }
   }
 
   export function getDatasetIframes(nomeDataset) {

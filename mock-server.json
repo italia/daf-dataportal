@@ -32,6 +32,223 @@
             "result": "session=sessiongrafana"
         }
     }, 
+    "/dati-gov/v1/search": {
+        "get": [
+            {
+                "type" : 0,
+                "_id" : "5a3bc29d104d370001c677a7",
+                "dataschema" : {
+                    "avro" : {
+                        "fields" : [ 
+                            {
+                                "name" : "agency_url"
+                            }, 
+                            {
+                                "name" : "agency_name"
+                            }, 
+                            {
+                                "name" : "agency_phone"
+                            }, 
+                            {
+                                "name" : "num"
+                            }, 
+                            {
+                                "name" : "agency_id"
+                            }, 
+                            {
+                                "name" : "agency_timezone"
+                            }, 
+                            {
+                                "name" : "agency_lang"
+                            }
+                        ]
+                    }
+                },
+                "operational" : {
+                    "group_own" : "ale.ercolani"
+                },
+                "dcatapit" : {
+                    "name" : "agency_infer_test",
+                    "notes" : "agency_infer_test",
+                    "title" : "agency_infer_test"
+                }
+            },
+            {
+                "type" : 1,
+                "id" : 2,
+                "status": 1,
+                "title": "Dashboard 4",
+                "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+                "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 2</p>\\n\"},\"type\":\"TextWidget\"}}"
+            },
+            {
+                "type" : 2,
+                "id":2,
+                "title": "Storia 1",
+                "published": false,
+                "subtitle": "Storia di prova",
+                "graph": {
+                    "title": "",
+                    "props": {
+                        "url": null
+                    }
+                },
+                "text": "Contenuto della storia",
+                "image": {
+                    "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
+                    "caption": "Testo Immagine"
+                },
+                "footer": "Questo è il footer"
+            },
+            {
+                "type" : 0,
+                "_id" : "5a3bc425104d370001c677aa",
+                "dataschema" : {
+                    "avro" : {
+                        "fields" : [ 
+                            {
+                                "name" : "agency_url"
+                            }, 
+                            {
+                                "name" : "agency_name"
+                            }, 
+                            {
+                                "name" : "agency_phone"
+                            }, 
+                            {
+                                "name" : "num"
+                            }, 
+                            {
+                                "name" : "agency_id"
+                            }, 
+                            {
+                                "name" : "agency_timezone"
+                            }, 
+                            {
+                                "name" : "agency_lang"
+                            }
+                        ]
+                    }
+                },
+                "operational" : {
+                    "group_own" : "alessandro"
+                },
+                "dcatapit" : {
+                    "name" : "agency_infer_ale",
+                    "notes" : "agency_infer_ale",
+                    "title" : "agency_infer_ale"
+                }
+            },
+            {
+                "type" : 0,
+                "_id" : "5a4f681e47ac100001f15cc8",
+                "dataschema" : {
+                    "avro" : {
+                        "fields" : [ 
+                            {
+                                "name" : "agency_id"
+                            }, 
+                            {
+                                "name" : "agency_name"
+                            }, 
+                            {
+                                "name" : "agency_url"
+                            }, 
+                            {
+                                "name" : "agency_timezone"
+                            }, 
+                            {
+                                "name" : "agency_lang"
+                            }, 
+                            {
+                                "name" : "agency_phone"
+                            }
+                        ]
+                    }
+                },
+                "operational" : {
+                    "group_own" : "francescoz"
+                },
+                "dcatapit" : {
+                    "name" : "agency_kylo",
+                    "notes" : "agency_kylo",
+                    "title" : "agency_kylo"
+                }
+            },
+            {
+                "type" : 1,
+                "id" : 2,
+                "status": 1,
+                "title": "Dashboard 3",
+                "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+                "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 2</p>\\n\"},\"type\":\"TextWidget\"}}"
+            },
+            {
+                "type" : 2,
+                "id":2,
+                "title": "Storia 2",
+                "published": false,
+                "subtitle": "Storia di prova",
+                "graph": {
+                    "title": "",
+                    "props": {
+                        "url": null
+                    }
+                },
+                "text": "Contenuto della storia",
+                "image": {
+                    "url": "https://theclayblog.files.wordpress.com/2013/03/this-is-my-story-2.jpg",
+                    "caption": "Testo Immagine"
+                },
+                "footer": "Questo è il footer"
+            },
+            {
+                "type" : 0,
+                "_id" : "5a4fe0a347ac100001f15cdd",
+                "dataschema" : {
+                    "avro" : {
+                        "fields" : [ 
+                            {
+                                "name" : "agency_id"
+                            }, 
+                            {
+                                "name" : "agency_name"
+                            }, 
+                            {
+                                "name" : "agency_url"
+                            }, 
+                            {
+                                "name" : "agency_timezone"
+                            }, 
+                            {
+                                "name" : "agency_lang"
+                            }, 
+                            {
+                                "name" : "agency_phone"
+                            }
+                        ]
+                    }
+                },
+                "operational" : {
+                    "group_own" : "alessandro"
+                },
+                "dcatapit" : {
+                    "name" : "agency_semicolon",
+                    "notes" : "agency_semicolon",
+                    "title" : "agency_semicolon"
+                }
+            },
+            {
+                "type" : 1,
+                "id" : 2,
+                "status": 1,
+                "title": "Dashboard 2",
+                "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+                "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 2</p>\\n\"},\"type\":\"TextWidget\"}}"
+            }
+
+        ]
+    },
     "/dati-gov/v1/dashboard/iframes": {
         "get": [
             {

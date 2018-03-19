@@ -102,3 +102,12 @@ export function transformName(name){
     } 
     return  day + "/" + month + "/" + year
   }
+
+  export function boldMyWords(sentence, word){
+    if(sentence.indexOf(word)!=-1){
+      return sentence.replace(word, '<b>'+word+'</b>')
+    }else{
+      return sentence
+    }
+
+  }

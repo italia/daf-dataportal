@@ -23,7 +23,9 @@ import {
   RECEIVE_FILE_STORAGEMANAGER,
   REQUEST_RESET,
   RECEIVE_RESET,
-  RECEIVE_RESET_ERROR
+  RECEIVE_RESET_ERROR,
+  REQUEST_SEARCH,
+  RECEIVE_SEARCH
 } from './actions'
 import {reducer as toastrReducer} from 'react-redux-toastr'
 
@@ -179,12 +181,24 @@ function ontologiesReducer(state = {}, action) {
   }
 }
 
+function searchReducer(state = {}, action) {
+  switch (action.type) {
+    case REQUEST_SEARCH:
+      return Object.assign({}, state, {'search': {'isFetching': true, 'results': undefined}})
+    case RECEIVE_SEARCH:
+      return Object.assign({}, state, {'search': { 'isFetching': false, 'results': action.results, 'query': action.query}})
+      default:
+      return state
+  }
+}
+
 //will mount each reducer with the corresponding key (datasetReducer)
 //but you can change it by naming the key differently (form: reduxFormReducer)
 const rootReducer = combineReducers({
   form: reduxFormReducer,
   datasetReducer,
   userReducer,
+  searchReducer,
   ontologiesReducer,
   propertiesReducer,
   toastr: toastrReducer // <- Mounted at toastr.
