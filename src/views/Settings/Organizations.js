@@ -425,7 +425,7 @@ class Organizations extends Component {
                             </div>
                             {isAdmin() &&
                             <div className="col-7">
-                                <button type="button" className="btn btn-link pull-right p-0" title="Crea nuova organizzazione" onClick={this.openOrgCreate}>
+                                <button type="button" className="btn btn-link fa-pull-right p-0" title="Crea nuova organizzazione" onClick={this.openOrgCreate}>
                                     <i className="fa fa-plus-circle fa-lg"></i>
                                 </button>
                             </div>

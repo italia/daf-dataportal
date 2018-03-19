@@ -24,7 +24,7 @@ class ViewBar extends React.Component {
 
         <Link role="button" to={"/user_story/list/" + this.props.id + "/edit"}>
           <button type="button" className="btn btn-link btn-xs">
-              <i className="fa fa-pencil fa-lg m-t-2"></i> 
+              <i className="fa fa-edit fa-lg m-t-2"></i> 
           </button>
         </Link>
 

@@ -245,11 +245,11 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
         <div className="App" style={{"paddingLeft": "10px"}}>
           <div className="App-header-thin">
             {length > 999 ?
-              <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6></div>
+              <div><h6 className="modal-title pull-left">Sono stati trovati più di 1000 datasets, ti consigliamo di affinare la ricerca</h6><h6 className="modal-title fa-pull-right">Dataset mostrati {datasets.length}</h6></div>
             :
 /*               <div>
                 <h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6>
-                <h6 className="modal-title pull-right">Dataset mostrati {datasets.length}</h6>
+                <h6 className="modal-title fa-pull-right">Dataset mostrati {datasets.length}</h6>
               </div> */
 
               <div className="row">
@@ -280,7 +280,7 @@ renderDatasetSearchResult(length, datasets, ope, isLoading){
       return(
         <div className="App">
           <div className="App-header-thin">
-            <div><h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6><h6 className="modal-title pull-right">Prova con un'altra ricerca</h6></div>
+            <div><h6 className="modal-title pull-left">Sono stati trovati {length} datasets</h6><h6 className="modal-title fa-pull-right">Prova con un'altra ricerca</h6></div>
           </div>
         </div>
       )
@@ -339,7 +339,7 @@ render() {
   const { isLoading, items, edit } = this.state;
   if(datasets)
     var subdatasets = datasets.slice(0, items)
-  return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (
+  return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Loading</h1> : (
       <div className="row u-textCenter u-padding-r-all u-textCenter">
       <div className="col-md-8">
       {this.renderDatasetSearchResult(datasets?datasets.length:0, subdatasets, ope, isLoading)}

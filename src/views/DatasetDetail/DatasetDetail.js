@@ -401,7 +401,7 @@ class DatasetDetail extends Component {
                                 <div className="card-block">
                                     <div className="row">
                                             {iframes&&iframes.length>0?iframes.map((iframe, key) => {
-                                                if (key > 2) return;
+                                                /* if (key > 2) return; */
                                                 return (
                                                     <WidgetCard
                                                         iframe = {iframe}
@@ -424,7 +424,7 @@ class DatasetDetail extends Component {
     }
     render() {
         const { dataset, ope, feed, iframes, isFetching, query } = this.props
-        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (<div>
+        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Loading</h1> : (<div>
                     <div className="row">
                         {this.renderDatasetDetail(dataset, ope, feed, iframes, query)}
                         {!dataset && 

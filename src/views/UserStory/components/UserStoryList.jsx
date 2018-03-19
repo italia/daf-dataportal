@@ -66,12 +66,12 @@ class UserStoryList extends Component {
       height: '160px',
       border: '0'
     }
-    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2"/>Loading</h1> : (
+    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Loading</h1> : (
     <Container>
 
-      <Header title="Le Mie Storie" />
+      <Header title="Storie" />
       
-      <ListBar onChange={this.filter} history={this.props.history} ></ListBar>
+      <ListBar onChange={this.filter} history={this.props.history} isOpen={this.props.history.location.state?this.props.history.location.state.isOpen:false}></ListBar>
       
       <div className="row pl-3">
         {
@@ -124,6 +124,7 @@ class UserStoryList extends Component {
                 imageA = {imageA}
                 time = {time}
                 key = {index}
+                id = {index}
                 />
             
             )

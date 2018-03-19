@@ -49,5 +49,17 @@ export default class HomeService {
         return response.json();
     }
 
-
+    async datasetDetail(name){
+        var url = serviceurl.apiURLCatalog + '/catalog-ds/getbyname/' + name;
+        var token = localStorage.getItem('token')
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        return response.json()
+    }
 } 
