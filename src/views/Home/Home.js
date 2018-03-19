@@ -112,7 +112,7 @@ class Home extends Component {
                                     </div>
                                     <i className="fa fa-chart-bar bg-primary p-4 font-2xl mr-3 float-left"></i>
                                     <div className="h5 text-muted mb-0 pt-3">{listIframes.length}</div>
-                                    <div className="text-muted text-uppercase font-weight-bold font-xs">Widgets</div>
+                                    <div className="text-muted text-uppercase font-weight-bold font-xs">Widget</div>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +169,7 @@ class Home extends Component {
                 <div className="py-3 bg-light">
                     <div className="container body w-100">
                         <div className="row mx-auto text-muted">
-                            <i className="fa fa-chart-bar fa-lg m-4" style={{ lineHeight: '1' }} /><h2 className="mt-3 mb-4">Widgets</h2>
+                            <i className="fa fa-chart-bar fa-lg m-4" style={{ lineHeight: '1' }} /><h2 className="mt-3 mb-4">Widget</h2>
                         </div>
                         <div className="row mx-auto m-0">
                             {
