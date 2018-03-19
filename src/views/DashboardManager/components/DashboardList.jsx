@@ -23,7 +23,7 @@ class DashboardList extends Component {
   constructor(props) {
     super(props);
     this.state={ 
-      isOpen: false,
+      isOpen: props.history.location.state?props.history.location.state.isOpen:false,
     };
     this.load();
 
@@ -82,9 +82,9 @@ class DashboardList extends Component {
 
     return this.state.isLoading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Loading</h1> : (
     <Container>
-      <Header title="Le Mie Dashboards" />
+      <Header title="Dashboard" />
       
-      <ListBar onChange={this.filter} history={this.props.history} ></ListBar>
+      <ListBar onChange={this.filter} history={this.props.history} isOpen={this.props.history.location.state?this.props.history.location.state.isOpen:false}></ListBar>
       
       <div className="row pl-3">
         {

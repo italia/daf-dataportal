@@ -358,7 +358,7 @@ class Users extends Component {
                             <li className="list-group-item"><input className="form-control" onChange={(e)=>{this.searchBy(e.target.value)}}></input></li>
                             {filter && filter.length > 0 && filter.map(user =>
                                 <li className={"list-group-item " + (userAct===user?"active":"")} key={user} >{user}
-                                    <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.editUser(user) }}><i className="fa fa-pencil fa-lg" /></button>
+                                    <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.editUser(user) }}><i className="fa fa-edit fa-lg" /></button>
                                     <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.openUserModal(user) }}><i className="fa fa-trash fa-lg" /></button>
                                 </li>
                             )

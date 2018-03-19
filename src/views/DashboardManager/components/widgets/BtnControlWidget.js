@@ -184,7 +184,7 @@ class BtnControlWidget extends React.Component {
                 
                 <button type="button" className="btn btn-sm btn-gray-200" aria-label="Change witdh"
                     onClick={this.openModal}>
-                    <span className="fa fa-pencil" aria-hidden="true"></span>
+                    <span className="fa fa-edit" aria-hidden="true"></span>
                 </button>
 
                 <App 

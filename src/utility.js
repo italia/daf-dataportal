@@ -105,6 +105,14 @@ export function transformName(name){
   }
 
   export function truncateDatasetName(name) {
+    var result = name
+    if (name.length >= 30)
+      result = result.substring(0, 26) + '...'
+
+    return result
+  }
+
+  export function transformDatasetName(name) {
     var result = name.replaceAll('_',' ')
     if (name.length >= 22)
       result = result.substring(0, 20) + '...'

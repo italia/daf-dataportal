@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import IframeWidget from '../../views/DatasetDetail/widgets/IframeWidget';
-import { transformWidgetName, truncateWidgetTitle, truncateDatasetName } from "../../utility";
+import { transformWidgetName, truncateWidgetTitle, transformDatasetName } from "../../utility";
 import { serviceurl } from "../../config/serviceurl";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -143,7 +143,7 @@ class WidgetCard extends Component {
                         </div>
                         <div className="col-8 pr-0 h-100">
                             <div title={sp1 ? (sp1[1]) : ''}>
-                                <i className="text-icon fa fa-table py-3 pr-2" /> {sp1 ? truncateDatasetName(sp1[1]):''}
+                                <i className="text-icon fa fa-table py-3 pr-2" /> {sp1 ? transformDatasetName(sp1[1]):''}
                             </div>
                         </div>
                         {sp1 && <div className="col-2 p-0 h-100">

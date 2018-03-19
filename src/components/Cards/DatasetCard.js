@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Route, Link } from 'react-router-dom';
 import HomeService from '../../views/Home/services/HomeService';
+import { truncateDatasetName } from "../../utility";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock, faGlobe } from '@fortawesome/fontawesome-free-solid'
@@ -41,7 +42,7 @@ class DatasetCard extends Component{
                 <div className="card bg-gray-100 card-dataset">
                     <div className="header-dataset row mx-0 py-1 b-b-card">
                         <div className="col-10 slug-dataset my-1 pl-3">
-                            <div className="my-1">{dataset.name}</div>
+                            <div className="my-1">{truncateDatasetName(dataset.name)}</div>
                         </div>
                         <div className="col-2 my-2">
                             {

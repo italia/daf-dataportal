@@ -401,7 +401,7 @@ class DatasetDetail extends Component {
                                 <div className="card-block">
                                     <div className="row">
                                             {iframes&&iframes.length>0?iframes.map((iframe, key) => {
-                                                if (key > 2) return;
+                                                /* if (key > 2) return; */
                                                 return (
                                                     <WidgetCard
                                                         iframe = {iframe}
