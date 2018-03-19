@@ -36,13 +36,13 @@ class Widgets extends Component{
                             <nav className="dashboardHeader">
                                 <h2>Widget</h2>
                             </nav>
-                            {loading ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2" /> Caricamento </h1> :
+                            {loading ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" /> Caricamento </h1> :
                             <div className="row pl-3">
                             {
                                 this.state.listWidgets.map((iframe, index) => {
                                     
                                     return (
-                                        iframe.identifier && iframe.table &&
+                                        iframe.identifier &&
                                         <WidgetCard
                                             iframe={iframe}
                                             key={index}

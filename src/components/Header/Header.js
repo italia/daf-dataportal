@@ -23,10 +23,13 @@ class Header extends Component {
     this.handleLoadDatasetClick = this.handleLoadDatasetClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this)
+    this.mobileSidebarToggle = this.mobileSidebarToggle.bind(this)
 
     this.state = {
+      mobile: false,
       revealed: false,
       dropdownOpen: false,
+      accento: false,
       value: ''
     };
   }
@@ -49,7 +52,12 @@ class Header extends Component {
 
   mobileSidebarToggle(e) {
     e.preventDefault();
+    this.setState({
+      mobile: !this.state.mobile
+    })
     document.body.classList.toggle('sidebar-mobile-show');
+    if(this.state.revealed === true)
+      this.props.openSearch();
   }
 
   asideToggle(e) {
@@ -71,18 +79,27 @@ class Header extends Component {
       })
   }
 
-  toggleSearch(){
+  toggleSearch(e){
     this.setState({
-      revealed: !this.state.revealed
+      revealed: !this.state.revealed,
+      accento: !this.state.accento
     })
+    if(this.state.mobile === true)
+      this.mobileSidebarToggle(e);
+
+    this.props.openSearch();
+  }
+
+  crea(){
+    this.props.history.push('/crea')
   }
 
   render() {
     const { loggedUser } = this.props
     let open = this.state.dropdownOpen ? "show" : "" 
-    let revealed = this.state.revealed ? "revealed" : ""
+    let revealed = this.state.revealed ? "btn-accento" : "btn-header"
     return (
-      <header className="app-header navbar">
+      <header className="app-header navbar border-0">
       <button className="nav-link navbar-toggler sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
         {/* <button className="d-md-down-none nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarMinimize}>&#9776;</button> */}
         
@@ -90,20 +107,33 @@ class Header extends Component {
         <li className="nav-item brand">
           <a href=""><img className="img-logo" src="http://designer.italia.it/assets/icons/logo-it.png" alt=""/><span>  DAF  </span></a>
         </li>
-        <li>
-          {/* <button className="btn btn-gray-200" onClick={this.toggleSearch}><i className="fa fa-search fa-lg" /></button> */}
 {/*           <div className={"search-bar " + revealed}>
             <form onSubmit={this.handleLoadDatasetClick}>
               <input className="search-input" placeholder="Cerca" ref="auto" name="s" id="search_mobile" tabindex="-1" type="text" />
             </form>
           </div> */}
+      </ul>
+      {/* <ul className="nav navbar-nav">
+        <AutocompleteDataset ref="auto"/>
+        <button className="btn btn-gray-200" onClick={this.handleLoadDatasetClick}><i className="fa fa-search fa-lg" /> Cerca</button>
+      </ul> */}
+      <ul className="navbar-nav ml-auto h-100 mr-2">
+        <li className="nav-item h-100">
+            <button className={"w-100 h-100 btn " + revealed} onClick={this.toggleSearch}><i className="fa fa-search fa-lg" /></button>
+        </li>
+        <li className="nav-item h-100 mr-3">
+          <button className="w-100 h-100 btn btn-header" onClick={this.crea.bind(this)}><i className="fa fa-plus fa-lg"/></button>
         </li>
       </ul>
-      <ul className="nav navbar-nav">
-        <AutocompleteDataset ref="auto"/>
-        <button className="btn btn-gray-200" onClick={this.handleLoadDatasetClick}>{/* <i className="fa fa-search fa-lg" /> */}Cerca</button>
-      </ul>
-      <ul className="nav navbar-nav ml-auto">
+      {/* <ul className="navbar-nav h-100 mr-2">
+        <li className="nav-item h-100">
+            <button className="w-100 h-100 btn btn-primary nav-link text-white"><i className="fa fa-bell-o" /><span className="badge badge-gray-100 badge-pill"></span></button>
+        </li>
+      </ul> */}
+      <ul className="nav navbar-nav" style={{marginRight:'30px'}}>
+{/*         <li>
+          <button className="btn btn-primary" onClick={this.props.openSearch}><i className="fa fa-search fa-lg" /></button>
+        </li> */}
         <li className="nav-item">
 {/*           <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
             <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
@@ -120,18 +150,15 @@ class Header extends Component {
           <div className={"dropdown " + open}>
               <a className="nav-link" role="button" id="dropdownMenuButton" data-toggle="dropdown" 
                 aria-haspopup="true" aria-expanded="false" onClick={this.toggle}>
-                <img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                <img src={'img/avatars/7.jpg'} className="img-avatar pointer" alt="admin@bootstrapmaster.com"/>
                 {/* <span className="d-md-down-none">{loggedUser ? loggedUser.givenname : ''}</span> */}
             </a>
               <div className={"dropdown-menu dropdown-menu-right "+ open} aria-labelledby="dropdownMenuButton">
-                <h6 className="dropdown-header text-center">{loggedUser ? loggedUser.givenname : ''}</h6>
+                <h6 className="dropdown-header text-center"><b>{loggedUser ? loggedUser.givenname : ''}</b></h6>
                 <a className="dropdown-item" href="/#/profile" onClick={this.toggle}><i className="fa fa-user"></i> Profilo</a>
                 <a className="dropdown-item" onClick={() => { logout(); this.toggle }} href="/"><i className="fa fa-lock"></i> Logout</a>
             </div>
           </div>
-        </li>
-        <li className="nav-item d-md-down-none">
-          <a className="nav-link navbar-toggler aside-menu-toggler" href="#"></a>
         </li>
       </ul>
       </header>

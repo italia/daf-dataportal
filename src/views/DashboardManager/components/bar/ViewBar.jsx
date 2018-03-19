@@ -17,7 +17,7 @@ class ViewBar extends React.Component {
           </div>
           <div className="col-2">
             {this.props.pvt==1 &&
-            <div className="badge badge-danger pull-right mt-20"><i className="fa fa-lock fa-lg m-t-2"></i> PRIVATA</div>
+            <div className="badge badge-danger fa-pull-right mt-20"><i className="fa fa-lock fa-lg m-t-2"></i> PRIVATA</div>
             }
           </div>
         </div>
@@ -41,7 +41,7 @@ class ViewBar extends React.Component {
               <Link role="button" to={"/dashboard/list/" + this.props.id + "/edit"}>
                 <button type="button" className="btn btn-link btn-xs" title="Modifica">
                   <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                  <i className="fa fa-pencil fa-lg m-t-2"></i>
+                  <i className="fa fa-edit fa-lg m-t-2"></i>
                 </button>
               </Link>
             </div>
