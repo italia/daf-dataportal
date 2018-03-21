@@ -6,6 +6,8 @@ import { truncateDatasetName } from "../../utility";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock, faGlobe } from '@fortawesome/fontawesome-free-solid'
+import { decodeTheme } from '../../utility' 
+
 
 const homeService = new HomeService();
 
@@ -75,7 +77,7 @@ class DatasetCard extends Component{
                             <span className="badge badge-secondary my-1">JSON</span>
                         </div>
                         <div className="col-2 my-2">
-                            <span className="badge badge-accento my-1">{detail?detail.dcatapit.theme:''} </span>
+                            <span className="badge badge-accento my-1">{detail?decodeTheme(detail.dcatapit.theme):''} </span>
                         </div>
                     </div>
                     <div className="header-dataset row m-0 py-1">
