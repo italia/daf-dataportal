@@ -194,7 +194,7 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link" onClick={this.createStory.bind(this)}><i className="fas fa-font fa-lg text-secondary" />  Nuosa Storia</a>
+                    <a href className="nav-link" onClick={this.createStory.bind(this)}><i className="fas fa-font fa-lg text-secondary" />  Nuova Storia</a>
                   </li>
                 </ul>
               </li>
@@ -205,7 +205,7 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-pie-chart fa-lg text-secondary"/>  Metabase</a>
+                    <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-chart-pie fa-lg text-secondary"/>  Metabase</a>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
