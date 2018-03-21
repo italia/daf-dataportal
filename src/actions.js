@@ -792,7 +792,7 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
       }
   }
 
-  export function search(query) {
+  export function search(query, filter) {
     var url = 'http://localhost:3001/dati-gov/v1/search'
     return dispatch => {
       dispatch(requestSearch())

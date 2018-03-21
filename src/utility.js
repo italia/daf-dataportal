@@ -1,6 +1,22 @@
 import { serviceurl } from './config/serviceurl.js'
 import { truncate } from 'fs';
 
+const themes = [
+  { 'val': 'AGRI', 'name': 'AGRICOLTURA' },
+  { 'val': 'ECON', 'name': 'ECONOMIA' },
+  { 'val': 'EDUC', 'name': 'EDUCAZIONE' },
+  { 'val': 'ENER', 'name': 'ENERGIA' },
+  { 'val': 'ENVI', 'name': 'AMBIENTE' },
+  { 'val': 'GOVE', 'name': 'GOVERNO' },
+  { 'val': 'HEAL', 'name': 'SANITA' },
+  { 'val': 'INTR', 'name': 'INTERNAZIONALE' },
+  { 'val': 'JUST', 'name': 'GIUSTIZIA' },
+  { 'val': 'REGI', 'name': 'REGIONE' },
+  { 'val': 'SOCI', 'name': 'SOCIETA' },
+  { 'val': 'TECH', 'name': 'TECNOLOGIA' },
+  { 'val': 'TRAN', 'name': 'TRASPORTO' }
+]
+
 String.prototype.replaceAll = function (search, replacement) {
   var target = this;
   return target.replace(new RegExp(search, 'g'), replacement);
@@ -143,3 +159,16 @@ export function transformName(name){
     }
 
   }
+
+  export function decodeTheme(value){
+    var found=value
+    for(var i = 0; i < themes.length; i++) {
+      if (themes[i].val == value) {
+          found = themes[i].name
+          break
+      }
+    }
+    return found
+  }
+
+  export default themes

@@ -25,13 +25,8 @@ class SearchBar extends Component{
     }
 
     handleLoadDatasetClick(event) {
-        console.log('Search Dataset for: ' + this.refs.auto.value);
         event.preventDefault();
-        const { dispatch, selectDataset } = this.props;
-        dispatch(loadDatasets(this.refs.auto.value, 0, '', '', '', '', 'metadata_modified%20desc'))
-        .then(json => {
-            this.props.history.push('/dataset');
-        })
+        this.props.history.push('/dataset?q='+this.refs.auto.value)
     }
 
     render(){

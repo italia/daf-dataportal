@@ -65,7 +65,8 @@
                     }
                 },
                 "operational" : {
-                    "group_own" : "ale.ercolani"
+                    "group_own" : "ale.ercolani",
+                    "theme": "TRAN"
                 },
                 "dcatapit" : {
                     "name" : "agency_infer_test",
@@ -131,7 +132,8 @@
                     }
                 },
                 "operational" : {
-                    "group_own" : "alessandro"
+                    "group_own" : "alessandro",
+                    "theme": "AGRI"
                 },
                 "dcatapit" : {
                     "name" : "agency_infer_ale",
@@ -167,7 +169,8 @@
                     }
                 },
                 "operational" : {
-                    "group_own" : "francescoz"
+                    "group_own" : "francescoz",
+                    "theme": "AGRI"
                 },
                 "dcatapit" : {
                     "name" : "agency_kylo",

@@ -21,6 +21,7 @@ import { transformWidgetName } from '../../utility'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import IframeWidget from './widgets/IframeWidget';
 import WidgetCard from '../../components/Cards/WidgetCard';
+import { decodeTheme } from '../../utility' 
 
 const userStoryService = new UserStoryService();
 const datasetService = new DatasetService();
@@ -184,7 +185,7 @@ class DatasetDetail extends Component {
                                         <h1 className="card-text">{transformName(dataset.dcatapit.title) + " "}</h1>
                                     </div>
                                     <div className="col-4">
-                                        <h4 className="float-right"><span className="badge badge-secondary"> {dataset.dcatapit.theme}</span></h4>
+                                        <h4 className="float-right"><span className="badge badge-secondary"> {decodeTheme(dataset.dcatapit.theme)}</span></h4>
                                     </div>
                                     <div className="col-12">
                                         <p className="text-muted">{"Pubblicato da " + " "}<b className="mr-3">{dataset.dcatapit.publisher_name + " "}  </b>{"Organizzazione " + " "}<b className="mr-3">{dataset.dcatapit.owner_org + " "}    </b>{"Licenza " + " "}<b>{dataset.dcatapit.license_title} </b></p>
