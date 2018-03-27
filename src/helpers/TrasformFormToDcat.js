@@ -138,7 +138,7 @@ export function createDcat (values, data) {
   data[dcatapit]['holder_identifier'] = values.ownership  //values.holder_identifier
   data[dcatapit]['license_title'] = 'Altro (Non Commerciale)' //values.license_title
   data[dcatapit]['license_id'] = values.license3//values.license_identifier
-  data[dcatapit]['owner_org'] = values.ownership //values.owner_org
+  data[dcatapit]['owner_org'] = values.private==1?values.ownership:'default_org' //if the dataset il public the organization will be default_org
   data[dcatapit]['frequency'] = 'unknown'//Not in form
   data[dcatapit]['creation_date'] = getCurrentDate() //Not in form
   data[dcatapit]["groups"] = []
