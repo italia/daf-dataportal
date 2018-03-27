@@ -14,7 +14,7 @@ function getSuggestions(value, data) {
   }
 
   const regex = new RegExp('^' + escapedValue, 'i');
-  return ontologiesFilter(data.results, regex);
+  return ontologiesFilter(data, regex);
 }
 
 function ontologiesFilter(semantics, regex){
@@ -35,13 +35,25 @@ function ontologiesFilter(semantics, regex){
                 }
               })
             }); */
+        
         semantics.forEach(function(entry) {
-        //if(regex.test(entry.label[0].value)){
-            //console.log('value: ' + entry.label[0].value);
-            //console.log('ontology: ' + entry['label.ontology'][0].value)
-            var label = entry.label?entry.label[0].value:''
-            var ontology = entry['label.ontology']?entry['label.ontology'][0].value:''
-            entry.name = label + ' [' + ontology + ']';
+          //if(regex.test(entry.label[0].value)){
+          //console.log('value: ' + entry.label[0].value);
+          //console.log('ontology: ' + entry['label.ontology'][0].value)
+
+/*        var label = entry.label?entry.label[0].value:''
+          var ontology = entry['label.ontology']?entry['label.ontology'][0].value:''
+          entry.name = label + ' [' + ontology + ']'; */
+            
+          var ontology = entry.ontology.label[0].value
+          var universe = entry.universe.domain.label[0].value
+          var property = entry.universe.property.label[0].value
+          var range = entry.universe.range.label[0].value
+
+          var name = ontology + ';'+ universe +';'+ property +';'+ range
+          entry.label='label'
+          entry.name=name
+            
             res.push(entry);
         //}
       });

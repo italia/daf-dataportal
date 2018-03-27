@@ -37,6 +37,7 @@ const renderThemes = ({ input, meta: { touched, error } }) => (
    </div>
 );
 
+/* FILTER ORG BY PVT FIELD
 const renderOrganization = ({ input, label, type, organizations, pvt, meta: { touched, error } }) => (
   <div className="form-group">
     <label className="form-control-label">{label}</label>
@@ -48,6 +49,23 @@ const renderOrganization = ({ input, label, type, organizations, pvt, meta: { to
               organization != 'default_org' && <option value={organization} key={organization}>{organization}</option>
               )}
           {pvt == 0 && <option value='default_org' key='default_org'>default_org</option>}
+        </select>
+      </div>
+      {touched && error && <div className="text-danger">{error}</div>}
+    </div>
+ </div>
+); */
+
+const renderOrganization = ({ input, label, type, organizations, pvt, meta: { touched, error } }) => (
+  <div className="form-group">
+    <label className="form-control-label">{label}</label>
+    <div>
+       <div className="form-group">
+        <select className="form-control" {...input}>
+          <option value=""  key='organization' defaultValue></option>
+          {organizations.map(organization => 
+              organization != 'default_org' && <option value={organization} key={organization}>{organization}</option>
+              )}
         </select>
       </div>
       {touched && error && <div className="text-danger">{error}</div>}
