@@ -107,9 +107,14 @@ class ViewBar extends React.Component {
           layout: JSON.stringify(layout),
           widgets: JSON.stringify(widgets)
         };
-        userStoryService.save(request).then((data)=> {
+/*         userStoryService.save(request).then((data)=> {
             this.props.history.push('/user_story/list/'+ data.message + '/edit');
-        });
+        }); */
+        this.props.history.push({
+          'pathname':'/user_story/create',
+          'story': request,
+          'modified':true
+        })
       }
     }else{
       this.setState({

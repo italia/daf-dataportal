@@ -52,7 +52,7 @@ class Full extends Component {
     if (history.location.pathname === '/user_story/list' || history.location.pathname === '/widget')
       mainDiv='bg-light'
     
-    if (history.location.pathname === '/home' )
+    if (history.location.pathname === '/home' || history.location.pathname.indexOf('/search')!==-1)
       home = 'p-0'
     return (
       <div className="app">
@@ -71,8 +71,8 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard manager" component={DashboardManager} />
                 <Route path="/user_story" name="User Story" component={UserStory} />
                 <Route path="/widget" name="Widget" component={Widgets} />
-                <Route exact path="/dataset" name="Dataset" component={Dataset} /> 
-                {/* <Route exact path="/dataset" name="Dataset" component={DatasetList} /> */}
+                {<Route exact path="/dataset" name="Dataset" component={Dataset} />}
+                {/* <Route exact path="/search" name="Search" component={DatasetList} /> */} 
                 <Route exact path="/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <Route path="/profile" name="Profile" component={Profile} />
                 <Route path="/settings" name="Settings" component={Settings} />

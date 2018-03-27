@@ -37,6 +37,7 @@ class BtnControlWidget extends React.Component {
     }
 
     removeCol = function () {
+        console.log(this.props.layout)
         let rows = this.props.layout.rows;
         let row = rows[this.props.index]
         let columns = row.columns;

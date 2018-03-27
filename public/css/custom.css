@@ -346,3 +346,74 @@
     border-bottom-left-radius:0;
     border-right-width: 1px;
 }
+
+.btn-outline-filters {
+    color: #536C79;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid #CAD4DC; }
+    .btn-outline-filters:hover {
+      color: #151b1e;
+      background-color: #f0f3f5;
+      border: 1px solid #CAD4DC; }
+    .btn-outline-filters:focus, .btn-outline-filters.focus {
+      background-color: #f0f3f5;
+      box-shadow: 0 0 0 0.2rem rgba(240, 243, 245, 0.5); }
+    .btn-outline-filters.disabled, .btn-outline-filters:disabled {
+      color: #f0f3f5;
+      background-color: transparent; }
+    .btn-outline-filters:not(:disabled):not(.disabled):active, .btn-outline-filters:not(:disabled):not(.disabled).active,
+    .show > .btn-outline-filters.dropdown-toggle {
+      color: #151b1e;
+      background-color: #f0f3f5;
+      border: 1px solid #CAD4DC; }
+      .btn-outline-filters:not(:disabled):not(.disabled):active:focus, .btn-outline-filters:not(:disabled):not(.disabled).active:focus,
+      .show > .btn-outline-filters.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem rgba(240, 243, 245, 0.5); }
+
+.bg-dataset {
+    background-color: #B0BEC5!important; }
+  
+  a.bg-dataset:hover, a.bg-dataset:focus,
+  button.bg-dataset:hover,
+  button.bg-dataset:focus {
+    background-color: #B0BEC5!important; }
+
+.risultato {
+    box-sizing: border-box;
+    height: 48px;
+    border: 1px solid #CAD4DC;
+}
+
+.filter-val {
+	color: #151B1E;
+	font-family: Arial;
+	font-size: 14px;
+    line-height: 16px;
+    font-weight: 400
+}
+
+.badge-white {
+    color: #151b1e;
+    background-color: #fff; }
+    .badge-white[href]:hover, .badge-white[href]:focus {
+      color: #151b1e;
+      text-decoration: none;
+      background-color: #fff; 
+    }
+
+.b-t-0{
+    border-top: none!important
+}
+
+.b-b-0{
+    border-bottom: none!important
+}
+
+.bg-grigino {
+    background-color: #F0F3F5!important; }
+  
+  a.bg-dataset:hover, a.bg-dataset:focus,
+  button.bg-dataset:hover,
+  button.bg-dataset:focus {
+    background-color: #F0F3F5!important; }

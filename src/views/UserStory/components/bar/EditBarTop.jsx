@@ -27,6 +27,7 @@ class EditBarTop extends React.Component {
     this.pubblica = this.pubblica.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.condividi = this.condividi.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -83,6 +84,10 @@ class EditBarTop extends React.Component {
     this.props.onRemove();
   }
   
+  onSave() {
+    this.props.onSave();
+  }
+
   render = function(){
 
     return (
@@ -142,7 +147,7 @@ class EditBarTop extends React.Component {
           }
           <div className="col-sm-2">
           {
-            (!this.props.saving) ? <span className="badge badge-success float-right">Salvato</span> : <span className="badge badge-warning float-right">Sto salvando...</span>
+            (!this.props.saving) ? <span className="badge badge-success float-right">Salvato</span> : <span className="badge badge-warning float-right">Modificato</span>
           }
           </div>
         </div>
@@ -169,9 +174,12 @@ class EditBarTop extends React.Component {
           {
             (!this.state.status || this.state.status==false || this.state.status === 1) &&
             <button type="button" className="btn btn-link" onClick={() => this.openModal()}>
-              <i className="fa fa-paper-plane-o fa-lg m-t-2"></i>
+              <i className="fa fa-paper-plane fa-lg m-t-2"></i>
             </button>
           }
+          <button type="button" className="btn btn-link" title="Salva" onClick={this.onSave}>              
+            <i className="fa fa-save fa-lg m-t-2"></i>
+          </button>
         </div>
 
         

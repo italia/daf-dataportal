@@ -56,7 +56,7 @@ class BtnControlWidget extends React.Component {
             }
         }
         rows.splice(this.props.index, 1);
-        this.props.setLayout(this.props.layout);
+        this.props.setLayout(this.props.layout, true);
     }
 
     openModal = function(e){
@@ -153,7 +153,7 @@ class BtnControlWidget extends React.Component {
 
         this.props.layout.rows[index].columns.push(control);
 
-        this.props.setLayout(this.props.layout);
+        this.props.setLayout(this.props.layout, true);
         this.closeModal();
     }
 

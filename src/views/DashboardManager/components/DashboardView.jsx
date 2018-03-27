@@ -116,7 +116,7 @@ class DashboardView extends Component {
         pvt: dashboard.pvt
         /* widgets: dashboard.widgets */
       });
-      console.log(this.state)
+      console.log(this.state);
 
           //get iframe from server
       let iframeTypes = widgetService.getIframe(dashboard.org);

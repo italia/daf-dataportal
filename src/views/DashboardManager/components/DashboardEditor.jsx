@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Components from 'react';
 import Dashboard, { addWidget } from 'react-dazzle';
-import { withRouter } from 'react-router-dom'
+import { withRouter, Prompt } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { toastr } from 'react-redux-toastr'
 
 // App components
 import Header from './Header';
@@ -51,14 +53,25 @@ class DashboardEditor extends Component {
         rows: []
       },
       editMode: true,
+      modified: this.props.history.location.state ? this.props.history.location.state.modified : false,
       isModalOpen: false,
-      dashboard: {
-        status: 0
-      },
-      id: this.props.match.params.id
+      dashboard: this.props.history.location.state ? this.props.history.location.state.dash : {status: 0},
+      id: this.props.match.params.id?this.props.match.params.id:''
     };
 
-    this.load();
+    if(this.props.match.params.id)
+      this.load();
+    else{
+      let iframeTypes = widgetService.getIframe(this.props.history.location.state.dash.org);
+      iframeTypes.then(iframes => {
+        this.loadIframe(iframes);
+        //get widget from server
+        /* this.load(); */
+      }, err => {
+        //get widget from server
+        /* this.load(); */
+      })
+    }
  
     //bind functions
     /* this.load = this.load.bind(this); */
@@ -70,10 +83,19 @@ class DashboardEditor extends Component {
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onPublish = this.onPublish.bind(this);
     this.onRemove = this.onRemove.bind(this);
+    this.back = this.back.bind(this)
+    this.preview = this.preview.bind(this)
     
   }
 
-  componentDidMount(){
+  componentDidMount() {
+      window.addEventListener('beforeunload', (ev) => 
+      {  
+          ev.preventDefault();
+          if(this.state.modified)
+            return ev.returnValue = 'Sei sicuro di voler chiudere la pagina?';
+          return;
+      });
   }
 
   async loadImage(widget){
@@ -172,7 +194,7 @@ class DashboardEditor extends Component {
         widgets: dashboard.widgets,
       });
       
-      this.setLayout(dashboard.layout, true);
+      this.setLayout(dashboard.layout);
 
       //get iframe from server
       let iframeTypes = widgetService.getIframe(dashboard.org);
@@ -194,14 +216,14 @@ class DashboardEditor extends Component {
    * When a widget moved, this will be called. Layout should be given back.
    */
   onMove = (layout) => {
-    this.setLayout(layout);
+    this.setLayout(layout, true);
   }
 
   /**
    * When a widget is removed, this will be called. Layout should be given back.
    */
   onRemoveWidget = (layout) => {
-    this.setLayout(layout);
+    this.setLayout(layout, true);
   }
 
 
@@ -209,6 +231,12 @@ class DashboardEditor extends Component {
   * Set layout Dashboard
   */
   setLayout = (layout, notSave) => {
+    if(notSave){
+      console.log('modificato')
+      this.setState({
+        modified: true
+      })
+    }
     // add control button
     if(layout) {
 
@@ -246,21 +274,22 @@ class DashboardEditor extends Component {
       }) 
       
 
-      this.state.layout = layout;
+      //this.state.layout = layout;
   
       this.setState({
         layout: layout
       });
   
-      if(!notSave)
-        this.save();
+/*       if(!notSave)
+        this.save(); */
     }
   }
 
   /**
   * Add row
   */
-  addRow = function (widgetKey) { 
+  addRow = function (widgetKey) {
+
     let columns = [{
         className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12',
         widgets: [],
@@ -269,7 +298,7 @@ class DashboardEditor extends Component {
     let row = {columns: columns}
 
     this.state.layout.rows.push(row);
-    this.setLayout(this.state.layout);
+    this.setLayout(this.state.layout, true);
   }
 
   /**
@@ -304,13 +333,12 @@ class DashboardEditor extends Component {
     if (!newWidget.props)
       newWidget.props = {};
     newWidget.props.wid_key = newKey;
-    
-    console.log(this.widgetsTypes)
+
     //add widget to list
     this.state.widgets[newKey] = newWidget;
     //add widget to layout
     this.state.layout.rows[row].columns[0].widgets.push({key: newKey});
-    this.setLayout(this.state.layout);
+    this.setLayout(this.state.layout, true);
 
   }
 
@@ -345,9 +373,17 @@ class DashboardEditor extends Component {
           }
         }
       }
-    console.log(output)
+    console.log(output);
     return output;
     }
+  }
+
+  back(){
+      this.props.history.push('/dashboard/list')
+  }
+
+  preview(){
+      this.props.history.push('/dashboard/list/'+this.state.id)
   }
 
   /**
@@ -400,14 +436,23 @@ class DashboardEditor extends Component {
     request.layout = JSON.stringify(layout);
     /* request.widgets = JSON.stringify(widgets); */
     request.widgets = JSON.stringify(this.cleanWidgets(layout));
-    const response = dashboardService.save(request);
-    this.setState({saving: true});
-    response.then((data)=> {
-      this.setState({
-        dashboard: this.state.dashboard,
-        saving: false
+    if(request.widgets==='{}'){
+      toastr.error('Errore', 'Per salvare una Dashboard inserisci almeno un Widget')
+    }else{
+      const response = dashboardService.save(request);
+      this.setState({saving: true});
+      response.then((data)=> {
+        request.id = data.message
+        this.setState({
+          dashboard: request,
+          id: data.message,
+          modified: false,
+          saving: false
+        })
+        this.props.history.push('/dashboard/list/'+ data.message + '/edit');
+        toastr.success('Completato', 'Dashboard salvata con successo')
       })
-    })
+    }
   }
 
   /**
@@ -493,7 +538,10 @@ class DashboardEditor extends Component {
     <Container>
       <EditBarTop 
           dashboard={this.state.dashboard}
-          saving={this.state.saving}
+          onBack={this.back}
+          onPreview={this.preview}
+          saving={this.state.modified}
+          onSave={this.save}
           onChange={this.onChangeTitle}
           onPublish={this.onPublish}
           onRemove={this.onRemove}
@@ -514,10 +562,20 @@ class DashboardEditor extends Component {
         widgets={this.widgetsTypes}
         addWidget={this.addWidget}
         />
+      <Prompt
+        when={this.state.modified}
+        message={'Ci sono delle modifiche non salvate, sei sicuro di voler lasciare la pagina?'}
+      />
     </Container>
+
     );
   }
 
 }
 
-export default DashboardEditor;
+function mapStateToProps(state) {
+  const { loggedUser } = state.userReducer['obj'] || { }
+  return { loggedUser }
+}
+
+export default connect(mapStateToProps)(DashboardEditor);

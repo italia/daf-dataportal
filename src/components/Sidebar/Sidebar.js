@@ -175,15 +175,15 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/crea'} className={"nav-link "+crea} activeClassName="nav-link-primary"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
               </li> */}
-              <li className="nav-item nav-dropdown">
-                <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-plus fa-lg text-secondary"></i> Crea</a>
+              <li className="nav-item nav-dropdown b-r-1">
+                <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-plus fa-lg text-secondary"></i> Crea</a>
                 <ul className="nav-dropdown-items bg-light">
-                  <li className="nav-item" onClick={(e) => {
+                  {(isEditor() || isAdmin()) && <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
                     <Link to={'/ingestionwizzard'} /* onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} */ className="nav-link"><i className="fas fa-table fa-lg text-secondary"/>  Nuovo Dataset</Link>
-                  </li>
+                  </li>}
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
@@ -194,18 +194,18 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link" onClick={this.createStory.bind(this)}><i className="fas fa-font fa-lg text-secondary" />  Nuosa Storia</a>
+                    <a href className="nav-link" onClick={this.createStory.bind(this)}><i className="fas fa-font fa-lg text-secondary" />  Nuova Storia</a>
                   </li>
                 </ul>
               </li>
-              <li className="nav-item nav-dropdown">
+              <li className="nav-item nav-dropdown b-r-1">
                 <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-wrench fa-lg text-secondary"></i> Strumenti</a>
                 <ul className="nav-dropdown-items bg-light">
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-pie-chart fa-lg text-secondary"/>  Metabase</a>
+                    <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-chart-pie fa-lg text-secondary"/>  Metabase</a>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();

@@ -10,10 +10,16 @@ import themes from '../../utility'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 
 
 const tipi = [{ 'name': 'Dataset'},{ 'name': 'Dashboard'},{ 'name': 'Storie'}]
 const visibilita = [{ 'name': 'Open data'},{ 'name': 'Privato'},{ 'name': 'Organizzazione'}]
+
+var localization = require('moment/locale/it.js')
+moment.locale('it', localization)
 
 class DatasetList extends Component {
     constructor(props) {
@@ -34,8 +40,10 @@ class DatasetList extends Component {
             showDivOrganizzazione: false,
             showDivVisibilita: false,
             startDate: moment(),
-            endData: moment()
+            endDate: moment()
         }
+
+
 
         this.load();
         this.searchAll = this.searchAll.bind(this)  
@@ -76,7 +84,7 @@ class DatasetList extends Component {
     componentDidMount() {
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search).q  
-       // this.searchAll(query)
+        this.searchAll(query)
     }
 
     searchAll(query){
@@ -159,6 +167,17 @@ class DatasetList extends Component {
           }));
       }
 
+      handleChangeDate(startDate, endDate){
+        let newFilter = Object.assign({}, this.state.filter); 
+        newFilter.da = startDate
+        newFilter.a = endDate
+        this.setState({
+          startDate: startDate,
+          endDate: endDate,
+          filter: newFilter
+        });
+      }
+
       handleChangeStartDate(date) {
         let newFilter = Object.assign({}, this.state.filter); 
         newFilter.da = date
@@ -216,10 +235,18 @@ class DatasetList extends Component {
 
       removeFilterDate(value) {
         let newFilter = Object.assign({}, this.state.filter);
-        if(value==='a') 
+        if(value==='a') {
             newFilter.a = ''
-        if(value==='da') 
+            this.setState({
+                endDate: moment()
+            })
+        }
+        if(value==='da') {
             newFilter.da = ''
+            this.setState({
+                startDate: moment()
+            })
+        }
         this.setState({ 
             filter: newFilter
         })
@@ -229,26 +256,26 @@ class DatasetList extends Component {
         const { results, isFetching } = this.props
         return (
             
-            <div className="container body">
+            <div className="body">
                 <div className="main_container">
                     <div className="top_nav">
                         <div className="nav_menu">
-                            <nav className="dashboardHeader">
-                                <h2><i className="fa fa-search"></i>Hai cercato {this.state.query}</h2>
+                            <nav className="dashboardHeader row text-gray-600 mx-3">
+                                <i className="fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Hai cercato <i>{this.state.query}</i></h2>
                             </nav>
-                            <nav className="dashboardHeader">
-                                <div className="row" >
-                                    <div className="col-md-10" >
-                                        <div className="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" className="btn btn-light" onClick={this.handleToggleClickTipo}>Tipo<i className={"fa fa-lg " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button>
-                                            <button type="button" className="btn btn-light" onClick={this.handleToggleClickData}>Data<i className={"fa fa-lg " + (this.state.showDivData ? "fa-angle-up" : "fa-angle-down")}></i></button>
-                                            <button type="button" className="btn btn-light" onClick={this.handleToggleClickCategoria}>Categoria<i className={"fa fa-lg " + (this.state.showDivCategoria ? "fa-angle-up" : "fa-angle-down")}></i></button>
-                                            <button type="button" className="btn btn-light" onClick={this.handleToggleClickOrganizzazione}>Organizzazione<i className={"fa fa-lg " + (this.state.showDivOrganizzazione ? "fa-angle-up" : "fa-angle-down")}></i></button>
-                                            <button type="button" className="btn btn-light" onClick={this.handleToggleClickVisibilita}>Visibilità<i className={"fa fa-lg " + (this.state.showDivVisibilita ? "fa-angle-up" : "fa-angle-down")}></i></button>
+                            <nav className="dashboardHeader px-5 b-t-1 b-b-1">
+                                <div className="row" style={{height: '48px'}}>
+                                    <div className="col-md-10 h-100" >
+                                        <div className="btn-group h-100" role="group" aria-label="Basic example">
+                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button>
+                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivData ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickData}>Data <i className={"fa " + (this.state.showDivData ? "fa-angle-up" : "fa-angle-down")}></i></button>
+                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivCategoria ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickCategoria}>Categoria <i className={"fa " + (this.state.showDivCategoria ? "fa-angle-up" : "fa-angle-down")}></i></button>
+                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivOrganizzazione ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickOrganizzazione}>Organizzazione <i className={"fa " + (this.state.showDivOrganizzazione ? "fa-angle-up" : "fa-angle-down")}></i></button>
+                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivVisibilita ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickVisibilita}>Visibilità <i className={"fa " + (this.state.showDivVisibilita ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                         </div>
                                     </div>
-                                    <div className="col-md-2" >
-                                        <select className="form-control" id="ordinamento" aria-required="true" onChange={this.handleChange} value={this.state.order_filter}>
+                                    <div className="col-md-2 h-100" >
+                                        <select className="form-control h-100 b-t-0 b-b-0" id="ordinamento" aria-required="true" onChange={this.handleChange} value={this.state.order_filter}>
                                             <option value="metadata_modified%20desc">Data crescente</option>
                                             <option value="metadata_modified%20asc">Data decrescente</option>
                                             <option value="relevance%20asc">Per rilevanza</option>
@@ -256,25 +283,26 @@ class DatasetList extends Component {
                                     </div>
                                 </div>
                             </nav>
-                            <nav className="dashboardHeader">
+                            <nav className="dashboardHeader mx-5">
                             {this.state.showDivTipo && tipi.map((tipo, index) => {
-                                return(<button type="button" onClick={this.addFilter.bind(this, 0, tipo.name)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': tipo.name})?"btn btn-light":"btn btn-secondary"}>{tipo.name}<span className="badge badge-pill badge-secondary">1</span></button>)
+                                return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 0, tipo.name)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': tipo.name})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn btn-secondary"}>{tipo.name}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
                                 }
                             )}
                             {this.state.showDivCategoria && themes.map((theme, index) => {
-                                return(<button type="button" onClick={this.addFilter.bind(this, 1, theme.name)} key={index} className={!this.isInArray(this.state.filter, {'type': 1, 'value': theme.name})?"btn btn-light":"btn btn-secondary"}>{theme.name}<span className="badge badge-pill badge-secondary">1</span></button>)
+                                return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 1, theme.name)} key={index} className={!this.isInArray(this.state.filter, {'type': 1, 'value': theme.name})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{theme.name}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
                                 }
                             )}
                             {this.state.showDivVisibilita && visibilita.map((vis, index) => {
-                                return(<button type="button" onClick={this.addFilter.bind(this, 2, vis.name)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis.name})?"btn btn-light":"btn btn-secondary"}>{vis.name}<span className="badge badge-pill badge-secondary">1</span></button>)
+                                return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 2, vis.name)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis.name})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{vis.name}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
                                 }
                             )}
                             {this.state.showDivData && 
-                                 <div className="row" >
+                                 /* <div className="row" >
                                     <div className="col-md-3" >
                                         <div>Dal:
                                         <DatePicker
                                             selected={this.state.startDate}
+                                            onChange={this.handleChangeStalected={this.state.startDate}
                                             onChange={this.handleChangeStartDate}
                                             locale='it-it'
                                             dateFormat='DD/MM/YYYY'
@@ -291,7 +319,16 @@ class DatasetList extends Component {
                                         />
                                         </div>
                                     </div>
-                                </div>
+                                </div> */
+                                <DateRangePicker
+                                    startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                                    startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                                    endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                                    endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                                    onDatesChange={({ startDate, endDate }) => this.handleChangeDate(startDate, endDate)} // PropTypes.func.isRequired,
+                                    focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                                    onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                                    />
                             }
                             {this.state.showDivOrganizzazione && 
                                 <div className="row">
@@ -312,79 +349,74 @@ class DatasetList extends Component {
                                     </div> */}
                                     <div className="col-12">
                                             {this.state.organizations.length>0 && this.state.organizations.map((org, index) => {
-                                                    return(<button type="button" onClick={this.addFilter.bind(this, 3, org)} key={index} className={!this.isInArray(this.state.filter, {'type': 3, 'value': org})?"btn btn-light":"btn btn-secondary"}>{org}<span className="badge badge-pill badge-secondary">1</span></button>)
+                                                    return(<button type="button" onClick={this.addFilter.bind(this, 3, org)} style={{height: '48px'}} key={index} className={!this.isInArray(this.state.filter, {'type': 3, 'value': org})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{org}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
                                                 }
                                             )}
                                     </div>
                                 </div>
                             }
                             </nav>
-                            <nav className="dashboardHeader">
+                            { (this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <nav className="dashboardHeader bg-grigino px-5 py-2">
                                 {this.state.filter.elements.length>0 && this.state.filter.elements.map((fi, index) => {
                                     switch(fi.type){
-                                        case 0: return(<span className="badge badge-pill badge-secondary" key={index}>{fi.value}<button type="button" className="btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="fa fa-times-circle"></i></button></span>);
+                                        case 0: return(<span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key={index}>{fi.value}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
                                         break;
-                                        case 1: return(<span className="badge badge-pill badge-primary" key={index}>{fi.value}<button type="button" className="btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="fa fa-times-circle"></i></button></span>);
+                                        case 1: return(<span className="badge badge-pill badge-info my-2 mr-2 pl-3 py-2 filter-val" key={index}>{fi.value}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
                                         break;
-                                        case 2: return(<span className="badge badge-pill badge-light" key={index}>{fi.value}<button type="button" className="btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="fa fa-times-circle"></i></button></span>);
+                                        case 2: return(<span className="badge badge-pill badge-light my-2 mr-2 pl-3 py-2 filter-val" key={index}>{fi.value}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
                                         break;
-                                        case 3: return(<span className="badge badge-pill badge-dark" key={index}>{fi.value}<button type="button" className="btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="fa fa-times-circle"></i></button></span>);
+                                        case 3: return(<span className="badge badge-pill badge-secondary my-2 mr-2 pl-3 py-2 filter-val" key={index}>{fi.value}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
                                         break;
                                     }
                                 })
                                 }
-                                {this.state.filter.da && <span className="badge badge-pill badge-dark" key='da'>Dal: {this.state.filter.da.locale('it').format('LLLL')}<button type="button" className="btn btn-link text-gray-600" onClick={this.removeFilterDate.bind(this, 'da')}><i className="fa fa-times-circle"></i></button></span>}
-                                {this.state.filter.a &&<span className="badge badge-pill badge-dark" key='a'>Al: {this.state.filter.a.locale('it').format('LLLL')}<button type="button" className="btn btn-link text-gray-600" onClick={this.removeFilterDate.bind(this, 'a')}><i className="fa fa-times-circle"></i></button></span>}             
-                                {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this)} className="btn btn-primary">Filtra</button>}
+                                {this.state.filter.da && this.state.filter.a && <span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key='da'>{this.state.filter.da.locale('it').format("DD-MM-YYYY")} - {this.state.filter.a.locale('it').format("DD-MM-YYYY")}<button type="button" className="btn btn-link p-0 ml-2 text-gray-600" onClick={this.removeFilterDate.bind(this, 'da')}><i className="ml-2 fa fa-times-circle"></i></button></span>}
+                                {/*this.state.filter.a &&<span className="badge badge-pill badge-dark" key='a'>Al: {this.state.filter.a.locale('it').format("DD-MM-YYYY")}<button type="button" className="btn btn-link" onClick={this.removeFilterDate.bind(this, 'a')}><i className="fa fa-times-circle"></i></button></span>*/}             
+                                {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
                             </nav>
-                            {isFetching === true ? <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2" />Loading</h1> : 
-                            <div>
+                            }
+                            {isFetching === true ? ""/* <h1 className="text-center fixed-middle"><i className="fa fa-circle-o-notch fa-spin mr-2" />Loading</h1>  */: 
+                             <div className="px-5">
                                 {results.map((result, index) => {
                                 switch(result.type){
                                     case 0: return(
-                                                    <div className="card" key={index}>
-                                                        <div className="card-body">
-                                                            <div className="row" >
-                                                                <div className="col-md-1" >
-                                                                    <i className="fa fa-table fa-lg"></i>
-                                                                </div>
-                                                                <div className="col-md-7" >
-                                                                    {result.dcatapit.title}
-                                                                </div>
-                                                                <div className="col-md-2" >
-                                                                    <span className="badge badge-accento my-1">{decodeTheme(result.operational.theme)}</span>
-                                                                </div>
-                                                                <div className="col-md-2" >
-                                                                    {result.operational.group_own}
-                                                                </div>
-                                                            </div>
+                                            <div className="card risultato mb-3" key={index}>
+                                                <div className="card-body p-0 clearfix">
+                                                    <i className="fa fa-table bg-dataset p-3 mr-3 float-left"></i>
+                                                    <div className="row py-2 h-100" >
+                                                        <div className="col-md-7 py-1 px-1" >
+                                                            {result.dcatapit.title}
                                                         </div>
-                                                    </div>
-                                            );
-                                            break;
-                                    case 1: return(
-                                                <div className="card" key={index}>
-                                                    <div className="card-body">
-                                                        <div className="row" >
-                                                            <div className="col-md-1" >
-                                                                <i className="fa fa-columns fa-lg"></i>
-                                                            </div>
-                                                            <div className="col-md-9" >
-                                                                {result.title}
-                                                            </div>
+                                                        <div className="col-md-2 py-1 px-1" >
+                                                            <span className="badge badge-accento my-1">{decodeTheme(result.operational.theme)}</span>
+                                                        </div>
+                                                        <div className="col-md-2 py-1 px-1" >                                                                
+                                                            {result.operational.group_own}
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            );
+                                            break;
+                                    case 1: return(
+                                            <div className="card risultato mb-3" key={index}>
+                                                <div className="card-body p-0 clearfix">
+                                                    <i className="fa fa-columns bg-gray-900 p-3 mr-3 float-left text-white"></i>
+                                                    <div className="row py-2 h-100" >
+                                                        <div className="col-md-9 py-1 px-1" >
+                                                            {result.title}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             )
                                             break;
                                     case 2: return(
-                                            <div className="card" key={index}>
-                                                <div className="card-body">
-                                                    <div className="row" >
-                                                        <div className="col-md-1" >
-                                                            <i className="fa fa-font fa-lg"></i>
-                                                        </div>
-                                                        <div className="col-md-9" >
+                                            <div className="card risultato mb-3" key={index}>
+                                                <div className="card-body p-0 clearfix">
+                                                    <i className="fa fa-font bg-primary p-3 mr-3 float-left"></i>
+                                                    <div className="row py-2 h-100" >
+                                                        <div className="col-md-9 py-1 px-1" >
                                                             {result.title}
                                                         </div>
                                                     </div>
@@ -397,9 +429,47 @@ class DatasetList extends Component {
                             }
                         </div>
                         }
-                    </div>
+                        {/* <div className="px-5">
+                        <div className="card risultato mb-3">
+                            <div className="card-body p-0 clearfix">
+                                <i className="fa fa-table bg-dataset p-3 mr-3 float-left"></i>
+                                <div className="row py-2 h-100" >
+                                    <div className="col-md-7 py-1 px-1" >
+                                        Elenco cinema torino
+                                    </div>
+                                    <div className="col-md-2 py-1 px-1" >
+                                        <span className="badge badge-accento my-1">SOCIETA</span>
+                                    </div>
+                                    <div className="col-md-2 py-1 px-1" >
+                                        default_org
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card risultato mb-3">
+                            <div className="card-body p-0 clearfix">
+                            <i className="fa fa-columns bg-gray-900 p-3 mr-3 float-left text-white"></i>
+                                <div className="row py-2 h-100" >
+                                    <div className="col-md-9 py-1 px-1" >
+                                        Redditi italiani 2015
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card risultato mb-3">
+                            <div className="card-body p-0 clearfix">
+                            <i className="fa fa-font bg-primary p-3 mr-3 float-left"></i>
+                                <div className="row py-2 h-100" >
+                                    <div className="col-md-9 py-1 px-1" >
+                                        Torino: stazioni Bike Sharing
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> */}
                 </div>
             </div>
+        </div>
         </div>
         )
     }
@@ -411,7 +481,7 @@ DatasetList.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, results, query } = state.searchReducer['search'] || { isFetching: false, results: [] }
+    const { isFetching, results, query } = state.searchReducer['search'] || { isFetching: true, results: [] }
     return { isFetching, results, query }
 }
 
