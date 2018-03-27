@@ -166,8 +166,9 @@ class Organizations extends Component {
         }
         let response = organizationService.create(organization);
         this.setState({saving: true})
-        response.then((json) => {
-            if(json.code!='0'){
+        if (response.ok) {
+            response.json().then(json => {
+                if(json.code!='0'){
                 this.setState({
                     remove: '',
                     add: '',
@@ -190,7 +191,18 @@ class Organizations extends Component {
                     console.log('Create org error: '+ json.message)
                 }
             }
+
         )
+        }else{
+            this.setState({
+                remove: '',
+                add: '',
+                create: 'ko',
+                delete: '',
+                saving: false
+            })
+            console.log('Create org error: Response.KO')
+        }        
     }
 
     deleteOrg(){
