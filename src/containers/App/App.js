@@ -158,6 +158,7 @@ class App extends Component {
             <PrivateRoute authed={this.state.authed} path="/ontologies" name="Ontologies" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/vocabulary" name="Vocabulary" component={Full} />
             <PrivateRoute authed={this.state.authed} exact path="/dataset" name="Dataset" component={Full} />
+            {/* <PrivateRoute authed={this.state.authed} exact path="/search" name="Search" component={Full} /> */}
             <PrivateRoute authed={this.state.authed} exact path="/dataset/:id" name="Dataset Detail" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/dashboard/manager" name="Dash" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/dashboard/list" name="Dash" component={Full} />

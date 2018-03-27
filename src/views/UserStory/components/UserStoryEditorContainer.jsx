@@ -281,10 +281,6 @@ class UserStoryEditorContainer extends Component {
       }
     }
 
-    console.log(widgets)
-    console.log(widgetsOld)
-
-
     //save data
     let request = this.state.dataStory;
     request.layout = JSON.stringify(layout);

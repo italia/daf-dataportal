@@ -139,10 +139,14 @@ class ListBar extends React.Component {
           status: 0
         };
         
-        //save data
+        this.props.history.push({
+          pathname: '/dashboard/create',
+          state: { 'dash': request, 'modified':true }})
+
+/*         //save data
         dashboardService.save(request).then((data)=> {
             this.props.history.push('/dashboard/list/'+ data.message + '/edit');
-        })
+        }) */
       }
     } else {
       this.setState({

@@ -182,7 +182,7 @@ class DatasetDetail extends Component {
                             <div className="card-block">
                             <div className="row">
                                     <div className="col-8">
-                                        <h1 className="card-text">{transformName(dataset.dcatapit.title) + " "}</h1>
+                                        <h1 className="card-text">{dataset.dcatapit.title + " "}</h1>
                                     </div>
                                     <div className="col-4">
                                         <h4 className="float-right"><span className="badge badge-secondary"> {decodeTheme(dataset.dcatapit.theme)}</span></h4>
@@ -302,7 +302,7 @@ class DatasetDetail extends Component {
                                                         <input className='w-75' value={this.state.value} onChange={({target: {value}}) => this.setState({value, copied: false})} disabled='true' />
                                                         <CopyToClipboard text={this.state.value}
                                                             onCopy={() => this.setState({copied: true})}>
-                                                            <button><i className="fa fa-clipboard"></i></button>
+                                                            <button><i className="fa fa-clone"></i></button>
                                                         </CopyToClipboard>
                                                         {this.state.copied ? <span className="badge badge-pill badge-success"> Copiato</span> : null}
                                                     </div>

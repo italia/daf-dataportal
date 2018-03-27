@@ -120,10 +120,10 @@ export function transformName(name){
     return result
   }
 
-  export function truncateDatasetName(name) {
+  export function truncateDatasetName(name, cut) {
     var result = name
     if (name.length >= 30)
-      result = result.substring(0, 26) + '...'
+      result = result.substring(0, cut) + '...'
 
     return result
   }

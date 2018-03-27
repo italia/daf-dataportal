@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import InfiniteScroll from '../../components/InfinityScroll'
 import WidgetService from './service/WidgetService';
 import WidgetCard from '../../components/Cards/WidgetCard'
 
@@ -11,6 +12,7 @@ class Widgets extends Component{
 
         this.state = {
             listWidgets: [],
+            items: 18,
             loading: true
         }
     }
@@ -25,33 +27,50 @@ class Widgets extends Component{
         })
     }
 
-    render(){
-        const { loading, listWidgets } = this.state
+    loadMore = () => {
+        if (this.state.isLoading) { return }
+        var totitems = this.state.items + 6;
+        this.setState({ 
+            items: totitems,
+            visible: "hidden"
+        });
+    }
 
+    handleScrollToBottom = () => this.loadMore()
+    handleLoadMoreClick = () => this.loadMore()
+
+    render(){
+        const { loading, listWidgets, visible, items } = this.state
+        let visibility = listWidgets.length<=items ? 'hidden':visible;
         return(
             <div className="container body">
                 <div className="main_container">
                     <div className="top_nav">
                         <div className="nav_menu">
-                            <nav className="dashboardHeader">
-                                <h2>Widget</h2>
+                            <nav className="dashboardHeader row">
+                                <i className="fas fa-chart-bar fa-lg m-2" style={{lineHeight:'1'}}/><h2> Widget</h2>
                             </nav>
-                            {loading ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" /> Caricamento </h1> :
-                            <div className="row pl-3">
-                            {
-                                this.state.listWidgets.map((iframe, index) => {
-                                    
-                                    return (
-                                        iframe.identifier &&
-                                        <WidgetCard
-                                            iframe={iframe}
-                                            key={index}
-                                        />
-                                    )
-                                })
-                            }
+                            <div className="App bg-light">
+                                <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="row pl-3">
+                                    {
+                                        this.state.listWidgets.slice(0, items).map((iframe, index) => {
+                                            if(iframe.identifier)
+                                                return (
+                                                    <WidgetCard
+                                                        iframe={iframe}
+                                                        key={index}
+                                                    />
+                                                )
+                                        })
+                                    }
+                                </InfiniteScroll>
                             </div>
-                        }
+                            <button
+                                className="List-load-more-button"
+                                onClick={this.handleLoadMoreClick}
+                                disabled={loading} style={{visibility: visibility }}>
+                                {loading ? 'Caricamento...' : 'Altri'}
+                            </button>
                         </div>
                     </div>
                 </div>

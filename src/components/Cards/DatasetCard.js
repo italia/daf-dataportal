@@ -44,7 +44,7 @@ class DatasetCard extends Component{
                 <div className="card bg-gray-100 card-dataset">
                     <div className="header-dataset row mx-0 py-1 b-b-card">
                         <div className="col-10 slug-dataset my-1 pl-3">
-                            <div className="my-1">{truncateDatasetName(dataset.name)}</div>
+                            <div className="my-1">{truncateDatasetName(dataset.name, 26)}</div>
                         </div>
                         <div className="col-2 my-2">
                             {
@@ -64,7 +64,7 @@ class DatasetCard extends Component{
                     <div className="dataset-body b-b-card">
                         <div className="title-dash pl-3 ml-0">
                             <Link to={"/dataset/" + dataset.name}>
-                                <h3 className="card-title text-primary">{dataset.title}</h3>
+                                <h3 className="card-title text-primary">{truncateDatasetName(dataset.title, 60)}</h3>
                             </Link>
                             {/* <h6 className="card-subtitle mb-2 text-muted">{dash.subtitle}</h6> */}
                         </div>

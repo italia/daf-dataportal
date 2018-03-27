@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import { withRouter, Prompt } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { toastr } from 'react-redux-toastr'
 
 // App components
 import Header from './Header';
@@ -20,14 +23,17 @@ class UserStoryEditor extends Component {
     super(props);
 
     //init state
+
     this.state={
-      id: this.props.match.params.id
+      modified: this.props.history.location.modified?this.props.history.location.modified:false,
+      id: this.props.match.params.id?this.props.match.params.id:undefined,
     };
 
     //bind functions
     this.save = this.save.bind(this);
     this.onPublish = this.onPublish.bind(this);
     this.onRemove = this.onRemove.bind(this);
+    this.onChange = this.onChange.bind(this);
     
     
     //load data
@@ -51,8 +57,29 @@ class UserStoryEditor extends Component {
         });
       });
     } else {
-      this.state.dataStory= {};
+      let wids = {}
+      if(this.props.history.location.story){
+        wids = JSON.parse(this.props.history.location.story.widgets)
+        
+        this.state={
+          modified: this.props.history.location.modified?this.props.history.location.modified:false,
+          id: this.props.match.params.id?this.props.match.params.id:undefined,
+          dataStory: this.props.history.location.story?this.props.history.location.story:false,
+          widgets: wids
+        };
+
+        console.log(this.state)
+      }
     }
+  }
+  componentDidMount() {
+    window.addEventListener('beforeunload', (ev) => 
+    {  
+        ev.preventDefault();
+        if(this.state.modified)
+          return ev.returnValue = 'Sei sicuro di voler chiudere la pagina?';
+        return;
+    });
   }
 
 
@@ -64,18 +91,36 @@ class UserStoryEditor extends Component {
     this.save();
   }
 
-  save(story) {
-
+  save() {
+      const { dataStory } = this.state
       this.setState({
         saving: true
       });
       
-      userStoryService.save(story).then((data)=> {
-        this.setState({
-          saving: false
-        })
-      })
+      if(dataStory.widgets==='{}'){
+        toastr.error('Errore', 'Per salvare una Dashboard inserisci almeno un Widget')
+      }else{
 
+        userStoryService.save(dataStory).then((data)=> {
+          this.setState({
+            saving: false,
+            modified: false
+          })
+          if(window.location === '/user_story/create/'){
+            this.state.dataStory.id = data.message;
+            this.props.history.push('/user_story/list/'+ data.message + '/edit');
+          }
+          toastr.success('Completato', 'Dashboard salvata con successo')
+        })
+      }
+
+  }
+
+  onChange(story){
+    this.setState({
+      modified: true,
+      dataStory: story
+    })
   }
 
   /**
@@ -110,18 +155,23 @@ class UserStoryEditor extends Component {
               onPublish={this.onPublish}
               id={this.state.dataStory.id}
               status={this.state.dataStory.published}
+              onSave={this.save}
               onRemove={this.onRemove}
-              saving={this.state.saving}
+              saving={this.state.modified}
               pvt={this.state.dataStory.pvt}
           ></EditBarTop>
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory} 
-            onChange={this.save}
+            onChange={this.onChange}
             widgets={this.state.widgets}
             readonly={false}
           />
       </div>
-      }    
+      }
+      <Prompt
+        when={this.state.modified}
+        message={'Ci sono delle modifiche non salvate, sei sicuro di voler lasciare la pagina?'}
+      />    
     </Container>
   
     );
@@ -129,4 +179,9 @@ class UserStoryEditor extends Component {
 
 }
 
-export default UserStoryEditor;
+function mapStateToProps(state) {
+  const { loggedUser } = state.userReducer['obj'] || { }
+  return { loggedUser }
+}
+
+export default connect(mapStateToProps)(UserStoryEditor);
