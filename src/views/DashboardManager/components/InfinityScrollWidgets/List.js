@@ -104,7 +104,7 @@ class List extends Component {
           className="List-load-more-button"
           onClick={this.handleLoadMoreClick}
           disabled={isLoading} style={{visibility: visible }}>
-          {isLoading ? 'Loading...' : 'Load more'}
+          {isLoading ? 'Caricamento...' : 'Altri'}
         </button>
       </InfiniteScroll>
     );

@@ -793,15 +793,17 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
   }
 
   export function search(query, filter) {
-    var url = 'http://localhost:3001/dati-gov/v1/search'
+    var url = serviceurl.apiURLDatiGov + '/elasticsearch/search'
     return dispatch => {
       dispatch(requestSearch())
       return fetch(url, {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(filter)
       })
       .then(response => response.json())
       .then(json => dispatch(receiveSearch(json, query)))

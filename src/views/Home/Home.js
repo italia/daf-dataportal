@@ -86,7 +86,7 @@ class Home extends Component {
     render(){
         const { datasets, isFetching } = this.props
         const { listDashboards, listStories, listIframes, items } = this.state
-        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Loading</h1> : (
+        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
             <div>
                 <div className="top-home w-100 bg-grey-n d-md-down-none">
                     <div className="row m-auto container body">

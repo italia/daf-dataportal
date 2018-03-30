@@ -140,7 +140,7 @@ class App extends Component {
     if (this.props.authed)
       this.state.authed = true;
 
-    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Loading</h1> : (
+    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> : (
       <div>
         <HashRouter history={history}>
           <Switch>
@@ -158,7 +158,7 @@ class App extends Component {
             <PrivateRoute authed={this.state.authed} path="/ontologies" name="Ontologies" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/vocabulary" name="Vocabulary" component={Full} />
             <PrivateRoute authed={this.state.authed} exact path="/dataset" name="Dataset" component={Full} />
-            {/* <PrivateRoute authed={this.state.authed} exact path="/search" name="Search" component={Full} /> */}
+            {<PrivateRoute authed={this.state.authed} exact path="/search" name="Search" component={Full} />}
             <PrivateRoute authed={this.state.authed} exact path="/dataset/:id" name="Dataset Detail" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/dashboard/manager" name="Dash" component={Full} />
             <PrivateRoute authed={this.state.authed} path="/dashboard/list" name="Dash" component={Full} />
