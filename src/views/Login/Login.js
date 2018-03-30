@@ -141,8 +141,8 @@ class Login extends Component {
                         {this.state.loginMessage}
                       </div>
                     }
-                  
-                    
+
+
                       <div className="input-group mb-1" style={{position: 'initial'}}>
                         <span className="input-group-text">
                           <i className="icon-user"></i>
@@ -151,15 +151,15 @@ class Login extends Component {
                           style={{position: 'initial', zIndex: 'initial'}}/>
                       </div>
                     
-                    
-                    <div className="input-group mb-2" style={{ position: 'initial' }}>
+                      <form onSubmit={this.handleSubmit.bind(this)}>
+                      <div className="input-group mb-2" style={{ position: 'initial' }}>
                         <span className="input-group-text">
                           <i className="icon-lock"></i>
                         </span>
-                      <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw}
-                        style={{ position: 'initial', zIndex: 'initial' }}/>
+                        <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw}
+                          style={{ position: 'initial', zIndex: 'initial' }}/>
                       </div>
-                    
+                      </form>
                    
                       <div className="row">
                         <div className="col-6" style={{ position: 'initial' }}>
@@ -169,6 +169,7 @@ class Login extends Component {
                         <button type="button" className="btn btn-link px-0" onClick={() => this.props.history.push('/requestreset')}>Password dimenticata?</button>
                         </div>
                       </div>
+                    
                   </OverlayLoader>
                     
               </div>

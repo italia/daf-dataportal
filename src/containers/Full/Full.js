@@ -72,7 +72,7 @@ class Full extends Component {
                 <Route path="/user_story" name="User Story" component={UserStory} />
                 <Route path="/widget" name="Widget" component={Widgets} />
                 {<Route exact path="/dataset" name="Dataset" component={Dataset} />}
-                {/* <Route exact path="/search" name="Search" component={DatasetList} /> */} 
+                {<Route exact path="/search" name="Search" component={DatasetList} />} 
                 <Route exact path="/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <Route path="/profile" name="Profile" component={Profile} />
                 <Route path="/settings" name="Settings" component={Settings} />

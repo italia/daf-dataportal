@@ -1,7 +1,7 @@
 import { serviceurl } from './config/serviceurl.js'
 import { truncate } from 'fs';
 
-const themes = [
+export const themes = [
   { 'val': 'AGRI', 'name': 'AGRICOLTURA' },
   { 'val': 'ECON', 'name': 'ECONOMIA' },
   { 'val': 'EDUC', 'name': 'EDUCAZIONE' },
@@ -16,6 +16,10 @@ const themes = [
   { 'val': 'TECH', 'name': 'TECNOLOGIA' },
   { 'val': 'TRAN', 'name': 'TRASPORTO' }
 ]
+
+export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}]
+
+export const visibilita = [{ 'val': '2','name': 'Open data'},{ 'val': '0','name': 'Privato'},{ 'val': '1','name': 'Organizzazione'}]
 
 String.prototype.replaceAll = function (search, replacement) {
   var target = this;
@@ -171,4 +175,28 @@ export function transformName(name){
     return found
   }
 
+  export function decodeTipo(value){
+    var found=value
+    for(var i = 0; i < tipi.length; i++) {
+      if (tipi[i].val == value) {
+          found = tipi[i].name
+          break
+      }
+    }
+    return found
+  }
+
+  export function decodeVisibilita(value){
+    var found=value
+    for(var i = 0; i < visibilita.length; i++) {
+      if (visibilita[i].val == value) {
+          found = visibilita[i].name
+          break
+      }
+    }
+    return found
+  }
+/* 
   export default themes
+
+  export default tipi */

@@ -137,7 +137,7 @@ class Sidebar extends Component {
         <div className="sidebar ">
           <nav className="sidebar-nav b-t-1 b-r-1">
             <ul className="nav">
-              <li className="nav-item" onClick={(e) => { 
+              <li className="nav-item b-r-1" onClick={(e) => { 
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');}}>
                 <NavLink to={'/home'} className={"nav-link "+home} activeClassName="nav-link-primary"><i className="fa fa-home fa-lg text-secondary"></i> Home</NavLink>

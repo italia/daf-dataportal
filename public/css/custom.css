@@ -383,6 +383,7 @@
     box-sizing: border-box;
     height: 48px;
     border: 1px solid #CAD4DC;
+    box-shadow: 0 0 8px 0 rgba(50,50,50,0.15);
 }
 
 .filter-val {
@@ -417,3 +418,15 @@
   button.bg-dataset:hover,
   button.bg-dataset:focus {
     background-color: #F0F3F5!important; }
+
+.title-res{
+    /* font-family: "Helvetica Neue"; */
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 19px;
+}
+
+.px-search{
+    padding-left: 4.5rem!important;
+    padding-right: 4.5rem!important;
+}
