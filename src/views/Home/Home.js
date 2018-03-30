@@ -93,10 +93,10 @@ class Home extends Component {
                         <div className="col-6 col-lg-3 pt-3">
                             <div className="card mt-1 bg-light">
                                 <div className="card-body p-0 clearfix">
-                                    <div className="btn-group float-right mt-4">
+{/*                                     <div className="btn-group float-right mt-4">
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <i className="fa fa-table bg-primary p-4 font-2xl mr-3 float-left"></i>
                                     <div className="h5 text-muted mb-0 pt-3">{datasets?datasets.length:0}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dataset</div>
@@ -106,10 +106,10 @@ class Home extends Component {
                         <div className="col-6 col-lg-3 pt-3">
                             <div className="card mt-1 bg-light">
                                 <div className="card-body p-0 clearfix">
-                                    <div className="btn-group float-right mt-4">
+{/*                                     <div className="btn-group float-right mt-4">
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <i className="fa fa-chart-bar bg-primary p-4 font-2xl mr-3 float-left"></i>
                                     <div className="h5 text-muted mb-0 pt-3">{listIframes.length}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Widget</div>
@@ -119,10 +119,10 @@ class Home extends Component {
                         <div className="col-6 col-lg-3 pt-3">
                             <div className="card mt-1 bg-light">
                                 <div className="card-body p-0 clearfix">
-                                    <div className="btn-group float-right mt-4">
+{/*                                     <div className="btn-group float-right mt-4">
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <i className="fa fa-columns bg-primary p-4 font-2xl mr-3 float-left"></i>
                                     <div className="h5 text-muted mb-0 pt-3">{listDashboards.length}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dashboard</div>
@@ -132,10 +132,10 @@ class Home extends Component {
                         <div className="col-6 col-lg-3 pt-3">
                             <div className="card mt-1 bg-light">
                                 <div className="card-body p-0 clearfix">
-                                    <div className="btn-group float-right mt-4">
+{/*                                     <div className="btn-group float-right mt-4">
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <i className="fa fa-font bg-primary p-4 font-2xl mr-3 float-left"></i>
                                     <div className="h5 text-muted mb-0 pt-3">{listStories.length}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Storie</div>
