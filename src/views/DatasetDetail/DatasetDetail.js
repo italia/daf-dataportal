@@ -425,7 +425,7 @@ class DatasetDetail extends Component {
     }
     render() {
         const { dataset, ope, feed, iframes, isFetching, query } = this.props
-        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Loading</h1> : (<div>
+        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> : (<div>
                     <div className="row">
                         {this.renderDatasetDetail(dataset, ope, feed, iframes, query)}
                         {!dataset && 
