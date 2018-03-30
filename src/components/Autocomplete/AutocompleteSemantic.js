@@ -72,7 +72,7 @@ class AutocompleteSemantic extends React.Component {
       .then(json => {
         var test = getSuggestions(input, json)
         .map((entry, index) => ( 
-          {'id': entry.universe.value, 'name' : entry.name, 'context': entry.universe.domain.contexts, 'subject': entry.universe.domain.id, 'predicate': entry.universe.property.id, 'rdf_object': entry.universe.range.id, 'uri_voc': 'aaaa'}
+          {'id': entry.universe.value, 'name' : entry.name, 'context': entry.universe.domain.contexts, 'subject': entry.universe.domain.id, 'predicate': entry.universe.property.id, 'rdf_object': entry.universe.range.id, 'uri_voc': entry.universe.range.controlledVocabularies&&entry.universe.range.controlledVocabularies.length>0?entry.universe.range.controlledVocabularies[0]:''}
           )
         )
         this.setSuggestion(test)
