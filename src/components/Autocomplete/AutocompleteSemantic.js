@@ -14,37 +14,21 @@ function getSuggestions(value, data) {
   }
 
   const regex = new RegExp('^' + escapedValue, 'i');
-  return ontologiesFilter(data.results, regex);
+  return ontologiesFilter(data, regex);
 }
 
 function ontologiesFilter(semantics, regex){
       var res = [];
-      // CNR
-/*       semantics.forEach(function(entry) {
-              //console.log('entry: ' + entry['http://www.w3.org/2000/01/rdf-schema#label']);
-              var obj = entry['http://www.w3.org/2000/01/rdf-schema#label'];
-              obj.forEach(function(lang) {
-                //console.log('lang: ' + lang['xml:lang']);
-                if(lang['xml:lang'] == 'it'){
-                  //console.log('lang1: ' + lang['value']);
-                  if(regex.test(lang['value'])){
-                      //console.log('lang2: ' + lang['value']);
-                      entry.name = lang['value'];
-                      res.push(entry);
-                  }
-                }
-              })
-            }); */
-        semantics.forEach(function(entry) {
-        //if(regex.test(entry.label[0].value)){
-            //console.log('value: ' + entry.label[0].value);
-            //console.log('ontology: ' + entry['label.ontology'][0].value)
-            var label = entry.label?entry.label[0].value:''
-            var ontology = entry['label.ontology']?entry['label.ontology'][0].value:''
-            entry.name = label + ' [' + ontology + ']';
-            res.push(entry);
-        //}
-      });
+
+        if(semantics.length>0){
+          semantics.forEach(function(entry) {
+              var domain = entry.universe.domain.label[0].value
+              var property = entry.universe.property.label[0].value
+              var range = entry.universe.range.label[0].value
+              entry.name = '[' + domain +'] '+ property +'; ('+ range +')' 
+              res.push(entry);
+        });
+      }
       return res; 
 }
 
@@ -52,6 +36,7 @@ class AutocompleteSemantic extends React.Component {
 
   state = {
     value: '',
+    id: '',
     suggestions: [],
   }
 
@@ -86,7 +71,10 @@ class AutocompleteSemantic extends React.Component {
       }).then(response => response.json())
       .then(json => {
         var test = getSuggestions(input, json)
-        .map((item, index) =>( {'id': 'c_' + index, 'name' : item.name }))
+        .map((entry, index) => ( 
+          {'id': entry.universe.value, 'name' : entry.name, 'context': entry.universe.domain.contexts, 'subject': entry.universe.domain.id, 'predicate': entry.universe.property.id, 'rdf_object': entry.universe.range.id, 'uri_voc': 'aaaa'}
+          )
+        )
         this.setSuggestion(test)
       })
   }
@@ -107,8 +95,8 @@ class AutocompleteSemantic extends React.Component {
           items={this.state.suggestions}
           getItemValue={(item) => item.name}
           onSelect={(value, item) => {
-            this.setState({ value, suggestions: [ item ] })
-            this.props.addSemanticToForm(value)
+            this.setState({ value, id: item.id, suggestions: [ item ] })
+            this.props.addSemanticToForm(value, item.id, item.context, item.subject, item.predicate, item.rdf_object, item.uri_voc, this.props.index, this.props.wizard, this.props.dispatchAction, this.props.aggiornaStato)
           }}
           onChange={(event, value) => {
             this.setState({ value })
@@ -116,6 +104,7 @@ class AutocompleteSemantic extends React.Component {
               var suggestion = this.getSuggestion(value);
             }else{ 
               this.setState({ suggestions: [] });
+              this.props.addSemanticToForm('', '', '', '', '', '', '', this.props.index, this.props.wizard, this.props.dispatchAction, this.props.aggiornaStato)
             }
           }}
           renderMenu={children => (

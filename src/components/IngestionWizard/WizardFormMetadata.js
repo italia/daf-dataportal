@@ -49,12 +49,12 @@ const renderField = ({ input, label, type, value, readonly, meta: { touched, err
     <label className="col-md-3 form-control-label">{label}</label>
       {(touched && error) ?
       <div className="col-md-9"> 
-          <input {...input} placeholder={label} type={type} className="form-control form-control-danger"/>
+          <input {...input}  type={type} className="form-control form-control-danger"/>
           <div className="form-control-feedback">{error}</div>
       </div>
       :
       <div className="col-md-9">
-          <input {...input} placeholder={label} readOnly={readonly} type={type} className="form-control"/>
+          <input {...input}  readOnly={readonly} type={type} className="form-control"/>
       </div>
       }
   </div>
@@ -74,7 +74,7 @@ const renderFieldTags = ({input, label, type, value, readonly, addTagsToForm, me
   <div className="form-group row">
     <label className="col-md-3 form-control-label">{label}</label>
     <div className="col-md-9">
-      <textarea {...input} name={input.name} placeholder={label} type={type} className="form-control"/>
+      <textarea {...input} name={input.name}  type={type} className="form-control"/>
       {touched && error && <div className="text-danger">{error}</div>}
       </div>
   </div>
@@ -138,6 +138,22 @@ const renderTipi = ({ input, label, type, tipi, index, meta: { touched, error } 
 </div>
 );
 
+const renderContesti = ({ input, label, type, contesti, index, meta: { touched, error } }) => (
+  <div className="form-group row">
+  <label className="col-md-3 form-control-label">{label}</label>
+  <div className="col-md-9">
+      <select className="form-control" {...input}>
+        {contesti.map(value => {
+         return(<option value={value.id} key={value.id}>{value.label}</option>)
+        }
+       )}
+      </select>
+    {touched && error && <div className="text-danger">{error}</div>}
+  </div>
+ </div>
+ );
+
+
 const renderFieldType = ({ input, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-md-3 form-control-label">Tipo Colonna</label>
@@ -198,10 +214,20 @@ class WizardFormMetadata extends Component {
     this.state = {
       files: [],
       uploading: false,
-      tipi: new Object()
+      tipi: new Object(),
+      context:[],
+      uri_voc:[],
+      showMore: false
     }
-    this.calcDataFields = this.calcDataFields.bind(this);
+    this.calcDataFields = this.calcDataFields.bind(this)
+    this.aggiornaStato = this.aggiornaStato.bind(this)
     this.cleanReduxForm()
+  }
+  
+  handleToggleClickMore() {
+    this.setState(prevState => ({
+      showMore: !prevState.showMore
+    }));
   }
 
   cleanReduxForm(){
@@ -244,8 +270,27 @@ class WizardFormMetadata extends Component {
     })
   }
 
-  addSemanticToForm(semantics){
+  addSemanticToForm(semantics, id, context, subject, predicate, rdf_object, uri_voc, index, wizard, dispatch, aggiornaStato){
+    aggiornaStato(context, uri_voc, index)
+    dispatch(change('wizard', 'tests['+index+'].id_concetto', id))
+    dispatch(change('wizard', 'tests['+index+'].subject', subject))
+    dispatch(change('wizard', 'tests['+index+'].predicate', predicate))
+    dispatch(change('wizard', 'tests['+index+'].rdf_object', rdf_object))
+    dispatch(change('wizard', 'tests['+index+'].uri_voc', uri_voc))
+    
     this.input.onChange(semantics)
+  }
+
+  aggiornaStato(context, uri_voc, index){
+    var contextArray = this.state.context
+    contextArray[index] = context
+    
+    var uri_vocArray = this.state.uri_voc
+    uri_vocArray[index] = uri_voc
+    
+    this.setState({context: contextArray,
+                   uri_voc: uri_vocArray
+                  })
   }
 
   addTagsToForm(fieldName, tags){
@@ -256,7 +301,7 @@ class WizardFormMetadata extends Component {
     this.onChange(tagString)
   }
 
-  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, addSemanticToForm, getSchemaFromWS, setUploading, uploading, errorUpload, modalitacaricamento, filetype, meta : {touched, error} }) => 
+  renderDropzoneInput = ({fields,columnCard, input, reset, calcDataFields, setTipi, tipi, addTagsToForm, addSemanticToForm, getSchemaFromWS, setUploading, uploading, errorUpload, modalitacaricamento, wizard, dispatchAction, aggiornaStato, handleToggleClickMore, filetype, meta : {touched, error} }) => 
       <div>
       {fields.length === 0 &&
         <div className="form-group row">
@@ -419,7 +464,31 @@ class WizardFormMetadata extends Component {
                 label="Concetto"
                 value={`${test}.concetto`}
                 addSemanticToForm={addSemanticToForm}
+                index={index}
+                wizard={wizard}
+                dispatchAction={dispatchAction}
+                aggiornaStato={aggiornaStato}
               />
+              {this.state.context && this.state.context[index] && this.state.context[index].length>0 &&
+                <Field
+                  name={`${test}.contesto`}
+                  type="text"
+                  component={renderContesti}
+                  label="Contesto"
+                  value={`${test}.contesto`}
+                  contesti={this.state.context[index]}
+                  index={index}
+                /> 
+              }
+              {this.state.uri_voc && this.state.uri_voc[index] &&
+                <Field
+                name={`${test}.uri_voc`}
+                type="text"
+                component={renderField}
+                label="Uri Vocabulary"
+                value={`${test}.uri_voc`}
+                />
+              }
               <Field
                 name={`${test}.desc`}
                 type="text"
@@ -449,18 +518,71 @@ class WizardFormMetadata extends Component {
                 label="Tipo Colonna"
                 value={`${test}.field_type`}
               />
-            {/*<Field
-                name={`${test}.cat`}
-                type="text"
-                component={renderFieldMeta}
-                label="Categoria"
-                value={`${test}.cat`}
-              />*/}
-{/*               <div className="col-md-12">
-                <button type="button" onClick={() => fields.remove(index)} className="btn btn-primary float-right" data-toggle="button" aria-pressed="false" autoComplete="off">
-                  Rimuovi
-                </button>
-              </div> */}
+              <div className="form-group row">
+                <div className="col-md-12">
+                  <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showMore ? "btn-secondary":"btn-light")} onClick={handleToggleClickMore}>Opzioni avanzate <i className={"fa " + (this.state.showMore ? "fa-angle-up" : "fa-angle-down")}></i></button>
+                </div>
+              </div>
+              {this.state.showMore &&
+              <div>
+                  <Field
+                    name={`${test}.personale`}
+                    type="text"
+                    component={renderYesNoSelector}
+                    label="Personale"
+                    value={`${test}.personale`}
+                  />
+                  <Field
+                    name={`${test}.cat`}
+                    type="text"
+                    component={renderField}
+                    label="Categoria"
+                    value={`${test}.cat`}
+                  />
+                  <Field
+                    name={`${test}.format_std_name`}
+                    type="text"
+                    component={renderField}
+                    label="STD-Nome"
+                    value={`${test}.format_std_name`}
+                  />
+                  <Field
+                    name={`${test}.format_std_param`}
+                    type="text"
+                    component={renderField}
+                    label="STD-Parametri"
+                    value={`${test}.format_std_param`}
+                  />
+                  <Field
+                    name={`${test}.field_profile_is_index`}
+                    type="text"
+                    component={renderField}
+                    label="FP-Indice"
+                    value={`${test}.field_profile_is_index`}
+                  />
+                  <Field
+                    name={`${test}.field_profile_is_profile`}
+                    type="text"
+                    component={renderField}
+                    label="FP-Profilo"
+                    value={`${test}.field_profile_is_profile`}
+                  />
+                  <Field
+                    name={`${test}.field_profile_validation`}
+                    type="text"
+                    component={renderField}
+                    label="FP-Validazione"
+                    value={`${test}.field_profile_validation`}
+                  />
+                  <Field
+                    name={`${test}.field_profile_standardization`}
+                    type="text"
+                    component={renderField}
+                    label="FP-Standardizazione"
+                    value={`${test}.field_profile_standardization`}
+                  />
+              </div>
+              }
             </div>
             </div>
             </div>
@@ -512,6 +634,10 @@ class WizardFormMetadata extends Component {
               setUploading={setUploading}
               modalitacaricamento={modalitacaricamento}
               filetype={filetype}
+              wizard={this}
+              dispatchAction={this.props.dispatch}
+              aggiornaStato={this.aggiornaStato.bind(this)}
+              handleToggleClickMore={this.handleToggleClickMore.bind(this)}
             />
     </form>
     </div>

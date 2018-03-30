@@ -58,6 +58,7 @@ export const serviceurl = {
 
  // URL ONTONETHUB
  urlSemantic: "https://api.daf.teamdigitale.it/stanbol/ontonethub/ontologies/find",
+ 
  // URL CNR
  //urlSemantic: 'http://stlab.istc.cnr.it/ontonethub/api/find',
 

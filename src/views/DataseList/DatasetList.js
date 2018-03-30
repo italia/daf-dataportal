@@ -82,6 +82,7 @@ class DatasetList extends Component {
         })
         return response.json()
       }
+      
     componentDidMount() {
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search).q  

@@ -1222,6 +1222,478 @@
             ]
         }
     },
+    "/stanbol/ontonethub/ontologies/find":{
+        "post":[
+            {
+                "score": 1,
+                "ontology": {
+                    "id": "I-TBITF9ahuFp-1KQaQFhA",
+                    "label": [
+                        {
+                            "value": "Indirizzi(Luoghi)",
+                            "lang": "it"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "value": "Questa è l'ontologia del profilo di italiano sugli indirizzi che hanno anche una connotazione geografica (Italian Core Location Vocabulary - Application Profile  - CLV-AP_IT)",
+                            "lang": "it"
+                        }
+                    ]
+                },
+                "universe": {
+                    "value": "CLV-AP_IT.City.hasCensusSection.CensusSection",
+                    "fingerprint": "CLV-AP_IT.City.hasCensusSection.CensusSection",
+                    "domain": {
+                        "id": "https://w3id.org/italia/onto/CLV/City",
+                        "label": [
+                            {
+                                "value": "Città (Comune)",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Questa classe rappresenta la città (Comune) dell'indirizzo.",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": [],
+                        "contexts": [
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.Region.hasLowerRank.City",
+                                "label": "CLV-AP_IT.Region.hasLowerRank.City"
+                            },
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.Address.hasCity.City",
+                                "label": "CLV-AP_IT.Address.hasCity.City"
+                            },
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.Province.hasDirectLowerRank.City",
+                                "label": "CLV-AP_IT.Province.hasDirectLowerRank.City"
+                            },
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.Country.hasLowerRank.City",
+                                "label": "CLV-AP_IT.Country.hasLowerRank.City"
+                            }
+                        ]
+                    },
+                    "property": {
+                        "id": "https://w3id.org/italia/onto/CLV/hasCensusSection",
+                        "label": [
+                            {
+                                "value": "ha sezione di censimento",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Proprietà che collega una città o un area dell'indirizzo a una sezione di censimento.",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": []
+                    },
+                    "range": {
+                        "id": "https://w3id.org/italia/onto/CLV/CensusSection",
+                        "label": [
+                            {
+                                "value": "Sezione di Censimento",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Porzione di territorio su cui sono effettuate le rilevazioni dell'Istat in occasione dei censimenti. La popolazione media è di circa 170 individui",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": [],
+                        "contexts": []
+                    }
+                }
+            },
+            {
+                "score": 1,
+                "ontology": {
+                    "id": "YDy-OG17xmGRyoymhAPNuw",
+                    "label": [
+                        {
+                            "value": "Ontologia per i social media",
+                            "lang": "it"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "value": "L'ontologia per i social media e i punti di contatto online. Questa ontologia permette di rappresentare social network, account, indirizzi email, loghi, ecc...",
+                            "lang": "it"
+                        }
+                    ]
+                },
+                "universe": {
+                    "value": "SM-AP_IT.Email.emailAddress.anyURI",
+                    "fingerprint": "SM-AP_IT.Email.emailAddress.anyURI",
+                    "domain": {
+                        "id": "https://w3id.org/italia/onto/SM/Email",
+                        "label": [
+                            {
+                                "value": "Email",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Questa classe rappresenta l'indirizzo email del punto di contatto di un'organizzazione. La classe è collegata al tipo di email. Nell'ambito itailano si identificano due tipi principali di email, la PEC e l'email tradizionale.",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": [],
+                        "contexts": [
+                            {
+                                "id": "https://w3id.org/italia/onto/SM/SM-AP_IT.OnlineContactPoint.hasEmail.Email",
+                                "label": "SM-AP_IT.OnlineContactPoint.hasEmail.Email"
+                            },
+                            {
+                                "id": "https://w3id.org/italia/onto/SM/SM-AP_IT.EmailType.isEmailTypeOf.Email",
+                                "label": "SM-AP_IT.EmailType.isEmailTypeOf.Email"
+                            }
+                        ]
+                    },
+                    "property": {
+                        "id": "https://w3id.org/italia/onto/SM/emailAddress",
+                        "label": [
+                            {
+                                "value": "indirizzo email",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Questa proprietà rappresenta l'indirizzo email che deve essere espresso nella forma mailto:XX@YY.ZZ",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": []
+                    },
+                    "range": {
+                        "id": "http://www.w3.org/2001/XMLSchema#anyURI",
+                        "label": [
+                            {
+                                "value": "anyURI"
+                            }
+                        ],
+                        "comment": [],
+                        "controlledVocabularies": [],
+                        "contexts": []
+                    }
+                }
+            },
+            {
+                "score": 1,
+                "ontology": {
+                    "id": "I-TBITF9ahuFp-1KQaQFhA",
+                    "label": [
+                        {
+                            "value": "Indirizzi(Luoghi)",
+                            "lang": "it"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "value": "Questa è l'ontologia del profilo di italiano sugli indirizzi che hanno anche una connotazione geografica (Italian Core Location Vocabulary - Application Profile  - CLV-AP_IT)",
+                            "lang": "it"
+                        }
+                    ]
+                },
+                "universe": {
+                    "value": "CLV-AP_IT.AddressArea.hasCensusSection.CensusSection",
+                    "fingerprint": "CLV-AP_IT.AddressArea.hasCensusSection.CensusSection",
+                    "domain": {
+                        "id": "https://w3id.org/italia/onto/CLV/AddressArea",
+                        "label": [
+                            {
+                                "value": "Area dell'Indirizzo",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "E' una componente dell'indirizzo che rappresenta il nome di un'area geografica o di una località che raggruppa un numero di oggetti indirizzatibili, per scopi di indirizzamento, senza necessariamente essere un'unità amministrativa territoriale. Nell'ambito dell'anagrafe nazionale numeri civici e strade urbane (ANNCSU) la classe può essere usata per rappresentare la LOCALITA’: una porzione più o meno vasta di territorio comunale, sulla quale insistono una o più aree di circolazione (presente se fornita dal Comune).",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": [],
+                        "contexts": [
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.Address.hasAddressArea.AddressArea",
+                                "label": "CLV-AP_IT.Address.hasAddressArea.AddressArea"
+                            }
+                        ]
+                    },
+                    "property": {
+                        "id": "https://w3id.org/italia/onto/CLV/hasCensusSection",
+                        "label": [
+                            {
+                                "value": "ha sezione di censimento",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Proprietà che collega una città o un area dell'indirizzo a una sezione di censimento.",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": []
+                    },
+                    "range": {
+                        "id": "https://w3id.org/italia/onto/CLV/CensusSection",
+                        "label": [
+                            {
+                                "value": "Sezione di Censimento",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Porzione di territorio su cui sono effettuate le rilevazioni dell'Istat in occasione dei censimenti. La popolazione media è di circa 170 individui",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": [],
+                        "contexts": []
+                    }
+                }
+            },
+            {
+                "score": 1,
+                "ontology": {
+                    "id": "I-TBITF9ahuFp-1KQaQFhA",
+                    "label": [
+                        {
+                            "value": "Indirizzi(Luoghi)",
+                            "lang": "it"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "value": "Questa è l'ontologia del profilo di italiano sugli indirizzi che hanno anche una connotazione geografica (Italian Core Location Vocabulary - Application Profile  - CLV-AP_IT)",
+                            "lang": "it"
+                        }
+                    ]
+                },
+                "universe": {
+                    "value": "CLV-AP_IT.Address.hasAddressArea.AddressArea",
+                    "fingerprint": "CLV-AP_IT.Address.hasAddressArea.AddressArea",
+                    "domain": {
+                        "id": "https://w3id.org/italia/onto/CLV/Address",
+                        "label": [
+                            {
+                                "value": "Indirizzo",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Questa classe rappresenta un indirizzo",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": [],
+                        "contexts": [
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.AddressInTime.withAddress.Address",
+                                "label": "CLV-AP_IT.AddressInTime.withAddress.Address"
+                            },
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.Thing.hasAddress.Address",
+                                "label": "CLV-AP_IT.Thing.hasAddress.Address"
+                            },
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.Thing.hasPrimaryAddress.Address",
+                                "label": "CLV-AP_IT.Thing.hasPrimaryAddress.Address"
+                            }
+                        ]
+                    },
+                    "property": {
+                        "id": "https://w3id.org/italia/onto/CLV/hasAddressArea",
+                        "label": [
+                            {
+                                "value": "ha area indirizzo",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Questa proprietà specializza la proprietà ha componente indirizzo per collegare l'indirizzo a un'area geografica o località che raggruppa diverse areee geografiche.",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": []
+                    },
+                    "range": {
+                        "id": "https://w3id.org/italia/onto/CLV/AddressArea",
+                        "label": [
+                            {
+                                "value": "Area dell'Indirizzo",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "E' una componente dell'indirizzo che rappresenta il nome di un'area geografica o di una località che raggruppa un numero di oggetti indirizzatibili, per scopi di indirizzamento, senza necessariamente essere un'unità amministrativa territoriale. Nell'ambito dell'anagrafe nazionale numeri civici e strade urbane (ANNCSU) la classe può essere usata per rappresentare la LOCALITA’: una porzione più o meno vasta di territorio comunale, sulla quale insistono una o più aree di circolazione (presente se fornita dal Comune).",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": [],
+                        "contexts": [
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.AddressArea.hasCensusSection.CensusSection",
+                                "label": "CLV-AP_IT.AddressArea.hasCensusSection.CensusSection"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "score": 1,
+                "ontology": {
+                    "id": "I-TBITF9ahuFp-1KQaQFhA",
+                    "label": [
+                        {
+                            "value": "Indirizzi(Luoghi)",
+                            "lang": "it"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "value": "Questa è l'ontologia del profilo di italiano sugli indirizzi che hanno anche una connotazione geografica (Italian Core Location Vocabulary - Application Profile  - CLV-AP_IT)",
+                            "lang": "it"
+                        }
+                    ]
+                },
+                "universe": {
+                    "value": "CLV-AP_IT.ExternalAddressNumber.metric.Literal",
+                    "fingerprint": "CLV-AP_IT.ExternalAddressNumber.metric.Literal",
+                    "domain": {
+                        "id": "https://w3id.org/italia/onto/CLV/ExternalAddressNumber",
+                        "label": [
+                            {
+                                "value": "Numero Civico Esterno",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Questa classe rappresenta il numero civico esterno e tutte le informazioni a esso collegate così come definite nell'ambito dell'anagrafe nazionale numeri civici e strate urbane.  I numeri civici individuano gli ACCESSI ESTERNI, cioè quelli che dall’area di circolazione immettono, direttamente o indirettamente, alle unità ecografiche semplici ossia abitazioni, esercizi commerciali, uffici e simili.",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": [],
+                        "contexts": [
+                            {
+                                "id": "https://w3id.org/italia/onto/CLV/CLV-AP_IT.InternalAddressNumber.refersToExternalNumber.ExternalAddressNumber",
+                                "label": "CLV-AP_IT.InternalAddressNumber.refersToExternalNumber.ExternalAddressNumber"
+                            }
+                        ]
+                    },
+                    "property": {
+                        "id": "https://w3id.org/italia/onto/CLV/metric",
+                        "label": [
+                            {
+                                "value": "metrico",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Valore del numero civico assegnato all’accesso esterno espresso in metri, utilizzato in caso di adozione del sistema metrico anziché della successione naturale dei numeri",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": []
+                    },
+                    "range": {
+                        "id": "http://www.w3.org/2000/01/rdf-schema#Literal",
+                        "label": [
+                            {
+                                "value": "Literal"
+                            }
+                        ],
+                        "comment": [],
+                        "controlledVocabularies": [],
+                        "contexts": []
+                    }
+                }
+            },
+            {
+                "score": 1,
+                "ontology": {
+                    "id": "I-TBITF9ahuFp-1KQaQFhA",
+                    "label": [
+                        {
+                            "value": "Indirizzi(Luoghi)",
+                            "lang": "it"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "value": "Questa è l'ontologia del profilo di italiano sugli indirizzi che hanno anche una connotazione geografica (Italian Core Location Vocabulary - Application Profile  - CLV-AP_IT)",
+                            "lang": "it"
+                        }
+                    ]
+                },
+                "universe": {
+                    "value": "CLV-AP_IT.InternalAddressNumber.yard.Literal",
+                    "fingerprint": "CLV-AP_IT.InternalAddressNumber.yard.Literal",
+                    "domain": {
+                        "id": "https://w3id.org/italia/onto/CLV/InternalAddressNumber",
+                        "label": [
+                            {
+                                "value": "Numero Civico Interno",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Questa classe rappresenta il numero civico interno associato al numero civico esterno. Il numero civico interno è composto da una serie di informazioni relative agli ACCESSI INTERNI, cioè quelli che da spazi privati o da scale immettono direttamente alle unità ecografiche semplici ossia abitazioni, esercizi commerciali, uffici e simili.",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": [],
+                        "contexts": []
+                    },
+                    "property": {
+                        "id": "https://w3id.org/italia/onto/CLV/yard",
+                        "label": [
+                            {
+                                "value": "cortile",
+                                "lang": "it"
+                            }
+                        ],
+                        "comment": [
+                            {
+                                "value": "Numero romano assegnato a ciascun spazio privato (cortile, corte e simili) cui si accede agli edifici o agli accessi interni, ove presente;",
+                                "lang": "it"
+                            }
+                        ],
+                        "controlledVocabularies": []
+                    },
+                    "range": {
+                        "id": "http://www.w3.org/2000/01/rdf-schema#Literal",
+                        "label": [
+                            {
+                                "value": "Literal"
+                            }
+                        ],
+                        "comment": [],
+                        "controlledVocabularies": [],
+                        "contexts": []
+                    }
+                }
+            }
+        ]
+    },
     "/dati-gov/v1/infer/kylo/csv":{
         "post": {
                 "name": null,
