@@ -8,12 +8,12 @@ export function createOperational (values, data) {
   data[operational]['subtheme'] = values.subdomain
   data[operational]['read_type'] = values.read_type
 
-properties:
+//properties:
   data[operational]['dataset_proc'] = { 
      "merge_strategy" : values.merge_strategy,
      "cron" : values.cron,
      "dataset_type" : "batch",  
-     "read_type" : values.read_type
+     "read_type" : (values.read_type) ? values.read_type : 'update'
     }
   if (!values.read_type){
       data[operational]['read_type'] = 'update'
@@ -47,9 +47,9 @@ properties:
 			}
     }
 
-  //data[operational]['logical_uri'] = "test1"  //values.uri
-  //data[operational]['dataset_type'] = (values.dataset_type) ? values.dataset_type  : 'batch'
-  //data[operational]['is_std'] = (values.is_std === 'true')
+  data[operational]['logical_uri'] = "test1"  //values.uri
+  data[operational]['dataset_type'] = (values.dataset_type) ? values.dataset_type  : 'batch'
+  data[operational]['is_std'] = (values.is_std === 'true')
   //data[operational]['std_schema'] = null
   //if (data[operational]['is_std']){
   // var std_schema = 'std_schema'
@@ -141,7 +141,7 @@ export function createDcat (values, data) {
   data[dcatapit]['holder_identifier'] = values.ownership  //values.holder_identifier
   data[dcatapit]['license_title'] = values.license1 //values.license_title
   data[dcatapit]['license_id'] = values.license1//values.license_identifier
-  data[dcatapit]['organization'] = values.ownership
+  data[dcatapit]['organization'] = null // values.ownership
   data[dcatapit]['owner_org'] = values.ownership
   data[dcatapit]['frequency'] = 'unknown'//Not in form
   data[dcatapit]['creation_date'] = getCurrentDate() //Not in form
@@ -201,7 +201,9 @@ export function createDataschema (values, data) {
                       "field_type": "",
                       "cat": "",
                       "tag": tag,
-                      "personal": item.personale,
+                      "personal": {
+                        "ispersonal" : (item.personale) ? item.personale : false
+                        },
                       "cat": item.cat, 
                       "field_profile" : {
                         "index": item.field_profile_is_index, 
@@ -210,12 +212,12 @@ export function createDataschema (values, data) {
                         "standardization": item.field_profile_standardization
                       },
                       "format_std":{
-                        "name": item.format_std_name,
+                        "name": (item.format_std_name) ? item.format_std_name : "",
                         "param": item.format_std_param
                       },
                       "constr": [{"`type`": "","param": ""}],
                       "semantics": {
-                        "id": item.id_concetto,
+                        "id": (item.id_concetto) ? item.id_concetto : "",
                         "id_label": item.concetto, 
                         "context": item.contesto, 
                         "subject": item.subject, 
