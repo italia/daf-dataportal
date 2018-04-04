@@ -201,7 +201,9 @@ export function createDataschema (values, data) {
                       "field_type": "",
                       "cat": "",
                       "tag": tag,
-                      "personal": item.personale,
+                      "personal": {
+                        "ispersonal" : (item.personale) ? item.personale : false
+                        },
                       "cat": item.cat, 
                       "field_profile" : {
                         "index": item.field_profile_is_index, 
@@ -210,12 +212,12 @@ export function createDataschema (values, data) {
                         "standardization": item.field_profile_standardization
                       },
                       "format_std":{
-                        "name": item.format_std_name,
+                        "name": (item.format_std_name) ? item.format_std_name : "",
                         "param": item.format_std_param
                       },
                       "constr": [{"`type`": "","param": ""}],
                       "semantics": {
-                        "id": item.id_concetto,
+                        "id": (item.id_concetto) ? item.id_concetto : "",
                         "id_label": item.concetto, 
                         "context": item.contesto, 
                         "subject": item.subject, 
