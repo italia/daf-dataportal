@@ -138,7 +138,7 @@ class WidgetCard extends Component {
                         <div className="col-2 p-0 h-100">
                             <div className="tool text-icon text-center bg-light b-b-card b-r-dash">
                                 {this.isSuperset() && <i className="fa fa-database py-3" title="Realizzato con Superset"/>}
-                                {this.isMetabase() && <i className="fa fa-pie-chart py-3" title="Realizzato con Metabase" />}
+                                {this.isMetabase() && <i className="fa fa-chart-pie py-3" title="Realizzato con Metabase" />}
                             </div>
                         </div>
                         <div className="col-8 pr-0 h-100">

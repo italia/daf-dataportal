@@ -162,7 +162,7 @@ class Home extends Component {
                     </div>
                     <div className="w-100 text-center">
                         <Link to={'/dataset'}>
-                            <h4 className="text-primary"><u>Vedi tutte</u></h4>
+                            <h4 className="text-primary"><u>Vedi tutti</u></h4>
                         </Link>
                     </div>
                 </div>
@@ -184,7 +184,7 @@ class Home extends Component {
                         </div>
                         <div className="w-100 text-center">
                             <Link to={'/widget'}>
-                                <h4 className="text-primary"><u>Vedi tutte</u></h4>
+                                <h4 className="text-primary"><u>Vedi tutti</u></h4>
                             </Link>
                         </div>
                     </div>
