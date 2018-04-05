@@ -49,7 +49,7 @@ export default class OrganizationService {
             },
             body: JSON.stringify(userAndGroup)
         })
-        return response.json();
+        return response;
     }
 
     async userDel(org, user) {
@@ -67,7 +67,7 @@ export default class OrganizationService {
             },
             body: JSON.stringify(userAndGroup)
         })
-        return response.json();
+        return response;
     }
 
     async create(organization) {
@@ -81,7 +81,7 @@ export default class OrganizationService {
             },
             body: JSON.stringify(organization)
         })
-        return response.json();
+        return response;
     }
 
     async delete(organization) {
@@ -94,6 +94,6 @@ export default class OrganizationService {
                 'Authorization': 'Bearer ' + token
             }
         })
-        return response.json();
+        return response;
     }
 }
