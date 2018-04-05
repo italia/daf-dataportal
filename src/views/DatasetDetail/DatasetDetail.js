@@ -137,7 +137,7 @@ class DatasetDetail extends Component {
 
     handleSuperset(nomeFile, org, e) {
         e.preventDefault()
-        const { dispatch } = this.props
+        const { dispatch, dataset } = this.props
         this.setState({
             showSuperset: true, 
             showAPI: false, 
@@ -148,7 +148,9 @@ class DatasetDetail extends Component {
             supersetState: 3,
             supersetLink: undefined
         })
-        dispatch(getSupersetUrl(nomeFile, org))
+        const isExtOpendata = (dataset.operational.ext_opendata 
+            || dataset.operational.ext_opendata != {}) ? true : false
+        dispatch(getSupersetUrl(nomeFile, org, isExtOpendata))
             .then(json => {this.setState({ supersetLink: json, supersetState: 1})})
             .catch(error => {this.setState({ supersetState: 2 })})  
     }
@@ -215,6 +217,15 @@ class DatasetDetail extends Component {
                                         </p>
                                     </div>
                                     <div className="col-2"></div>
+                                    <div className="col-12">
+                                       { (dataset.operational.ext_opendata && 
+                                         dataset.operational.ext_opendata.url) &&
+                                        <a href={dataset.operational.ext_opendata.url}>
+                                            <p className="card-text"><strong>APRI CKAN</strong> </p>
+                                        </a>
+                                       }
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <div className="card-block">

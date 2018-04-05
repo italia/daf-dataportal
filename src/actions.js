@@ -897,9 +897,10 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
 
 
 
-  export function getSupersetUrl(nomeDataset, org) {
+  export function getSupersetUrl(nomeDataset, org, isExtOpendata) {
     var token = '';
-    var url = serviceurl.apiURLDatiGov + '/superset/table/' + org + '_o_' + nomeDataset;
+    var name = isExtOpendata ? nomeDataset :  org + '_o_' + nomeDataset;
+    var url = serviceurl.apiURLDatiGov + '/superset/table/' + name
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
         token = localStorage.getItem('token')

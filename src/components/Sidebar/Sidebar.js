@@ -120,17 +120,14 @@ class Sidebar extends Component {
           </ModalHeader>
           <ModalBody>
           <div className="form-group">
-            {this.state.name==='Metabase' ? 
-            <h3 className="text-center"><i className="fa fa-exclamation-triangle fa-lg"/> Lavori in corso! {this.state.name} sarà presto disponibile</h3>
-            :
-            <p>Stai per essere renidirizzato nell'applicazione {this.state.name}.</p>}
+            <p>Stai per essere renidirizzato nell'applicazione {this.state.name}.</p>
           </div>
           </ModalBody>
           <ModalFooter>
             <button className='btn btn-gray-200' onClick={this.hideModal}>
               Chiudi
             </button>
-              {this.state.name !== 'Metabase' && <button className='btn btn-gray-200' onClick={this.hideModalAndRedirect}>Scegli</button>}
+            <button className='btn btn-gray-200' onClick={this.hideModalAndRedirect}>Scegli</button>
           </ModalFooter>
         </form>
       </Modal>
