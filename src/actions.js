@@ -109,13 +109,25 @@ function requestSearch() {
   }
 }
 
+function receiveSearchError(query) { 
+  return {
+    type: RECEIVE_SEARCH,
+    results: undefined,
+    query: query,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_SEARCH',
+    isFetching: false
+  }
+}
+
 function receiveSearch(json, query) { 
   return {
     type: RECEIVE_SEARCH,
     results: json,
     query: query,
     receivedAt: Date.now(),
-    ope: 'RECEIVE_SEARCH'
+    ope: 'RECEIVE_SEARCH',
+    isFetching: false
   }
 }
 
@@ -805,8 +817,11 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
         },
         body: JSON.stringify(filter)
       })
-      .then(response => response.json())
-      .then(json => dispatch(receiveSearch(json, query)))
+      .then(response => {
+          if(response.ok)
+              response.json().then(json => dispatch(receiveSearch(json, query)))
+          else dispatch(receiveSearchError(query))
+      }).catch(error => console.log('Errore durante la ricerca'))
     }
   }
 
