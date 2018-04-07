@@ -102,6 +102,11 @@ class DatasetList extends Component {
         }
 
         dispatch(search(query, filter))
+        .catch((error) => {
+        this.setState({
+          isFetching: false
+        })
+      })
     }
 
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
@@ -141,6 +146,11 @@ class DatasetList extends Component {
 
         console.log(filter)
         dispatch(search(query, filter))
+        .catch((error) => {
+            this.setState({
+              isFetching: false
+            })
+          })
     }
 
     handleLoadDatasetDetailClick(name, e) {
@@ -342,7 +352,7 @@ class DatasetList extends Component {
                                 }
                             ) */}
                             {this.state.showDivVisibilita && visibilita.map((vis, index) => {
-                                return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 2, vis.val)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis.name})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{vis.name}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
+                                return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 2, vis.val)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis.name})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{vis.name}</button>)
                                 }
                             )}
                             {this.state.showDivData && 
@@ -400,7 +410,7 @@ class DatasetList extends Component {
                                     </div> */}
                                     <div className="col-12">
                                             {this.state.organizations.length>0 && this.state.organizations.map((org, index) => {
-                                                    return(<button type="button" onClick={this.addFilter.bind(this, 3, org)} style={{height: '48px'}} key={index} className={!this.isInArray(this.state.filter, {'type': 3, 'value': org})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{org}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
+                                                    return(<button type="button" onClick={this.addFilter.bind(this, 3, org)} style={{height: '48px'}} key={index} className={!this.isInArray(this.state.filter, {'type': 3, 'value': org})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{org}</button>)
                                                 }
                                             )}
                                     </div>
@@ -428,7 +438,7 @@ class DatasetList extends Component {
                             }
                             {isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
                              <div className="px-search">
-                                {results.map((result, index) => {
+                                {results ? results.map((result, index) => {
                                 switch(result.type){
                                     case 'catalog_test': 
                                         let dataset = JSON.parse(result.source)
@@ -503,6 +513,8 @@ class DatasetList extends Component {
                                     break;         
                                     }
                                 })
+                                :
+                                <i>Non sono stati trovati risultati.</i>
                             }
                         </div>
                         }
