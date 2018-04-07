@@ -149,7 +149,7 @@ class DatasetDetail extends Component {
             supersetLink: undefined
         })
         const isExtOpendata = (dataset.operational.ext_opendata 
-            || dataset.operational.ext_opendata != {}) ? true : false
+            || dataset.operational.ext_opendata != null) ? true : false
         dispatch(getSupersetUrl(nomeFile, org, isExtOpendata))
             .then(json => {this.setState({ supersetLink: json, supersetState: 1})})
             .catch(error => {this.setState({ supersetState: 2 })})  
