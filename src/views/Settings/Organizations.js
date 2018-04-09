@@ -104,7 +104,7 @@ class Organizations extends Component {
         let response = organizationService.userDel(org, user)
         response.then((response) => {
             if (response.ok) {
-                response.then((json) => {
+                response.json().then(json => {
                     if (json.code != '0') {
                         this.getUsers(org);
                         this.setState({
@@ -132,7 +132,7 @@ class Organizations extends Component {
                     delete: '',
                     saving: false
                 })
-                console.log('User remove error: Response.KO')
+                console.log('User remove error: ' + response.text())
             }
         })   
     }
@@ -143,7 +143,7 @@ class Organizations extends Component {
         this.setState({ saving: true })
         response.then((response) => {
             if (response.ok) {
-                response.then((json) =>{
+                response.json().then(json => {
                     if(json.code!= '0'){
                         this.getUsers(org)
                         this.setState({
@@ -177,7 +177,7 @@ class Organizations extends Component {
                     delete: '',
                     saving: false
                 })
-                console.log('User Add error: Response.KO')
+                console.log('User Add error: ' + response.text())
             }
         })   
     }
@@ -227,7 +227,7 @@ class Organizations extends Component {
                     delete: '',
                     saving: false
                 })
-                console.log('Create org error: Response.KO')
+                console.log('Create org error:' + response.text())
             }
         })        
     }
@@ -238,7 +238,7 @@ class Organizations extends Component {
         this.setState({ saving: true })
         response.then((response) => {
             if (response.ok) {
-                response.then((json) => {
+                response.json().then(json => {
                     if (!json.code) {
                         this.setState({
                             orgModal: false,
@@ -271,7 +271,7 @@ class Organizations extends Component {
                     delete: '',
                     saving: false
                 })
-                console.log('Delete org error: Response.KO')
+                console.log('Delete org error: ' + response.text())
             }
         }) 
     }
