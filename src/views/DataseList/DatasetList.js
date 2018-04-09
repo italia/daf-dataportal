@@ -268,12 +268,15 @@ class DatasetList extends Component {
         }
       }
 
-      isInArray(array, element){
+      isInArray(filter, element){
         var found = false;
-        for(var i = 0; i < array.length; i++) {
-            if (array[i].type == element.type && array[i].value == element.value) {
-                found = true;
-                break;
+        if(filter.elements){
+            var array = filter.elements 
+            for(var i = 0; i < array.length; i++) {
+                if (array[i].type == element.type && array[i].value == element.value) {
+                    found = true;
+                    break;
+                }
             }
         }
         return found
@@ -300,6 +303,9 @@ class DatasetList extends Component {
             startDate: undefined,
             filter: newFilter
         })
+        if(newFilter.elements.length===0 && newFilter.a==='' && newFilter.da===''){
+            this.searchAll(this.state.query)
+        }
 
       }
  
@@ -338,47 +344,20 @@ class DatasetList extends Component {
                             {this.state.showDivTipo && results &&
                                 Object.keys(JSON.parse(results[results.length-1].source)).map((tipo, index) =>{
                                     var tipi=JSON.parse(results[results.length-1].source)
-                                    return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 0, tipo)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': tipo})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn btn-secondary"}>{decodeTipo(tipo)}<span className="ml-2 badge badge-pill badge-secondary">{tipi[tipo]}</span></button>)
+                                    return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 0, 'value': tipo})} onClick={this.addFilter.bind(this, 0, tipo)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': tipo})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTipo(tipo)}<span className="ml-2 badge badge-pill badge-secondary">{tipi[tipo]}</span></button>)
                                 })
                             }
                             {this.state.showDivCategoria && results &&
                                 Object.keys(JSON.parse(results[results.length-2].source)).map((theme, index) =>{
                                     var themes=JSON.parse(results[results.length-2].source)
-                                    return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 1, theme)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': theme})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn btn-secondary"}>{decodeTheme(theme)}<span className="ml-2 badge badge-pill badge-secondary">{themes[theme]}</span></button>)
+                                    return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 1, 'value': theme})} onClick={this.addFilter.bind(this, 1, theme)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': theme})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTheme(theme)}<span className="ml-2 badge badge-pill badge-secondary">{themes[theme]}</span></button>)
                                 }) 
-                            
-                            /* themes.map((theme, index) => {
-                                return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 1, theme.val)} key={index} className={!this.isInArray(this.state.filter, {'type': 1, 'value': theme.name})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{theme.name}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
-                                }
-                            ) */}
+                            }
                             {this.state.showDivVisibilita && visibilita.map((vis, index) => {
-                                return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 2, vis.val)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis.name})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{vis.name}</button>)
+                                return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 2, 'value': vis.val})} onClick={this.addFilter.bind(this, 2, vis.val)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis.name})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{vis.name}</button>)
                                 }
                             )}
                             {this.state.showDivData && 
-                                 /* <div className="row" >
-                                    <div className="col-md-3" >
-                                        <div>Dal:
-                                        <DatePicker
-                                            selected={this.state.startDate}
-                                            onChange={this.handleChangeStalected={this.state.startDate}
-                                            onChange={this.handleChangeStartDate}
-                                            locale='it-it'
-                                            dateFormat='DD/MM/YYYY'
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-9" >
-                                        <div>Al:
-                                        <DatePicker
-                                            selected={this.state.endData}
-                                            onChange={this.handleChangeEndDate}
-                                            locale='it-it'
-                                            dateFormat='DD/MM/YYYY'
-                                        />
-                                        </div>
-                                    </div>
-                                </div> */
                                 <DateRangePicker
                                     startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                                     startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
@@ -410,7 +389,7 @@ class DatasetList extends Component {
                                     </div> */}
                                     <div className="col-12">
                                             {this.state.organizations.length>0 && this.state.organizations.map((org, index) => {
-                                                    return(<button type="button" onClick={this.addFilter.bind(this, 3, org)} style={{height: '48px'}} key={index} className={!this.isInArray(this.state.filter, {'type': 3, 'value': org})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{org}</button>)
+                                                    return(<button type="button" disabled={this.isInArray(this.state.filter, {'type': 3, 'value': org})} onClick={this.addFilter.bind(this, 3, org)} style={{height: '48px'}} key={index} className={!this.isInArray(this.state.filter, {'type': 3, 'value': org})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{org}</button>)
                                                 }
                                             )}
                                     </div>
@@ -448,7 +427,7 @@ class DatasetList extends Component {
                                                     <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-7 py-1 px-1" >
-                                                            <Link to={'/dataset/'+dataset.dcatapit.name} className="title-res text-primary">
+                                                            <Link to={'/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
                                                             {dataset.dcatapit.title}
                                                             </Link>
                                                         </div>
@@ -475,7 +454,7 @@ class DatasetList extends Component {
                                                     <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-9 py-1 px-1" >
-                                                            <Link to={''} className="title-res text-primary">
+                                                            <Link to={'/dashboard/list/' + dashboard.id} className="title-res text-primary">
                                                             {dashboard.title}
                                                             </Link>
                                                         </div>
@@ -497,7 +476,7 @@ class DatasetList extends Component {
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-9 py-1 px-1" >
-                                                            <Link to={''} className="title-res text-primary">
+                                                            <Link to={'/user_story/list/'+ story.id} className="title-res text-primary">
                                                             {story.title}
                                                             </Link>
                                                         </div>
@@ -518,44 +497,6 @@ class DatasetList extends Component {
                             }
                         </div>
                         }
-                        {/* <div className="px-5">
-                        <div className="card risultato mb-3">
-                            <div className="card-body p-0 clearfix">
-                                <i className="fa fa-table bg-dataset p-3 mr-3 float-left"></i>
-                                <div className="row py-2 h-100" >
-                                    <div className="col-md-7 py-1 px-1" >
-                                        Elenco cinema torino
-                                    </div>
-                                    <div className="col-md-2 py-1 px-1" >
-                                        <span className="badge badge-accento my-1">SOCIETA</span>
-                                    </div>
-                                    <div className="col-md-2 py-1 px-1" >
-                                        default_org
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card risultato mb-3">
-                            <div className="card-body p-0 clearfix">
-                            <i className="fa fa-columns bg-gray-900 p-3 mr-3 float-left text-white"></i>
-                                <div className="row py-2 h-100" >
-                                    <div className="col-md-9 py-1 px-1" >
-                                        Redditi italiani 2015
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card risultato mb-3">
-                            <div className="card-body p-0 clearfix">
-                            <i className="fa fa-font bg-primary p-3 mr-3 float-left"></i>
-                                <div className="row py-2 h-100" >
-                                    <div className="col-md-9 py-1 px-1" >
-                                        Torino: stazioni Bike Sharing
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
                 </div>
             </div>
         </div>
