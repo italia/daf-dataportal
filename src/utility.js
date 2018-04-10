@@ -126,7 +126,7 @@ export function transformName(name){
 
   export function truncateDatasetName(name, cut) {
     var result = name
-    if (name.length >= 30)
+    if (name.length >= cut)
       result = result.substring(0, cut) + '...'
 
     return result
@@ -163,7 +163,7 @@ export function transformName(name){
     }
 
   }
-
+/* 
   export function decodeTheme(value){
     var found=value
     for(var i = 0; i < themes.length; i++) {
@@ -173,6 +173,35 @@ export function transformName(name){
       }
     }
     return found
+  }
+ */
+   export function decodeTheme(value){
+    var found=''
+    if(value.indexOf('{')!=-1){
+      value = value.substring(1,value.length-1)
+      var valueArr = value.split(',')
+      for(var i=0;i<valueArr.length;i++){
+        if(found=='')
+          found+=getThemeDescFromCode(valueArr[i])
+        else
+        found+=', ' + getThemeDescFromCode(valueArr[i])
+      }
+    }else{
+      found = getThemeDescFromCode(value)
+    }
+    return found
+  }
+  
+  function getThemeDescFromCode(code){
+    var found=code
+    for(var i = 0; i < themes.length; i++) {
+      if (themes[i].val == code.trim()) {
+          found = themes[i].name
+          break
+      }
+    }
+    return found
+
   }
 
   export function decodeTipo(value){
@@ -196,6 +225,8 @@ export function transformName(name){
     }
     return found
   }
+
+
 /* 
   export default themes
 
