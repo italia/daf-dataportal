@@ -411,7 +411,13 @@ class DatasetList extends Component {
                                 switch(result.type){
                                     case 'catalog_test': 
                                         let dataset = JSON.parse(result.source)
-                                        let datasetMatch = JSON.parse(result.match)
+                                        let datasetMatch = dataset
+                                        try {
+                                            datasetMatch = JSON.parse(result.match)
+                                        } catch (error) {
+                                            
+                                        }
+                                         
                                         let fields = datasetMatch.dataschema&&datasetMatch.dataschema.avro&&datasetMatch.dataschema.avro.fields?datasetMatch.dataschema.avro.fields:dataset.dataschema.avro.fields
                                         return(
                                             <div key={index}>
@@ -485,7 +491,12 @@ class DatasetList extends Component {
                                             break;
                                     case 'dashboards':
                                         let dashboard = JSON.parse(result.source)
-                                        let dashboardMatch = JSON.parse(result.match)
+                                        let dashboardMatch = dashboard
+                                        try {
+                                            dashboardMatch = JSON.parse(result.match)
+                                        } catch (error) {
+                                            
+                                        }
                                         if ((dashboard.widgets && dashboard.widgets !== '{}') && (dashboard.layout && dashboard.layout !== '{}')) {
                                             const dashLayout = JSON.parse(dashboard.layout)
                                             var firstLayout = ''
@@ -523,7 +534,7 @@ class DatasetList extends Component {
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" title={dashboard.title}>
                                                                 <Link to={'/dashboard/list/' + dashboard.id} className="title-res text-primary">
-                                                                    <div title={dashboard.title} dangerouslySetInnerHTML={{__html: truncateDatasetName(dashboardMatch['title']?dashboardMatch['title']:dashboard.title, 60)}}></div>
+                                                                    <div title={dashboard.title} dangerouslySetInnerHTML={{__html: truncateDatasetName(dashboardMatch['title']?dashboardMatch['title']:dashboard.title, 100)}}></div>
                                                                 </Link>
                                                             </div>
                                                             <div className="col-md-2 py-1 px-1" ></div>
@@ -581,7 +592,12 @@ class DatasetList extends Component {
                                             break;
                                     case 'stories': 
                                         let story = JSON.parse(result.source)
-                                        let storyMatch = JSON.parse(result.match)
+                                        let storyMatch = story
+                                        try {
+                                            storyMatch = JSON.parse(result.match)
+                                        } catch (error) {
+                                            
+                                        }
                                         if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
                                             const dashLayout = JSON.parse(story.layout)
                                             var firstLayout = ''
