@@ -581,7 +581,7 @@ class DatasetDetail extends Component {
                                 </div>
                             </div>
                             <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
-                                <Widgets widgets={iframes}/>
+                                <Widgets widgets={iframes} loading={false}/>
                             </div>
                             <div className="col-12">
                                 <div>

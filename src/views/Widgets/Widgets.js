@@ -13,7 +13,7 @@ class Widgets extends Component{
         this.state = {
             listWidgets: props.widgets?props.widgets:[],
             items: 18,
-            loading: true
+            loading: props.loading?props.loading:true
         }
     }
     
@@ -25,6 +25,10 @@ class Widgets extends Component{
                     loading: false,
                     listWidgets: json
                 })
+            })
+        }else{
+            this.setState({
+                loading: false
             })
         }
     }
@@ -44,8 +48,8 @@ class Widgets extends Component{
     render(){
         const { loading, listWidgets, visible, items } = this.state
         let visibility = listWidgets.length<=items ? 'hidden':visible;
-        return(
-            <div className="container body">
+        return loading == true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> : (
+           <div className="container body">
                 <div className="main_container">
                     <div className="top_nav">
                         <div className="nav_menu">
