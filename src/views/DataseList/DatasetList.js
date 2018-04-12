@@ -428,7 +428,7 @@ class DatasetList extends Component {
                             }
                             {isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
                              <div className="px-search">
-                                {results.map((result, index) => {
+                                {results? results.map((result, index) => {
                                 switch(result.type){
                                     case 'catalog_test': 
                                         let dataset = JSON.parse(result.source)
@@ -502,7 +502,7 @@ class DatasetList extends Component {
                                             )
                                     break;         
                                     }
-                                })
+                                }): 'Non sono stati trovati risultati per la tua ricerca'
                             }
                         </div>
                         }
