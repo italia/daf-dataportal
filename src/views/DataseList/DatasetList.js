@@ -6,7 +6,7 @@ import { search } from '../../actions'
 import { serviceurl } from '../../config/serviceurl'
 import { boldMyWords } from '../../utility'
 import Select from 'react-select'
-import { decodeTheme, decodeTipo, decodeVisibilita } from '../../utility' 
+import { decodeTheme, decodeTipo, decodeVisibilita, truncateDatasetName } from '../../utility' 
 import {themes, tipi, visibilita} from '../../utility' 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -46,7 +46,7 @@ class DatasetList extends Component {
 
 
 
-        this.load();
+        //this.load();
         this.searchAll = this.searchAll.bind(this)  
         this.search = this.search.bind(this)  
         this.addFilter = this.addFilter.bind(this)  
@@ -59,9 +59,10 @@ class DatasetList extends Component {
         this.handleToggleClickVisibilita = this.handleToggleClickVisibilita.bind(this)
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
+        this.handleChangeOrdinamento = this.handleChangeOrdinamento.bind(this);
     }
 
-    load() {
+/*     load() {
         let response = this.organizations();
         response.then((list) => {
           this.setState({
@@ -81,7 +82,7 @@ class DatasetList extends Component {
           }
         })
         return response.json()
-      }
+      } */
       
     componentDidMount() {
         const queryString = require('query-string');
@@ -98,10 +99,16 @@ class DatasetList extends Component {
             'org': [],
             'theme':[],
             'date': "",
-            'status': []
+            'status': [],
+            'order':""
         }
 
         dispatch(search(query, filter))
+        .catch((error) => {
+        this.setState({
+          isFetching: false
+        })
+      })
     }
 
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
@@ -116,7 +123,7 @@ class DatasetList extends Component {
             'org': [],
             'theme':[],
             'date': this.state.filter.da && this.state.filter.a ? this.state.filter.da.locale('it').format("YYYY-MM-DD")+ ' ' +this.state.filter.a.locale('it').format("YYYY-MM-DD") : '',
-            'status': []
+            'status': []        
         }
 
         if(this.state.filter.elements){
@@ -141,6 +148,11 @@ class DatasetList extends Component {
 
         console.log(filter)
         dispatch(search(query, filter))
+        .catch((error) => {
+            this.setState({
+              isFetching: false
+            })
+          })
     }
 
     handleLoadDatasetDetailClick(name, e) {
@@ -240,6 +252,19 @@ class DatasetList extends Component {
         });
       }
       
+      handleChangeOrdinamento(e) {
+        const { dispatch } = this.props
+        const queryString = require('query-string');
+        const query = queryString.parse(this.props.location.search).q  
+        let newFilter = Object.assign({}, this.state.filter); 
+        newFilter.order = e.target.value
+        this.setState({
+            order_filter: e.target.value,
+            filter: newFilter
+        });
+        dispatch(search(query, newFilter))
+      }
+      
       componentWillReceiveProps(nextProps){
         const queryString = require('query-string');
         const query = queryString.parse(nextProps.location.search).q 
@@ -258,12 +283,15 @@ class DatasetList extends Component {
         }
       }
 
-      isInArray(array, element){
+      isInArray(filter, element){
         var found = false;
-        for(var i = 0; i < array.length; i++) {
-            if (array[i].type == element.type && array[i].value == element.value) {
-                found = true;
-                break;
+        if(filter.elements){
+            var array = filter.elements 
+            for(var i = 0; i < array.length; i++) {
+                if (array[i].type == element.type && array[i].value == element.value) {
+                    found = true;
+                    break;
+                }
             }
         }
         return found
@@ -290,6 +318,9 @@ class DatasetList extends Component {
             startDate: undefined,
             filter: newFilter
         })
+        if(newFilter.elements.length===0 && newFilter.a==='' && newFilter.da===''){
+            this.searchAll(this.state.query)
+        }
 
       }
  
@@ -316,59 +347,22 @@ class DatasetList extends Component {
                                         </div>
                                     </div>
                                     <div className="col-md-2 h-100" >
-                                        <select className="form-control h-100 b-t-0 b-b-0" id="ordinamento" aria-required="true" onChange={this.handleChange} value={this.state.order_filter}>
-                                            <option value="metadata_modified%20desc">Data crescente</option>
-                                            <option value="metadata_modified%20asc">Data decrescente</option>
-                                            <option value="relevance%20asc">Per rilevanza</option>
+                                        <select className="form-control h-100 b-t-0 b-b-0" id="ordinamento" aria-required="true" onChange={this.handleChangeOrdinamento.bind(this)} value={this.state.order_filter}>
+                                            <option value="asc">Data crescente</option>
+                                            <option value="desc">Data decrescente</option>
+                                            <option value="score">Per rilevanza</option>
                                         </select> 
                                     </div>
                                 </div>
                             </nav>
                             <nav className="dashboardHeader mx-5">
                             {this.state.showDivTipo && results &&
-                                Object.keys(JSON.parse(results[results.length-1].source)).map((tipo, index) =>{
-                                    var tipi=JSON.parse(results[results.length-1].source)
-                                    return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 0, tipo)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': tipo})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn btn-secondary"}>{decodeTipo(tipo)}<span className="ml-2 badge badge-pill badge-secondary">{tipi[tipo]}</span></button>)
+                                Object.keys(JSON.parse(results[results.length-4].source)).map((tipo, index) =>{
+                                    var tipi=JSON.parse(results[results.length-4].source)
+                                    return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 0, 'value': tipo})} onClick={this.addFilter.bind(this, 0, tipo)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': tipo})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTipo(tipo)}<span className="ml-2 badge badge-pill badge-secondary">{tipi[tipo]}</span></button>)
                                 })
                             }
-                            {this.state.showDivCategoria && results &&
-                                Object.keys(JSON.parse(results[results.length-2].source)).map((theme, index) =>{
-                                    var themes=JSON.parse(results[results.length-2].source)
-                                    return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 1, theme)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': theme})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn btn-secondary"}>{decodeTheme(theme)}<span className="ml-2 badge badge-pill badge-secondary">{themes[theme]}</span></button>)
-                                }) 
-                            
-                            /* themes.map((theme, index) => {
-                                return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 1, theme.val)} key={index} className={!this.isInArray(this.state.filter, {'type': 1, 'value': theme.name})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{theme.name}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
-                                }
-                            ) */}
-                            {this.state.showDivVisibilita && visibilita.map((vis, index) => {
-                                return(<button type="button" style={{height: '48px'}} onClick={this.addFilter.bind(this, 2, vis.val)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis.name})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{vis.name}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
-                                }
-                            )}
                             {this.state.showDivData && 
-                                 /* <div className="row" >
-                                    <div className="col-md-3" >
-                                        <div>Dal:
-                                        <DatePicker
-                                            selected={this.state.startDate}
-                                            onChange={this.handleChangeStalected={this.state.startDate}
-                                            onChange={this.handleChangeStartDate}
-                                            locale='it-it'
-                                            dateFormat='DD/MM/YYYY'
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-9" >
-                                        <div>Al:
-                                        <DatePicker
-                                            selected={this.state.endData}
-                                            onChange={this.handleChangeEndDate}
-                                            locale='it-it'
-                                            dateFormat='DD/MM/YYYY'
-                                        />
-                                        </div>
-                                    </div>
-                                </div> */
                                 <DateRangePicker
                                     startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                                     startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
@@ -381,30 +375,23 @@ class DatasetList extends Component {
                                     minimumNights={ 0 }
                                     />
                             }
-                            {this.state.showDivOrganizzazione && 
-                                <div className="row">
-                                    {/* <div className="col-4">
-                                        <Select
-                                        id="state-select"
-                                        onBlurResetsInput={false}
-                                        onSelectResetsInput={false}
-                                        options={this.state.organization}
-                                        simpleValue
-                                        clearable={true}
-                                        name="selected-user"
-                                        //value={this.state.user}
-                                        //onChange={this.updateValue}
-                                        rtl={false}
-                                        searchable={true}
-                                        />
-                                    </div> */}
-                                    <div className="col-12">
-                                            {this.state.organizations.length>0 && this.state.organizations.map((org, index) => {
-                                                    return(<button type="button" onClick={this.addFilter.bind(this, 3, org)} style={{height: '48px'}} key={index} className={!this.isInArray(this.state.filter, {'type': 3, 'value': org})?"my-2 mr-2 btn btn-outline-filters":"my-2 mr-2 btn btn-secondary"}>{org}<span className="ml-2 badge badge-pill badge-secondary">1</span></button>)
-                                                }
-                                            )}
-                                    </div>
-                                </div>
+                            {this.state.showDivCategoria && results &&
+                                Object.keys(JSON.parse(results[results.length-1].source)).map((theme, index) =>{
+                                    var themes=JSON.parse(results[results.length-1].source)
+                                    return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 1, 'value': theme})} onClick={this.addFilter.bind(this, 1, theme)} key={index} className={!this.isInArray(this.state.filter, {'type': 1, 'value': theme})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTheme(theme)}<span className="ml-2 badge badge-pill badge-secondary">{themes[theme]}</span></button>)
+                                }) 
+                            }
+                            {this.state.showDivOrganizzazione && results &&
+                                Object.keys(JSON.parse(results[results.length-2].source)).map((org, index) =>{
+                                    var orgs=JSON.parse(results[results.length-2].source)
+                                    return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 3, 'value': org})} onClick={this.addFilter.bind(this, 3, org)} key={index} className={!this.isInArray(this.state.filter, {'type': 3, 'value': org})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{org}<span className="ml-2 badge badge-pill badge-secondary">{orgs[org]}</span></button>)
+                                }) 
+                            }
+                            {this.state.showDivVisibilita && results &&
+                                Object.keys(JSON.parse(results[results.length-3].source)).map((vis, index) =>{
+                                    var arrVis=JSON.parse(results[results.length-3].source)
+                                    return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 2, 'value': vis})} onClick={this.addFilter.bind(this, 2, vis)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeVisibilita(vis)}<span className="ml-2 badge badge-pill badge-secondary">{arrVis[vis]}</span></button>)
+                                }) 
                             }
                             </nav>
                             { (this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <nav className="dashboardHeader bg-grigino px-5 py-2">
@@ -422,13 +409,12 @@ class DatasetList extends Component {
                                 })
                                 }
                                 {this.state.filter.da && this.state.filter.a && <span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key='da'>{this.state.filter.da.locale('it').format("DD/MM/YYYY")} - {this.state.filter.a.locale('it').format("DD/MM/YYYY")}<button type="button" className="btn btn-link p-0 ml-2 text-gray-600" onClick={this.removeFilterDate.bind(this)}><i className="ml-2 fa fa-times-circle"></i></button></span>}
-                                {/*this.state.filter.a &&<span className="badge badge-pill badge-dark" key='a'>Al: {this.state.filter.a.locale('it').format("DD-MM-YYYY")}<button type="button" className="btn btn-link" onClick={this.removeFilterDate.bind(this, 'a')}><i className="fa fa-times-circle"></i></button></span>*/}             
                                 {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
                             </nav>
                             }
                             {isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
                              <div className="px-search">
-                                {results? results.map((result, index) => {
+                                {results ? results.map((result, index) => {
                                 switch(result.type){
                                     case 'catalog_test': 
                                         let dataset = JSON.parse(result.source)
@@ -438,8 +424,8 @@ class DatasetList extends Component {
                                                     <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-7 py-1 px-1" >
-                                                            <Link to={'/dataset/'+dataset.dcatapit.name} className="title-res text-primary">
-                                                            {dataset.dcatapit.title}
+                                                            <Link to={'/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
+                                                                <span title={dataset.dcatapit.title}>{truncateDatasetName(dataset.dcatapit.title, 60)}</span>
                                                             </Link>
                                                         </div>
                                                         <div className="col-md-2 py-1 px-1" >
@@ -464,12 +450,16 @@ class DatasetList extends Component {
                                                 <div className="card-body p-0 clearfix">
                                                     <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
-                                                        <div className="col-md-9 py-1 px-1" >
-                                                            <Link to={''} className="title-res text-primary">
-                                                            {dashboard.title}
+                                                        <div className="col-md-7 py-1 px-1" title={dashboard.title}>
+                                                            <Link to={'/dashboard/list/' + dashboard.id} className="title-res text-primary">
+                                                                <span title={dashboard.title}>{truncateDatasetName(dashboard.title, 60)}</span>
                                                             </Link>
                                                         </div>
-                                                        <div className="col-md-3 py-1">
+                                                        <div className="col-md-2 py-1 px-1" ></div>
+                                                        <div className="col-md-2 py-1 px-1" >
+                                                            {dashboard.org}
+                                                        </div>
+                                                        <div className="col-md-1 py-1">
                                                             {dashboard.status===2 && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
                                                             {dashboard.status===1 && <i className="fa fa-users fa-lg text-icon float-right pt-1"/>}
                                                             {dashboard.status===0 && <i className="fas fa-lock fa-lg text-icon float-right pt-1"/>}
@@ -486,12 +476,16 @@ class DatasetList extends Component {
                                                 <div className="card-body p-0 clearfix">
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
-                                                        <div className="col-md-9 py-1 px-1" >
-                                                            <Link to={''} className="title-res text-primary">
-                                                            {story.title}
+                                                        <div className="col-md-7 py-1 px-1" >
+                                                            <Link to={'/user_story/list/'+ story.id} className="title-res text-primary">
+                                                                <span title={story.title}>{truncateDatasetName(story.title, 60)}</span>
                                                             </Link>
                                                         </div>
-                                                        <div className="col-md-3 py-1">
+                                                        <div className="col-md-2 py-1 px-1" ></div>
+                                                        <div className="col-md-2 py-1 px-1" >
+                                                            {story.org}
+                                                        </div>
+                                                        <div className="col-md-1 py-1">
                                                             {story.published===2 && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
                                                             {story.published===1 && <i className="fa fa-users fa-lg text-icon float-right pt-1"/>}
                                                             {story.published===0 && <i className="fas fa-lock fa-lg text-icon float-right pt-1"/>}
@@ -502,48 +496,12 @@ class DatasetList extends Component {
                                             )
                                     break;         
                                     }
-                                }): 'Non sono stati trovati risultati per la tua ricerca'
+                                })
+                                :
+                                <i>Non sono stati trovati risultati.</i>
                             }
                         </div>
                         }
-                        {/* <div className="px-5">
-                        <div className="card risultato mb-3">
-                            <div className="card-body p-0 clearfix">
-                                <i className="fa fa-table bg-dataset p-3 mr-3 float-left"></i>
-                                <div className="row py-2 h-100" >
-                                    <div className="col-md-7 py-1 px-1" >
-                                        Elenco cinema torino
-                                    </div>
-                                    <div className="col-md-2 py-1 px-1" >
-                                        <span className="badge badge-accento my-1">SOCIETA</span>
-                                    </div>
-                                    <div className="col-md-2 py-1 px-1" >
-                                        default_org
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card risultato mb-3">
-                            <div className="card-body p-0 clearfix">
-                            <i className="fa fa-columns bg-gray-900 p-3 mr-3 float-left text-white"></i>
-                                <div className="row py-2 h-100" >
-                                    <div className="col-md-9 py-1 px-1" >
-                                        Redditi italiani 2015
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card risultato mb-3">
-                            <div className="card-body p-0 clearfix">
-                            <i className="fa fa-font bg-primary p-3 mr-3 float-left"></i>
-                                <div className="row py-2 h-100" >
-                                    <div className="col-md-9 py-1 px-1" >
-                                        Torino: stazioni Bike Sharing
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
                 </div>
             </div>
         </div>

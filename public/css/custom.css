@@ -376,8 +376,8 @@
       background-color: #f0f3f5;
       box-shadow: 0 0 0 0.2rem rgba(240, 243, 245, 0.5); }
     .btn-outline-filters.disabled, .btn-outline-filters:disabled {
-      color: #f0f3f5;
-      background-color: transparent; }
+        /*color: #f0f3f5;*/      
+        background-color: transparent; }
     .btn-outline-filters:not(:disabled):not(.disabled):active, .btn-outline-filters:not(:disabled):not(.disabled).active,
     .show > .btn-outline-filters.dropdown-toggle {
       color: #151b1e;
