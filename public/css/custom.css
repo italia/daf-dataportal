@@ -158,6 +158,22 @@
     height: 114px
 }
 
+.top-dataset{
+    margin-top: -1.5rem !important;
+    height: 139px;
+    background-color: #E7ECEF!important;
+    position: relative;
+}
+
+.buttons-nav{
+    position: absolute;
+    bottom: 0;
+}
+
+.button-data-nav{
+    height: 49px;
+    padding: 0.8rem;
+}
 .bg-grey-n{
     background-color: #CAD4DC !important
 }
@@ -429,4 +445,36 @@
 .px-search{
     padding-left: 4.5rem!important;
     padding-right: 4.5rem!important;
+}
+
+.title-dataset {
+    /* font-family: "Helvetica Neue"; */
+    padding-top: 2.125rem!important;
+	color: #536C79;
+	font-weight: bold;
+	line-height: 2.125rem;
+}
+
+.desc-dataset{
+    color: #536C79;
+    font-size: 21px;
+    line-height: 32px;
+}
+
+.status{
+    color: #536C79;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 23px;
+}
+
+.icon-dataset {
+    padding-top: 2.125rem!important;
+    padding-left: 1.94rem!important;
+    color: #536C79;
+    line-height: 2.125rem;
+}
+
+.d-inline-table{
+    display: inline-table;
 }

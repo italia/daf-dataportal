@@ -892,7 +892,25 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
         }
       }
 
-
+      export function checkMetabase(nomeDataset) {
+        var token = '';
+        var url = serviceurl.apiURLDatiGov + '/metabase/table/' + nomeDataset
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+          localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+            token = localStorage.getItem('token')
+          }
+        return dispatch => {
+            return fetch(url, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              }
+            })
+            .then(response => response.json())
+          }
+        }
 
 
 

@@ -11,20 +11,22 @@ class Widgets extends Component{
         super(props)
 
         this.state = {
-            listWidgets: [],
+            listWidgets: props.widgets?props.widgets:[],
             items: 18,
             loading: true
         }
     }
     
     componentDidMount(){
-        let response = widgetService.iframes()
-        response.then(json => {
-            this.setState({
-                loading: false,
-                listWidgets: json
+        if(this.state.listWidgets.length===0 && !this.props.widgets){
+            let response = widgetService.iframes()
+            response.then(json => {
+                this.setState({
+                    loading: false,
+                    listWidgets: json
+                })
             })
-        })
+        }
     }
 
     loadMore = () => {
@@ -51,6 +53,8 @@ class Widgets extends Component{
                                 <i className="fas fa-chart-bar fa-lg m-2" style={{lineHeight:'1'}}/><h2> Widget</h2>
                             </nav>
                             <div className="App bg-light">
+
+                                {listWidgets.length>0 ? 
                                 <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="row pl-3">
                                     {
                                         this.state.listWidgets.slice(0, items).map((iframe, index) => {
@@ -64,6 +68,9 @@ class Widgets extends Component{
                                         })
                                     }
                                 </InfiniteScroll>
+                                :
+                                <i>Non sono stati trovati Widget, se vuoi essere il primo a crearli clicca qui</i>
+                                }
                             </div>
                             <button
                                 className="List-load-more-button"

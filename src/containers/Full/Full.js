@@ -52,7 +52,7 @@ class Full extends Component {
     if (history.location.pathname === '/user_story/list' || history.location.pathname === '/widget')
       mainDiv='bg-light'
     
-    if (history.location.pathname === '/home' || history.location.pathname.indexOf('/search')!==-1)
+    if (history.location.pathname === '/home' || history.location.pathname.indexOf('/search')!==-1 || history.location.pathname.indexOf('/dataset/')!==-1)
       home = 'p-0'
     return (
       <div className="app">
