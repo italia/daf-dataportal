@@ -62,21 +62,31 @@ class DatasetList extends Component {
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleChangeOrdinamento = this.handleChangeOrdinamento.bind(this);
+
+/*         if(window.location.hash==='#/dataset'){
+            this.searchAll('')
+        } */
+        
         this.handleToggleClickDataset = this.handleToggleClickDataset.bind(this);
     }
       
     componentDidMount() {
-        const queryString = require('query-string');
-        const query = queryString.parse(this.props.location.search).q  
-        this.searchAll(query)
+        if(window.location.hash==='#/dataset'){
+            this.searchAll('')
+        }
+        if(!this.props.results || this.props.results.length === 0){
+            const queryString = require('query-string');
+            const query = queryString.parse(this.props.location.search).q  
+            this.searchAll(query)
+        }
     }
 
     searchAll(query){
         const { dispatch } = this.props
-       
+        var dataset = window.location.hash==='#/dataset'
         let filter = {
             'text': query,
-            'index': [],
+            'index': dataset?['catalog_test']:[],
             'org': [],
             'theme':[],
             'date': "",
@@ -97,10 +107,10 @@ class DatasetList extends Component {
         const { dispatch } = this.props
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search).q  
-        
+        var dataset = window.location.hash==='#/dataset'
         let filter = {
             'text': query,
-            'index': [],
+            'index': dataset?['catalog_test']:[],
             'org': [],
             'theme':[],
             'date': this.state.filter.da && this.state.filter.a ? this.state.filter.da.locale('it').format("YYYY-MM-DD")+ ' ' +this.state.filter.a.locale('it').format("YYYY-MM-DD") : '',
@@ -332,7 +342,7 @@ class DatasetList extends Component {
                                 <div className="row" style={{height: '48px'}}>
                                     <div className="col-md-10 h-100" >
                                         <div className="btn-group h-100" role="group" aria-label="Basic example">
-                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button>
+                                            {window.location.hash.indexOf('dataset')===-1 && <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button>}
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivData ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickData}>Data <i className={"fa " + (this.state.showDivData ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivCategoria ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickCategoria}>Categoria <i className={"fa " + (this.state.showDivCategoria ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivOrganizzazione ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickOrganizzazione}>Organizzazione <i className={"fa " + (this.state.showDivOrganizzazione ? "fa-angle-up" : "fa-angle-down")}></i></button>
