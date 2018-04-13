@@ -13,7 +13,8 @@ import {
   loadDatasets,
   unloadDatasets,
   datasetDetail,
-  logout
+  logout,
+  search
 } from '../../actions'
 import PropTypes from 'prop-types'
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
@@ -78,12 +79,19 @@ class Sidebar extends Component {
   };
 
   handleLoadDatasetClick(event) {
-    console.log('Search Dataset for: ' + this.refs.auto.state.value);
     event.preventDefault();
     const { dispatch, selectDataset } = this.props;
-    dispatch(loadDatasets(this.refs.auto.state.value, 0, '', '', '', '', 'metadata_modified%20desc'));
-    this.props.history.push('/dataset');
-    document.body.classList.toggle('sidebar-mobile-show');
+    let filter = {
+      'text': '',
+      'index': ['catalog_test'],
+      'org': [],
+      'theme':[],
+      'date': "",
+      'status': [],
+      'order':""
+  }
+    dispatch(search('', filter))
+    this.props.history.push('/dataset')
   }
 
   createDash(){
@@ -143,7 +151,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/dataset'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-table fa-lg text-secondary"></i> Dataset</NavLink>
+                <NavLink to={'/dataset'} className="nav-link" activeClassName="nav-link-primary" onClick={this.handleLoadDatasetClick.bind(this)}><i className="fa fa-table fa-lg text-secondary"></i> Dataset</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();

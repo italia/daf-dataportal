@@ -8,7 +8,8 @@ import {
     loadDatasets,
     unloadDatasets,
     datasetDetail,
-    logout
+    logout,
+    search
 } from '../../actions'
 import { createBrowserHistory } from 'history';
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
@@ -27,10 +28,30 @@ class SearchBar extends Component{
     handleLoadDatasetClick(event) {
         event.preventDefault();
         const { dispatch, selectDataset } = this.props;
-            dispatch(loadDatasets(this.refs.auto.value, 0, '', '', '', '', 'metadata_modified%20desc'))
+/*         dispatch(loadDatasets(this.refs.auto.value, 0, '', '', '', '', 'metadata_modified%20desc'))
+        .then(json => {
+            this.props.history.push('/dataset');
+        }) */
+        var dataset = window.location.hash==='#/dataset'
+        if(this.refs.auto.value!==''){
+            let filter = {
+                'text': this.refs.auto.value.toLowerCase(),
+                'index': dataset?['catalog_test']:[],
+                'org': [],
+                'theme':[],
+                'date': "",
+                'status': [],
+                'order':""
+            }
+
+            dispatch(search(this.refs.auto.value, filter))
             .then(json => {
-                this.props.history.push('/dataset');
-        })
+                if(!dataset) 
+                    this.props.history.push('/search?q='+this.refs.auto.value);
+                if(dataset)
+                    this.props.history.push('/dataset?q='+this.refs.auto.value);
+            })
+        }
         /* this.props.history.push('/dataset?q='+this.refs.auto.value) */
     }
 
@@ -42,7 +63,12 @@ class SearchBar extends Component{
         return(
             <div className={"search-bar " + revealed}>
                 <form onSubmit={this.handleLoadDatasetClick}>
-                    <input className="search-input" placeholder="Cosa stai cercando?" ref="auto" name="s" id="search_mobile" type="text"/>
+                    <div className="input-group">
+                        {/* <div className="input-group-prepend">
+                            <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"></button>
+                        </div> */}
+                        <input className="search-input form-control" placeholder="Cosa stai cercando?" ref="auto" name="s" id="inlineFormInputGroup" type="text"/>
+                    </div>
                 </form>
             </div>
         )
