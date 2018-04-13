@@ -14,6 +14,7 @@ import moment from 'moment';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import WidgetCard from '../../components/Cards/WidgetCard';
 
 
 /* const tipi = [{ 'name': 'Dataset'},{ 'name': 'Dashboard'},{ 'name': 'Storie'}]
@@ -26,7 +27,7 @@ class DatasetList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            order_filter: props.history.location.state?props.history.location.state.order_filter:'metadata_modified%20desc',
+            order_filter: props.history.location.state?props.history.location.state.order_filter:'desc',
             category_filter: props.history.location.state && props.history.location.state.category_filter,
             group_filter: props.history.location.state && props.history.location.state.group_filter,
             organization_filter: props.history.location.state && props.history.location.state.organization_filter,
@@ -40,6 +41,7 @@ class DatasetList extends Component {
             showDivCategoria: false,
             showDivOrganizzazione: false,
             showDivVisibilita: false,
+            showDivDataset: [],
             startDate: undefined,
             endDate: undefined
         }
@@ -64,29 +66,9 @@ class DatasetList extends Component {
 /*         if(window.location.hash==='#/dataset'){
             this.searchAll('')
         } */
+        
+        this.handleToggleClickDataset = this.handleToggleClickDataset.bind(this);
     }
-
-/*     load() {
-        let response = this.organizations();
-        response.then((list) => {
-          this.setState({
-            organizations: list
-          })
-        })
-      }
-
-      async organizations() {
-        var url = serviceurl.apiURLCatalog + '/ckan/organizations'
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
-        })
-        return response.json()
-      } */
       
     componentDidMount() {
         if(window.location.hash==='#/dataset'){
@@ -155,7 +137,6 @@ class DatasetList extends Component {
             })
         }
 
-        console.log(filter)
         dispatch(search(query, filter))
         .catch((error) => {
             this.setState({
@@ -179,6 +160,19 @@ class DatasetList extends Component {
                   'order_filter': order_filter,
                   'group_filter': group_filter
           }
+        })
+      }
+
+      handleToggleClickDataset(index){
+        var array = this.state.showDivDataset
+        var i = array.indexOf(index);
+        if(i != -1) {
+            array.splice(i, 1);
+        }else{
+            array.push(index)
+        }
+        this.setState({
+            showDivDataset: array
         })
       }
 
@@ -334,7 +328,7 @@ class DatasetList extends Component {
       }
  
     render() {
-        const { results, isFetching } = this.props
+        const { results, isFetching, query } = this.props
         return (
             
             <div className="body">
@@ -422,85 +416,287 @@ class DatasetList extends Component {
                             </nav>
                             }
                             {isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
-                             <div className="px-search">
+                             <div className="px-search mb-3">
                                 {results ? results.map((result, index) => {
                                 switch(result.type){
                                     case 'catalog_test': 
                                         let dataset = JSON.parse(result.source)
+                                        let datasetMatch = dataset
+                                        try {
+                                            datasetMatch = JSON.parse(result.match)
+                                        } catch (error) {
+                                            
+                                        }
+                                         
+                                        let fields = datasetMatch.dataschema&&datasetMatch.dataschema.avro&&datasetMatch.dataschema.avro.fields?datasetMatch.dataschema.avro.fields:dataset.dataschema.avro.fields
                                         return(
-                                            <div className="card risultato mb-3" key={index}>
-                                                <div className="card-body p-0 clearfix bg-light">
-                                                    <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
-                                                    <div className="row pl-3 pt-2 h-100" >
-                                                        <div className="col-md-7 py-1 px-1" >
-                                                            <Link to={'/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
-                                                                <span title={dataset.dcatapit.title}>{truncateDatasetName(dataset.dcatapit.title, 60)}</span>
-                                                            </Link>
-                                                        </div>
-                                                        <div className="col-md-2 py-1 px-1" >
-                                                            <span className="badge badge-accento my-1">{decodeTheme(dataset.dcatapit.theme)}</span>
-                                                        </div>
-                                                        <div className="col-md-2 py-1 px-1" >                                                                
-                                                            {dataset.dcatapit.owner_org}
-                                                        </div>
-                                                        <div className="col-md-1 py-1">
-                                                            {!dataset.dcatapit.privatex && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
-                                                            {dataset.dcatapit.privatex && <i className="fa fa-users fa-lg text-icon float-right pt-1"/>}
+                                            <div key={index}>
+                                                <div className="card risultato mt-3 mb-0" >
+                                                    <div className="card-body p-0 clearfix bg-light">
+                                                        <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
+                                                        <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="col-md-6 py-1 px-1" >
+                                                                <Link to={'/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
+                                                                    <div title={dataset.dcatapit.title} dangerouslySetInnerHTML={{__html: truncateDatasetName(datasetMatch['dcatapit.title']?datasetMatch['dcatapit.title']:dataset.dcatapit.title, 60)}}></div>
+                                                                </Link>
+                                                            </div>
+                                                            <div className="col-md-2 py-1 px-1" >
+                                                                <span className="badge badge-info my-1">{decodeTheme(dataset.dcatapit.theme)}</span>
+                                                            </div>
+                                                            <div className="col-md-2 py-1 px-1" >
+                                                                <div title={dataset.dcatapit.owner_org} dangerouslySetInnerHTML={{__html: dataset.dcatapit.owner_org}}></div>
+                                                            </div>
+                                                            <div className="col-md-1 py-1">
+                                                                {!dataset.dcatapit.privatex && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
+                                                                {dataset.dcatapit.privatex && <i className="fa fa-users fa-lg text-icon float-right pt-1"/>}
+                                                            </div>
+                                                            <div className="col-md-1 py-1">
+                                                                <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 py-0 btn btn-outline-filters float-right" onClick={this.handleToggleClickDataset.bind(this, index)}>
+                                                                    {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
+                                                <div className="card mb-3 mt-0">
+                                                    <div className="card-body p-0 clearfix">
+                                                        <div className="row pl-3 pt-2 h-100" >
+                                                                <div className="col-md-2 py-1 px-1" >
+                                                                    <b>Ultima modifica: </b>
+                                                                </div>
+                                                                <div className="col-md-8 py-1 px-1" >
+                                                                    {dataset.dcatapit.modified}
+                                                                </div>
+                                                        </div>
+                                                        <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="col-md-2 py-1 px-1" >
+                                                                    <b>Descrizione: </b>
+                                                                </div>
+                                                                <div className="col-md-8 py-1 px-1" >
+                                                                    <div dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.notes']?datasetMatch['dcatapit.notes']:dataset.dcatapit.notes}}></div>
+                                                                </div>
+                                                        </div>
+                                                        <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="col-md-2 py-1 px-1" >
+                                                                    <b>Campi del dataset: </b>
+                                                            </div>
+                                                            <div className="col-md-8 py-1 px-1" >
+                                                                <p>
+                                                                {fields.map((result, index) => {
+                                                                    if(index===0)
+                                                                        return(result.name)
+                                                                    else 
+                                                                        return(', ' + result.name)
+                                                                }) 
+                                                                }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                }
                                             </div>
                                             );
                                             break;
-                                    case 'dashboards': 
+                                    case 'dashboards':
                                         let dashboard = JSON.parse(result.source)
+                                        let dashboardMatch = dashboard
+                                        try {
+                                            dashboardMatch = JSON.parse(result.match)
+                                        } catch (error) {
+                                            
+                                        }
+                                        if ((dashboard.widgets && dashboard.widgets !== '{}') && (dashboard.layout && dashboard.layout !== '{}')) {
+                                            const dashLayout = JSON.parse(dashboard.layout)
+                                            var firstLayout = ''
+
+                                            let righe = dashLayout.rows
+                                            for (let i = 0; i < righe.length; i++) {
+                                            let colonne = righe[i].columns;
+                                            for (let j = 0; j < colonne.length; j++) {
+                                                let wids = colonne[j].widgets
+                                                wids.map((index) => {
+                                                /*  if (!index.key.startsWith('TextWidget')) { */
+                                                if (index.key.indexOf('TextWidget') == -1) {
+                                                    firstLayout = index.key
+                                                }
+                                                })
+                                                if (firstLayout != '')
+                                                break
+                                            }
+                                            if (firstLayout != '')
+                                                break
+                                            }
+                                            const dashWidgets = JSON.parse(dashboard.widgets)
+                                            var imageA = undefined
+                                            if (firstLayout != '') {
+                                                var firstWidget = dashWidgets[firstLayout];
+                                                imageA = firstWidget.image
+                                            }
+                                        } 
+
                                         return(
-                                            <div className="card risultato mb-3" key={index}>
-                                                <div className="card-body p-0 clearfix">
-                                                    <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
-                                                    <div className="row pl-3 pt-2 h-100" >
-                                                        <div className="col-md-7 py-1 px-1" title={dashboard.title}>
-                                                            <Link to={'/dashboard/list/' + dashboard.id} className="title-res text-primary">
-                                                                <span title={dashboard.title}>{truncateDatasetName(dashboard.title, 60)}</span>
-                                                            </Link>
-                                                        </div>
-                                                        <div className="col-md-2 py-1 px-1" ></div>
-                                                        <div className="col-md-2 py-1 px-1" >
-                                                            {dashboard.org}
-                                                        </div>
-                                                        <div className="col-md-1 py-1">
-                                                            {dashboard.status===2 && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
-                                                            {dashboard.status===1 && <i className="fa fa-users fa-lg text-icon float-right pt-1"/>}
-                                                            {dashboard.status===0 && <i className="fas fa-lock fa-lg text-icon float-right pt-1"/>}
+                                            <div key={index}>
+                                                <div className="card risultato mt-3 mb-0" >
+                                                    <div className="card-body p-0 clearfix">
+                                                        <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
+                                                        <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="col-md-6 py-1 px-1" title={dashboard.title}>
+                                                                <Link to={'/dashboard/list/' + dashboard.id} className="title-res text-primary">
+                                                                    <div title={dashboard.title} dangerouslySetInnerHTML={{__html: truncateDatasetName(dashboardMatch['title']?dashboardMatch['title']:dashboard.title, 100)}}></div>
+                                                                </Link>
+                                                            </div>
+                                                            <div className="col-md-2 py-1 px-1" ></div>
+                                                            <div className="col-md-2 py-1 px-1" >
+                                                                <div title={dashboard.org} dangerouslySetInnerHTML={{__html: dashboard.org}}></div>
+                                                            </div>
+                                                            <div className="col-md-1 py-1">
+                                                                {dashboard.status===2 && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
+                                                                {dashboard.status===1 && <i className="fa fa-users fa-lg text-icon float-right pt-1"/>}
+                                                                {dashboard.status===0 && <i className="fas fa-lock fa-lg text-icon float-right pt-1"/>}
+                                                            </div>
+                                                            <div className="col-md-1 py-1">
+                                                                <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 py-0 btn btn-outline-filters float-right" onClick={this.handleToggleClickDataset.bind(this, index)}>
+                                                                    {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
+                                                <div className="card mb-3 mt-0">
+                                                     <div className="card-body p-0 clearfix">
+                                                     <div className="row pl-3 pt-2 h-100" >
+                                                             <div className="col-md-2 py-1 px-1" >
+                                                                 <b>Ultima modifica: </b>
+                                                             </div>
+                                                             <div className="col-md-8 py-1 px-1" >
+                                                                 {dashboard.timestamp}
+                                                             </div>
+                                                     </div>
+                                                         <div className="row pl-3 pt-2 h-100" >
+                                                             <div className="col-md-2 py-1 px-1" >
+                                                                 <b>Sottotitolo: </b>
+                                                             </div>
+                                                             <div className="col-md-8 py-1 px-1" >
+                                                                 <div title={dashboard.subtitle} dangerouslySetInnerHTML={{__html: dashboardMatch['subtitle']?dashboardMatch['subtitle']:dashboard.subtitle}}></div>
+                                                             </div>
+                                                         </div>
+                                                         <div className="row pl-3 pt-2 h-100" >
+                                                             <div className="col-md-2 py-1 px-1" >
+                                                                 <b>Widget: </b>
+                                                             </div>
+                                                             <div className="col-md-8 py-1 px-1" >
+                                                             {firstWidget &&
+                                                             <WidgetCard
+                                                                 iframe = {firstWidget}
+                                                                 />}
+                                                             </div>
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                                }
                                             </div>
                                             )
                                             break;
                                     case 'stories': 
                                         let story = JSON.parse(result.source)
+                                        let storyMatch = story
+                                        try {
+                                            storyMatch = JSON.parse(result.match)
+                                        } catch (error) {
+                                            
+                                        }
+                                        if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
+                                            const dashLayout = JSON.parse(story.layout)
+                                            var firstLayout = ''
+
+                                            let righe = dashLayout.rows
+                                            for (let i = 0; i < righe.length; i++) {
+                                            let colonne = righe[i].columns;
+                                            for (let j = 0; j < colonne.length; j++) {
+                                                let wids = colonne[j].widgets
+                                                wids.map((index) => {
+                                                /*  if (!index.key.startsWith('TextWidget')) { */
+                                                if (index.key.indexOf('TextWidget') == -1) {
+                                                    firstLayout = index.key
+                                                }
+                                                })
+                                                if (firstLayout != '')
+                                                break
+                                            }
+                                            if (firstLayout != '')
+                                                break
+                                            }
+                                            const dashWidgets = JSON.parse(story.widgets)
+                                            var imageA = undefined
+                                            if (firstLayout != '') {
+                                                var firstWidget = dashWidgets[firstLayout];
+                                                imageA = firstWidget.image
+                                            }
+                                        }
                                         return(
-                                            <div className="card risultato mb-3" key={index}>
+                                            <div key={index}>
+                                                <div className="card risultato mt-3 mb-0">
                                                 <div className="card-body p-0 clearfix">
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
-                                                        <div className="col-md-7 py-1 px-1" >
+                                                        <div className="col-md-6 py-1 px-1" >
                                                             <Link to={'/user_story/list/'+ story.id} className="title-res text-primary">
-                                                                <span title={story.title}>{truncateDatasetName(story.title, 60)}</span>
+                                                                <div title={story.title} dangerouslySetInnerHTML={{__html: truncateDatasetName(storyMatch['title']?storyMatch['title']:story.title, 100)}}></div>
                                                             </Link>
                                                         </div>
                                                         <div className="col-md-2 py-1 px-1" ></div>
                                                         <div className="col-md-2 py-1 px-1" >
-                                                            {story.org}
+                                                            <div title={story.org} dangerouslySetInnerHTML={{__html: story.org}}></div>
                                                         </div>
                                                         <div className="col-md-1 py-1">
                                                             {story.published===2 && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
                                                             {story.published===1 && <i className="fa fa-users fa-lg text-icon float-right pt-1"/>}
                                                             {story.published===0 && <i className="fas fa-lock fa-lg text-icon float-right pt-1"/>}
                                                         </div>
+                                                        <div className="col-md-1 py-1">
+                                                            <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 py-0 btn btn-outline-filters float-right" onClick={this.handleToggleClickDataset.bind(this, index)}>
+                                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                </div>
+                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
+                                                    <div className="card mb-3 mt-0">
+                                                        <div className="card-body p-0 clearfix">
+                                                        <div className="row pl-3 pt-2 h-100" >
+                                                                <div className="col-md-2 py-1 px-1" >
+                                                                    <b>Ultima modifica: </b>
+                                                                </div>
+                                                                <div className="col-md-8 py-1 px-1" >
+                                                                    {story.timestamp}
+                                                                </div>
+                                                        </div>
+                                                            <div className="row pl-3 pt-2 h-100" >
+                                                                <div className="col-md-2 py-1 px-1" >
+                                                                    <b>Sottotitolo: </b>
+                                                                </div>
+                                                                <div className="col-md-8 py-1 px-1" >
+                                                                    <div title={story.subtitle} dangerouslySetInnerHTML={{__html: storyMatch['subtitle']?storyMatch['subtitle']:story.subtitle}}></div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="row pl-3 pt-2 h-100" >
+                                                                <div className="col-md-2 py-1 px-1" >
+                                                                    <b>Widget: </b>
+                                                                </div>
+                                                                <div className="col-md-8 py-1 px-1" >
+                                                                {firstWidget &&
+                                                                <WidgetCard
+                                                                    iframe = {firstWidget}
+                                                                    />}
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                }
                                             </div>
                                             )
                                     break;         

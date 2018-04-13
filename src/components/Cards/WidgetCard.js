@@ -29,7 +29,7 @@ class WidgetCard extends Component {
 
     isSuperset(){
         const { iframe } = this.props
-        if(iframe.identifier.indexOf('superset')!== -1)
+        if((iframe.identifier && iframe.identifier.indexOf('superset')!== -1) || (iframe.props && iframe.props.identifier.indexOf('superset')!== -1))
             return true
         else
             return false
@@ -37,7 +37,7 @@ class WidgetCard extends Component {
 
     isMetabase(){
         const { iframe } = this.props
-        if (iframe.identifier.indexOf('metabase')!== -1)
+        if ((iframe.identifier && iframe.identifier.indexOf('metabase')!== -1) || (iframe.props && iframe.props.identifier.indexOf('metabase')!== -1))
             return true
         else
             return false
@@ -54,7 +54,11 @@ class WidgetCard extends Component {
 
     componentDidMount(){
         const { iframe } = this.props
-        let url = serviceurl.apiURLDatiGov + '/plot/' + iframe.identifier + '/330x280';
+        let url = '';
+        if(iframe.identifier)
+            url = serviceurl.apiURLDatiGov + '/plot/' + iframe.identifier + '/330x280';
+        if(iframe.props)
+            url = serviceurl.apiURLDatiGov + '/plot/' + iframe.props.identifier + '/330x280';
         const response = fetch(url, {
             method: 'GET'
         }).then(response => {
@@ -104,7 +108,7 @@ class WidgetCard extends Component {
                     <div className="header-widget py-1">
                         <div className="row my-1 mx-0">
                             <div className="col-9 title-widget my-1 pl-3">
-                                <a href={this.getLink(iframe.iframe_url)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
+                                <a href={this.getLink(iframe.iframe_url?iframe.iframe_url:iframe.props.url)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
                             </div>
                             <div className="col-3 my-2">
                                 {
