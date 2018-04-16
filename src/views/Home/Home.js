@@ -12,7 +12,8 @@ import {
     loadDatasets,
     unloadDatasets,
     datasetDetail,
-    getFileFromStorageManager
+    getFileFromStorageManager,
+    search
 } from '../../actions'
 
 // Services
@@ -29,10 +30,12 @@ class Home extends Component {
             listStories: [],
             listDashboards: [],
             listIframes: [],
+            counter:[],
             items: 3,
         }
         
         this.searchDataset();
+        this.counters();
 
         let dash = homeService.dashboards();
         dash.then(json => {
@@ -69,6 +72,14 @@ class Home extends Component {
         window.removeEventListener("resize", this.updatePredicate);
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.results){
+            this.setState({
+                counter: JSON.parse(nextProps.results[nextProps.results.length-4].source)
+            })
+        }
+    }
+
     updatePredicate() {
         if (window.innerWidth <= 1200)
             this.setState({items: 2});
@@ -83,9 +94,24 @@ class Home extends Component {
         dispatch(loadDatasets(query, 0, '', category, group, organization, order))
     }
 
+    counters(){
+        const { dispatch } = this.props
+        let filter = {
+            'text': '',
+            'index': [],
+            'org': [],
+            'theme':[],
+            'date': "",
+            'status': [],
+            'order':""
+        }
+        dispatch(search('', filter))
+    }
+
     render(){
-        const { datasets, isFetching } = this.props
-        const { listDashboards, listStories, listIframes, items } = this.state
+        const { datasets, isFetching, results } = this.props
+        const { listDashboards, listStories, listIframes, items, counter } = this.state
+        /* var counter = JSON.parse(results[results.length-4].source) */
         return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
             <div>
                 <div className="top-home w-100 bg-grey-n d-md-down-none">
@@ -98,7 +124,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-table bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{datasets?datasets.length:0}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.catalog_test?counter.catalog_test:0}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dataset</div>
                                 </div>
                             </div>
@@ -124,7 +150,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-columns bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{listDashboards.length}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.dashboards?counter.dashboards:0}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dashboard</div>
                                 </div>
                             </div>
@@ -137,7 +163,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-font bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{listStories.length}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.stories?counter.stories:0}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Storie</div>
                                 </div>
                             </div>
@@ -345,8 +371,9 @@ Home.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, lastUpdated, dataset, items: datasets, query, ope, json } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
-    return { datasets, dataset, isFetching, lastUpdated, query, ope, json }
+    const { isFetching, lastUpdated, dataset, items: datasets, query, ope, json } = state.datasetReducer['obj'] || { isFetching: false, items: [], ope: '' }
+    const { results } = state.searchReducer['search'] || { results: [] }
+    return { datasets, dataset, isFetching, lastUpdated, query, ope, json, results }
 }
 
 export default connect(mapStateToProps)(Home)

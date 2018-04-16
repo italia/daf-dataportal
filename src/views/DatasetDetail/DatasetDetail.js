@@ -248,8 +248,8 @@ class DatasetDetail extends Component {
                             <div hidden={!this.state.showDett} className="col-4">
                                 { (dataset.operational.ext_opendata && 
                                     dataset.operational.ext_opendata.url) &&
-                                <a className="w-25" href={dataset.operational.ext_opendata.url}>
-                                    <p className="card-text"><strong>APRI CKAN</strong> </p>
+                                <a className="w-25" href={serviceurl.urlCkan + dataset.operational.ext_opendata.name} target='_blank'>
+                                    <p className="card-text text-primary"><strong>APRI CKAN</strong> </p>
                                 </a>
                                 }
                             </div>
@@ -401,7 +401,7 @@ class DatasetDetail extends Component {
                                             </div>
                                             {this.state.hasMetabase && 
                                             <div>
-                                                <p>Collegati a <a href={serviceurl.urlMetabase} target='_blank'>Metabase</a> e cerca il dataset per creare nuovi widget.</p>
+                                                <p>Collegati a <a href={serviceurl.urlMetabase + '/question/new'} target='_blank'>Metabase</a> e cerca il dataset per creare nuovi widget.</p>
                                             </div>
                                             }
                                             {!this.state.hasMetabase && <p>Il dataset non è ancora stato associato a Metabase</p>}
