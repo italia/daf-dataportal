@@ -43,7 +43,7 @@ const renderMergeStrategy = ({ input, meta: { touched, error } }) => (
       <option value="MERGE"  key='MERGE'>Inserisci tutte le righe</option>
       <option value="DEDUPE_AND_MERGE"  key='DEDUPE_AND_MERGE'>Inserisci tutte le righe ignorando i duplicati</option>
     </select>
-    {touched && error && <span>{error}</span>}
+    {touched && error && <div className="text-danger">{error}</div>}
   </div>
 );
 
@@ -74,7 +74,7 @@ const renderAggiornamento = ({ input, meta: { touched, error } }) => (
     <option value="" defaultValue key=''></option>
     {cron.map(item => <option value={item.val} key={item.val}>{item.name}</option>)}
   </select>
-  {touched && error && <span>{error}</span>}
+  {touched && error && <div className="text-danger">{error}</div>}
 </div>
 );
 
