@@ -71,10 +71,12 @@ class DatasetList extends Component {
     }
       
     componentDidMount() {
-        if(window.location.hash==='#/dataset'){
-            this.searchAll('')
+        if(window.location.hash.indexOf('dataset')!==-1){
+            const queryString = require('query-string');
+            const query = queryString.parse(this.props.location.search).q 
+            this.searchAll(query)
         }
-        if(!this.props.results || this.props.results.length === 0){
+        else if(!this.props.results || this.props.results.length === 0){
             const queryString = require('query-string');
             const query = queryString.parse(this.props.location.search).q  
             this.searchAll(query)
@@ -83,7 +85,7 @@ class DatasetList extends Component {
 
     searchAll(query){
         const { dispatch } = this.props
-        var dataset = window.location.hash==='#/dataset'
+        var dataset = window.location.hash.indexOf('dataset')!==-1
         let filter = {
             'text': query,
             'index': dataset?['catalog_test']:[],
@@ -91,7 +93,7 @@ class DatasetList extends Component {
             'theme':[],
             'date': "",
             'status': [],
-            'order':""
+            'order':"desc"
         }
 
         dispatch(search(query, filter))
@@ -103,18 +105,25 @@ class DatasetList extends Component {
     }
 
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
-    search(){
+    search(order){
         const { dispatch } = this.props
         const queryString = require('query-string');
-        const query = queryString.parse(this.props.location.search).q  
-        var dataset = window.location.hash==='#/dataset'
+        const query = queryString.parse(this.props.location.search).q
+        var orderFilter = ''
+        if(order)
+            orderFilter = order
+        else{
+            orderFilter = this.state.newFilter.order
+        }  
+        var dataset = window.location.hash.indexOf('dataset')!==-1
         let filter = {
             'text': query,
             'index': dataset?['catalog_test']:[],
             'org': [],
             'theme':[],
             'date': this.state.filter.da && this.state.filter.a ? this.state.filter.da.locale('it').format("YYYY-MM-DD")+ ' ' +this.state.filter.a.locale('it').format("YYYY-MM-DD") : '',
-            'status': []        
+            'status': [],
+            'order': orderFilter,
         }
 
         if(this.state.filter.elements){
@@ -265,7 +274,8 @@ class DatasetList extends Component {
             order_filter: e.target.value,
             filter: newFilter
         });
-        dispatch(search(query, newFilter))
+        /* dispatch(search(query, newFilter)) */
+        this.search(e.target.value);
       }
       
       componentWillReceiveProps(nextProps){

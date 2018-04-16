@@ -32,7 +32,7 @@ class SearchBar extends Component{
         .then(json => {
             this.props.history.push('/dataset');
         }) */
-        var dataset = window.location.hash==='#/dataset'
+        var dataset = window.location.hash.indexOf('dataset')!==-1
         if(this.refs.auto.value!==''){
             let filter = {
                 'text': this.refs.auto.value.toLowerCase(),

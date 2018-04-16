@@ -12,6 +12,8 @@ class Widgets extends Component{
 
         this.state = {
             listWidgets: props.widgets?props.widgets:[],
+            searched: props.widgets?props.widgets:[],
+            query: '',
             items: 18,
             loading: props.loading?props.loading:true
         }
@@ -23,7 +25,8 @@ class Widgets extends Component{
             response.then(json => {
                 this.setState({
                     loading: false,
-                    listWidgets: json
+                    listWidgets: json,
+                    searched: json
                 })
             })
         }else{
@@ -32,6 +35,26 @@ class Widgets extends Component{
             })
         }
     }
+
+    filter(e, val){
+        return e.title.toLowerCase().indexOf(val) != -1 || e.table.toLowerCase().indexOf(val) != -1
+    }
+
+    searchBy(val) {
+        const { listWidgets } = this.state;
+        var result = listWidgets.filter((wid) => {
+            if(wid.table)
+                return wid.title.toLowerCase().indexOf(val) != -1 || wid.table.toLowerCase().indexOf(val) != -1
+            else
+                return wid.title.toLowerCase().indexOf(val) != -1
+        })
+    
+        this.setState({
+          query: val,
+          searched: result
+        })
+        return result;
+      }
 
     loadMore = () => {
         if (this.state.isLoading) { return }
@@ -56,12 +79,22 @@ class Widgets extends Component{
                             <nav className="dashboardHeader row">
                                 <i className="fas fa-chart-bar fa-lg m-2" style={{lineHeight:'1'}}/><h2> Widget</h2>
                             </nav>
+                            {window.location.hash.indexOf('dataset')===-1 && <div className="row">
+                                <div className="col-12">
+                                    <div className="input-prepend input-group mb-20">
+                                        <div className="input-group-text transparent-frame">
+                                            <i className="fa fa-search"/>
+                                        </div>
+                                        <input className="form-control transparent-frame" size="25" type="text" value={this.state.query} onChange={(e) => this.searchBy(e.target.value)} placeholder="Filtra la lista ..."/>
+                                    </div>
+                                </div>
+                            </div>}
                             <div className="App bg-light">
 
                                 {listWidgets.length>0 ? 
                                 <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="row pl-3">
                                     {
-                                        this.state.listWidgets.slice(0, items).map((iframe, index) => {
+                                        this.state.searched.slice(0, items).map((iframe, index) => {
                                             if(iframe.identifier)
                                                 return (
                                                     <WidgetCard
@@ -73,7 +106,7 @@ class Widgets extends Component{
                                     }
                                 </InfiniteScroll>
                                 :
-                                <i>Non sono stati trovati Widget, se vuoi essere il primo a crearli clicca qui</i>
+                                <i>Non sono stati trovati Widget</i>
                                 }
                             </div>
                             <button
