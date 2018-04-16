@@ -27,6 +27,7 @@ export const serviceurl = {
  apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
  apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
  apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1",
+ apiCKAN: "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy",
 
 /*  apiURLSSOManager: "https://security-manager.daf.teamdigitale.it/sso-manager",
  apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1",
