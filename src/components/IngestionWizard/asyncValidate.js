@@ -24,7 +24,7 @@ function asyncValidate(values, dispatch, props, currentFieldName) {
           } else {
             if(values.private==0){
               console.log('Il dataset è pubblico quindi controllo anche sul ckan')
-              var queryurl='?q=title:'+values.title;
+              var queryurl='?q=title:"'+values.title+'"';
               var urlCkan = serviceurl.apiCKAN + '/package_search' + queryurl;  
                 return fetch(urlCkan, {
                   method: 'GET',
