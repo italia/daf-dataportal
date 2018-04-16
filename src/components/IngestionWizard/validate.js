@@ -32,6 +32,13 @@ const validate = values => {
   if (!values.subdomain) {
     errors.subdomain = 'Campo obbligatorio'
   }
+  if (!values.cron) {
+    errors.cron = 'Campo obbligatorio'
+  }
+  if (!values.merge_strategy) {
+    errors.merge_strategy = 'Campo obbligatorio'
+  }
+  
   
 
   return errors
