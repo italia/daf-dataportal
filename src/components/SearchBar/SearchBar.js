@@ -17,6 +17,9 @@ import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 class SearchBar extends Component{
     constructor(props){
         super(props)
+        this.state={
+            open: props.open
+        }
 
         this.handleLoadDatasetClick = this.handleLoadDatasetClick.bind(this)
     }
@@ -28,35 +31,28 @@ class SearchBar extends Component{
     handleLoadDatasetClick(event) {
         event.preventDefault();
         const { dispatch, selectDataset } = this.props;
-/*         dispatch(loadDatasets(this.refs.auto.value, 0, '', '', '', '', 'metadata_modified%20desc'))
-        .then(json => {
-            this.props.history.push('/dataset');
-        }) */
-        var dataset = window.location.hash.indexOf('dataset')!==-1
+
         if(this.refs.auto.value!==''){
             let filter = {
                 'text': this.refs.auto.value.toLowerCase(),
-                'index': dataset?['catalog_test']:[],
+                'index': [],
                 'org': [],
                 'theme':[],
                 'date': "",
                 'status': [],
-                'order':""
+                'order':"desc"
             }
 
             dispatch(search(this.refs.auto.value, filter))
             .then(json => {
-                if(!dataset) 
-                    this.props.history.push('/search?q='+this.refs.auto.value);
-                if(dataset)
-                    this.props.history.push('/dataset?q='+this.refs.auto.value);
+                this.props.history.push('/search?q='+this.refs.auto.value);
             })
         }
         /* this.props.history.push('/dataset?q='+this.refs.auto.value) */
     }
 
     render(){
-        const { open } = this.props
+        const { open } = this.state
 
         let revealed = open ? "revealed" : ""
 

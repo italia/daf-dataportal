@@ -389,7 +389,7 @@ class DatasetDetail extends Component {
                                                     <div>
                                                         {this.state.supersetLink.map((link, index) => {
                                                                 return(
-                                                                    <div>
+                                                                    <div key={index}>
                                                                         <p>Accedi alla tabella <strong><a href={link.url} target='_blank'>{link.name}</a></strong> su Superset.</p>
                                                                     </div>
                                                                 )
