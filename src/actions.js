@@ -13,6 +13,7 @@ export const DELETE_DATASETS = 'DELETE_DATASETS'
 export const SELECT_DATASET = 'SELECT_DATASET'
 export const REQUEST_DATASET_DETAIL = 'REQUEST_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL = 'RECEIVE_DATASET_DETAIL'
+export const RECEIVE_DATASET_DETAIL_ERROR = 'RECEIVE_DATASET_DETAIL_ERROR'
 export const REQUEST_LOGIN = 'REQUEST_LOGIN'
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN'
 export const REMOVE_LOGGED_USER = 'REMOVE_LOGGED_USER'
@@ -100,6 +101,22 @@ function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, categor
       order_filter: order_filter,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_DETAIL'
+  }
+}
+
+function receiveDatasetDetailError(query, category_filter, group_filter, organization_filter, order_filter) {
+  return {
+      type: RECEIVE_DATASET_DETAIL_ERROR,
+      dataset: undefined,
+      feed: undefined,
+      iframes: undefined,
+      query: query,
+      category_filter: category_filter,
+      group_filter: group_filter,
+      organization_filter: organization_filter,
+      order_filter: order_filter,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_DATASET_DETAIL_ERROR'
   }
 }
 
@@ -800,7 +817,11 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
                 .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
                 .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter)))
                 })
-              }) 
+              })
+        .catch(error => {
+          console.log('Nessun Dataset con questo nome');
+          dispatch(receiveDatasetDetailError(query, category_filter, group_filter, organization_filter, order_filter))
+        }) 
       }
   }
 
