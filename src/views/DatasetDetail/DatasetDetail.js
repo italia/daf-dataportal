@@ -212,7 +212,7 @@ class DatasetDetail extends Component {
 
     truncate(title, n){
         var result = title
-        if (title.length>n+5){
+        if (title && title.length>n+5){
             result = title.substring(0, n) + '...'
         }
 
