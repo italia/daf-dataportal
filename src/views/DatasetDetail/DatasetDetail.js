@@ -210,10 +210,10 @@ class DatasetDetail extends Component {
           }))
     }
 
-    truncate(title){
+    truncate(title, n){
         var result = title
-        if (title.length>80){
-            result = title.substring(0, 77) + '...'
+        if (title.length>n+5){
+            result = title.substring(0, n) + '...'
         }
 
         return result
@@ -226,7 +226,7 @@ class DatasetDetail extends Component {
                     <div>
                     <div className='top-dataset'>
                         <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary"></i>
-                        <h2 className="title-dataset px-4 text-primary" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title)}</h2>
+                        <h2 className="title-dataset px-4 text-primary" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title,75)}</h2>
                         <ul className="nav nav-tabs w-100 buttons-nav px-search">
                                 <li className="nav-item">
                                     <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({showDett:true, showPreview: false, showAPI:false, showTools:false, showWidget:false, showDownload:false})}}><i className="text-icon fa fa-info-circle pr-2"/>Dettaglio</a>
@@ -269,7 +269,7 @@ class DatasetDetail extends Component {
                                                 <tbody className="w-100">
                                                     <tr>
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Slug: </strong></th> 
-                                                        <td className="bg-grigino" title={dataset.dcatapit.name}>{dataset.dcatapit.name.substring(0,30)+'...'}
+                                                        <td className="bg-grigino" title={dataset.dcatapit.name}>{this.truncate(dataset.dcatapit.name,30)}
                                                             <CopyToClipboard text={dataset.dcatapit.name}>
                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{lineHeight: '1.5'}}/>
                                                             </CopyToClipboard>
@@ -302,7 +302,7 @@ class DatasetDetail extends Component {
                                                     </tr>
                                                     <tr>
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Percorso: </strong></th>
-                                                        <td className="bg-grigino" title={dataset.operational.input_src.sftp[0].url}>{dataset.operational.input_src.sftp[0].url.substring(0,30)+'...'}
+                                                        <td className="bg-grigino" title={dataset.operational.input_src.sftp[0].url}>{this.truncate(dataset.operational.input_src.sftp[0].url,30)}
                                                             <CopyToClipboard text={dataset.operational.input_src.sftp[0].url}>
                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{lineHeight: '1.5'}}/>
                                                             </CopyToClipboard>
@@ -319,7 +319,7 @@ class DatasetDetail extends Component {
                                                     </tr>
                                                     <tr>
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Indirizzo: </strong></th>
-                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_pull[0].url}>{dataset.operational.input_src.srv_pull[0].url.substring(0,45)+'...'}
+                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_pull[0].url}>{this.truncate(dataset.operational.input_src.srv_pull[0].url,30)}
                                                             <CopyToClipboard text={dataset.operational.input_src.srv_pull[0].url}>
                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{lineHeight: '1.5'}}/>
                                                             </CopyToClipboard>

@@ -476,9 +476,9 @@ class DatasetList extends Component {
                             }
                             {isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
                              <div className="px-search mb-3">
-                                <div className="App">
+                                <div className="App" style={{overflowX: 'hidden'}}>
                                 {results ? 
-                                <InfiniteScroll onScrollToBottom={this.handleScrollToBottom}>
+                                <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="w-100">
                                 {results.slice(0,this.state.items).map((result, index) => {
                                 switch(result.type){
                                     case 'catalog_test': 
@@ -499,7 +499,7 @@ class DatasetList extends Component {
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" >
                                                                 <Link to={'/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
-                                                                    <div title={dataset.dcatapit.title} dangerouslySetInnerHTML={{__html: truncateDatasetName(datasetMatch['dcatapit.title']?datasetMatch['dcatapit.title']:dataset.dcatapit.title, 60)}}></div>
+                                                                    <div title={dataset.dcatapit.title} dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?truncateDatasetName(datasetMatch['dcatapit.title'],100):truncateDatasetName(dataset.dcatapit.title, 60)}}></div>
                                                                 </Link>
                                                             </div>
                                                             <div className="col-md-2 py-1 px-1" >
@@ -523,6 +523,14 @@ class DatasetList extends Component {
                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                 <div className="card mb-3 mt-0">
                                                     <div className="card-body p-0 clearfix">
+                                                        <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="col-md-2 py-1 px-1" >
+                                                                <b>Titolo: </b>
+                                                            </div>
+                                                            <div className="col-md-8 py-1 px-1" >
+                                                            <div dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?datasetMatch['dcatapit.title']:dataset.dcatapit.title}}></div>
+                                                            </div>
+                                                        </div>
                                                         <div className="row pl-3 pt-2 h-100" >
                                                                 <div className="col-md-2 py-1 px-1" >
                                                                     <b>Ultima modifica: </b>
@@ -606,7 +614,7 @@ class DatasetList extends Component {
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" title={dashboard.title}>
                                                                 <Link to={'/dashboard/list/' + dashboard.id} className="title-res text-primary">
-                                                                    <div title={dashboard.title} dangerouslySetInnerHTML={{__html: truncateDatasetName(dashboardMatch['title']?dashboardMatch['title']:dashboard.title, 100)}}></div>
+                                                                    <div title={dashboard.title} dangerouslySetInnerHTML={{__html: dashboardMatch['title']?truncateDatasetName(dashboardMatch['title'],100):truncateDatasetName(dashboard.title, 60)}}></div>
                                                                 </Link>
                                                             </div>
                                                             <div className="col-md-2 py-1 px-1" ></div>
@@ -629,14 +637,22 @@ class DatasetList extends Component {
                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                 <div className="card mb-3 mt-0">
                                                      <div className="card-body p-0 clearfix">
-                                                     <div className="row pl-3 pt-2 h-100" >
+                                                        <div className="row pl-3 pt-2 h-100" >
+                                                             <div className="col-md-2 py-1 px-1" >
+                                                                 <b>Titolo: </b>
+                                                             </div>
+                                                             <div className="col-md-8 py-1 px-1" >
+                                                                 <div title={dashboard.title} dangerouslySetInnerHTML={{__html: dashboardMatch['title']?dashboardMatch['title']:dashboard.title}}></div>
+                                                             </div>
+                                                        </div>
+                                                        <div className="row pl-3 pt-2 h-100" >
                                                              <div className="col-md-2 py-1 px-1" >
                                                                  <b>Ultima modifica: </b>
                                                              </div>
                                                              <div className="col-md-8 py-1 px-1" >
                                                                  {dashboard.timestamp}
                                                              </div>
-                                                     </div>
+                                                        </div>
                                                          <div className="row pl-3 pt-2 h-100" >
                                                              <div className="col-md-2 py-1 px-1" >
                                                                  <b>Sottotitolo: </b>
@@ -706,7 +722,7 @@ class DatasetList extends Component {
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
                                                             <Link to={'/user_story/list/'+ story.id} className="title-res text-primary">
-                                                                <div title={story.title} dangerouslySetInnerHTML={{__html: truncateDatasetName(storyMatch['title']?storyMatch['title']:story.title, 100)}}></div>
+                                                                <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?truncateDatasetName(storyMatch['title'],100):truncateDatasetName(story.title, 60)}}></div>
                                                             </Link>
                                                         </div>
                                                         <div className="col-md-2 py-1 px-1" ></div>
@@ -729,14 +745,22 @@ class DatasetList extends Component {
                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                     <div className="card mb-3 mt-0">
                                                         <div className="card-body p-0 clearfix">
-                                                        <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="row pl-3 pt-2 h-100" >
+                                                                <div className="col-md-2 py-1 px-1" >
+                                                                    <b>Titolo: </b>
+                                                                </div>
+                                                                <div className="col-md-8 py-1 px-1" >
+                                                                    <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?storyMatch['title']:story.title}}></div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="row pl-3 pt-2 h-100" >
                                                                 <div className="col-md-2 py-1 px-1" >
                                                                     <b>Ultima modifica: </b>
                                                                 </div>
                                                                 <div className="col-md-8 py-1 px-1" >
                                                                     {story.timestamp}
                                                                 </div>
-                                                        </div>
+                                                            </div>
                                                             <div className="row pl-3 pt-2 h-100" >
                                                                 <div className="col-md-2 py-1 px-1" >
                                                                     <b>Sottotitolo: </b>
