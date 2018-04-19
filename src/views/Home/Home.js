@@ -176,7 +176,7 @@ class Home extends Component {
                     </div>
                     <div className="row mx-auto m-0">
                         {
-                            datasets&&datasets.slice(0, items).map((dataset, index) => {
+                            datasets&&Array.isArray(datasets)&&datasets.slice(0, items).map((dataset, index) => {
                                 return (
                                     <DatasetCard
                                         dataset={dataset}
