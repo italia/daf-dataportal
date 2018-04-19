@@ -374,6 +374,7 @@ class DatasetDetail extends Component {
                                                         <p><strong>Utente: </strong>{localStorage.getItem('user')}</p>
                                                         <p><strong>Password: </strong>XXXXXXXXXX</p>      
                                                     </div>
+                                                    <p>Per conoscere le modalità di utilizzo delle REST API puoi consultare la documentazione dettagliata <b><a className="text-primary" href="http://daf-dataportal.readthedocs.io/it/latest/dataportal-privato/api.html" title="Guida all'uso delle API">QUI</a></b></p>
                                                 </div>
                                             </div>
                                         </div> 
