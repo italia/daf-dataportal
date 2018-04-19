@@ -103,7 +103,7 @@ class ListBar extends React.Component {
       });
     }
 
-    if(this.pvt.value == 1 && (!this.org || this.org.value == '')){
+    if(!this.org || this.org.value == ''){
       this.setState({
         validationMSgOrg: 'Campo obbligatorio'
       });
@@ -121,9 +121,13 @@ class ListBar extends React.Component {
     e.preventDefault()
 
     if(this.title.value){
-      if(this.pvt.value == 1 && (!this.org || this.org.value == '')){
+      if(!this.org || this.org.value == ''){
         this.setState({
           validationMSgOrg: 'Campo obbligatorio'
+        });
+      }else if(this.org.value=='default_org' && this.pvt.value == 1){
+        this.setState({
+          validationMSgOrg: 'Non è possibile creare una storia privata con l\'organizzazione selezionata'
         });
       }else{
         //prepara data
@@ -201,14 +205,12 @@ class ListBar extends React.Component {
                   }
                   </div>
                 </div>
-                {this.state.pvt == 1 &&
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Organizzazione</label>
                   <div className="col-md-8">
                     <select className="form-control" ref={(org) => this.org = org} onChange={(e) => this.onOrganizationChange(e, e.target.value)} id="org" >
                         <option value=""  key='organization' defaultValue></option>
                         {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
-                          if(organization!=='default_org')
                             return (<option value={organization} key={organization}>{organization}</option>)
                         })
                         }
@@ -216,7 +218,6 @@ class ListBar extends React.Component {
                     {this.state.validationMSgOrg && <span>{this.state.validationMSgOrg}</span>}
                   </div>
                 </div>
-                }
             </div>
             </ModalBody>
             <ModalFooter>
