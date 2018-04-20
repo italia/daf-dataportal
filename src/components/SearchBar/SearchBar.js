@@ -30,11 +30,13 @@ class SearchBar extends Component{
 
     handleLoadDatasetClick(event) {
         event.preventDefault();
-        const { dispatch, selectDataset } = this.props;
+        const { dispatch, filter } = this.props;
+        
+        let newFilter = { }
 
-        if(this.refs.auto.value!==''){
-            let filter = {
-                'text': this.refs.auto.value.toLowerCase(),
+        if(window.location.hash.indexOf('dataset')!==-1){
+            newFilter = {
+                'text': '',
                 'index': [],
                 'org': [],
                 'theme':[],
@@ -42,13 +44,21 @@ class SearchBar extends Component{
                 'status': [],
                 'order':"desc"
             }
-
-            dispatch(search(this.refs.auto.value, filter))
-            .then(json => {
-                this.props.history.push('/search?q='+this.refs.auto.value);
-            })
+        }else{
+            newFilter = filter?filter:{
+                'text': '',
+                'index': [],
+                'org': [],
+                'theme':[],
+                'date': "",
+                'status': [],
+                'order':"desc"
+            }
         }
-        /* this.props.history.push('/dataset?q='+this.refs.auto.value) */
+
+        newFilter.text = this.refs.auto.value.toLowerCase();
+        this.props.history.push('/search?q='+this.refs.auto.value);
+        dispatch(search(this.refs.auto.value, newFilter))
     }
 
     render(){
@@ -72,13 +82,14 @@ class SearchBar extends Component{
 }
 
 SearchBar.propTypes = {
-    loggedUser: PropTypes.object,
-    value: PropTypes.string
+    filter: PropTypes.object,
+    query: PropTypes.string,
+    results: PropTypes.array,
 }
 
 function mapStateToProps(state) {
-    const { loggedUser } = state.userReducer['obj'] || {}
-    return { loggedUser }
+    const { isFetching, results, query, filter } = state.searchReducer['search'] || { isFetching: false, results: []}
+    return { filter }
 }
 
 export default connect(mapStateToProps)(SearchBar)

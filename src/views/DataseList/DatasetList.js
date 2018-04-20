@@ -49,6 +49,7 @@ class DatasetList extends Component {
             items: 20,
         }
 
+        
 
 
         //this.load();
@@ -73,14 +74,10 @@ class DatasetList extends Component {
         
         this.handleToggleClickDataset = this.handleToggleClickDataset.bind(this);
     }
-      
+    
+    //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
     componentDidMount() {
-        if(window.location.hash.indexOf('dataset')!==-1){
-            const queryString = require('query-string');
-            const query = queryString.parse(this.props.location.search).q 
-            this.searchAll(query)
-        }
-        else if(!this.props.results || this.props.results.length === 0){
+        if(!this.props.isFetching && (!this.props.results || this.props.results.length === 0)){
             const queryString = require('query-string');
             const query = queryString.parse(this.props.location.search).q  
             this.searchAll(query)
@@ -111,18 +108,21 @@ class DatasetList extends Component {
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
     search(order){
         const { dispatch } = this.props
-        /* const queryString = require('query-string');
-        const query = queryString.parse(this.props.location.search).q */
-        const { query } = this.state
+        
+        const queryString = require('query-string');
+        const query = queryString.parse(this.props.location.search).q
+
         var orderFilter = ''
         if(order)
             orderFilter = order
         else{
             orderFilter = this.state.newFilter.order
         }  
+        
         var dataset = window.location.hash.indexOf('dataset')!==-1
+        
         let filter = {
-            'text': query.toLowerCase(),
+            'text': dataset?'':query.toLowerCase(),
             'index': dataset?['catalog_test']:[],
             'org': [],
             'theme':[],
@@ -151,15 +151,13 @@ class DatasetList extends Component {
             })
         }
 
-        if(query.length>0){
+        if(dataset){
+            dispatch(search('', filter))
+        }else{
             dispatch(search(query, filter))
-            .then(json => {
-                if(window.location.hash.indexOf('search')!==-1)
-                    this.props.history.push('search?q='+query)
-            })
             .catch((error) => {
                 this.setState({
-                isFetching: false
+                    isFetching: false
                 })
             })
         }
@@ -309,6 +307,44 @@ class DatasetList extends Component {
         const queryString = require('query-string');
         const query = queryString.parse(nextProps.location.search).q 
         this.setState({query: query})
+        var newFilter = this.state.filter
+        var elements = this.state.filter.elements
+        if(nextProps.filter){
+            if(nextProps.filter.index.length===0){
+                elements = elements.filter(element => {
+                    return element.type!==0
+                })
+            }
+            if(nextProps.filter.org.length===0){
+                elements = elements.filter(element => {
+                    return element.type!==3
+                })
+            }
+            if(nextProps.filter.status.length===0){
+                elements = elements.filter(element => {
+                    return element.type!==2
+                })
+            }
+            if(nextProps.filter.theme.length===0){
+                elements = elements.filter(element => {
+                    return element.type!==1
+                })
+            }
+            if(nextProps.filter.date===''){
+                newFilter.da = ''
+                newFilter.a=''
+                this.setState({
+                    startDate: undefined,
+                    endDate: undefined
+                })
+            }
+
+            newFilter.elements = elements;
+
+            this.setState({
+                filter: newFilter
+            })
+        }
       }
 
       //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
@@ -400,7 +436,7 @@ class DatasetList extends Component {
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivCategoria ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickCategoria}>Categoria <i className={"fa " + (this.state.showDivCategoria ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivOrganizzazione ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickOrganizzazione}>Organizzazione <i className={"fa " + (this.state.showDivOrganizzazione ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivVisibilita ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickVisibilita}>Visibilità <i className={"fa " + (this.state.showDivVisibilita ? "fa-angle-up" : "fa-angle-down")}></i></button>
-                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivSearch ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickSearch}><i className="fa fa-search fa-lg"/></button>
+                                            {/* <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivSearch ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickSearch}><i className="fa fa-search fa-lg"/></button> */}
                                         </div>
                                     </div>
                                     <div className="col-md-2 h-100" >
@@ -421,6 +457,8 @@ class DatasetList extends Component {
                             }
                             {this.state.showDivData && 
                                 <DateRangePicker
+                                    startDatePlaceholderText={'Data di inizio'} //PropTypes.string,
+                                    endDatePlaceholderText={'Data di fine'} //PropTypes.string,
                                     startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                                     startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
                                     endDate={this.state.endDate} // momentPropTypes.momentObj or null,
@@ -450,16 +488,16 @@ class DatasetList extends Component {
                                     return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 2, 'value': vis})} onClick={this.addFilter.bind(this, 2, vis)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeVisibilita(vis)}<span className="ml-2 badge badge-pill badge-secondary">{arrVis[vis]}</span></button>)
                                 }) 
                             }
-                            {this.state.showDivSearch && 
+                            {/* this.state.showDivSearch && 
                                 <form className="py-2 w-100" onSubmit={this.search.bind(this, this.state.order_filter)}>
                                     <input className="search-input w-100" placeholder="Cosa vuoi cercare?" value={this.state.query} onChange={e => this.setState({query: e.target.value})}/>
-                                </form>
+                                </form> */
                             }
                             </nav>
                             { (this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <nav className="dashboardHeader bg-grigino px-5 py-2">
                                 {this.state.filter.elements.length>0 && this.state.filter.elements.map((fi, index) => {
                                     switch(fi.type){
-                                        case 0: return(<span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key={index}>{decodeTipo(fi.value)}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
+                                        case 0: return(window.location.hash.indexOf('dataset')===-1 && <span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key={index}>{decodeTipo(fi.value)}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
                                         break;
                                         case 1: return(<span className="badge badge-pill badge-info my-2 mr-2 pl-3 py-2 filter-val" key={index}>{decodeTheme(fi.value)}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
                                         break;
@@ -810,8 +848,8 @@ DatasetList.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, results, query } = state.searchReducer['search'] || { isFetching: false, results: [] }
-    return { isFetching, results, query }
+    const { isFetching, results, query, filter } = state.searchReducer['search'] || { isFetching: false, results: [] }
+    return { isFetching, results, query, filter }
 }
 
 export default connect(mapStateToProps)(DatasetList)
