@@ -117,18 +117,20 @@ class Header extends Component {
 		}
 
 		createDash(){
-			this.props.history.push({
+			/* this.props.history.push({
 				pathname: '/dashboard/list',
 				state: { 'isOpen': true }
-			})
+			}) */
+			this.props.openModalDash();
 			this.toggleCrea()
 		}
 
 		createStory(){
-			this.props.history.push({
+			/* this.props.history.push({
 				pathname: '/user_story/list',
 				state: { 'isOpen': true }
-			})
+			}) */
+			this.props.openModalStory();
 			this.toggleCrea()
 		}
 
