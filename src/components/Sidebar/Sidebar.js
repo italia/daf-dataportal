@@ -95,17 +95,19 @@ class Sidebar extends Component {
   }
 
   createDash(){
-    this.props.history.push({
+    this.props.openModalDash();
+    /* this.props.history.push({
       pathname: '/dashboard/list',
       state: { 'isOpen': true }
-    })
+    }) */
   }
 
   createStory(){
-    this.props.history.push({
+    this.props.openModalStory();
+    /* this.props.history.push({
       pathname: '/user_story/list',
       state: { 'isOpen': true }
-    })
+    }) */
   }
 
   render() {
@@ -187,7 +189,7 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <Link to={'/ingestionwizzard'} /* onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} */ className="nav-link"><i className="fas fa-table fa-lg text-secondary"/>  Nuovo Dataset</Link>
+                    <Link to={'/ingestionwizzard'} className="nav-link"><i className="fas fa-table fa-lg text-secondary"/>  Nuovo Dataset</Link>
                   </li>}
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();

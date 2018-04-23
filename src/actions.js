@@ -137,11 +137,12 @@ function receiveSearchError(query) {
   }
 }
 
-function receiveSearch(json, query) { 
+function receiveSearch(json, query, filter) { 
   return {
     type: RECEIVE_SEARCH,
     results: json,
     query: query,
+    filter: filter,
     receivedAt: Date.now(),
     ope: 'RECEIVE_SEARCH',
     isFetching: false
@@ -840,7 +841,7 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
       })
       .then(response => {
           if(response.ok)
-              response.json().then(json => dispatch(receiveSearch(json, query)))
+              response.json().then(json => dispatch(receiveSearch(json, query, filter)))
           else dispatch(receiveSearchError(query))
       }).catch(error => console.log('Errore durante la ricerca'))
     }
