@@ -122,7 +122,7 @@ class DatasetList extends Component {
         var dataset = window.location.hash.indexOf('dataset')!==-1
         
         let filter = {
-            'text': dataset?'':query.toLowerCase(),
+            'text': dataset?'':query,
             'index': dataset?['catalog_test']:[],
             'org': [],
             'theme':[],
