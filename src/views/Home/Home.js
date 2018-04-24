@@ -28,16 +28,18 @@ class Home extends Component {
 
         this.state = {
             listStories: [],
+            listDataset: [],
             listDashboards: [],
             listIframes: [],
             counter:[],
             items: 3,
+            isLoading: true,
         }
         
-        this.searchDataset();
+//        this.searchDataset();
         this.counters();
 
-        let dash = homeService.dashboards();
+/*         let dash = homeService.dashboards();
         dash.then(json => {
             this.setState({
                 listDashboards: json
@@ -49,7 +51,7 @@ class Home extends Component {
             this.setState({
                 listStories: json
             })
-        })
+        }) */
 
         let iframes = homeService.iframes();
         iframes.then(json => {
@@ -72,14 +74,6 @@ class Home extends Component {
         window.removeEventListener("resize", this.updatePredicate);
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.results){
-            this.setState({
-                counter: JSON.parse(nextProps.results[nextProps.results.length-4].source)
-            })
-        }
-    }
-
     updatePredicate() {
         if (window.innerWidth <= 1200)
             this.setState({items: 2});
@@ -96,23 +90,41 @@ class Home extends Component {
 
     counters(){
         const { dispatch } = this.props
-        let filter = {
-            'text': '',
-            'index': [],
-            'org': [],
-            'theme':[],
-            'date': "",
-            'status': [],
-            'order':""
-        }
-        dispatch(search('', filter))
+        let elements = homeService.homeElements();
+        elements.then(json => {
+            try{
+                json.map((element, index)=>{
+                    switch(element.type){
+                        case 'catalog_test':
+                            let dataset = JSON.parse(element.source)
+                            this.state.listDataset.push(dataset)
+                            break;
+                        case 'dashboards':
+                            let dashboard = JSON.parse(element.source)
+                            this.state.listDashboards.push(dashboard)
+                            break;
+                        case 'stories':
+                            let story = JSON.parse(element.source)
+                            this.state.listStories.push(story)
+                            break;
+                        case 'type':
+                            let type = JSON.parse(element.source)
+                            this.state.counter = type
+                            break;
+                    }
+                })
+                this.state.isLoading = false
+            }
+            catch(error){console.log('error in getting elements')}
+        })
+        /* dispatch(search('', filter)) */
     }
 
     render(){
         const { datasets, isFetching, results } = this.props
-        const { listDashboards, listStories, listIframes, items, counter } = this.state
+        const { listDashboards, listStories, listDataset, listIframes, items, counter, isLoading } = this.state
         /* var counter = JSON.parse(results[results.length-4].source) */
-        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
+        return isLoading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
             <div>
                 <div className="top-home w-100 bg-grey-n d-md-down-none">
                     <div className="row m-auto container body">
@@ -124,7 +136,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-table bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{counter.catalog_test?counter.catalog_test:0}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.catalog_test}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dataset</div>
                                 </div>
                             </div>
@@ -150,7 +162,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-columns bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{counter.dashboards?counter.dashboards:0}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.dashboards}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dashboard</div>
                                 </div>
                             </div>
@@ -163,7 +175,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-font bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{counter.stories?counter.stories:0}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.stories}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Storie</div>
                                 </div>
                             </div>
@@ -176,7 +188,7 @@ class Home extends Component {
                     </div>
                     <div className="row mx-auto m-0">
                         {
-                            datasets&&Array.isArray(datasets)&&datasets.slice(0, items).map((dataset, index) => {
+                            listDataset&&Array.isArray(listDataset)&&listDataset.slice(0, items).map((dataset, index) => {
                                 return (
                                     <DatasetCard
                                         dataset={dataset}

@@ -94,7 +94,7 @@ class DatasetList extends Component {
             'theme':[],
             'date': "",
             'status': [],
-            'order':"desc"
+            'order': this.state.order_filter
         }
 
         dispatch(search(query, filter))
@@ -122,7 +122,7 @@ class DatasetList extends Component {
         var dataset = window.location.hash.indexOf('dataset')!==-1
         
         let filter = {
-            'text': dataset?'':query.toLowerCase(),
+            'text': dataset? '':query,
             'index': dataset?['catalog_test']:[],
             'org': [],
             'theme':[],
@@ -131,7 +131,7 @@ class DatasetList extends Component {
             'order': orderFilter,
         }
 
-        if(this.state.filter.elements){
+        if(this.state.filter.elements && this.state.filter.elements.length>0){
             this.state.filter.elements.map((fi, index) => {
                 switch(fi.type){
                     case 0:
@@ -708,6 +708,9 @@ class DatasetList extends Component {
                                                              <WidgetCard
                                                                  iframe = {firstWidget}
                                                                  />}
+                                                                {/* dashboardMatch['widgets']&&
+                                                                <div dangerouslySetInnerHTML={{__html: dashboardMatch['widgets']}}></div>
+                                                                 */}
                                                              </div>
                                                          </div>
                                                     </div>
@@ -816,6 +819,9 @@ class DatasetList extends Component {
                                                                 <WidgetCard
                                                                     iframe = {firstWidget}
                                                                     />}
+                                                                {/* storyMatch['text']&&
+                                                                <div dangerouslySetInnerHTML={{__html: storyMatch['text']}}></div>
+                                                                 */}
                                                                 </div>
                                                             </div>
                                                     </div>
