@@ -144,7 +144,7 @@ const renderContesti = ({ input, label, type, contesti, index, meta: { touched, 
   <div className="col-md-9">
       <select className="form-control" {...input}>
         {contesti.map(value => {
-         return(<option value={value.id} key={value.id}>{value.label}</option>)
+         return(<option value={value.id} key={value.id}>{value.humanlabel}</option>)
         }
        )}
       </select>
@@ -470,24 +470,38 @@ class WizardFormMetadata extends Component {
                 aggiornaStato={aggiornaStato}
               />
               {this.state.context && this.state.context[index] && this.state.context[index].length>0 &&
-                <Field
-                  name={`${test}.contesto`}
+                <div>
+                  <Field
+                    name={`${test}.contesto`}
+                    type="text"
+                    component={renderContesti}
+                    label="Contesto"
+                    value={`${test}.contesto`}
+                    contesti={this.state.context[index]}
+                    index={index}
+                  /> 
+                  <Field
+                  name={`${test}.uri_voc`}
                   type="text"
-                  component={renderContesti}
-                  label="Contesto"
-                  value={`${test}.contesto`}
-                  contesti={this.state.context[index]}
-                  index={index}
-                /> 
-              }
-              {this.state.uri_voc && this.state.uri_voc[index] &&
-                <Field
-                name={`${test}.uri_voc`}
-                type="text"
-                component={renderField}
-                label="Uri Vocabulary"
-                value={`${test}.uri_voc`}
-                />
+                  component={renderField}
+                  label="Uri Vocabulary"
+                  value={`${test}.uri_voc`}
+                  />
+                   <Field
+                  name={`${test}.uri_property`}
+                  type="text"
+                  component={renderField}
+                  label="Uri Property"
+                  value={`${test}.uri_property`}
+                  />
+                   <Field
+                  name={`${test}.gerarchia`}
+                  type="text"
+                  component={renderField}
+                  label="Gerarchia"
+                  value={`${test}.gerarchia`}
+                  />
+                </div>
               }
               <Field
                 name={`${test}.desc`}
