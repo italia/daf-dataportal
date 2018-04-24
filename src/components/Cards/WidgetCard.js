@@ -92,9 +92,13 @@ class WidgetCard extends Component {
     render(){
         const { iframe } = this.props
         var org = ''
+        var sp1 = []
         if(iframe.table){
-            if(iframe.table.indexOf('_o_')!==-1){
-                var sp1 = iframe.table.split('_o_')
+            if(this.isMetabase()){
+                sp1[1] = iframe.table
+            }
+            else if(this.isSuperset() && iframe.table.indexOf('_o_')!==-1){
+                sp1 = iframe.table.split('_o_')
                 let sp2 = sp1[0].split('.')
                 org = sp2[1]
             }
@@ -141,13 +145,13 @@ class WidgetCard extends Component {
                     <div className="row m-0 footer-widget">
                         <div className="col-2 p-0 h-100">
                             <div className="tool text-icon text-center bg-light b-b-card b-r-dash">
-                                {this.isSuperset() && <i className="fa fa-database py-3" title="Realizzato con Superset"/>}
-                                {this.isMetabase() && <i className="fa fa-chart-pie py-3" title="Realizzato con Metabase" />}
+                                {this.isSuperset() && <i className="fa fa-database py-3 pointer" title="Realizzato con Superset"/>}
+                                {this.isMetabase() && <i className="fa fa-chart-pie py-3 pointer" title="Realizzato con Metabase" />}
                             </div>
                         </div>
                         <div className="col-8 pr-0 h-100">
                             <div title={sp1 ? (sp1[1]) : ''}>
-                                <i className="text-icon fa fa-table py-3 pr-2" /> {sp1 ? transformDatasetName(sp1[1]):''}
+                                <i className="text-icon fa fa-table py-3 pr-2" /> {sp1[1] ? transformDatasetName(sp1[1]):''}
                             </div>
                         </div>
                         {sp1 && <div className="col-2 p-0 h-100">
