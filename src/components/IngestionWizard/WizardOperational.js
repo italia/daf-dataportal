@@ -38,12 +38,12 @@ const renderTipoLettura = ({ input, meta: { touched, error } }) => (
 const renderMergeStrategy = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
-      <option value=""  key='' defaultValue></option>
-      <option value="SYNC" key='SYNC'>Sostituisci il contenuto della tabella</option>
+      {/*<option value=""  key='' defaultValue></option>
+      <option value="SYNC" key='SYNC'>Sostituisci il contenuto della tabella</option>*/}
+      <option value="DEDUPE_AND_MERGE"  key='DEDUPE_AND_MERGE' defaultValue>Inserisci tutte le righe ignorando i duplicati</option>
       <option value="MERGE"  key='MERGE'>Inserisci tutte le righe</option>
-      <option value="DEDUPE_AND_MERGE"  key='DEDUPE_AND_MERGE'>Inserisci tutte le righe ignorando i duplicati</option>
     </select>
-    {touched && error && <span>{error}</span>}
+    {touched && error && <div className="text-danger">{error}</div>}
   </div>
 );
 
@@ -74,7 +74,7 @@ const renderAggiornamento = ({ input, meta: { touched, error } }) => (
     <option value="" defaultValue key=''></option>
     {cron.map(item => <option value={item.val} key={item.val}>{item.name}</option>)}
   </select>
-  {touched && error && <span>{error}</span>}
+  {touched && error && <div className="text-danger">{error}</div>}
 </div>
 );
 

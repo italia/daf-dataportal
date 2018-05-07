@@ -210,6 +210,15 @@ class DatasetDetail extends Component {
           }))
     }
 
+    truncate(title, n){
+        var result = title
+        if (title && title.length>n+5){
+            result = title.substring(0, n) + '...'
+        }
+
+        return result
+    }
+
     render() {
         const { dataset, ope, feed, iframes, isFetching, query } = this.props
         return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> : (<div>
@@ -217,7 +226,7 @@ class DatasetDetail extends Component {
                     <div>
                     <div className='top-dataset'>
                         <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary"></i>
-                        <h2 className="title-dataset px-4 text-primary">{dataset.dcatapit.title}</h2>
+                        <h2 className="title-dataset px-4 text-primary" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title,75)}</h2>
                         <ul className="nav nav-tabs w-100 buttons-nav px-search">
                                 <li className="nav-item">
                                     <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({showDett:true, showPreview: false, showAPI:false, showTools:false, showWidget:false, showDownload:false})}}><i className="text-icon fa fa-info-circle pr-2"/>Dettaglio</a>
@@ -260,7 +269,7 @@ class DatasetDetail extends Component {
                                                 <tbody className="w-100">
                                                     <tr>
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Slug: </strong></th> 
-                                                        <td className="bg-grigino">{dataset.dcatapit.name}
+                                                        <td className="bg-grigino" title={dataset.dcatapit.name}>{this.truncate(dataset.dcatapit.name,30)}
                                                             <CopyToClipboard text={dataset.dcatapit.name}>
                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{lineHeight: '1.5'}}/>
                                                             </CopyToClipboard>
@@ -293,7 +302,7 @@ class DatasetDetail extends Component {
                                                     </tr>
                                                     <tr>
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Percorso: </strong></th>
-                                                        <td className="bg-grigino">{dataset.operational.input_src.sftp[0].url}
+                                                        <td className="bg-grigino" title={dataset.operational.input_src.sftp[0].url}>{this.truncate(dataset.operational.input_src.sftp[0].url,30)}
                                                             <CopyToClipboard text={dataset.operational.input_src.sftp[0].url}>
                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{lineHeight: '1.5'}}/>
                                                             </CopyToClipboard>
@@ -310,7 +319,7 @@ class DatasetDetail extends Component {
                                                     </tr>
                                                     <tr>
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Indirizzo: </strong></th>
-                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_pull[0].url}>{dataset.operational.input_src.srv_pull[0].url.substring(0,45)+'...'}
+                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_pull[0].url}>{this.truncate(dataset.operational.input_src.srv_pull[0].url,30)}
                                                             <CopyToClipboard text={dataset.operational.input_src.srv_pull[0].url}>
                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{lineHeight: '1.5'}}/>
                                                             </CopyToClipboard>
@@ -365,6 +374,7 @@ class DatasetDetail extends Component {
                                                         <p><strong>Utente: </strong>{localStorage.getItem('user')}</p>
                                                         <p><strong>Password: </strong>XXXXXXXXXX</p>      
                                                     </div>
+                                                    <p>Per conoscere le modalità di utilizzo delle REST API puoi consultare la documentazione dettagliata <b><a className="text-primary" href="http://daf-dataportal.readthedocs.io/it/latest/dataportal-privato/api.html" title="Guida all'uso delle API">QUI</a></b></p>
                                                 </div>
                                             </div>
                                         </div> 
@@ -380,7 +390,7 @@ class DatasetDetail extends Component {
                                                     <div>
                                                         {this.state.supersetLink.map((link, index) => {
                                                                 return(
-                                                                    <div>
+                                                                    <div key={index}>
                                                                         <p>Accedi alla tabella <strong><a href={link.url} target='_blank'>{link.name}</a></strong> su Superset.</p>
                                                                     </div>
                                                                 )
@@ -409,6 +419,8 @@ class DatasetDetail extends Component {
                                                 <div className="row text-muted">
                                                     <i className="text-icon fa fa-sticky-note fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Jupyter</b></h4>
                                                 </div>
+                                                {this.state.hasPreview &&
+                                                <div>
                                                 <div className="row">
                                                     <p>Leggi attentamente le <a href="http://daf-docs.readthedocs.io/en/latest/manutente/datascience/jupyter.html" target='_blank'>istruzioni </a> e collegati a <a href={serviceurl.urlJupiter} target='_blank'>Jupyter</a>.  </p>
                                                     <p>Dopo aver attivato la sessione seguendo le istruzioni potrai analizzare il file al percorso:</p>
@@ -453,7 +465,9 @@ class DatasetDetail extends Component {
                                                     </div>
                                                 </div>
                                                 <br /><br />
+                                                </div>}
                                             </div>
+                                            {!this.state.hasPreview && <p>Non è possibile usare Jupyter per questo dataset</p>}
                                         </div> 
                         </div>
                         </div>
@@ -591,14 +605,11 @@ class DatasetDetail extends Component {
                     </div>
                     </div>
                     }
-                        {!dataset && 
-                        <div className="row">
-                        <div className="col-10" hidden={this.state.hidden}>
-                            <div className="alert alert-danger col-" role="alert">
+                        {!dataset && (ope === 'RECEIVE_DATASET_DETAIL_ERROR') &&
+                        <div className="row mx-4">
+                        <div className="col-12">
+                            <div className="alert alert-danger" role="alert">
                                 Il dataset cercato non esiste
-                            </div>
-                            <div>
-                                <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
                             </div>
                         </div>
                         </div>}

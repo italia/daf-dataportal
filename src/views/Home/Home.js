@@ -28,10 +28,12 @@ class Home extends Component {
 
         this.state = {
             listStories: [],
+            listDataset: [],
             listDashboards: [],
             listIframes: [],
             counter:[],
             items: 3,
+            isLoading: true,
         }
         
         this.searchDataset();
@@ -72,13 +74,13 @@ class Home extends Component {
         window.removeEventListener("resize", this.updatePredicate);
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.results){
-            this.setState({
-                counter: JSON.parse(nextProps.results[nextProps.results.length-4].source)
-            })
+        componentWillReceiveProps(nextProps){
+            if(nextProps.results){
+                this.setState({
+                    counter: JSON.parse(nextProps.results[nextProps.results.length-4].source)
+                })
+            }
         }
-    }
 
     updatePredicate() {
         if (window.innerWidth <= 1200)
@@ -105,13 +107,42 @@ class Home extends Component {
             'status': [],
             'order':""
         }
+        
+        /* let elements = homeService.homeElements();
+        elements.then(json => {
+            try{
+                json.map((element, index)=>{
+                    switch(element.type){
+                        case 'catalog_test':
+                            let dataset = JSON.parse(element.source)
+                            this.state.listDataset.push(dataset)
+                            break;
+                        case 'dashboards':
+                            let dashboard = JSON.parse(element.source)
+                            this.state.listDashboards.push(dashboard)
+                            break;
+                        case 'stories':
+                            let story = JSON.parse(element.source)
+                            this.state.listStories.push(story)
+                            break;
+                        case 'type':
+                            let type = JSON.parse(element.source)
+                            this.state.counter = type
+                            break;
+                    }
+                })
+                this.state.isLoading = false
+            }
+            catch(error){console.log('error in getting elements')}
+        }) */
         dispatch(search('', filter))
     }
 
     render(){
         const { datasets, isFetching, results } = this.props
-        const { listDashboards, listStories, listIframes, items, counter } = this.state
-        /* var counter = JSON.parse(results[results.length-4].source) */
+        const { listDashboards, listStories, listIframes, counter, items } = this.state
+        //const { listDashboards, listStories, listDataset, listIframes, items, counter, isLoading } = this.state
+        //var counter = JSON.parse(results[results.length-4].source)
         return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
             <div>
                 <div className="top-home w-100 bg-grey-n d-md-down-none">
@@ -176,7 +207,7 @@ class Home extends Component {
                     </div>
                     <div className="row mx-auto m-0">
                         {
-                            datasets&&datasets.slice(0, items).map((dataset, index) => {
+                            datasets&&Array.isArray(datasets)&&datasets.slice(0, items).map((dataset, index) => {
                                 return (
                                     <DatasetCard
                                         dataset={dataset}

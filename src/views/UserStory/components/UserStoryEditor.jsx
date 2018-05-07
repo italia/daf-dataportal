@@ -98,7 +98,7 @@ class UserStoryEditor extends Component {
       });
       
       if(dataStory.widgets==='{}'){
-        toastr.error('Errore', 'Per salvare una Dashboard inserisci almeno un Widget')
+        toastr.error('Errore', 'Per salvare una Storia inserisci almeno un Widget')
       }else{
 
         userStoryService.save(dataStory).then((data)=> {
@@ -110,7 +110,7 @@ class UserStoryEditor extends Component {
             this.state.dataStory.id = data.message;
             this.props.history.push('/user_story/list/'+ data.message + '/edit');
           }
-          toastr.success('Completato', 'Dashboard salvata con successo')
+          toastr.success('Completato', 'Storia salvata con successo')
         })
       }
 

@@ -17,6 +17,9 @@ import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 class SearchBar extends Component{
     constructor(props){
         super(props)
+        this.state={
+            open: props.open
+        }
 
         this.handleLoadDatasetClick = this.handleLoadDatasetClick.bind(this)
     }
@@ -27,36 +30,39 @@ class SearchBar extends Component{
 
     handleLoadDatasetClick(event) {
         event.preventDefault();
-        const { dispatch, selectDataset } = this.props;
-/*         dispatch(loadDatasets(this.refs.auto.value, 0, '', '', '', '', 'metadata_modified%20desc'))
-        .then(json => {
-            this.props.history.push('/dataset');
-        }) */
-        var dataset = window.location.hash==='#/dataset'
-        if(this.refs.auto.value!==''){
-            let filter = {
-                'text': this.refs.auto.value.toLowerCase(),
-                'index': dataset?['catalog_test']:[],
+        const { dispatch, filter } = this.props;
+        
+        let newFilter = { }
+
+        if(window.location.hash.indexOf('dataset')!==-1){
+            newFilter = {
+                'text': '',
+                'index': [],
                 'org': [],
                 'theme':[],
                 'date': "",
                 'status': [],
-                'order':""
+                'order':"desc"
             }
-
-            dispatch(search(this.refs.auto.value, filter))
-            .then(json => {
-                if(!dataset) 
-                    this.props.history.push('/search?q='+this.refs.auto.value);
-                if(dataset)
-                    this.props.history.push('/dataset?q='+this.refs.auto.value);
-            })
+        }else{
+            newFilter = filter?filter:{
+                'text': '',
+                'index': [],
+                'org': [],
+                'theme':[],
+                'date': "",
+                'status': [],
+                'order':"desc"
+            }
         }
-        /* this.props.history.push('/dataset?q='+this.refs.auto.value) */
+
+        newFilter.text = this.refs.auto.value.toLowerCase();
+        this.props.history.push('/search?q='+this.refs.auto.value);
+        dispatch(search(this.refs.auto.value, newFilter))
     }
 
     render(){
-        const { open } = this.props
+        const { open } = this.state
 
         let revealed = open ? "revealed" : ""
 
@@ -76,13 +82,14 @@ class SearchBar extends Component{
 }
 
 SearchBar.propTypes = {
-    loggedUser: PropTypes.object,
-    value: PropTypes.string
+    filter: PropTypes.object,
+    query: PropTypes.string,
+    results: PropTypes.array,
 }
 
 function mapStateToProps(state) {
-    const { loggedUser } = state.userReducer['obj'] || {}
-    return { loggedUser }
+    const { isFetching, results, query, filter } = state.searchReducer['search'] || { isFetching: false, results: []}
+    return { filter }
 }
 
 export default connect(mapStateToProps)(SearchBar)

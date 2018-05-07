@@ -13,6 +13,7 @@ export const DELETE_DATASETS = 'DELETE_DATASETS'
 export const SELECT_DATASET = 'SELECT_DATASET'
 export const REQUEST_DATASET_DETAIL = 'REQUEST_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL = 'RECEIVE_DATASET_DETAIL'
+export const RECEIVE_DATASET_DETAIL_ERROR = 'RECEIVE_DATASET_DETAIL_ERROR'
 export const REQUEST_LOGIN = 'REQUEST_LOGIN'
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN'
 export const REMOVE_LOGGED_USER = 'REMOVE_LOGGED_USER'
@@ -103,6 +104,22 @@ function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, categor
   }
 }
 
+function receiveDatasetDetailError(query, category_filter, group_filter, organization_filter, order_filter) {
+  return {
+      type: RECEIVE_DATASET_DETAIL_ERROR,
+      dataset: undefined,
+      feed: undefined,
+      iframes: undefined,
+      query: query,
+      category_filter: category_filter,
+      group_filter: group_filter,
+      organization_filter: organization_filter,
+      order_filter: order_filter,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_DATASET_DETAIL_ERROR'
+  }
+}
+
 function requestSearch() { 
   return {
     type: REQUEST_SEARCH
@@ -120,11 +137,12 @@ function receiveSearchError(query) {
   }
 }
 
-function receiveSearch(json, query) { 
+function receiveSearch(json, query, filter) { 
   return {
     type: RECEIVE_SEARCH,
     results: json,
     query: query,
+    filter: filter,
     receivedAt: Date.now(),
     ope: 'RECEIVE_SEARCH',
     isFetching: false
@@ -800,12 +818,17 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
                 .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
                 .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter)))
                 })
-              }) 
+              })
+        .catch(error => {
+          console.log('Nessun Dataset con questo nome');
+          dispatch(receiveDatasetDetailError(query, category_filter, group_filter, organization_filter, order_filter))
+        }) 
       }
   }
 
   export function search(query, filter) {
     var url = serviceurl.apiURLDatiGov + '/elasticsearch/search'
+    /* var url = 'http://10.100.208.165:9000/dati-gov/v1/elasticsearch/search' */
     return dispatch => {
       dispatch(requestSearch())
       return fetch(url, {
@@ -814,12 +837,13 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('token')
+          /* 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyIkaW50X3Blcm1zIjpbXSwic3ViIjoib3JnLnBhYzRqLmxkYXAucHJvZmlsZS5MZGFwUHJvZmlsZSNsdWNhcGljIiwiJGludF9yb2xlcyI6W10sIm1lbWJlck9mIjpbImNuPWRhZl9hZG1pbnMsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPXRlc3Rfb3JnMyxjbj1ncm91cHMsY249YWNjb3VudHMsZGM9ZXhhbXBsZSxkYz10ZXN0IiwiY249aXBhdXNlcnMsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPXRlc3Rfb3JnMixjbj1ncm91cHMsY249YWNjb3VudHMsZGM9ZXhhbXBsZSxkYz10ZXN0IiwiY249Y29tdW5lX2RpX3JvbWEsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPXRlc3Rfb3JnLGNuPWdyb3Vwcyxjbj1hY2NvdW50cyxkYz1leGFtcGxlLGRjPXRlc3QiLCJjbj1kYWYsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPWRlZmF1bHRfb3JnLGNuPWdyb3Vwcyxjbj1hY2NvdW50cyxkYz1leGFtcGxlLGRjPXRlc3QiXSwiZXhwIjoxNTI0NTkzMDYyfQ.qxUWtye--LOM_5vwyOkObgXeP2faYENmH21bY17tc30' */
         },
         body: JSON.stringify(filter)
       })
       .then(response => {
           if(response.ok)
-              response.json().then(json => dispatch(receiveSearch(json, query)))
+              response.json().then(json => dispatch(receiveSearch(json, query, filter)))
           else dispatch(receiveSearchError(query))
       }).catch(error => console.log('Errore durante la ricerca'))
     }

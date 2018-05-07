@@ -42,14 +42,22 @@ class Header extends Component {
 	
 		toggleCrea(){
 			this.setState({
-				crea: !this.state.crea
+				crea: !this.state.crea,
+				dropdownOpen: false,
+				revealed: false
 			})
+			if(this.state.revealed === true)
+				this.props.openSearch();
 		}
 
 		toggle() {
 			this.setState({
-				dropdownOpen: !this.state.dropdownOpen
+				dropdownOpen: !this.state.dropdownOpen,
+				crea: false,
+				revealed: false
 			});
+			if(this.state.revealed === true)
+				this.props.openSearch();
 		}
 
 		sidebarToggle(e) {
@@ -94,7 +102,9 @@ class Header extends Component {
 		toggleSearch(e){
 			this.setState({
 				revealed: !this.state.revealed,
-				accento: !this.state.accento
+				accento: !this.state.accento,
+				dropdownOpen: false,
+				crea: false
 			})
 			if(this.state.mobile === true)
 				this.mobileSidebarToggle(e);
@@ -107,18 +117,20 @@ class Header extends Component {
 		}
 
 		createDash(){
-			this.props.history.push({
+			/* this.props.history.push({
 				pathname: '/dashboard/list',
 				state: { 'isOpen': true }
-			})
+			}) */
+			this.props.openModalDash();
 			this.toggleCrea()
 		}
 
 		createStory(){
-			this.props.history.push({
+			/* this.props.history.push({
 				pathname: '/user_story/list',
 				state: { 'isOpen': true }
-			})
+			}) */
+			this.props.openModalStory();
 			this.toggleCrea()
 		}
 
