@@ -8,7 +8,8 @@ import {
     loadDatasets,
     unloadDatasets,
     datasetDetail,
-    logout
+    logout,
+    search
 } from '../../actions'
 import { createBrowserHistory } from 'history';
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
@@ -16,6 +17,9 @@ import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 class SearchBar extends Component{
     constructor(props){
         super(props)
+        this.state={
+            open: props.open
+        }
 
         this.handleLoadDatasetClick = this.handleLoadDatasetClick.bind(this)
     }
@@ -26,18 +30,51 @@ class SearchBar extends Component{
 
     handleLoadDatasetClick(event) {
         event.preventDefault();
-        this.props.history.push('/dataset?q='+this.refs.auto.value)
+        const { dispatch, filter } = this.props;
+        
+        let newFilter = { }
+
+        if(window.location.hash.indexOf('dataset')!==-1){
+            newFilter = {
+                'text': '',
+                'index': [],
+                'org': [],
+                'theme':[],
+                'date': "",
+                'status': [],
+                'order':"desc"
+            }
+        }else{
+            newFilter = filter?filter:{
+                'text': '',
+                'index': [],
+                'org': [],
+                'theme':[],
+                'date': "",
+                'status': [],
+                'order':"desc"
+            }
+        }
+
+        newFilter.text = this.refs.auto.value.toLowerCase();
+        this.props.history.push('/search?q='+this.refs.auto.value);
+        dispatch(search(this.refs.auto.value, newFilter))
     }
 
     render(){
-        const { open } = this.props
+        const { open } = this.state
 
         let revealed = open ? "revealed" : ""
 
         return(
             <div className={"search-bar " + revealed}>
                 <form onSubmit={this.handleLoadDatasetClick}>
-                    <input className="search-input" placeholder="Cosa stai cercando?" ref="auto" name="s" id="search_mobile" type="text"/>
+                    <div className="input-group">
+                        {/* <div className="input-group-prepend">
+                            <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"></button>
+                        </div> */}
+                        <input className="search-input form-control" placeholder="Cosa stai cercando?" ref="auto" name="s" id="inlineFormInputGroup" type="text"/>
+                    </div>
                 </form>
             </div>
         )
@@ -45,13 +82,14 @@ class SearchBar extends Component{
 }
 
 SearchBar.propTypes = {
-    loggedUser: PropTypes.object,
-    value: PropTypes.string
+    filter: PropTypes.object,
+    query: PropTypes.string,
+    results: PropTypes.array,
 }
 
 function mapStateToProps(state) {
-    const { loggedUser } = state.userReducer['obj'] || {}
-    return { loggedUser }
+    const { isFetching, results, query, filter } = state.searchReducer['search'] || { isFetching: false, results: []}
+    return { filter }
 }
 
 export default connect(mapStateToProps)(SearchBar)

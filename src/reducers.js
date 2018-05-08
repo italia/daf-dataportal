@@ -6,6 +6,7 @@ import {
   DELETE_DATASETS,
   REQUEST_DATASET_DETAIL,
   RECEIVE_DATASET_DETAIL,
+  RECEIVE_DATASET_DETAIL_ERROR,
   REQUEST_LOGIN,
   RECEIVE_LOGIN,
   REMOVE_LOGGED_USER,
@@ -55,6 +56,22 @@ function datasets( state = { isFetching: false, didInvalidate: false, items: [],
         didInvalidate: false
       })
     case RECEIVE_DATASET_DETAIL:
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: false,
+        items: null,
+        query: action.query,
+        dataset: action.dataset,
+        feed: action.feed,
+        iframes: action.iframes,
+        category_filter: action.category_filter,
+        group_filter: action.group_filter,
+        organization_filter: action.organization_filter,
+        order_filter: action.order_filter,
+        lastUpdated: action.receivedAt,
+        ope: action.ope
+      })
+    case RECEIVE_DATASET_DETAIL_ERROR : 
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
@@ -131,6 +148,7 @@ function datasetReducer(state = {}, action) {
   switch (action.type) {
     case REQUEST_DATASET_DETAIL:
     case RECEIVE_DATASET_DETAIL:
+    case RECEIVE_DATASET_DETAIL_ERROR:
     case DELETE_DATASETS:
     case RECEIVE_DATASETS:
     case REQUEST_DATASETS:
@@ -186,7 +204,7 @@ function searchReducer(state = {}, action) {
     case REQUEST_SEARCH:
       return Object.assign({}, state, {'search': {'isFetching': true, 'results': undefined}})
     case RECEIVE_SEARCH:
-      return Object.assign({}, state, {'search': { 'isFetching': false, 'results': action.results, 'query': action.query}})
+      return Object.assign({}, state, {'search': { 'isFetching': action.isFetching, 'results': action.results, 'query': action.query, 'filter': action.filter}})
       default:
       return state
   }

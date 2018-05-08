@@ -11,6 +11,7 @@ import {
 } from 'react-modal-bootstrap'
 import TextEditor from '../../../UserStory/components/editor/TextEditor'
 import { isEditor, isAdmin } from '../../../../utility'
+import { connect } from 'react-redux'
 
 class EditBarTop extends React.Component {
 
@@ -18,15 +19,19 @@ class EditBarTop extends React.Component {
     super(props);
     this.state= {
       dashboard : this.props.dashboard,
+      modified: this.props.modified,
       isOpen: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.save = this.save.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.dashboard)
       this.state.dashboard = nextProps.dashboard;
+    if(nextProps.modified)
+      this.state.modified = nextProps.modified
   }
 
   handleChange(event) {
@@ -79,6 +84,18 @@ class EditBarTop extends React.Component {
     this.props.onRemove();
   }
 
+  save(){
+    this.props.onSave();
+  }
+
+  back(){
+    this.props.onBack();
+  }
+
+  preview(){
+    this.props.onPreview();
+  }
+
   render = function(){
     const { dashboard } = this.state
 
@@ -108,7 +125,7 @@ class EditBarTop extends React.Component {
               </form>
             </Modal>
             <div className="row">
-            {this.state.dashboard.id &&
+            {
             (!this.state.dashboard.status) &&
                 <div className="col-sm-10">
                   <div className="alert alert-warning" role="alert">
@@ -136,7 +153,7 @@ class EditBarTop extends React.Component {
               }
               <div className="col-sm-2">
               {
-                (!this.props.saving) ? <span className="badge badge-success float-right">Salvato</span> : <span className="badge badge-warning float-right">Sto salvando...</span>
+                (!this.props.saving) ? <span className="badge badge-success float-right">Salvato</span> : <span className="badge badge-info float-right">Modificato</span>
               }
               </div>
               </div>
@@ -155,11 +172,11 @@ class EditBarTop extends React.Component {
             <div className="col-sm-5 hidden-sm-down">
               <div className="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">
                 <div className="btn-group mr-1" data-toggle="buttons" aria-label="First group">
-                  <Link role="button" to="/dashboard/list">
-                    <button type="button" className="btn btn-link float-right" title="Torna alle mie Dashboard">
-                      <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
-                    </button>
-                  </Link>
+                  
+                  <button type="button" className="btn btn-link float-right" title="Torna alla lista Dashboard" onClick={this.back.bind(this)}>
+                    <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
+                  </button>
+                  
                   {this.state.dashboard.id &&
                   <button type="button" className="btn btn-link float-right" onClick={() => this.onRemove()}  title="Elimina">
                     <i className="fa fa-trash fa-lg m-t-2"></i>
@@ -168,18 +185,19 @@ class EditBarTop extends React.Component {
 
                   {
                    this.state.dashboard.id &&
-                    <Link role="button" to={"/dashboard/list/" + this.state.dashboard.id }>
-                      <button type="button" className="btn btn-link float-right" title="Anteprima">
+                      <button type="button" className="btn btn-link float-right" title="Anteprima" onClick={this.preview.bind(this)}>
                         <i className="fa fa-eye fa-lg m-t-2"></i>
                       </button>
-                    </Link>
                   }
                   {
-                  (!this.state.dashboard.status || this.state.dashboard.status == false || this.state.dashboard.status === 1) &&
+                  /* (!this.state.dashboard.status || this.state.dashboard.status == false || this.state.dashboard.status === 1) &&
                     <button type="button" className="btn btn-link float-right" onClick={() => this.openModal()} title="Pubblica">
-                    <i className="fa fa-paper-plane-o fa-lg m-t-2"></i>
+                    <i className="fa fa-paper-plane fa-lg m-t-2"></i>
                     </button>
-                  }
+                   */}
+                    <button type="button" className="btn btn-link float-right" onClick={() => this.save()} title="Salva">
+                    <i className="fas fa-save fa-lg m-t-2"></i>
+                    </button>
                 </div>
               </div>
             </div>
@@ -259,4 +277,9 @@ class EditBarTop extends React.Component {
 */
 
 
-export default EditBarTop;
+function mapStateToProps(state) {
+  const { loggedUser } = state.userReducer['obj'] || { }
+  return { loggedUser }
+}
+
+export default connect(mapStateToProps)(EditBarTop);

@@ -13,7 +13,8 @@ import {
   loadDatasets,
   unloadDatasets,
   datasetDetail,
-  logout
+  logout,
+  search
 } from '../../actions'
 import PropTypes from 'prop-types'
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
@@ -78,26 +79,35 @@ class Sidebar extends Component {
   };
 
   handleLoadDatasetClick(event) {
-    console.log('Search Dataset for: ' + this.refs.auto.state.value);
     event.preventDefault();
     const { dispatch, selectDataset } = this.props;
-    dispatch(loadDatasets(this.refs.auto.state.value, 0, '', '', '', '', 'metadata_modified%20desc'));
-    this.props.history.push('/dataset');
-    document.body.classList.toggle('sidebar-mobile-show');
+    let filter = {
+      'text': '',
+      'index': ['catalog_test'],
+      'org': [],
+      'theme':[],
+      'date': "",
+      'status': [],
+      'order':""
+  }
+    dispatch(search('', filter))
+    this.props.history.push('/dataset')
   }
 
   createDash(){
-    this.props.history.push({
+    this.props.openModalDash();
+    /* this.props.history.push({
       pathname: '/dashboard/list',
       state: { 'isOpen': true }
-    })
+    }) */
   }
 
   createStory(){
-    this.props.history.push({
+    this.props.openModalStory();
+    /* this.props.history.push({
       pathname: '/user_story/list',
       state: { 'isOpen': true }
-    })
+    }) */
   }
 
   render() {
@@ -120,24 +130,21 @@ class Sidebar extends Component {
           </ModalHeader>
           <ModalBody>
           <div className="form-group">
-            {this.state.name==='Metabase' ? 
-            <h3 className="text-center"><i className="fa fa-exclamation-triangle fa-lg"/> Lavori in corso! {this.state.name} sarà presto disponibile</h3>
-            :
-            <p>Stai per essere renidirizzato nell'applicazione {this.state.name}.</p>}
+            <p>Stai per essere renidirizzato nell'applicazione {this.state.name}.</p>
           </div>
           </ModalBody>
           <ModalFooter>
             <button className='btn btn-gray-200' onClick={this.hideModal}>
               Chiudi
             </button>
-              {this.state.name !== 'Metabase' && <button className='btn btn-gray-200' onClick={this.hideModalAndRedirect}>Scegli</button>}
+            <button className='btn btn-gray-200' onClick={this.hideModalAndRedirect}>Scegli</button>
           </ModalFooter>
         </form>
       </Modal>
         <div className="sidebar ">
           <nav className="sidebar-nav b-t-1 b-r-1">
             <ul className="nav">
-              <li className="nav-item" onClick={(e) => { 
+              <li className="nav-item b-r-1" onClick={(e) => { 
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');}}>
                 <NavLink to={'/home'} className={"nav-link "+home} activeClassName="nav-link-primary"><i className="fa fa-home fa-lg text-secondary"></i> Home</NavLink>
@@ -146,7 +153,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/dataset'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-table fa-lg text-secondary"></i> Dataset</NavLink>
+                <NavLink to={'/dataset'} className="nav-link" activeClassName="nav-link-primary" onClick={this.handleLoadDatasetClick.bind(this)}><i className="fa fa-table fa-lg text-secondary"></i> Dataset</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
@@ -175,15 +182,15 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/crea'} className={"nav-link "+crea} activeClassName="nav-link-primary"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
               </li> */}
-              <li className="nav-item nav-dropdown">
-                <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-plus fa-lg text-secondary"></i> Crea</a>
+              <li className="nav-item nav-dropdown b-r-1">
+                <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-plus fa-lg text-secondary"></i> Crea</a>
                 <ul className="nav-dropdown-items bg-light">
-                  <li className="nav-item" onClick={(e) => {
+                  {(isEditor() || isAdmin()) && <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <Link to={'/ingestionwizzard'} /* onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} */ className="nav-link"><i className="fas fa-table fa-lg text-secondary"/>  Nuovo Dataset</Link>
-                  </li>
+                    <Link to={'/ingestionwizzard'} className="nav-link"><i className="fas fa-table fa-lg text-secondary"/>  Nuovo Dataset</Link>
+                  </li>}
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
@@ -194,18 +201,18 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link" onClick={this.createStory.bind(this)}><i className="fas fa-font fa-lg text-secondary" />  Nuosa Storia</a>
+                    <a href className="nav-link" onClick={this.createStory.bind(this)}><i className="fas fa-font fa-lg text-secondary" />  Nuova Storia</a>
                   </li>
                 </ul>
               </li>
-              <li className="nav-item nav-dropdown">
+              <li className="nav-item nav-dropdown b-r-1">
                 <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-wrench fa-lg text-secondary"></i> Strumenti</a>
                 <ul className="nav-dropdown-items bg-light">
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-pie-chart fa-lg text-secondary"/>  Metabase</a>
+                    <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-chart-pie fa-lg text-secondary"/>  Metabase</a>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();

@@ -29,6 +29,7 @@ class UserStoryEditor extends Component {
     //load data
     let response = userStoryService.get(this.state.id);
     response.then((story) => {
+      try{
       let wids = JSON.parse(story.widgets)
 
       Object.keys(wids).map(wid => {
@@ -47,6 +48,7 @@ class UserStoryEditor extends Component {
       this.setState({
         dataStory: story
       });
+    }catch(error){console.log('error in getting story')}
     });
 
   }

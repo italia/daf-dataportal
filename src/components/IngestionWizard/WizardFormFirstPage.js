@@ -45,10 +45,9 @@ const renderOrganization = ({ input, label, type, organizations, pvt, meta: { to
        <div className="form-group">
         <select className="form-control" {...input}>
           <option value=""  key='organization' defaultValue></option>
-          {pvt == 1 && organizations.map(organization => 
+          {organizations.map(organization => 
               organization != 'default_org' && <option value={organization} key={organization}>{organization}</option>
               )}
-          {pvt == 0 && <option value='default_org' key='default_org'>default_org</option>}
         </select>
       </div>
       {touched && error && <div className="text-danger">{error}</div>}
@@ -80,7 +79,7 @@ const renderLicenze = ({ input, label, type, licenze, meta: { touched, error } }
        <div className="form-group">
         <select className="form-control" {...input}>
           <option value=""  key='organization' defaultValue></option>
-          {licenze.map(licenza => <option value={licenza.notation} key={licenza.notation}>{licenza.label}</option>)}
+          {licenze.map(licenza => <option value={licenza.label} key={licenza.label}>{licenza.label}</option>)}
         </select>
       </div>
       {touched && error && <div className="text-danger">{error}</div>}

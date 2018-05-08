@@ -10842,6 +10842,7 @@ base-chart.chart {
     position: relative; }
     .sidebar .nav-dropdown-toggle::before {
       position: absolute;
+      color: black!important;
       top: 50%;
       right: 1rem;
       display: block;

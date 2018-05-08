@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import InfiniteScroll from '../../components/InfinityScroll'
 import WidgetService from './service/WidgetService';
 import WidgetCard from '../../components/Cards/WidgetCard'
 
@@ -10,48 +11,110 @@ class Widgets extends Component{
         super(props)
 
         this.state = {
-            listWidgets: [],
-            loading: true
+            listWidgets: props.widgets?props.widgets:[],
+            searched: props.widgets?props.widgets:[],
+            query: '',
+            items: 18,
+            loading: props.loading?props.loading:true
         }
     }
     
     componentDidMount(){
-        let response = widgetService.iframes()
-        response.then(json => {
-            this.setState({
-                loading: false,
-                listWidgets: json
+        if(this.state.listWidgets.length===0 && !this.props.widgets){
+            let response = widgetService.iframes()
+            response.then(json => {
+                this.setState({
+                    loading: false,
+                    listWidgets: json,
+                    searched: json
+                })
             })
-        })
+        }else{
+            this.setState({
+                loading: false
+            })
+        }
     }
 
-    render(){
-        const { loading, listWidgets } = this.state
+    filter(e, val){
+        return e.title.toLowerCase().indexOf(val) != -1 || e.table.toLowerCase().indexOf(val) != -1
+    }
 
-        return(
-            <div className="container body">
+    searchBy(val) {
+        const { listWidgets } = this.state;
+        var result = listWidgets.filter((wid) => {
+            if(wid.table)
+                return wid.title.toLowerCase().indexOf(val) != -1 || wid.table.toLowerCase().indexOf(val) != -1
+            else
+                return wid.title.toLowerCase().indexOf(val) != -1
+        })
+    
+        this.setState({
+          query: val,
+          searched: result
+        })
+        return result;
+      }
+
+    loadMore = () => {
+        if (this.state.isLoading) { return }
+        var totitems = this.state.items + 6;
+        this.setState({ 
+            items: totitems,
+            visible: "hidden"
+        });
+    }
+
+    handleScrollToBottom = () => this.loadMore()
+    handleLoadMoreClick = () => this.loadMore()
+
+    render(){
+        const { loading, listWidgets, visible, items } = this.state
+        let visibility = listWidgets.length<=items ? 'hidden':visible;
+        return loading == true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> : (
+           <div className="container body">
                 <div className="main_container">
                     <div className="top_nav">
                         <div className="nav_menu">
-                            <nav className="dashboardHeader">
-                                <h2>Widget</h2>
+                            <nav className="dashboardHeader row">
+                                <i className="fas fa-chart-bar fa-lg m-2" style={{lineHeight:'1'}}/><h2> Widget</h2>
                             </nav>
-                            {loading ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" /> Caricamento </h1> :
-                            <div className="row pl-3">
-                            {
-                                this.state.listWidgets.map((iframe, index) => {
-                                    
-                                    return (
-                                        iframe.identifier &&
-                                        <WidgetCard
-                                            iframe={iframe}
-                                            key={index}
-                                        />
-                                    )
-                                })
-                            }
+                            {window.location.hash.indexOf('dataset')===-1 && <div className="row">
+                                <div className="col-12">
+                                    <div className="input-prepend input-group mb-20">
+                                        <div className="input-group-text transparent-frame">
+                                            <i className="fa fa-search"/>
+                                        </div>
+                                        <input className="form-control transparent-frame" size="25" type="text" value={this.state.query} onChange={(e) => this.searchBy(e.target.value)} placeholder="Filtra la lista ..."/>
+                                    </div>
+                                </div>
+                            </div>}
+                            <div className="App bg-light">
+
+                                {listWidgets.length>0 ? 
+                                <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="row pl-3">
+                                    {
+                                        this.state.searched.slice(0, items).map((iframe, index) => {
+                                            if(iframe.identifier)
+                                                return (
+                                                    <WidgetCard
+                                                        iframe={iframe}
+                                                        key={index}
+                                                    />
+                                                )
+                                        })
+                                    }
+                                </InfiniteScroll>
+                                :
+                                <i>Non sono stati trovati Widget</i>
+                                }
                             </div>
-                        }
+                            <button
+                                className="List-load-more-button"
+                                onClick={this.handleLoadMoreClick}
+                                disabled={loading} style={{visibility: visibility }}>
+                                {loading ? 'Caricamento...' : 'Altri'}
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import { serviceurl } from './config/serviceurl.js'
 import { truncate } from 'fs';
 
-const themes = [
+export const themes = [
   { 'val': 'AGRI', 'name': 'AGRICOLTURA' },
   { 'val': 'ECON', 'name': 'ECONOMIA' },
   { 'val': 'EDUC', 'name': 'EDUCAZIONE' },
@@ -16,6 +16,10 @@ const themes = [
   { 'val': 'TECH', 'name': 'TECNOLOGIA' },
   { 'val': 'TRAN', 'name': 'TRASPORTO' }
 ]
+
+export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}]
+
+export const visibilita = [{ 'val': '2','name': 'Open data'},{ 'val': '0','name': 'Privato'},{ 'val': '1','name': 'Organizzazione'}]
 
 String.prototype.replaceAll = function (search, replacement) {
   var target = this;
@@ -120,10 +124,10 @@ export function transformName(name){
     return result
   }
 
-  export function truncateDatasetName(name) {
+  export function truncateDatasetName(name, cut) {
     var result = name
-    if (name.length >= 30)
-      result = result.substring(0, 26) + '...'
+    if (name.length >= cut)
+      result = result.substring(0, cut) + '...'
 
     return result
   }
@@ -159,7 +163,7 @@ export function transformName(name){
     }
 
   }
-
+/* 
   export function decodeTheme(value){
     var found=value
     for(var i = 0; i < themes.length; i++) {
@@ -170,5 +174,60 @@ export function transformName(name){
     }
     return found
   }
+ */
+   export function decodeTheme(value){
+    var found=''
+    if(value.indexOf('{')!=-1){
+      value = value.substring(1,value.length-1)
+      var valueArr = value.split(',')
+      for(var i=0;i<valueArr.length;i++){
+        if(found=='')
+          found+=getThemeDescFromCode(valueArr[i])
+        else
+        found+=', ' + getThemeDescFromCode(valueArr[i])
+      }
+    }else{
+      found = getThemeDescFromCode(value)
+    }
+    return found
+  }
+  
+  function getThemeDescFromCode(code){
+    var found=code
+    for(var i = 0; i < themes.length; i++) {
+      if (themes[i].val == code.trim()) {
+          found = themes[i].name
+          break
+      }
+    }
+    return found
 
+  }
+
+  export function decodeTipo(value){
+    var found=value
+    for(var i = 0; i < tipi.length; i++) {
+      if (tipi[i].val == value) {
+          found = tipi[i].name
+          break
+      }
+    }
+    return found
+  }
+
+  export function decodeVisibilita(value){
+    var found=value
+    for(var i = 0; i < visibilita.length; i++) {
+      if (visibilita[i].val == value) {
+          found = visibilita[i].name
+          break
+      }
+    }
+    return found
+  }
+
+
+/* 
   export default themes
+
+  export default tipi */

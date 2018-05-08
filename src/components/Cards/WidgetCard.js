@@ -29,7 +29,7 @@ class WidgetCard extends Component {
 
     isSuperset(){
         const { iframe } = this.props
-        if(iframe.identifier.indexOf('superset')!== -1)
+        if((iframe.identifier && iframe.identifier.indexOf('superset')!== -1) || (iframe.props && iframe.props.identifier.indexOf('superset')!== -1))
             return true
         else
             return false
@@ -37,7 +37,7 @@ class WidgetCard extends Component {
 
     isMetabase(){
         const { iframe } = this.props
-        if (iframe.identifier.indexOf('metabase')!== -1)
+        if ((iframe.identifier && iframe.identifier.indexOf('metabase')!== -1) || (iframe.props && iframe.props.identifier.indexOf('metabase')!== -1))
             return true
         else
             return false
@@ -54,7 +54,11 @@ class WidgetCard extends Component {
 
     componentDidMount(){
         const { iframe } = this.props
-        let url = serviceurl.apiURLDatiGov + '/plot/' + iframe.identifier + '/330x280';
+        let url = '';
+        if(iframe.identifier)
+            url = serviceurl.apiURLDatiGov + '/plot/' + iframe.identifier + '/330x280';
+        if(iframe.props)
+            url = serviceurl.apiURLDatiGov + '/plot/' + iframe.props.identifier + '/330x280';
         const response = fetch(url, {
             method: 'GET'
         }).then(response => {
@@ -88,9 +92,13 @@ class WidgetCard extends Component {
     render(){
         const { iframe } = this.props
         var org = ''
+        var sp1 = []
         if(iframe.table){
-            if(iframe.table.indexOf('_o_')!==-1){
-                var sp1 = iframe.table.split('_o_')
+            if(this.isMetabase()){
+                sp1[1] = iframe.table
+            }
+            else if(this.isSuperset() && iframe.table.indexOf('_o_')!==-1){
+                sp1 = iframe.table.split('_o_')
                 let sp2 = sp1[0].split('.')
                 org = sp2[1]
             }
@@ -104,7 +112,7 @@ class WidgetCard extends Component {
                     <div className="header-widget py-1">
                         <div className="row my-1 mx-0">
                             <div className="col-9 title-widget my-1 pl-3">
-                                <a href={this.getLink(iframe.iframe_url)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
+                                <a href={this.getLink(iframe.iframe_url?iframe.iframe_url:iframe.props.url)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
                             </div>
                             <div className="col-3 my-2">
                                 {
@@ -137,13 +145,13 @@ class WidgetCard extends Component {
                     <div className="row m-0 footer-widget">
                         <div className="col-2 p-0 h-100">
                             <div className="tool text-icon text-center bg-light b-b-card b-r-dash">
-                                {this.isSuperset() && <i className="fa fa-database py-3" title="Realizzato con Superset"/>}
-                                {this.isMetabase() && <i className="fa fa-pie-chart py-3" title="Realizzato con Metabase" />}
+                                {this.isSuperset() && <i className="fa fa-database py-3 pointer" title="Realizzato con Superset"/>}
+                                {this.isMetabase() && <i className="fa fa-chart-pie py-3 pointer" title="Realizzato con Metabase" />}
                             </div>
                         </div>
                         <div className="col-8 pr-0 h-100">
                             <div title={sp1 ? (sp1[1]) : ''}>
-                                <i className="text-icon fa fa-table py-3 pr-2" /> {sp1 ? transformDatasetName(sp1[1]):''}
+                                <i className="text-icon fa fa-table py-3 pr-2" /> {sp1[1] ? transformDatasetName(sp1[1]):''}
                             </div>
                         </div>
                         {sp1 && <div className="col-2 p-0 h-100">
