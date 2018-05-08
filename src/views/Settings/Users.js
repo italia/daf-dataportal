@@ -265,10 +265,8 @@ class Users extends Component {
     validatePsw(val){
         // pattern to match : Atleast one capital letter, one number and 8 chars length
         if(val!==''){
-            //var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
-            var reg1 = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$")
-            var reg2 = new RegExp("^[a-zA-Z0-9%@#   &,;:_'\/\<\(\[\{\\\^\-\=\$\!\|\]\}\)\\u200C\\u200B\?\*\+\.\>]*$")
-            if (reg1.test(val) && reg2.test(val)) {
+            var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>]{8,}$")
+            if (reg.test(val)) {
                 this.setState({
                     pswok: true,
                 })
