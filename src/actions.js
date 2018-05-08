@@ -340,39 +340,33 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
   };
   return dispatch => {
     dispatch(requestRegistration())
-    //var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
-    var reg1 = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$")
-    var reg2 = new RegExp("^[a-zA-Z0-9%@#   &,;:_'\/\<\(\[\{\\\^\-\=\$\!\|\]\}\)\\u200C\\u200B\?\*\+\.\>]*$")
-    if(reg1.test(pw)){
-      if(reg2.test(pw)){
-        if(pw===pw2){
-        return fetch(url, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'      
-          },
-          body: JSON.stringify(input)
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>]{8,}$")
+    if(reg.test(pw)){
+      if(pw===pw2){
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'      
+        },
+        body: JSON.stringify(input)
+      })
+      .then(response => {
+          if (response.ok) {
+            response.json().then(json => {
+              console.log(json);
+              dispatch(receiveRegistrationSuccess('ok', json))
+            });
+          } else {
+            response.json().then(json => {
+              console.log(json);
+              dispatch(receiveRegistrationSuccess('ko', json))
+            });
+          }
         })
-        .then(response => {
-            if (response.ok) {
-              response.json().then(json => {
-                console.log(json);
-                dispatch(receiveRegistrationSuccess('ok', json))
-              });
-            } else {
-              response.json().then(json => {
-                console.log(json);
-                dispatch(receiveRegistrationSuccess('ko', json))
-              });
-            }
-          })
-        .catch(error => dispatch(receiveRegistrationError(error)))
-        } else{
-          dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
-        }
-      }else{
-        dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita contiene caratteri non consentiti.'))
+      .catch(error => dispatch(receiveRegistrationError(error)))
+      } else{
+        dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
       }
     } else{
       dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
@@ -562,26 +556,20 @@ export function changePwd(token, pwd1, pwd2) {
 
   return dispatch => {
     dispatch(requestRegistration())
-    //var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
-    var reg1 = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$")
-    var reg2 = new RegExp("^[a-zA-Z0-9%@#   &,;:_'\/\<\(\[\{\\\^\-\=\$\!\|\]\}\)\\u200C\\u200B\?\*\+\.\>]*$")
-    if (reg1.test(pwd1)) {
-      if(reg2.test(pwd1)){
-        if (pwd1 === pwd2) {
-          return fetch(url, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(input),
-          })
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>]{8,}$")
+    if (reg.test(pwd1)) {
+      if (pwd1 === pwd2) {
+        return fetch(url, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(input),
+        })
       } else {
         dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
       }
-    } else {
-      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita contiene caratteri non consentiti.'))
-    }  
     } else {
       dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
     }
