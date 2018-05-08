@@ -71,32 +71,40 @@ class ConfirmReset extends Component {
         console.log('Cambio password utente token: ' + this.token);
         const { dispatch } = this.props
         this.setState({uploading: true})
-        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
-        if (reg.test(this.password.value)){
-          if(this.password.value === this.password2.value){
-            dispatch(changePwd(this.token, this.password.value, this.password2.value))
-            .then((response)=> {
-                if(response.ok){
-                  this.setState(setSuccessMsg('Cambio password avvenuto con successo.'))
-                  toastr.success('Complimenti', 'Cambio password avvenuto con successo.', { timeOut: 9000,})
-                  this.props.history.push('/login')
-                }else{
-                  response.json().then(json => {
-                    if(json.code===1){
-                      toastr.danger('Errore', json.message, {timeOut:0})
-                      /* this.setState(setErrorMsg(json.message)) */
-                    }else{
-                      /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
-                      toastr.danger('Errore', 'Errore durante il salvataggio.', {timeOut: 0 })
-                    }
-                  });
-                }
-            }).catch((error) => {
-              /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
-              toastr.danger('Errore', 'Errore durante il salvataggio.')
-            })
+        //var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+        var reg1 = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$")
+        var reg2 = new RegExp("^[a-zA-Z0-9%@#   &,;:_'\/\<\(\[\{\\\^\-\=\$\!\|\]\}\)\\u200C\\u200B\?\*\+\.\>]*$")
+      
+        
+        if (reg1.test(this.password.value)){
+          if (reg2.test(this.password.value)){
+            if(this.password.value === this.password2.value){
+              dispatch(changePwd(this.token, this.password.value, this.password2.value))
+              .then((response)=> {
+                  if(response.ok){
+                    this.setState(setSuccessMsg('Cambio password avvenuto con successo.'))
+                    toastr.success('Complimenti', 'Cambio password avvenuto con successo.', { timeOut: 9000,})
+                    this.props.history.push('/login')
+                  }else{
+                    response.json().then(json => {
+                      if(json.code===1){
+                        toastr.danger('Errore', json.message, {timeOut:0})
+                        /* this.setState(setErrorMsg(json.message)) */
+                      }else{
+                        /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
+                        toastr.danger('Errore', 'Errore durante il salvataggio.', {timeOut: 0 })
+                      }
+                    });
+                  }
+              }).catch((error) => {
+                /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
+                toastr.danger('Errore', 'Errore durante il salvataggio.')
+              })
+            }else{
+              this.setState(setErrorMsg('Le password inserite non corrispondono'))
+            }
           }else{
-            this.setState(setErrorMsg('Le password inserite non corrispondono'))
+            this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password inserita contiene caratteri non consentiti.'))
           }
         }else{
           this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
@@ -105,13 +113,23 @@ class ConfirmReset extends Component {
 
     validate(){
       if(this.password.value){
-        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
-        if(reg.test(this.password.value)){
+        //var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+        var reg1 = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$")
+        var reg2 = new RegExp("^[a-zA-Z0-9%@#   &,;:_'\/\<\(\[\{\\\^\-\=\$\!\|\]\}\)\\u200C\\u200B\?\*\+\.\>]*$")
+
+        if(reg1.test(this.password.value)){
           this.setState({
             msg: null,
           })
         }else{
           this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+        }
+        if(reg2.test(this.password.value)){
+          this.setState({
+            msg: null,
+          })
+        }else{
+          this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password inserita contiene caratteri non consentiti.'))
         }
       }else{
         this.setState({
