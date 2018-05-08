@@ -102,58 +102,84 @@ class Organizations extends Component {
     removeUser(user){
         const { org } = this.state
         let response = organizationService.userDel(org, user)
-        response.then((json) => {
-            if (json.code != '0') {
-                this.getUsers(org);
-                this.setState({
-                    remove: json.fields,
-                    add: '',
-                    create:'',
-                    delete:''
+        response.then((response) => {
+            if (response.ok) {
+                response.json().then(json => {
+                    if (json.code != '0') {
+                        this.getUsers(org);
+                        this.setState({
+                            remove: json.fields,
+                            add: '',
+                            create:'',
+                            delete:''
+                        })
+                    }else{
+                        this.getUsers(org);
+                        this.setState({
+                            remove: 'ko',
+                            add: '',
+                            create: '',
+                            delete: ''
+                        })
+                        console.log('User remove error: ' + json.message)
+                    }
                 })
             }else{
-                this.getUsers(org);
                 this.setState({
-                    remove: 'ko',
+                    remove: '',
                     add: '',
-                    create: '',
-                    delete: ''
+                    create: 'ko',
+                    delete: '',
+                    saving: false
                 })
-                console.log('User remove error: ' + json.message)
+                console.log('User remove error: ' + response.text())
             }
-        })
+        })   
     }
 
     add(){
         const { user, org } = this.state;
         let response = organizationService.userAdd(org, user)
         this.setState({ saving: true })
-        response.then((json) =>{
-            if(json.code!= '0'){
-                this.getUsers(org)
-                this.setState({
-                    add: json.fields,
-                    create: '',
-                    remove: '',
-                    delete: '',
-                    user: '',
-                    userModal: false,
-                    saving: false
+        response.then((response) => {
+            if (response.ok) {
+                response.json().then(json => {
+                    if(json.code!= '0'){
+                        this.getUsers(org)
+                        this.setState({
+                            add: json.fields,
+                            create: '',
+                            remove: '',
+                            delete: '',
+                            user: '',
+                            userModal: false,
+                            saving: false
+                        })
+                    }else{
+                        this.getUsers(org);
+                        this.setState({
+                            add: 'ko',
+                            create: '',
+                            remove: '',
+                            delete: '',
+                            user: '',
+                            userModal: false,
+                            saving: false
+                        })
+                        console.log('User Add error: '+json.message)
+                    }   
                 })
             }else{
-                this.getUsers(org);
                 this.setState({
-                    add: 'ko',
-                    create: '',
                     remove: '',
+                    add: '',
+                    create: 'ko',
                     delete: '',
-                    user: '',
-                    userModal: false,
                     saving: false
                 })
-                console.log('User Add error: '+json.message)
-            }   
-        })
+                console.log('User Add error: ' + response.text())
+            }
+        })   
     }
 
     createOrg(){
@@ -167,76 +193,87 @@ class Organizations extends Component {
         let response = organizationService.create(organization);
         this.setState({saving: true})
         response.then((response) => {
-        if (response.ok) {
-            response.json().then(json => {
-                if(json.code!='0'){
-                this.setState({
-                    remove: '',
-                    add: '',
-                    create: 'ok',
-                    delete: '',
-                    nome: '',
-                    mail: '',
-                    psw: '',
-                    saving: false
-                });
-                this.load();
-                }else{
+            if (response.ok) {
+                response.json().then(json => {
+                    if(json.code!='0'){
                     this.setState({
                         remove: '',
                         add: '',
-                        create: 'ko',
+                        create: 'ok',
                         delete: '',
+                        nome: '',
+                        mail: '',
+                        psw: '',
                         saving: false
-                    })
-                    console.log('Create org error: '+ json.message)
+                    });
+                    this.load();
+                    }else{
+                        this.setState({
+                            remove: '',
+                            add: '',
+                            create: 'ko',
+                            delete: '',
+                            saving: false
+                        })
+                        console.log('Create org error: '+ json.message)
+                    }
                 }
+            )
+            }else{
+                this.setState({
+                    remove: '',
+                    add: '',
+                    create: 'ko',
+                    delete: '',
+                    saving: false
+                })
+                console.log('Create org error:' + response.text())
             }
-
-        )
-        }else{
-            this.setState({
-                remove: '',
-                add: '',
-                create: 'ko',
-                delete: '',
-                saving: false
-            })
-            console.log('Create org error: Response.KO ' + response.description)
-            
-        }   
-        })     
+        })        
     }
 
     deleteOrg(){
         const { org } = this.state
         let response = organizationService.delete(org);
         this.setState({ saving: true })
-        response.then((json) => {
-            if (!json.code) {
-                this.setState({
-                    orgModal: false,
-                    remove: '',
-                    add: '',
-                    create: '',
-                    delete: 'ok',
-                    message: json.message,
-                    saving: false
+        response.then((response) => {
+            if (response.ok) {
+                response.json().then(json => {
+                    if (!json.code) {
+                        this.setState({
+                            orgModal: false,
+                            remove: '',
+                            add: '',
+                            create: '',
+                            delete: 'ok',
+                            message: json.message,
+                            saving: false
+                        })
+                        this.load();
+                    }else{
+                        this.setState({
+                            orgModal: false,
+                            remove: '',
+                            add: '',
+                            create: '',
+                            delete: 'ko',
+                            message: json.message,
+                            saving: false
+                        })
+                        this.load();
+                    }
                 })
-                this.load();
             }else{
                 this.setState({
-                    orgModal: false,
                     remove: '',
                     add: '',
-                    create: '',
-                    delete: 'ko',
-                    message: json.message,
+                    create: 'ko',
+                    delete: '',
                     saving: false
                 })
-                this.load();
+                console.log('Delete org error: ' + response.text())
             }
-        })
+        }) 
     }
 
     openOrgCreate(){

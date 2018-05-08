@@ -3,32 +3,25 @@ import { getKyloSchema, getCurrentDate } from '../utility'
 export function createOperational (values, data) {
   var operational = 'operational'
   data[operational] = {}
-  data[operational]['logical_uri'] = "test1"  //values.uri
   data[operational]['group_own'] = localStorage.getItem('user').toLowerCase() //values.ownership
-  data[operational]['dataset_type'] = (values.dataset_type) ? values.dataset_type  : 'batch'
-  data[operational]['is_std'] = (values.is_std === 'true')
   data[operational]['theme'] = values.domain
   data[operational]['subtheme'] = values.subdomain
-  data[operational]['std_schema'] = null
-  //if (data[operational]['is_std']){
-  // var std_schema = 'std_schema'
-  // data[operational][std_schema] = {}
-  // data[operational][std_schema]['std_uri'] = values.uri_associato
-  //}
-
   data[operational]['read_type'] = values.read_type
+
+//properties:
+  data[operational]['dataset_proc'] = { 
+     "merge_strategy" : values.merge_strategy,
+     "cron" : values.cron,
+     "dataset_type" : "batch",  
+     "read_type" : (values.read_type) ? values.read_type : 'update'
+    }
   if (!values.read_type){
       data[operational]['read_type'] = 'update'
   }
-  //data[operational]['push'] = values.pushOrPull
-  //data[operational]['ftporws'] = values.ftporws
-  //data[operational]['connection'] = values.dest_uri
   var input_src = 'input_src'
-  //var separator = values.separator
   if(values.modalitacaricamento==1){
     var param = "format=".concat(values.filetype?values.filetype:'csv')
     var url = "/home/".concat(localStorage.getItem('user').toLowerCase()).concat("/").concat(values.domain).concat("/").concat(values.subdomain).concat("/").concat(values.nome)
-    console.log('param: ' + param)
     data[operational][input_src] = {"sftp": [{
         "name": "sftp_local",
         "url": url,
@@ -37,26 +30,36 @@ export function createOperational (values, data) {
       }]
     }
   }
-
   if(values.modalitacaricamento==2){
-    data[operational][input_src] = {"srv_pull": [{
-      "name": "ws_remote",
-      "url": values.ws_url,
-      "username": "test",
-      "password": "test",
-      "param": ""
-    }]
+      data[operational][input_src] = {"srv_pull": [{
+        "name": "ws_remote",
+        "url": values.ws_url,
+        "username": "test",
+        "password": "test",
+        "param": ""
+      }]
+    }
   }
-}
-  
   data[operational]['storage_info'] = 
     {
 			"hdfs": {
 				"name": "hdfs_daf"
 			}
     }
-    
-//  console.log(values.sftps)
+
+  data[operational]['logical_uri'] = "test1"  //values.uri
+  data[operational]['dataset_type'] = (values.dataset_type) ? values.dataset_type  : 'batch'
+  data[operational]['is_std'] = (values.is_std === 'true')
+  //data[operational]['std_schema'] = null
+  //if (data[operational]['is_std']){
+  // var std_schema = 'std_schema'
+  // data[operational][std_schema] = {}
+  // data[operational][std_schema]['std_uri'] = values.uri_associato
+  //}
+  //data[operational]['push'] = values.pushOrPull
+  //data[operational]['ftporws'] = values.ftporws
+  //data[operational]['connection'] = values.dest_uri
+  //var separator = values.separator
   /*
   if(values.sfpts){
     data[operational][input_src]['sftp'] = []
@@ -115,7 +118,6 @@ export function createOperational (values, data) {
       data[operational]['group_access'].push(group)
     })
   } */
-  console.log(data)
   return data
 }
 
@@ -126,6 +128,7 @@ export function createDcat (values, data) {
   data[dcatapit]['privatex'] = values.private==1?true:false
   data[dcatapit]['name'] = values.nome
   data[dcatapit]['title'] = values.title
+  data[dcatapit]['author'] = localStorage.getItem('user').toLowerCase()
   data[dcatapit]['identifier'] = values.nome //values.identifier
   data[dcatapit]['alternate_identifier'] = values.nome //values.identifier
   data[dcatapit]['notes'] = values.notes
@@ -136,9 +139,10 @@ export function createDcat (values, data) {
   data[dcatapit]['modified'] = getCurrentDate() //values.creation_date
   data[dcatapit]['holder_name'] = values.ownership  //values.holder_name
   data[dcatapit]['holder_identifier'] = values.ownership  //values.holder_identifier
-  data[dcatapit]['license_title'] = 'Altro (Non Commerciale)' //values.license_title
-  data[dcatapit]['license_id'] = values.license3//values.license_identifier
-  data[dcatapit]['owner_org'] = values.private==1?values.ownership:'default_org' //if the dataset il public the organization will be default_org
+  data[dcatapit]['license_title'] = values.license1 //values.license_title
+  data[dcatapit]['license_id'] = values.license1//values.license_identifier
+  data[dcatapit]['organization'] = null // values.ownership
+  data[dcatapit]['owner_org'] = values.ownership
   data[dcatapit]['frequency'] = 'unknown'//Not in form
   data[dcatapit]['creation_date'] = getCurrentDate() //Not in form
   data[dcatapit]["groups"] = []
@@ -188,22 +192,44 @@ export function createDataschema (values, data) {
         tipo = tipo[0]
       }
     }else if(item.tipo instanceof Object){
-      console.log('tipo object');
-      //tipo = 'string'
       tipo = JSON.stringify(item.tipo);
     }
     var obj = {'name' : name, "`type`" : tipo}
     var tag =  ((item.tag === '' || item.tag === undefined )  ? [] : item.tag.split(','))
-    var concetto = item.concetto // i.e. latitudine [Indirizzi(Luoghi)]
-    var id = item.concetto.substring(0, item.concetto.indexOf('[')-1) 
-    var context = item.concetto.substring(item.concetto.indexOf('['),item.concetto.indexOf(']')+1)
-    var metadata = { "desc": item.desc, "required": 0, "field_type": "","cat": "","tag": tag,"constr": [{"`type`": "","param": ""}],"semantics": {"id": id,"context": context}}
+    var metadata = {  "desc": item.desc, 
+                      "required": 0, 
+                      "field_type": "",
+                      "cat": "",
+                      "tag": tag,
+                      "personal": {
+                        "ispersonal" : (item.personale) ? item.personale : false
+                        },
+                      "cat": item.cat, 
+                      "field_profile" : {
+                        "index": item.field_profile_is_index, 
+                        "profile": item.field_profile_is_profile, 
+                        "validation": item.field_profile_validation, 
+                        "standardization": item.field_profile_standardization
+                      },
+                      "format_std":{
+                        "name": (item.format_std_name) ? item.format_std_name : "",
+                        "param": item.format_std_param
+                      },
+                      "constr": [{"`type`": "","param": ""}],
+                      "semantics": {
+                        "id": (item.id_concetto) ? item.id_concetto : "",
+                        "id_label": item.concetto, 
+                        "context": item.contesto, 
+                        "subject": item.subject, 
+                        "predicate": item.predicate, 
+                        "rdf_object": item.rdf_object
+                      }
+    }
     data[dataschema][avro]['fields'].push(obj)
     var flat = {'name' : name, "`type`" : tipo, 'metadata' : metadata }
     data[dataschema][flatSchema].push(flat)
     }
   })
-
   return data
 }
 

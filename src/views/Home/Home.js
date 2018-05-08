@@ -12,7 +12,8 @@ import {
     loadDatasets,
     unloadDatasets,
     datasetDetail,
-    getFileFromStorageManager
+    getFileFromStorageManager,
+    search
 } from '../../actions'
 
 // Services
@@ -27,12 +28,16 @@ class Home extends Component {
 
         this.state = {
             listStories: [],
+            listDataset: [],
             listDashboards: [],
             listIframes: [],
+            counter:[],
             items: 3,
+            isLoading: true,
         }
         
         this.searchDataset();
+        this.counters();
 
         let dash = homeService.dashboards();
         dash.then(json => {
@@ -69,6 +74,14 @@ class Home extends Component {
         window.removeEventListener("resize", this.updatePredicate);
     }
 
+        componentWillReceiveProps(nextProps){
+            if(nextProps.results){
+                this.setState({
+                    counter: JSON.parse(nextProps.results[nextProps.results.length-4].source)
+                })
+            }
+        }
+
     updatePredicate() {
         if (window.innerWidth <= 1200)
             this.setState({items: 2});
@@ -83,22 +96,66 @@ class Home extends Component {
         dispatch(loadDatasets(query, 0, '', category, group, organization, order))
     }
 
+    counters(){
+        const { dispatch } = this.props
+        let filter = {
+            'text': '',
+            'index': [],
+            'org': [],
+            'theme':[],
+            'date': "",
+            'status': [],
+            'order':""
+        }
+        
+        /* let elements = homeService.homeElements();
+        elements.then(json => {
+            try{
+                json.map((element, index)=>{
+                    switch(element.type){
+                        case 'catalog_test':
+                            let dataset = JSON.parse(element.source)
+                            this.state.listDataset.push(dataset)
+                            break;
+                        case 'dashboards':
+                            let dashboard = JSON.parse(element.source)
+                            this.state.listDashboards.push(dashboard)
+                            break;
+                        case 'stories':
+                            let story = JSON.parse(element.source)
+                            this.state.listStories.push(story)
+                            break;
+                        case 'type':
+                            let type = JSON.parse(element.source)
+                            this.state.counter = type
+                            break;
+                    }
+                })
+                this.state.isLoading = false
+            }
+            catch(error){console.log('error in getting elements')}
+        }) */
+        dispatch(search('', filter))
+    }
+
     render(){
-        const { datasets, isFetching } = this.props
-        const { listDashboards, listStories, listIframes, items } = this.state
-        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Loading</h1> : (
+        const { datasets, isFetching, results } = this.props
+        const { listDashboards, listStories, listIframes, counter, items } = this.state
+        //const { listDashboards, listStories, listDataset, listIframes, items, counter, isLoading } = this.state
+        //var counter = JSON.parse(results[results.length-4].source)
+        return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
             <div>
                 <div className="top-home w-100 bg-grey-n d-md-down-none">
                     <div className="row m-auto container body">
                         <div className="col-6 col-lg-3 pt-3">
                             <div className="card mt-1 bg-light">
                                 <div className="card-body p-0 clearfix">
-                                    <div className="btn-group float-right mt-4">
+{/*                                     <div className="btn-group float-right mt-4">
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <i className="fa fa-table bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{datasets?datasets.length:0}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.catalog_test?counter.catalog_test:0}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dataset</div>
                                 </div>
                             </div>
@@ -106,25 +163,25 @@ class Home extends Component {
                         <div className="col-6 col-lg-3 pt-3">
                             <div className="card mt-1 bg-light">
                                 <div className="card-body p-0 clearfix">
-                                    <div className="btn-group float-right mt-4">
+{/*                                     <div className="btn-group float-right mt-4">
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <i className="fa fa-chart-bar bg-primary p-4 font-2xl mr-3 float-left"></i>
                                     <div className="h5 text-muted mb-0 pt-3">{listIframes.length}</div>
-                                    <div className="text-muted text-uppercase font-weight-bold font-xs">Widgets</div>
+                                    <div className="text-muted text-uppercase font-weight-bold font-xs">Widget</div>
                                 </div>
                             </div>
                         </div>
                         <div className="col-6 col-lg-3 pt-3">
                             <div className="card mt-1 bg-light">
                                 <div className="card-body p-0 clearfix">
-                                    <div className="btn-group float-right mt-4">
+{/*                                     <div className="btn-group float-right mt-4">
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <i className="fa fa-columns bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{listDashboards.length}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.dashboards?counter.dashboards:0}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dashboard</div>
                                 </div>
                             </div>
@@ -132,12 +189,12 @@ class Home extends Component {
                         <div className="col-6 col-lg-3 pt-3">
                             <div className="card mt-1 bg-light">
                                 <div className="card-body p-0 clearfix">
-                                    <div className="btn-group float-right mt-4">
+{/*                                     <div className="btn-group float-right mt-4">
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <i className="fa fa-font bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{listStories.length}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.stories?counter.stories:0}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Storie</div>
                                 </div>
                             </div>
@@ -150,7 +207,7 @@ class Home extends Component {
                     </div>
                     <div className="row mx-auto m-0">
                         {
-                            datasets&&datasets.slice(0, items).map((dataset, index) => {
+                            datasets&&Array.isArray(datasets)&&datasets.slice(0, items).map((dataset, index) => {
                                 return (
                                     <DatasetCard
                                         dataset={dataset}
@@ -162,14 +219,14 @@ class Home extends Component {
                     </div>
                     <div className="w-100 text-center">
                         <Link to={'/dataset'}>
-                            <h4 className="text-primary"><u>Vedi tutte</u></h4>
+                            <h4 className="text-primary"><u>Vedi tutti</u></h4>
                         </Link>
                     </div>
                 </div>
                 <div className="py-3 bg-light">
                     <div className="container body w-100">
                         <div className="row mx-auto text-muted">
-                            <i className="fa fa-chart-bar fa-lg m-4" style={{ lineHeight: '1' }} /><h2 className="mt-3 mb-4">Widgets</h2>
+                            <i className="fa fa-chart-bar fa-lg m-4" style={{ lineHeight: '1' }} /><h2 className="mt-3 mb-4">Widget</h2>
                         </div>
                         <div className="row mx-auto m-0">
                             {
@@ -184,7 +241,7 @@ class Home extends Component {
                         </div>
                         <div className="w-100 text-center">
                             <Link to={'/widget'}>
-                                <h4 className="text-primary"><u>Vedi tutte</u></h4>
+                                <h4 className="text-primary"><u>Vedi tutti</u></h4>
                             </Link>
                         </div>
                     </div>
@@ -345,8 +402,9 @@ Home.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, lastUpdated, dataset, items: datasets, query, ope, json } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
-    return { datasets, dataset, isFetching, lastUpdated, query, ope, json }
+    const { isFetching, lastUpdated, dataset, items: datasets, query, ope, json } = state.datasetReducer['obj'] || { isFetching: false, items: [], ope: '' }
+    const { results } = state.searchReducer['search'] || { results: [] }
+    return { datasets, dataset, isFetching, lastUpdated, query, ope, json, results }
 }
 
 export default connect(mapStateToProps)(Home)

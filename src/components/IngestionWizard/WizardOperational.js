@@ -5,11 +5,9 @@ import TestSelect from './TestSelect';
 import TestSelectDomain from './TestSelectDomain';
 import { connect  } from 'react-redux';
 import { serviceurl } from '../../config/serviceurl.js'
-
-
-
+import { cron } from '../../const.js'
+ 
 import 'react-select/dist/react-select.css';
-
 
 const isStds = ['true'];
 const tipo_lettura = ['ts']
@@ -37,6 +35,18 @@ const renderTipoLettura = ({ input, meta: { touched, error } }) => (
   </div>
 );
 
+const renderMergeStrategy = ({ input, meta: { touched, error } }) => (
+  <div>
+    <select className="form-control" {...input}>
+      {/*<option value=""  key='' defaultValue></option>
+      <option value="SYNC" key='SYNC'>Sostituisci il contenuto della tabella</option>*/}
+      <option value="DEDUPE_AND_MERGE"  key='DEDUPE_AND_MERGE' defaultValue>Inserisci tutte le righe ignorando i duplicati</option>
+      <option value="MERGE"  key='MERGE'>Inserisci tutte le righe</option>
+    </select>
+    {touched && error && <div className="text-danger">{error}</div>}
+  </div>
+);
+
 const renderDatasetType = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
@@ -56,6 +66,16 @@ const renderYesNoSelector = ({ input, meta: { touched, error } }) => (
     {touched && error && <span>{error}</span>}
 
   </div>
+);
+
+const renderAggiornamento = ({ input, meta: { touched, error } }) => (
+  <div>
+  <select className="form-control" {...input}>
+    <option value="" defaultValue key=''></option>
+    {cron.map(item => <option value={item.val} key={item.val}>{item.name}</option>)}
+  </select>
+  {touched && error && <div className="text-danger">{error}</div>}
+</div>
 );
 
 const pushOrPull = ({ input, meta: { touched, error } }) => (
@@ -569,7 +589,7 @@ let WizardOperational = props => {
   return (
     <form  onSubmit={handleSubmit}>
       <div className="col-md-12">
-      <div className="form-group">
+{/*       <div className="form-group">
         <label>Definisce uno standard?</label>
         <Field name="is_std" type="text" component={renderYesNoSelector} />
       </div>
@@ -580,7 +600,7 @@ let WizardOperational = props => {
         {(followStandard === 'true') &&
         <Field name="uri_associato" type="text" component={TestSelect}  url={standards} />
         }
-      </div>}
+      </div>} */}
 
       <div className="form-group">
         <label>Dominio</label>
@@ -597,11 +617,18 @@ let WizardOperational = props => {
         <label>Tipo Lettura del dataset</label>
         <Field name="read_type" type="text" component={renderTipoLettura} />
       </div>
-
       <div className="form-group">
+        <label>Strategia di merge</label>
+        <Field name="merge_strategy" type="text" component={renderMergeStrategy} />
+      </div>
+      <div className="form-group">
+        <label>Frequenza di aggiornamento ogni: </label>
+        <Field name="cron" type="text" component={renderAggiornamento} />
+      </div>
+{/*       <div className="form-group">
         <label>Tipo Dataset</label>
         <Field name="dataset_type" type="text" component={renderDatasetType} />
-      </div>
+      </div> */}
       
       {/* <h4>Group Access</h4>
       <FieldArray name="accesses" component={renderGroupAccess} />

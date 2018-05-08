@@ -34,7 +34,10 @@ class UserStoryEditorContainer extends Component {
       layout: JSON.parse(props.dataStory.layout)
     };
 
-    let response = widgetService.getIframe(props.dataStory.org)
+    let org = props.dataStory.org
+    if(props.dataStory.pvt==0)
+      org = 'default_org'
+    let response = widgetService.getIframe(org)
     response.then(iframes => {
       this.loadIframe(iframes);
     })
@@ -280,10 +283,6 @@ class UserStoryEditorContainer extends Component {
         }
       }
     }
-
-    console.log(widgets)
-    console.log(widgetsOld)
-
 
     //save data
     let request = this.state.dataStory;
