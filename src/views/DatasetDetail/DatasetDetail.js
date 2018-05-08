@@ -371,7 +371,7 @@ class DatasetDetail extends Component {
                                                 <div className="col-12">
                                                     <p>Ti ricordiamo che per poter effettuare la chiamata alla REST API occorre fornire i seguenti parametri di Basic Authentication:</p>
                                                     <div>
-                                                        <p><strong>Utente: </strong>{localStorage.getItem('user')}</p>
+                                                        <p><strong>Utente: </strong>{localStorage.getItem('username')}</p>
                                                         <p><strong>Password: </strong>XXXXXXXXXX</p>      
                                                     </div>
                                                     <p>Per conoscere le modalità di utilizzo delle REST API puoi consultare la documentazione dettagliata <b><a className="text-primary" href="http://daf-dataportal.readthedocs.io/it/latest/dataportal-privato/api.html" title="Guida all'uso delle API">QUI</a></b></p>
@@ -422,7 +422,7 @@ class DatasetDetail extends Component {
                                                 {this.state.hasPreview &&
                                                 <div>
                                                 <div className="row">
-                                                    <p>Leggi attentamente le <a href="http://daf-docs.readthedocs.io/en/latest/manutente/datascience/jupyter.html" target='_blank'>istruzioni </a> e collegati a <a href={serviceurl.urlJupiter} target='_blank'>Jupyter</a>.  </p>
+                                                    <p>Leggi attentamente le <a href="https://daf-dataportal.readthedocs.io/it/latest/datascience/jupyter/index.html#creazione-e-configurazione-di-un-notebook" target='_blank'>istruzioni </a> e collegati a <a href={serviceurl.urlJupiter} target='_blank'>Jupyter</a>.  </p>
                                                     <p>Dopo aver attivato la sessione seguendo le istruzioni potrai analizzare il file al percorso:</p>
                                                     <p><strong>{dataset.operational.physical_uri}</strong>.</p>
                                                     <p>Usa i seguenti comandi per caricare il file nel notebook:</p>
