@@ -218,7 +218,7 @@ class Home extends Component {
                         }
                     </div>
                     <div className="w-100 text-center">
-                        <Link to={'/dataset'}>
+                        <Link to={'/private/dataset'}>
                             <h4 className="text-primary"><u>Vedi tutti</u></h4>
                         </Link>
                     </div>
@@ -240,7 +240,7 @@ class Home extends Component {
                             }
                         </div>
                         <div className="w-100 text-center">
-                            <Link to={'/widget'}>
+                            <Link to={'/private/widget'}>
                                 <h4 className="text-primary"><u>Vedi tutti</u></h4>
                             </Link>
                         </div>
@@ -309,7 +309,7 @@ class Home extends Component {
                         }
                     </div>
                     <div className="w-100 text-center">
-                        <Link to={'/dashboard/list'}>
+                        <Link to={'/private/dashboard/list'}>
                             <h4 className="text-primary"><u>Vedi tutte</u></h4>
                         </Link>
                     </div>
@@ -378,7 +378,7 @@ class Home extends Component {
                         }
                     </div>
                     <div className="w-100 text-center">
-                        <Link to={'/user_story/list'}>
+                        <Link to={'/private/user_story/list'}>
                             <h4 className="text-primary"><u>Vedi tutte</u></h4>
                         </Link>
                     </div>

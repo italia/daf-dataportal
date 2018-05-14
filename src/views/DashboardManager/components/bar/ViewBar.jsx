@@ -31,14 +31,14 @@ class ViewBar extends React.Component {
           <div className="col-6">
           <div className="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">
             <div className="btn-group mr-1" data-toggle="buttons" aria-label="First group">
-              <Link role="button" to="/dashboard/list">
+              <Link role="button" to="/private/dashboard/list">
                 <button type="button" className="btn btn-link btn-xs" title="Torna alle mie Dashboard">
                   <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
                 </button>
               </Link>
 
-              <Link role="button" to={"/dashboard/list/" + this.props.id + "/edit"}>
+              <Link role="button" to={"/private/dashboard/list/" + this.props.id + "/edit"}>
                 <button type="button" className="btn btn-link btn-xs" title="Modifica">
                   <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   <i className="fa fa-edit fa-lg m-t-2"></i>

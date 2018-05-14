@@ -13,10 +13,10 @@ class DashboardManager extends Component {
     return (
       <div>
         <Switch>
-          <Route path='/dashboard/create'         exact component={DashboardEditor} />
-          <Route path="/dashboard/list"           exact component={DashboardList} />
-          <Route path="/dashboard/list/:id"       exact component={DashboardView} />
-          <Route path="/dashboard/list/:id/edit"  exact component={DashboardEditor} />
+          <Route path='/private/dashboard/create'         exact component={DashboardEditor} />
+          <Route path="/private/dashboard/list"           exact component={DashboardList} />
+          <Route path="/private/dashboard/list/:id"       exact component={DashboardView} />
+          <Route path="/private/dashboard/list/:id/edit"  exact component={DashboardEditor} />
         </Switch>
       </div>
     )

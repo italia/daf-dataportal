@@ -16,7 +16,7 @@ class Home extends React.Component {
     return (
        <div data-reactroot className="app flex-row align-items-center">
           <Switch>
-            <Route path='/' exact component={Login} />
+            <Route path='/private' exact component={Login} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/confirmregistration" component={ConfirmRegistration} />

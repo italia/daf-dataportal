@@ -53,7 +53,7 @@ hideModalAndRedirect = (e) => {
     transformed: undefined
   });
   dispatch(reset('wizard'))
-  this.props.history.push('/home')
+  this.props.history.push('/private/home')
 };
 
   /*  showResults = values =>{
@@ -84,7 +84,7 @@ hideModalAndRedirect = (e) => {
                 localStorage.removeItem('kyloSchema')
                 this.setState({saving: false})
                 toastr.success('Complimenti', 'Il caricamento dei metadati è avvenuto con successo')
-                this.props.history.push('/dataset/' + transformed.dcatapit.name)
+                this.props.history.push('/private/dataset/' + transformed.dcatapit.name)
               }else{
                 this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
                 console.log('Errore durante il caricamento su kylo')

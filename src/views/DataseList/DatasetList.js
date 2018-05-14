@@ -171,7 +171,7 @@ class DatasetList extends Component {
         const { dispatch, query } = this.props
         const { order_filter, category_filter, organization_filter, group_filter } = this.state
         this.props.history.push({
-          pathname: '/dataset/'+name,
+          pathname: '/private/dataset/'+name,
           state: {'query': query,
                   'category_filter': category_filter,
                   'organization_filter': organization_filter,
@@ -536,7 +536,7 @@ class DatasetList extends Component {
                                                         <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" >
-                                                                <Link to={'/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
+                                                                <Link to={'/private/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
                                                                     <div title={dataset.dcatapit.title} dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?truncateDatasetName(datasetMatch['dcatapit.title'],100):truncateDatasetName(dataset.dcatapit.title, 60)}}></div>
                                                                 </Link>
                                                             </div>
@@ -651,7 +651,7 @@ class DatasetList extends Component {
                                                         <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" title={dashboard.title}>
-                                                                <Link to={'/dashboard/list/' + dashboard.id} className="title-res text-primary">
+                                                                <Link to={'/private/dashboard/list/' + dashboard.id} className="title-res text-primary">
                                                                     <div title={dashboard.title} dangerouslySetInnerHTML={{__html: dashboardMatch['title']?truncateDatasetName(dashboardMatch['title'],100):truncateDatasetName(dashboard.title, 60)}}></div>
                                                                 </Link>
                                                             </div>
@@ -762,7 +762,7 @@ class DatasetList extends Component {
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
-                                                            <Link to={'/user_story/list/'+ story.id} className="title-res text-primary">
+                                                            <Link to={'/private/user_story/list/'+ story.id} className="title-res text-primary">
                                                                 <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?truncateDatasetName(storyMatch['title'],100):truncateDatasetName(story.title, 60)}}></div>
                                                             </Link>
                                                         </div>

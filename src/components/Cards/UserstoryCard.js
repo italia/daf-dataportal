@@ -123,7 +123,7 @@ class UserstoryCard extends Component {
                     </div>
                     <div className="card-body p-0">
                         <div className="title-dash">
-                            <Link to={"/user_story/list/" + story.id}>
+                            <Link to={"/private/user_story/list/" + story.id}>
                                 <h3 className="card-title text-primary">{story.title}</h3>
                             </Link>
                         </div>

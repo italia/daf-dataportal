@@ -185,7 +185,7 @@ class Crea extends Component {
 
                 //save data
                 dashboardService.save(request).then((data) => {
-                    this.props.history.push('/dashboard/list/' + data.message + '/edit');
+                    this.props.history.push('/private/dashboard/list/' + data.message + '/edit');
                 })
             }
         } else {
@@ -217,7 +217,7 @@ class Crea extends Component {
                     widgets: JSON.stringify(widgets)
                 };
                 userStoryService.save(request).then((data) => {
-                    this.props.history.push('/user_story/list/' + data.message + '/edit');
+                    this.props.history.push('/private/user_story/list/' + data.message + '/edit');
                 });
             }
         } else {
@@ -371,7 +371,7 @@ class Crea extends Component {
                         <div className="card text-center">
                             <h3 className="card-title pt-4">Dataset</h3>
                             <div className="card-body pb-4">
-                                <button className="btn btn-primary" onClick={() => { this.props.history.push("/ingestionwizzard")}}>Crea scheda e carica</button>
+                                <button className="btn btn-primary" onClick={() => { this.props.history.push("/private/ingestionwizzard")}}>Crea scheda e carica</button>
                             </div>
                         </div>
                     </div>

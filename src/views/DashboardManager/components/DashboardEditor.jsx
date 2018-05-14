@@ -379,11 +379,11 @@ class DashboardEditor extends Component {
   }
 
   back(){
-      this.props.history.push('/dashboard/list')
+      this.props.history.push('/private/dashboard/list')
   }
 
   preview(){
-      this.props.history.push('/dashboard/list/'+this.state.id)
+      this.props.history.push('/private/dashboard/list/'+this.state.id)
   }
 
   /**
@@ -449,7 +449,7 @@ class DashboardEditor extends Component {
           modified: false,
           saving: false
         })
-        this.props.history.push('/dashboard/list/'+ data.message + '/edit');
+        this.props.history.push('/private/dashboard/list/'+ data.message + '/edit');
         toastr.success('Completato', 'Dashboard salvata con successo')
       })
     }

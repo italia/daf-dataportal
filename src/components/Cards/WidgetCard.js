@@ -86,7 +86,7 @@ class WidgetCard extends Component {
     }
 
     linkTo(nome){
-        this.props.history.push('/dataset/'+nome)
+        this.props.history.push('/private/dataset/'+nome)
     }
 
     render(){
@@ -155,7 +155,7 @@ class WidgetCard extends Component {
                             </div>
                         </div>
                         {sp1 && <div className="col-2 p-0 h-100">
-                            <Link to={'/dataset/'+sp1[1]}>
+                            <Link to={'/private/dataset/'+sp1[1]}>
                                 <i className="text-primary fa fa-arrow-circle-right fa-pull-right fa-lg py-3 pr-3" title="Vai al Dataset"/>
                             </Link>
                         </div>}

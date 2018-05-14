@@ -76,7 +76,8 @@ class DatasetDetail extends Component {
     componentDidMount(){
         const { dataset, dispatch, query } = this.props
         const path = window.location.hash
-        let nome = path.substring(10)
+        let sp = path.split('/')
+        let nome = sp[sp.length-1]
         console.log(nome)
         dispatch(datasetDetail(nome, query))
         .catch(error => {console.log('Errore durante il caricamento del dataset ' + nome); this.setState({hidden: false})})
@@ -200,7 +201,7 @@ class DatasetDetail extends Component {
         const { dispatch } = this.props
         dispatch(loadDatasets(query, 0, '', category_filter, group_filter, organization_filter, order_filter))
         .then(() =>  this.props.history.push({
-            pathname: '/dataset',
+            pathname: '/private/dataset',
             state: {'query': query,
                     'category_filter': category_filter,
                     'organization_filter': organization_filter,
@@ -295,14 +296,14 @@ class DatasetDetail extends Component {
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Porta: </strong></th><td className="bg-grigino">22</td>
                                                     </tr>
                                                     <tr>
-                                                        <th className="bg-white" style={{width:"192px"}}><strong>Utente: </strong></th><td className="bg-grigino">{dataset.operational.input_src.sftp[0].username}</td>
+                                                        <th className="bg-white" style={{width:"192px"}}><strong>Utente: </strong></th><td className="bg-grigino text-truncate">{dataset.operational.input_src.sftp[0].username}</td>
                                                     </tr>
                                                     <tr>
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Password: </strong></th><td className="bg-grigino">XXXXXXXXXX</td>
                                                     </tr>
                                                     <tr>
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Percorso: </strong></th>
-                                                        <td className="bg-grigino" title={dataset.operational.input_src.sftp[0].url}>{this.truncate(dataset.operational.input_src.sftp[0].url,30)}
+                                                        <td className="bg-grigino text-truncate" title={dataset.operational.input_src.sftp[0].url}>{this.truncate(dataset.operational.input_src.sftp[0].url,30)}
                                                             <CopyToClipboard text={dataset.operational.input_src.sftp[0].url}>
                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{lineHeight: '1.5'}}/>
                                                             </CopyToClipboard>
@@ -319,7 +320,7 @@ class DatasetDetail extends Component {
                                                     </tr>
                                                     <tr>
                                                         <th className="bg-white" style={{width:"192px"}}><strong>Indirizzo: </strong></th>
-                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_pull[0].url}>{this.truncate(dataset.operational.input_src.srv_pull[0].url,30)}
+                                                        <td className="bg-grigino text-truncate" title={dataset.operational.input_src.srv_pull[0].url}>{this.truncate(dataset.operational.input_src.srv_pull[0].url,30)}
                                                             <CopyToClipboard text={dataset.operational.input_src.srv_pull[0].url}>
                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{lineHeight: '1.5'}}/>
                                                             </CopyToClipboard>

@@ -4,6 +4,9 @@ import PropTypes from 'prop-types'
 import { Redirect } from 'react-router'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
+import fontawesome from '@fortawesome/fontawesome'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { faGlobe } from '@fortawesome/fontawesome-free-solid'
 import {
 	loadDatasets,
 	unloadDatasets,
@@ -60,6 +63,17 @@ class Header extends Component {
 				this.props.openSearch();
 		}
 
+		toggleNav() {
+			this.setState({
+				dropdownOpen: false,
+				crea: false,
+				revealed: false,
+				navigation: !this.state.navigation,
+			});
+			if(this.state.revealed === true)
+				this.props.openSearch();
+		}
+
 		sidebarToggle(e) {
 			e.preventDefault();
 			document.body.classList.toggle('sidebar-hidden');
@@ -95,7 +109,7 @@ class Header extends Component {
 			const { dispatch, selectDataset } = this.props;
 			dispatch(loadDatasets(this.refs.auto.state.value, 0, '', '', '', '','metadata_modified%20desc'))
 				.then(json => {
-					this.props.history.push('/dataset');
+					this.props.history.push('/private/dataset');
 				})
 		}
 
@@ -113,7 +127,7 @@ class Header extends Component {
 		}
 
 		crea(){
-			this.props.history.push('/crea')
+			this.props.history.push('/private/crea')
 		}
 
 		createDash(){
@@ -138,7 +152,9 @@ class Header extends Component {
 			const { loggedUser } = this.props
 			let open = this.state.dropdownOpen ? "show" : "" 
 			let revealed = this.state.revealed ? "btn-accento" : "btn-header"
-			let crea = this.state.crea ? "show" : "" 
+			let crea = this.state.crea ? "show" : ""
+			var navigation = this.state.navigation?" active":""
+			var show = this.state.navigation?" show":"" 
 			return (
 				<header className="app-header navbar border-0">
 				<button className="nav-link navbar-toggler sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
@@ -146,7 +162,7 @@ class Header extends Component {
 					
 				<ul className="nav navbar-nav d-md-down-none mr-auto">
 					<li className="nav-item brand">
-						<a href=""><img className="img-logo" src="http://designer.italia.it/assets/icons/logo-it.png" alt=""/><span>  DAF  </span></a>
+						<Link to={'/private/home'}><img className="img-logo" src="./img/DAF_pittogramma_FU.svg" alt=""/><span className="pl-2" style={{fontSize: '24px', fontWeight: 'bold'}}>DAF Italia</span></Link>
 					</li>
 	{/*           <div className={"search-bar " + revealed}>
 							<form onSubmit={this.handleLoadDatasetClick}>
@@ -167,7 +183,7 @@ class Header extends Component {
 								<button className="w-100 h-100 btn btn-header" onClick={/* this.crea.bind(this) */this.toggleCrea}><i className="fa fa-plus fa-lg"/></button>
 								<div className={"dropdown-menu m-0 dropdown-menu-right "+ crea} aria-labelledby="dropdownMenuButton">
 									<h6 className="dropdown-header text-center"><b>Crea</b></h6>
-									{(isEditor() || isAdmin()) && <button className="dropdown-item" onClick={()=> { this.props.history.push('/ingestionwizzard'); this.toggleCrea}}><i className="fa fa-table"></i> Carica Dataset</button>}
+									{(isEditor() || isAdmin()) && <button className="dropdown-item" onClick={()=> { this.props.history.push('/private/ingestionwizzard'); this.toggleCrea}}><i className="fa fa-table"></i> Carica Dataset</button>}
 									<button className="dropdown-item" onClick={this.createDash} ><i className="fa fa-columns"></i> Nuova Dashboard</button>
 									<button className="dropdown-item" onClick={this.createStory} ><i className="fa fa-font"></i> Nuova Storia</button>
 							</div>
@@ -180,32 +196,36 @@ class Header extends Component {
 							<button className="w-100 h-100 btn btn-primary nav-link text-white"><i className="fa fa-bell-o" /><span className="badge badge-gray-100 badge-pill"></span></button>
 					</li>
 				</ul> */}
-				<ul className="nav navbar-nav" style={{marginRight:'30px'}}>
-	{/*         <li>
-						<button className="btn btn-primary" onClick={this.props.openSearch}><i className="fa fa-search fa-lg" /></button>
-					</li> */}
+				<ul className="nav navbar-nav mr-2">
 					<li className="nav-item">
-	{/*           <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-							<button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
-								<img src={'img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-								<span className="d-md-down-none">{loggedUser?loggedUser.givenname:''}</span>
-							</button>
-							<DropdownMenu className="dropdown-menu-right">
-								<DropdownItem header className="text-center"><strong>Menu utente</strong></DropdownItem>
-								<DropdownItem><a className="nav-link" href="/#/profile"><i className="fa fa-user"></i> Profilo</a></DropdownItem>
-								<DropdownItem><a className="nav-link" href="/#/settings"><i className="fa fa-gear"></i> Impostazioni</a></DropdownItem>
-								<DropdownItem><a className="nav-link"  onClick={() => {logout()}} href="/"><i className="fa fa-lock"></i> Logut</a></DropdownItem>
-							</DropdownMenu>
-						</Dropdown> */}
 						<div className={"dropdown " + open}>
-								<a className="nav-link" role="button" id="dropdownMenuButton" data-toggle="dropdown" 
-									aria-haspopup="true" aria-expanded="false" onClick={this.toggle}>
-									<img src={'img/avatars/7.jpg'} className="img-avatar pointer" alt="admin@bootstrapmaster.com"/>
-							</a>
+							<a className="nav-link" role="button" id="dropdownMenuButton" data-toggle="dropdown" 
+										aria-haspopup="true" aria-expanded="false" onClick={this.toggle}>
+										<img src={'img/avatars/7.jpg'} className="img-avatar pointer" alt="admin@bootstrapmaster.com"/>
+								</a>
 								<div className={"dropdown-menu dropdown-menu-right "+ open} aria-labelledby="dropdownMenuButton">
 									<h6 className="dropdown-header text-center"><b>{loggedUser ? loggedUser.givenname : ''}</b></h6>
 									<a className="dropdown-item" href="/#/profile" onClick={this.toggle}><i className="fa fa-user"></i> Profilo</a>
 									<a className="dropdown-item" onClick={() => { logout(); this.toggle }} href="/"><i className="fa fa-lock"></i> Logout</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<ul className="nav navbar-nav h-100">
+					<li className="nav-item h-100">
+						<div className={"h-100 dropdown " + show}>
+						<button className={"h-100 btn btn-accento"+navigation} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.toggleNav.bind(this)}><p className="m-0 p-0 d-md-down-none float-left">Area Privata</p><i className="float-left fa fa-lock fa-lg d-lg-none"/> <i className="fa fa-sort-down ml-2 align-top"/></button>
+							<div className={"dropdown-menu dropdown-menu-right m-0" + show} aria-labelledby="dropdownMenuButton">
+								<h6 className="dropdown-header bg-white"><b>VAI A</b></h6>
+								<button className="dropdown-item bg-light b-l-pvt border-primary pr-5" onClick={()=>this.props.history.push('/')}>
+										<div className="row">
+												<h5 className="col-1 pl-0"><FontAwesomeIcon icon={faGlobe} className="mx-2"/></h5>
+												<div className="row col-11 ml-1">
+														<div className="col-12 pl-1"><p className="mb-0"><b>Area pubblica</b></p></div>
+														<div className="col-12 pl-1">Catalogo open data italiani</div>
+												</div>
+										</div>
+								</button>
 							</div>
 						</div>
 					</li>

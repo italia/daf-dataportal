@@ -115,7 +115,7 @@ class ViewBar extends React.Component {
             this.props.history.push('/user_story/list/'+ data.message + '/edit');
         }); */
         this.props.history.push({
-          'pathname':'/user_story/create',
+          'pathname':'/private/user_story/create',
           'story': request,
           'modified':true
         })

@@ -144,7 +144,7 @@ class ListBar extends React.Component {
         };
         
         this.props.history.push({
-          pathname: '/dashboard/create',
+          pathname: '/private/dashboard/create',
           state: { 'dash': request, 'modified':true }})
 
 /*         //save data

@@ -201,7 +201,7 @@ class Full extends Component {
             this.props.history.push('/user_story/list/'+ data.message + '/edit');
         }); */
         this.props.history.push({
-          'pathname':'/user_story/create',
+          'pathname':'/private/user_story/create',
           'story': request,
           'modified':true
         })
@@ -242,7 +242,7 @@ class Full extends Component {
         };
         
         this.props.history.push({
-          pathname: '/dashboard/create',
+          pathname: '/private/dashboard/create',
           state: { 'dash': request, 'modified':true }})
         
         this.hideModalDash();
@@ -267,10 +267,10 @@ class Full extends Component {
     let mainDiv = 'bg-white'
     let home = ''
 
-    if (history.location.pathname === '/user_story/list' || history.location.pathname === '/widget')
+    if (history.location.pathname === '/private/user_story/list' || history.location.pathname === 'private/widget')
       mainDiv='bg-light'
     
-    if (history.location.pathname === '/home' || history.location.pathname.indexOf('/search')!==-1 || history.location.pathname.indexOf('/dataset')!==-1)
+    if (history.location.pathname === '/private/home' || history.location.pathname.indexOf('/private/search')!==-1 || history.location.pathname.indexOf('/private/dataset')!==-1)
       home = 'p-0'
     return (
       <div className="app">
@@ -413,23 +413,23 @@ class Full extends Component {
             <Breadcrumb />
             <div className={"container-fluid "+home} style={divStyle}>
               <Switch>
-                <Route path="/home" name="Home" exact component={Home}/>
-                <Route path="/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
-                <Route path="/ontologies" name="Ontologies" component={Ontologies} />
-                <Route path="/vocabulary" name="Vocabulary" component={Vocabulary} />
-                <Route path="/dashboard" name="Dashboard manager" component={DashboardManager} />
-                <Route path="/user_story" name="User Story" component={UserStory} />
-                <Route path="/widget" name="Widget" component={Widgets} />
-                {<Route exact path="/dataset_old" name="Dataset" component={Dataset} />}
-                {<Route exact path="/dataset" name="Dataset" component={DatasetList} />}
-                {<Route exact path="/search" name="Search" component={DatasetList} />} 
-                <Route exact path="/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
-                <Route path="/profile" name="Profile" component={Profile} />
-                <Route path="/settings" name="Settings" component={Settings} />
-                <Route path="/organizations" name="Organizations" component={Organizations} />
-                <Route path="/users" name="Users" component={Users} />
-                <Route path="/crea" name="Crea" component={Crea} />
-                <Redirect from="/" to="/home"/>
+                <Route path="/private/home" name="Home" exact component={Home}/>
+                <Route path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
+                <Route path="/private/ontologies" name="Ontologies" component={Ontologies} />
+                <Route path="/private/vocabulary" name="Vocabulary" component={Vocabulary} />
+                <Route path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
+                <Route path="/private/user_story" name="User Story" component={UserStory} />
+                <Route path="/private/widget" name="Widget" component={Widgets} />
+                {<Route exact path="/private/dataset_old" name="Dataset" component={Dataset} />}
+                {<Route exact path="/private/dataset" name="Dataset" component={DatasetList} />}
+                {<Route exact path="/private/search" name="Search" component={DatasetList} />} 
+                <Route exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
+                <Route path="/private/profile" name="Profile" component={Profile} />
+                <Route path="/private/settings" name="Settings" component={Settings} />
+                <Route path="/private/organizations" name="Organizations" component={Organizations} />
+                <Route path="/private/users" name="Users" component={Users} />
+                <Route path="/private/crea" name="Crea" component={Crea} />
+                <Redirect from="/private" to="/private/home"/>
               </Switch>
             </div>
           </main>

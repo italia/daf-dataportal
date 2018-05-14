@@ -108,7 +108,7 @@ class UserStoryEditor extends Component {
           })
           if(window.location === '/user_story/create/'){
             this.state.dataStory.id = data.message;
-            this.props.history.push('/user_story/list/'+ data.message + '/edit');
+            this.props.history.push('/private/user_story/list/'+ data.message + '/edit');
           }
           toastr.success('Completato', 'Storia salvata con successo')
         })

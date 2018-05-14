@@ -63,7 +63,7 @@ class DatasetCard extends Component{
                     </div>
                     <div className="dataset-body b-b-card">
                         <div className="title-dash pl-3 ml-0">
-                            <Link to={"/dataset/" + dataset.name}>
+                            <Link to={"/private/dataset/" + dataset.name}>
                                 <h3 className="card-title text-primary">{truncateDatasetName(dataset.title, 60)}</h3>
                             </Link>
                             {/* <h6 className="card-subtitle mb-2 text-muted">{dash.subtitle}</h6> */}
