@@ -195,7 +195,8 @@ class Full extends Component {
           pvt: this.state.pvtStory,
           org: this.state.orgStory,
           layout: JSON.stringify(layout),
-          widgets: JSON.stringify(widgets)
+          widgets: JSON.stringify(widgets),
+          published: 0
         };
 /*         userStoryService.save(request).then((data)=> {
             this.props.history.push('/user_story/list/'+ data.message + '/edit');

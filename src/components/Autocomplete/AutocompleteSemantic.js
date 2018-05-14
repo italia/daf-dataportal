@@ -26,7 +26,7 @@ function ontologiesFilter(semantics, regex){
               var domain = entry.universe.domain.label[0].value
               var property = entry.universe.property.label[0].value
               var range = entry.universe.range.label[0].value
-              entry.name = '[' + domain +'] '+ property +'; ('+ range +') - ' + domainId 
+              entry.name = '[' + domain +'] '+ property +'; ('+ range +')' 
               res.push(entry);
         });
       }
