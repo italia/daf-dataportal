@@ -26,7 +26,8 @@ import {
   RECEIVE_RESET,
   RECEIVE_RESET_ERROR,
   REQUEST_SEARCH,
-  RECEIVE_SEARCH
+  RECEIVE_SEARCH,
+  RECEIVE_METADATA
 } from './actions'
 import {reducer as toastrReducer} from 'react-redux-toastr'
 
@@ -95,6 +96,13 @@ function datasets( state = { isFetching: false, didInvalidate: false, items: [],
       lastUpdated: action.receivedAt,
       ope: action.ope
     })
+    case RECEIVE_METADATA:
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: false,
+        metadata: action.metadata,
+        ope: action.ope
+      })
     default:
       return state
   }
@@ -153,6 +161,7 @@ function datasetReducer(state = {}, action) {
     case RECEIVE_DATASETS:
     case REQUEST_DATASETS:
     case RECEIVE_FILE_STORAGEMANAGER:
+    case RECEIVE_METADATA:
       return Object.assign({}, state, {'obj': datasets(state[action], action)
       })
     case RECEIVE_ADD_DATASET:

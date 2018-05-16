@@ -1694,6 +1694,2071 @@
             }
         ]
     },
+    "/dati-gov/v1/elasticsearch/search":{
+        "post":[
+                {
+                    "type": "catalog_test",
+                    "source": "{\"dcatapit\":{\"name\":\"legal_status\",\"modified\":\"11/05/2018\",\"privatex\":true,\"notes\":\"Vocabolario controllato degli stati legali di un organizzazione preso dalla repository github https://github.com/italia/daf-ontologie-vocabolari-controllati/blob/master/VocabolariControllati/classifications-for-organizations/legal-status/legal-status.csv\",\"title\":\"legal status\",\"owner_org\":\"daf_data\",\"theme\":\"JUST\"},\"dataschema\":{\"avro\":{\"fields\":[{\"name\":\"codice_1_livello\"},{\"name\":\"label_ITA_1_livello\"},{\"name\":\"codice_2__livello\"},{\"name\":\"label_ITA_2_livello\"},{\"name\":\"codice_3_livello\"},{\"name\":\"label_ITA_3_livello\"}]}}}",
+                    "match": "{\"dcatapit.title\": \"<span style='background-color:#0BD9D3'>legal</span> status,\"dcatapit.notes\": \"-for-organizations/<span style='background-color:#0BD9D3'>legal</span>-status/<span style='background-color:#0BD9D3'>legal</span>-status.csv}"
+                },
+                {
+                    "type": "ext_opendata",
+                    "source": "{\"name\": \"01-psc-piano-strutturale-comunale-kml\",\"title\": \"01 - PSC - Piano Strutturale Comunale - Kml\",\"notes\": \"Sintesi del Piano Strutturale Comunale\",\"theme\": \"OP_DATPRO\",\"organization\": {\"name\": \"emilia-romagna\"},\"modified\": \"2017-02-03T15:51:29.327285\"}",
+                    "match": "{}"
+                },
+                {
+                    "type": "status",
+                    "source": "{\"0\":\"1\",\"1\":\"1\", \"2\":\"0\"}",
+                    "match": null
+                },
+                {
+                    "type": "organization",
+                    "source": "{\"daf_data\":\"1\"}",
+                    "match": null
+                },
+                {
+                    "type": "category",
+                    "source": "{\"JUST\":\"1\"}",
+                    "match": null
+                }
+            ]
+    },
+    "/dati-gov/v1/opendata_resource": {
+        "get" : 
+            [
+                {
+                    "_id": {
+                        "$oid": "5abd6ce2936bb60001002533"
+                    },
+                    "dataschema": {
+                        "avro": {
+                            "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_0.csv",
+                            "`type`": "record",
+                            "namespace": "it.gov.daf.dataset.opendata",
+                            "aliases": null,
+                            "fields": [
+                                {
+                                    "name": "data",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_regione",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "nome_regione",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_ente",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "nome_ente",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_servizio",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "descrizione_servizio",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "numero",
+                                    "`type`": "double"
+                                }
+                            ]
+                        },
+                        "flatSchema": [
+                            {
+                                "name": "data",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_regione",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_regione",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_ente",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_ente",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_servizio",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "descrizione_servizio",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "numero",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            }
+                        ],
+                        "kyloSchema": "\"{\\\"name\\\":null,\\\"description\\\":null,\\\"charset\\\":\\\"UTF-8\\\",\\\"properties\\\":{},\\\"fields\\\":[{\\\"sampleValues\\\":[\\\"1/11/17\\\",\\\"1/11/17\\\",\\\"1/11/17\\\",\\\"1/11/17\\\",\\\"1/11/17\\\",\\\"1/11/17\\\",\\\"1/11/17\\\",\\\"1/11/17\\\",\\\"1/11/17\\\"],\\\"name\\\":\\\"DATA\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\"],\\\"name\\\":\\\"CODICE_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\"],\\\"name\\\":\\\"NOME_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\"],\\\"name\\\":\\\"CODICE_ENTE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\"],\\\"name\\\":\\\"NOME_ENTE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"1\\\",\\\"2a\\\",\\\"4\\\",\\\"5\\\",\\\"6\\\",\\\"7\\\",\\\"8\\\",\\\"9\\\",\\\"10\\\"],\\\"name\\\":\\\"CODICE_SERVIZIO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Posti alloggio in residenze - anno corrente\\\",\\\"Posti alloggio in residenze - di cui assegnati a studenti idonei (borsisti e non borsisti)\\\",\\\"Posti alloggio in residenze - anno corrente - di cui assegnati a studenti non idonei\\\",\\\"Posti alloggio in residenze - anno corrente - di cui riservati a studenti in mobilitï¿½ (es. Erasmus)\\\",\\\"Posti alloggio in residenze - anno corrente - di cui riservati ad uso foresteria\\\",\\\"Mense attive a gestione diretta - anno corrente\\\",\\\"Posti a sedere in mense a gestione diretta - anno corrente\\\",\\\"Mense attive a gestione indiretta - anno corrente\\\",\\\"Posti a sedere in mense a gestione indiretta - anno corrente\\\"],\\\"name\\\":\\\"DESCRIZIONE_SERVIZIO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"2452\\\",\\\"2115\\\",\\\"0\\\",\\\"0\\\",\\\"337\\\",\\\"0\\\",\\\"0\\\",\\\"8\\\",\\\"1330\\\"],\\\"name\\\":\\\"NUMERO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"}],\\\"schemaName\\\":null,\\\"databaseName\\\":null,\\\"hiveFormat\\\":\\\"ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'\\\\n WITH SERDEPROPERTIES ( 'separatorChar' = '\\\\\\\\;' ,'escapeChar' = '\\\\\\\\\\\\\\\\' ,'quoteChar' = '\\\\\\\\'') STORED AS TEXTFILE\\\",\\\"structured\\\":false,\\\"id\\\":\\\"1aa034a6-8d20-4a59-b5d5-2def84507485\\\"}\""
+                    },
+                    "operational": {
+                        "dataset_type": "batch",
+                        "read_type": "update",
+                        "is_std": false,
+                        "logical_uri": "daf://opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_0",
+                        "theme": "EDUC",
+                        "subtheme": "unknown",
+                        "group_own": "d_ale",
+                        "georef": null,
+                        "storage_info": {
+                            "hbase": null,
+                            "mongo": null,
+                            "kudu": null,
+                            "textdb": null,
+                            "hdfs": {
+                                "name": "hdfs_daf",
+                                "path": null,
+                                "param": "format=csv"
+                            }
+                        },
+                        "ext_opendata": {
+                            "resourceId": "ac8ce736-86a7-43e6-add4-c8cffc38f766",
+                            "name": "2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "url": "http://agid.geo-solutions.it/api/3/action/package_show?id=2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "resourceName": "2017 Alloggi e mense",
+                            "id": "d125ffb6-aa9f-4bab-a29c-d44cca66409f",
+                            "resourceUrl": "http://dati.ustat.miur.it/dataset/f2d9bc3b-a4e6-4bc1-8e61-836351152166/resource/64b72751-5f77-461c-a513-3c2faca7a061/download/2017_dsu_alloggi_mense.csv"
+                        },
+                        "physical_uri": "/daf/opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_0",
+                        "ingestion_pipeline": null,
+                        "input_src": {
+                            "sftp": [
+                                {
+                                    "name": "sftp_local",
+                                    "url": "/opendata",
+                                    "username": "d_ale",
+                                    "param": "format=csv",
+                                    "password": null
+                                }
+                            ],
+                            "srv_pull": null,
+                            "srv_push": null,
+                            "daf_dataset": null
+                        },
+                        "group_access": null,
+                        "std_schema": null,
+                        "partitions": null,
+                        "dataset_proc": null
+                    },
+                    "dcatapit": {
+                        "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_0",
+                        "notes": "Banca-dati relativa agli organismi di gestione per il diritto allo studio universitario ed agli uffici per il diritto allo studio all'interno degli istituti che erogano interventi con fondi regionali. Le informazioni riguardano: posti-alloggio, mense e personale relativo a ciascun ente per il DSU o Ufficio; Interventi concessi a studenti per ciascun Ateneo o Istituto gestito da ciascun ente per il DSU o ufficio; Spesa impegnata per interventi concessi a studenti per ciascun Ateneo o Istituto nell’esercizio finanziario (gestione di competenza).",
+                        "organization": null,
+                        "author": null,
+                        "license_id": null,
+                        "relationships_as_object": [],
+                        "holder_identifier": "default_org",
+                        "identifier": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_0",
+                        "tags": [],
+                        "groups": [],
+                        "modified": "22/03/2018",
+                        "privatex": false,
+                        "alternate_identifier": "2017_diritto_allo_studio_universitario_dsu_regionale_d_ac8ce736-86a7-43e6-add4-c8cffc38f766_d_csv",
+                        "relationships_as_subject": [],
+                        "holder_name": "default_org",
+                        "publisher_identifier": "default_org",
+                        "resources": [],
+                        "frequency": "unknown",
+                        "title": "2017 Diritto allo Studio Universitario (DSU) Regionale - 2017 Alloggi e mense",
+                        "owner_org": "default_org",
+                        "theme": "EDUC",
+                        "publisher_name": "default_org"
+                    }
+                },
+                {
+                    "_id": {
+                        "$oid": "5abd6ce3936bb60001002535"
+                    },
+                    "dataschema": {
+                        "avro": {
+                            "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_3.csv",
+                            "`type`": "record",
+                            "namespace": "it.gov.daf.dataset.opendata",
+                            "aliases": null,
+                            "fields": [
+                                {
+                                    "name": "anno_solare",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "codice_regione",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "nome_regione",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_ente",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "nome_ente",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_tipologia",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "descrizione_tipologia",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "numero",
+                                    "`type`": "double"
+                                }
+                            ]
+                        },
+                        "flatSchema": [
+                            {
+                                "name": "anno_solare",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_regione",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_regione",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_ente",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_ente",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_tipologia",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "descrizione_tipologia",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "numero",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            }
+                        ],
+                        "kyloSchema": "\"{\\\"name\\\":null,\\\"description\\\":null,\\\"charset\\\":\\\"UTF-8\\\",\\\"properties\\\":{},\\\"fields\\\":[{\\\"sampleValues\\\":[\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\"],\\\"name\\\":\\\"ANNO_SOLARE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"02\\\",\\\"02\\\",\\\"02\\\",\\\"02\\\",\\\"03\\\"],\\\"name\\\":\\\"CODICE_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Valle d'Aosta\\\",\\\"Valle d'Aosta\\\",\\\"Valle d'Aosta\\\",\\\"Valle d'Aosta\\\",\\\"Lombardia\\\"],\\\"name\\\":\\\"NOME_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0201\\\",\\\"0201\\\",\\\"0201\\\",\\\"0201\\\",\\\"0302\\\"],\\\"name\\\":\\\"CODICE_ENTE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"Regione Autonoma Valle d'Aosta - Struttura Politiche Educative\\\",\\\"Regione Autonoma Valle d'Aosta - Struttura Politiche Educative\\\",\\\"Regione Autonoma Valle d'Aosta - Struttura Politiche Educative\\\",\\\"Regione Autonoma Valle d'Aosta - Struttura Politiche Educative\\\",\\\"Politecnico di Milano - Servizio DSU e mobilitï¿½ internazionale\\\"],\\\"name\\\":\\\"NOME_ENTE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"11\\\",\\\"12\\\",\\\"13\\\",\\\"14\\\",\\\"11\\\",\\\"12\\\",\\\"13\\\",\\\"14\\\",\\\"11\\\"],\\\"name\\\":\\\"CODICE_TIPOLOGIA\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Pasti erogati in mense a gestione diretta\\\",\\\"Pasti erogati in mense a gestione indiretta\\\",\\\"Pasti erogati in servizi di ristorazione convenzionati\\\",\\\"Studenti che usufruiscono delle mense\\\",\\\"Pasti erogati in mense a gestione diretta\\\",\\\"Pasti erogati in mense a gestione indiretta\\\",\\\"Pasti erogati in servizi di ristorazione convenzionati\\\",\\\"Studenti che usufruiscono delle mense\\\",\\\"Pasti erogati in mense a gestione diretta\\\"],\\\"name\\\":\\\"DESCRIZIONE_TIPOLOGIA\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"0\\\",\\\"384881\\\",\\\"46009\\\",\\\"13053\\\",\\\"0\\\",\\\"257\\\",\\\"4951\\\",\\\"105\\\",\\\"0\\\"],\\\"name\\\":\\\"NUMERO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"}],\\\"schemaName\\\":null,\\\"databaseName\\\":null,\\\"hiveFormat\\\":\\\"ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'\\\\n WITH SERDEPROPERTIES ( 'separatorChar' = '\\\\\\\\;' ,'escapeChar' = '\\\\\\\\\\\\\\\\' ,'quoteChar' = '\\\\\\\\'') STORED AS TEXTFILE\\\",\\\"structured\\\":false,\\\"id\\\":\\\"863f9470-87fd-4268-a491-51d416d5ff03\\\"}\""
+                    },
+                    "operational": {
+                        "dataset_type": "batch",
+                        "read_type": "update",
+                        "is_std": false,
+                        "logical_uri": "daf://opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_3",
+                        "theme": "EDUC",
+                        "subtheme": "unknown",
+                        "group_own": "d_ale",
+                        "georef": null,
+                        "storage_info": {
+                            "hbase": null,
+                            "mongo": null,
+                            "kudu": null,
+                            "textdb": null,
+                            "hdfs": {
+                                "name": "hdfs_daf",
+                                "path": null,
+                                "param": "format=csv"
+                            }
+                        },
+                        "ext_opendata": {
+                            "resourceId": "b7891fc2-01e6-4bf4-9998-38ef97a9bbca",
+                            "name": "2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "url": "http://agid.geo-solutions.it/api/3/action/package_show?id=2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "resourceName": "2017 Pasti erogati",
+                            "id": "d125ffb6-aa9f-4bab-a29c-d44cca66409f",
+                            "resourceUrl": "http://dati.ustat.miur.it/dataset/f2d9bc3b-a4e6-4bc1-8e61-836351152166/resource/95088a0a-6870-4b1f-a06e-55522b6104b3/download/2017_dsu_pasti_erogati.csv"
+                        },
+                        "physical_uri": "/daf/opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_3",
+                        "ingestion_pipeline": null,
+                        "input_src": {
+                            "sftp": [
+                                {
+                                    "name": "sftp_local",
+                                    "url": "/opendata",
+                                    "username": "d_ale",
+                                    "param": "format=csv",
+                                    "password": null
+                                }
+                            ],
+                            "srv_pull": null,
+                            "srv_push": null,
+                            "daf_dataset": null
+                        },
+                        "group_access": null,
+                        "std_schema": null,
+                        "partitions": null,
+                        "dataset_proc": null
+                    },
+                    "dcatapit": {
+                        "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_3",
+                        "notes": "Banca-dati relativa agli organismi di gestione per il diritto allo studio universitario ed agli uffici per il diritto allo studio all'interno degli istituti che erogano interventi con fondi regionali. Le informazioni riguardano: posti-alloggio, mense e personale relativo a ciascun ente per il DSU o Ufficio; Interventi concessi a studenti per ciascun Ateneo o Istituto gestito da ciascun ente per il DSU o ufficio; Spesa impegnata per interventi concessi a studenti per ciascun Ateneo o Istituto nell’esercizio finanziario (gestione di competenza).",
+                        "organization": null,
+                        "author": null,
+                        "license_id": null,
+                        "relationships_as_object": [],
+                        "holder_identifier": "default_org",
+                        "identifier": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_3",
+                        "tags": [],
+                        "groups": [],
+                        "modified": "22/03/2018",
+                        "privatex": false,
+                        "alternate_identifier": "2017_diritto_allo_studio_universitario_dsu_regionale_d_b7891fc2-01e6-4bf4-9998-38ef97a9bbca_d_csv",
+                        "relationships_as_subject": [],
+                        "holder_name": "default_org",
+                        "publisher_identifier": "default_org",
+                        "resources": [],
+                        "frequency": "unknown",
+                        "title": "2017 Diritto allo Studio Universitario (DSU) Regionale - 2017 Pasti erogati",
+                        "owner_org": "default_org",
+                        "theme": "EDUC",
+                        "publisher_name": "default_org"
+                    }
+                },
+                {
+                    "_id": {
+                        "$oid": "5abd6ce5936bb60001002537"
+                    },
+                    "dataschema": {
+                        "avro": {
+                            "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_4.csv",
+                            "`type`": "record",
+                            "namespace": "it.gov.daf.dataset.opendata",
+                            "aliases": null,
+                            "fields": [
+                                {
+                                    "name": "anno_accademico",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_regione",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "nome_regione",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_ente",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "nome_ente",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_istituto",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "nome_istituto",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "tipo_istituto",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_intervento",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "descrizione_intervento",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "interventi_laurea",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "interventi_laurea_extra_ue",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "interventi_dottorato",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "interventi_specializzazione",
+                                    "`type`": "String"
+                                }
+                            ]
+                        },
+                        "flatSchema": [
+                            {
+                                "name": "anno_accademico",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_regione",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_regione",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_ente",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_ente",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_istituto",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_istituto",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "tipo_istituto",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_intervento",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "descrizione_intervento",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "interventi_laurea",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "interventi_laurea_extra_ue",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "interventi_dottorato",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "interventi_specializzazione",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            }
+                        ],
+                        "kyloSchema": "\"{\\\"name\\\":null,\\\"description\\\":null,\\\"charset\\\":\\\"UTF-8\\\",\\\"properties\\\":{},\\\"fields\\\":[{\\\"sampleValues\\\":[\\\"2016-2017 \\\",\\\"2016-2017 \\\",\\\"2016-2017 \\\",\\\"2016-2017 \\\",\\\"2016-2017 \\\",\\\"2016-2017 \\\",\\\"2016-2017 \\\",\\\"2016-2017 \\\",\\\"2016-2017 \\\"],\\\"name\\\":\\\"ANNO_ACCADEMICO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\"],\\\"name\\\":\\\"CODICE_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\"],\\\"name\\\":\\\"NOME_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\"],\\\"name\\\":\\\"CODICE_ENTE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\"],\\\"name\\\":\\\"NOME_ENTE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\"],\\\"name\\\":\\\"CODICE_ISTITUTO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\"],\\\"name\\\":\\\"NOME_ISTITUTO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\"],\\\"name\\\":\\\"TIPO_ISTITUTO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"1\\\",\\\"2\\\",\\\"3\\\",\\\"4\\\",\\\"5\\\",\\\"6\\\",\\\"7\\\",\\\"8\\\",\\\"9\\\"],\\\"name\\\":\\\"CODICE_INTERVENTO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Borse di studio - N� domande\\\",\\\"Borse di studio - N� idonei (beneficiari e non beneficiari)\\\",\\\"Borse di studio - N� borse concesse (incluse borse concesse con FSE) (*)\\\",\\\"Prestiti di onore e altri prestiti agevolati - N� domande\\\",\\\"Prestiti di onore e altri prestiti agevolati - N� prestiti concessi\\\",\\\"Mobilit� internazionale - N� domande contributi\\\",\\\"Mobilit� internazionale - N� contributi concessi\\\",\\\"Mobilit� internazionale - N� complessivo di mesi in mobilit�\\\",\\\"Interventi a favore di studenti in situazione di handicap - N� domande\\\"],\\\"name\\\":\\\"DESCRIZIONE_INTERVENTO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"7056\\\",\\\"5330\\\",\\\"5330\\\",\\\"0\\\",\\\"0\\\",\\\"528\\\",\\\"249\\\",\\\"1769\\\",\\\"42\\\"],\\\"name\\\":\\\"INTERVENTI_LAUREA\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"729\\\",\\\"594\\\",\\\"594\\\",\\\"0\\\",\\\"0\\\",\\\"17\\\",\\\"15\\\",\\\"112\\\",\\\"N\\\"],\\\"name\\\":\\\"INTERVENTI_LAUREA_EXTRA_UE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"7\\\",\\\"4\\\",\\\"4\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\"],\\\"name\\\":\\\"INTERVENTI_DOTTORATO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"35\\\",\\\"27\\\",\\\"27\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"N\\\"],\\\"name\\\":\\\"INTERVENTI_SPECIALIZZAZIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"}],\\\"schemaName\\\":null,\\\"databaseName\\\":null,\\\"hiveFormat\\\":\\\"ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'\\\\n WITH SERDEPROPERTIES ( 'separatorChar' = '\\\\\\\\;' ,'escapeChar' = '\\\\\\\\\\\\\\\\' ,'quoteChar' = '\\\\\\\\\\\\\\\"') STORED AS TEXTFILE\\\",\\\"structured\\\":false,\\\"id\\\":\\\"a65bdae4-3cbc-4cec-bc24-8da6acd5158b\\\"}\""
+                    },
+                    "operational": {
+                        "dataset_type": "batch",
+                        "read_type": "update",
+                        "is_std": false,
+                        "logical_uri": "daf://opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_4",
+                        "theme": "EDUC",
+                        "subtheme": "unknown",
+                        "group_own": "d_ale",
+                        "georef": null,
+                        "storage_info": {
+                            "hbase": null,
+                            "mongo": null,
+                            "kudu": null,
+                            "textdb": null,
+                            "hdfs": {
+                                "name": "hdfs_daf",
+                                "path": null,
+                                "param": "format=csv"
+                            }
+                        },
+                        "ext_opendata": {
+                            "resourceId": "a241140c-7df1-48aa-bd5f-3b4c1a4fae18",
+                            "name": "2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "url": "http://agid.geo-solutions.it/api/3/action/package_show?id=2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "resourceName": "2017 Numero di interventi",
+                            "id": "d125ffb6-aa9f-4bab-a29c-d44cca66409f",
+                            "resourceUrl": "http://dati.ustat.miur.it/dataset/f2d9bc3b-a4e6-4bc1-8e61-836351152166/resource/2b13eb6a-cf60-43c2-8f1c-c368064585bb/download/2017_dsu_interventi.csv"
+                        },
+                        "physical_uri": "/daf/opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_4",
+                        "ingestion_pipeline": null,
+                        "input_src": {
+                            "sftp": [
+                                {
+                                    "name": "sftp_local",
+                                    "url": "/opendata",
+                                    "username": "d_ale",
+                                    "param": "format=csv",
+                                    "password": null
+                                }
+                            ],
+                            "srv_pull": null,
+                            "srv_push": null,
+                            "daf_dataset": null
+                        },
+                        "group_access": null,
+                        "std_schema": null,
+                        "partitions": null,
+                        "dataset_proc": null
+                    },
+                    "dcatapit": {
+                        "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_4",
+                        "notes": "Banca-dati relativa agli organismi di gestione per il diritto allo studio universitario ed agli uffici per il diritto allo studio all'interno degli istituti che erogano interventi con fondi regionali. Le informazioni riguardano: posti-alloggio, mense e personale relativo a ciascun ente per il DSU o Ufficio; Interventi concessi a studenti per ciascun Ateneo o Istituto gestito da ciascun ente per il DSU o ufficio; Spesa impegnata per interventi concessi a studenti per ciascun Ateneo o Istituto nell’esercizio finanziario (gestione di competenza).",
+                        "organization": null,
+                        "author": null,
+                        "license_id": null,
+                        "relationships_as_object": [],
+                        "holder_identifier": "default_org",
+                        "identifier": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_4",
+                        "tags": [],
+                        "groups": [],
+                        "modified": "22/03/2018",
+                        "privatex": false,
+                        "alternate_identifier": "2017_diritto_allo_studio_universitario_dsu_regionale_d_a241140c-7df1-48aa-bd5f-3b4c1a4fae18_d_csv",
+                        "relationships_as_subject": [],
+                        "holder_name": "default_org",
+                        "publisher_identifier": "default_org",
+                        "resources": [],
+                        "frequency": "unknown",
+                        "title": "2017 Diritto allo Studio Universitario (DSU) Regionale - 2017 Numero di interventi",
+                        "owner_org": "default_org",
+                        "theme": "EDUC",
+                        "publisher_name": "default_org"
+                    }
+                },
+                {
+                    "_id": {
+                        "$oid": "5abd6ce6936bb60001002539"
+                    },
+                    "dataschema": {
+                        "avro": {
+                            "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_5.csv",
+                            "`type`": "record",
+                            "namespace": "it.gov.daf.dataset.opendata",
+                            "aliases": null,
+                            "fields": [
+                                {
+                                    "name": "data",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "codice_regione",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "nome_regione",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_tipologia_personale",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "descrizione_tipologia_personale",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "numero",
+                                    "`type`": "int"
+                                }
+                            ]
+                        },
+                        "flatSchema": [
+                            {
+                                "name": "data",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_regione",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_regione",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_tipologia_personale",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "descrizione_tipologia_personale",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "numero",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            }
+                        ],
+                        "kyloSchema": "\"{\\\"name\\\":null,\\\"description\\\":null,\\\"charset\\\":\\\"UTF-8\\\",\\\"properties\\\":{},\\\"fields\\\":[{\\\"sampleValues\\\":[\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\"],\\\"name\\\":\\\"DATA\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\"],\\\"name\\\":\\\"CODICE_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\"],\\\"name\\\":\\\"NOME_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"111\\\",\\\"112\\\",\\\"113\\\",\\\"114\\\",\\\"115\\\",\\\"116\\\",\\\"117\\\",\\\"118\\\",\\\"119\\\"],\\\"name\\\":\\\"CODICE_TIPOLOGIA_PERSONALE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Dipendente dall'Ente a tempo determinato maschio - numero\\\",\\\"Dipendente dall'Ente a tempo determinato femmina - numero\\\",\\\"Dipendente dall'Ente a tempo determinato maschio - mesi lavorati\\\",\\\"Dipendente dall'Ente a tempo determinato femmina - mesi lavorati\\\",\\\"Dipendente dalla Regione a tempo determinato maschio - numero\\\",\\\"Dipendente dalla Regione a tempo determinato femmina - numero\\\",\\\"Dipendente dalla Regione a tempo determinato maschio - mesi lavorati\\\",\\\"Dipendente dalla Regione a tempo determinato femmina - mesi lavorati\\\",\\\"Dipendente dall'ateneo a tempo determinato maschio - numero\\\"],\\\"name\\\":\\\"DESCRIZIONE_TIPOLOGIA_PERSONALE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\"],\\\"name\\\":\\\"NUMERO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"}],\\\"schemaName\\\":null,\\\"databaseName\\\":null,\\\"hiveFormat\\\":\\\"ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'\\\\n WITH SERDEPROPERTIES ( 'separatorChar' = '\\\\\\\\;' ,'escapeChar' = '\\\\\\\\\\\\\\\\' ,'quoteChar' = '\\\\\\\\\\\\\\\"') STORED AS TEXTFILE\\\",\\\"structured\\\":false,\\\"id\\\":\\\"37f125c9-b29a-429d-9291-3bc85859a2fa\\\"}\""
+                    },
+                    "operational": {
+                        "dataset_type": "batch",
+                        "read_type": "update",
+                        "is_std": false,
+                        "logical_uri": "daf://opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_5",
+                        "theme": "EDUC",
+                        "subtheme": "unknown",
+                        "group_own": "d_ale",
+                        "georef": null,
+                        "storage_info": {
+                            "hbase": null,
+                            "mongo": null,
+                            "kudu": null,
+                            "textdb": null,
+                            "hdfs": {
+                                "name": "hdfs_daf",
+                                "path": null,
+                                "param": "format=csv"
+                            }
+                        },
+                        "ext_opendata": {
+                            "resourceId": "c5aac2c1-7988-47ae-9b38-9b87fbee5932",
+                            "name": "2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "url": "http://agid.geo-solutions.it/api/3/action/package_show?id=2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "resourceName": "2017 Personale a tempo determinato",
+                            "id": "d125ffb6-aa9f-4bab-a29c-d44cca66409f",
+                            "resourceUrl": "http://dati.ustat.miur.it/dataset/f2d9bc3b-a4e6-4bc1-8e61-836351152166/resource/a3d751ad-4f9f-4e71-a78b-c3da6b580a9f/download/2017_dsu_personale_determinato.csv"
+                        },
+                        "physical_uri": "/daf/opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_5",
+                        "ingestion_pipeline": null,
+                        "input_src": {
+                            "sftp": [
+                                {
+                                    "name": "sftp_local",
+                                    "url": "/opendata",
+                                    "username": "d_ale",
+                                    "param": "format=csv",
+                                    "password": null
+                                }
+                            ],
+                            "srv_pull": null,
+                            "srv_push": null,
+                            "daf_dataset": null
+                        },
+                        "group_access": null,
+                        "std_schema": null,
+                        "partitions": null,
+                        "dataset_proc": null
+                    },
+                    "dcatapit": {
+                        "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_5",
+                        "notes": "Banca-dati relativa agli organismi di gestione per il diritto allo studio universitario ed agli uffici per il diritto allo studio all'interno degli istituti che erogano interventi con fondi regionali. Le informazioni riguardano: posti-alloggio, mense e personale relativo a ciascun ente per il DSU o Ufficio; Interventi concessi a studenti per ciascun Ateneo o Istituto gestito da ciascun ente per il DSU o ufficio; Spesa impegnata per interventi concessi a studenti per ciascun Ateneo o Istituto nell’esercizio finanziario (gestione di competenza).",
+                        "organization": null,
+                        "author": null,
+                        "license_id": null,
+                        "relationships_as_object": [],
+                        "holder_identifier": "default_org",
+                        "identifier": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_5",
+                        "tags": [],
+                        "groups": [],
+                        "modified": "22/03/2018",
+                        "privatex": false,
+                        "alternate_identifier": "2017_diritto_allo_studio_universitario_dsu_regionale_d_c5aac2c1-7988-47ae-9b38-9b87fbee5932_d_csv",
+                        "relationships_as_subject": [],
+                        "holder_name": "default_org",
+                        "publisher_identifier": "default_org",
+                        "resources": [],
+                        "frequency": "unknown",
+                        "title": "2017 Diritto allo Studio Universitario (DSU) Regionale - 2017 Personale a tempo determinato",
+                        "owner_org": "default_org",
+                        "theme": "EDUC",
+                        "publisher_name": "default_org"
+                    }
+                },
+                {
+                    "_id": {
+                        "$oid": "5abd6ce8936bb6000100253b"
+                    },
+                    "dataschema": {
+                        "avro": {
+                            "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_7.csv",
+                            "`type`": "record",
+                            "namespace": "it.gov.daf.dataset.opendata",
+                            "aliases": null,
+                            "fields": [
+                                {
+                                    "name": "anno_solare",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "codice_regione",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "nome_regione",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_ente",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "nome_ente",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_istituto",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "nome_istituto",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "tipo_istituto",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_spesa",
+                                    "`type`": "int"
+                                },
+                                {
+                                    "name": "descrizione_spesa",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "spesa_laurea",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "spesa_dottorato",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "spesa_specializzazione",
+                                    "`type`": "double"
+                                }
+                            ]
+                        },
+                        "flatSchema": [
+                            {
+                                "name": "anno_solare",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_regione",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_regione",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_ente",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_ente",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_istituto",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_istituto",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "tipo_istituto",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_spesa",
+                                "`type`": "int",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "descrizione_spesa",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "spesa_laurea",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "spesa_dottorato",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "spesa_specializzazione",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            }
+                        ],
+                        "kyloSchema": "\"{\\\"name\\\":null,\\\"description\\\":null,\\\"charset\\\":\\\"UTF-8\\\",\\\"properties\\\":{},\\\"fields\\\":[{\\\"sampleValues\\\":[\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\",\\\"2016\\\"],\\\"name\\\":\\\"ANNO_SOLARE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\"],\\\"name\\\":\\\"CODICE_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\"],\\\"name\\\":\\\"NOME_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\",\\\"0101\\\"],\\\"name\\\":\\\"CODICE_ENTE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\",\\\"EDISU del Piemonte\\\"],\\\"name\\\":\\\"NOME_ENTE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\",\\\"00101\\\"],\\\"name\\\":\\\"CODICE_ISTITUTO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\",\\\"Universit� degli studi di Torino\\\"],\\\"name\\\":\\\"NOME_ISTITUTO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\",\\\"Ateneo\\\"],\\\"name\\\":\\\"TIPO_ISTITUTO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"1\\\",\\\"2\\\",\\\"3\\\",\\\"4\\\",\\\"5\\\",\\\"6\\\",\\\"7\\\",\\\"8\\\",\\\"9\\\"],\\\"name\\\":\\\"CODICE_SPESA\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Borse di studio - Spesa per borse concesse\\\",\\\"Borse di studio - Spesa per borse concesse - di cui Fondo Sociale Europeo\\\",\\\"Prestiti di onore e altri prestiti agevolati - Spesa per prestiti concessi\\\",\\\"Mobilit� internazionale - Spesa per contributi concessi\\\",\\\"Interventi a favore di studenti in situazione di handicap - Spesa per interventi concessi\\\",\\\"Attivit� di collaborazione a tempo parziale - Spesa per attivit� di collaborazioni a tempo parziale\\\",\\\"Posti alloggio e contributi-alloggio - Spesa per contributi-alloggio assegnati\\\",\\\"Posti alloggio e contributi-alloggio - Spesa per contributi-alloggio assegnati - di cui spesa per contributi a borsisti (non beneficiari di alloggio)\\\",\\\"Posti alloggio e contributi-alloggio - Spesa per contributi-alloggio assegnati - di cui spesa per contributi a idonei non borsisti (non beneficiari di alloggio)\\\"],\\\"name\\\":\\\"DESCRIZIONE_SPESA\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"17673411\\\",\\\"0\\\",\\\"0\\\",\\\"421725\\\",\\\"44498\\\",\\\"142200\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\"],\\\"name\\\":\\\"SPESA_LAUREA\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"22121\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\"],\\\"name\\\":\\\"SPESA_DOTTORATO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"74467\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"2611\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\"],\\\"name\\\":\\\"SPESA_SPECIALIZZAZIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"}],\\\"schemaName\\\":null,\\\"databaseName\\\":null,\\\"hiveFormat\\\":\\\"ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'\\\\n WITH SERDEPROPERTIES ( 'separatorChar' = '\\\\\\\\;' ,'escapeChar' = '\\\\\\\\\\\\\\\\' ,'quoteChar' = '\\\\\\\\\\\\\\\"') STORED AS TEXTFILE\\\",\\\"structured\\\":false,\\\"id\\\":\\\"c09b005e-6eec-4840-ae8b-3c7bae7841f7\\\"}\""
+                    },
+                    "operational": {
+                        "dataset_type": "batch",
+                        "read_type": "update",
+                        "is_std": false,
+                        "logical_uri": "daf://opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_7",
+                        "theme": "EDUC",
+                        "subtheme": "unknown",
+                        "group_own": "d_ale",
+                        "georef": null,
+                        "storage_info": {
+                            "hbase": null,
+                            "mongo": null,
+                            "kudu": null,
+                            "textdb": null,
+                            "hdfs": {
+                                "name": "hdfs_daf",
+                                "path": null,
+                                "param": "format=csv"
+                            }
+                        },
+                        "ext_opendata": {
+                            "resourceId": "fa5557b6-f8f3-42db-9621-744201d36c46",
+                            "name": "2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "url": "http://agid.geo-solutions.it/api/3/action/package_show?id=2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "resourceName": "2017 Spesa per interventi",
+                            "id": "d125ffb6-aa9f-4bab-a29c-d44cca66409f",
+                            "resourceUrl": "http://dati.ustat.miur.it/dataset/f2d9bc3b-a4e6-4bc1-8e61-836351152166/resource/5bb0ff78-f60e-4e30-b237-7791dff940c2/download/2017_dsu_spesa.csv"
+                        },
+                        "physical_uri": "/daf/opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_7",
+                        "ingestion_pipeline": null,
+                        "input_src": {
+                            "sftp": [
+                                {
+                                    "name": "sftp_local",
+                                    "url": "/opendata",
+                                    "username": "d_ale",
+                                    "param": "format=csv",
+                                    "password": null
+                                }
+                            ],
+                            "srv_pull": null,
+                            "srv_push": null,
+                            "daf_dataset": null
+                        },
+                        "group_access": null,
+                        "std_schema": null,
+                        "partitions": null,
+                        "dataset_proc": null
+                    },
+                    "dcatapit": {
+                        "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_7",
+                        "notes": "Banca-dati relativa agli organismi di gestione per il diritto allo studio universitario ed agli uffici per il diritto allo studio all'interno degli istituti che erogano interventi con fondi regionali. Le informazioni riguardano: posti-alloggio, mense e personale relativo a ciascun ente per il DSU o Ufficio; Interventi concessi a studenti per ciascun Ateneo o Istituto gestito da ciascun ente per il DSU o ufficio; Spesa impegnata per interventi concessi a studenti per ciascun Ateneo o Istituto nell’esercizio finanziario (gestione di competenza).",
+                        "organization": null,
+                        "author": null,
+                        "license_id": null,
+                        "relationships_as_object": [],
+                        "holder_identifier": "default_org",
+                        "identifier": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_7",
+                        "tags": [],
+                        "groups": [],
+                        "modified": "22/03/2018",
+                        "privatex": false,
+                        "alternate_identifier": "2017_diritto_allo_studio_universitario_dsu_regionale_d_fa5557b6-f8f3-42db-9621-744201d36c46_d_csv",
+                        "relationships_as_subject": [],
+                        "holder_name": "default_org",
+                        "publisher_identifier": "default_org",
+                        "resources": [],
+                        "frequency": "unknown",
+                        "title": "2017 Diritto allo Studio Universitario (DSU) Regionale - 2017 Spesa per interventi",
+                        "owner_org": "default_org",
+                        "theme": "EDUC",
+                        "publisher_name": "default_org"
+                    }
+                },
+                {
+                    "_id": {
+                        "$oid": "5abd6ce9936bb6000100253e"
+                    },
+                    "dataschema": {
+                        "avro": {
+                            "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_8.csv",
+                            "`type`": "record",
+                            "namespace": "it.gov.daf.dataset.opendata",
+                            "aliases": null,
+                            "fields": [
+                                {
+                                    "name": "data",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_regione",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "nome_regione",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "codice_tipologia_personale",
+                                    "`type`": "double"
+                                },
+                                {
+                                    "name": "descrizione_tipologia_personale",
+                                    "`type`": "String"
+                                },
+                                {
+                                    "name": "numero",
+                                    "`type`": "double"
+                                }
+                            ]
+                        },
+                        "flatSchema": [
+                            {
+                                "name": "data",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_regione",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "nome_regione",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "codice_tipologia_personale",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "descrizione_tipologia_personale",
+                                "`type`": "String",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            },
+                            {
+                                "name": "numero",
+                                "`type`": "double",
+                                "metadata": {
+                                    "field_profile": null,
+                                    "semantics": null,
+                                    "desc": null,
+                                    "format_std": null,
+                                    "tag": null,
+                                    "uniq_dim": null,
+                                    "field_type": null,
+                                    "is_createdate": null,
+                                    "is_updatedate": null,
+                                    "personal": null,
+                                    "constr": null,
+                                    "title": null,
+                                    "required": null,
+                                    "cat": null
+                                }
+                            }
+                        ],
+                        "kyloSchema": "\"{\\\"name\\\":null,\\\"description\\\":null,\\\"charset\\\":\\\"UTF-8\\\",\\\"properties\\\":{},\\\"fields\\\":[{\\\"sampleValues\\\":[\\\"31/12/16\\\",\\\"31/12/16\\\",\\\"31/12/16\\\",\\\"31/12/16\\\",\\\"31/12/16\\\",\\\"31/12/16\\\",\\\"31/12/16\\\",\\\"31/12/16\\\",\\\"31/12/16\\\"],\\\"name\\\":\\\"DATA\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\",\\\"01\\\"],\\\"name\\\":\\\"CODICE_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\",\\\"Piemonte\\\"],\\\"name\\\":\\\"NOME_REGIONE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"95\\\",\\\"96\\\",\\\"97\\\",\\\"98\\\",\\\"99\\\",\\\"100\\\",\\\"101\\\",\\\"102\\\",\\\"103\\\"],\\\"name\\\":\\\"CODICE_TIPOLOGIA_PERSONALE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"Dipendente dall'Ente full time a tempo indeterminato maschio\\\",\\\"Dipendente dall'Ente full time a tempo indeterminato femmina\\\",\\\"Dipendente dall'Ente part time a tempo indeterminato maschio\\\",\\\"Dipendente dall'Ente part time a tempo indeterminato femmina\\\",\\\"Dipendente dalla Regione full time a tempo indeterminato maschio\\\",\\\"Dipendente dalla Regione full time a tempo indeterminato femmina\\\",\\\"Dipendente dalla Regione part time a tempo indeterminato maschio\\\",\\\"Dipendente dalla Regione part time a tempo indeterminato femmina\\\",\\\"Dipendente dall'ateneo full time a tempo indeterminato maschio\\\"],\\\"name\\\":\\\"DESCRIZIONE_TIPOLOGIA_PERSONALE\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"string\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":false,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"string\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"},{\\\"sampleValues\\\":[\\\"25\\\",\\\"35\\\",\\\"0\\\",\\\"3\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\",\\\"0\\\"],\\\"name\\\":\\\"NUMERO\\\",\\\"description\\\":\\\"\\\",\\\"nativeDataType\\\":null,\\\"derivedDataType\\\":\\\"int\\\",\\\"primaryKey\\\":false,\\\"nullable\\\":true,\\\"modifiable\\\":true,\\\"dataTypeDescriptor\\\":{\\\"numeric\\\":true,\\\"date\\\":false,\\\"complex\\\":false},\\\"updatedTracker\\\":false,\\\"precisionScale\\\":null,\\\"createdTracker\\\":false,\\\"tags\\\":null,\\\"dataTypeWithPrecisionAndScale\\\":\\\"int\\\",\\\"descriptionWithoutNewLines\\\":\\\"\\\"}],\\\"schemaName\\\":null,\\\"databaseName\\\":null,\\\"hiveFormat\\\":\\\"ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'\\\\n WITH SERDEPROPERTIES ( 'separatorChar' = '\\\\\\\\;' ,'escapeChar' = '\\\\\\\\\\\\\\\\' ,'quoteChar' = '\\\\\\\\\\\\\\\"') STORED AS TEXTFILE\\\",\\\"structured\\\":false,\\\"id\\\":\\\"eca9a0c6-0286-42e0-9338-c57cb47ea5fd\\\"}\""
+                    },
+                    "operational": {
+                        "dataset_type": "batch",
+                        "read_type": "update",
+                        "is_std": false,
+                        "logical_uri": "daf://opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_8",
+                        "theme": "EDUC",
+                        "subtheme": "unknown",
+                        "group_own": "d_ale",
+                        "georef": null,
+                        "storage_info": {
+                            "hbase": null,
+                            "mongo": null,
+                            "kudu": null,
+                            "textdb": null,
+                            "hdfs": {
+                                "name": "hdfs_daf",
+                                "path": null,
+                                "param": "format=csv"
+                            }
+                        },
+                        "ext_opendata": {
+                            "resourceId": "764a2500-1e76-40ce-806a-15416fc6305d",
+                            "name": "2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "url": "http://agid.geo-solutions.it/api/3/action/package_show?id=2017-diritto-allo-studio-universitario-dsu-regionale",
+                            "resourceName": "2017 Personale a tempo indeterminato",
+                            "id": "764a2500-1e76-40ce-806a-15416fc6305d",
+                            "resourceUrl": "http://dati.ustat.miur.it/dataset/f2d9bc3b-a4e6-4bc1-8e61-836351152166/resource/5565909d-a13d-4915-84c2-2d3e5d6d8114/download/2017_dsu_personale_indeterminato.csv"
+                        },
+                        "physical_uri": "/daf/opendata/miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_8",
+                        "ingestion_pipeline": null,
+                        "input_src": {
+                            "sftp": [
+                                {
+                                    "name": "sftp_local",
+                                    "url": "/opendata",
+                                    "username": "d_ale",
+                                    "param": "format=csv",
+                                    "password": null
+                                }
+                            ],
+                            "srv_pull": null,
+                            "srv_push": null,
+                            "daf_dataset": null
+                        },
+                        "group_access": null,
+                        "std_schema": null,
+                        "partitions": null,
+                        "dataset_proc": null
+                    },
+                    "dcatapit": {
+                        "name": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_8",
+                        "notes": "Banca-dati relativa agli organismi di gestione per il diritto allo studio universitario ed agli uffici per il diritto allo studio all'interno degli istituti che erogano interventi con fondi regionali. Le informazioni riguardano: posti-alloggio, mense e personale relativo a ciascun ente per il DSU o Ufficio; Interventi concessi a studenti per ciascun Ateneo o Istituto gestito da ciascun ente per il DSU o ufficio; Spesa impegnata per interventi concessi a studenti per ciascun Ateneo o Istituto nell’esercizio finanziario (gestione di competenza).",
+                        "organization": null,
+                        "author": null,
+                        "license_id": null,
+                        "relationships_as_object": [],
+                        "holder_identifier": "default_org",
+                        "identifier": "miur_o_2017_diritto_allo_studio_universitario_dsu_regionale_8",
+                        "tags": [],
+                        "groups": [],
+                        "modified": "22/03/2018",
+                        "privatex": false,
+                        "alternate_identifier": "2017_diritto_allo_studio_universitario_dsu_regionale_d_703b7427-64f3-4be6-b332-721a8f86335d_d_csv",
+                        "relationships_as_subject": [],
+                        "holder_name": "default_org",
+                        "publisher_identifier": "default_org",
+                        "resources": [],
+                        "frequency": "unknown",
+                        "title": "2017 Diritto allo Studio Universitario (DSU) Regionale - 2017 Personale a tempo indeterminato",
+                        "owner_org": "default_org",
+                        "theme": "EDUC",
+                        "publisher_name": "default_org"
+                    }
+                }
+            ]
+        
+    },
+    "/dati-gov/v1/searchMetadata" : {
+        "get": {
+            "_id": {
+                "$oid": "5af1955a446a3c6351100ba6"
+            },
+            "license_title": "Licenza non specificata",
+            "maintainer": null,
+            "creator": "[{\"creator_identifier\": \"N/A\", \"creator_name\": {\"fr\": \"N/A\", \"de\": \"N/A\", \"en\": \"N/A\", \"it\": \"N/A\"}}]",
+            "issued": "2016-05-11T13:20:24.416826",
+            "private": false,
+            "maintainer_email": null,
+            "num_tags": 2,
+            "frequency": "UNKNOWN",
+            "publisher_name": "N/A",
+            "id": "33cf7070-a6e9-42c3-b46c-71b97ceaf4b2",
+            "metadata_created": "2018-05-02T21:00:00.788247",
+            "metadata_modified": "2018-05-02T21:06:10.174926",
+            "author": null,
+            "author_email": null,
+            "theme": "[{\"subthemes\": [], \"theme\": \"OP_DATPRO\"},{\"subthemes\": [], \"theme\": \"GOVE\"}]",
+            "state": "active",
+            "version": null,
+            "alternate_identifier": "[]",
+            "relationships_as_object": [],
+            "license_id": "notspecified",
+            "type": "dataset",
+            "resources": [
+                {
+                    "mimetype": null,
+                    "cache_url": null,
+                    "hash": "",
+                    "description": "Comune di Anzola dell'Emilia - WGS 84  EPSG:4326",
+                    "name": "00 - Confine Comunale - Kml",
+                    "format": "KML",
+                    "url": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5/download/t0kml.zip",
+                    "cache_last_updated": null,
+                    "uri": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5",
+                    "created": "2018-05-02T21:00:00.791827",
+                    "state": "active",
+                    "mimetype_inner": null,
+                    "last_modified": null,
+                    "id": "764a2500-1e76-40ce-806a-15416fc6305d",
+                    "position": 0,
+                    "package_id": "33cf7070-a6e9-42c3-b46c-71b97ceaf4b2",
+                    "url_type": null,
+                    "revision_id": "4ed1e1ea-96b0-4871-940e-3dad55a52e93",
+                    "resource_type": null,
+                    "size": null
+                },
+                {
+                    "mimetype": null,
+                    "cache_url": null,
+                    "hash": "",
+                    "description": "Comune di Anzola dell'Emilia - WGS 84  EPSG:4326",
+                    "name": "Prova - Kml",
+                    "format": "CSV",
+                    "url": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5/download/t0kml.zip",
+                    "cache_last_updated": null,
+                    "uri": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5",
+                    "created": "2018-05-02T21:00:00.791827",
+                    "state": "active",
+                    "mimetype_inner": null,
+                    "last_modified": null,
+                    "id": "864a2500-1e76-40ce-806a-15416fc6305d",
+                    "position": 0,
+                    "package_id": "33cf7070-a6e9-42c3-b46c-71b97ceaf4b2",
+                    "url_type": null,
+                    "revision_id": "4ed1e1ea-96b0-4871-940e-3dad55a52e93",
+                    "resource_type": null,
+                    "size": null
+                }
+            ],
+            "holder_name": "N/A",
+            "tags": [
+                {
+                    "vocabulary_id": null,
+                    "state": "active",
+                    "display_name": "comune",
+                    "id": "6c93dcc4-b716-4ee7-bb57-98054dc4dc92",
+                    "name": "comune"
+                },
+                {
+                    "vocabulary_id": null,
+                    "state": "active",
+                    "display_name": "confine",
+                    "id": "9f5f95ff-f298-4444-917e-029194920c16",
+                    "name": "confine"
+                }
+            ],
+            "holder_identifier": "N/A",
+            "language": "",
+            "groups": [],
+            "creator_user_id": "a6ad3f49-8f6f-473a-9387-910118c421fe",
+            "relationships_as_subject": [],
+            "num_resources": 1,
+            "organization": {
+                "description": "",
+                "created": "2018-04-30T14:38:32.808655",
+                "title": "Regione Emilia-Romagna",
+                "name": "regione-emilia-romagna",
+                "is_organization": true,
+                "state": "active",
+                "image_url": "https://www.regione.emilia-romagna.it/@@site-logo/logo_rer.png",
+                "revision_id": "e023b80e-2234-4ebd-8a71-78c2a3489f92",
+                "type": "organization",
+                "id": "0b3d751a-ae70-48f7-9584-8c1e40a7f637",
+                "approval_status": "approved"
+            },
+            "name": "00-confine-comunale-kml",
+            "isopen": false,
+            "url": "http://dati.emilia-romagna.it/dataset/00-confine-comunale-kml--010536a2",
+            "notes": "Confine Comunale",
+            "owner_org": "0b3d751a-ae70-48f7-9584-8c1e40a7f637",
+            "modified": "2017-03-30T08:27:27.835712",
+            "publisher_identifier": "N/A",
+            "extras": [
+                {
+                    "key": "contact_name",
+                    "value": "comune-di-anzola-dell-emilia"
+                },
+                {
+                    "key": "contact_uri",
+                    "value": "http://dati.emilia-romagna.it/organization/4f781df9-07b7-498b-90ef-d93f92f50fbc"
+                },
+                {
+                    "key": "guid",
+                    "value": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a"
+                },
+                {
+                    "key": "source_catalog_homepage",
+                    "value": "http://dati.emilia-romagna.it/#"
+                },
+                {
+                    "key": "source_catalog_modified",
+                    "value": "2018-04-28T22:01:35.418428"
+                },
+                {
+                    "key": "source_catalog_publisher",
+                    "value": "{\"url\": \"\", \"email\": \"\", \"type\": \"\", \"uri\": \"\", \"name\": \"\"}"
+                },
+                {
+                    "key": "source_catalog_title",
+                    "value": "CKAN Regione Emilia Romagna"
+                },
+                {
+                    "key": "uri",
+                    "value": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a"
+                }
+            ],
+            "title": "00 - Confine Comunale - Kml",
+            "revision_id": "4ed1e1ea-96b0-4871-940e-3dad55a52e93",
+            "identifier": "3a89a14b-3835-4551-8289-bfcb99a8744a"
+        }
+    },
+    "/catalog-manager/v1/ipa/userbymail/test": {
+        "get": {
+
+        }
+    },
+    "catalog-manager/v1/token": {
+        "get": {
+
+        }
+    },
     "/dati-gov/v1/infer/kylo/csv":{
         "post": {
                 "name": null,

@@ -11,6 +11,7 @@ export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
 export const DELETE_DATASETS = 'DELETE_DATASETS'
 export const SELECT_DATASET = 'SELECT_DATASET'
+export const RECEIVE_METADATA = 'RECEIVE_METADATA'
 export const REQUEST_DATASET_DETAIL = 'REQUEST_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL = 'RECEIVE_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL_ERROR = 'RECEIVE_DATASET_DETAIL_ERROR'
@@ -101,6 +102,14 @@ function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, categor
       order_filter: order_filter,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_DETAIL'
+  }
+}
+
+function receiveMetadataAndResources(jsonMetadata){
+  return{
+      type: RECEIVE_METADATA,
+      metadata: jsonMetadata,
+      ope: 'RECEIVE_METADATA'
   }
 }
 
@@ -340,7 +349,7 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
   };
   return dispatch => {
     dispatch(requestRegistration())
-    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>]{8,}$")
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
     if(reg.test(pw)){
       if(pw===pw2){
       return fetch(url, {
@@ -556,7 +565,7 @@ export function changePwd(token, pwd1, pwd2) {
 
   return dispatch => {
     dispatch(requestRegistration())
-    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>]{8,}$")
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
     if (reg.test(pwd1)) {
       if (pwd1 === pwd2) {
         return fetch(url, {
@@ -758,6 +767,20 @@ export function datasetDetail(datasetname, query, category_filter, group_filter,
   }
 }
 
+export function datasetMetadata(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
+  console.log('Metadata Detail action');
+  return (dispatch, getState) => {
+      return dispatch(fetchMetadataAndResources(datasetname))
+  }
+}
+
+export function getOpendataResources(datasetname) {
+  console.log('Opendata resources Detail action');
+  return (dispatch, getState) => {
+      return dispatch(fetchOpendataResources(datasetname))
+  }
+}
+
 export function addDataset(inputJson, token, fileType) {
   console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
@@ -791,6 +814,58 @@ export function addDatasetKylo(json, token, fileType) {
         .catch(error => console.log('Eccezione durante il caricamento del file su Kylo ')) 
   }
 }
+
+function fetchOpendataResources(datasetname) {
+  var token = '';
+  var url = serviceurl.apiURLDatiGov + '/public/opendata_resource/' + datasetname
+  if(localStorage.getItem('username') && localStorage.getItem('token') &&
+    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+      token = localStorage.getItem('token')
+    }
+  return dispatch => {
+      return fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(response => response.json())
+        .catch(error => {
+          console.log('Nessun Metadato trovato con questo nome');
+          
+        }) 
+    }
+  }
+
+function fetchMetadataAndResources(datasetname) {
+  var token = '';
+  var url = serviceurl.apiURLDatiGov + 'public/opendata/' + datasetname
+  if(localStorage.getItem('username') && localStorage.getItem('token') &&
+    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+      token = localStorage.getItem('token')
+    }
+  return dispatch => {
+      dispatch(requestDatasetDetail())
+      return fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(response => response.json())
+        .then(json => {
+          dispatch(receiveMetadataAndResources(json))
+        })
+        .catch(error => {
+          console.log('Nessun Metadato trovato con questo nome');
+          
+        }) 
+    }
+  }
 
 function fetchDatasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
   var token = '';
@@ -828,7 +903,6 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
 
   export function search(query, filter) {
     var url = serviceurl.apiURLDatiGov + '/elasticsearch/search'
-    /* var url = 'http://10.100.208.165:9000/dati-gov/v1/elasticsearch/search' */
     return dispatch => {
       dispatch(requestSearch())
       return fetch(url, {
