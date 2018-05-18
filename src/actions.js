@@ -340,9 +340,9 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
   };
   return dispatch => {
     dispatch(requestRegistration())
-    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>-]{8,}$")    
     if(reg.test(pw)){
-      if(pw===pw2){
+       if(pw===pw2){
       return fetch(url, {
         method: 'POST',
         headers: {
@@ -364,12 +364,12 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
             });
           }
         })
-      .catch(error => dispatch(receiveRegistrationError(error)))
+      .catch(error => dispatch(receiveRegistrationError(error))) 
       } else{
         dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
       }
     } else{
-      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero. I caratteri speciali consentiti sono: "%@#,;:_\'/<([{^=$!|}.>-"'))
     }
   }
 }
@@ -556,7 +556,7 @@ export function changePwd(token, pwd1, pwd2) {
 
   return dispatch => {
     dispatch(requestRegistration())
-    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>-]{8,}$")
     if (reg.test(pwd1)) {
       if (pwd1 === pwd2) {
         return fetch(url, {
@@ -571,7 +571,7 @@ export function changePwd(token, pwd1, pwd2) {
         dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
       }
     } else {
-      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero. I caratteri speciali consentiti sono: "%@#,;:_\'/<([{^=$!|}.>-"'))
     }
   }
 }
