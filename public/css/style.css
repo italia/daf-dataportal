@@ -12269,7 +12269,7 @@ app-root {
   position: fixed;
   z-index: 1020;
   width: 100%; 
-  background-color: #06c!important;
+  background-color: var(--primary)!important;
 }
 
 .header-fixed .app-body {

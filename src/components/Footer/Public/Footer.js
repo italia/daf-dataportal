@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 
 class Footer extends Component {
   render() {
@@ -12,10 +14,10 @@ class Footer extends Component {
             <div className="col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">Il DAF Italia</h4>
               <ul className="list-group list-group-flush">
-                <li className="list-group-item bg-footer"><a href="">Chi Siamo</a></li>
-                <li className="list-group-item bg-footer"><a href="">Il Progetto</a></li>
-                <li className="list-group-item bg-footer"><a href="">Strategia</a></li>
-                <li className="list-group-item bg-footer"><a href="#/private">Area privata e strumenti</a></li>                
+                <li className="list-group-item bg-footer"><Link to={'/team'}>Chi Siamo</Link></li>
+                <li className="list-group-item bg-footer"><Link to={'/missione'}>Missione</Link></li>
+                <li className="list-group-item bg-footer"><Link to={'/lineeguida'}>Linee guida</Link></li>
+                <li className="list-group-item bg-footer"><Link to={'/private'}>Area privata e strumenti</Link></li>                
               </ul>
             </div>
             <div className="col-12 col-sm-3">
@@ -42,8 +44,8 @@ class Footer extends Component {
               <h4 className="text-white font-weight-bold mb-3">Seguici su</h4>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-footer social-links">
-                  <a className="bg-accento rounded-circle text-footer-social py-1 px-2" href="https://twitter.com/teamdigitaleIT?lang=it" title="Twitter"><i className="fab fa-twitter"/></a>
-                  <a className="bg-accento rounded-circle text-footer-social py-1 px-2 mx-2" href="https://medium.com/team-per-la-trasformazione-digitale" title="Medium"><i className="fab fa-medium-m"/></a>
+                  <a className="bg-accento rounded-circle text-footer-social py-1 px-2" target="_blank" href="https://twitter.com/teamdigitaleIT?lang=it" title="Twitter"><i className="fab fa-twitter"/></a>
+                  <a className="bg-accento rounded-circle text-footer-social py-1 px-2 mx-2" target="_blank" href="https://medium.com/team-per-la-trasformazione-digitale" title="Medium"><i className="fab fa-medium-m"/></a>
                 </li>               
               </ul>
             </div>

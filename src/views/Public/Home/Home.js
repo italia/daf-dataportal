@@ -182,7 +182,7 @@ class Home extends Component{
           <div className="container py-4">
             <div className="row">
               <h5 className="ml-auto mr-4 align-self-center mb-0">Sei un Developer? Contribuisci su </h5> 
-              <a className="btn btn-accento py-2 px-3 mr-auto font-lg" href='https://github.com/italia/'>Github <i className="ml-4 fab fa-github fa-lg"/></a>
+              <a className="btn btn-accento py-2 px-3 mr-auto font-lg" href='https://github.com/italia/?utf8=%E2%9C%93&q=daf&type=&language=' target="_blank">Github <i className="ml-4 fab fa-github fa-lg"/></a>
             </div>
           </div>
         </div>

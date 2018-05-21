@@ -2,7 +2,7 @@
     "/catalog-manager/v1/token": {
         "get": "eyJhbGciOiJIUzI1NiJ9.eyIkaW50X3Blcm1zIjpbXSwic3ViIjoib3JnLnBhYzRqLmxkYXAucHJvZmlsZS5MZGFwUHJvZmlsZSNwcm92YWFsbWEiLCIkaW50X3JvbGVzIjpbXX0.Oq93mHzGbCGKczWQ1OqGQk0FbohPyDNw_jeeFgqv7Pw"
     },
-    "/catalog-manager/v1/ipa/user/test": {
+    "/catalog-manager/v1/ipa/userbymail/test": {
         "get": {
                 "sn": "test_sn",
                 "givenname": "test_gn",
@@ -10,6 +10,11 @@
                 "uid": "test_uid",
                 "userpassword": null
             }
+    },
+    "/sso-manager/v1/secured/test":{
+      "get": {
+        "ok": "true"
+      }
     },
     "/sso-manager/v1/secured/retriveCookie/superset": {
         "get": {
@@ -31,6 +36,25 @@
         "get": {
             "result": "session=sessiongrafana"
         }
+    },
+    "/dati-gov/v1/settings":{
+        "get": {
+          "footerLogoDevITA": "https://developers.italia.it/assets/icons/dt-logo.svg",
+          "forumURL": "https://forum.italia.it/",
+          "mediumURL": "https://medium.com/team-per-la-trasformazione-digitale/",
+          "twitterURL": "https://twitter.com/datigovit",
+          "footerLegal": "https://designers.italia.it/note-legali/",
+          "notizieURL": "https://developers.italia.it/news",
+          "footerNomeEnte": "TEAM PER LA TRASFORMAZIONE DIGITALE",
+          "footerLogoGov": "https://teamdigitale.governo.it/images/loghi/governo.svg",
+          "headerSiglaTool": "/daf",
+          "footerPrivacy": "https://designers.italia.it/privacy-policy/",
+          "footerLogoAGID": "https://www.spid.gov.it/assets/img/agid-logo-bb.svg",
+          "headerDescTool": "Il framework dei dati pubblici del Paese",
+          "theme": "1",
+          "headerLogo": "https://developers.italia.it/assets/icons/logo-it.png",
+          "organization": "daf"
+      }
     }, 
     "/dati-gov/v1/search": {
         "get": [
@@ -832,6 +856,102 @@
                 }
             
         }
+    },
+    "/catalog-manager/v1/catalog-ds/getbyname/test1":{
+      "get":{
+        "dcatapit": {
+          "name": "carsharing_entity_vehicle",
+          "notes": "carsharing_entity_vehicle",
+          "relationships_as_object": [],
+          "holder_identifier": "default_org",
+          "identifier": "carsharing_entity_vehicle",
+          "license_title": "Altro (Non Commerciale)",
+          "tags": [
+              {
+                  "name": "TRAN",
+                  "state": "active",
+                  "display_name": "TRAN",
+                  "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+              }
+          ],
+          "groups": [],
+          "modified": "2017-07-23",
+          "alternate_identifier": "carsharing_entity_vehicle",
+          "relationships_as_subject": [],
+          "holder_name": "default_org",
+          "publisher_identifier": "default_org",
+          "resources": [],
+          "frequency": "unknown",
+          "title": "carsharing_entity_vehicle",
+          "owner_org": "default_org",
+          "theme": "TRAN",
+          "publisher_name": "default_org"
+        }
+      }
+    },
+    "/catalog-manager/v1/catalog-ds/getbyname/test2":{
+      "get":{
+        "dcatapit": {
+          "name": "carsharing_entity_vehicle",
+          "notes": "carsharing_entity_vehicle",
+          "relationships_as_object": [],
+          "holder_identifier": "default_org",
+          "identifier": "carsharing_entity_vehicle",
+          "license_title": "Altro (Non Commerciale)",
+          "tags": [
+              {
+                  "name": "TRAN",
+                  "state": "active",
+                  "display_name": "TRAN",
+                  "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+              }
+          ],
+          "groups": [],
+          "modified": "2017-07-23",
+          "alternate_identifier": "carsharing_entity_vehicle",
+          "relationships_as_subject": [],
+          "holder_name": "default_org",
+          "publisher_identifier": "default_org",
+          "resources": [],
+          "frequency": "unknown",
+          "title": "carsharing_entity_vehicle",
+          "owner_org": "default_org",
+          "theme": "TRAN",
+          "publisher_name": "default_org"
+        }
+      }
+    },
+    "/catalog-manager/v1/catalog-ds/getbyname/test3":{
+      "get":{
+        "dcatapit": {
+          "name": "carsharing_entity_vehicle",
+          "notes": "carsharing_entity_vehicle",
+          "relationships_as_object": [],
+          "holder_identifier": "default_org",
+          "identifier": "carsharing_entity_vehicle",
+          "license_title": "Altro (Non Commerciale)",
+          "tags": [
+              {
+                  "name": "TRAN",
+                  "state": "active",
+                  "display_name": "TRAN",
+                  "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+              }
+          ],
+          "groups": [],
+          "modified": "2017-07-23",
+          "alternate_identifier": "carsharing_entity_vehicle",
+          "relationships_as_subject": [],
+          "holder_name": "default_org",
+          "publisher_identifier": "default_org",
+          "resources": [],
+          "frequency": "unknown",
+          "title": "carsharing_entity_vehicle",
+          "owner_org": "default_org",
+          "theme": "TRAN",
+          "publisher_name": "default_org"
+        }
+      }
     },
     "/catalog-manager/v1/ckan/datasets/test1": {
         "get": {

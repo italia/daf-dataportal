@@ -620,7 +620,8 @@ function receiveResetError(json) {
 
 /******************************** DATASET ************************************** */
 export function fetchProperties(org) {
-  var url = serviceurl.apiURLDatiGov + "/settings?organization="+ org
+  /* var url = serviceurl.apiURLDatiGov + "/settings?domain="+ org */
+  var url = serviceurl.apiURLDatiGov + '/settings'
   return dispatch => {
     return fetch(url, {
       method: 'GET',

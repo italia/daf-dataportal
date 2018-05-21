@@ -17,6 +17,7 @@ class UserStory extends Component {
       <Switch>
         <Route path='/private/user_story/create'         exact component={UserStoryEditor} />
         <Route path="/private/user_story/list"           exact component={UserStoryList} />
+        <Route path="/userstory/list"                    exact component={UserStoryList} />        
         <Route path="/private/user_story/list/:id"       exact component={UserStoryView} />
         <Route path="/private/user_story/list/:id/edit"  exact component={UserStoryEditor} />
       </Switch>

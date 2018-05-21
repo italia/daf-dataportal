@@ -13,7 +13,14 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Button,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+
  } from 'reactstrap';
+ import SearchBar from '../../SearchBar/SearchBar';
 
 
 class Header extends Component {
@@ -23,15 +30,24 @@ class Header extends Component {
     this.state = {
       open: false,
       navbar: false,
-      dropdownOpen: false
+      dropdownOpen: false,
+      isOpen: false,
+      search: false,
+      showMenu: false,
+      community: false,
     }
 
     this.toggleDrop = this.toggleDrop.bind(this)
+    this.closeMenu = this.closeMenu.bind(this)
   }
 
-  openDrop(){
+  openDrop(event){
+    event.preventDefault();
+
     this.setState({
       open:!this.state.open
+    }, () => {
+      document.addEventListener('click', this.closeMenu);
     })
   }
 
@@ -41,9 +57,43 @@ class Header extends Component {
     })
   }
 
+/*   toggle2(){
+    this.setState({
+      isOpen:!this.state.isOpen
+    })
+  } */
+
+  openSearch(){
+    this.setState({
+      search: !this.state.search
+    })
+  }
+
   toggle() {
     this.setState({
       navbar: !this.state.navbar
+    });
+  }
+
+  showMenu(event) {
+    event.preventDefault();
+    
+    this.setState({ showMenu: !this.state.showMenu }, () => {
+      document.addEventListener('click', this.closeMenu);
+    });
+  }
+
+  community(event) {
+    event.preventDefault();
+    
+    this.setState({ community: !this.state.community }, () => {
+      document.addEventListener('click', this.closeMenu);
+    });
+  }
+
+  closeMenu() {
+    this.setState({ showMenu: false, community: false, open: false }, () => {
+      document.removeEventListener('click', this.closeMenu);
     });
   }
 
@@ -82,7 +132,7 @@ class Header extends Component {
                 <a className="d-sm-down-none social-button bg-white rounded-circle text-center text-primary mx-1 py-1" href="https://twitter.com/teamdigitaleIT?lang=it"><i className="fab fa-twitter"/></a>
                 <a className="d-sm-down-none social-button bg-white rounded-circle text-center text-primary mx-1 py-1" href="https://medium.com/team-per-la-trasformazione-digitale"><i className="fab fa-medium-m"/></a>
                 <div className="row col-12 px-4" style={{height: '56px'}}>
-                  <button className="h-100 btn btn-header" style={{width: '56px'}}><i className="fa fa-search fa-lg" /></button>
+                  <button className={(this.state.search ? "btn-accento":"btn-header")+" h-100 btn"} style={{width: '56px'}} onClick={this.openSearch.bind(this)}><i className="fa fa-search fa-lg" /></button>
                     {loggedUser?
                     <div className={"dropdown" + show }>
                     <button className="h-100 btn btn-accento px-4" style={{marginLeft: '1px'}} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.openDrop.bind(this)}><h6 className="m-0 p-0 d-lg-down-none float-left">Area Pubblica</h6><i className="float-left fa fa-globe fa-lg d-xl-none"/> <i className="fa fa-sort-down ml-2 float-right"/></button>
@@ -101,30 +151,67 @@ class Header extends Component {
                         </button>
                       </div>
                     </div>
-                    :<button className="h-100 btn btn-header btn-accedi" onClick={()=>{this.props.history.push('/private')}}><h6 className="m-0 p-0 d-sm-down-none">Accedi</h6><i className="d-md-none fa fa-sign-in-alt fa-lg" /></button>}
+                    :<button className="h-100 btn btn-header btn-accedi" onClick={()=>{this.props.history.push('/login')}}><h6 className="m-0 p-0 d-sm-down-none">Accedi</h6><i className="d-md-none fa fa-sign-in-alt fa-lg" /></button>}
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <div className="container public">
+          {this.state.search && <SearchBar open={this.state.search}/>}
+        </div>
         <div className="navi-header container">
           <Navbar color="primary" light expand="md" className="py-1 h-100">
-          <NavbarToggler className="d-md-none text-white" onClick={this.toggle.bind(this)} children={<i className="fa fa-bars"/>}/>
+          <NavbarToggler className="d-md-none text-white border-0" onClick={this.toggle.bind(this)} children={<i className="fa fa-bars"/>}/>
           <Nav className="d-sm-down-none bg-primary">
               <NavItem>
-                <NavLink className="text-white" href="/">Home</NavLink>
+              <div className={"dropdown " + (this.state.showMenu ? "show":"")}>
+                <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.showMenu ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.showMenu.bind(this)}>Il progetto</a>
+                <div className={"dropdown-menu " + (this.state.showMenu ? "show":"")} aria-labelledby="dropdownMenuButton">
+                  <Link to={'/missione'} className="dropdown-item text-primary">Missione</Link>
+                  <Link to={'/team'} className="dropdown-item text-primary">Chi siamo</Link>
+                  <Link to={'/lineeguida'} className="dropdown-item text-primary">Linee guida</Link>
+                </div>
+              </div>
               </NavItem>
               <NavItem>
-                <NavLink className="text-white" href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+              <div className={"dropdown " + (this.state.community ? "show":"")}>
+                <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.community ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.community.bind(this)}>Community</a>
+                <div className={"dropdown-menu " + (this.state.community ? "show":"")} aria-labelledby="dropdownMenuButton">
+                  <Link to={'/'} className="dropdown-item text-primary">Storie</Link>
+                  <Link to={'/'} className="dropdown-item text-primary">Notizie</Link>
+                  <a href="https://forum.italia.it/" target="_blank" className="dropdown-item text-primary">Forum</a>
+                </div>
+              </div>
+              </NavItem>
+              <NavItem>
+                <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
               </NavItem>
             </Nav>
           <Collapse isOpen={this.state.navbar} navbar>
             <Nav className="bg-primary ml-auto" navbar>
               <NavItem>
-                <NavLink href="/components/">Components</NavLink>
+              <div className={"dropdown " + (this.state.showMenu ? "show":"")}>
+                <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.showMenu ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.showMenu.bind(this)}>Il progetto</a>
+                <div className={"dropdown-menu " + (this.state.showMenu ? "show":"")} aria-labelledby="dropdownMenuButton">
+                  <Link to={'/missione'} className="dropdown-item">Missione</Link>
+                  <Link to={'/team'} className="dropdown-item">Chi siamo</Link>
+                  <Link to={'/lineeguida'} className="dropdown-item">Linee guida</Link>
+                </div>
+              </div>
               </NavItem>
               <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+              <div className={"dropdown " + (this.state.community ? "show":"")}>
+                <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.community ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.community.bind(this)}>Community</a>
+                <div className={"dropdown-menu " + (this.state.community ? "show":"")} aria-labelledby="dropdownMenuButton">
+                  <Link to={'/'} className="dropdown-item">Storie</Link>
+                  <Link to={'/'} className="dropdown-item">Notizie</Link>
+                  <a href="https://forum.italia.it/" target="_blank" className="dropdown-item text-primary">Forum</a>
+                </div>
+              </div>
+              </NavItem>
+              <NavItem>
+                <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
               </NavItem>
             </Nav>
           </Collapse>

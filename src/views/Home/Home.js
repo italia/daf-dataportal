@@ -37,9 +37,9 @@ class Home extends Component {
         }
         
         this.searchDataset();
-        this.counters();
+        //this.counters();
 
-        let dash = homeService.dashboards();
+        /* let dash = homeService.dashboards();
         dash.then(json => {
             this.setState({
                 listDashboards: json
@@ -58,7 +58,7 @@ class Home extends Component {
             this.setState({
                 listIframes: json
             })
-        })
+        }) */
 
         this.updatePredicate = this.updatePredicate.bind(this);
         
@@ -74,13 +74,13 @@ class Home extends Component {
         window.removeEventListener("resize", this.updatePredicate);
     }
 
-        componentWillReceiveProps(nextProps){
+        /* componentWillReceiveProps(nextProps){
             if(nextProps.results){
                 this.setState({
                     counter: JSON.parse(nextProps.results[nextProps.results.length-4].source)
                 })
             }
-        }
+        } */
 
     updatePredicate() {
         if (window.innerWidth <= 1200)
