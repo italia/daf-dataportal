@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { search } from '../../actions'
 import { serviceurl } from '../../config/serviceurl'
-import { boldMyWords } from '../../utility'
+import { boldMyWords, isPublic } from '../../utility'
 import Select from 'react-select'
 import { decodeTheme, decodeTipo, decodeVisibilita, truncateDatasetName } from '../../utility' 
 import {themes, tipi, visibilita} from '../../utility' 
@@ -57,7 +57,7 @@ class DatasetList extends Component {
         this.search = this.search.bind(this)  
         this.addFilter = this.addFilter.bind(this)  
         this.removeFilter = this.removeFilter.bind(this)  
-        this.handleLoadDatasetDetailClick = this.handleLoadDatasetDetailClick.bind(this)
+        //this.handleLoadDatasetDetailClick = this.handleLoadDatasetDetailClick.bind(this)
         this.handleToggleClickTipo = this.handleToggleClickTipo.bind(this)
         this.handleToggleClickData = this.handleToggleClickData.bind(this)
         this.handleToggleClickCategoria = this.handleToggleClickCategoria.bind(this)
@@ -163,7 +163,7 @@ class DatasetList extends Component {
         }
     }
 
-    handleLoadDatasetDetailClick(name, e) {
+    /* handleLoadDatasetDetailClick(name, e) {
         e.preventDefault()
         this.setState({
           edit: false
@@ -179,7 +179,7 @@ class DatasetList extends Component {
                   'group_filter': group_filter
           }
         })
-      }
+      } */
 
       handleToggleClickDataset(index){
         var array = this.state.showDivDataset
@@ -517,7 +517,7 @@ class DatasetList extends Component {
                             </nav>
                             }
                             {isFetching === true ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
-                             <div className="px-search mb-3">
+                             <div className="container mb-3">
                                 <div className="App" style={{overflowX: 'hidden'}}>
                                 {results ? 
                                 <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="w-100">
@@ -540,7 +540,7 @@ class DatasetList extends Component {
                                                         <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" >
-                                                                <Link to={'/private/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
+                                                                <Link to={isPublic()?'/dataset/' + dataset.dcatapit.name:'/private/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
                                                                     <div title={dataset.dcatapit.title} dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?truncateDatasetName(datasetMatch['dcatapit.title'],100):truncateDatasetName(dataset.dcatapit.title, 60)}}></div>
                                                                 </Link>
                                                             </div>
@@ -564,7 +564,7 @@ class DatasetList extends Component {
                                                 </div>
                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                 <div className="card mb-3 mt-0">
-                                                    <div className="card-body p-0 clearfix">
+                                                    <div className="card-body clearfix">
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-2 py-1 px-1" >
                                                                 <b>Titolo: </b>
@@ -651,7 +651,7 @@ class DatasetList extends Component {
                                         return(
                                             <div key={index}>
                                                 <div className="card risultato mt-3 mb-0" >
-                                                    <div className="card-body p-0 clearfix">
+                                                    <div className="card-body clearfix">
                                                         <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" title={dashboard.title}>
@@ -678,7 +678,7 @@ class DatasetList extends Component {
                                                 </div>
                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                 <div className="card mb-3 mt-0">
-                                                     <div className="card-body p-0 clearfix">
+                                                     <div className="card-body clearfix">
                                                         <div className="row pl-3 pt-2 h-100" >
                                                              <div className="col-md-2 py-1 px-1" >
                                                                  <b>Titolo: </b>
@@ -762,7 +762,7 @@ class DatasetList extends Component {
                                         return(
                                             <div key={index}>
                                                 <div className="card risultato mt-3 mb-0">
-                                                <div className="card-body p-0 clearfix">
+                                                <div className="card-body clearfix">
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
@@ -789,7 +789,7 @@ class DatasetList extends Component {
                                                 </div>
                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                     <div className="card mb-3 mt-0">
-                                                        <div className="card-body p-0 clearfix">
+                                                        <div className="card-body clearfix">
                                                             <div className="row pl-3 pt-2 h-100" >
                                                                 <div className="col-md-2 py-1 px-1" >
                                                                     <b>Titolo: </b>

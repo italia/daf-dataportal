@@ -828,8 +828,7 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
   }
 
   export function search(query, filter) {
-    //var url = serviceurl.apiURLDatiGov + '/elasticsearch/search'
-    var url = '10.100.208.180:9000/dati-gov/v1/elasticsearch/search'
+    var url = serviceurl.apiURLDatiGov + '/elasticsearch/search'
     return dispatch => {
       dispatch(requestSearch())
       return fetch(url, {
