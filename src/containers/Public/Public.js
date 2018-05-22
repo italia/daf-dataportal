@@ -10,14 +10,11 @@ import UserStory from '../../views/UserStory/UserStory'
 import Team from '../../views/Public/Team/Team';
 import Guida from '../../views/Public/Guida/Guida';
 import Partecipa from '../../views/Public/Partecipa/Partecipa';
-<<<<<<< HEAD
 import Notizie from '../../views/Public/Notizie/NotizieList';
 import NotizieDett from '../../views/Public/Notizie/NotizieDett';
 import UserStoryList from '../../views/UserStory/components/UserStoryList';
 import DataApplication from '../../views/Public/DataApplication/DataApplication';
-=======
 import DatasetList from '../../views/DataseList/DatasetList'
->>>>>>> 4b69063f1116ed9f568f328701bc09840a22bc05
 
 
 class Public extends Component {
