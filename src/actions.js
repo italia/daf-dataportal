@@ -828,8 +828,8 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
   }
 
   export function search(query, filter) {
-    var url = serviceurl.apiURLDatiGov + '/elasticsearch/search'
-    /* var url = 'http://10.100.208.165:9000/dati-gov/v1/elasticsearch/search' */
+    //var url = serviceurl.apiURLDatiGov + '/elasticsearch/search'
+    var url = '10.100.208.180:9000/dati-gov/v1/elasticsearch/search'
     return dispatch => {
       dispatch(requestSearch())
       return fetch(url, {
@@ -837,8 +837,8 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-          /* 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyIkaW50X3Blcm1zIjpbXSwic3ViIjoib3JnLnBhYzRqLmxkYXAucHJvZmlsZS5MZGFwUHJvZmlsZSNsdWNhcGljIiwiJGludF9yb2xlcyI6W10sIm1lbWJlck9mIjpbImNuPWRhZl9hZG1pbnMsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPXRlc3Rfb3JnMyxjbj1ncm91cHMsY249YWNjb3VudHMsZGM9ZXhhbXBsZSxkYz10ZXN0IiwiY249aXBhdXNlcnMsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPXRlc3Rfb3JnMixjbj1ncm91cHMsY249YWNjb3VudHMsZGM9ZXhhbXBsZSxkYz10ZXN0IiwiY249Y29tdW5lX2RpX3JvbWEsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPXRlc3Rfb3JnLGNuPWdyb3Vwcyxjbj1hY2NvdW50cyxkYz1leGFtcGxlLGRjPXRlc3QiLCJjbj1kYWYsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPWRlZmF1bHRfb3JnLGNuPWdyb3Vwcyxjbj1hY2NvdW50cyxkYz1leGFtcGxlLGRjPXRlc3QiXSwiZXhwIjoxNTI0NTkzMDYyfQ.qxUWtye--LOM_5vwyOkObgXeP2faYENmH21bY17tc30' */
+          //'Authorization': 'Bearer ' + localStorage.getItem('token')
+          'Authorization': 'Basic bHVjYS5waWNjaW9uaTI2QGdtYWlsLmNvbTpQYXNzd29yZDE='
         },
         body: JSON.stringify(filter)
       })
