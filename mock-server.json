@@ -1188,8 +1188,159 @@
             "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 4</p>\\n\"},\"type\":\"TextWidget\"}}"
         }
     },
-    "/catalog-manager/v1/catalog-ds/getbyname/legal_status": {
-
+    "/dati-gov/v1/searchMetadata" : {
+        "get": {
+            "_id": {
+                "$oid": "5af1955a446a3c6351100ba6"
+            },
+            "license_title": "Licenza non specificata",
+            "maintainer": null,
+            "creator": "[{\"creator_identifier\": \"N/A\", \"creator_name\": {\"fr\": \"N/A\", \"de\": \"N/A\", \"en\": \"N/A\", \"it\": \"N/A\"}}]",
+            "issued": "2016-05-11T13:20:24.416826",
+            "private": false,
+            "maintainer_email": null,
+            "num_tags": 2,
+            "frequency": "UNKNOWN",
+            "publisher_name": "N/A",
+            "id": "33cf7070-a6e9-42c3-b46c-71b97ceaf4b2",
+            "metadata_created": "2018-05-02T21:00:00.788247",
+            "metadata_modified": "2018-05-02T21:06:10.174926",
+            "author": null,
+            "author_email": null,
+            "theme": "[{\"subthemes\": [], \"theme\": \"OP_DATPRO\"},{\"subthemes\": [], \"theme\": \"GOVE\"}]",
+            "state": "active",
+            "version": null,
+            "alternate_identifier": "[]",
+            "relationships_as_object": [],
+            "license_id": "notspecified",
+            "type": "dataset",
+            "resources": [
+                {
+                    "mimetype": null,
+                    "cache_url": null,
+                    "hash": "",
+                    "description": "Comune di Anzola dell'Emilia - WGS 84  EPSG:4326",
+                    "name": "00 - Confine Comunale - Kml",
+                    "format": "KML",
+                    "url": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5/download/t0kml.zip",
+                    "cache_last_updated": null,
+                    "uri": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5",
+                    "created": "2018-05-02T21:00:00.791827",
+                    "state": "active",
+                    "mimetype_inner": null,
+                    "last_modified": null,
+                    "id": "764a2500-1e76-40ce-806a-15416fc6305d",
+                    "position": 0,
+                    "package_id": "33cf7070-a6e9-42c3-b46c-71b97ceaf4b2",
+                    "url_type": null,
+                    "revision_id": "4ed1e1ea-96b0-4871-940e-3dad55a52e93",
+                    "resource_type": null,
+                    "size": null
+                },
+                {
+                    "mimetype": null,
+                    "cache_url": null,
+                    "hash": "",
+                    "description": "Comune di Anzola dell'Emilia - WGS 84  EPSG:4326",
+                    "name": "Prova - Kml",
+                    "format": "CSV",
+                    "url": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5/download/t0kml.zip",
+                    "cache_last_updated": null,
+                    "uri": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5",
+                    "created": "2018-05-02T21:00:00.791827",
+                    "state": "active",
+                    "mimetype_inner": null,
+                    "last_modified": null,
+                    "id": "864a2500-1e76-40ce-806a-15416fc6305d",
+                    "position": 0,
+                    "package_id": "33cf7070-a6e9-42c3-b46c-71b97ceaf4b2",
+                    "url_type": null,
+                    "revision_id": "4ed1e1ea-96b0-4871-940e-3dad55a52e93",
+                    "resource_type": null,
+                    "size": null
+                }
+            ],
+            "holder_name": "N/A",
+            "tags": [
+                {
+                    "vocabulary_id": null,
+                    "state": "active",
+                    "display_name": "comune",
+                    "id": "6c93dcc4-b716-4ee7-bb57-98054dc4dc92",
+                    "name": "comune"
+                },
+                {
+                    "vocabulary_id": null,
+                    "state": "active",
+                    "display_name": "confine",
+                    "id": "9f5f95ff-f298-4444-917e-029194920c16",
+                    "name": "confine"
+                }
+            ],
+            "holder_identifier": "N/A",
+            "language": "",
+            "groups": [],
+            "creator_user_id": "a6ad3f49-8f6f-473a-9387-910118c421fe",
+            "relationships_as_subject": [],
+            "num_resources": 1,
+            "organization": {
+                "description": "",
+                "created": "2018-04-30T14:38:32.808655",
+                "title": "Regione Emilia-Romagna",
+                "name": "regione-emilia-romagna",
+                "is_organization": true,
+                "state": "active",
+                "image_url": "https://www.regione.emilia-romagna.it/@@site-logo/logo_rer.png",
+                "revision_id": "e023b80e-2234-4ebd-8a71-78c2a3489f92",
+                "type": "organization",
+                "id": "0b3d751a-ae70-48f7-9584-8c1e40a7f637",
+                "approval_status": "approved"
+            },
+            "name": "00-confine-comunale-kml",
+            "isopen": false,
+            "url": "http://dati.emilia-romagna.it/dataset/00-confine-comunale-kml--010536a2",
+            "notes": "Confine Comunale",
+            "owner_org": "0b3d751a-ae70-48f7-9584-8c1e40a7f637",
+            "modified": "2017-03-30T08:27:27.835712",
+            "publisher_identifier": "N/A",
+            "extras": [
+                {
+                    "key": "contact_name",
+                    "value": "comune-di-anzola-dell-emilia"
+                },
+                {
+                    "key": "contact_uri",
+                    "value": "http://dati.emilia-romagna.it/organization/4f781df9-07b7-498b-90ef-d93f92f50fbc"
+                },
+                {
+                    "key": "guid",
+                    "value": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a"
+                },
+                {
+                    "key": "source_catalog_homepage",
+                    "value": "http://dati.emilia-romagna.it/#"
+                },
+                {
+                    "key": "source_catalog_modified",
+                    "value": "2018-04-28T22:01:35.418428"
+                },
+                {
+                    "key": "source_catalog_publisher",
+                    "value": "{\"url\": \"\", \"email\": \"\", \"type\": \"\", \"uri\": \"\", \"name\": \"\"}"
+                },
+                {
+                    "key": "source_catalog_title",
+                    "value": "CKAN Regione Emilia Romagna"
+                },
+                {
+                    "key": "uri",
+                    "value": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a"
+                }
+            ],
+            "title": "00 - Confine Comunale - Kml",
+            "revision_id": "4ed1e1ea-96b0-4871-940e-3dad55a52e93",
+            "identifier": "3a89a14b-3835-4551-8289-bfcb99a8744a"
+        }
     },
     "/dati-gov/v1/user-stories": {
         "post": {

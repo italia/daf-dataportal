@@ -11,6 +11,7 @@ export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
 export const DELETE_DATASETS = 'DELETE_DATASETS'
 export const SELECT_DATASET = 'SELECT_DATASET'
+export const RECEIVE_METADATA = 'RECEIVE_METADATA'
 export const REQUEST_DATASET_DETAIL = 'REQUEST_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL = 'RECEIVE_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL_ERROR = 'RECEIVE_DATASET_DETAIL_ERROR'
@@ -87,6 +88,14 @@ function requestLogin() {
     type: REQUEST_LOGIN
   }
 }
+
+function receiveMetadataAndResources(jsonMetadata){
+    return{
+        type: RECEIVE_METADATA,
+        metadata: jsonMetadata,
+        ope: 'RECEIVE_METADATA'
+    }
+  }
 
 function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter) {
   return {
@@ -759,6 +768,20 @@ export function datasetDetail(datasetname, query, category_filter, group_filter,
   }
 }
 
+export function datasetMetadata(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
+    console.log('Metadata Detail action');
+    return (dispatch, getState) => {
+        return dispatch(fetchMetadataAndResources(datasetname))
+    }
+  }
+  
+export function getOpendataResources(datasetname) {
+    console.log('Opendata resources Detail action');
+    return (dispatch, getState) => {
+        return dispatch(fetchOpendataResources(datasetname))
+    }
+  }
+
 export function addDataset(inputJson, token, fileType) {
   console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
@@ -776,6 +799,58 @@ export function addDataset(inputJson, token, fileType) {
   }
 }
 
+function fetchOpendataResources(datasetname) {
+    var token = '';
+    var url = 'http://locale:3001/dati-gov/v1/opendata_resource'
+    if(localStorage.getItem('username') && localStorage.getItem('token') &&
+      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+        token = localStorage.getItem('token')
+      }
+    return dispatch => {
+        return fetch(url, {
+          method: 'GET',
+         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+          .then(response => response.json())
+          .catch(error => {
+            console.log('Nessun Metadato trovato con questo nome');
+            
+          }) 
+      }
+    }
+  
+  function fetchMetadataAndResources(datasetname) {
+    var token = '';
+    var url = 'http://locale:3001/dati-gov/v1/searchMetadata'
+    if(localStorage.getItem('username') && localStorage.getItem('token') &&
+      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+        token = localStorage.getItem('token')
+      }
+    return dispatch => {
+        dispatch(requestDatasetDetail())
+        return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+          .then(response => response.json())
+          .then(json => {
+            dispatch(receiveMetadataAndResources(json))
+          })
+          .catch(error => {
+            console.log('Nessun Metadato trovato con questo nome');
+            
+          }) 
+      }
+    }
+  
 export function addDatasetKylo(json, token, fileType) {
   console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/kylo/feed/" + fileType

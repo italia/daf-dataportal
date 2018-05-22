@@ -195,7 +195,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-table bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{counter.catalog_test?counter.catalog_test:0}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.catalog_test?counter.catalog_test:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dataset</div>
                                 </div>
                             </div>
@@ -208,7 +208,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-chart-bar bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{listIframes.length}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{listIframes.length>0?listIframes.length:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Widget</div>
                                 </div>
                             </div>
@@ -221,7 +221,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-columns bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{counter.dashboards?counter.dashboards:0}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.dashboards?counter.dashboards:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dashboard</div>
                                 </div>
                             </div>
@@ -234,7 +234,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-font bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{counter.stories?counter.stories:0}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{counter.stories?counter.stories:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Storie</div>
                                 </div>
                             </div>
@@ -273,13 +273,15 @@ class Home extends Component {
                         </div>
                         <div className="row mx-auto m-0">
                             {
-                                this.state.listIframes.slice(0, items).map((iframe, index) => {
+                                 this.state.listIframes && this.state.listIframes.length>0?this.state.listIframes.slice(0, items).map((iframe, index) => {
                                     return (
                                         <WidgetCard
                                             iframe={iframe}
                                             key={index}
                                         />)
-                                })
+                                    }): 
+                                    <h1 className="w-100 text-center py-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>
+                                               
                             }
                         </div>
                         <div className="w-100 text-center">

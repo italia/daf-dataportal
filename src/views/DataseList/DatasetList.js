@@ -604,28 +604,97 @@ class DatasetList extends Component {
                                                                 }
                                                                 </p>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                               }
+                                           </div>
+                                           );
+                                           break;
+                                            case 'ext_opendata': 
+                                                let datasetOpen = JSON.parse(result.source)
+                                                let datasetOpenMatch = dataset
+                                                try {
+                                                    datasetOpenMatch = JSON.parse(result.match)
+                                                } catch (error) {
+                                                    
                                                 }
-                                            </div>
-                                            );
-                                            break;
-                                    case 'dashboards':
-                                        let dashboard = JSON.parse(result.source)
-                                        let dashboardMatch = dashboard
-                                        try {
-                                            dashboardMatch = JSON.parse(result.match)
-                                        } catch (error) {
-                                            
-                                        }
-                                        if ((dashboard.widgets && dashboard.widgets !== '{}') && (dashboard.layout && dashboard.layout !== '{}')) {
-                                            const dashLayout = JSON.parse(dashboard.layout)
-                                            var firstLayout = ''
-
-                                            let righe = dashLayout.rows
-                                            for (let i = 0; i < righe.length; i++) {
-                                            let colonne = righe[i].columns;
+                                                return(
+                                                <div key={index}>
+                                                <div className="card risultato mt-3 mb-0" >
+                                                    <div className="card-body p-0 clearfix bg-light">
+                                                        <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
+                                                        <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="col-md-6 py-1 px-1" >
+                                                                        <Link to={'/dataset/' + datasetOpen.name + '?type=open'} className="title-res text-primary">
+                                                                            <div title={datasetOpen.title} dangerouslySetInnerHTML={{__html: datasetOpenMatch['title']?truncateDatasetName(datasetOpenMatch['title'],100):truncateDatasetName(datasetOpen.title, 60)}}></div>
+                                                                        </Link>
+                                                                    </div>
+                                                                    <div className="col-md-2 py-1 px-1" >
+                                                                        <span className="badge badge-info my-1">{decodeTheme(datasetOpen.theme)}</span>
+                                                                    </div>
+                                                                    <div className="col-md-2 py-1 px-1" >
+                                                                        <div title={datasetOpen.organization.name} dangerouslySetInnerHTML={{__html: datasetOpen.organization.name}}></div>
+                                                                    </div>
+                                                                    <div className="col-md-1 py-1">
+                                                                         <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>
+                                                                    </div>
+                                                                    <div className="col-md-1 py-1">
+                                                                        <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 py-0 btn btn-outline-filters float-right" onClick={this.handleToggleClickDataset.bind(this, index)}>
+                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
+                                                        <div className="card mb-3 mt-0">
+                                                            <div className="card-body clearfix">
+                                                                <div className="row px-3 pt-2 h-100" >
+                                                                    <div className="col-md-2 py-1 px-1" >
+                                                                        <b>Titolo: </b>
+                                                                    </div>
+                                                                    <div className="col-md-8 py-1 px-1" >
+                                                                    <div dangerouslySetInnerHTML={{__html: datasetOpenMatch['title']?datasetOpenMatch['title']:datasetOpen.title}}></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="row px-3 pt-2 h-100" >
+                                                                        <div className="col-md-2 py-1 px-1" >
+                                                                            <b>Ultima modifica: </b>
+                                                                        </div>
+                                                                        <div className="col-md-8 py-1 px-1" >
+                                                                            {datasetOpen.modified}
+                                                                        </div>
+                                                                </div>
+                                                                <div className="row px-3 pt-2 h-100" >
+                                                                    <div className="col-md-2 py-1 px-1" >
+                                                                            <b>Descrizione: </b>
+                                                                        </div>
+                                                                        <div className="col-md-8 py-1 px-1" >
+                                                                            <div dangerouslySetInnerHTML={{__html: datasetOpenMatch['notes']?datasetOpenMatch['notes']:datasetOpen.notes}}></div>
+                                                                        </div>
+                                                                </div>
+                                                               
+                                                            </div>
+                                                        </div>
+                                                        }
+                                                    </div>
+                                                    );
+                                                    break;
+                                   case 'dashboards':
+                                       let dashboard = JSON.parse(result.source)
+                                       let dashboardMatch = dashboard
+                                       try {
+                                           dashboardMatch = JSON.parse(result.match)
+                                       } catch (error) {
+                                           
+                                       }
+                                       if ((dashboard.widgets && dashboard.widgets !== '{}') && (dashboard.layout && dashboard.layout !== '{}')) {
+                                           const dashLayout = JSON.parse(dashboard.layout)
+                                           var firstLayout = ''
+                                           let righe = dashLayout.rows
+                                           for (let i = 0; i < righe.length; i++) {
+                                           let colonne = righe[i].columns;
                                             for (let j = 0; j < colonne.length; j++) {
                                                 let wids = colonne[j].widgets
                                                 wids.map((index) => {
@@ -651,7 +720,7 @@ class DatasetList extends Component {
                                         return(
                                             <div key={index}>
                                                 <div className="card risultato mt-3 mb-0" >
-                                                    <div className="card-body clearfix">
+                                                    <div className="card-body p-0 clearfix">
                                                         <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" title={dashboard.title}>
@@ -762,7 +831,7 @@ class DatasetList extends Component {
                                         return(
                                             <div key={index}>
                                                 <div className="card risultato mt-3 mb-0">
-                                                <div className="card-body clearfix">
+                                                <div className="card-body p-0 clearfix">
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
