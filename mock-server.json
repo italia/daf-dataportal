@@ -53,9 +53,29 @@
           "headerDescTool": "Il framework dei dati pubblici del Paese",
           "theme": "1",
           "headerLogo": "https://developers.italia.it/assets/icons/logo-it.png",
-          "organization": "daf"
+          "organization": "daf",
+          "url": "team-per-la-trasformazione-digitale" 
       }
-    }, 
+    },
+    "/dati-gov/v1/datapplications": {
+        "get": [
+            {"title": "Data Application 1",
+             "url": "http://www.google.com",
+             "creator": "raippl",
+             "description": "descrizione deata application 1"   
+            },
+            {"title": "Data Application 2",
+             "url": "http://www.google.com",
+             "creator": "raippl",
+             "description": "descrizione deata application 2"   
+            },
+            {"title": "Data Application 3",
+             "url": "http://www.google.com",
+             "creator": "raippl",
+             "description": "descrizione deata application 3"   
+            }
+            ]
+    },
     "/dati-gov/v1/search": {
         "get": [
             {

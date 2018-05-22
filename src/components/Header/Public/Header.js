@@ -161,7 +161,7 @@ class Header extends Component {
           {this.state.search && <SearchBar open={this.state.search}/>}
         </div>
         <div className="navi-header container">
-          <Navbar color="primary" light expand="md" className="py-1 h-100">
+          <Navbar color="primary" light  className="py-1 h-100">
           <NavbarToggler className="d-md-none text-white border-0" onClick={this.toggle.bind(this)} children={<i className="fa fa-bars"/>}/>
           <Nav className="d-sm-down-none bg-primary">
               <NavItem>
@@ -178,14 +178,17 @@ class Header extends Component {
               <div className={"dropdown " + (this.state.community ? "show":"")}>
                 <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.community ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.community.bind(this)}>Community</a>
                 <div className={"dropdown-menu " + (this.state.community ? "show":"")} aria-labelledby="dropdownMenuButton">
-                  <Link to={'/'} className="dropdown-item text-primary">Storie</Link>
-                  <Link to={'/'} className="dropdown-item text-primary">Notizie</Link>
+                  <Link to={'/userstory/list'} className="dropdown-item text-primary">Storie</Link>
+                  <Link to={'/notizie'} className="dropdown-item text-primary">Notizie</Link>
                   <a href="https://forum.italia.it/" target="_blank" className="dropdown-item text-primary">Forum</a>
                 </div>
               </div>
               </NavItem>
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
+              </NavItem>
+              <NavItem>
+                <Link className="nav-link font-weight-bold lead text-white" to={'/datapplication'}>Data Application</Link>
               </NavItem>
             </Nav>
           <Collapse isOpen={this.state.navbar} navbar>
@@ -204,14 +207,17 @@ class Header extends Component {
               <div className={"dropdown " + (this.state.community ? "show":"")}>
                 <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.community ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.community.bind(this)}>Community</a>
                 <div className={"dropdown-menu " + (this.state.community ? "show":"")} aria-labelledby="dropdownMenuButton">
-                  <Link to={'/'} className="dropdown-item">Storie</Link>
-                  <Link to={'/'} className="dropdown-item">Notizie</Link>
+                  <Link to={'/userstory/list'} className="dropdown-item">Storie</Link>
+                  <Link to={'/notizie'} className="dropdown-item">Notizie</Link>
                   <a href="https://forum.italia.it/" target="_blank" className="dropdown-item text-primary">Forum</a>
                 </div>
               </div>
               </NavItem>
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
+              </NavItem>
+              <NavItem>
+                <Link className="nav-link font-weight-bold lead text-white" to={'/datapplication'}>Data Application</Link>
               </NavItem>
             </Nav>
           </Collapse>

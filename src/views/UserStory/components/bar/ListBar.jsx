@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Route, Link } from 'react-router-dom';
 import { connect } from 'react-redux'
+import { isAdmin, isEditor, isPublic } from '../../../../utility.js'
 
 import {
   Modal,
@@ -152,7 +153,7 @@ class ViewBar extends React.Component {
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Privata</label>
                   <div className="col-md-8">
-                  {loggedUser.organizations && loggedUser.organizations.length > 1 ?
+                  {loggedUser && loggedUser.organizations && loggedUser.organizations.length > 1 ?
                     <select className="form-control" ref={(pvt) => this.pvt = pvt} onChange= {(e) => this.onPvtChange(e, e.target.value)} id="pvt" >
                       <option value="0" defaultValue key="0">No</option>
                       <option value="1" key='1'>Si</option>
@@ -172,7 +173,7 @@ class ViewBar extends React.Component {
                   <div className="col-md-8">
                     <select className="form-control" ref={(org) => this.org = org} onChange= {(e) => this.onOrganizationChange(e, e.target.value)} id="org" >
                         <option value=""  key='organization' defaultValue></option>
-                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
+                        {loggedUser && loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
                               return(
                                 <option value={organization} key={organization}>{organization}</option>)
                           }
@@ -206,11 +207,13 @@ class ViewBar extends React.Component {
                   <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" onChange={this.props.onChange} placeholder="Filtra la lista ..."/>
               </div>
             </div>
+            {(isPublic() && (isEditor() || isAdmin())) &&
             <div className="col-md-2">
               <button type="button" className="btn btn-link float-right" title="Aggiungi Dashboard" onClick={this.openModal}>
                 <i className="fa fa-plus-circle fa-lg m-t-2"></i>
               </button>
             </div>
+            }
           </div> 
         </div>
 
@@ -237,7 +240,7 @@ ViewBar.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const loggedUser = state.userReducer['obj'].loggedUser || { } 
+    const loggedUser = state.userReducer['obj'] && state.userReducer['obj'].loggedUser || { } 
     return { loggedUser }
 }
 

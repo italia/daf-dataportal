@@ -8,12 +8,12 @@ export const serviceurl = {
 
   
   //MOCK
-  apiURLDatiGov: "http://localhost:3001/dati-gov/v1", 
-  apiURLCatalog: "http://localhost:3001/catalog-manager/v1",
-  apiURLIngestion: "http://localhost:3001/ingestion-manager/v1",
-  apiURLSecurity: "http://localhost:3001/catalog-manager/v1",
-  apiURLSSOManager: "http://localhost:3001/sso-manager/v1", 
-
+  apiURLDatiGov: "http://locale:3001/dati-gov/v1", 
+  apiURLCatalog: "http://locale:3001/catalog-manager/v1",
+  apiURLIngestion: "http://locale:3001/ingestion-manager/v1",
+  apiURLSecurity: "http://locale:3001/catalog-manager/v1",
+  apiURLSSOManager: "http://locale:3001/sso-manager/v1", 
+  apiMedium: "http://locale:3001/dati-gov/medium/",
   // INTERNAL
  //apiURLSSOManager: "http://security-manager.default.svc.cluster.local:9000/sso-manager",
  //apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000/dati-gov/v1", 
