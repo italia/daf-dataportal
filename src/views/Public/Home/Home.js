@@ -3,16 +3,58 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 
+import UserstoryCard from '../../../components/Cards/UserstoryCard';
+import DatasetCard from '../../../components/Cards/DatasetCard';
+import HomeService from '../../Home/services/HomeService';
 
+
+const homeService = new HomeService();
 
 class Home extends Component{
   constructor(props){
     super(props)
 
-    this.state = {}
+    this.state = {
+      listStories: [],
+      listDataset: [],
+      isLoading: true,
+    }
+
   }
 
+  componentDidMount() {
+    var datasets = []
+    var stories = []
+    let home = homeService.publicHome();
+      home.then(json =>{
+        try{
+          json.map((element, index)=>{
+              switch(element.type){
+                  case 'catalog_test':
+                      datasets.push(element)
+                      break;
+                  case 'ext_opendata':
+                      datasets.push(element)
+                      break;
+                  case 'stories':
+                      let story = JSON.parse(element.source)
+                      stories.push(story)
+                      break;
+              }
+          })
+          this.setState({
+            listDataset: datasets,
+            listStories: stories,
+            isLoading: false
+          })
+        }
+        catch(error){console.log('error in getting elements')}
+      })
+    }
+
   render(){
+    const { listDataset, listStories, isLoading } = this.state
+    
     return(
       <div>
         <div className="py-5 w-100 bg-lightblue text-white">
@@ -40,7 +82,7 @@ class Home extends Component{
             <div className="row mt-2 mb-3">
               <div className="col-lg-7 col-md-7 col-12 pr-0">              
                 <div className="search-pub pl-0">
-                    <form /* onSubmit={this.handleLoadDatasetClick} */>
+                    <form onSubmit={()=> this.props.history.push('/search?q=')}>
                         <div className="input-group">
                             <div className="input-group-prepend">
                                 <button type="button" className="btn btn-accento px-3"><i className="fa fa-search fa-lg"/></button>
@@ -60,9 +102,10 @@ class Home extends Component{
             <div className="row mx-auto text-muted">
                 <i className="fa fa-font fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Storie</h2>
             </div>
+            {isLoading? <h4 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h4>:
             <div className="row mx-auto m-0">
-                {/* 
-                    this.state.listStories.slice(0, items).map((story, index) => {
+                { 
+                    this.state.listStories.map((story, index) => {
                         let chartUrl = undefined
                         if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
                             const dashLayout = JSON.parse(story.layout)
@@ -114,9 +157,9 @@ class Home extends Component{
                             />
 
                         )
-                    }) */
+                    })
                 }
-            </div>
+            </div>}
             <div className="w-100 text-center">
                 <Link to={'/private/user_story/list'}>
                     <h4 className="text-primary"><u>Vedi tutte</u></h4>
@@ -128,18 +171,22 @@ class Home extends Component{
           <div className="row m-0 text-muted">
               <i className="fa fa-table fa-lg m-4" style={{lineHeight:'1'}} /><h2 className="mt-3 mb-4">Dataset</h2>
           </div>
+          {isLoading ? <h4 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h4>:
           <div className="row mx-auto m-0">
-              {/* 
-                  datasets&&Array.isArray(datasets)&&datasets.slice(0, items).map((dataset, index) => {
-                      return (
-                          <DatasetCard
-                              dataset={dataset}
-                              key={index}
-                          />
-                      )
-                  }) */
+              {
+                  listDataset&&Array.isArray(listDataset)&&listDataset.map((element, index) => {
+                    var open = element.type==="ext_opendata"
+                    var dataset = JSON.parse(element.source)
+                    return (
+                        <DatasetCard
+                            open={open}
+                            dataset={dataset}
+                            key={index}
+                        />
+                    )
+                  })
               }
-          </div>
+          </div>}
           <div className="w-100 text-center">
               <Link to={'/private/dataset'}>
                   <h4 className="text-primary"><u>Vedi tutti</u></h4>

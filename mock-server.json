@@ -492,9 +492,81 @@
         "post": {
             "msg":"success"
         }
-    }, 
+    },
+    "/dati-gov/v1/public/elasticsearch/home": {
+      "get":
+          [{
+              "type": "ext_opendata",
+              "source": "{\"organization\":{\"name\":\"miur\"},\"name\":\"2017-collegi-universitari\",\"modified\":\"2018-09-02\",\"notes\":\"Dati disponibili su Collegi Universitari Statali e Legalmente Riconosciuti, anno accademico 2016-2017 e anno solare 2017\",\"title\":\"2017 Collegi Universitari\",\"theme\":\"no_category\"}",
+              "match": "{}"
+          },
+          {
+              "type": "catalog_test",
+              "source": "{\"dcatapit\":{\"author\":null,\"name\":\"umbria_o_az_sanitarie_ospedaliere_strut_ricovero_pg_tr_0\",\"modified\":\"22/03/2018\",\"privatex\":false,\"title\":\"Aziende sanitarie, aziende ospedaliere, strutture di ricovero - province di Perugia e Terni - Anno 2013 - Dati anagrafici strutture di ricovero\",\"owner_org\":\"default_org\",\"theme\":\"HEAL\"}}",
+              "match": "{}"
+          },
+          {
+              "type": "catalog_test",
+              "source": "{\"dcatapit\":{\"author\":null,\"name\":\"toscana_o_bacino_arno_stato_ecologico_e_chimico_delle_acque_superficiali_anni_20_1\",\"modified\":\"22/03/2018\",\"privatex\":false,\"title\":\"Bacino Arno - Stato ecologico e chimico delle acque superficiali - anni 2010-2016 - Bacino Arno - Stato ecologico e chimico delle acque superficiali - anni 2010-2016\",\"owner_org\":\"default_org\",\"theme\":\"OP_DATPRO\"}}",
+              "match": "{}"
+          },
+          {
+              "type": "stories",
+              "source": "{\"subtitle\":\"<p>I teatri della città di Torino</p>\",\"timestamp\":\"2018-05-16T19:59:48.427Z[GMT]\",\"published\":2,\"id\":\"f78c2c58-bb1f-4484-bd3b-37bcf609d493\",\"widgets\":\"{\\\"superset_697\\\":{\\\"title\\\":\\\"Torino a teatro\\\",\\\"image\\\":\\\"noimage\\\",\\\"table\\\":\\\"EDUC__luoghi.comune_torino_o_teatri_di_torino\\\",\\\"props\\\":{\\\"url\\\":\\\"https://bi.daf.teamdigitale.it//superset/explore/table/4396/?form_data=%7B%22mapbox_color%22%3A%20%22rgb%280%2C%20122%2C%20135%29%22%2C%20%22pandas_aggfunc%22%3A%20%22sum%22%2C%20%22viewport_zoom%22%3A%2011%2C%20%22all_columns_x%22%3A%20%22longitude%22%2C%20%22granularity_sqla%22%3A%20null%2C%20%22having%22%3A%20%22%22%2C%20%22mapbox_label%22%3A%20%5B%22denominaz%22%5D%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22row_limit%22%3A%20null%2C%20%22point_radius%22%3A%20%22Auto%22%2C%20%22mapbox_style%22%3A%20%22mapbox%3A//styles/mapbox/streets-v9%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viewport_longitude%22%3A%207.6868%2C%20%22all_columns_y%22%3A%20%22latitude%22%2C%20%22filters%22%3A%20%5B%5D%2C%20%22where%22%3A%20%22%22%2C%20%22render_while_dragging%22%3A%20true%2C%20%22since%22%3A%20%227%20days%20ago%22%2C%20%22viewport_latitude%22%3A%2045.0704%2C%20%22global_opacity%22%3A%201%2C%20%22viz_type%22%3A%20%22mapbox%22%2C%20%22datasource%22%3A%20%224396__table%22%2C%20%22time_grain_sqla%22%3A%20null%2C%20%22point_radius_unit%22%3A%20%22Pixels%22%2C%20%22slice_id%22%3A%20697%2C%20%22clustering_radius%22%3A%20%2220%22%7D&standalone=true\\\",\\\"identifier\\\":\\\"superset_697\\\",\\\"origin\\\":\\\"superset\\\",\\\"wid_key\\\":\\\"superset_697\\\"}}}\",\"layout\":\"{\\\"rows\\\":[{\\\"columns\\\":[{\\\"className\\\":\\\"col-lg-12 col-md-12 col-sm-12 col-xs-12\\\",\\\"widgets\\\":[{\\\"key\\\":\\\"superset_697\\\"}]}]}]}\",\"title\":\"Torino a teatro\",\"org\":\"comune_torino\",\"user\":\"d_mc\",\"pvt\":\"0\"}",
+              "match": "{}"
+          },
+          {
+              "type": "type",
+              "source": "{\"ext_opendata\":\"18988\",\"catalog_test\":\"4388\",\"stories\":\"11\"}",
+              "match": null
+          }
+        ]
+    },
+    "/dati-gov/v1/elasticsearch/home": {
+      "get":
+          [{
+              "type": "ext_opendata",
+              "source": "{\"organization\":{\"name\":\"miur\"},\"name\":\"2017-collegi-universitari\",\"modified\":\"2018-09-02\",\"notes\":\"Dati disponibili su Collegi Universitari Statali e Legalmente Riconosciuti, anno accademico 2016-2017 e anno solare 2017\",\"title\":\"2017 Collegi Universitari\",\"theme\":\"no_category\"}",
+              "match": "{}"
+          },
+          {
+              "type": "catalog_test",
+              "source": "{\"dcatapit\":{\"author\":null,\"name\":\"umbria_o_az_sanitarie_ospedaliere_strut_ricovero_pg_tr_0\",\"modified\":\"22/03/2018\",\"privatex\":false,\"title\":\"Aziende sanitarie, aziende ospedaliere, strutture di ricovero - province di Perugia e Terni - Anno 2013 - Dati anagrafici strutture di ricovero\",\"owner_org\":\"default_org\",\"theme\":\"HEAL\"}}",
+              "match": "{}"
+          },
+          {
+              "type": "catalog_test",
+              "source": "{\"dcatapit\":{\"author\":null,\"name\":\"toscana_o_bacino_arno_stato_ecologico_e_chimico_delle_acque_superficiali_anni_20_1\",\"modified\":\"22/03/2018\",\"privatex\":false,\"title\":\"Bacino Arno - Stato ecologico e chimico delle acque superficiali - anni 2010-2016 - Bacino Arno - Stato ecologico e chimico delle acque superficiali - anni 2010-2016\",\"owner_org\":\"default_org\",\"theme\":\"OP_DATPRO\"}}",
+              "match": "{}"
+          },
+          {
+              "type": "stories",
+              "source": "{\"subtitle\":\"<p>I teatri della città di Torino</p>\",\"timestamp\":\"2018-05-16T19:59:48.427Z[GMT]\",\"published\":2,\"id\":\"f78c2c58-bb1f-4484-bd3b-37bcf609d493\",\"widgets\":\"{\\\"superset_697\\\":{\\\"title\\\":\\\"Torino a teatro\\\",\\\"image\\\":\\\"noimage\\\",\\\"table\\\":\\\"EDUC__luoghi.comune_torino_o_teatri_di_torino\\\",\\\"props\\\":{\\\"url\\\":\\\"https://bi.daf.teamdigitale.it//superset/explore/table/4396/?form_data=%7B%22mapbox_color%22%3A%20%22rgb%280%2C%20122%2C%20135%29%22%2C%20%22pandas_aggfunc%22%3A%20%22sum%22%2C%20%22viewport_zoom%22%3A%2011%2C%20%22all_columns_x%22%3A%20%22longitude%22%2C%20%22granularity_sqla%22%3A%20null%2C%20%22having%22%3A%20%22%22%2C%20%22mapbox_label%22%3A%20%5B%22denominaz%22%5D%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22row_limit%22%3A%20null%2C%20%22point_radius%22%3A%20%22Auto%22%2C%20%22mapbox_style%22%3A%20%22mapbox%3A//styles/mapbox/streets-v9%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viewport_longitude%22%3A%207.6868%2C%20%22all_columns_y%22%3A%20%22latitude%22%2C%20%22filters%22%3A%20%5B%5D%2C%20%22where%22%3A%20%22%22%2C%20%22render_while_dragging%22%3A%20true%2C%20%22since%22%3A%20%227%20days%20ago%22%2C%20%22viewport_latitude%22%3A%2045.0704%2C%20%22global_opacity%22%3A%201%2C%20%22viz_type%22%3A%20%22mapbox%22%2C%20%22datasource%22%3A%20%224396__table%22%2C%20%22time_grain_sqla%22%3A%20null%2C%20%22point_radius_unit%22%3A%20%22Pixels%22%2C%20%22slice_id%22%3A%20697%2C%20%22clustering_radius%22%3A%20%2220%22%7D&standalone=true\\\",\\\"identifier\\\":\\\"superset_697\\\",\\\"origin\\\":\\\"superset\\\",\\\"wid_key\\\":\\\"superset_697\\\"}}}\",\"layout\":\"{\\\"rows\\\":[{\\\"columns\\\":[{\\\"className\\\":\\\"col-lg-12 col-md-12 col-sm-12 col-xs-12\\\",\\\"widgets\\\":[{\\\"key\\\":\\\"superset_697\\\"}]}]}]}\",\"title\":\"Torino a teatro\",\"org\":\"comune_torino\",\"user\":\"d_mc\",\"pvt\":\"0\"}",
+              "match": "{}"
+          },
+          {
+              "type": "type",
+              "source": "{\"ext_opendata\":\"18988\",\"catalog_test\":\"4388\",\"stories\":\"11\"}",
+              "match": null
+          }
+        ]
+    },
     "/catalog-manager/v1/ckan/searchDataset": {
         "get": [
+            {
+              "type": "ext_opendata",
+              "source": {
+                "name": "01-psc-piano-strutturale-comunale-kml",
+                "title": "01 - PSC - Piano Strutturale Comunale - Kml",
+                "notes": "Sintesi del Piano Strutturale Comunale",
+                "theme": "OP_DATPRO",
+                "organization": {
+                  "name": "regione-emilia-romagna"
+                },
+                "modified": "2017-02-03T15:51:29.327285"
+              },
+              "match": null
+            },
             {
               "name": "test1",
               "notes": "dd",

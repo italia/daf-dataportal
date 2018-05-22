@@ -158,7 +158,7 @@ class Header extends Component {
           </div>
         </div>
         <div className="container public">
-          {this.state.search && <SearchBar open={this.state.search}/>}
+          {this.state.search && <SearchBar history={this.props.history} open={this.state.search}/>}
         </div>
         <div className="navi-header container">
           <Navbar color="primary" light expand="md" className="py-1 h-100">

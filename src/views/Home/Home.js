@@ -36,7 +36,7 @@ class Home extends Component {
             isLoading: true,
         }
         
-        this.searchDataset();
+        //this.searchDataset();
         //this.counters();
 
         /* let dash = homeService.dashboards();
@@ -66,6 +66,46 @@ class Home extends Component {
     }
 
     componentDidMount() {
+      var datasets = []
+      var stories = []
+      var dashboards = []
+      var counter = {}
+      let home = homeService.homeElements();
+        home.then(json =>{
+          try{
+            json.map((element, index)=>{
+                switch(element.type){
+                    case 'catalog_test':
+                        datasets.push(element)
+                        break;
+                    case 'ext_opendata':
+                        datasets.push(element)
+                        break;
+                    case 'dashboards':
+                        let dashboard = JSON.parse(element.source)
+                        dashboards.push(dashboard)
+                        break;
+                    case 'stories':
+                        let story = JSON.parse(element.source)
+                        stories.push(story)
+                        break;
+                    case 'type':
+                        let type = JSON.parse(element.source)
+                        counter = type
+                        break;
+                }
+            })
+            this.setState({
+              listDataset: datasets,
+              listDashboards: dashboards,
+              listStories: stories,
+              counter: counter,
+              isLoading: false
+            })
+          }
+          catch(error){console.log('error in getting elements')}
+        })
+        
         this.updatePredicate()
         window.addEventListener("resize", this.updatePredicate);
     }
@@ -91,9 +131,9 @@ class Home extends Component {
             this.setState({items: 3});
     }
 
-    searchDataset(query, category, group, organization, order) {
-        const { dispatch } = this.props
-        dispatch(loadDatasets(query, 0, '', category, group, organization, order))
+    searchDataset() {
+        //const { dispatch } = this.props
+        //dispatch(loadDatasets(query, 0, '', category, group, organization, order))
     }
 
     counters(){
@@ -139,8 +179,8 @@ class Home extends Component {
     }
 
     render(){
-        const { datasets, isFetching, results } = this.props
-        const { listDashboards, listStories, listIframes, counter, items } = this.state
+        const { isFetching, results } = this.props
+        const { listDataset, listDashboards, listStories, listIframes, counter, items } = this.state
         //const { listDashboards, listStories, listDataset, listIframes, items, counter, isLoading } = this.state
         //var counter = JSON.parse(results[results.length-4].source)
         return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
@@ -207,9 +247,12 @@ class Home extends Component {
                     </div>
                     <div className="row mx-auto m-0">
                         {
-                            datasets&&Array.isArray(datasets)&&datasets.slice(0, items).map((dataset, index) => {
+                            listDataset&&Array.isArray(listDataset)&&listDataset.slice(0, items).map((element, index) => {
+                                var open = element.type==="ext_opendata"
+                                var dataset = JSON.parse(element.source)
                                 return (
                                     <DatasetCard
+                                        open={open}
                                         dataset={dataset}
                                         key={index}
                                     />

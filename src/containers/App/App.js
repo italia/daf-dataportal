@@ -70,6 +70,13 @@ class App extends Component {
       var html = document.getElementsByTagName('html')[0];
       switch(json.properties.theme){
         case "1":
+          html.style.setProperty("--primary", "#0066CC");
+          html.style.setProperty("--lightblue", "#1A75D1");
+          this.setState({
+            loading: false
+          })
+          break;
+        case "2":
           html.style.setProperty("--primary", "#4975A6");
           html.style.setProperty("--lightblue", "#5B83AF");
           this.setState({
@@ -166,7 +173,8 @@ class App extends Component {
             <Route path='/lineeguida' exact component={Public} />
             <Route path='/partecipa' exact component={Public} />                                    
             <Route path='/userstory/list' exact component={Public} />
-            <Route path='/team' exact component={Public} />            
+            <Route path='/team' exact component={Public} />
+            <Route path='/search' exact component={Public} />                                    
             <Route path='/private' exact component={Home} />
             <Route path="/login" component={Home} />
             <Route path="/register" component={Home} />

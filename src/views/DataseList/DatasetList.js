@@ -421,15 +421,19 @@ class DatasetList extends Component {
             
             <div className="body">
                 <div className="main_container">
-                    <div className="top_nav">
-                        <div className="nav_menu">
+                    <div>
+                        <div>
                             <nav className="dashboardHeader text-gray-600">
-                                {window.location.hash.indexOf('dataset')!==-1 && <div className="row mx-3"><i className="fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset</h2></div>}
-                                {window.location.hash.indexOf('dataset')===-1 && <div className="row mx-3"><i className="fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Hai cercato <i>{search}</i></h2></div>}
+                              <div className="row">
+                                {window.location.hash.indexOf('dataset')!==-1 && <div className="col-lg-3 col-md-4 mx-auto container mx-3"><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset</h2></div>}
+                                {window.location.hash.indexOf('dataset')===-1 && <div className="col-lg-3 col-md-4 mx-auto container mx-3"><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Hai cercato <i className="fa-pull-left">{search}</i></h2></div>}
+                                <div className="col-lg-3 col-md-4 ml-auto">
+                                </div>
+                              </div>
                             </nav>
                             <nav className={"dashboardHeader px-5 b-t-1 b-b-1 "+(this.state.showDivSearch?"mb-0":"")}>
                                 <div className="row" style={{height: '48px'}}>
-                                    <div className="col-md-10 h-100" >
+                                    <div className="mx-auto col-lg-4 col-md-7 h-100" >
                                         <div className="btn-group h-100" role="group" aria-label="Basic example">
                                             {window.location.hash.indexOf('dataset')===-1 && <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button>}
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivData ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickData}>Data <i className={"fa " + (this.state.showDivData ? "fa-angle-up" : "fa-angle-down")}></i></button>
@@ -439,7 +443,7 @@ class DatasetList extends Component {
                                             {/* <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivSearch ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickSearch}><i className="fa fa-search fa-lg"/></button> */}
                                         </div>
                                     </div>
-                                    <div className="col-md-2 h-100" >
+                                    <div className="mx-auto col-lg-2 col-md-3 h-100" >
                                         <select className="form-control h-100 b-t-0 b-b-0" id="ordinamento" aria-required="true" onChange={this.handleChangeOrdinamento.bind(this)} value={this.state.order_filter}>
                                             <option value="desc">Data decrescente</option>
                                             <option value="asc">Data crescente</option>
@@ -512,7 +516,7 @@ class DatasetList extends Component {
                                 {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this, this.state.order_filter)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
                             </nav>
                             }
-                            {isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
+                            {isFetching === true ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
                              <div className="px-search mb-3">
                                 <div className="App" style={{overflowX: 'hidden'}}>
                                 {results ? 
