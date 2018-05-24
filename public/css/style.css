@@ -3374,7 +3374,7 @@ tbody.collapse.show {
   display: inline-block;
   width: 0;
   height: 0;
-  margin-left: 0.255em;
+  margin-left: 0.5em;
   vertical-align: 0.255em;
   content: "";
   border-top: 0.3em solid;
@@ -8129,10 +8129,10 @@ button.bg-gray-900:focus {
   color: #fff !important; }
 
 .text-primary {
-  color: var(--primary) !important; }
+  color: #0066CC!important; }
 
 a.text-primary:hover, a.text-primary:focus {
-  color: var(--primary) !important; }
+  color: #0066CC!important; }
 
 .text-secondary {
   color: #a4b7c1 !important; }
