@@ -162,7 +162,7 @@ class Header extends Component {
 					
 				<ul className="nav navbar-nav d-md-down-none mr-auto">
 					<li className="nav-item brand">
-						<Link to={'/private/home'}><img className="img-logo" src="./img/DAF_pittogramma_FU.svg" alt=""/><span className="pl-2" style={{fontSize: '24px', fontWeight: 'bold'}}>DAF Italia</span></Link>
+						<Link className="h-100 font-2xl" to={'/private/home'}><img className="img-logo mb-1 pr-3" src="./img/DAF_pittogramma_FU.svg" alt=""/><span className="pl-3 font-weight-bold">DAF Italia</span></Link>
 					</li>
 	{/*           <div className={"search-bar " + revealed}>
 							<form onSubmit={this.handleLoadDatasetClick}>
@@ -201,7 +201,8 @@ class Header extends Component {
 						<div className={"dropdown " + open}>
 							<a className="nav-link" role="button" id="dropdownMenuButton" data-toggle="dropdown" 
 										aria-haspopup="true" aria-expanded="false" onClick={this.toggle}>
-										<img src={'img/avatars/7.jpg'} className="img-avatar pointer" alt="admin@bootstrapmaster.com"/>
+                    {/* <img src={'img/avatars/7.jpg'} className="img-avatar pointer" alt="admin@bootstrapmaster.com"/> */}
+                    <i className="fas fa-user-circle fa-2x pointer text-white"/>
 								</a>
 								<div className={"dropdown-menu dropdown-menu-right "+ open} aria-labelledby="dropdownMenuButton">
 									<h6 className="dropdown-header text-center"><b>{loggedUser ? loggedUser.givenname : ''}</b></h6>
