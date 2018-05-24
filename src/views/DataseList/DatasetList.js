@@ -626,7 +626,7 @@ class DatasetList extends Component {
                                                         <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" >
-                                                                        <Link to={'/dataset/' + datasetOpen.name + '?type=open'} className="title-res text-primary">
+                                                                        <Link to={isPublic()?'/dataset/' + datasetOpen.name + '?type=open':'/private/dataset/' + datasetOpen.name + '?type=open'} className="title-res text-primary">
                                                                             <div title={datasetOpen.title} dangerouslySetInnerHTML={{__html: datasetOpenMatch['title']?truncateDatasetName(datasetOpenMatch['title'],100):truncateDatasetName(datasetOpen.title, 60)}}></div>
                                                                         </Link>
                                                                     </div>
