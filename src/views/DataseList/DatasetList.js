@@ -39,7 +39,7 @@ class DatasetList extends Component {
                     'elements': []},
             showDivTipo: false,
             showDivData: false,
-            showDivCategoria: false,
+            showDivCategoria: props.location.state?props.location.state.theme:false,
             showDivOrganizzazione: false,
             showDivVisibilita: false,
             showDivSearch: false,

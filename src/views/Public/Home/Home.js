@@ -7,7 +7,6 @@ import UserstoryCard from '../../../components/Cards/UserstoryCard';
 import DatasetCard from '../../../components/Cards/DatasetCard';
 import HomeService from '../../Home/services/HomeService';
 
-
 const homeService = new HomeService();
 
 class Home extends Component{
@@ -54,6 +53,7 @@ class Home extends Component{
 
   render(){
     const { listDataset, listStories, isLoading } = this.state
+    const { properties } = this.props
     
     return(
       <div>
@@ -64,9 +64,9 @@ class Home extends Component{
                 <img src="./img/DAF_pittogrammaillustrazione_FU.svg" alt="Illustrazione" style={{width: '85%'}}/>
               </div>
               <div className="col-lg-5 col-md-7 col-8 mx-auto pt-3">
-                <h1 style={{fontSize: '45px'}}><b>La piattaforma <br/> dei dati italiani</b></h1>
+                <h1 style={{fontSize: '45px'}}><b>La piattaforma <br/> dei dati {properties.bodyIllustrazione}</b></h1>
                 <h5 className="mt-5">Scopri tutto quello che c’è da sapere sul progetto</h5>
-                <button className="font-weight-bold btn btn-lg btn-outline-primary border-white-solid text-white mt-3 py-2 px-3">PIANO STRATEGICO</button>
+                <a href="http://pianotriennale-ict.readthedocs.io/it/latest/doc/09_data-analytics-framework.html" target="_blank"><button className="font-weight-bold btn btn-lg btn-outline-primary border-white-solid text-white mt-3 py-2 px-3">PIANO STRATEGICO</button></a>
               </div>
             </div>
           </div>
@@ -76,13 +76,13 @@ class Home extends Component{
             <div className="row">
               <div className="col-lg-6 col-md-7 col-12">
                 <h1 className="text-gray-600 font-weight-bold" style={{fontSize: '3rem'}}>Esplora gli opendata</h1>
-                <h5 className="text-gray-600 mb-4">Cerca tra i dataset, i widget e le storie basate su dati opendata della pubblica amministrazione italiana</h5>
+                <h5 className="text-gray-600 mb-4">{properties.bodyEsplora}</h5>
               </div>
             </div>
             <div className="row mt-2 mb-3">
               <div className="col-lg-7 col-md-7 col-12 pr-0">              
                 <div className="search-pub pl-0">
-                    <form onSubmit={()=> this.props.history.push('/search?q=')}>
+                    <form onSubmit={()=> this.props.history.push('/search?q=' + this.refs.auto.value)}>
                         <div className="input-group">
                             <div className="input-group-prepend">
                                 <button type="button" className="btn btn-accento px-3"><i className="fa fa-search fa-lg"/></button>
@@ -93,7 +93,7 @@ class Home extends Component{
                 </div>
               </div>
               <h5 className="text-gray-600 vertical-align-middle mx-4 my-3">oppure</h5>
-              <button className="btn btn-accento">Esplora per categoria</button>            
+              <button className="btn btn-accento" onClick={()=> this.props.history.push({pathname: '/search', search: '?q=',state: { 'theme': true }})}>Esplora per categoria</button>            
             </div>
           </div>
         </div>
@@ -204,7 +204,7 @@ class Home extends Component{
                   <h5><b>Sei un esperto di dati?</b> Scopri come sfruttare tutte le potenzialità: accedi e usa strumenti di analisi e storytelling integrati ed a portata di click</h5>
                 </div>
                 <div className="col-lg-3 align-self-center mx-auto">
-                  <button className="font-weight-bold btn btn-lg btn-outline-primary border-white-solid text-white py-2 px-3">RICHIEDI L'ACCESSO</button>
+                  <a href="/#/register"><button className="font-weight-bold btn btn-lg btn-outline-primary border-white-solid text-white py-2 px-3">RICHIEDI L'ACCESSO</button></a>
                 </div>
               </div>
           </div>
@@ -213,7 +213,7 @@ class Home extends Component{
           <div className="container h-100">
               <div className="row h-100">
                 <div className="col-lg-4 h-100 align-self-center">
-                  <button className="float-right font-weight-bold btn btn-lg btn-outline-gray-700 border-white-solid text-white py-2 px-3">CONTATTACI</button>
+                  <a href="https://teamdigitale.governo.it/it/contatti.htm" target="_blank"><button className="float-right font-weight-bold btn btn-lg btn-outline-gray-700 border-white-solid text-white py-2 px-3">CONTATTACI</button></a>
                 </div>
                 <div className="col-lg-5 text-white px-5 py-3 my-3">
                   <h1 className="font-weight-bold">DAF è per la PA</h1>
@@ -238,4 +238,15 @@ class Home extends Component{
   }
 }
 
-export default Home;
+Home.propTypes = {
+  loggedUser: PropTypes.object,
+  dispatch: PropTypes.func.isRequired
+}
+
+function mapStateToProps(state) {
+  const { properties } = state.propertiesReducer['prop'] || {}
+
+  return { properties }
+}
+
+export default connect(mapStateToProps)(Home);

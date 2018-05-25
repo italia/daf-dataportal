@@ -149,7 +149,7 @@ class Header extends Component {
 		}
 
 		render() {
-			const { loggedUser } = this.props
+			const { loggedUser, properties } = this.props
 			let open = this.state.dropdownOpen ? "show" : "" 
 			let revealed = this.state.revealed ? "btn-accento" : "btn-header"
 			let crea = this.state.crea ? "show" : ""
@@ -162,7 +162,9 @@ class Header extends Component {
 					
 				<ul className="nav navbar-nav d-md-down-none mr-auto">
 					<li className="nav-item brand">
-						<Link to={'/private/home'}><img className="img-logo" src="./img/DAF_pittogramma_FU.svg" alt=""/><span className="pl-2" style={{fontSize: '24px', fontWeight: 'bold'}}>DAF Italia</span></Link>
+						<Link to={'/private/home'}>
+							<img className="img-logo" src="./img/DAF_pittogramma_FU.svg" alt=""/><span className="pl-2" style={{fontSize: '24px', fontWeight: 'bold'}}>DAF {properties.headerSiglaTool}</span>
+							</Link>
 					</li>
 	{/*           <div className={"search-bar " + revealed}>
 							<form onSubmit={this.handleLoadDatasetClick}>
@@ -292,7 +294,8 @@ Header.propTypes = {
 
 function mapStateToProps(state) {
 	const { loggedUser } = state.userReducer['obj'] || { }
-	return { loggedUser }
+	const { properties } = state.propertiesReducer['prop'] || {}
+	return { loggedUser, properties }
 }
 
 export default connect(mapStateToProps)(Header)
