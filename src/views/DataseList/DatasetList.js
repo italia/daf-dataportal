@@ -418,22 +418,18 @@ class DatasetList extends Component {
         var search = queryString.parse(this.props.location.search).q
 
         return (
-            
-            <div className="body">
-                <div className="main_container">
                     <div>
                         <div>
                             <nav className="dashboardHeader text-gray-600">
-                              <div className="row">
-                                {window.location.hash.indexOf('dataset')!==-1 && <div className="col-lg-3 col-md-4 mx-auto container mx-3"><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset</h2></div>}
-                                {window.location.hash.indexOf('dataset')===-1 && <div className="col-lg-3 col-md-4 mx-auto container mx-3"><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Hai cercato <i className="fa-pull-left">{search}</i></h2></div>}
-                                <div className="col-lg-3 col-md-4 ml-auto">
-                                </div>
+                              <div className="container">
+                                {window.location.hash.indexOf('dataset')!==-1 && <div><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset</h2></div>}
+                                {window.location.hash.indexOf('dataset')===-1 && <div><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Hai cercato <i>{search}</i></h2></div>}
                               </div>
                             </nav>
-                            <nav className={"dashboardHeader px-5 b-t-1 b-b-1 "+(this.state.showDivSearch?"mb-0":"")}>
-                                <div className="row" style={{height: '48px'}}>
-                                    <div className="mx-auto col-lg-4 col-md-7 h-100" >
+                            <nav className={"dashboardHeader b-t-1 b-b-1 "+(this.state.showDivSearch?"mb-0":"")}>
+                                <div className="px-5 container" style={{height: '48px'}}>
+                                  <div className="row h-100">
+                                    <div className="mr-auto col-lg-4 col-md-7 h-100" >
                                         <div className="btn-group h-100" role="group" aria-label="Basic example">
                                             {window.location.hash.indexOf('dataset')===-1 && <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button>}
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivData ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickData}>Data <i className={"fa " + (this.state.showDivData ? "fa-angle-up" : "fa-angle-down")}></i></button>
@@ -443,16 +439,17 @@ class DatasetList extends Component {
                                             {/* <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivSearch ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickSearch}><i className="fa fa-search fa-lg"/></button> */}
                                         </div>
                                     </div>
-                                    <div className="mx-auto col-lg-2 col-md-3 h-100" >
+                                    <div className="ml-auto col-lg-3 col-md-4 h-100" >
                                         <select className="form-control h-100 b-t-0 b-b-0" id="ordinamento" aria-required="true" onChange={this.handleChangeOrdinamento.bind(this)} value={this.state.order_filter}>
                                             <option value="desc">Data decrescente</option>
                                             <option value="asc">Data crescente</option>
                                             <option value="score">Per rilevanza</option>
                                         </select> 
                                     </div>
+                                  </div>
                                 </div>
                             </nav>
-                            <nav className={"dashboardHeader "+(this.state.showDivSearch?"px-5 bg-secondary":"mx-5")}>
+                            <nav className={"dashboardHeader "+(this.state.showDivSearch?"px-5 container bg-secondary":"container px-5")}>
                             {this.state.showDivTipo && results &&
                                 Object.keys(JSON.parse(results[results.length-4].source)).map((tipo, index) =>{
                                     var tipi=JSON.parse(results[results.length-4].source)
@@ -498,7 +495,9 @@ class DatasetList extends Component {
                                 </form> */
                             }
                             </nav>
-                            { (this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <nav className="dashboardHeader bg-grigino px-5 py-2">
+                            { (this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && 
+                              <div className="bg-grigino">
+                                <nav className="dashboardHeader container py-2 px-5">
                                 {this.state.filter.elements.length>0 && this.state.filter.elements.map((fi, index) => {
                                     switch(fi.type){
                                         case 0: return(window.location.hash.indexOf('dataset')===-1 && <span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key={index}>{decodeTipo(fi.value)}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
@@ -514,10 +513,11 @@ class DatasetList extends Component {
                                 }
                                 {this.state.filter.da && this.state.filter.a && <span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key='da'>{this.state.filter.da.locale('it').format("DD/MM/YYYY")} - {this.state.filter.a.locale('it').format("DD/MM/YYYY")}<button type="button" className="btn btn-link p-0 ml-2 text-gray-600" onClick={this.removeFilterDate.bind(this)}><i className="ml-2 fa fa-times-circle"></i></button></span>}
                                 {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this, this.state.order_filter)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
-                            </nav>
+                                </nav>
+                              </div>
                             }
                             {isFetching === true ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
-                             <div className="container mb-3">
+                             <div className="mb-3">
                                 <div className="App" style={{overflowX: 'hidden'}}>
                                 {results ? 
                                 <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="w-100">
@@ -534,7 +534,7 @@ class DatasetList extends Component {
                                          
                                         let fields = datasetMatch.dataschema&&datasetMatch.dataschema.avro&&datasetMatch.dataschema.avro.fields?datasetMatch.dataschema.avro.fields:dataset.dataschema.avro.fields
                                         return(
-                                            <div key={index}>
+                                            <div className="container px-5" key={index}>
                                                 <div className="card risultato mt-3 mb-0" >
                                                     <div className="card-body p-0 clearfix bg-light">
                                                         <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
@@ -544,13 +544,13 @@ class DatasetList extends Component {
                                                                     <div title={dataset.dcatapit.title} dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?truncateDatasetName(datasetMatch['dcatapit.title'],100):truncateDatasetName(dataset.dcatapit.title, 60)}}></div>
                                                                 </Link>
                                                             </div>
-                                                            <div className="col-md-2 py-1 px-1" >
+                                                            <div className="col-md-2 py-1 px-4" >
                                                                 <span className="badge badge-info my-1">{decodeTheme(dataset.dcatapit.theme)}</span>
                                                             </div>
-                                                            <div className="col-md-2 py-1 px-1" >
+                                                            <div className="col-md-2 py-1 px-3" >
                                                                 <div title={dataset.dcatapit.owner_org} dangerouslySetInnerHTML={{__html: dataset.dcatapit.owner_org}}></div>
                                                             </div>
-                                                            <div className="col-md-1 py-1">
+                                                            <div className="col-md-1 py-1 px-2">
                                                                 {!dataset.dcatapit.privatex && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
                                                                 {dataset.dcatapit.privatex && <i className="fa fa-users fa-lg text-icon float-right pt-1"/>}
                                                             </div>
@@ -620,10 +620,11 @@ class DatasetList extends Component {
                                                     
                                                 }
                                                 return(
-                                                <div key={index}>
+                                                <div className="container px-5" key={index}>
                                                 <div className="card risultato mt-3 mb-0" >
-                                                    <div className="card-body p-0 clearfix bg-light">
+                                                    <div className="card-body p-0 clearfix bg-e7ecef">
                                                         <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
+                                                        <i className="fa fa-external-link-square-alt b-r-dash b-l-ext bg-light float-left text-icon p-3 h-100"></i>                                                        
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" >
                                                                         <Link to={isPublic()?'/dataset/' + datasetOpen.name + '?type=open':'/private/dataset/' + datasetOpen.name + '?type=open'} className="title-res text-primary">
@@ -718,7 +719,7 @@ class DatasetList extends Component {
                                         } 
 
                                         return(
-                                            <div key={index}>
+                                            <div className="container px-5" key={index}>
                                                 <div className="card risultato mt-3 mb-0" >
                                                     <div className="card-body p-0 clearfix">
                                                         <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
@@ -829,7 +830,7 @@ class DatasetList extends Component {
                                             }
                                         }
                                         return(
-                                            <div key={index}>
+                                            <div className="container px-5" key={index}>
                                                 <div className="card risultato mt-3 mb-0">
                                                 <div className="card-body p-0 clearfix">
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
@@ -915,8 +916,6 @@ class DatasetList extends Component {
                         }
                 </div>
             </div>
-        </div>
-        </div>
         )
     }
 }

@@ -61,6 +61,7 @@ class App extends Component {
   state = {
     loading: true,
   }
+
   componentDidMount() {
     const { dispatch } = this.props
     var domain = window.location.host
@@ -92,72 +93,7 @@ class App extends Component {
           break;
       }
     })
-  /*     if (this.props.loggedUser && this.props.loggedUser.mail) {
-      this.setState({
-        authed: true,
-        loading: false
-      })
-    } else {
-      if (localStorage.getItem('username') && localStorage.getItem('token') &&
-        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
-        dispatch(isValidToken(localStorage.getItem('token')))
-        .then(ok => {
-          if (ok) {
-                dispatch(getApplicationCookie('superset'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                })
-                dispatch(getApplicationCookie('metabase'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                })
-                dispatch(getApplicationCookie('jupyter'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                }) */
-                /* dispatch(getApplicationCookie('grafana'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                }) */
-                /* dispatch(loginAction())
-                  .then(json => {
-                      dispatch(receiveLogin(json)) */
-                      /* dispatch(addUserOrganization(json.uid)) */
-                      /* this.setState({
-                          authed: true,
-                          loading: false
-                        })
-                })
-              } else {
-                this.setState({
-                  authed: false,
-                  loading: false
-              })
-              this.props.history.push('/login')
-              }
-            })
-            .catch((error) => {
-              this.setState({
-                authed: false,
-                loading: false
-              })
-            })
-          } else {
-            this.setState({
-              authed: false,
-              loading: false
-            })
-          }
-        }*/
-      } 
+  }
       
   componentWillUnmount() {
     this.removeListener()

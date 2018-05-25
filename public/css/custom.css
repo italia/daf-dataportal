@@ -673,3 +673,11 @@ li.bg-footer:last-child{
 .text-footer-social{
   color: #3f474e !important;
 }
+
+.bg-e7ecef{
+  background-color: #E7ECEF
+}
+
+.b-l-ext{
+  border-left: 1px solid #f0f3f5;
+}

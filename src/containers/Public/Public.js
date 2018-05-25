@@ -22,33 +22,7 @@ class Public extends Component {
 
   constructor(props){
     super(props)
-    this.state = {
-      js_scrolled: false,
-    }
-
-    this.handleScroll = this.handleScroll.bind(this);
   }
-
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
-  };
-  
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-  };
-  
-  handleScroll(event) {
-    if(window.scrollY > 80){
-      this.setState({
-        js_scrolled: true
-      })
-    }
-    else{
-      this.setState({
-        js_scrolled: false
-      })
-    }
-  };
   
 
   render() {
@@ -61,9 +35,11 @@ class Public extends Component {
       p='py-5'
     if(window.location.hash.indexOf('userstory')!==-1)
       p='py-5'
+
+      window.scrollTo(0,0)
     return (
       <div className="app">
-        <Header history={history} scrolled={this.state.js_scrolled}/>
+        <Header history={history} />
         <div data-reactroot className={"app-body pub "+bg}>
           <main className={"w-100 " + p}>
               <Switch>

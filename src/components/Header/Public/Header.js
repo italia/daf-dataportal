@@ -35,11 +35,34 @@ class Header extends Component {
       search: false,
       showMenu: false,
       community: false,
+      js_scrolled: false,
     }
 
+    this.handleScroll = this.handleScroll.bind(this);
     this.toggleDrop = this.toggleDrop.bind(this)
     this.closeMenu = this.closeMenu.bind(this)
   }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  };
+  
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  };
+  
+  handleScroll(event) {
+    if(window.scrollY > 80){
+      this.setState({
+        js_scrolled: true
+      })
+    }
+    else{
+      this.setState({
+        js_scrolled: false
+      })
+    }
+  };
 
   openDrop(event){
     event.preventDefault();
@@ -98,8 +121,8 @@ class Header extends Component {
   }
 
   render(){
-    const { scrolled, loggedUser } = this.props
-    var jsscrolled = scrolled ? 'js-scrolled': ''
+    const { loggedUser } = this.props
+    var jsscrolled = this.state.js_scrolled ? 'js-scrolled': ''
     var active = this.state.open?" active":""
     var show = this.state.open?" show":""
     return(
