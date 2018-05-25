@@ -121,7 +121,7 @@ class Header extends Component {
   }
 
   render(){
-    const { loggedUser } = this.props
+    const { loggedUser, properties } = this.props
     var jsscrolled = this.state.js_scrolled ? 'js-scrolled': ''
     var active = this.state.open?" active":""
     var show = this.state.open?" show":""
@@ -142,18 +142,18 @@ class Header extends Component {
             <div className="col-md col-lg col-sm col-xs col pt-2 h-auto">
               <div className="row mx-0">
                 <Link className="text-white" to={'/'}>
-                  <h2 className="mr-4 mb-0">{/* props.styleProps.headerSiglaTool */}<b>DAF Italia</b></h2>
+                  <h2 className="mr-4 mb-0">{/* props.styleProps.headerSiglaTool */}<b>DAF {properties.headerSiglaTool}</b></h2>
                 </Link>
                 <span className="badge badge-pill mt-2 h-100" style={{backgroundColor: 'rgba(0,0,0,0.2)', height: 'max-content'}}>versione alpha 1.0</span>
               </div>
-              <p className="d-sm-down-none">{/* props.styleProps.headerDescTool */}Data And Analytics Framework Italia</p>
+              <p className="d-sm-down-none">{/* props.styleProps.headerDescTool */}{"Data & Analytics Framework"} <b>{properties.headerDescTool}</b></p>
             </div>
             <div className="col-lg-3 col-md-4 col-sm-4 col h-auto">
               <div className="h-100 row">
                 <p className="d-sm-down-none text-white mr-3">Seguici su</p>
                 {/* <a className="social-button bg-white rounded-circle text-center mx-1 py-1"><i className="fab fa-facebook-f"/></a> */}
-                <a className="d-sm-down-none social-button bg-white rounded-circle text-center text-primary mx-1 py-1" href="https://twitter.com/teamdigitaleIT?lang=it"><i className="fab fa-twitter"/></a>
-                <a className="d-sm-down-none social-button bg-white rounded-circle text-center text-primary mx-1 py-1" href="https://medium.com/team-per-la-trasformazione-digitale"><i className="fab fa-medium-m"/></a>
+                <a className="d-sm-down-none social-button bg-white rounded-circle text-center text-primary mx-1 py-1" href={properties.twitterURL}><i className="fab fa-twitter"/></a>
+                <a className="d-sm-down-none social-button bg-white rounded-circle text-center text-primary mx-1 py-1" href={properties.mediumURL}><i className="fab fa-medium-m"/></a>
                 <div className="row col-12 px-4" style={{height: '56px'}}>
                   <button className={(this.state.search ? "btn-accento":"btn-header")+" h-100 btn"} style={{width: '56px'}} onClick={this.openSearch.bind(this)}><i className="fa fa-search fa-lg" /></button>
                     {loggedUser?
@@ -258,7 +258,9 @@ Header.propTypes = {
 
 function mapStateToProps(state) {
   const { loggedUser, authed } = state.userReducer['obj'] || {}
-  return { loggedUser, authed }
+  const { properties } = state.propertiesReducer['prop'] || {}
+
+  return { loggedUser, authed, properties }
 }
 
 export default connect(mapStateToProps)(Header);

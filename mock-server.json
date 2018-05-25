@@ -38,22 +38,34 @@
     },
     "/dati-gov/v1/settings": {
         "get": {
-            "footerLogoDevITA": "https://developers.italia.it/assets/icons/dt-logo.svg",
-            "forumURL": "https://forum.italia.it/",
-            "mediumURL": "https://medium.com/team-per-la-trasformazione-digitale/",
-            "twitterURL": "https://twitter.com/datigovit",
-            "footerLegal": "https://designers.italia.it/note-legali/",
-            "notizieURL": "https://developers.italia.it/news",
-            "footerNomeEnte": "TEAM PER LA TRASFORMAZIONE DIGITALE",
-            "footerLogoGov": "https://teamdigitale.governo.it/images/loghi/governo.svg",
-            "headerSiglaTool": "/daf",
-            "footerPrivacy": "https://designers.italia.it/privacy-policy/",
-            "footerLogoAGID": "https://www.spid.gov.it/assets/img/agid-logo-bb.svg",
-            "headerDescTool": "Il framework dei dati pubblici del Paese",
             "theme": "1",
             "headerLogo": "https://developers.italia.it/assets/icons/logo-it.png",
+            "headerSiglaTool": "Italia",
+            "headerDescTool" : "Italia",
+            "bodyIllustrazione" :"italiani",
+            "bodyEsplora": "Cerca tra i dataset, i widget e le storie basate su dati opendata della pubblica amministrazione italiana",
+            "twitterURL": "https://twitter.com/datigovit",
+            "mediumURL": "https://medium.com/team-per-la-trasformazione-digitale/",
+            "notizieURL": "team-per-la-trasformazione-digitale",
+            "forumURL": "https://forum.italia.it/",
             "organization": "daf",
-            "url": "team-per-la-trasformazione-digitale"
+            "domain": "dataportal"
+        }
+    },
+    "/dati-gov/v1/settings_torino": {
+        "get": {
+                "theme" : "2",
+                "headerLogo" : "https://i.imgur.com/wapFEUQ.png",
+                "headerSiglaTool" : "Torino",
+                "headerDescTool" : "Comune di Torino",
+                "bodyIllustrazione" :"torinesi",
+                "bodyEsplora": "Cerca tra i dataset, i widget e le storie basate su dati opendata del comune di Torino e dei territori limitrofi",
+                "twitterURL" : "https://twitter.com/twitorino",
+                "mediumURL" : "https://medium.com",
+                "notizieURL" : "team-per-la-trasformazione-digitale",
+                "forumURL" : "http://www.comune.torino.it/discus/",
+                "organization" : "comune_torino",
+                "domain" : "torino"
         }
     },
     "/dati-gov/v1/datapplications": {
