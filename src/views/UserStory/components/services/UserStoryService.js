@@ -1,9 +1,10 @@
 import { serviceurl } from '../../../../config/serviceurl.js'
+import { isPublic } from '../../../../utility'
 
 export default class UserStoryService {
     
 
-    baseUrl = serviceurl.apiURLDatiGov  + "/user-stories";
+    baseUrl = serviceurl.apiURLDatiGov  + (isPublic()?'/public':'') +"/user-stories";
     baseUrlSave = serviceurl.apiURLDatiGov  + "/save/user-stories";
     baseUrlRemove = serviceurl.apiURLDatiGov  + "/delete/user-stories";
     constructor() {

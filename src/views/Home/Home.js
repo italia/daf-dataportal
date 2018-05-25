@@ -183,6 +183,13 @@ class Home extends Component {
         const { listDataset, listDashboards, listStories, listIframes, counter, items } = this.state
         //const { listDashboards, listStories, listDataset, listIframes, items, counter, isLoading } = this.state
         //var counter = JSON.parse(results[results.length-4].source)
+        var totData = 0
+        if(counter){
+            if(counter.catalog_test)
+                totData += parseInt(counter.catalog_test)
+            if(counter.ext_opendata)
+                totData += parseInt(counter.ext_opendata)
+        }
         return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
             <div>
                 <div className="top-home w-100 bg-grey-n d-md-down-none">
@@ -195,7 +202,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-table bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{counter.catalog_test?counter.catalog_test:'-'}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{(totData>=0)?totData:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dataset</div>
                                 </div>
                             </div>

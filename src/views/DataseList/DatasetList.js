@@ -97,7 +97,7 @@ class DatasetList extends Component {
             'order': this.state.order_filter
         }
 
-        dispatch(search(query, filter))
+        dispatch(search(query, filter, isPublic()))
         .catch((error) => {
         this.setState({
           isFetching: false
@@ -548,7 +548,7 @@ class DatasetList extends Component {
                                                                 <span className="badge badge-info my-1">{decodeTheme(dataset.dcatapit.theme)}</span>
                                                             </div>
                                                             <div className="col-md-2 py-1 px-3" >
-                                                                <div title={dataset.dcatapit.owner_org} dangerouslySetInnerHTML={{__html: dataset.dcatapit.owner_org}}></div>
+                                                                <div title={dataset.dcatapit.owner_org} dangerouslySetInnerHTML={{__html: truncateDatasetName(dataset.dcatapit.owner_org,20)}}></div>
                                                             </div>
                                                             <div className="col-md-1 py-1 px-2">
                                                                 {!dataset.dcatapit.privatex && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
@@ -909,7 +909,7 @@ class DatasetList extends Component {
                             }
                             </InfiniteScroll>
                                 :
-                                <i>Non sono stati trovati risultati.</i>
+                                <h3 className="container px-5 mt-3"><i>Non sono stati trovati risultati.</i></h3>
                             }
                         </div>
                         </div>

@@ -156,7 +156,7 @@ class Header extends Component {
                 <a className="d-sm-down-none social-button bg-white rounded-circle text-center text-primary mx-1 py-1" href={properties.mediumURL}><i className="fab fa-medium-m"/></a>
                 <div className="row col-12 px-4" style={{height: '56px'}}>
                   <button className={(this.state.search ? "btn-accento":"btn-header")+" h-100 btn"} style={{width: '56px'}} onClick={this.openSearch.bind(this)}><i className="fa fa-search fa-lg" /></button>
-                    {loggedUser?
+                    {localStorage.getItem('token')?
                     <div className={"dropdown" + show }>
                     <button className="h-100 btn btn-accento px-4" style={{marginLeft: '1px'}} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.openDrop.bind(this)}><h6 className="m-0 p-0 d-lg-down-none float-left">Area Pubblica</h6><i className="float-left fa fa-globe fa-lg d-xl-none"/> <i className="fa fa-sort-down ml-2 float-right"/></button>
                     <div className={"dropdown-menu dropdown-menu-right mt-0" +show} aria-labelledby="dropdownMenuButton">

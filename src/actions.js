@@ -629,8 +629,7 @@ function receiveResetError(json) {
 
 /******************************** DATASET ************************************** */
 export function fetchProperties(org) {
-  /* var url = serviceurl.apiURLDatiGov + "/settings?domain="+ org */
-  var url = serviceurl.apiURLDatiGov + '/settings'
+  var url = serviceurl.apiURLDatiGov + "/settings?domain="+ org
   return dispatch => {
     return fetch(url, {
       method: 'GET',
@@ -801,7 +800,7 @@ export function addDataset(inputJson, token, fileType) {
 
 function fetchOpendataResources(datasetname) {
     var token = '';
-    var url = 'http://localhost:3001/dati-gov/v1/opendata_resource'
+    var url = serviceurl.apiURLDatiGov + '/public/opendata_resource/' + datasetname
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
         token = localStorage.getItem('token')
@@ -812,7 +811,7 @@ function fetchOpendataResources(datasetname) {
          headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            //'Authorization': 'Bearer ' + token
           }
         })
           .then(response => response.json())
@@ -825,7 +824,7 @@ function fetchOpendataResources(datasetname) {
   
   function fetchMetadataAndResources(datasetname) {
     var token = '';
-    var url = 'http://localhost:3001/dati-gov/v1/searchMetadata'
+    var url = serviceurl.apiURLDatiGov + '/public/opendata/' + datasetname    
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
         token = localStorage.getItem('token')
@@ -837,7 +836,7 @@ function fetchOpendataResources(datasetname) {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            //'Authorization': 'Bearer ' + token
           }
         })
           .then(response => response.json())
@@ -902,8 +901,8 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
       }
   }
 
-  export function search(query, filter) {
-    var url = serviceurl.apiURLDatiGov + '/elasticsearch/search'
+  export function search(query, filter, isPublic) {
+    var url = serviceurl.apiURLDatiGov + (isPublic?'/public':'')+'/elasticsearch/search'
     return dispatch => {
       dispatch(requestSearch())
       return fetch(url, {

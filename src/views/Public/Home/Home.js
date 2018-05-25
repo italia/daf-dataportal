@@ -102,7 +102,7 @@ class Home extends Component{
             <div className="row mx-auto text-muted">
                 <i className="fa fa-font fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Storie</h2>
             </div>
-            {isLoading? <h4 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h4>:
+            {isLoading? <h4 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h4>:
             <div className="row mx-auto m-0">
                 { 
                     this.state.listStories.map((story, index) => {
@@ -161,7 +161,7 @@ class Home extends Component{
                 }
             </div>}
             <div className="w-100 text-center">
-                <Link to={'/private/user_story/list'}>
+                <Link to={'/userstory/list'}>
                     <h4 className="text-primary"><u>Vedi tutte</u></h4>
                 </Link>
             </div>
@@ -171,7 +171,7 @@ class Home extends Component{
           <div className="row m-0 text-muted">
               <i className="fa fa-table fa-lg m-4" style={{lineHeight:'1'}} /><h2 className="mt-3 mb-4">Dataset</h2>
           </div>
-          {isLoading ? <h4 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h4>:
+          {isLoading ? <h4 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h4>:
           <div className="row mx-auto m-0">
               {
                   listDataset&&Array.isArray(listDataset)&&listDataset.map((element, index) => {
@@ -188,7 +188,7 @@ class Home extends Component{
               }
           </div>}
           <div className="w-100 text-center">
-              <Link to={'/private/dataset'}>
+              <Link to={'/search?q='}>
                   <h4 className="text-primary"><u>Vedi tutti</u></h4>
               </Link>
           </div>

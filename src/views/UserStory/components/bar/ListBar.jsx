@@ -207,7 +207,7 @@ class ViewBar extends React.Component {
                   <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" onChange={this.props.onChange} placeholder="Filtra la lista ..."/>
               </div>
             </div>
-            {(isPublic() && (isEditor() || isAdmin())) &&
+            {(!isPublic() && (isEditor() || isAdmin())) &&
             <div className="col-md-2">
               <button type="button" className="btn btn-link float-right" title="Aggiungi Dashboard" onClick={this.openModal}>
                 <i className="fa fa-plus-circle fa-lg m-t-2"></i>

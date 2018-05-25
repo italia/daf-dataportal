@@ -11,7 +11,7 @@ class NotizieList extends Component {
     }
 
     componentDidMount(){
-        let url = serviceurl.apiURLDatiGov + '/datapplications'
+        let url = serviceurl.apiURLDatiGov + '/public/data-application'
         fetch(url)
             .then(response => response.json())
             .then(json => {

@@ -88,7 +88,7 @@ class DatasetDetail extends Component {
 
         if (path.indexOf('/') != -1) {
             var arr = path.split('/')
-            var nome = arr[2]
+            var nome = arr[arr.length-1]
             console.log(nome)
             this.setState({name:nome})
             if (this.props.location.search == '?type=open') {

@@ -59,7 +59,7 @@ class SearchBar extends Component{
 
         newFilter.text = this.refs.auto.value.toLowerCase();
         this.props.history.push(isPublic()?'/search?q='+this.refs.auto.value:'/private/search?q='+this.refs.auto.value);
-        dispatch(search(this.refs.auto.value, newFilter))
+        dispatch(search(this.refs.auto.value, newFilter, isPublic()))
     }
 
     render(){
