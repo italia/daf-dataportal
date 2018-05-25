@@ -2,14 +2,19 @@
     "/catalog-manager/v1/token": {
         "get": "eyJhbGciOiJIUzI1NiJ9.eyIkaW50X3Blcm1zIjpbXSwic3ViIjoib3JnLnBhYzRqLmxkYXAucHJvZmlsZS5MZGFwUHJvZmlsZSNwcm92YWFsbWEiLCIkaW50X3JvbGVzIjpbXX0.Oq93mHzGbCGKczWQ1OqGQk0FbohPyDNw_jeeFgqv7Pw"
     },
-    "/catalog-manager/v1/ipa/user/test": {
+    "/catalog-manager/v1/ipa/userbymail/test": {
         "get": {
-                "sn": "test_sn",
-                "givenname": "test_gn",
-                "mail": "test@test.it",
-                "uid": "test_uid",
-                "userpassword": null
-            }
+            "sn": "test_sn",
+            "givenname": "test_gn",
+            "mail": "test@test.it",
+            "uid": "test_uid",
+            "userpassword": null
+        }
+    },
+    "/sso-manager/v1/secured/test": {
+        "get": {
+            "ok": "true"
+        }
     },
     "/sso-manager/v1/secured/retriveCookie/superset": {
         "get": {
@@ -21,70 +26,152 @@
             "result": "session=sessionmetabase"
         }
     },
-
-    "/sso-manager/v1/secured/retriveCookie/jupyter":{
+    "/sso-manager/v1/secured/retriveCookie/jupyter": {
         "get": {
             "result": "session=sessionjupyter"
         }
     },
-    "/sso-manager/v1/secured/retriveCookie/grafana":{
+    "/sso-manager/v1/secured/retriveCookie/grafana": {
         "get": {
             "result": "session=sessiongrafana"
         }
-    }, 
+    },
+    "/dati-gov/v1/settings": {
+        "get": {
+            "theme": "1",
+            "headerLogo": "https://developers.italia.it/assets/icons/logo-it.png",
+            "headerSiglaTool": "Italia",
+            "headerDescTool" : "Italia",
+            "bodyIllustrazione" :"italiani",
+            "bodyEsplora": "Cerca tra i dataset, i widget e le storie basate su dati opendata della pubblica amministrazione italiana",
+            "twitterURL": "https://twitter.com/datigovit",
+            "mediumURL": "https://medium.com/team-per-la-trasformazione-digitale/",
+            "notizieURL": "team-per-la-trasformazione-digitale",
+            "forumURL": "https://forum.italia.it/",
+            "organization": "daf",
+            "domain": "dataportal"
+        }
+    },
+    "/dati-gov/v1/settings_torino": {
+        "get": {
+                "theme" : "2",
+                "headerLogo" : "https://i.imgur.com/wapFEUQ.png",
+                "headerSiglaTool" : "Torino",
+                "headerDescTool" : "Comune di Torino",
+                "bodyIllustrazione" :"torinesi",
+                "bodyEsplora": "Cerca tra i dataset, i widget e le storie basate su dati opendata del comune di Torino e dei territori limitrofi",
+                "twitterURL" : "https://twitter.com/twitorino",
+                "mediumURL" : "https://medium.com",
+                "notizieURL" : "team-per-la-trasformazione-digitale",
+                "forumURL" : "http://www.comune.torino.it/discus/",
+                "organization" : "comune_torino",
+                "domain" : "torino"
+        }
+    },
+    "/dati-gov/v1/datapplications": {
+        "get": [
+            {
+                "title": "Data Application 1",
+                "url": "http://www.google.com",
+                "creator": "raippl",
+                "description": "descrizione deata application 1"
+            },
+            {
+                "title": "Data Application 2",
+                "url": "http://www.google.com",
+                "creator": "raippl",
+                "description": "descrizione deata application 2"
+            },
+            {
+                "title": "Data Application 3",
+                "url": "http://www.google.com",
+                "creator": "raippl",
+                "description": "descrizione deata application 3"
+            }
+        ]
+    },
+    "/dati-gov/v1/elasticsearch/search": {
+        "post": [
+            {
+                "type": "catalog_test",
+                "source": "{\"dcatapit\":{\"name\":\"legal_status\",\"modified\":\"11/05/2018\",\"privatex\":true,\"notes\":\"Vocabolario controllato degli stati legali di un organizzazione preso dalla repository github https://github.com/italia/daf-ontologie-vocabolari-controllati/blob/master/VocabolariControllati/classifications-for-organizations/legal-status/legal-status.csv\",\"title\":\"legal status\",\"owner_org\":\"daf_data\",\"theme\":\"JUST\"},\"dataschema\":{\"avro\":{\"fields\":[{\"name\":\"codice_1_livello\"},{\"name\":\"label_ITA_1_livello\"},{\"name\":\"codice_2__livello\"},{\"name\":\"label_ITA_2_livello\"},{\"name\":\"codice_3_livello\"},{\"name\":\"label_ITA_3_livello\"}]}}}",
+                "match": "{\"dcatapit.title\": \"<span style='background-color:#0BD9D3'>legal</span> status,\"dcatapit.notes\": \"-for-organizations/<span style='background-color:#0BD9D3'>legal</span>-status/<span style='background-color:#0BD9D3'>legal</span>-status.csv}"
+            },
+            {
+                "type": "ext_opendata",
+                "source": "{\"name\": \"01-psc-piano-strutturale-comunale-kml\",\"title\": \"01 - PSC - Piano Strutturale Comunale - Kml\",\"notes\": \"Sintesi del Piano Strutturale Comunale\",\"theme\": \"OP_DATPRO\",\"organization\": {\"name\": \"emilia-romagna\"},\"modified\": \"2017-02-03T15:51:29.327285\"}",
+                "match": "{}"
+            },
+            {
+                "type": "status",
+                "source": "{\"0\":\"1\",\"1\":\"1\", \"2\":\"0\"}",
+                "match": null
+            },
+            {
+                "type": "organization",
+                "source": "{\"daf_data\":\"1\"}",
+                "match": null
+            },
+            {
+                "type": "category",
+                "source": "{\"JUST\":\"1\"}",
+                "match": null
+            }
+        ]
+    },
     "/dati-gov/v1/search": {
         "get": [
             {
-                "type" : 0,
-                "_id" : "5a3bc29d104d370001c677a7",
-                "dataschema" : {
-                    "avro" : {
-                        "fields" : [ 
+                "type": 0,
+                "_id": "5a3bc29d104d370001c677a7",
+                "dataschema": {
+                    "avro": {
+                        "fields": [
                             {
-                                "name" : "agency_url"
-                            }, 
+                                "name": "agency_url"
+                            },
                             {
-                                "name" : "agency_name"
-                            }, 
+                                "name": "agency_name"
+                            },
                             {
-                                "name" : "agency_phone"
-                            }, 
+                                "name": "agency_phone"
+                            },
                             {
-                                "name" : "num"
-                            }, 
+                                "name": "num"
+                            },
                             {
-                                "name" : "agency_id"
-                            }, 
+                                "name": "agency_id"
+                            },
                             {
-                                "name" : "agency_timezone"
-                            }, 
+                                "name": "agency_timezone"
+                            },
                             {
-                                "name" : "agency_lang"
+                                "name": "agency_lang"
                             }
                         ]
                     }
                 },
-                "operational" : {
-                    "group_own" : "ale.ercolani",
+                "operational": {
+                    "group_own": "ale.ercolani",
                     "theme": "TRAN"
                 },
-                "dcatapit" : {
-                    "name" : "agency_infer_test",
-                    "notes" : "agency_infer_test",
-                    "title" : "agency_infer_test"
+                "dcatapit": {
+                    "name": "agency_infer_test",
+                    "notes": "agency_infer_test",
+                    "title": "agency_infer_test"
                 }
             },
             {
-                "type" : 1,
-                "id" : 2,
+                "type": 1,
+                "id": 2,
                 "status": 1,
                 "title": "Dashboard 4",
-                "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+                "layout": "{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
                 "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 2</p>\\n\"},\"type\":\"TextWidget\"}}"
             },
             {
-                "type" : 2,
-                "id":2,
+                "type": 2,
+                "id": 2,
                 "title": "Storia 1",
                 "published": false,
                 "subtitle": "Storia di prova",
@@ -102,93 +189,93 @@
                 "footer": "Questo è il footer"
             },
             {
-                "type" : 0,
-                "_id" : "5a3bc425104d370001c677aa",
-                "dataschema" : {
-                    "avro" : {
-                        "fields" : [ 
+                "type": 0,
+                "_id": "5a3bc425104d370001c677aa",
+                "dataschema": {
+                    "avro": {
+                        "fields": [
                             {
-                                "name" : "agency_url"
-                            }, 
+                                "name": "agency_url"
+                            },
                             {
-                                "name" : "agency_name"
-                            }, 
+                                "name": "agency_name"
+                            },
                             {
-                                "name" : "agency_phone"
-                            }, 
+                                "name": "agency_phone"
+                            },
                             {
-                                "name" : "num"
-                            }, 
+                                "name": "num"
+                            },
                             {
-                                "name" : "agency_id"
-                            }, 
+                                "name": "agency_id"
+                            },
                             {
-                                "name" : "agency_timezone"
-                            }, 
+                                "name": "agency_timezone"
+                            },
                             {
-                                "name" : "agency_lang"
+                                "name": "agency_lang"
                             }
                         ]
                     }
                 },
-                "operational" : {
-                    "group_own" : "alessandro",
+                "operational": {
+                    "group_own": "alessandro",
                     "theme": "AGRI"
                 },
-                "dcatapit" : {
-                    "name" : "agency_infer_ale",
-                    "notes" : "agency_infer_ale",
-                    "title" : "agency_infer_ale"
+                "dcatapit": {
+                    "name": "agency_infer_ale",
+                    "notes": "agency_infer_ale",
+                    "title": "agency_infer_ale"
                 }
             },
             {
-                "type" : 0,
-                "_id" : "5a4f681e47ac100001f15cc8",
-                "dataschema" : {
-                    "avro" : {
-                        "fields" : [ 
+                "type": 0,
+                "_id": "5a4f681e47ac100001f15cc8",
+                "dataschema": {
+                    "avro": {
+                        "fields": [
                             {
-                                "name" : "agency_id"
-                            }, 
+                                "name": "agency_id"
+                            },
                             {
-                                "name" : "agency_name"
-                            }, 
+                                "name": "agency_name"
+                            },
                             {
-                                "name" : "agency_url"
-                            }, 
+                                "name": "agency_url"
+                            },
                             {
-                                "name" : "agency_timezone"
-                            }, 
+                                "name": "agency_timezone"
+                            },
                             {
-                                "name" : "agency_lang"
-                            }, 
+                                "name": "agency_lang"
+                            },
                             {
-                                "name" : "agency_phone"
+                                "name": "agency_phone"
                             }
                         ]
                     }
                 },
-                "operational" : {
-                    "group_own" : "francescoz",
+                "operational": {
+                    "group_own": "francescoz",
                     "theme": "AGRI"
                 },
-                "dcatapit" : {
-                    "name" : "agency_kylo",
-                    "notes" : "agency_kylo",
-                    "title" : "agency_kylo"
+                "dcatapit": {
+                    "name": "agency_kylo",
+                    "notes": "agency_kylo",
+                    "title": "agency_kylo"
                 }
             },
             {
-                "type" : 1,
-                "id" : 2,
+                "type": 1,
+                "id": 2,
                 "status": 1,
                 "title": "Dashboard 3",
-                "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+                "layout": "{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
                 "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 2</p>\\n\"},\"type\":\"TextWidget\"}}"
             },
             {
-                "type" : 2,
-                "id":2,
+                "type": 2,
+                "id": 2,
                 "title": "Storia 2",
                 "published": false,
                 "subtitle": "Storia di prova",
@@ -206,50 +293,49 @@
                 "footer": "Questo è il footer"
             },
             {
-                "type" : 0,
-                "_id" : "5a4fe0a347ac100001f15cdd",
-                "dataschema" : {
-                    "avro" : {
-                        "fields" : [ 
+                "type": 0,
+                "_id": "5a4fe0a347ac100001f15cdd",
+                "dataschema": {
+                    "avro": {
+                        "fields": [
                             {
-                                "name" : "agency_id"
-                            }, 
+                                "name": "agency_id"
+                            },
                             {
-                                "name" : "agency_name"
-                            }, 
+                                "name": "agency_name"
+                            },
                             {
-                                "name" : "agency_url"
-                            }, 
+                                "name": "agency_url"
+                            },
                             {
-                                "name" : "agency_timezone"
-                            }, 
+                                "name": "agency_timezone"
+                            },
                             {
-                                "name" : "agency_lang"
-                            }, 
+                                "name": "agency_lang"
+                            },
                             {
-                                "name" : "agency_phone"
+                                "name": "agency_phone"
                             }
                         ]
                     }
                 },
-                "operational" : {
-                    "group_own" : "alessandro"
+                "operational": {
+                    "group_own": "alessandro"
                 },
-                "dcatapit" : {
-                    "name" : "agency_semicolon",
-                    "notes" : "agency_semicolon",
-                    "title" : "agency_semicolon"
+                "dcatapit": {
+                    "name": "agency_semicolon",
+                    "notes": "agency_semicolon",
+                    "title": "agency_semicolon"
                 }
             },
             {
-                "type" : 1,
-                "id" : 2,
+                "type": 1,
+                "id": 2,
                 "status": 1,
                 "title": "Dashboard 2",
-                "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+                "layout": "{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
                 "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 2</p>\\n\"},\"type\":\"TextWidget\"}}"
             }
-
         ]
     },
     "/dati-gov/v1/dashboard/iframes": {
@@ -440,41 +526,13 @@
                 "title": "mapbox"
             }
         ]
-        
-    }, 
+    },
     "/catalog-manager/v1/ckan/organizations": {
         "get": []
     },
     "/catalog-manager/v1/ckan/userOrganizations/test_uid": {
         "get": [
             {
-              "name": "test-org",
-              "image_url": "http://dati.trentino.it/images/logo.png",
-              "email": null,
-              "state": "active",
-              "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
-              "users": null,
-              "is_organization": true,
-              "id": "232cad97-ecf2-447d-9656-63899023887t",
-              "title": "APT Altopiano di Pinè e Valle di Cembra it",
-              "type": null,
-              "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
-              "approval_status": "approved",
-              "created": "2017-09-11T14:25:30.958736"
-            }
-          ]
-    },
-    "/catalog-manager/v1/catalog-ds/add": {
-        "post": {
-            "msg":"success"
-        }
-    }, 
-    "/catalog-manager/v1/ckan/searchDataset": {
-        "get": [
-            {
-              "name": "test1",
-              "notes": "dd",
-              "organization": {
                 "name": "test-org",
                 "image_url": "http://dati.trentino.it/images/logo.png",
                 "email": null,
@@ -488,349 +546,551 @@
                 "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
                 "approval_status": "approved",
                 "created": "2017-09-11T14:25:30.958736"
-              },
-              "author": null,
-              "license_id": "other-nc",
-              "relationships_as_object": [],
-              "holder_identifier": null,
-              "identifier": null,
-              "license_title": "Other (Non-Commercial)",
-              "tags": [
-                {
-                  "name": "ECON",
-                  "state": "active",
-                  "vocabulary_id": null,
-                  "display_name": "ECON",
-                  "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
-                }
-              ],
-              "groups": [],
-              "modified": null,
-              "alternate_identifier": null,
-              "relationships_as_subject": [],
-              "holder_name": null,
-              "publisher_identifier": null,
-              "resources": [],
-              "frequency": null,
-              "title": "colonnine_20170830074512_2",
-              "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
-              "theme": null,
-              "publisher_name": null
-            },
-            {
-              "name": "test2",
-              "notes": "aaa",
-              "organization": {
-                "name": "test-org",
-                "image_url": "http://dati.trentino.it/images/logo.png",
-                "email": null,
-                "state": "active",
-                "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
-                "users": null,
-                "is_organization": true,
-                "id": "232cad97-ecf2-447d-9656-63899023887t",
-                "title": "APT Altopiano di Pinè e Valle di Cembra it",
-                "type": null,
-                "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
-                "approval_status": "approved",
-                "created": "2017-09-11T14:25:30.958736"
-              },
-              "author": null,
-              "license_id": "other-nc",
-              "relationships_as_object": [],
-              "holder_identifier": null,
-              "identifier": null,
-              "license_title": "Other (Non-Commercial)",
-              "tags": [
-                {
-                  "name": "ECON",
-                  "state": "active",
-                  "vocabulary_id": null,
-                  "display_name": "ECON",
-                  "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
-                }
-              ],
-              "groups": [],
-              "modified": null,
-              "alternate_identifier": null,
-              "relationships_as_subject": [],
-              "holder_name": null,
-              "publisher_identifier": null,
-              "resources": [],
-              "frequency": null,
-              "title": "colonnine_20170830074512",
-              "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
-              "theme": null,
-              "publisher_name": null
-            },
-            {
-              "name": "test3",
-              "notes": "qwerewr",
-              "organization": {
-                "name": "test-org",
-                "image_url": "http://dati.trentino.it/images/logo.png",
-                "email": null,
-                "state": "active",
-                "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
-                "users": null,
-                "is_organization": true,
-                "id": "232cad97-ecf2-447d-9656-63899023887t",
-                "title": "APT Altopiano di Pinè e Valle di Cembra it",
-                "type": null,
-                "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
-                "approval_status": "approved",
-                "created": "2017-09-11T14:25:30.958736"
-              },
-              "author": null,
-              "license_id": "other-nc",
-              "relationships_as_object": [],
-              "holder_identifier": null,
-              "identifier": null,
-              "license_title": "Other (Non-Commercial)",
-              "tags": [
-                {
-                  "name": "ECON",
-                  "state": "active",
-                  "vocabulary_id": null,
-                  "display_name": "ECON",
-                  "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
-                }
-              ],
-              "groups": [],
-              "modified": null,
-              "alternate_identifier": null,
-              "relationships_as_subject": [],
-              "holder_name": null,
-              "publisher_identifier": null,
-              "resources": [],
-              "frequency": null,
-              "title": "bike_sharing3",
-              "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
-              "theme": null,
-              "publisher_name": null
             }
         ]
     },
-   
-    
+    "/catalog-manager/v1/catalog-ds/add": {
+        "post": {
+            "msg": "success"
+        }
+    },
+    "/dati-gov/v1/public/elasticsearch/home": {
+        "get": [
+            {
+                "type": "ext_opendata",
+                "source": "{\"organization\":{\"name\":\"miur\"},\"name\":\"2017-collegi-universitari\",\"modified\":\"2018-09-02\",\"notes\":\"Dati disponibili su Collegi Universitari Statali e Legalmente Riconosciuti, anno accademico 2016-2017 e anno solare 2017\",\"title\":\"2017 Collegi Universitari\",\"theme\":\"no_category\"}",
+                "match": "{}"
+            },
+            {
+                "type": "catalog_test",
+                "source": "{\"dcatapit\":{\"author\":null,\"name\":\"umbria_o_az_sanitarie_ospedaliere_strut_ricovero_pg_tr_0\",\"modified\":\"22/03/2018\",\"privatex\":false,\"title\":\"Aziende sanitarie, aziende ospedaliere, strutture di ricovero - province di Perugia e Terni - Anno 2013 - Dati anagrafici strutture di ricovero\",\"owner_org\":\"default_org\",\"theme\":\"HEAL\"}}",
+                "match": "{}"
+            },
+            {
+                "type": "catalog_test",
+                "source": "{\"dcatapit\":{\"author\":null,\"name\":\"toscana_o_bacino_arno_stato_ecologico_e_chimico_delle_acque_superficiali_anni_20_1\",\"modified\":\"22/03/2018\",\"privatex\":false,\"title\":\"Bacino Arno - Stato ecologico e chimico delle acque superficiali - anni 2010-2016 - Bacino Arno - Stato ecologico e chimico delle acque superficiali - anni 2010-2016\",\"owner_org\":\"default_org\",\"theme\":\"OP_DATPRO\"}}",
+                "match": "{}"
+            },
+            {
+                "type": "stories",
+                "source": "{\"subtitle\":\"<p>I teatri della città di Torino</p>\",\"timestamp\":\"2018-05-16T19:59:48.427Z[GMT]\",\"published\":2,\"id\":\"f78c2c58-bb1f-4484-bd3b-37bcf609d493\",\"widgets\":\"{\\\"superset_697\\\":{\\\"title\\\":\\\"Torino a teatro\\\",\\\"image\\\":\\\"noimage\\\",\\\"table\\\":\\\"EDUC__luoghi.comune_torino_o_teatri_di_torino\\\",\\\"props\\\":{\\\"url\\\":\\\"https://bi.daf.teamdigitale.it//superset/explore/table/4396/?form_data=%7B%22mapbox_color%22%3A%20%22rgb%280%2C%20122%2C%20135%29%22%2C%20%22pandas_aggfunc%22%3A%20%22sum%22%2C%20%22viewport_zoom%22%3A%2011%2C%20%22all_columns_x%22%3A%20%22longitude%22%2C%20%22granularity_sqla%22%3A%20null%2C%20%22having%22%3A%20%22%22%2C%20%22mapbox_label%22%3A%20%5B%22denominaz%22%5D%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22row_limit%22%3A%20null%2C%20%22point_radius%22%3A%20%22Auto%22%2C%20%22mapbox_style%22%3A%20%22mapbox%3A//styles/mapbox/streets-v9%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viewport_longitude%22%3A%207.6868%2C%20%22all_columns_y%22%3A%20%22latitude%22%2C%20%22filters%22%3A%20%5B%5D%2C%20%22where%22%3A%20%22%22%2C%20%22render_while_dragging%22%3A%20true%2C%20%22since%22%3A%20%227%20days%20ago%22%2C%20%22viewport_latitude%22%3A%2045.0704%2C%20%22global_opacity%22%3A%201%2C%20%22viz_type%22%3A%20%22mapbox%22%2C%20%22datasource%22%3A%20%224396__table%22%2C%20%22time_grain_sqla%22%3A%20null%2C%20%22point_radius_unit%22%3A%20%22Pixels%22%2C%20%22slice_id%22%3A%20697%2C%20%22clustering_radius%22%3A%20%2220%22%7D&standalone=true\\\",\\\"identifier\\\":\\\"superset_697\\\",\\\"origin\\\":\\\"superset\\\",\\\"wid_key\\\":\\\"superset_697\\\"}}}\",\"layout\":\"{\\\"rows\\\":[{\\\"columns\\\":[{\\\"className\\\":\\\"col-lg-12 col-md-12 col-sm-12 col-xs-12\\\",\\\"widgets\\\":[{\\\"key\\\":\\\"superset_697\\\"}]}]}]}\",\"title\":\"Torino a teatro\",\"org\":\"comune_torino\",\"user\":\"d_mc\",\"pvt\":\"0\"}",
+                "match": "{}"
+            },
+            {
+                "type": "stories",
+                "source": "{\"subtitle\":\"<p>I cinema della città di Torino</p>\",\"timestamp\":\"2018-05-16T19:59:48.427Z[GMT]\",\"published\":2,\"id\":\"f78c2c58-bb1f-4484-bd3b-37bcf609d493\",\"widgets\":\"{\\\"superset_697\\\":{\\\"title\\\":\\\"Torino in Cinema\\\",\\\"image\\\":\\\"noimage\\\",\\\"table\\\":\\\"EDUC__luoghi.comune_torino_o_teatri_di_torino\\\",\\\"props\\\":{\\\"url\\\":\\\"https://bi.daf.teamdigitale.it//superset/explore/table/4396/?form_data=%7B%22mapbox_color%22%3A%20%22rgb%280%2C%20122%2C%20135%29%22%2C%20%22pandas_aggfunc%22%3A%20%22sum%22%2C%20%22viewport_zoom%22%3A%2011%2C%20%22all_columns_x%22%3A%20%22longitude%22%2C%20%22granularity_sqla%22%3A%20null%2C%20%22having%22%3A%20%22%22%2C%20%22mapbox_label%22%3A%20%5B%22denominaz%22%5D%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22row_limit%22%3A%20null%2C%20%22point_radius%22%3A%20%22Auto%22%2C%20%22mapbox_style%22%3A%20%22mapbox%3A//styles/mapbox/streets-v9%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viewport_longitude%22%3A%207.6868%2C%20%22all_columns_y%22%3A%20%22latitude%22%2C%20%22filters%22%3A%20%5B%5D%2C%20%22where%22%3A%20%22%22%2C%20%22render_while_dragging%22%3A%20true%2C%20%22since%22%3A%20%227%20days%20ago%22%2C%20%22viewport_latitude%22%3A%2045.0704%2C%20%22global_opacity%22%3A%201%2C%20%22viz_type%22%3A%20%22mapbox%22%2C%20%22datasource%22%3A%20%224396__table%22%2C%20%22time_grain_sqla%22%3A%20null%2C%20%22point_radius_unit%22%3A%20%22Pixels%22%2C%20%22slice_id%22%3A%20697%2C%20%22clustering_radius%22%3A%20%2220%22%7D&standalone=true\\\",\\\"identifier\\\":\\\"superset_697\\\",\\\"origin\\\":\\\"superset\\\",\\\"wid_key\\\":\\\"superset_697\\\"}}}\",\"layout\":\"{\\\"rows\\\":[{\\\"columns\\\":[{\\\"className\\\":\\\"col-lg-12 col-md-12 col-sm-12 col-xs-12\\\",\\\"widgets\\\":[{\\\"key\\\":\\\"superset_697\\\"}]}]}]}\",\"title\":\"Torino a teatro\",\"org\":\"comune_torino\",\"user\":\"d_mc\",\"pvt\":\"0\"}",
+                "match": "{}"
+            },
+            {
+                "type": "stories",
+                "source": "{\"subtitle\":\"<p>Le palestre della città di Torino</p>\",\"timestamp\":\"2018-05-16T19:59:48.427Z[GMT]\",\"published\":2,\"id\":\"f78c2c58-bb1f-4484-bd3b-37bcf609d493\",\"widgets\":\"{\\\"superset_697\\\":{\\\"title\\\":\\\"Torino\\\",\\\"image\\\":\\\"noimage\\\",\\\"table\\\":\\\"EDUC__luoghi.comune_torino_o_teatri_di_torino\\\",\\\"props\\\":{\\\"url\\\":\\\"https://bi.daf.teamdigitale.it//superset/explore/table/4396/?form_data=%7B%22mapbox_color%22%3A%20%22rgb%280%2C%20122%2C%20135%29%22%2C%20%22pandas_aggfunc%22%3A%20%22sum%22%2C%20%22viewport_zoom%22%3A%2011%2C%20%22all_columns_x%22%3A%20%22longitude%22%2C%20%22granularity_sqla%22%3A%20null%2C%20%22having%22%3A%20%22%22%2C%20%22mapbox_label%22%3A%20%5B%22denominaz%22%5D%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22row_limit%22%3A%20null%2C%20%22point_radius%22%3A%20%22Auto%22%2C%20%22mapbox_style%22%3A%20%22mapbox%3A//styles/mapbox/streets-v9%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viewport_longitude%22%3A%207.6868%2C%20%22all_columns_y%22%3A%20%22latitude%22%2C%20%22filters%22%3A%20%5B%5D%2C%20%22where%22%3A%20%22%22%2C%20%22render_while_dragging%22%3A%20true%2C%20%22since%22%3A%20%227%20days%20ago%22%2C%20%22viewport_latitude%22%3A%2045.0704%2C%20%22global_opacity%22%3A%201%2C%20%22viz_type%22%3A%20%22mapbox%22%2C%20%22datasource%22%3A%20%224396__table%22%2C%20%22time_grain_sqla%22%3A%20null%2C%20%22point_radius_unit%22%3A%20%22Pixels%22%2C%20%22slice_id%22%3A%20697%2C%20%22clustering_radius%22%3A%20%2220%22%7D&standalone=true\\\",\\\"identifier\\\":\\\"superset_697\\\",\\\"origin\\\":\\\"superset\\\",\\\"wid_key\\\":\\\"superset_697\\\"}}}\",\"layout\":\"{\\\"rows\\\":[{\\\"columns\\\":[{\\\"className\\\":\\\"col-lg-12 col-md-12 col-sm-12 col-xs-12\\\",\\\"widgets\\\":[{\\\"key\\\":\\\"superset_697\\\"}]}]}]}\",\"title\":\"Torino a teatro\",\"org\":\"comune_torino\",\"user\":\"d_mc\",\"pvt\":\"0\"}",
+                "match": "{}"
+            },
+            {
+                "type": "type",
+                "source": "{\"ext_opendata\":\"18988\",\"catalog_test\":\"4388\",\"stories\":\"11\"}",
+                "match": null
+            }
+        ]
+    },
+    "/dati-gov/v1/elasticsearch/home": {
+        "get": [
+            {
+                "type": "ext_opendata",
+                "source": "{\"organization\":{\"name\":\"miur\"},\"name\":\"2017-collegi-universitari\",\"modified\":\"2018-09-02\",\"notes\":\"Dati disponibili su Collegi Universitari Statali e Legalmente Riconosciuti, anno accademico 2016-2017 e anno solare 2017\",\"title\":\"2017 Collegi Universitari\",\"theme\":\"no_category\"}",
+                "match": "{}"
+            },
+            {
+                "type": "catalog_test",
+                "source": "{\"dcatapit\":{\"author\":null,\"name\":\"umbria_o_az_sanitarie_ospedaliere_strut_ricovero_pg_tr_0\",\"modified\":\"22/03/2018\",\"privatex\":false,\"title\":\"Aziende sanitarie, aziende ospedaliere, strutture di ricovero - province di Perugia e Terni - Anno 2013 - Dati anagrafici strutture di ricovero\",\"owner_org\":\"default_org\",\"theme\":\"HEAL\"}}",
+                "match": "{}"
+            },
+            {
+                "type": "catalog_test",
+                "source": "{\"dcatapit\":{\"author\":null,\"name\":\"toscana_o_bacino_arno_stato_ecologico_e_chimico_delle_acque_superficiali_anni_20_1\",\"modified\":\"22/03/2018\",\"privatex\":false,\"title\":\"Bacino Arno - Stato ecologico e chimico delle acque superficiali - anni 2010-2016 - Bacino Arno - Stato ecologico e chimico delle acque superficiali - anni 2010-2016\",\"owner_org\":\"default_org\",\"theme\":\"OP_DATPRO\"}}",
+                "match": "{}"
+            },
+            {
+                "type": "stories",
+                "source": "{\"subtitle\":\"<p>I teatri della città di Torino</p>\",\"timestamp\":\"2018-05-16T19:59:48.427Z[GMT]\",\"published\":2,\"id\":\"f78c2c58-bb1f-4484-bd3b-37bcf609d493\",\"widgets\":\"{\\\"superset_697\\\":{\\\"title\\\":\\\"Torino a teatro\\\",\\\"image\\\":\\\"noimage\\\",\\\"table\\\":\\\"EDUC__luoghi.comune_torino_o_teatri_di_torino\\\",\\\"props\\\":{\\\"url\\\":\\\"https://bi.daf.teamdigitale.it//superset/explore/table/4396/?form_data=%7B%22mapbox_color%22%3A%20%22rgb%280%2C%20122%2C%20135%29%22%2C%20%22pandas_aggfunc%22%3A%20%22sum%22%2C%20%22viewport_zoom%22%3A%2011%2C%20%22all_columns_x%22%3A%20%22longitude%22%2C%20%22granularity_sqla%22%3A%20null%2C%20%22having%22%3A%20%22%22%2C%20%22mapbox_label%22%3A%20%5B%22denominaz%22%5D%2C%20%22groupby%22%3A%20%5B%5D%2C%20%22row_limit%22%3A%20null%2C%20%22point_radius%22%3A%20%22Auto%22%2C%20%22mapbox_style%22%3A%20%22mapbox%3A//styles/mapbox/streets-v9%22%2C%20%22until%22%3A%20%22now%22%2C%20%22viewport_longitude%22%3A%207.6868%2C%20%22all_columns_y%22%3A%20%22latitude%22%2C%20%22filters%22%3A%20%5B%5D%2C%20%22where%22%3A%20%22%22%2C%20%22render_while_dragging%22%3A%20true%2C%20%22since%22%3A%20%227%20days%20ago%22%2C%20%22viewport_latitude%22%3A%2045.0704%2C%20%22global_opacity%22%3A%201%2C%20%22viz_type%22%3A%20%22mapbox%22%2C%20%22datasource%22%3A%20%224396__table%22%2C%20%22time_grain_sqla%22%3A%20null%2C%20%22point_radius_unit%22%3A%20%22Pixels%22%2C%20%22slice_id%22%3A%20697%2C%20%22clustering_radius%22%3A%20%2220%22%7D&standalone=true\\\",\\\"identifier\\\":\\\"superset_697\\\",\\\"origin\\\":\\\"superset\\\",\\\"wid_key\\\":\\\"superset_697\\\"}}}\",\"layout\":\"{\\\"rows\\\":[{\\\"columns\\\":[{\\\"className\\\":\\\"col-lg-12 col-md-12 col-sm-12 col-xs-12\\\",\\\"widgets\\\":[{\\\"key\\\":\\\"superset_697\\\"}]}]}]}\",\"title\":\"Torino a teatro\",\"org\":\"comune_torino\",\"user\":\"d_mc\",\"pvt\":\"0\"}",
+                "match": "{}"
+            },
+            {
+                "type": "type",
+                "source": "{\"ext_opendata\":\"18988\",\"catalog_test\":\"4388\",\"stories\":\"11\"}",
+                "match": null
+            }
+        ]
+    },
+    "/catalog-manager/v1/ckan/searchDataset": {
+        "get": [
+            {
+                "type": "ext_opendata",
+                "source": {
+                    "name": "01-psc-piano-strutturale-comunale-kml",
+                    "title": "01 - PSC - Piano Strutturale Comunale - Kml",
+                    "notes": "Sintesi del Piano Strutturale Comunale",
+                    "theme": "OP_DATPRO",
+                    "organization": {
+                        "name": "regione-emilia-romagna"
+                    },
+                    "modified": "2017-02-03T15:51:29.327285"
+                },
+                "match": null
+            },
+            {
+                "name": "test1",
+                "notes": "dd",
+                "organization": {
+                    "name": "test-org",
+                    "image_url": "http://dati.trentino.it/images/logo.png",
+                    "email": null,
+                    "state": "active",
+                    "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
+                    "users": null,
+                    "is_organization": true,
+                    "id": "232cad97-ecf2-447d-9656-63899023887t",
+                    "title": "APT Altopiano di Pinè e Valle di Cembra it",
+                    "type": null,
+                    "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
+                    "approval_status": "approved",
+                    "created": "2017-09-11T14:25:30.958736"
+                },
+                "author": null,
+                "license_id": "other-nc",
+                "relationships_as_object": [],
+                "holder_identifier": null,
+                "identifier": null,
+                "license_title": "Other (Non-Commercial)",
+                "tags": [
+                    {
+                        "name": "ECON",
+                        "state": "active",
+                        "vocabulary_id": null,
+                        "display_name": "ECON",
+                        "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                    }
+                ],
+                "groups": [],
+                "modified": null,
+                "alternate_identifier": null,
+                "relationships_as_subject": [],
+                "holder_name": null,
+                "publisher_identifier": null,
+                "resources": [],
+                "frequency": null,
+                "title": "colonnine_20170830074512_2",
+                "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
+                "theme": null,
+                "publisher_name": null
+            },
+            {
+                "name": "test2",
+                "notes": "aaa",
+                "organization": {
+                    "name": "test-org",
+                    "image_url": "http://dati.trentino.it/images/logo.png",
+                    "email": null,
+                    "state": "active",
+                    "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
+                    "users": null,
+                    "is_organization": true,
+                    "id": "232cad97-ecf2-447d-9656-63899023887t",
+                    "title": "APT Altopiano di Pinè e Valle di Cembra it",
+                    "type": null,
+                    "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
+                    "approval_status": "approved",
+                    "created": "2017-09-11T14:25:30.958736"
+                },
+                "author": null,
+                "license_id": "other-nc",
+                "relationships_as_object": [],
+                "holder_identifier": null,
+                "identifier": null,
+                "license_title": "Other (Non-Commercial)",
+                "tags": [
+                    {
+                        "name": "ECON",
+                        "state": "active",
+                        "vocabulary_id": null,
+                        "display_name": "ECON",
+                        "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                    }
+                ],
+                "groups": [],
+                "modified": null,
+                "alternate_identifier": null,
+                "relationships_as_subject": [],
+                "holder_name": null,
+                "publisher_identifier": null,
+                "resources": [],
+                "frequency": null,
+                "title": "colonnine_20170830074512",
+                "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
+                "theme": null,
+                "publisher_name": null
+            },
+            {
+                "name": "test3",
+                "notes": "qwerewr",
+                "organization": {
+                    "name": "test-org",
+                    "image_url": "http://dati.trentino.it/images/logo.png",
+                    "email": null,
+                    "state": "active",
+                    "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
+                    "users": null,
+                    "is_organization": true,
+                    "id": "232cad97-ecf2-447d-9656-63899023887t",
+                    "title": "APT Altopiano di Pinè e Valle di Cembra it",
+                    "type": null,
+                    "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
+                    "approval_status": "approved",
+                    "created": "2017-09-11T14:25:30.958736"
+                },
+                "author": null,
+                "license_id": "other-nc",
+                "relationships_as_object": [],
+                "holder_identifier": null,
+                "identifier": null,
+                "license_title": "Other (Non-Commercial)",
+                "tags": [
+                    {
+                        "name": "ECON",
+                        "state": "active",
+                        "vocabulary_id": null,
+                        "display_name": "ECON",
+                        "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                    }
+                ],
+                "groups": [],
+                "modified": null,
+                "alternate_identifier": null,
+                "relationships_as_subject": [],
+                "holder_name": null,
+                "publisher_identifier": null,
+                "resources": [],
+                "frequency": null,
+                "title": "bike_sharing3",
+                "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
+                "theme": null,
+                "publisher_name": null
+            }
+        ]
+    },
     "/catalog-manager/v1/catalog-ds/getbytitle/test1": {
         "get": {
-                "dataschema": {
-                    "avro": {
-                        "name": "carsharing_entity_vehicle",
-                        "type": "record",
-                        "namespace": "daf://default_org/TRAN/carsharing_entity_vehicle",
-                        "aliases": [
-                            "carsharing_entity_vehicle"
-                        ],
-                        "fields": [
-                            {
-                                "name": "emission_class",
-                                "type": "string"
-                            },
-                            {
-                                "name": "fuel",
-                                "type": "string"
-                            },
-                            {
-                                "name": "vehicle_model",
-                                "type": "string"
-                            },
-                            {
-                                "name": "status",
-                                "type": "string"
-                            },
-                            {
-                                "name": "id_license_plate",
-                                "type": "string"
-                            },
-                            {
-                                "name": "vehicle_type",
-                                "type": "string"
-                            }
-                        ]
-                    },
-                    "flatSchema": [
+            "dataschema": {
+                "avro": {
+                    "name": "carsharing_entity_vehicle",
+                    "type": "record",
+                    "namespace": "daf://default_org/TRAN/carsharing_entity_vehicle",
+                    "aliases": [
+                        "carsharing_entity_vehicle"
+                    ],
+                    "fields": [
                         {
                             "name": "emission_class",
-                            "type": "string",
-                            "metadata": {
-                                "semantics": {
-                                    "id": "",
-                                    "context": ""
-                                },
-                                "desc": "",
-                                "tag": [],
-                                "field_type": "",
-                                "constr": [
-                                    {
-                                        "type": "",
-                                        "param": ""
-                                    }
-                                ],
-                                "required": 0,
-                                "cat": ""
-                            }
+                            "type": "string"
                         },
                         {
                             "name": "fuel",
-                            "type": "string",
-                            "metadata": {
-                                "semantics": {
-                                    "id": "",
-                                    "context": ""
-                                },
-                                "desc": "",
-                                "tag": [],
-                                "field_type": "",
-                                "constr": [
-                                    {
-                                        "type": "",
-                                        "param": ""
-                                    }
-                                ],
-                                "required": 0,
-                                "cat": ""
-                            }
+                            "type": "string"
                         },
                         {
                             "name": "vehicle_model",
-                            "type": "string",
-                            "metadata": {
-                                "semantics": {
-                                    "id": "",
-                                    "context": ""
-                                },
-                                "desc": "",
-                                "tag": [],
-                                "field_type": "",
-                                "constr": [
-                                    {
-                                        "type": "",
-                                        "param": ""
-                                    }
-                                ],
-                                "required": 0,
-                                "cat": ""
-                            }
+                            "type": "string"
                         },
                         {
                             "name": "status",
-                            "type": "string",
-                            "metadata": {
-                                "semantics": {
-                                    "id": "",
-                                    "context": ""
-                                },
-                                "desc": "",
-                                "tag": [],
-                                "field_type": "",
-                                "constr": [
-                                    {
-                                        "type": "",
-                                        "param": ""
-                                    }
-                                ],
-                                "required": 0,
-                                "cat": ""
-                            }
+                            "type": "string"
                         },
                         {
                             "name": "id_license_plate",
-                            "type": "string",
-                            "metadata": {
-                                "semantics": {
-                                    "id": "",
-                                    "context": ""
-                                },
-                                "desc": "",
-                                "tag": [],
-                                "field_type": "",
-                                "constr": [
-                                    {
-                                        "type": "",
-                                        "param": ""
-                                    }
-                                ],
-                                "required": 0,
-                                "cat": ""
-                            }
+                            "type": "string"
                         },
                         {
                             "name": "vehicle_type",
-                            "type": "string",
-                            "metadata": {
-                                "semantics": {
-                                    "id": "",
-                                    "context": ""
-                                },
-                                "desc": "",
-                                "tag": [],
-                                "field_type": "",
-                                "constr": [
-                                    {
-                                        "type": "",
-                                        "param": ""
-                                    }
-                                ],
-                                "required": 0,
-                                "cat": ""
-                            }
+                            "type": "string"
                         }
                     ]
                 },
-                "operational": {
-                    "dataset_type": "batch",
-                    "read_type": "update",
-                    "is_std": false,
-                    "logical_uri": "daf://dataset/ord/ale.ercolani/default_org/TRAN/terrestre/carsharing_entity_vehicle",
-                    "theme": "TRAN",
-                    "subtheme": "terrestre",
-                    "group_own": "ale.ercolani",
-                    "storage_info": {
-                        "hdfs": {
-                            "name": "hdfs_daf"
+                "flatSchema": [
+                    {
+                        "name": "emission_class",
+                        "type": "string",
+                        "metadata": {
+                            "semantics": {
+                                "id": "",
+                                "context": ""
+                            },
+                            "desc": "",
+                            "tag": [],
+                            "field_type": "",
+                            "constr": [
+                                {
+                                    "type": "",
+                                    "param": ""
+                                }
+                            ],
+                            "required": 0,
+                            "cat": ""
                         }
                     },
-                    "physical_uri": "data/daf_testdatalake/ord/default_org/TRAN/terrestre/ale.ercolani/carsharing_entity_vehicle",
-                    "input_src": {
-                        "sftp": [
-                            {
-                                "name": "sftp_daf",
-                                "param": "format=csv, sep=,"
-                            }
-                        ]
+                    {
+                        "name": "fuel",
+                        "type": "string",
+                        "metadata": {
+                            "semantics": {
+                                "id": "",
+                                "context": ""
+                            },
+                            "desc": "",
+                            "tag": [],
+                            "field_type": "",
+                            "constr": [
+                                {
+                                    "type": "",
+                                    "param": ""
+                                }
+                            ],
+                            "required": 0,
+                            "cat": ""
+                        }
+                    },
+                    {
+                        "name": "vehicle_model",
+                        "type": "string",
+                        "metadata": {
+                            "semantics": {
+                                "id": "",
+                                "context": ""
+                            },
+                            "desc": "",
+                            "tag": [],
+                            "field_type": "",
+                            "constr": [
+                                {
+                                    "type": "",
+                                    "param": ""
+                                }
+                            ],
+                            "required": 0,
+                            "cat": ""
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "type": "string",
+                        "metadata": {
+                            "semantics": {
+                                "id": "",
+                                "context": ""
+                            },
+                            "desc": "",
+                            "tag": [],
+                            "field_type": "",
+                            "constr": [
+                                {
+                                    "type": "",
+                                    "param": ""
+                                }
+                            ],
+                            "required": 0,
+                            "cat": ""
+                        }
+                    },
+                    {
+                        "name": "id_license_plate",
+                        "type": "string",
+                        "metadata": {
+                            "semantics": {
+                                "id": "",
+                                "context": ""
+                            },
+                            "desc": "",
+                            "tag": [],
+                            "field_type": "",
+                            "constr": [
+                                {
+                                    "type": "",
+                                    "param": ""
+                                }
+                            ],
+                            "required": 0,
+                            "cat": ""
+                        }
+                    },
+                    {
+                        "name": "vehicle_type",
+                        "type": "string",
+                        "metadata": {
+                            "semantics": {
+                                "id": "",
+                                "context": ""
+                            },
+                            "desc": "",
+                            "tag": [],
+                            "field_type": "",
+                            "constr": [
+                                {
+                                    "type": "",
+                                    "param": ""
+                                }
+                            ],
+                            "required": 0,
+                            "cat": ""
+                        }
+                    }
+                ]
+            },
+            "operational": {
+                "dataset_type": "batch",
+                "read_type": "update",
+                "is_std": false,
+                "logical_uri": "daf://dataset/ord/ale.ercolani/default_org/TRAN/terrestre/carsharing_entity_vehicle",
+                "theme": "TRAN",
+                "subtheme": "terrestre",
+                "group_own": "ale.ercolani",
+                "storage_info": {
+                    "hdfs": {
+                        "name": "hdfs_daf"
                     }
                 },
-                "dcatapit": {
-                    "name": "carsharing_entity_vehicle",
-                    "notes": "carsharing_entity_vehicle",
-                    "relationships_as_object": [],
-                    "holder_identifier": "default_org",
-                    "identifier": "carsharing_entity_vehicle",
-                    "license_title": "Altro (Non Commerciale)",
-                    "tags": [
+                "physical_uri": "data/daf_testdatalake/ord/default_org/TRAN/terrestre/ale.ercolani/carsharing_entity_vehicle",
+                "input_src": {
+                    "sftp": [
                         {
-                            "name": "TRAN",
-                            "state": "active",
-                            "display_name": "TRAN",
-                            "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                            "name": "sftp_daf",
+                            "param": "format=csv, sep=,"
                         }
-                    ],
-                    "groups": [],
-                    "modified": "2017-07-23",
-                    "alternate_identifier": "carsharing_entity_vehicle",
-                    "relationships_as_subject": [],
-                    "holder_name": "default_org",
-                    "publisher_identifier": "default_org",
-                    "resources": [],
-                    "frequency": "unknown",
-                    "title": "carsharing_entity_vehicle",
-                    "owner_org": "default_org",
-                    "theme": "TRAN",
-                    "publisher_name": "default_org"
+                    ]
                 }
-            
+            },
+            "dcatapit": {
+                "name": "carsharing_entity_vehicle",
+                "notes": "carsharing_entity_vehicle",
+                "relationships_as_object": [],
+                "holder_identifier": "default_org",
+                "identifier": "carsharing_entity_vehicle",
+                "license_title": "Altro (Non Commerciale)",
+                "tags": [
+                    {
+                        "name": "TRAN",
+                        "state": "active",
+                        "display_name": "TRAN",
+                        "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                    }
+                ],
+                "groups": [],
+                "modified": "2017-07-23",
+                "alternate_identifier": "carsharing_entity_vehicle",
+                "relationships_as_subject": [],
+                "holder_name": "default_org",
+                "publisher_identifier": "default_org",
+                "resources": [],
+                "frequency": "unknown",
+                "title": "carsharing_entity_vehicle",
+                "owner_org": "default_org",
+                "theme": "TRAN",
+                "publisher_name": "default_org"
+            }
+        }
+    },
+    "/catalog-manager/v1/catalog-ds/getbyname/test1": {
+        "get": {
+            "dcatapit": {
+                "name": "carsharing_entity_vehicle",
+                "notes": "carsharing_entity_vehicle",
+                "relationships_as_object": [],
+                "holder_identifier": "default_org",
+                "identifier": "carsharing_entity_vehicle",
+                "license_title": "Altro (Non Commerciale)",
+                "tags": [
+                    {
+                        "name": "TRAN",
+                        "state": "active",
+                        "display_name": "TRAN",
+                        "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                    }
+                ],
+                "groups": [],
+                "modified": "2017-07-23",
+                "alternate_identifier": "carsharing_entity_vehicle",
+                "relationships_as_subject": [],
+                "holder_name": "default_org",
+                "publisher_identifier": "default_org",
+                "resources": [],
+                "frequency": "unknown",
+                "title": "carsharing_entity_vehicle",
+                "owner_org": "default_org",
+                "theme": "TRAN",
+                "publisher_name": "default_org"
+            }
+        }
+    },
+    "/catalog-manager/v1/catalog-ds/getbyname/test2": {
+        "get": {
+            "dcatapit": {
+                "name": "carsharing_entity_vehicle",
+                "notes": "carsharing_entity_vehicle",
+                "relationships_as_object": [],
+                "holder_identifier": "default_org",
+                "identifier": "carsharing_entity_vehicle",
+                "license_title": "Altro (Non Commerciale)",
+                "tags": [
+                    {
+                        "name": "TRAN",
+                        "state": "active",
+                        "display_name": "TRAN",
+                        "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                    }
+                ],
+                "groups": [],
+                "modified": "2017-07-23",
+                "alternate_identifier": "carsharing_entity_vehicle",
+                "relationships_as_subject": [],
+                "holder_name": "default_org",
+                "publisher_identifier": "default_org",
+                "resources": [],
+                "frequency": "unknown",
+                "title": "carsharing_entity_vehicle",
+                "owner_org": "default_org",
+                "theme": "TRAN",
+                "publisher_name": "default_org"
+            }
+        }
+    },
+    "/catalog-manager/v1/catalog-ds/getbyname/test3": {
+        "get": {
+            "dcatapit": {
+                "name": "carsharing_entity_vehicle",
+                "notes": "carsharing_entity_vehicle",
+                "relationships_as_object": [],
+                "holder_identifier": "default_org",
+                "identifier": "carsharing_entity_vehicle",
+                "license_title": "Altro (Non Commerciale)",
+                "tags": [
+                    {
+                        "name": "TRAN",
+                        "state": "active",
+                        "display_name": "TRAN",
+                        "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                    }
+                ],
+                "groups": [],
+                "modified": "2017-07-23",
+                "alternate_identifier": "carsharing_entity_vehicle",
+                "relationships_as_subject": [],
+                "holder_name": "default_org",
+                "publisher_identifier": "default_org",
+                "resources": [],
+                "frequency": "unknown",
+                "title": "carsharing_entity_vehicle",
+                "owner_org": "default_org",
+                "theme": "TRAN",
+                "publisher_name": "default_org"
+            }
         }
     },
     "/catalog-manager/v1/ckan/datasets/test1": {
@@ -838,19 +1098,19 @@
             "name": "colonnine_20170830074512_2",
             "notes": "dd",
             "organization": {
-              "name": "test-org",
-              "image_url": "http://dati.trentino.it/images/logo.png",
-              "email": null,
-              "state": "active",
-              "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
-              "users": null,
-              "is_organization": true,
-              "id": "232cad97-ecf2-447d-9656-63899023887t",
-              "title": "APT Altopiano di Pinè e Valle di Cembra it",
-              "type": null,
-              "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
-              "approval_status": "approved",
-              "created": "2017-09-11T14:25:30.958736"
+                "name": "test-org",
+                "image_url": "http://dati.trentino.it/images/logo.png",
+                "email": null,
+                "state": "active",
+                "description": "Azienda per il Turismo Altopiano di Piné e Valle di Cembra. Maggiori informazioni sul loro [sito web](http://www.visitpinecembra.it)",
+                "users": null,
+                "is_organization": true,
+                "id": "232cad97-ecf2-447d-9656-63899023887t",
+                "title": "APT Altopiano di Pinè e Valle di Cembra it",
+                "type": null,
+                "revision_id": "2e356149-3a65-48af-b889-dfd7577c681a",
+                "approval_status": "approved",
+                "created": "2017-09-11T14:25:30.958736"
             },
             "author": null,
             "license_id": "other-nc",
@@ -859,13 +1119,13 @@
             "identifier": "colonnine_20170830074512_2",
             "license_title": "Other (Non-Commercial)",
             "tags": [
-              {
-                "name": "ECON",
-                "state": "active",
-                "vocabulary_id": null,
-                "display_name": "ECON",
-                "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
-              }
+                {
+                    "name": "ECON",
+                    "state": "active",
+                    "vocabulary_id": null,
+                    "display_name": "ECON",
+                    "id": "f5feb374-3e24-417a-969e-17f00d7e6458"
+                }
             ],
             "groups": [],
             "modified": "2017-07-23",
@@ -879,85 +1139,232 @@
             "owner_org": "232cad97-ecf2-447d-9656-63899023887t",
             "theme": "ECON",
             "publisher_name": "test-org"
-          }
+        }
     },
-
     "/dati-gov/v1/dashboards": {
         "get": [
-                {
-                    "id" : 1,
-                    "title": "Dashboard 1"
-                },
-                {
-                    "id" : 2,
-                    "title": "Dashboard 2",
-                    "status": 1
-                },
-                {
-                    "id" : 3,
-                    "title": "Dashboard 3"
-                },
-                {
-                    "id" : 4,
-                    "title": "Dashboard 4"
-                }
-            ],
-        "post" : {
+            {
+                "id": 1,
+                "title": "Dashboard 1"
+            },
+            {
+                "id": 2,
+                "title": "Dashboard 2",
+                "status": 1
+            },
+            {
+                "id": 3,
+                "title": "Dashboard 3"
+            },
+            {
+                "id": 4,
+                "title": "Dashboard 4"
+            }
+        ],
+        "post": {
             "message": 1
         }
-        
     },
-    
     "/dati-gov/v1/dashboards/1": {
         "get": {
-            "id" : 1,
+            "id": 1,
             "title": "Dashboard 1",
-            "layout":"{\"rows\":[]}",
+            "layout": "{\"rows\":[]}",
             "widgets": "{}"
-        }         
+        }
     },
-    
     "/dati-gov/v1/dashboards/2": {
         "get": {
-            "id" : 2,
+            "id": 2,
             "status": 1,
             "title": "Dashboard 2",
-            "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+            "layout": "{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
             "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 2</p>\\n\"},\"type\":\"TextWidget\"}}"
-         }    
+        }
     },
-    
     "/dati-gov/v1/dashboards/3": {
         "get": {
-            "id" : 3,
+            "id": 3,
             "title": "Dashboard 3",
             "status": 0,
-            "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+            "layout": "{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
             "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 3</p>\\n\"},\"type\":\"TextWidget\"}}"
-         }    
+        }
     },
-
     "/dati-gov/v1/dashboards/4": {
         "get": {
-            "id" : 4,
+            "id": 4,
             "title": "Dashboard 4",
             "status": 0,
-            "layout":"{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+            "layout": "{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
             "widgets": "{\"TextWidget_1\":{\"title\":\"Text\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>Insert your text here - Dashboard 4</p>\\n\"},\"type\":\"TextWidget\"}}"
-         }    
+        }
     },
-    
+    "/dati-gov/v1/searchMetadata" : {
+        "get": {
+            "_id": {
+                "$oid": "5af1955a446a3c6351100ba6"
+            },
+            "license_title": "Licenza non specificata",
+            "maintainer": null,
+            "creator": "[{\"creator_identifier\": \"N/A\", \"creator_name\": {\"fr\": \"N/A\", \"de\": \"N/A\", \"en\": \"N/A\", \"it\": \"N/A\"}}]",
+            "issued": "2016-05-11T13:20:24.416826",
+            "private": false,
+            "maintainer_email": null,
+            "num_tags": 2,
+            "frequency": "UNKNOWN",
+            "publisher_name": "N/A",
+            "id": "33cf7070-a6e9-42c3-b46c-71b97ceaf4b2",
+            "metadata_created": "2018-05-02T21:00:00.788247",
+            "metadata_modified": "2018-05-02T21:06:10.174926",
+            "author": null,
+            "author_email": null,
+            "theme": "[{\"subthemes\": [], \"theme\": \"OP_DATPRO\"},{\"subthemes\": [], \"theme\": \"GOVE\"}]",
+            "state": "active",
+            "version": null,
+            "alternate_identifier": "[]",
+            "relationships_as_object": [],
+            "license_id": "notspecified",
+            "type": "dataset",
+            "resources": [
+                {
+                    "mimetype": null,
+                    "cache_url": null,
+                    "hash": "",
+                    "description": "Comune di Anzola dell'Emilia - WGS 84  EPSG:4326",
+                    "name": "00 - Confine Comunale - Kml",
+                    "format": "KML",
+                    "url": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5/download/t0kml.zip",
+                    "cache_last_updated": null,
+                    "uri": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5",
+                    "created": "2018-05-02T21:00:00.791827",
+                    "state": "active",
+                    "mimetype_inner": null,
+                    "last_modified": null,
+                    "id": "764a2500-1e76-40ce-806a-15416fc6305d",
+                    "position": 0,
+                    "package_id": "33cf7070-a6e9-42c3-b46c-71b97ceaf4b2",
+                    "url_type": null,
+                    "revision_id": "4ed1e1ea-96b0-4871-940e-3dad55a52e93",
+                    "resource_type": null,
+                    "size": null
+                },
+                {
+                    "mimetype": null,
+                    "cache_url": null,
+                    "hash": "",
+                    "description": "Comune di Anzola dell'Emilia - WGS 84  EPSG:4326",
+                    "name": "Prova - Kml",
+                    "format": "CSV",
+                    "url": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5/download/t0kml.zip",
+                    "cache_last_updated": null,
+                    "uri": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a/resource/bbaacc0d-4e2b-4819-b975-5448b74958f5",
+                    "created": "2018-05-02T21:00:00.791827",
+                    "state": "active",
+                    "mimetype_inner": null,
+                    "last_modified": null,
+                    "id": "864a2500-1e76-40ce-806a-15416fc6305d",
+                    "position": 0,
+                    "package_id": "33cf7070-a6e9-42c3-b46c-71b97ceaf4b2",
+                    "url_type": null,
+                    "revision_id": "4ed1e1ea-96b0-4871-940e-3dad55a52e93",
+                    "resource_type": null,
+                    "size": null
+                }
+            ],
+            "holder_name": "N/A",
+            "tags": [
+                {
+                    "vocabulary_id": null,
+                    "state": "active",
+                    "display_name": "comune",
+                    "id": "6c93dcc4-b716-4ee7-bb57-98054dc4dc92",
+                    "name": "comune"
+                },
+                {
+                    "vocabulary_id": null,
+                    "state": "active",
+                    "display_name": "confine",
+                    "id": "9f5f95ff-f298-4444-917e-029194920c16",
+                    "name": "confine"
+                }
+            ],
+            "holder_identifier": "N/A",
+            "language": "",
+            "groups": [],
+            "creator_user_id": "a6ad3f49-8f6f-473a-9387-910118c421fe",
+            "relationships_as_subject": [],
+            "num_resources": 1,
+            "organization": {
+                "description": "",
+                "created": "2018-04-30T14:38:32.808655",
+                "title": "Regione Emilia-Romagna",
+                "name": "regione-emilia-romagna",
+                "is_organization": true,
+                "state": "active",
+                "image_url": "https://www.regione.emilia-romagna.it/@@site-logo/logo_rer.png",
+                "revision_id": "e023b80e-2234-4ebd-8a71-78c2a3489f92",
+                "type": "organization",
+                "id": "0b3d751a-ae70-48f7-9584-8c1e40a7f637",
+                "approval_status": "approved"
+            },
+            "name": "00-confine-comunale-kml",
+            "isopen": false,
+            "url": "http://dati.emilia-romagna.it/dataset/00-confine-comunale-kml--010536a2",
+            "notes": "Confine Comunale",
+            "owner_org": "0b3d751a-ae70-48f7-9584-8c1e40a7f637",
+            "modified": "2017-03-30T08:27:27.835712",
+            "publisher_identifier": "N/A",
+            "extras": [
+                {
+                    "key": "contact_name",
+                    "value": "comune-di-anzola-dell-emilia"
+                },
+                {
+                    "key": "contact_uri",
+                    "value": "http://dati.emilia-romagna.it/organization/4f781df9-07b7-498b-90ef-d93f92f50fbc"
+                },
+                {
+                    "key": "guid",
+                    "value": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a"
+                },
+                {
+                    "key": "source_catalog_homepage",
+                    "value": "http://dati.emilia-romagna.it/#"
+                },
+                {
+                    "key": "source_catalog_modified",
+                    "value": "2018-04-28T22:01:35.418428"
+                },
+                {
+                    "key": "source_catalog_publisher",
+                    "value": "{\"url\": \"\", \"email\": \"\", \"type\": \"\", \"uri\": \"\", \"name\": \"\"}"
+                },
+                {
+                    "key": "source_catalog_title",
+                    "value": "CKAN Regione Emilia Romagna"
+                },
+                {
+                    "key": "uri",
+                    "value": "http://dati.emilia-romagna.it/dataset/3a89a14b-3835-4551-8289-bfcb99a8744a"
+                }
+            ],
+            "title": "00 - Confine Comunale - Kml",
+            "revision_id": "4ed1e1ea-96b0-4871-940e-3dad55a52e93",
+            "identifier": "3a89a14b-3835-4551-8289-bfcb99a8744a"
+        }
+    },
     "/dati-gov/v1/user-stories": {
-        "post" : {
+        "post": {
             "message": 1
         },
         "get": [
             {
-                "id":1,
+                "id": 1,
                 "title": "Storia 1"
             },
             {
-                "id":2,
+                "id": 2,
                 "title": "Storia 2",
                 "published": false,
                 "subtitle": "Storia di prova",
@@ -975,7 +1382,7 @@
                 "footer": "Questo è il footer"
             },
             {
-                "id":3,
+                "id": 3,
                 "title": "Storia 3",
                 "subtitle": "Storia di prova",
                 "graph": {
@@ -992,19 +1399,33 @@
                 "footer": "Questo è il footer"
             }
         ]
-        
     },
-    
+    "/dati-gov/v1/dashboard/iframesbyorg/daf": {
+        "get":[]
+    },
+    "/dati-gov/v1/user-stories/f78c2c58-bb1f-4484-bd3b-37bcf609d493": {
+        "get": {
+            "subtitle" : "<p>sottotitolo</p>",
+            "timestamp" : "2017-04-04T13:09:45.051Z",
+            "published" : 1,
+            "id" : "efee0293-4dd8-4a19-add4-f0b1ef0ff711",
+            "widgets" : "{\"TextWidget_1\":{\"title\":\"Testo\",\"props\":{\"wid_key\":\"TextWidget_1\",\"text\":\"<p>L'approccio programmatico estrinseca un organico collegamento interdisciplinare ed una prassi di lavoro di gruppo con criteri non dirigistici, ipotizzando e perseguendo quale sua premessa indispensabile e condizionante la trasparenza di ogni atto decisionale</p>\"}}}",
+            "layout" : "{\"rows\":[{\"columns\":[{\"className\":\"col-lg-12 col-md-12 col-sm-12 col-xs-12\",\"widgets\":[{\"key\":\"TextWidget_1\"}]}]}]}",
+            "title" : "la mia storia",
+            "org" : "daf",
+            "user" : "lucapic",
+            "pvt" : "1"
+        }
+    },
     "/dati-gov/v1/user-stories/1": {
         "get": {
-            "id":1,
+            "id": 1,
             "title": "Storia 1"
         }
     },
-    
     "/dati-gov/v1/user-stories/2": {
         "get": {
-            "id":2,
+            "id": 2,
             "title": "Storia 2",
             "published": false,
             "subtitle": "Storia di prova",
@@ -1015,15 +1436,13 @@
                 }
             },
             "text": "Contenuto della storia",
-            "image": {
-            },
+            "image": {},
             "footer": "Questo è il footer"
         }
     },
-    
     "/dati-gov/v1/user-stories/3": {
         "get": {
-            "id":3,
+            "id": 3,
             "title": "Storia 3",
             "subtitle": "Storia di prova",
             "graph": {
@@ -1040,9 +1459,9 @@
             "footer": "Questo è il footer"
         }
     },
-    "/catalog-manager/v1/ontologies":{
+    "/catalog-manager/v1/ontologies": {
         "get": [
-                {
+            {
                 "objectProperties": 26,
                 "ontologyDescription": "This is the ontology of the Italian application profile for Location and Addresses.",
                 "ontologyIRI": "http://stlab.istc.cnr.it/teamdigitale/Ontologie/Location/v0.2/CLV-AP_IT.ttl",
@@ -1054,8 +1473,8 @@
                 "individuals": 0,
                 "ontologyID": "6SP0mIcPmvhZl6tvL0Fkcw",
                 "annotationProperties": 0
-                },
-                {
+            },
+            {
                 "objectProperties": 26,
                 "ontologyDescription": "This is the ontology of ...",
                 "ontologyIRI": "http://stlab.istc.cnr.it/teamdigitale/Ontologie/Location/v0.2/CLV-AP_IT.ttl",
@@ -1067,61 +1486,59 @@
                 "individuals": 0,
                 "ontologyID": "6SP0mIcPmvhZl6tvL0Fkcw",
                 "annotationProperties": 0
-                }
-                ]
+            }
+        ]
     },
     "/storage-manager/v1/dataset-manager/v1/dataset/daf": {
-        "get": 
-            [
-                {
-                    "agency_url": "http://www.gtt.to.it",
-                    "agency_name": "Gruppo Torinese Trasporti",
-                    "agency_phone": "800-019152",
-                    "num": 21,
-                    "agency_id": "GTT",
-                    "agency_timezone": "Europe/Rome",
-                    "agency_lang": "it"
-                },
-                {
-                    "agency_url": "http://www.gtt.to.it",
-                    "agency_name": "GTT servizio extraurbano",
-                    "agency_phone": "800-019152",
-                    "num": 43,
-                    "agency_id": "GTT_E",
-                    "agency_timezone": "Europe/Rome",
-                    "agency_lang": "it"
-                },
-                {
-                    "agency_url": "http://www.gtt.to.it",
-                    "agency_name": "Gruppo Torinese Trasporti",
-                    "agency_phone": "800-019152",
-                    "num": 0,
-                    "agency_id": "GTT_F",
-                    "agency_timezone": "Europe/Rome",
-                    "agency_lang": "it"
-                },
-                {
-                    "agency_url": "http://www.gtt.to.it",
-                    "agency_name": "GTT Servizi Turistici",
-                    "agency_phone": "800-019152",
-                    "num": 121,
-                    "agency_id": "GTT_T",
-                    "agency_timezone": "Europe/Rome",
-                    "agency_lang": "it"
-                },
-                {
-                    "agency_url": "http://www.trenitalia.com",
-                    "agency_name": "Trenitalia",
-                    "agency_phone": "199-892021",
-                    "num": 2,
-                    "agency_id": "FS",
-                    "agency_timezone": "Europe/Rome",
-                    "agency_lang": "it"
-                }
-            ]
-        
+        "get": [
+            {
+                "agency_url": "http://www.gtt.to.it",
+                "agency_name": "Gruppo Torinese Trasporti",
+                "agency_phone": "800-019152",
+                "num": 21,
+                "agency_id": "GTT",
+                "agency_timezone": "Europe/Rome",
+                "agency_lang": "it"
+            },
+            {
+                "agency_url": "http://www.gtt.to.it",
+                "agency_name": "GTT servizio extraurbano",
+                "agency_phone": "800-019152",
+                "num": 43,
+                "agency_id": "GTT_E",
+                "agency_timezone": "Europe/Rome",
+                "agency_lang": "it"
+            },
+            {
+                "agency_url": "http://www.gtt.to.it",
+                "agency_name": "Gruppo Torinese Trasporti",
+                "agency_phone": "800-019152",
+                "num": 0,
+                "agency_id": "GTT_F",
+                "agency_timezone": "Europe/Rome",
+                "agency_lang": "it"
+            },
+            {
+                "agency_url": "http://www.gtt.to.it",
+                "agency_name": "GTT Servizi Turistici",
+                "agency_phone": "800-019152",
+                "num": 121,
+                "agency_id": "GTT_T",
+                "agency_timezone": "Europe/Rome",
+                "agency_lang": "it"
+            },
+            {
+                "agency_url": "http://www.trenitalia.com",
+                "agency_name": "Trenitalia",
+                "agency_phone": "199-892021",
+                "num": 2,
+                "agency_id": "FS",
+                "agency_timezone": "Europe/Rome",
+                "agency_lang": "it"
+            }
+        ]
     },
-    "/dati-gov/v1/infer/schema/csv":{
+    "/dati-gov/v1/infer/schema/csv": {
         "post": {
             "separator": ";",
             "format": "csv",
@@ -1222,8 +1639,8 @@
             ]
         }
     },
-    "/stanbol/ontonethub/ontologies/find":{
-        "post":[
+    "/stanbol/ontonethub/ontologies/find": {
+        "post": [
             {
                 "score": 1,
                 "ontology": {
@@ -1694,22 +2111,20 @@
             }
         ]
     },
-    "/dati-gov/v1/infer/kylo/csv":{
+    "/dati-gov/v1/infer/kylo/csv": {
         "post": {
-                "name": null,
-                "description": null,
-                "charset": "UTF-8",
-                "properties": {
-                  
-                },
-                "fields": [
-                  {
+            "name": null,
+            "description": null,
+            "charset": "UTF-8",
+            "properties": {},
+            "fields": [
+                {
                     "sampleValues": [
-                      "GTT",
-                      "GTT_E",
-                      "GTT_F",
-                      "GTT_T",
-                      "FS"
+                        "GTT",
+                        "GTT_E",
+                        "GTT_F",
+                        "GTT_T",
+                        "FS"
                     ],
                     "name": "agency_id",
                     "description": "",
@@ -1719,9 +2134,9 @@
                     "nullable": true,
                     "modifiable": true,
                     "dataTypeDescriptor": {
-                      "numeric": false,
-                      "date": false,
-                      "complex": false
+                        "numeric": false,
+                        "date": false,
+                        "complex": false
                     },
                     "updatedTracker": false,
                     "precisionScale": null,
@@ -1729,14 +2144,14 @@
                     "tags": null,
                     "descriptionWithoutNewLines": "",
                     "dataTypeWithPrecisionAndScale": "string"
-                  },
-                  {
+                },
+                {
                     "sampleValues": [
-                      "Gruppo Torinese Trasporti",
-                      "GTT servizio extraurbano",
-                      "Gruppo Torinese Trasporti",
-                      "GTT Servizi Turistici",
-                      "Trenitalia"
+                        "Gruppo Torinese Trasporti",
+                        "GTT servizio extraurbano",
+                        "Gruppo Torinese Trasporti",
+                        "GTT Servizi Turistici",
+                        "Trenitalia"
                     ],
                     "name": "agency_name",
                     "description": "",
@@ -1746,9 +2161,9 @@
                     "nullable": true,
                     "modifiable": true,
                     "dataTypeDescriptor": {
-                      "numeric": false,
-                      "date": false,
-                      "complex": false
+                        "numeric": false,
+                        "date": false,
+                        "complex": false
                     },
                     "updatedTracker": false,
                     "precisionScale": null,
@@ -1756,14 +2171,14 @@
                     "tags": null,
                     "descriptionWithoutNewLines": "",
                     "dataTypeWithPrecisionAndScale": "string"
-                  },
-                  {
+                },
+                {
                     "sampleValues": [
-                      "http: \/\/www.gtt.to.it",
-                      "http: \/\/www.gtt.to.it",
-                      "http: \/\/www.gtt.to.it",
-                      "http: \/\/www.gtt.to.it",
-                      "http: \/\/www.trenitalia.com"
+                        "http: \/\/www.gtt.to.it",
+                        "http: \/\/www.gtt.to.it",
+                        "http: \/\/www.gtt.to.it",
+                        "http: \/\/www.gtt.to.it",
+                        "http: \/\/www.trenitalia.com"
                     ],
                     "name": "agency_url",
                     "description": "",
@@ -1773,9 +2188,9 @@
                     "nullable": true,
                     "modifiable": true,
                     "dataTypeDescriptor": {
-                      "numeric": false,
-                      "date": false,
-                      "complex": false
+                        "numeric": false,
+                        "date": false,
+                        "complex": false
                     },
                     "updatedTracker": false,
                     "precisionScale": null,
@@ -1783,14 +2198,14 @@
                     "tags": null,
                     "descriptionWithoutNewLines": "",
                     "dataTypeWithPrecisionAndScale": "string"
-                  },
-                  {
+                },
+                {
                     "sampleValues": [
-                      "Europe\/Rome",
-                      "Europe\/Rome",
-                      "Europe\/Rome",
-                      "Europe\/Rome",
-                      "Europe\/Rome"
+                        "Europe\/Rome",
+                        "Europe\/Rome",
+                        "Europe\/Rome",
+                        "Europe\/Rome",
+                        "Europe\/Rome"
                     ],
                     "name": "agency_timezone",
                     "description": "",
@@ -1800,9 +2215,9 @@
                     "nullable": true,
                     "modifiable": true,
                     "dataTypeDescriptor": {
-                      "numeric": false,
-                      "date": false,
-                      "complex": false
+                        "numeric": false,
+                        "date": false,
+                        "complex": false
                     },
                     "updatedTracker": false,
                     "precisionScale": null,
@@ -1810,14 +2225,14 @@
                     "tags": null,
                     "descriptionWithoutNewLines": "",
                     "dataTypeWithPrecisionAndScale": "string"
-                  },
-                  {
+                },
+                {
                     "sampleValues": [
-                      "it",
-                      "it",
-                      "it",
-                      "it",
-                      "it"
+                        "it",
+                        "it",
+                        "it",
+                        "it",
+                        "it"
                     ],
                     "name": "agency_lang",
                     "description": "",
@@ -1827,9 +2242,9 @@
                     "nullable": true,
                     "modifiable": true,
                     "dataTypeDescriptor": {
-                      "numeric": false,
-                      "date": false,
-                      "complex": false
+                        "numeric": false,
+                        "date": false,
+                        "complex": false
                     },
                     "updatedTracker": false,
                     "precisionScale": null,
@@ -1837,14 +2252,14 @@
                     "tags": null,
                     "descriptionWithoutNewLines": "",
                     "dataTypeWithPrecisionAndScale": "string"
-                  },
-                  {
+                },
+                {
                     "sampleValues": [
-                      "800-019152",
-                      "800-019152",
-                      "800-019152",
-                      "800-019152",
-                      "199-892021"
+                        "800-019152",
+                        "800-019152",
+                        "800-019152",
+                        "800-019152",
+                        "199-892021"
                     ],
                     "name": "agency_phone",
                     "description": "",
@@ -1854,9 +2269,9 @@
                     "nullable": true,
                     "modifiable": true,
                     "dataTypeDescriptor": {
-                      "numeric": false,
-                      "date": false,
-                      "complex": false
+                        "numeric": false,
+                        "date": false,
+                        "complex": false
                     },
                     "updatedTracker": false,
                     "precisionScale": null,
@@ -1864,14 +2279,14 @@
                     "tags": null,
                     "descriptionWithoutNewLines": "",
                     "dataTypeWithPrecisionAndScale": "string"
-                  },
-                  {
+                },
+                {
                     "sampleValues": [
-                      "21",
-                      "43",
-                      "0",
-                      "121",
-                      "2"
+                        "21",
+                        "43",
+                        "0",
+                        "121",
+                        "2"
                     ],
                     "name": "num",
                     "description": "",
@@ -1881,9 +2296,9 @@
                     "nullable": true,
                     "modifiable": true,
                     "dataTypeDescriptor": {
-                      "numeric": true,
-                      "date": false,
-                      "complex": false
+                        "numeric": true,
+                        "date": false,
+                        "complex": false
                     },
                     "updatedTracker": false,
                     "precisionScale": null,
@@ -1891,13 +2306,13 @@
                     "tags": null,
                     "descriptionWithoutNewLines": "",
                     "dataTypeWithPrecisionAndScale": "int"
-                  }
-                ],
-                "schemaName": null,
-                "databaseName": null,
-                "hiveFormat": "ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'\\n WITH SERDEPROPERTIES ( 'separatorChar' = ',','escapeChar' = '\\\\\\\\' , 'quoteChar' = '\\\\\\') STORED AS TEXTFILE",
-                "structured": false,
-                "id": "30d6eb06-72fa-4aee-9ab1-aa1367f62cbc"
-              }
+                }
+            ],
+            "schemaName": null,
+            "databaseName": null,
+            "hiveFormat": "ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'\\n WITH SERDEPROPERTIES ( 'separatorChar' = ',','escapeChar' = '\\\\\\\\' , 'quoteChar' = '\\\\\\') STORED AS TEXTFILE",
+            "structured": false,
+            "id": "30d6eb06-72fa-4aee-9ab1-aa1367f62cbc"
+        }
     }
 }

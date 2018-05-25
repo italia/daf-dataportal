@@ -13,6 +13,7 @@ import {
 } from '../../actions'
 import { createBrowserHistory } from 'history';
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
+import { isPublic } from '../../utility';
 
 class SearchBar extends Component{
     constructor(props){
@@ -57,8 +58,8 @@ class SearchBar extends Component{
         }
 
         newFilter.text = this.refs.auto.value.toLowerCase();
-        this.props.history.push('/search?q='+this.refs.auto.value);
-        dispatch(search(this.refs.auto.value, newFilter))
+        this.props.history.push(isPublic()?'/search?q='+this.refs.auto.value:'/private/search?q='+this.refs.auto.value);
+        dispatch(search(this.refs.auto.value, newFilter, isPublic()))
     }
 
     render(){

@@ -68,7 +68,8 @@
     "superagent": "^3.5.2",
     "superagent-mock": "^3.4.0",
     "superagent-promise": "^1.1.0",
-    "throttle-debounce": "^1.0.1"
+    "throttle-debounce": "^1.0.1",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "concurrently": "^3.5.0",

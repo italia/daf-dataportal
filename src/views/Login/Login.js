@@ -68,7 +68,7 @@ class Login extends Component {
                                     let dataportalCookie = json.givenname +'/'+token;
                                     setCookie(JSON.parse('[{"name":"dataportal","value":"'+ dataportalCookie +'","path":"/"}]'))
                                     dispatch(receiveLogin(json))
-                                    this.props.history.push('/home')
+                                    this.props.history.push('/private/home')
                                   })
                               //}
                             //})

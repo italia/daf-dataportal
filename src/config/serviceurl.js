@@ -13,7 +13,8 @@ export const serviceurl = {
   apiURLIngestion: "http://localhost:3001/ingestion-manager/v1",
   apiURLSecurity: "http://localhost:3001/catalog-manager/v1",
   apiURLSSOManager: "http://localhost:3001/sso-manager/v1", 
-*/
+  apiMedium: "http://localhost:3001/dati-gov/medium/", */
+
   // INTERNAL
  //apiURLSSOManager: "http://security-manager.default.svc.cluster.local:9000/sso-manager",
  //apiURLDatiGov: "http://datipubblici.default.svc.cluster.local:9000/dati-gov/v1", 
@@ -28,6 +29,7 @@ export const serviceurl = {
  apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
  apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1",
  apiCKAN: "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy",
+ apiMedium: "https://api.daf.teamdigitale.it/dati-gov/medium",
 
 /*  apiURLSSOManager: "https://security-manager.daf.teamdigitale.it/sso-manager",
  apiURLDatiGov: "https://datipubblici.daf.teamdigitale.it/dati-gov/v1",

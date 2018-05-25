@@ -157,7 +157,7 @@ class DashboardCard extends Component {
                     </div>
                     <div className="card-body p-0 b-t-dash">
                         <div className="title-dash">
-                            <Link to={"/dashboard/list/" + dash.id}>
+                            <Link to={"/private/dashboard/list/" + dash.id}>
                                 <h3 className="card-title text-primary">{dash.title}</h3>
                             </Link>
                             {/* <h6 className="card-subtitle mb-2 text-muted">{dash.subtitle}</h6> */}

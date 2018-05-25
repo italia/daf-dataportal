@@ -8,6 +8,7 @@ import ViewBar from './bar/ViewBar';
 import UserStoryEditorContainer from './UserStoryEditorContainer';
 import IframeWidget from './widgets/IframeWidget';
 import TextWidget from './widgets/TextWidget';
+import { isPublic } from '../../../utility'
 
 // SERVICES
 import UserStoryService from './services/UserStoryService';
@@ -63,8 +64,10 @@ class UserStoryEditor extends Component {
       {
         this.state.dataStory &&
         <div>
-        <Header title="La Tua Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/>
-          <ViewBar title={this.state.dataStory.title} id={this.state.id}></ViewBar>
+        <Header title="Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/>
+          {!isPublic() &&
+            <ViewBar title={this.state.dataStory.title} id={this.state.id}></ViewBar>
+          }
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory}
             widgets={this.state.widgets}
