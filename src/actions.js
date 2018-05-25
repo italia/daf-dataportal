@@ -801,7 +801,7 @@ export function addDataset(inputJson, token, fileType) {
 
 function fetchOpendataResources(datasetname) {
     var token = '';
-    var url = 'http://locale:3001/dati-gov/v1/opendata_resource'
+    var url = 'http://localhost:3001/dati-gov/v1/opendata_resource'
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
         token = localStorage.getItem('token')
@@ -825,7 +825,7 @@ function fetchOpendataResources(datasetname) {
   
   function fetchMetadataAndResources(datasetname) {
     var token = '';
-    var url = 'http://locale:3001/dati-gov/v1/searchMetadata'
+    var url = 'http://localhost:3001/dati-gov/v1/searchMetadata'
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
         token = localStorage.getItem('token')

@@ -168,9 +168,9 @@ class Header extends Component {
               <div className={"dropdown " + (this.state.showMenu ? "show":"")}>
                 <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.showMenu ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.showMenu.bind(this)}>Il progetto</a>
                 <div className={"dropdown-menu " + (this.state.showMenu ? "show":"")} aria-labelledby="dropdownMenuButton">
-                  <Link to={'/missione'} className="dropdown-item text-primary">Missione</Link>
-                  <Link to={'/team'} className="dropdown-item text-primary">Chi siamo</Link>
-                  <Link to={'/lineeguida'} className="dropdown-item text-primary">Linee guida</Link>
+                  <Link to={'/missione'} className="dropdown-item text-primary font-lg">Missione</Link>
+                  <Link to={'/team'} className="dropdown-item text-primary font-lg">Chi siamo</Link>
+                  <Link to={'/lineeguida'} className="dropdown-item text-primary font-lg">Linee guida</Link>
                 </div>
               </div>
               </NavItem>
@@ -178,9 +178,9 @@ class Header extends Component {
               <div className={"dropdown " + (this.state.community ? "show":"")}>
                 <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.community ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.community.bind(this)}>Community</a>
                 <div className={"dropdown-menu " + (this.state.community ? "show":"")} aria-labelledby="dropdownMenuButton">
-                  <Link to={'/userstory/list'} className="dropdown-item text-primary">Storie</Link>
-                  <Link to={'/notizie'} className="dropdown-item text-primary">Notizie</Link>
-                  <a href="https://forum.italia.it/" target="_blank" className="dropdown-item text-primary">Forum</a>
+                  <Link to={'/userstory/list'} className="dropdown-item text-primary font-lg">Storie</Link>
+                  <Link to={'/notizie'} className="dropdown-item text-primary font-lg">Notizie</Link>
+                  <a href="https://forum.italia.it/" target="_blank" className="dropdown-item text-primary font-lg">Forum</a>
                 </div>
               </div>
               </NavItem>

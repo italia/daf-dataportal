@@ -38,7 +38,7 @@ class Public extends Component {
   };
   
   handleScroll(event) {
-    if(window.scrollY > 150){
+    if(window.scrollY > 80){
       this.setState({
         js_scrolled: true
       })
