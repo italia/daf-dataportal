@@ -730,7 +730,7 @@ class DatasetList extends Component {
                                                         <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" title={dashboard.title}>
-                                                                <Link to={'/private/dashboard/list/' + dashboard.id} className="title-res text-primary">
+                                                                <Link to={isPublic()?'/dashboard/list/' + dashboard.id:'/private/dashboard/list/' + dashboard.id} className="title-res text-primary">                                                                    
                                                                     <div title={dashboard.title} dangerouslySetInnerHTML={{__html: dashboardMatch['title']?truncateDatasetName(dashboardMatch['title'],100):truncateDatasetName(dashboard.title, 60)}}></div>
                                                                 </Link>
                                                             </div>
@@ -841,7 +841,7 @@ class DatasetList extends Component {
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
-                                                            <Link to={'/private/user_story/list/'+ story.id} className="title-res text-primary">
+                                                            <Link to={isPublic()?'/user_story/list/' + story.id:'/private/user_story/list/' + story.id} className="title-res text-primary">                                                                    
                                                                 <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?truncateDatasetName(storyMatch['title'],100):truncateDatasetName(story.title, 60)}}></div>
                                                             </Link>
                                                         </div>

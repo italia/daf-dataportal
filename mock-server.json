@@ -90,6 +90,36 @@
             }
         ]
     },
+    "/dati-gov/v1/public/elasticsearch/search": {
+        "post": [
+            {
+                "type": "catalog_test",
+                "source": "{\"dcatapit\":{\"name\":\"legal_status\",\"modified\":\"11/05/2018\",\"privatex\":true,\"notes\":\"Vocabolario controllato degli stati legali di un organizzazione preso dalla repository github https://github.com/italia/daf-ontologie-vocabolari-controllati/blob/master/VocabolariControllati/classifications-for-organizations/legal-status/legal-status.csv\",\"title\":\"legal status\",\"owner_org\":\"daf_data\",\"theme\":\"JUST\"},\"dataschema\":{\"avro\":{\"fields\":[{\"name\":\"codice_1_livello\"},{\"name\":\"label_ITA_1_livello\"},{\"name\":\"codice_2__livello\"},{\"name\":\"label_ITA_2_livello\"},{\"name\":\"codice_3_livello\"},{\"name\":\"label_ITA_3_livello\"}]}}}",
+                "match": "{\"dcatapit.title\": \"<span style='background-color:#0BD9D3'>legal</span> status,\"dcatapit.notes\": \"-for-organizations/<span style='background-color:#0BD9D3'>legal</span>-status/<span style='background-color:#0BD9D3'>legal</span>-status.csv}"
+            },
+            {
+                "type": "ext_opendata",
+                "source": "{\"name\": \"01-psc-piano-strutturale-comunale-kml\",\"title\": \"01 - PSC - Piano Strutturale Comunale - Kml\",\"notes\": \"Sintesi del Piano Strutturale Comunale\",\"theme\": \"OP_DATPRO\",\"organization\": {\"name\": \"emilia-romagna\"},\"modified\": \"2017-02-03T15:51:29.327285\"}",
+                "match": "{}"
+            },
+            {
+                "type": "status",
+                "source": "{\"0\":\"1\",\"1\":\"1\", \"2\":\"0\"}",
+                "match": null
+            },
+            {
+                "type": "organization",
+                "source": "{\"daf_data\":\"1\"}",
+                "match": null
+            },
+            {
+                "type": "category",
+                "source": "{\"JUST\":\"1\"}",
+                "match": null
+            }
+        ]
+    
+    },
     "/dati-gov/v1/elasticsearch/search": {
         "post": [
             {
