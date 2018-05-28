@@ -13,7 +13,7 @@ class NotizieList extends Component {
     componentDidMount(){
         // ORIG URL  https://medium.com/feed/team-per-la-trasformazione-digitale
         // FINAL URL https://datipubblici.daf.teamdigitale.it/dati-gov/medium/medium.com/feed/team-per-la-trasformazione-digitale
-        let url = serviceurl.apiMedium + this.props.properties.url
+        let url = serviceurl.apiMedium + this.props.properties.mediumURL
         this.load(url);
     }
 
