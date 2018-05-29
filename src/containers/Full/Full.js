@@ -316,10 +316,10 @@ class Full extends Component {
           published: 0
         };
 /*         userStoryService.save(request).then((data)=> {
-            this.props.history.push('/user_story/list/'+ data.message + '/edit');
+            this.props.history.push('/userstory/list/'+ data.message + '/edit');
         }); */
         this.props.history.push({
-          'pathname':'/private/user_story/create',
+          'pathname':'/private/userstory/create',
           'story': request,
           'modified':true
         })
@@ -385,7 +385,7 @@ class Full extends Component {
     let mainDiv = 'bg-white'
     let home = ''
 
-    if (history.location.pathname === '/private/user_story/list' || history.location.pathname === 'private/widget')
+    if (history.location.pathname === '/private/userstory/list' || history.location.pathname === 'private/widget')
       mainDiv='bg-light'
     
     if (history.location.pathname === '/private/home' || history.location.pathname.indexOf('/private/search')!==-1 || history.location.pathname.indexOf('/private/dataset')!==-1)
@@ -542,7 +542,7 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies" name="Ontologies" component={Ontologies} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabulary" name="Vocabulary" component={Vocabulary} />
                 <PrivateRoute authed={this.state.authed} path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
-                <PrivateRoute authed={this.state.authed} path="/private/user_story" name="User Story" component={UserStory} />
+                <PrivateRoute authed={this.state.authed} path="/private/userstory" name="User Story" component={UserStory} />
                 <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} />
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset_old" name="Dataset" component={Dataset} />}
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset" name="Dataset" component={DatasetList} />}

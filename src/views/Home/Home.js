@@ -430,7 +430,7 @@ class Home extends Component {
                         }
                     </div>
                     <div className="w-100 text-center">
-                        <Link to={'/private/user_story/list'}>
+                        <Link to={'/private/userstory/list'}>
                             <h4 className="text-primary"><u>Vedi tutte</u></h4>
                         </Link>
                     </div>

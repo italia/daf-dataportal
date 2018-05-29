@@ -106,9 +106,9 @@ class UserStoryEditor extends Component {
             saving: false,
             modified: false
           })
-          if(window.location === '/user_story/create/'){
+          if(window.location === '/userstory/create/'){
             this.state.dataStory.id = data.message;
-            this.props.history.push('/private/user_story/list/'+ data.message + '/edit');
+            this.props.history.push('/private/userstory/list/'+ data.message + '/edit');
           }
           toastr.success('Completato', 'Storia salvata con successo')
         })
@@ -136,7 +136,7 @@ class UserStoryEditor extends Component {
    */
   onRemove() {
     userStoryService.remove(this.state.dataStory.id).then(() => {
-      window.location = '#/user_story/list';
+      window.location = '#/userstory/list';
     })
   }
 

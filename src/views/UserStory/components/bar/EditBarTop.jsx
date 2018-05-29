@@ -155,17 +155,17 @@ class EditBarTop extends React.Component {
 
         {/* BUTTON BAR */}          
         <div className="box text-right">
-          <Link role="button" to="/private/user_story/list">
+{/*           <Link role="button" to="/private/userstory/list">
             <button type="button" className="btn btn-link" >
               <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
             </button>
-          </Link>
+          </Link> */}
           
           <button type="button" className="btn btn-link" onClick={() => this.onRemove()}>
               <i className="fa fa-trash fa-lg m-t-2"></i>
           </button>
 
-          <Link role="button" to={"/private/user_story/list/" + this.props.id }>
+          <Link role="button" to={"/private/userstory/list/" + this.props.id }>
             <button type="button" className="btn btn-link">              
               <i className="fa fa-eye fa-lg m-t-2"></i>
             </button>

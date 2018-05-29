@@ -16,13 +16,13 @@ class ViewBar extends React.Component {
 */}
 
 
-        <Link role="button" to="/private/user_story/list">
+{/*         <Link role="button" to="/private/userstory/list">
           <button type="button" className="btn btn-link btn-xs" >
               <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
           </button>
-        </Link>
+        </Link> */}
 
-        <Link role="button" to={"/private/user_story/list/" + this.props.id + "/edit"}>
+        <Link role="button" to={"/private/userstory/list/" + this.props.id + "/edit"}>
           <button type="button" className="btn btn-link btn-xs">
               <i className="fa fa-edit fa-lg m-t-2"></i> 
           </button>

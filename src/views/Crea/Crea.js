@@ -218,7 +218,7 @@ class Crea extends Component {
                     published: 0
                 };
                 userStoryService.save(request).then((data) => {
-                    this.props.history.push('/private/user_story/list/' + data.message + '/edit');
+                    this.props.history.push('/private/userstory/list/' + data.message + '/edit');
                 });
             }
         } else {

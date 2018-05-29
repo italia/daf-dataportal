@@ -141,7 +141,7 @@ class Header extends Component {
 
 		createStory(){
 			/* this.props.history.push({
-				pathname: '/user_story/list',
+				pathname: '/userstory/list',
 				state: { 'isOpen': true }
 			}) */
 			this.props.openModalStory();
