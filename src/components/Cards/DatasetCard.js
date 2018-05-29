@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Route, Link } from 'react-router-dom';
 import HomeService from '../../views/Home/services/HomeService';
-import { truncateDatasetName } from "../../utility";
+import { truncateDatasetName, isPublic } from "../../utility";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock, faGlobe } from '@fortawesome/fontawesome-free-solid'
@@ -47,6 +47,9 @@ class DatasetCard extends Component{
           if(!dataset.dcatapit.privatex)
             openData=true
 
+
+        var url = (isPublic()?'/dataset/':'/private/dataset/')+(open?(dataset.name+'?type=open'):dataset.dcatapit.name)
+
         return (
             <div className="mx-auto">
                 <div className="card bg-gray-100 card-dataset">
@@ -71,7 +74,7 @@ class DatasetCard extends Component{
                     </div>
                     <div className="dataset-body b-b-card">
                         <div className="title-dash pl-3 ml-0">
-                            <Link to={"/private/dataset/" + (open?dataset.name:dataset.dcatapit.name)}>
+                            <Link to={url}>
                                 <h3 className="card-title text-primary">{open?truncateDatasetName(dataset.title, 60):truncateDatasetName(dataset.dcatapit.title, 60)}</h3>
                             </Link>
                             {/* <h6 className="card-subtitle mb-2 text-muted">{dash.subtitle}</h6> */}

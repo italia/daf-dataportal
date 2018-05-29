@@ -399,7 +399,7 @@ class Full extends Component {
     return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
       <div className="app">
       {/* Modal per creazione nuova Storia */}
-      <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
+      {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
           <form>
             <ModalHeader>
               <ModalTitle>Crea una Storia</ModalTitle>
@@ -458,11 +458,11 @@ class Full extends Component {
               </button>
             </ModalFooter>
           </form>
-        </Modal>
+        </Modal>}
 
         {/* Modal per creazione nuova Dash */}
 
-        <Modal isOpen={this.state.isOpenDash} onRequestHide={this.hideModalDash}>
+        {loggedUser && <Modal isOpen={this.state.isOpenDash} onRequestHide={this.hideModalDash}>
           <form>
             <ModalHeader>
               <ModalTitle>Crea una Dashboard</ModalTitle>
@@ -526,12 +526,12 @@ class Full extends Component {
               </button>
             </ModalFooter>
           </form>
-        </Modal>
+        </Modal>}
 
 
         <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>
         <div className="app-body">
-          <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>
+          {loggedUser && <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>}
           <main className={"main "+mainDiv} >
             {this.state.open && <SearchBar history={history} open={this.state.open}/>}
             <Breadcrumb />

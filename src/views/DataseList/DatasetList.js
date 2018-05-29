@@ -634,7 +634,7 @@ class DatasetList extends Component {
                                                                     <div className="col-md-2 py-1 px-1" >
                                                                         <span className="badge badge-info my-1">{decodeTheme(datasetOpen.theme)}</span>
                                                                     </div>
-                                                                    <div className="col-md-2 py-1 px-1" >
+                                                                    <div className="col-md-2 py-1 px-1 text-truncate" >
                                                                         <div title={datasetOpen.organization.name} dangerouslySetInnerHTML={{__html: datasetOpen.organization.name}}></div>
                                                                     </div>
                                                                     <div className="col-md-1 py-1">
