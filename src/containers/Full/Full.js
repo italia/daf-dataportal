@@ -378,18 +378,25 @@ class Full extends Component {
 
   render() {
     const { history, loggedUser } = this.props
-    const divStyle = {
+/*     const divStyle = {
       'paddingLeft': '10px',
       'paddingRigth': '0px',
-    };
+    }; */
     let mainDiv = 'bg-white'
     let home = ''
+    let paddingTop = 'pt-3'
 
-    if (history.location.pathname === '/private/userstory/list' || history.location.pathname === 'private/widget')
+    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1)
       mainDiv='bg-light'
     
-    if (history.location.pathname === '/private/home' || history.location.pathname.indexOf('/private/search')!==-1 || history.location.pathname.indexOf('/private/dataset')!==-1)
+    if (window.location.hash.indexOf('/private/home')!==-1 || window.location.hash.indexOf('/private/search')!==-1 || window.location.hash.indexOf('/private/dataset')!==-1)
       home = 'p-0'
+
+    if (window.location.hash.indexOf('/private/home')!==-1)
+      paddingTop = ''
+    
+    if (window.location.hash.indexOf('/private/dataset/')!==-1)
+      paddingTop = ''
 
     var role = ''
     if(this.props.loggedUser)
@@ -535,7 +542,7 @@ class Full extends Component {
           <main className={"main "+mainDiv} >
             {this.state.open && <SearchBar history={history} open={this.state.open}/>}
             <Breadcrumb />
-            <div className={"container-fluid "+home} style={divStyle}>
+            <div className={paddingTop+ " container-fluid "+home }>
               <Switch>
                 <PrivateRoute authed={this.state.authed} path="/private/home" name="Home" exact component={Home}/>
                 <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
