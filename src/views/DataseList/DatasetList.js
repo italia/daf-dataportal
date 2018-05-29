@@ -841,7 +841,7 @@ class DatasetList extends Component {
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
-                                                            <Link to={isPublic()?'/user_story/list/' + story.id:'/private/user_story/list/' + story.id} className="title-res text-primary">                                                                    
+                                                            <Link to={isPublic()?'/userstory/list/' + story.id:'/private/userstory/list/' + story.id} className="title-res text-primary">                                                                    
                                                                 <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?truncateDatasetName(storyMatch['title'],100):truncateDatasetName(story.title, 60)}}></div>
                                                             </Link>
                                                         </div>

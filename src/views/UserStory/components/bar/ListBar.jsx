@@ -114,10 +114,10 @@ class ViewBar extends React.Component {
           published: 0
         };
 /*         userStoryService.save(request).then((data)=> {
-            this.props.history.push('/user_story/list/'+ data.message + '/edit');
+            this.props.history.push('/userstory/list/'+ data.message + '/edit');
         }); */
         this.props.history.push({
-          'pathname':'/private/user_story/create',
+          'pathname':'/private/userstory/create',
           'story': request,
           'modified':true
         })
