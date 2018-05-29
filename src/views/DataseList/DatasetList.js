@@ -152,9 +152,9 @@ class DatasetList extends Component {
         }
 
         if(dataset){
-            dispatch(search('', filter))
+            dispatch(search('', filter, isPublic()))
         }else{
-            dispatch(search(query, filter))
+            dispatch(search(query, filter, isPublic()))
             .catch((error) => {
                 this.setState({
                     isFetching: false

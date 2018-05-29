@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Route, Link } from 'react-router-dom';
 import HomeService from '../../views/Home/services/HomeService';
-import { truncateDatasetName, isPublic } from "../../utility";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock, faGlobe } from '@fortawesome/fontawesome-free-solid'
-import { decodeTheme, isPublic } from '../../utility' 
+import { truncateDatasetName, decodeTheme, isPublic } from '../../utility' 
 
 
 const homeService = new HomeService();
