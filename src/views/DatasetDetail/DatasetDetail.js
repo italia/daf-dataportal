@@ -814,7 +814,7 @@ class DatasetDetail extends Component {
                 </div>
             }
             {!dataset && !metadata && (ope === 'RECEIVE_DATASET_DETAIL_ERROR') &&
-                <div className="row mx-4">
+                <div className="row mx-4 mt-3">
                     <div className="col-12">
                         <div className="alert alert-danger" role="alert">
                             Il dataset cercato non esiste

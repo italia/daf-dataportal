@@ -6,7 +6,7 @@ import { truncateDatasetName, isPublic } from "../../utility";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock, faGlobe } from '@fortawesome/fontawesome-free-solid'
-import { decodeTheme, isPublic } from '../../utility' 
+import { decodeTheme } from '../../utility' 
 
 
 const homeService = new HomeService();
