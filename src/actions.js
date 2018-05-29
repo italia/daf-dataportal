@@ -910,8 +910,7 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          //'Authorization': 'Bearer ' + localStorage.getItem('token')
-          'Authorization': 'Basic bHVjYS5waWNjaW9uaTI2QGdtYWlsLmNvbTpQYXNzd29yZDE='
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
         body: JSON.stringify(filter)
       })

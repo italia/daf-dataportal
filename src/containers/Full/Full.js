@@ -316,10 +316,10 @@ class Full extends Component {
           published: 0
         };
 /*         userStoryService.save(request).then((data)=> {
-            this.props.history.push('/user_story/list/'+ data.message + '/edit');
+            this.props.history.push('/userstory/list/'+ data.message + '/edit');
         }); */
         this.props.history.push({
-          'pathname':'/private/user_story/create',
+          'pathname':'/private/userstory/create',
           'story': request,
           'modified':true
         })
@@ -378,18 +378,25 @@ class Full extends Component {
 
   render() {
     const { history, loggedUser } = this.props
-    const divStyle = {
+/*     const divStyle = {
       'paddingLeft': '10px',
       'paddingRigth': '0px',
-    };
+    }; */
     let mainDiv = 'bg-white'
     let home = ''
+    let paddingTop = 'pt-3'
 
-    if (history.location.pathname === '/private/user_story/list' || history.location.pathname === 'private/widget')
+    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1)
       mainDiv='bg-light'
     
-    if (history.location.pathname === '/private/home' || history.location.pathname.indexOf('/private/search')!==-1 || history.location.pathname.indexOf('/private/dataset')!==-1)
+    if (window.location.hash.indexOf('/private/home')!==-1 || window.location.hash.indexOf('/private/search')!==-1 || window.location.hash.indexOf('/private/dataset')!==-1)
       home = 'p-0'
+
+    if (window.location.hash.indexOf('/private/home')!==-1)
+      paddingTop = ''
+    
+    if (window.location.hash.indexOf('/private/dataset/')!==-1)
+      paddingTop = ''
 
     var role = ''
     if(this.props.loggedUser)
@@ -399,7 +406,7 @@ class Full extends Component {
     return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
       <div className="app">
       {/* Modal per creazione nuova Storia */}
-      <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
+      {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
           <form>
             <ModalHeader>
               <ModalTitle>Crea una Storia</ModalTitle>
@@ -458,11 +465,11 @@ class Full extends Component {
               </button>
             </ModalFooter>
           </form>
-        </Modal>
+        </Modal>}
 
         {/* Modal per creazione nuova Dash */}
 
-        <Modal isOpen={this.state.isOpenDash} onRequestHide={this.hideModalDash}>
+        {loggedUser && <Modal isOpen={this.state.isOpenDash} onRequestHide={this.hideModalDash}>
           <form>
             <ModalHeader>
               <ModalTitle>Crea una Dashboard</ModalTitle>
@@ -526,23 +533,23 @@ class Full extends Component {
               </button>
             </ModalFooter>
           </form>
-        </Modal>
+        </Modal>}
 
 
         <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>
         <div className="app-body">
-          <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>
+          {loggedUser && <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>}
           <main className={"main "+mainDiv} >
             {this.state.open && <SearchBar history={history} open={this.state.open}/>}
             <Breadcrumb />
-            <div className={"container-fluid "+home} style={divStyle}>
+            <div className={paddingTop+ " container-fluid "+home }>
               <Switch>
                 <PrivateRoute authed={this.state.authed} path="/private/home" name="Home" exact component={Home}/>
                 <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies" name="Ontologies" component={Ontologies} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabulary" name="Vocabulary" component={Vocabulary} />
                 <PrivateRoute authed={this.state.authed} path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
-                <PrivateRoute authed={this.state.authed} path="/private/user_story" name="User Story" component={UserStory} />
+                <PrivateRoute authed={this.state.authed} path="/private/userstory" name="User Story" component={UserStory} />
                 <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} />
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset_old" name="Dataset" component={Dataset} />}
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset" name="Dataset" component={DatasetList} />}

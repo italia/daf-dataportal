@@ -1,5 +1,5 @@
 .story-content {
-  background-color: white;
+  /* background-color: white; */
   padding: 20px;
   margin-bottom: 40px;
 }
@@ -12,7 +12,7 @@
 
 .title-story-content h3 {
   color: #263238;
-  background-color: #e4e5e6;
+  /* background-color: #e4e5e6; */
   position: absolute;
   padding: 5px 10px;
   font-size: 15px;
@@ -68,5 +68,5 @@
 .user-story-card {
   padding: 20px;
   margin: 20px;
-  background: #F5F7FA;
+  /* background: #F5F7FA; */
 }

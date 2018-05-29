@@ -137,7 +137,7 @@ class App extends Component {
             <Route exact path="/private/dataset/:id" name="Dataset Detail" component={Full} />
             <Route path="/private/dashboard/manager" name="Dash" component={Full} />
             <Route path="/private/dashboard/list" name="Dash" component={Full} />
-            <Route path="/private/user_story" name="Storie" component={Full} />
+            <Route path="/private/userstory" name="Storie" component={Full} />
             <Route path="/private/profile" name="Profile" component={Full} />
             <Route path="/private/crea" name="Crea" component={Full} />
             <Route path="/private/settings" name="Settings" component={Full} />

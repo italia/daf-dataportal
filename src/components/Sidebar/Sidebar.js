@@ -105,7 +105,7 @@ class Sidebar extends Component {
   createStory(){
     this.props.openModalStory();
     /* this.props.history.push({
-      pathname: '/user_story/list',
+      pathname: '/userstory/list',
       state: { 'isOpen': true }
     }) */
   }
@@ -171,7 +171,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/private/user_story/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Storie</NavLink>
+                <NavLink to={'/private/userstory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Storie</NavLink>
               </li>
               <li className="nav-title text-secondary">
                 TOOLKIT
@@ -289,7 +289,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/user_story/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
+                <NavLink to={'/userstory/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li> */}
               {role && role != 'daf_viewers' && <div>
               <li className="nav-title text-secondary">

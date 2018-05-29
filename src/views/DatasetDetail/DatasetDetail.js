@@ -664,11 +664,11 @@ class DatasetDetail extends Component {
                         <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
                             <Widgets widgets={iframes} loading={false} />
                         </div>
-                        <div className="col-12">
+                        {/* <div className="col-12">
                             <div>
                                 <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             }
@@ -814,7 +814,7 @@ class DatasetDetail extends Component {
                 </div>
             }
             {!dataset && !metadata && (ope === 'RECEIVE_DATASET_DETAIL_ERROR') &&
-                <div className="row mx-4">
+                <div className="row mx-4 mt-3">
                     <div className="col-12">
                         <div className="alert alert-danger" role="alert">
                             Il dataset cercato non esiste
