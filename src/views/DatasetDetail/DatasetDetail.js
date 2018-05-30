@@ -24,7 +24,7 @@ import { transformWidgetName } from '../../utility'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import IframeWidget from './widgets/IframeWidget';
 import WidgetCard from '../../components/Cards/WidgetCard';
-import { decodeTheme } from '../../utility'
+import { decodeTheme, isPublic } from '../../utility'
 import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
 
@@ -82,15 +82,20 @@ class DatasetDetail extends Component {
     }
 
     componentDidMount() {
-        const { dataset, dispatch, query } = this.props
+        const { query } = this.props
         const path = this.props.location.pathname
-
-
         if (path.indexOf('/') != -1) {
             var arr = path.split('/')
             var nome = arr[arr.length-1]
             console.log(nome)
             this.setState({name:nome})
+            this.load(nome, query, false)
+        }
+    }
+
+    load(nome, query, isDaf){
+        const { dispatch } = this.props
+        if(!isDaf){
             if (this.props.location.search == '?type=open') {
                 dispatch(datasetMetadata(nome))
                     .catch(error => { console.log('Errore durante il caricamento dei metadati del dataset ' + nome); this.setState({ hidden: false }) })
@@ -98,8 +103,10 @@ class DatasetDetail extends Component {
                 dispatch(datasetDetail(nome, query))
                     .catch(error => { console.log('Errore durante il caricamento del dataset ' + nome); this.setState({ hidden: false }) })
             }
+        }else{
+            dispatch(datasetDetail(nome, query))
+                    .catch(error => { console.log('Errore durante il caricamento del dataset ' + nome); this.setState({ hidden: false }) })
         }
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -187,8 +194,12 @@ class DatasetDetail extends Component {
           
     }
 
-    handleDafRedirect(link){
-        this.props.history.push(link);
+    handleDafRedirect(nome){
+        const { query } = this.props
+        console.log(nome)
+        this.setState({name:nome})
+        this.load(nome, query, true)
+        this.props.history.push(isPublic()?'/dataset/' + nome:'/private/dataset/' + nome)
     }
 
     handlePreview(nomeFile, logical_uri, e) {
@@ -266,18 +277,18 @@ class DatasetDetail extends Component {
     }
 
 
-    getLinktoDaf(resId, jsonOpendataResources){
-        var link = undefined
+    getNameInDaf(resId, jsonOpendataResources){
+        var name = undefined
         if(jsonOpendataResources && jsonOpendataResources.length >0){
             console.log('il json ha restituito un valore')
             for(var i=0;i<jsonOpendataResources.length;i++){
                 var res = jsonOpendataResources[i]
                 if(res.operational.ext_opendata.resourceId === resId){
-                    link = '/dataset/' + res.dcatapit.name
+                    name = res.dcatapit.name
                 }
             }
         }
-        return link
+        return name
     }
     
 
@@ -702,11 +713,11 @@ class DatasetDetail extends Component {
                                                 <table className="table table-bordered table-responsive d-inline-table">
                                                     <tbody className="w-100">
                                                         <tr>
-                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Identificativo del dataset</strong></th>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Identificativo dataset</strong></th>
                                                             <td className="bg-grigino">{this.truncate(metadata.identifier, 50)}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Temi del dataset</strong></th>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Temi dataset</strong></th>
                                                             <td className="bg-grigino">
                                                                 {metadataThemes && metadataThemes.map((theme, index) => {
                                                                     if (index == 0) {
@@ -723,6 +734,58 @@ class DatasetDetail extends Component {
                                                                 }
                                                                 </td>
                                                             </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Data creazione</strong></th>
+                                                            <td className="bg-grigino">{metadata.metadata_created}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Data modifica</strong></th>
+                                                            <td className="bg-grigino">{metadata.metadata_modified}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Nome titolare</strong></th>
+                                                            <td className="bg-grigino">{metadata.holder_name}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Identificativo titolare</strong></th>
+                                                            <td className="bg-grigino">{metadata.holder_identifier}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Autore</strong></th>
+                                                            <td className="bg-grigino">{metadata.author}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Email autore</strong></th>
+                                                            <td className="bg-grigino">{metadata.author_email}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Manutentore</strong></th>
+                                                            <td className="bg-grigino">{metadata.maintainer}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Email manutentore</strong></th>
+                                                            <td className="bg-grigino">{metadata.maintainer_email}</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                            <div className="col-12">
+                                                <p className="text-muted mb-4"><b>Informazioni Addizionali </b></p>
+                                            </div>
+                                            <div className="col-12">
+                                                <table className="table table-bordered table-responsive d-inline-table">
+                                                    <tbody className="w-100">
+                                                        {metadata.extras && metadata.extras.map((extra, index) => {
+                                                            return(
+                                                                <tr>
+                                                                    <th className="bg-white" style={{ width: "192px" }}><strong>{extra.key}</strong></th>
+                                                                    <td className="bg-grigino">{extra.value}</td>
+                                                                </tr>
+                                                                )
+                                                            })
+                                                        }
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -774,7 +837,7 @@ class DatasetDetail extends Component {
                                     <div className="row px-3">
                                         <div className="col-12 card-text">
                                                 {metadata.resources && metadata.resources.map((res, index) => {
-                                                    var link = this.getLinktoDaf(res.id, this.state.jsonOpendataResources)
+                                                    var dafName = this.getNameInDaf(res.id, this.state.jsonOpendataResources)
                                                     return (
                                                         <div className="row" key={index}>
                                                             <div className="col-8 py-4">
@@ -795,11 +858,11 @@ class DatasetDetail extends Component {
                                                             </div>
                                                             <div className="col-4 py-4">
                                                                 <div className="row py-4">
-                                                                    <button className="btn btn-accento" style={{ right: '20%', height: '48px' }} onClick={this.handleDownloadResource.bind(this, res.url)}>Download<i className="ml-4 fa fa-download" /></button>
+                                                                    <button className="btn btn-accento" style={{ right: '20%', height: '48px', width: '200px' }} onClick={this.handleDownloadResource.bind(this, res.url)}>Download<i className="ml-4 fa fa-download" /></button>
                                                                 </div>
-                                                                {link && 
+                                                                {dafName && 
                                                                 <div className="row py-4">
-                                                                    <button className="btn btn-accento" style={{ right: '20%', height: '48px' }} onClick={this.handleDafRedirect.bind(this, link)}>Vai al Daf<i className="ml-4 fa fa-chevron-circle-right" /></button>
+                                                                    <button className="btn btn-accento" style={{ right: '20%', height: '48px', width: '200px' }} onClick={this.handleDafRedirect.bind(this, dafName)}>Vai al dettaglio<i className="ml-4 fa fa-chevron-circle-right" /></button>
                                                                 </div>
                                                                 }
                                                             </div>

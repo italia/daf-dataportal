@@ -487,15 +487,10 @@ export function logout() {
 }
 
 function deleteDataportalCookies() {
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        if(name.trim()=='dataportal')
-          document.cookie = "dataportal=; path=/; domain=" + serviceurl.domain;
-    }
+    document.cookie = "dataportal=;path=/;domain=" + serviceurl.domain
+    document.cookie = "session=;path=/;domain=" + serviceurl.domain
+    document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
+    document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
 }
 
 export function addUserOrganization(uid) {
