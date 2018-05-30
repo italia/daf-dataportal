@@ -100,11 +100,11 @@ class DatasetDetail extends Component {
                 dispatch(datasetMetadata(nome))
                     .catch(error => { console.log('Errore durante il caricamento dei metadati del dataset ' + nome); this.setState({ hidden: false }) })
             } else {
-                dispatch(datasetDetail(nome, query))
+                dispatch(datasetDetail(nome, query, isPublic()))
                     .catch(error => { console.log('Errore durante il caricamento del dataset ' + nome); this.setState({ hidden: false }) })
             }
         }else{
-            dispatch(datasetDetail(nome, query))
+            dispatch(datasetDetail(nome, query, isPublic()))
                     .catch(error => { console.log('Errore durante il caricamento del dataset ' + nome); this.setState({ hidden: false }) })
         }
     }
@@ -787,7 +787,7 @@ class DatasetDetail extends Component {
                                                     <tbody className="w-100">
                                                         {metadata.extras && metadata.extras.map((extra, index) => {
                                                             return(
-                                                                <tr>
+                                                                <tr key={index}>
                                                                     <th className="bg-white" style={{ width: "192px" }}><strong>{extra.key}</strong></th>
                                                                     <td className="bg-grigino">{extra.value}</td>
                                                                 </tr>
