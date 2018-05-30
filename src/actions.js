@@ -6,6 +6,7 @@ import { serviceurl } from './config/serviceurl.js'
 //import det from './data/datasetdetail'
 import ont from './data/ontologies'
 import voc from './data/vocabulary'
+import settings from './data/settings'
 
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
@@ -487,15 +488,10 @@ export function logout() {
 }
 
 function deleteDataportalCookies() {
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        if(name.trim()=='dataportal')
-          document.cookie = "dataportal=; path=/; domain=" + serviceurl.domain;
-    }
+    document.cookie = "dataportal=;path=/;domain=" + serviceurl.domain
+    document.cookie = "session=;path=/;domain=" + serviceurl.domain
+    document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
+    document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
 }
 
 export function addUserOrganization(uid) {
@@ -640,6 +636,9 @@ export function fetchProperties(org) {
     })
       .then(response => response.json())
       .then(json => dispatch(receiveProperties(json)))
+    .catch(error => {
+      console.log('Errore nel caricamento delle properties, carico default')
+      dispatch(receiveProperties(settings))})
   }
 }
 

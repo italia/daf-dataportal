@@ -24,7 +24,7 @@ import { transformWidgetName } from '../../utility'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import IframeWidget from './widgets/IframeWidget';
 import WidgetCard from '../../components/Cards/WidgetCard';
-import { decodeTheme } from '../../utility'
+import { decodeTheme, isPublic } from '../../utility'
 import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
 
@@ -82,15 +82,20 @@ class DatasetDetail extends Component {
     }
 
     componentDidMount() {
-        const { dataset, dispatch, query } = this.props
+        const { query } = this.props
         const path = this.props.location.pathname
-
-
         if (path.indexOf('/') != -1) {
             var arr = path.split('/')
             var nome = arr[arr.length-1]
             console.log(nome)
             this.setState({name:nome})
+            this.load(nome, query, false)
+        }
+    }
+
+    load(nome, query, isDaf){
+        const { dispatch } = this.props
+        if(!isDaf){
             if (this.props.location.search == '?type=open') {
                 dispatch(datasetMetadata(nome))
                     .catch(error => { console.log('Errore durante il caricamento dei metadati del dataset ' + nome); this.setState({ hidden: false }) })
@@ -98,8 +103,10 @@ class DatasetDetail extends Component {
                 dispatch(datasetDetail(nome, query))
                     .catch(error => { console.log('Errore durante il caricamento del dataset ' + nome); this.setState({ hidden: false }) })
             }
+        }else{
+            dispatch(datasetDetail(nome, query))
+                    .catch(error => { console.log('Errore durante il caricamento del dataset ' + nome); this.setState({ hidden: false }) })
         }
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -187,8 +194,12 @@ class DatasetDetail extends Component {
           
     }
 
-    handleDafRedirect(link){
-        this.props.history.push(link);
+    handleDafRedirect(nome){
+        const { query } = this.props
+        console.log(nome)
+        this.setState({name:nome})
+        this.load(nome, query, true)
+        this.props.history.push(isPublic()?'/dataset/' + nome:'/private/dataset/' + nome)
     }
 
     handlePreview(nomeFile, logical_uri, e) {
@@ -266,18 +277,18 @@ class DatasetDetail extends Component {
     }
 
 
-    getLinktoDaf(resId, jsonOpendataResources){
-        var link = undefined
+    getNameInDaf(resId, jsonOpendataResources){
+        var name = undefined
         if(jsonOpendataResources && jsonOpendataResources.length >0){
             console.log('il json ha restituito un valore')
             for(var i=0;i<jsonOpendataResources.length;i++){
                 var res = jsonOpendataResources[i]
                 if(res.operational.ext_opendata.resourceId === resId){
-                    link = '/dataset/' + res.dcatapit.name
+                    name = res.dcatapit.name
                 }
             }
         }
-        return link
+        return name
     }
     
 
@@ -296,9 +307,10 @@ class DatasetDetail extends Component {
             {(ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') && (dataset) &&
                 <div>
                     <div className='top-dataset'>
+                      <div className="container pt-4">
                         <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary"></i>
                         <h2 className="title-dataset px-4 text-primary" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title, 75)}</h2>
-                        <ul className="nav nav-tabs w-100 buttons-nav px-search">
+                        <ul className="nav b-b-0 nav-tabs w-100 buttons-nav pl-4">
                             <li className="nav-item">
                                 <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
                             </li>
@@ -316,11 +328,12 @@ class DatasetDetail extends Component {
                             </li>
                         </ul>
                         <button className="btn btn-accento buttons-nav" style={{ right: '20%', height: '48px' }} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>
-
+                      </div>
                     </div>
+                    <div className="container">
                     <div className="row">
                         <div hidden={this.state.showWidget} className="col-7">
-                            <div className="card-block px-search">
+                            <div className="card-block ">
                                 <div className="row px-3">
                                     <div hidden={!this.state.showDett} className="col-12">
                                         <p className="desc-dataset"> {dataset.dcatapit.notes} </p>
@@ -546,7 +559,7 @@ class DatasetDetail extends Component {
                                         <p className='status'>Stato</p>
                                     </div>
                                     {(!dataset.operational.ext_opendata || dataset.operational.ext_opendata === {}) &&
-                                        <div className="col-6 mb-3">
+                                        <div className="col-8 mb-3">
                                             {feed.has_job && feed.job_status === 'COMPLETED' &&
                                                 <div className="progress" style={{ height: '30px' }}>
                                                     <div className="progress-bar bg-success w-100 h-100 text-dark" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Attivo</div>
@@ -570,7 +583,7 @@ class DatasetDetail extends Component {
                                         </div>
                                     }
                                     {(dataset.operational.ext_opendata && dataset.operational.ext_opendata != {}) &&
-                                        <div className="col-6 mb-3">
+                                        <div className="col-8 mb-3">
                                             {!this.state.hasPreview &&
                                                 <div className="progress" style={{ height: '30px' }}>
                                                     <div className="progress-bar bg-danger w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Caricamento non riuscito</div>
@@ -598,14 +611,14 @@ class DatasetDetail extends Component {
                                         <p className="text-muted pb-1 mb-2"><b className="pr-2">Tema </b> <span className="badge badge-info"> {decodeTheme(dataset.dcatapit.theme)}</span></p>
                                     </div>
 
-                                    <div className="col-4 mt-3 pr-0">
+                                    <div className="col-6 mt-3 pr-0">
                                         <p className='status'>DAF Index</p>
                                     </div>
                                     <div className="col-3 mt-3">
                                         <span className="badge badge-pill badge-success text-dark">{this.state.dafIndex}</span> <span className="ml-1 text-muted"> su 5</span>
                                     </div>
 
-                                    <div className="col-6">
+                                    <div className="col-8">
                                         <table className="table table-bordered table-responsive d-inline-table">
                                             <tbody className="w-100">
                                                 <tr>
@@ -630,7 +643,19 @@ class DatasetDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div hidden={!this.state.showDett} className="col-12 bg-light">
+                        
+
+                        {/* <div className="col-12">
+                            <div>
+                                <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
+                            </div>
+                        </div> */}
+                        </div>
+                    </div>
+                    <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
+                      <Widgets widgets={iframes} loading={false} />
+                    </div>
+                    <div hidden={!this.state.showDett} className="bg-light">
                             <div className="card-block">
                                 <div className="container body w-100">
                                     <div className="row mx-auto text-muted">
@@ -661,23 +686,15 @@ class DatasetDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
-                            <Widgets widgets={iframes} loading={false} />
-                        </div>
-                        {/* <div className="col-12">
-                            <div>
-                                <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
-                            </div>
-                        </div> */}
-                    </div>
                 </div>
             }
             {(ope === 'RECEIVE_METADATA' && metadata) &&
                 <div>
                     <div className='top-dataset'>
+                      <div className="container pt-4">
                         <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary"></i>
                         <h2 className="title-dataset px-4 text-primary" title={metadata.title}>{this.truncate(metadata.title, 75)}</h2>
-                        <ul className="nav nav-tabs w-100 buttons-nav px-search">
+                        <ul className="nav b-b-0 nav-tabs w-100 buttons-nav pl-4">
                             <li className="nav-item">
                                 <a className={!this.state.showMeta ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showMeta: true, showRes: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
                             </li>
@@ -685,10 +702,12 @@ class DatasetDetail extends Component {
                                 <a className={!this.state.showRes ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleResources.bind(this, metadata.name)}><i className="text-icon fa fa-info-circle pr-2" />Risorse</a>
                             </li>
                         </ul>
+                      </div>
                     </div>
-                    <div className="row" hidden={!this.state.showMeta}>
-                        <div className="col-7">
-                            <div className="card-block px-search">
+                    <div className="container">
+                    <div className="row" >
+                        <div className="col-7" hidden={!this.state.showMeta}>
+                            <div className="card-block ">
                                 <div className="row px-3">
                                     <div className="col-12">
                                         <p className="desc-dataset"> {metadata.notes} </p>
@@ -702,11 +721,11 @@ class DatasetDetail extends Component {
                                                 <table className="table table-bordered table-responsive d-inline-table">
                                                     <tbody className="w-100">
                                                         <tr>
-                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Identificativo del dataset</strong></th>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Identificativo dataset</strong></th>
                                                             <td className="bg-grigino">{this.truncate(metadata.identifier, 50)}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Temi del dataset</strong></th>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Temi dataset</strong></th>
                                                             <td className="bg-grigino">
                                                                 {metadataThemes && metadataThemes.map((theme, index) => {
                                                                     if (index == 0) {
@@ -723,6 +742,58 @@ class DatasetDetail extends Component {
                                                                 }
                                                                 </td>
                                                             </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Data creazione</strong></th>
+                                                            <td className="bg-grigino">{metadata.metadata_created}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Data modifica</strong></th>
+                                                            <td className="bg-grigino">{metadata.metadata_modified}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Nome titolare</strong></th>
+                                                            <td className="bg-grigino">{metadata.holder_name}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Identificativo titolare</strong></th>
+                                                            <td className="bg-grigino">{metadata.holder_identifier}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Autore</strong></th>
+                                                            <td className="bg-grigino">{metadata.author}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Email autore</strong></th>
+                                                            <td className="bg-grigino">{metadata.author_email}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Manutentore</strong></th>
+                                                            <td className="bg-grigino">{metadata.maintainer}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th className="bg-white" style={{ width: "192px" }}><strong>Email manutentore</strong></th>
+                                                            <td className="bg-grigino">{metadata.maintainer_email}</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                            <div className="col-12">
+                                                <p className="text-muted mb-4"><b>Informazioni Addizionali </b></p>
+                                            </div>
+                                            <div className="col-12">
+                                                <table className="table table-bordered table-responsive d-inline-table">
+                                                    <tbody className="w-100">
+                                                        {metadata.extras && metadata.extras.map((extra, index) => {
+                                                            return(
+                                                                <tr>
+                                                                    <th className="bg-white" style={{ width: "192px" }}><strong>{extra.key}</strong></th>
+                                                                    <td className="bg-grigino">{extra.value}</td>
+                                                                </tr>
+                                                                )
+                                                            })
+                                                        }
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -731,7 +802,7 @@ class DatasetDetail extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-5 px-0">
+                            <div className="col-5 px-0" hidden={!this.state.showMeta}>
                                 <div className="card-block">
                                     <div className="border-left pl-3 row">
                                         <div className="col-12">
@@ -767,39 +838,37 @@ class DatasetDetail extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row" hidden={!this.state.showRes}>
-                            <div className="col-7">
-                                <div className="card-block px-search">
+                            <div className="col-12" hidden={!this.state.showRes}>
+                                <div className="card-block ">
                                     <div className="row px-3">
                                         <div className="col-12 card-text">
                                                 {metadata.resources && metadata.resources.map((res, index) => {
-                                                    var link = this.getLinktoDaf(res.id, this.state.jsonOpendataResources)
+                                                    var dafName = this.getNameInDaf(res.id, this.state.jsonOpendataResources)
                                                     return (
                                                         <div className="row" key={index}>
                                                             <div className="col-8 py-4">
-                                                                <div className="row text-muted" key={index}>
-                                                                    <i className="text-icon fa fa-sticky-note fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>{res.name}</b></h4>
+                                                                <div className="text-muted" key={index}>
+                                                                    <i className="text-icon fa fa-sticky-note fa-pull-left fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>{res.name}</b></h4>
                                                                 </div>
                                                                 <div>
-                                                                    <div className="row">
+                                                                    <div className="">
                                                                         <p><i>{res.description}</i></p>
                                                                     </div>
-                                                                    <div className="row">
+                                                                    <div className="">
                                                                         <p><b>Data creazione: </b>{res.created}</p>
                                                                     </div>
-                                                                    <div className="row">
+                                                                    <div className="">
                                                                         <p><b> Formato: </b>{res.format}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div className="col-4 py-4">
-                                                                <div className="row py-4">
-                                                                    <button className="btn btn-accento" style={{ right: '20%', height: '48px' }} onClick={this.handleDownloadResource.bind(this, res.url)}>Download<i className="ml-4 fa fa-download" /></button>
+                                                                <div className="py-4">
+                                                                    <button className="btn btn-accento" style={{ right: '20%', height: '48px', width: '200px' }} onClick={this.handleDownloadResource.bind(this, res.url)}>Download<i className="ml-4 fa fa-download" /></button>
                                                                 </div>
-                                                                {link && 
-                                                                <div className="row py-4">
-                                                                    <button className="btn btn-accento" style={{ right: '20%', height: '48px' }} onClick={this.handleDafRedirect.bind(this, link)}>Vai al Daf<i className="ml-4 fa fa-chevron-circle-right" /></button>
+                                                                {dafName && 
+                                                                <div className="py-4">
+                                                                    <button className="btn btn-accento" style={{ right: '20%', height: '48px', width: '200px' }} onClick={this.handleDafRedirect.bind(this, dafName)}>Vai al dettaglio<i className="ml-4 fa fa-chevron-circle-right" /></button>
                                                                 </div>
                                                                 }
                                                             </div>
@@ -810,7 +879,8 @@ class DatasetDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </div>
+                        </div>
                 </div>
             }
             {!dataset && !metadata && (ope === 'RECEIVE_DATASET_DETAIL_ERROR') &&

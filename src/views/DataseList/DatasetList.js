@@ -28,7 +28,7 @@ class DatasetList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            order_filter: props.history.location.state?props.history.location.state.order_filter:'desc',
+            order_filter: 'desc',
             category_filter: props.history.location.state && props.history.location.state.category_filter,
             group_filter: props.history.location.state && props.history.location.state.group_filter,
             organization_filter: props.history.location.state && props.history.location.state.organization_filter,
@@ -36,6 +36,7 @@ class DatasetList extends Component {
             organizations:[],
             filter:{'da':'',
                     'a':'',
+                    'order': 'desc',
                     'elements': []},
             showDivTipo: false,
             showDivData: false,
@@ -116,7 +117,7 @@ class DatasetList extends Component {
         if(order)
             orderFilter = order
         else{
-            orderFilter = this.state.newFilter.order
+            orderFilter = this.state.filter.order
         }  
         
         var dataset = window.location.hash.indexOf('dataset')!==-1
@@ -435,7 +436,7 @@ class DatasetList extends Component {
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivData ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickData}>Data <i className={"fa " + (this.state.showDivData ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivCategoria ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickCategoria}>Categoria <i className={"fa " + (this.state.showDivCategoria ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivOrganizzazione ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickOrganizzazione}>Organizzazione <i className={"fa " + (this.state.showDivOrganizzazione ? "fa-angle-up" : "fa-angle-down")}></i></button>
-                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivVisibilita ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickVisibilita}>Visibilità <i className={"fa " + (this.state.showDivVisibilita ? "fa-angle-up" : "fa-angle-down")}></i></button>
+                                            {!isPublic() && <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivVisibilita ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickVisibilita}>Visibilità <i className={"fa " + (this.state.showDivVisibilita ? "fa-angle-up" : "fa-angle-down")}></i></button>}
                                             {/* <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivSearch ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickSearch}><i className="fa fa-search fa-lg"/></button> */}
                                         </div>
                                     </div>
@@ -471,7 +472,7 @@ class DatasetList extends Component {
                                     minimumNights={ 0 }
                                     />
                             }
-                            {this.state.showDivCategoria && results &&
+                            {this.state.showDivCategoria && results && results.length>0 &&
                                 Object.keys(JSON.parse(results[results.length-1].source)).map((theme, index) =>{
                                     var themes=JSON.parse(results[results.length-1].source)
                                     return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 1, 'value': theme})} onClick={this.addFilter.bind(this, 1, theme)} key={index} className={!this.isInArray(this.state.filter, {'type': 1, 'value': theme})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTheme(theme)}<span className="ml-2 badge badge-pill badge-secondary">{themes[theme]}</span></button>)
