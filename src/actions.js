@@ -759,14 +759,14 @@ export function unloadDatasets() {
   }
 }
 
-export function datasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
+export function datasetDetail(datasetname, query, isPublic) {
   console.log('Dataset Detail action');
   return (dispatch, getState) => {
-      return dispatch(fetchDatasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter))
+      return dispatch(fetchDatasetDetail(datasetname, query, isPublic))
   }
 }
 
-export function datasetMetadata(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
+export function datasetMetadata(datasetname, query) {
     console.log('Metadata Detail action');
     return (dispatch, getState) => {
         return dispatch(fetchMetadataAndResources(datasetname))
@@ -866,9 +866,9 @@ export function addDatasetKylo(json, token, fileType) {
   }
 }
 
-function fetchDatasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
+function fetchDatasetDetail(datasetname, query, isPublic) {
   var token = '';
-  var url = serviceurl.apiURLCatalog + '/catalog-ds/getbyname/'  + datasetname;
+  var url = serviceurl.apiURLCatalog + (isPublic?'/public/catalog-ds/getbyname/'  + datasetname:'/catalog-ds/getbyname/'  + datasetname)
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
       token = localStorage.getItem('token')
@@ -890,12 +890,12 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
               .then(jsonFeed => {
                 dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
                 .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter)))
+                .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query)))
                 })
               })
         .catch(error => {
           console.log('Nessun Dataset con questo nome');
-          dispatch(receiveDatasetDetailError(query, category_filter, group_filter, organization_filter, order_filter))
+          dispatch(receiveDatasetDetailError(query))
         }) 
       }
   }
