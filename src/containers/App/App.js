@@ -69,28 +69,36 @@ class App extends Component {
     dispatch(fetchProperties(split[0]))
     .then(json => {
       var html = document.getElementsByTagName('html')[0];
-      switch(json.properties.theme){
-        case "1":
-          html.style.setProperty("--primary", "#0066CC");
-          html.style.setProperty("--lightblue", "#1A75D1");
-          this.setState({
-            loading: false
-          })
-          break;
-        case "2":
-          html.style.setProperty("--primary", "#4975A6");
-          html.style.setProperty("--lightblue", "#5B83AF");
-          this.setState({
-            loading: false
-          })
-          break;
-        default:
-          html.style.setProperty("--primary", "#0066CC");
-          html.style.setProperty("--lightblue", "#1A75D1");
-          this.setState({
-            loading: false
-          })
-          break;
+      if(json){
+        switch(json.properties.theme){
+          case "1":
+            html.style.setProperty("--primary", "#0066CC");
+            html.style.setProperty("--lightblue", "#1A75D1");
+            this.setState({
+              loading: false
+            })
+            break;
+          case "2":
+            html.style.setProperty("--primary", "#4975A6");
+            html.style.setProperty("--lightblue", "#5B83AF");
+            this.setState({
+              loading: false
+            })
+            break;
+          default:
+            html.style.setProperty("--primary", "#0066CC");
+            html.style.setProperty("--lightblue", "#1A75D1");
+            this.setState({
+              loading: false
+            })
+            break;
+        }
+      }else{
+        html.style.setProperty("--primary", "#0066CC");
+        html.style.setProperty("--lightblue", "#1A75D1");
+        this.setState({
+          loading: false
+        })
       }
     })
   }

@@ -165,6 +165,7 @@
     height: 139px;
     background-color: #E7ECEF!important;
     position: relative;
+    border-bottom: 1px solid #a4b7c1;
 }
 
 .buttons-nav{
@@ -478,7 +479,7 @@
 
 .title-dataset {
     /* font-family: "Helvetica Neue"; */
-    padding-top: 2.125rem!important;
+    /* padding-top: 2.125rem!important; */
 	color: #536C79;
 	font-weight: bold;
 	line-height: 2.125rem;
@@ -498,8 +499,6 @@
 }
 
 .icon-dataset {
-    padding-top: 2.125rem!important;
-    padding-left: 1.94rem!important;
     color: #536C79;
     line-height: 2.125rem;
 }

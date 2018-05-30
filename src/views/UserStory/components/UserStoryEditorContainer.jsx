@@ -15,6 +15,7 @@ import BtnControlWidget from './widgets/BtnControlWidget';
 import WidgetService from '../../DashboardManager/components/services/WidgetService';
 import EditBar from './bar/EditBar'
 import { serviceurl } from "../../../config/serviceurl";
+import { isPublic } from '../../../utility'
 
 // Default styes of dazzle.
 import 'react-dazzle/lib/style/style.css';
@@ -37,10 +38,13 @@ class UserStoryEditorContainer extends Component {
     let org = props.dataStory.org
     if(props.dataStory.pvt==0)
       org = 'default_org'
-    let response = widgetService.getIframe(org)
-    response.then(iframes => {
-      this.loadIframe(iframes);
-    })
+    
+    if(!props.readonly){
+      let response = widgetService.getIframe(org)
+      response.then(iframes => {
+        this.loadIframe(iframes);
+      })
+    }
 
     this.onChange = this.onChange.bind(this);
     this.setLayout = this.setLayout.bind(this);
