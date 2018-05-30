@@ -691,7 +691,7 @@ class DatasetDetail extends Component {
             {(ope === 'RECEIVE_METADATA' && metadata) &&
                 <div>
                     <div className='top-dataset'>
-                      <div className="container">
+                      <div className="container pt-4">
                         <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary"></i>
                         <h2 className="title-dataset px-4 text-primary" title={metadata.title}>{this.truncate(metadata.title, 75)}</h2>
                         <ul className="nav b-b-0 nav-tabs w-100 buttons-nav pl-4">
