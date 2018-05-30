@@ -35,30 +35,13 @@ class Home extends Component {
             items: 3,
             isLoading: true,
         }
-        
-        //this.searchDataset();
-        //this.counters();
-
-        /* let dash = homeService.dashboards();
-        dash.then(json => {
-            this.setState({
-                listDashboards: json
-            })
-        })
-
-        let stories = homeService.stories();
-        stories.then(json => {
-            this.setState({
-                listStories: json
-            })
-        })
 
         let iframes = homeService.iframes();
         iframes.then(json => {
             this.setState({
                 listIframes: json
             })
-        }) */
+        }) 
 
         this.updatePredicate = this.updatePredicate.bind(this);
         
