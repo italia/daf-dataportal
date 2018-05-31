@@ -2,6 +2,12 @@
   /* background-color: white; */
   padding: 20px;
   margin-bottom: 40px;
+  max-width: 800px;
+}
+
+.story-content iframe{
+  height: 500px;
+  max-width: 800px;
 }
 
 .title-story-content {
@@ -39,6 +45,7 @@
   margin-bottom: 20px;
   line-height: 1.04;
   letter-spacing: -.028em;
+  max-width: 600px;
 }
 
 .text-editor-subtitle {
@@ -46,11 +53,13 @@
   --baseline-multiplier: 0.179; 
   letter-spacing: .01rem;
   font-weight: 400;
-  font-style: normal;
-  font-size: 23px;
-  line-height: 1.58;
+  color: #444E57;	
+  font-family: "Titillium Web";	
+  font-size: 32px;	
+  line-height: 38px;
   letter-spacing: -.003em;
   margin-bottom: 30px;
+  max-width: 600px;
 }
 
 .text-editor.text-editor-content,
