@@ -542,14 +542,15 @@ class DatasetList extends Component {
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" >
                                                                 <Link to={isPublic()?'/dataset/' + dataset.dcatapit.name:'/private/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
-                                                                    <div title={dataset.dcatapit.title} dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?truncateDatasetName(datasetMatch['dcatapit.title'],100):truncateDatasetName(dataset.dcatapit.title, 60)}}></div>
+{/*                                                                <div title={dataset.dcatapit.title} dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?truncateDatasetName(datasetMatch['dcatapit.title'],100):truncateDatasetName(dataset.dcatapit.title, 60)}}></div>
+ */}                                                               <div title={dataset.dcatapit.title} className="text-truncate" dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?datasetMatch['dcatapit.title']:dataset.dcatapit.title}}></div>
                                                                 </Link>
                                                             </div>
                                                             <div className="col-md-2 py-1 px-4" >
                                                                 <span className="badge badge-info my-1">{decodeTheme(dataset.dcatapit.theme)}</span>
                                                             </div>
                                                             <div className="col-md-2 py-1 px-3" >
-                                                                <div title={dataset.dcatapit.owner_org} dangerouslySetInnerHTML={{__html: truncateDatasetName(dataset.dcatapit.owner_org,20)}}></div>
+                                                                <div title={dataset.dcatapit.owner_org} className="text-truncate" dangerouslySetInnerHTML={{__html: dataset.dcatapit.owner_org}}></div>
                                                             </div>
                                                             <div className="col-md-1 py-1 px-2">
                                                                 {!dataset.dcatapit.privatex && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
@@ -628,14 +629,15 @@ class DatasetList extends Component {
                                                                 <div className="row pl-3 pt-2 h-100" >
                                                                     <div className="col-md-6 py-1 px-1" >
                                                                                 <Link to={isPublic()?'/dataset/' + datasetOpen.name + '?type=open':'/private/dataset/' + datasetOpen.name + '?type=open'} className="title-res text-primary">
-                                                                                    <div title={datasetOpen.title} dangerouslySetInnerHTML={{__html: datasetOpenMatch['title']?truncateDatasetName(datasetOpenMatch['title'],100):truncateDatasetName(datasetOpen.title, 60)}}></div>
+                                                                                    {/* <div title={datasetOpen.title} dangerouslySetInnerHTML={{__html: datasetOpenMatch['title']?truncateDatasetName(datasetOpenMatch['title'],100):truncateDatasetName(datasetOpen.title, 60)}}></div> */}
+                                                                                    <div title={datasetOpen.title} className="text-truncate" dangerouslySetInnerHTML={{__html: datasetOpenMatch['title']?datasetOpenMatch['title']:datasetOpen.title}}></div>
                                                                                 </Link>
                                                                             </div>
                                                                             <div className="col-md-2 py-1 px-1" >
                                                                                 <span className="badge badge-info my-1">{decodeTheme(datasetOpen.theme)}</span>
                                                                             </div>
                                                                             <div className="col-md-2 py-1 px-1" >
-                                                                                <div title={datasetOpen.organization.name} dangerouslySetInnerHTML={{__html: datasetOpen.organization.name}}></div>
+                                                                                <div title={datasetOpen.organization.name} className="text-truncate" dangerouslySetInnerHTML={{__html: datasetOpen.organization.name}}></div>
                                                                             </div>
                                                                             <div className="col-md-1 py-1">
                                                                                  <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>
@@ -732,12 +734,14 @@ class DatasetList extends Component {
                                                         <div className="row pl-3 pt-2 h-100" >
                                                             <div className="col-md-6 py-1 px-1" title={dashboard.title}>
                                                                 <Link to={isPublic()?'/dashboard/list/' + dashboard.id:'/private/dashboard/list/' + dashboard.id} className="title-res text-primary">                                                                    
-                                                                    <div title={dashboard.title} dangerouslySetInnerHTML={{__html: dashboardMatch['title']?truncateDatasetName(dashboardMatch['title'],100):truncateDatasetName(dashboard.title, 60)}}></div>
-                                                                </Link>
+{/*                                                                     <div title={dashboard.title} dangerouslySetInnerHTML={{__html: dashboardMatch['title']?truncateDatasetName(dashboardMatch['title'],100):truncateDatasetName(dashboard.title, 60)}}></div>
+
+ */}                                                                <div title={dashboard.title} className="text-truncate" dangerouslySetInnerHTML={{__html: dashboardMatch['title']?dashboardMatch['title']:dashboard.title}}></div>
+                                                                        </Link>
                                                             </div>
                                                             <div className="col-md-2 py-1 px-1" ></div>
                                                             <div className="col-md-2 py-1 px-1" >
-                                                                <div title={dashboard.org} dangerouslySetInnerHTML={{__html: dashboard.org}}></div>
+                                                                <div title={dashboard.org} className="text-truncate" dangerouslySetInnerHTML={{__html: dashboard.org}}></div>
                                                             </div>
                                                             <div className="col-md-1 py-1">
                                                                 {dashboard.status===2 && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
@@ -843,12 +847,13 @@ class DatasetList extends Component {
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
                                                             <Link to={isPublic()?'/userstory/list/' + story.id:'/private/userstory/list/' + story.id} className="title-res text-primary">                                                                    
-                                                                <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?truncateDatasetName(storyMatch['title'],100):truncateDatasetName(story.title, 60)}}></div>
+{/*                                                                 <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?truncateDatasetName(storyMatch['title'],100):truncateDatasetName(story.title, 60)}}></div>
+ */}                                                        <div title={story.title} className="text-truncate" dangerouslySetInnerHTML={{__html: storyMatch['title']?storyMatch['title']:story.title}}></div>    
                                                             </Link>
                                                         </div>
                                                         <div className="col-md-2 py-1 px-1" ></div>
                                                         <div className="col-md-2 py-1 px-1" >
-                                                            <div title={story.org} dangerouslySetInnerHTML={{__html: story.org}}></div>
+                                                            <div title={story.org} className="text-truncate" dangerouslySetInnerHTML={{__html: story.org}}></div>
                                                         </div>
                                                         <div className="col-md-1 py-1">
                                                             {story.published===2 && <i className="fa fa-globe fa-lg text-icon float-right pt-1"/>}
