@@ -11,6 +11,10 @@ import {
   search
 } from '../../../actions'
 
+import {
+  isPublic
+} from '../../../utility'
+
 const homeService = new HomeService();
 
 class Home extends Component{
@@ -69,7 +73,7 @@ class Home extends Component{
           'order':""
       }
       this.props.history.push('/dataset/list');
-      dispatch(search('', filter, false))
+      dispatch(search('', filter, isPublic()))
   }
 
   handleSearch(textValue, theme){
@@ -84,7 +88,7 @@ class Home extends Component{
         'order':""
     }
     this.props.history.push({pathname: '/search', search: '?q=', state: theme?{ 'theme': true }:undefined})
-    dispatch(search('', filter, false))
+    dispatch(search('', filter, isPublic()))
 }
 
   render(){
