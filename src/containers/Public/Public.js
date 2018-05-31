@@ -35,6 +35,8 @@ class Public extends Component {
       p='py-5'
     if(window.location.hash.indexOf('userstory')!==-1)
       p='py-5'
+     if(window.location.hash.indexOf('dataset/list')!==-1)
+      p='py-5' 
 
       window.scrollTo(0,0)
     return (
@@ -53,6 +55,7 @@ class Public extends Component {
                 <Route path="/datapplication" name="Data Applcation" exact component={DataApplication}/>
                 <Route path="/notizie" name="Notizie" exact component={Notizie}/>
                 <Route path="/notizie/:id" name="Dettaglio Notizie" exact component={NotizieDett}/>
+                <Route path="/dataset/list" name="Lista Dataset" exact component={DatasetList}/>
                 <Route path="/dataset/:id" name="Dettaglio Dataset" exact component={DatasetDetail}/>
                 <Route path="/search" name="Search" exact component={DatasetList}/>                                                
                 <Redirect from="/" to="/home"/>

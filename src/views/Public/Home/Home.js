@@ -7,6 +7,10 @@ import UserstoryCard from '../../../components/Cards/UserstoryCard';
 import DatasetCard from '../../../components/Cards/DatasetCard';
 import HomeService from '../../Home/services/HomeService';
 
+import {
+  search
+} from '../../../actions'
+
 const homeService = new HomeService();
 
 class Home extends Component{
@@ -18,6 +22,8 @@ class Home extends Component{
       listDataset: [],
       isLoading: true,
     }
+
+    this.handleDatasetSearch = this.handleDatasetSearch.bind(this);
 
   }
 
@@ -51,6 +57,36 @@ class Home extends Component{
       })
     }
 
+    handleDatasetSearch(){
+      const { dispatch } = this.props
+      let filter = {
+          'text': '',
+          'index': ['catalog_test'],
+          'org': [],
+          'theme':[],
+          'date': "",
+          'status': [],
+          'order':""
+      }
+      this.props.history.push('/dataset/list');
+      dispatch(search('', filter, false))
+  }
+
+  handleSearch(textValue, theme){
+    const { dispatch } = this.props
+    let filter = {
+        'text': textValue?textValue:'',
+        'index': [],
+        'org': [],
+        'theme':[],
+        'date': "",
+        'status': [],
+        'order':""
+    }
+    this.props.history.push({pathname: '/search', search: '?q=', state: theme?{ 'theme': true }:undefined})
+    dispatch(search('', filter, false))
+}
+
   render(){
     const { listDataset, listStories, isLoading } = this.state
     const { properties } = this.props
@@ -82,7 +118,7 @@ class Home extends Component{
             <div className="row mt-2 mb-3">
               <div className="col-lg-7 col-md-7 col-12 pr-0">              
                 <div className="search-pub pl-0">
-                    <form onSubmit={()=> this.props.history.push('/search?q=' + this.refs.auto.value)}>
+                    <form onSubmit={()=> this.handleSearch(this.refs.auto.value, undefined)}>
                         <div className="input-group">
                             <div className="input-group-prepend">
                                 <button type="button" className="btn btn-accento px-3"><i className="fa fa-search fa-lg"/></button>
@@ -93,7 +129,7 @@ class Home extends Component{
                 </div>
               </div>
               <h5 className="text-gray-600 vertical-align-middle mx-4 my-3">oppure</h5>
-              <button className="btn btn-accento" onClick={()=> this.props.history.push({pathname: '/search', search: '?q=',state: { 'theme': true }})}>Esplora per categoria</button>            
+              <button className="btn btn-accento" onClick={()=> this.handleSearch(undefined, true)}>Esplora per categoria</button>            
             </div>
           </div>
         </div>
@@ -188,9 +224,9 @@ class Home extends Component{
               }
           </div>}
           <div className="w-100 text-center">
-              <Link to={'/search?q='}>
+              <a className="pointer" onClick={this.handleDatasetSearch.bind(this)}>
                   <h4 className="text-primary"><u>Vedi tutti</u></h4>
-              </Link>
+              </a>
           </div>
         </div>
         <div className="bg-lightblue" style={{height: '245px'}}>

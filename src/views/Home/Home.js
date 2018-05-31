@@ -44,7 +44,7 @@ class Home extends Component {
         }) 
 
         this.updatePredicate = this.updatePredicate.bind(this);
-        
+        this.handleSearch = this.handleSearch.bind(this);
 
     }
 
@@ -161,6 +161,22 @@ class Home extends Component {
         dispatch(search('', filter))
     }
 
+    handleSearch(){
+        const { dispatch } = this.props
+        let filter = {
+            'text': '',
+            'index': ['catalog_test'],
+            'org': [],
+            'theme':[],
+            'date': "",
+            'status': [],
+            'order':""
+        }
+        this.props.history.push('/private/dataset/');
+        dispatch(search('', filter, false))
+    }
+
+
     render(){
         const { isFetching, results } = this.props
         const { listDataset, listDashboards, listStories, listIframes, counter, items } = this.state
@@ -251,9 +267,9 @@ class Home extends Component {
                         }
                     </div>
                     <div className="w-100 text-center">
-                        <Link to={'/private/dataset'}>
+                        <a className="pointer" onClick={this.handleSearch.bind(this)}>
                             <h4 className="text-primary"><u>Vedi tutti</u></h4>
-                        </Link>
+                        </a>
                     </div>
                 </div>
                 <div className="py-3 bg-light">

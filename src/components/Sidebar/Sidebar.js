@@ -80,7 +80,7 @@ class Sidebar extends Component {
 
   handleLoadDatasetClick(event) {
     event.preventDefault();
-    const { dispatch, selectDataset } = this.props;
+    const { dispatch } = this.props;
     let filter = {
       'text': '',
       'index': ['catalog_test'],
@@ -90,8 +90,8 @@ class Sidebar extends Component {
       'status': [],
       'order':""
   }
-    dispatch(search('', filter))
     this.props.history.push('/private/dataset')
+    dispatch(search('', filter, false))
   }
 
   createDash(){

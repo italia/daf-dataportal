@@ -119,7 +119,7 @@ class DatasetDetail extends Component {
                     .then(json => { this.setState({ hasPreview: true, dafIndex: this.state.dafIndex + 3 }) })
                     .catch(error => { this.setState({ hasPreview: false }) })
             } else {
-                if (nextProps.feed.has_job && (nextProps.feed.job_status === 'COMPLETED' || nextProps.feed.job_status === 'STARTED')) {
+                if (nextProps.feed && nextProps.feed.has_job && (nextProps.feed.job_status === 'COMPLETED' || nextProps.feed.job_status === 'STARTED')) {
                     this.setState({ hasPreview: true, dafIndex: this.state.dafIndex + 3 })
                 } else {
                     this.setState({ hasPreview: false })
