@@ -125,6 +125,7 @@ class App extends Component {
             <Route path='/storie' exact component={Public} />
             <Route path='/team' exact component={Public} />
             <Route path='/search' exact component={Public} /> 
+            <Route path='/dataset/list' exact component={Public} />  
             <Route path='/dataset/:id' exact component={Public} />      
             <Route path='/private' exact component={Home} />
             <Route path="/login" component={Home} />

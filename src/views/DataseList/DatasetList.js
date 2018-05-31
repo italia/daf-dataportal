@@ -307,7 +307,13 @@ class DatasetList extends Component {
       componentWillReceiveProps(nextProps){
         const queryString = require('query-string');
         const query = queryString.parse(nextProps.location.search).q 
-        this.setState({query: query})
+        this.setState({query: query,
+            showDivTipo: false,
+            showDivData: false,
+            showDivCategoria: nextProps.location && nextProps.location.state && nextProps.location.state.theme?true:false,
+            showDivOrganizzazione: false,
+            showDivVisibilita: false
+        })
         var newFilter = this.state.filter
         var elements = this.state.filter.elements
         if(nextProps.filter){
