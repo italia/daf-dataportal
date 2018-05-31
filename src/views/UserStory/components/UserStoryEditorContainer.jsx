@@ -370,7 +370,7 @@ class UserStoryEditorContainer extends Component {
    */
   render() {
     return (
-    <div className="story-content">
+    <div className="bg-white story-content container">
         <SectionTitle readonly={this.props.readonly} title="Titolo"/>
         <TextEditor 
           readonly={this.props.readonly}
@@ -381,7 +381,6 @@ class UserStoryEditorContainer extends Component {
           placeholder="Title"
           disableHtml={true}
         ></TextEditor>
-        
         <SectionTitle readonly={this.props.readonly} title="Sottotitolo"/>
         <TextEditor 
           readonly={this.props.readonly}
