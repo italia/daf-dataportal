@@ -2,20 +2,17 @@ import React, { PropTypes } from 'react';
 
 const CustomFrame = ({children, onRemove, editable, title}) => {
   return (
-    <div className="x_panel fixed_height_320" style={{height:'400px'}}>
-      <div className="x_title">
-          <h2>{title}</h2>
+    <div  /* style={{height:'400px'}} */>
+      {editable && <div className="x_title">
           <ul className="nav navbar-right panel_toolbox">
-              {editable && <li><a onClick={() => {onRemove();}} className="close-link"><i className="fa fa-close"></i></a>
-              </li>}
+            <li><a onClick={() => {onRemove();}} className="close-link"><i className="fa fa-close"></i></a></li>
           </ul>
-          <div className="clearfix"></div>
-      </div>
-      <div className="x_content">
+      </div>}
+      <div className="mb-4 x_content">
         {children}
       </div>
-  </div>
-);
+    </div>
+  );
 };
 
 CustomFrame.propTypes = {

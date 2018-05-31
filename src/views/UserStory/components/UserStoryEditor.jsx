@@ -149,7 +149,7 @@ class UserStoryEditor extends Component {
     <Container>
     {this.state.dataStory &&
       <div>
-      <Header title="La Tua Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/>
+      {/* <Header title="La Tua Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/> */}
           <EditBarTop 
               title={this.state.dataStory.title}
               onPublish={this.onPublish}

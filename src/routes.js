@@ -1,12 +1,12 @@
 const routes = {
   '/': 'Home',
-  '/home': 'DAF - Data Analytics Framework',
-  '/dashboard/list': 'Dashboard',
-  '/userstory/list': 'Storie',
-  '/ingestionform': 'Ingestion',
-  '/vocabulary/list': 'Vocabolari e standard',
-  '/dataset':'Datasets',
-  '/widget' : 'Widget',
-  '/dataset/:id' : ':id'
+  '/private/home': 'DAF - Data Analytics Framework',
+  '/private/dashboard/list': 'Dashboard',
+  '/private/userstory/list': 'Storie',
+  '/private/ingestionform': 'Ingestion',
+  '/private/vocabulary/list': 'Vocabolari e standard',
+  '/private/dataset':'Datasets',
+  '/private/widget' : 'Widget',
+  '/private/dataset/:id' : ':id'
 };
 export default routes;

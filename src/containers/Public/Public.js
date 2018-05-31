@@ -29,12 +29,17 @@ class Public extends Component {
     const { history } = this.props
     var bg = 'bg-white'
     var p = ''
-    if(window.location.hash.indexOf('userstory')!==-1)
-      bg="bg-light"
+
     if(window.location.hash.indexOf('search')!==-1)
       p='py-5'
-    if(window.location.hash.indexOf('userstory')!==-1)
+    if(window.location.hash.indexOf('userstory/list')!==-1){
       p='py-5'
+      bg='bg-light'
+    }
+    if(window.location.hash.indexOf('userstory/list/')!==-1){
+      p=''
+      bg='bg-white'
+    }
      if(window.location.hash.indexOf('dataset/list')!==-1)
       p='py-5' 
 
