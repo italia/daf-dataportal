@@ -8,10 +8,12 @@ class Partecipa extends Component{
 
   render(){
     return(
-      <div className="container p-5 mt-2">
-        <h1>Partecipa</h1>
-        <div className="row mt-4">
-          <div className="col-8">          
+      <div className="w-100">
+        <div className="header-story">
+          <img src="./img/olu-eletu-13086-unsplash.jpg"/>
+        </div>
+        <div className="container paragrafo my-5">
+          <h1 className="mt-3">Partecipa</h1>         
             <h5 className="">
             Sei un appassionato di dati e analytics e vuoi utilizzare attivamente il Data & Analytics Framework (DAF), dando il tuo contributo al paese? 
             Registrandoti al Dataportal! otrai accedere alle funzionalità di analisi e condivisione di informazioni disponibili nella sezione privata. 
@@ -38,7 +40,6 @@ class Partecipa extends Component{
             Jupyter Notebook è un tool open-source che permette di eseguire codice in maniera interattiva. É diventato uno standard de facto per data science perché offre la possibilità di sviluppare analisi dati, 
             generare grafici, costruire modelli di machine learning e molto altro, con i tuoi linguaggi di programmazione preferiti.
             </h5>
-          </div>
         </div>
       </div>
     )

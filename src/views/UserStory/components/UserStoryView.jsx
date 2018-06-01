@@ -22,7 +22,8 @@ class UserStoryEditor extends Component {
     
     //init state
     this.state={
-      id: this.props.match.params.id
+      id: this.props.match.params.id,
+      loading: true,
     };
 
     //bind functions
@@ -44,11 +45,12 @@ class UserStoryEditor extends Component {
 
       this.setState({
         dataStory: story,
-        widgets: wids
+        widgets: wids,
+        loading: false,
       });
-      this.setState({
+      /* this.setState({
         dataStory: story
-      });
+      }); */
     }catch(error){console.log('error in getting story')}
     });
 
@@ -59,7 +61,7 @@ class UserStoryEditor extends Component {
    */
   render() {
     console.log(this.state.dataStory)
-    return (
+    return (this.state.loading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>:
     <Container>
       {
         this.state.dataStory &&

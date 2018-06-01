@@ -381,6 +381,9 @@ class UserStoryEditorContainer extends Component {
           placeholder="Title"
           disableHtml={true}
         ></TextEditor>
+        {this.props.readonly && <div className="my-5 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+          Autore <i>{this.state.dataStory.user}</i>
+        </div>}
         <SectionTitle readonly={this.props.readonly} title="Sottotitolo"/>
         <TextEditor 
           readonly={this.props.readonly}
@@ -391,43 +394,6 @@ class UserStoryEditorContainer extends Component {
           placeholder="Subtitle"
         ></TextEditor>
         <SectionTitle readonly={this.props.readonly} title="Contenuto della Storia" />
-        {/* <SectionTitle readonly={this.props.readonly} title="Grafico"/>
-        <GraphEditor 
-          readonly={this.props.readonly}
-          keyValue="graph1"
-          graph={this.state.dataStory.graph1}
-          onChange={this.onChange}
-          org={this.state.dataStory.org}
-        ></GraphEditor>
-
-        <SectionTitle readonly={this.props.readonly} title="La Tua Storia"/>
-        <TextEditor 
-          readonly={this.props.readonly}
-          keyValue="text"
-          text={this.state.dataStory.text} 
-          className="text-editor-content"
-          onChange={this.onChange}
-          placeholder="Tell your story..."
-        ></TextEditor>
-
-        <SectionTitle readonly={this.props.readonly} title="Grafico"/>
-        <GraphEditor 
-          readonly={this.props.readonly}
-          keyValue="graph2"
-          graph={this.state.dataStory.graph2}
-          onChange={this.onChange}
-          org={this.state.dataStory.org}
-        ></GraphEditor>
-
-        <SectionTitle readonly={this.props.readonly} title="Footer"/>
-        <TextEditor 
-          readonly={this.props.readonly}
-          keyValue="footer"
-          text={this.state.dataStory.footer} 
-          className="text-editor-footer"
-          onChange={this.onChange}
-          placeholder="Footer"
-        ></TextEditor> */}
         <Dashboard
           frameComponent={CustomFrame}
           onRemove={this.onRemoveWidget}

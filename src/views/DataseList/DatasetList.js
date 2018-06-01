@@ -33,11 +33,12 @@ class DatasetList extends Component {
             group_filter: props.history.location.state && props.history.location.state.group_filter,
             organization_filter: props.history.location.state && props.history.location.state.organization_filter,
             query: props.history.location.state && props.history.location.state.query,
-            organizations:[],
             filter:{'da':'',
                     'a':'',
                     'order': 'desc',
                     'elements': []},
+            selectedOrg: '',
+            selectedCat: '',
             showDivTipo: false,
             showDivData: false,
             showDivCategoria: props.location.state?props.location.state.theme:false,
@@ -68,6 +69,7 @@ class DatasetList extends Component {
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleChangeOrdinamento = this.handleChangeOrdinamento.bind(this);
+        this.addOrganization = this.addOrganization.bind(this)
 
 /*         if(window.location.hash==='#/dataset'){
             this.searchAll('')
@@ -417,12 +419,38 @@ class DatasetList extends Component {
     }
 
     handleScrollToBottom = () => this.loadMore()
+
+    addOrganization(newValue){
+      this.setState({
+        selectedOrg: newValue
+      })
+
+      if(newValue){
+        this.addFilter(3, newValue)
+      }
+    }
+
  
     render() {
         const { results, isFetching, query } = this.props
         
         const queryString = require('query-string');
         var search = queryString.parse(this.props.location.search).q
+
+        if(results && results.length>0){
+          var categories = Object.keys(JSON.parse(results[results.length-1].source))
+          var organizations = Object.keys(JSON.parse(results[results.length-2].source))
+          var selectOrganizations = []
+          if(organizations.length>10){
+            organizations = organizations.slice(0,10)
+            Object.keys(JSON.parse(results[results.length-2].source)).slice(11, Object.keys(JSON.parse(results[results.length-2].source)).length-1).map((org, index)=>{
+              selectOrganizations.push({
+                'value': org,
+                'label': org
+              })
+            })            
+          }
+        }
 
         return (
                     <div>
@@ -479,22 +507,40 @@ class DatasetList extends Component {
                                     />
                             }
                             {this.state.showDivCategoria && results && results.length>0 &&
-                                Object.keys(JSON.parse(results[results.length-1].source)).map((theme, index) =>{
+                                categories.map((theme, index) =>{
                                     var themes=JSON.parse(results[results.length-1].source)
                                     return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 1, 'value': theme})} onClick={this.addFilter.bind(this, 1, theme)} key={index} className={!this.isInArray(this.state.filter, {'type': 1, 'value': theme})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTheme(theme)}<span className="ml-2 badge badge-pill badge-secondary">{themes[theme]}</span></button>)
                                 }) 
                             }
                             {this.state.showDivOrganizzazione && results &&
-                                Object.keys(JSON.parse(results[results.length-2].source)).map((org, index) =>{
+                                organizations.map((org, index) =>{
                                     var orgs=JSON.parse(results[results.length-2].source)
                                     return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 3, 'value': org})} onClick={this.addFilter.bind(this, 3, org)} key={index} className={!this.isInArray(this.state.filter, {'type': 3, 'value': org})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{org}<span className="ml-2 badge badge-pill badge-secondary">{orgs[org]}</span></button>)
-                                }) 
+                                })
+                            }
+                            {this.state.showDivOrganizzazione && selectOrganizations.length>0 &&
+                            <div className="my-2 p-2 btn-outline-filters" style={{maxWidth: '230px'}}>
+                              <Select
+                                id="state-select"
+                                onBlurResetsInput={false}
+                                onSelectResetsInput={false}
+                                options={selectOrganizations}
+                                simpleValue
+                                clearable={true}
+                                name="selected-organization"
+                                value={this.state.selectedOrg}
+                                onChange={this.addOrganization}
+                                rtl={false}
+                                searchable={true}
+                                style={{maxWidth: '230px'}}
+                                />
+                            </div>
                             }
                             {this.state.showDivVisibilita && results &&
                                 Object.keys(JSON.parse(results[results.length-3].source)).map((vis, index) =>{
                                     var arrVis=JSON.parse(results[results.length-3].source)
                                     return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 2, 'value': vis})} onClick={this.addFilter.bind(this, 2, vis)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeVisibilita(vis)}<span className="ml-2 badge badge-pill badge-secondary">{arrVis[vis]}</span></button>)
-                                }) 
+                                })
                             }
                             {/* this.state.showDivSearch && 
                                 <form className="py-2 w-100" onSubmit={this.search.bind(this, this.state.order_filter)}>
