@@ -678,3 +678,53 @@ li.bg-footer:last-child{
 .b-l-ext{
   border-left: 1px solid #f0f3f5;
 }
+
+.header-story{
+  height: 450px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.header-story img{
+  width: 130%;
+  height: 170%;
+  margin: -10% 0 0 -10%;
+}
+
+.paragrafo{
+  margin-left: auto!important;
+  margin-right: auto!important; 
+  max-width: 600px;
+}
+
+.paragrafo p, .paragrafo div, .paragrafo h5{
+  font: 400 16px/25px "Titillium Web"
+}
+
+.paragrafo h1{
+  font: 700 32px/38px "Titillium Web";
+  margin: 32px 0 16px 0;
+}
+
+.paragrafo h2{
+  font: 200 24px/28px "Titillium Web";
+}
+
+.paragrafo img{
+  max-width: 800px
+}
+
+@media screen and (min-width:768px) {
+  .paragrafo p, .paragrafo div, .paragrafo h5{
+    font: 400 21px/32px "Titillium Web"
+  }
+
+  .paragrafo h1{
+    font: 700 40px/48px "Titillium Web";
+    margin: 4px 0 32px 0;
+  }
+
+  .paragrafo h2{
+    font: 200 32px/38px "Titillium Web";
+  }
+}

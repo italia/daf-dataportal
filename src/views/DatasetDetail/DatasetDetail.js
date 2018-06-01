@@ -323,20 +323,20 @@ class DatasetDetail extends Component {
                             <li className="nav-item h-100">
                                 <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
                             </li>
-                            <li className="nav-item h-100">
+                            {!isPublic()&&<li className="nav-item h-100">
                                 <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
-                            </li>
+                            </li>}
                         </ul>
                         <button className="btn btn-accento buttons-nav" style={{ right: '20%', height: '48px' }} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>
                       </div>
                     </div>
                     <div className="container">
-                    <div className="row">
+                    <div className="row pt-5">
                         <div hidden={this.state.showWidget} className="col-7">
-                            <div className="card-block ">
+                            <div>
                                 <div className="row px-3">
                                     <div hidden={!this.state.showDett} className="col-12">
-                                        <p className="desc-dataset"> {dataset.dcatapit.notes} </p>
+                                        <p className="desc-dataset" dangerouslySetInnerHTML={{__html: dataset.dcatapit.notes}}/> 
                                     </div>
                                     <div hidden={!this.state.showDett} className="col-4">
                                         {(dataset.operational.ext_opendata &&
@@ -553,7 +553,7 @@ class DatasetDetail extends Component {
                             </div>
                         </div>
                         <div hidden={!this.state.showDett} className="col-5 px-0">
-                            <div className="card-block">
+                            <div>
                                 <div className="border-left pl-3 row">
                                     <div className="col-12">
                                         <p className='status'>Stato</p>
@@ -652,11 +652,11 @@ class DatasetDetail extends Component {
                         </div> */}
                         </div>
                     </div>
-                    <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
+                    {!isPublic() && <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
                       <Widgets widgets={iframes} loading={false} />
-                    </div>
-                    <div hidden={!this.state.showDett} className="bg-light">
-                            <div className="card-block">
+                    </div>}
+                    {!isPublic() && <div hidden={!this.state.showDett} className="bg-light">
+                            <div>
                                 <div className="container body w-100">
                                     <div className="row mx-auto text-muted">
                                         <i className="fa fa-chart-bar fa-lg m-4" style={{ lineHeight: '1' }} /><h2 className="mt-3 mb-4">Widget</h2>
@@ -685,7 +685,7 @@ class DatasetDetail extends Component {
                                     }
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                 </div>
             }
             {(ope === 'RECEIVE_METADATA' && metadata) &&
@@ -705,12 +705,12 @@ class DatasetDetail extends Component {
                       </div>
                     </div>
                     <div className="container">
-                    <div className="row" >
+                    <div className="row pt-5">
                         <div className="col-7" hidden={!this.state.showMeta}>
-                            <div className="card-block ">
+                            <div>
                                 <div className="row px-3">
                                     <div className="col-12">
-                                        <p className="desc-dataset"> {metadata.notes} </p>
+                                        <p className="desc-dataset" dangerouslySetInnerHTML={{__html: metadata.notes}}/>
                                     </div>
                                     <div className="col-12 card-text mt-4">
                                         <div className="row">
@@ -803,7 +803,7 @@ class DatasetDetail extends Component {
                                 </div>
                             </div>
                             <div className="col-5 px-0" hidden={!this.state.showMeta}>
-                                <div className="card-block">
+                                <div>
                                     <div className="border-left pl-3 row">
                                         <div className="col-12">
                                             <p className='status'>Stato</p>
@@ -839,7 +839,7 @@ class DatasetDetail extends Component {
                                 </div>
                             </div>
                             <div className="col-12" hidden={!this.state.showRes}>
-                                <div className="card-block ">
+                                <div>
                                     <div className="row px-3">
                                         <div className="col-12 card-text">
                                                 {metadata.resources && metadata.resources.map((res, index) => {

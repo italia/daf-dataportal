@@ -48,7 +48,7 @@ class Public extends Component {
       <div className="app">
         <Header history={history} />
         <div data-reactroot className={"app-body pub "+bg}>
-          <main className={"w-100 " + p}>
+          <main className={"app w-100 " + p}>
               <Switch>
                 <Route path="/home" name="Home" exact component={Home} />
                 <Route path="/missione" name="Missione" exact component={Missione}/>
