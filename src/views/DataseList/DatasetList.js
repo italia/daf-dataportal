@@ -88,12 +88,15 @@ class DatasetList extends Component {
     }
 
     searchAll(query){
-        const { dispatch } = this.props
+        const { dispatch, properties } = this.props
         var dataset = window.location.hash.indexOf('dataset')!==-1
+        var org = []
+        if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+          org.push(properties.organization)
         let filter = {
             'text': query,
             'index': dataset?['catalog_test']:[],
-            'org': [],
+            'org': org,
             'theme':[],
             'date': "",
             'status': [],
@@ -110,7 +113,7 @@ class DatasetList extends Component {
 
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
     search(order){
-        const { dispatch } = this.props
+        const { dispatch, properties } = this.props
         
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search).q
@@ -123,11 +126,14 @@ class DatasetList extends Component {
         }  
         
         var dataset = window.location.hash.indexOf('dataset')!==-1
-        
+        var org = []
+        if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+          org.push(properties.organization)
+
         let filter = {
             'text': dataset?'':query,
             'index': dataset?['catalog_test']:[],
-            'org': [],
+            'org': org,
             'theme':[],
             'date': this.state.filter.da && this.state.filter.a ? this.state.filter.da.locale('it').format("YYYY-MM-DD")+ ' ' +this.state.filter.a.locale('it').format("YYYY-MM-DD") : '',
             'status': [],
@@ -432,7 +438,7 @@ class DatasetList extends Component {
 
  
     render() {
-        const { results, isFetching, query } = this.props
+        const { results, isFetching, query, properties } = this.props
         
         const queryString = require('query-string');
         var search = queryString.parse(this.props.location.search).q
@@ -452,6 +458,10 @@ class DatasetList extends Component {
           }
         }
 
+        var orgFilter = false
+        if(!isPublic() || (properties.domain==='dataportal' || properties.domain==='dataportal-private'))
+          orgFilter = true
+
         return (
                     <div>
                         <div>
@@ -469,7 +479,7 @@ class DatasetList extends Component {
                                             {window.location.hash.indexOf('dataset')===-1 && <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button>}
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivData ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickData}>Data <i className={"fa " + (this.state.showDivData ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivCategoria ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickCategoria}>Categoria <i className={"fa " + (this.state.showDivCategoria ? "fa-angle-up" : "fa-angle-down")}></i></button>
-                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivOrganizzazione ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickOrganizzazione}>Organizzazione <i className={"fa " + (this.state.showDivOrganizzazione ? "fa-angle-up" : "fa-angle-down")}></i></button>
+                                            {orgFilter && <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivOrganizzazione ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickOrganizzazione}>Organizzazione <i className={"fa " + (this.state.showDivOrganizzazione ? "fa-angle-up" : "fa-angle-down")}></i></button>}
                                             {!isPublic() && <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivVisibilita ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickVisibilita}>Visibilità <i className={"fa " + (this.state.showDivVisibilita ? "fa-angle-up" : "fa-angle-down")}></i></button>}
                                             {/* <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivSearch ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickSearch}><i className="fa fa-search fa-lg"/></button> */}
                                         </div>
@@ -990,7 +1000,8 @@ DatasetList.propTypes = {
 
 function mapStateToProps(state) {
     const { isFetching, results, query, filter } = state.searchReducer['search'] || { isFetching: false, results: [] }
-    return { isFetching, results, query, filter }
+    const { properties } = state.propertiesReducer['prop'] || {}
+    return { isFetching, results, query, filter, properties }
 }
 
 export default connect(mapStateToProps)(DatasetList)

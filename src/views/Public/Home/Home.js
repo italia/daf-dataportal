@@ -62,11 +62,16 @@ class Home extends Component{
     }
 
     handleDatasetSearch(){
-      const { dispatch } = this.props
-      let filter = {
+      const { dispatch, properties } = this.props
+      
+      var org = []
+      if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+        org.push(properties.organization)
+      
+        let filter = {
           'text': '',
           'index': ['catalog_test'],
-          'org': [],
+          'org': org,
           'theme':[],
           'date': "",
           'status': [],
@@ -77,17 +82,21 @@ class Home extends Component{
   }
 
   handleSearch(textValue, theme){
-    const { dispatch } = this.props
+    const { dispatch, properties } = this.props
+    var org = []
+    if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+      org.push(properties.organization)
+
     let filter = {
         'text': textValue?textValue:'',
         'index': [],
-        'org': [],
+        'org': org,
         'theme':[],
         'date': "",
         'status': [],
         'order':""
     }
-    this.props.history.push({pathname: '/search', search: '?q=', state: theme?{ 'theme': true }:undefined})
+    this.props.history.push({pathname: '/search', search: '?q='+textValue?textValue:'', state: theme?{ 'theme': true }:undefined})
     dispatch(search('', filter, isPublic()))
 }
 

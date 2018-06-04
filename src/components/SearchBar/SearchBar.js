@@ -31,15 +31,17 @@ class SearchBar extends Component{
 
     handleLoadDatasetClick(event) {
         event.preventDefault();
-        const { dispatch, filter } = this.props;
+        const { dispatch, filter, properties } = this.props;
         
         let newFilter = { }
-
-        if(window.location.hash.indexOf('dataset')!==-1){
+        var org = []
+        if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+          org.push(properties.organization)
+        if(window.location.hash.indexOf('search')===-1){
             newFilter = {
                 'text': '',
                 'index': [],
-                'org': [],
+                'org': org,
                 'theme':[],
                 'date': "",
                 'status': [],
@@ -49,7 +51,7 @@ class SearchBar extends Component{
             newFilter = filter?filter:{
                 'text': '',
                 'index': [],
-                'org': [],
+                'org': org,
                 'theme':[],
                 'date': "",
                 'status': [],
@@ -90,7 +92,8 @@ SearchBar.propTypes = {
 
 function mapStateToProps(state) {
     const { isFetching, results, query, filter } = state.searchReducer['search'] || { isFetching: false, results: []}
-    return { filter }
+    const { properties } = state.propertiesReducer['prop'] || {}    
+    return { filter, properties }
 }
 
 export default connect(mapStateToProps)(SearchBar)

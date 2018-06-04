@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { Route, Link } from 'react-router-dom';
 import ListBar from './bar/ListBar';
 import UserstoryCard from "../../../components/Cards/UserstoryCard";
+import { isPublic } from '../../../utility'
 
 // App components
 import Header from './Header';
@@ -31,12 +34,17 @@ class UserStoryList extends Component {
    * Method called for load dashboard list
    */
   load = (config) => {
+    const { properties } = this.props
+
     this.state = {
       userStories: [],
       loading:true
     };
-    
-    let response = userStoryService.list();
+    var org = undefined
+    if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+      org = properties.organization
+
+    let response = userStoryService.list(org);
     response.then((list) => {
       this.originalUserStories = list;
       this.setState({
@@ -144,4 +152,15 @@ class UserStoryList extends Component {
 
 }
 
-export default UserStoryList;
+UserStoryList.propTypes = {
+  loggedUser: PropTypes.object,
+  dispatch: PropTypes.func.isRequired
+}
+
+function mapStateToProps(state) {
+  const { properties } = state.propertiesReducer['prop'] || {}
+
+  return { properties }
+}
+
+export default connect(mapStateToProps)(UserStoryList);
