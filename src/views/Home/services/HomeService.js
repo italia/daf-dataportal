@@ -80,10 +80,11 @@ export default class HomeService {
         return response.json()
     }
 
-    async publicHome(){
+    async publicHome(org){
       //var url = serviceurl.apiURLDatiGov + '/elasticsearch/home';
       var token = localStorage.getItem('token')
-      const response = await fetch(this.publicHomeUrl, {
+      var url = this.publicHomeUrl+(org?'?org='+org:'')
+      const response = await fetch(url, {
           method: 'GET',
           headers: {
               'Accept': 'application/json',

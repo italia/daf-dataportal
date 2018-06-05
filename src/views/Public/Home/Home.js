@@ -32,9 +32,13 @@ class Home extends Component{
   }
 
   componentDidMount() {
+    const {properties} = this.props
     var datasets = []
     var stories = []
-    let home = homeService.publicHome();
+    var org = undefined
+    if(properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+      org=properties.organization
+    let home = homeService.publicHome(org);
       home.then(json =>{
         try{
           json.map((element, index)=>{
@@ -70,7 +74,7 @@ class Home extends Component{
       
         let filter = {
           'text': '',
-          'index': ['catalog_test'],
+          'index': ['catalog_test','ext_opendata'],
           'org': org,
           'theme':[],
           'date': "",

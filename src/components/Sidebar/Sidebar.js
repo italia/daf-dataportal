@@ -83,7 +83,7 @@ class Sidebar extends Component {
     const { dispatch } = this.props;
     let filter = {
       'text': '',
-      'index': ['catalog_test'],
+      'index': ['catalog_test','ext_opendata'],
       'org': [],
       'theme':[],
       'date': "",

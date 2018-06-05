@@ -95,7 +95,7 @@ class DatasetList extends Component {
           org.push(properties.organization)
         let filter = {
             'text': query,
-            'index': dataset?['catalog_test']:[],
+            'index': dataset?['catalog_test','ext_opendata']:[],
             'org': org,
             'theme':[],
             'date': "",
@@ -132,7 +132,7 @@ class DatasetList extends Component {
 
         let filter = {
             'text': dataset?'':query,
-            'index': dataset?['catalog_test']:[],
+            'index': dataset?['catalog_test','ext_opendata']:[],
             'org': org,
             'theme':[],
             'date': this.state.filter.da && this.state.filter.a ? this.state.filter.da.locale('it').format("YYYY-MM-DD")+ ' ' +this.state.filter.a.locale('it').format("YYYY-MM-DD") : '',
