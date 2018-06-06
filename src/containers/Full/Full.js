@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
-import { loginAction, addUserOrganization, isValidToken, receiveLogin, getApplicationCookie } from './../../actions.js'
+import { loginAction, addUserOrganization, isValidToken, receiveLogin, getApplicationCookie, logout } from './../../actions.js'
 import { setCookie } from '../../utility'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
@@ -156,8 +156,9 @@ class Full extends Component {
                 this.setState({
                   authed: false,
                   loading: false
-              })
-              this.props.history.push('/login')
+                })
+                logout();
+                this.props.history.push('/login')
               }
             })
             .catch((error) => {

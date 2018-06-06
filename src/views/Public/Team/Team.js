@@ -13,7 +13,7 @@ class Team extends Component{
         <div className="row mt-4">
           <div className="col-8">
             <h5 className="">
-            Il progetto nasce da un’iniziativa del Team per la Trasformazione Digitale in collaborazione con l’Agenzia per l’Italia Digitale della Presidenza del Consiglio dei Ministri. 
+            Il progetto nasce da un’iniziativa del <a href="https://teamdigitale.governo.it/" target="_blank" className="text-primary">Team per la Trasformazione Digitale</a> in collaborazione con <a href="https://www.agid.gov.it/" target="_blank" className="text-primary">l’Agenzia per l’Italia Digitale</a> della Presidenza del Consiglio dei Ministri. 
             Lo sviluppo delle varie componenti software utilizzate nel Dataportal è avvenuto grazie anche al supporto di:
             </h5>
             <ul className="my-4">

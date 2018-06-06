@@ -22,12 +22,13 @@ return (
       </div>
       <div className="main-header container">
         <div className="h-100 bg-primary row">
-          <div className="col-md-2 col-lg-1 col-sm-2 col-xs col-3 pt-2 h-auto">
+          <div className="float-left">
             <Link to={'/'}>
-              <img src='./img/DAF_pittogramma_FU.svg' alt="" className="logo-pub"/>
+              <img src='./img/DAF_pittogramma_FU.svg' alt="" className="logo-pub mr-4"/>
+              {properties.domain!=='dataportal' && properties.domain!=='dataportal-private' && <img src={properties.headerLogo} alt="" className="float-right logo-pub-pa mr-2"/>}
             </Link>
           </div>
-          <div className="col-md col-lg col-sm col-xs col pt-2 h-auto">
+          <div className="col-md col-lg col-sm col-xs col h-auto">
             <div className="row mx-0">
               <Link className="text-white" to={'/'}>
                 <h2 className="mr-4 mb-0">{/* props.styleProps.headerSiglaTool */}<b>DAF {properties.headerSiglaTool}</b></h2>

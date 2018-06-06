@@ -5,57 +5,13 @@ import { createBrowserHistory } from 'history';
 import Full from '../Full/'
 import Home from '../Home/'
 import PropTypes from 'prop-types'
-import { loginAction, addUserOrganization, isValidToken, receiveLogin, getApplicationCookie, fetchProperties } from './../../actions.js'
+import { fetchProperties } from './../../actions.js'
 import { serviceurl } from '../../config/serviceurl.js'
 import { setCookie } from '../../utility'
 import ReduxToastr from 'react-redux-toastr'
 import Public from '../Public/';
 
 const history = createBrowserHistory();
-
-function PrivateRoute({ component: Component, authed, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authed === true
-        ? <Component {...props} />
-        : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
-    />
-  )
-}
-
-function PrivateRouteAdmin({ component: Component, authed, role, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => (authed === true && role==='daf_admins')
-        ? <Component {...props} />
-        : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
-    />
-  )
-}
-
-function PrivateRouteEditor({ component: Component, authed, role, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => (authed === true && (role === 'daf_editors' || role === 'daf_admins'))
-        ? <Component {...props} />
-        : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
-    />
-  )
-}
-
-function PublicRoute({ component: Component, authed, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authed === false
-        ? <Component {...props} />
-        : <Redirect to='/home' />}
-    />
-  )
-}
 
 class App extends Component {
   state = {

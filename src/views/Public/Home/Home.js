@@ -32,9 +32,13 @@ class Home extends Component{
   }
 
   componentDidMount() {
+    const {properties} = this.props
     var datasets = []
     var stories = []
-    let home = homeService.publicHome();
+    var org = undefined
+    if(properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+      org=properties.organization
+    let home = homeService.publicHome(org);
       home.then(json =>{
         try{
           json.map((element, index)=>{
@@ -62,11 +66,16 @@ class Home extends Component{
     }
 
     handleDatasetSearch(){
-      const { dispatch } = this.props
-      let filter = {
+      const { dispatch, properties } = this.props
+      
+      var org = []
+      if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+        org.push(properties.organization)
+      
+        let filter = {
           'text': '',
-          'index': ['catalog_test'],
-          'org': [],
+          'index': ['catalog_test','ext_opendata'],
+          'org': org,
           'theme':[],
           'date': "",
           'status': [],
@@ -77,17 +86,21 @@ class Home extends Component{
   }
 
   handleSearch(textValue, theme){
-    const { dispatch } = this.props
+    const { dispatch, properties } = this.props
+    var org = []
+    if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+      org.push(properties.organization)
+
     let filter = {
         'text': textValue?textValue:'',
         'index': [],
-        'org': [],
+        'org': org,
         'theme':[],
         'date': "",
         'status': [],
         'order':""
     }
-    this.props.history.push({pathname: '/search', search: '?q=', state: theme?{ 'theme': true }:undefined})
+    this.props.history.push({pathname: '/search', search: '?q='+textValue?textValue:'', state: theme?{ 'theme': true }:undefined})
     dispatch(search('', filter, isPublic()))
 }
 
@@ -101,7 +114,7 @@ class Home extends Component{
           <div className="container">
             <div className="row h-100">
               <div className="col-lg-5 col-md-5 col-12">
-                <img src="./img/DAF_pittogrammaillustrazione_FU.svg" alt="Illustrazione" style={{width: '85%'}}/>
+                <img src={"./img/DAF_pittogrammaillustrazione_FU_"+properties.theme+".svg"} alt="Illustrazione" style={{width: '85%'}}/>
               </div>
               <div className="col-lg-5 col-md-7 col-8 mx-auto pt-3">
                 <h1 style={{fontSize: '45px'}}><b>La piattaforma <br/> dei dati {properties.bodyIllustrazione}</b></h1>

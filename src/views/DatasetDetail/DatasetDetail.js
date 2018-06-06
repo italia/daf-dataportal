@@ -314,20 +314,20 @@ class DatasetDetail extends Component {
                             <li className="nav-item">
                                 <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
                             </li>
-                            <li className="nav-item h-100">
+                            {!isPublic()&&<li className="nav-item h-100">
                                 <a className={!this.state.showPreview ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handlePreview.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="text-icon fa fa-eye pr-2" /> Anteprima</a>
-                            </li>
-                            <li className="nav-item h-100">
+                            </li>}
+                            {!isPublic()&&<li className="nav-item h-100">
                                 <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
-                            </li>
-                            <li className="nav-item h-100">
+                            </li>}
+                            {!isPublic()&&<li className="nav-item h-100">
                                 <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
-                            </li>
+                            </li>}
                             {!isPublic()&&<li className="nav-item h-100">
                                 <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
                             </li>}
                         </ul>
-                        <button className="btn btn-accento buttons-nav" style={{ right: '20%', height: '48px' }} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>
+                        {!isPublic()&&<button className="btn btn-accento buttons-nav" style={{ right: '20%', height: '48px' }} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>}
                       </div>
                     </div>
                     <div className="container">
@@ -362,11 +362,11 @@ class DatasetDetail extends Component {
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div className="col-12">
+                                            {!isPublic()&&<div className="col-12">
                                                 <p className="text-muted mb-4"><b>Informazioni di caricamento </b></p>
-                                            </div>
+                                            </div>}
                                             <div className="col-12">
-                                                {dataset.operational.input_src.sftp &&
+                                                {!isPublic()&&dataset.operational.input_src.sftp &&
                                                     <table className="table table-bordered table-responsive d-inline-table">
                                                         <tbody className="w-100">
                                                             <tr>
@@ -395,7 +395,7 @@ class DatasetDetail extends Component {
                                                         </tbody>
                                                     </table>
                                                 }
-                                                {dataset.operational.input_src.srv_pull &&
+                                                {!isPublic()&&dataset.operational.input_src.srv_pull &&
                                                     <table className="table table-bordered table-striped table-responsive d-inline-table">
                                                         <tbody className="w-100">
                                                             <tr>
@@ -555,10 +555,10 @@ class DatasetDetail extends Component {
                         <div hidden={!this.state.showDett} className="col-5 px-0">
                             <div>
                                 <div className="border-left pl-3 row">
-                                    <div className="col-12">
+                                    {!isPublic()&&<div className="col-12">
                                         <p className='status'>Stato</p>
-                                    </div>
-                                    {(!dataset.operational.ext_opendata || dataset.operational.ext_opendata === {}) &&
+                                    </div>}
+                                    {!isPublic()&&(!dataset.operational.ext_opendata || dataset.operational.ext_opendata === {}) &&
                                         <div className="col-8 mb-3">
                                             {feed.has_job && feed.job_status === 'COMPLETED' &&
                                                 <div className="progress" style={{ height: '30px' }}>
@@ -582,7 +582,7 @@ class DatasetDetail extends Component {
                                             }
                                         </div>
                                     }
-                                    {(dataset.operational.ext_opendata && dataset.operational.ext_opendata != {}) &&
+                                    {!isPublic()&&(dataset.operational.ext_opendata && dataset.operational.ext_opendata != {}) &&
                                         <div className="col-8 mb-3">
                                             {!this.state.hasPreview &&
                                                 <div className="progress" style={{ height: '30px' }}>
@@ -611,14 +611,14 @@ class DatasetDetail extends Component {
                                         <p className="text-muted pb-1 mb-2"><b className="pr-2">Tema </b> <span className="badge badge-info"> {decodeTheme(dataset.dcatapit.theme)}</span></p>
                                     </div>
 
-                                    <div className="col-6 mt-3 pr-0">
+                                    {!isPublic()&&<div className="col-6 mt-3 pr-0">
                                         <p className='status'>DAF Index</p>
-                                    </div>
-                                    <div className="col-3 mt-3">
+                                    </div>}
+                                    {!isPublic()&&<div className="col-3 mt-3">
                                         <span className="badge badge-pill badge-success text-dark">{this.state.dafIndex}</span> <span className="ml-1 text-muted"> su 5</span>
-                                    </div>
+                                    </div>}
 
-                                    <div className="col-8">
+                                    {!isPublic()&&<div className="col-8">
                                         <table className="table table-bordered table-responsive d-inline-table">
                                             <tbody className="w-100">
                                                 <tr>
@@ -638,7 +638,7 @@ class DatasetDetail extends Component {
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
+                                    </div>}
 
                                 </div>
                             </div>
@@ -650,6 +650,12 @@ class DatasetDetail extends Component {
                                 <button type="button" className="btn btn-link float-right" onClick={this.searchDataset.bind(this, query, this.state.category_filter, this.state.group_filter, this.state.organization_filter, this.state.order_filter)} title="torna alla lista dei risultati di ricerca"><i className="fa fa-list fa-lg mt-2"></i> Torna alla lista dei risultati di ricerca</button>
                             </div>
                         </div> */}
+
+                        {isPublic()&&
+                          <div className="py-5 text-center col-12">
+                            Vuoi scoprire maggiori informazioni sul dataset? <button type="button" className="ml-3 p-3 btn btn-accento" onClick={()=>this.props.history.push('/private/dataset/'+dataset.dcatapit.name)}>Accedi all'area Privata</button>
+                          </div>
+                        }
                         </div>
                     </div>
                     {!isPublic() && <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">

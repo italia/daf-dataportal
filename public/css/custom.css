@@ -552,6 +552,10 @@
         .upper-header h6 {
           /*margin-left:22px;*/ } }
 
+.upper-header a{
+  text-decoration: underline;
+}
+
 .main-header {
     height: 124px;
     background-color: var(--primary);
@@ -579,13 +583,34 @@
 .js-scrolled .logo-pub{
     height: 34px;
     width: 40px;
-    margin-top: auto;
+    margin-top: 0.5rem!important;
     margin-bottom: auto;
+}
+
+.js-scrolled .main-header h2{
+  font-size: 24px;
+  line-height: 24px;
+  padding-top: 0.5rem!important;
+  padding-bottom: 0.5rem!important
 }
 
 .logo-pub{
     height: 51px;
-    width: 60px
+    width: 60px;
+    margin-top: 0.25rem!important
+}
+
+.js-scrolled .logo-pub-pa{
+  height: 48px;
+  width: 29px;
+  margin-top: 1px;
+  margin-bottom: auto;
+}
+
+.logo-pub-pa{
+  height: 95px;
+  width: 58px;
+  margin-top:-20px
 }
 
 .js-scrolled p{
@@ -599,6 +624,7 @@
 .social-button{
     height: 28px;
     width: 28px;
+    color: var(--primary)!important
 }
 
 .navi-header {

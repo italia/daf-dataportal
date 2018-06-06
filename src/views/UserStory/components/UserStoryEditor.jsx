@@ -14,6 +14,7 @@ import TextWidget from './widgets/TextWidget';
 
 // SERVICES
 import UserStoryService from './services/UserStoryService';
+import { isPublic } from '../../../utility';
 
 const userStoryService = new UserStoryService();
 
@@ -136,7 +137,7 @@ class UserStoryEditor extends Component {
    */
   onRemove() {
     userStoryService.remove(this.state.dataStory.id).then(() => {
-      window.location = '#/userstory/list';
+      window.location = isPublic()?'#/userstory/list':'#/private/userstory/list';
     })
   }
 

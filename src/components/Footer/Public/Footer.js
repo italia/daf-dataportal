@@ -23,15 +23,15 @@ class Footer extends Component {
             <div className="col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">Open data in Italia</h4>
               <ul className="list-group list-group-flush">
-                <li className="list-group-item bg-footer"><a href="">Il catalogo nazionale</a></li>
-                <li className="list-group-item bg-footer"><a href="">Tipologie</a></li>
-                <li className="list-group-item bg-footer"><a href="">Qualità</a></li>
-                <li className="list-group-item bg-footer"><a href="#/private">Faq</a></li>                
+                <li className="list-group-item bg-footer"><Link to={'/dataset/list'}>Il catalogo dei dataset</Link></li>
+                <li className="list-group-item bg-footer"><Link to={'/userstory/list'}>Le storie</Link></li>
+                <li className="list-group-item bg-footer"><Link to={'/notizie'}>Notizie</Link></li>
+                <li className="list-group-item bg-footer"><Link to={'/partecipa'}>Partecipa</Link></li>                
               </ul>
             </div>
           </div>
           <div className="row">
-            <div className="col-12 col-sm-3">
+            {/* <div className="col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">Open data in Italia</h4>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-footer"><a href="">Il catalogo nazionale</a></li>
@@ -39,7 +39,7 @@ class Footer extends Component {
                 <li className="list-group-item bg-footer"><a href="">Qualità</a></li>
                 <li className="list-group-item bg-footer"><a href="#/private">Faq</a></li>                
               </ul>
-            </div>
+            </div> */}
             <div className="col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">Seguici su</h4>
               <ul className="list-group list-group-flush">
