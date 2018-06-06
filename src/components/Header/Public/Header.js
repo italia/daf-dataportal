@@ -130,7 +130,7 @@ class Header extends Component {
       <div className={"app-header " + jsscrolled}>
         <div className="upper-header">
           <div className="container">
-            <h6 className="mx-5 px-1 mb-0">Agid + Team Digitale</h6>
+            <h6 className="mx-5 px-1 mb-0"><a className="text-white" href="https://www.agid.gov.it/">Agid</a> + <a href="https://teamdigitale.governo.it/" className="text-white">Team Digitale</a></h6>
           </div>
         </div>
         <div className="main-header container">
@@ -154,8 +154,8 @@ class Header extends Component {
               <div className="h-100 row">
                 <p className="d-sm-down-none text-white mr-3">Seguici su</p>
                 {/* <a className="social-button bg-white rounded-circle text-center mx-1 py-1"><i className="fab fa-facebook-f"/></a> */}
-                <a className="d-sm-down-none social-button bg-white rounded-circle text-center mx-1 py-1" href={properties.twitterURL}><i className="fab fa-twitter"/></a>
-                <a className="d-sm-down-none social-button bg-white rounded-circle text-center mx-1 py-1" href={properties.mediumURL}><i className="fab fa-medium-m"/></a>
+                <a className="d-sm-down-none social-button bg-white rounded-circle text-center mx-1 py-1" href={properties.twitterURL} target="_blank"><i className="fab fa-twitter"/></a>
+                <a className="d-sm-down-none social-button bg-white rounded-circle text-center mx-1 py-1" href={properties.mediumURL} target="_blank"><i className="fab fa-medium-m"/></a>
                 <div className="row col-12 px-4" style={{height: '56px'}}>
                   <button className={(this.state.search ? "btn-accento":"btn-header")+" h-100 btn"} style={{width: '56px'}} onClick={this.openSearch.bind(this)}><i className="fa fa-search fa-lg" /></button>
                     {localStorage.getItem('token')?
