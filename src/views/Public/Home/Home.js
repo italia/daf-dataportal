@@ -100,7 +100,7 @@ class Home extends Component{
         'status': [],
         'order':""
     }
-    this.props.history.push({pathname: '/search', search: '?q='+textValue?textValue:'', state: theme?{ 'theme': true }:undefined})
+    this.props.history.push({pathname: '/search', search: '?q='+(textValue?textValue:''), state: theme?{ 'theme': true }:undefined})
     dispatch(search('', filter, isPublic()))
 }
 
