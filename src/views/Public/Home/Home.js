@@ -114,7 +114,7 @@ class Home extends Component{
           <div className="container">
             <div className="row h-100">
               <div className="col-lg-5 col-md-5 col-12">
-                <img src="./img/DAF_pittogrammaillustrazione_FU.svg" alt="Illustrazione" style={{width: '85%'}}/>
+                <img src={"./img/DAF_pittogrammaillustrazione_FU_"+properties.theme+".svg"} alt="Illustrazione" style={{width: '85%'}}/>
               </div>
               <div className="col-lg-5 col-md-7 col-8 mx-auto pt-3">
                 <h1 style={{fontSize: '45px'}}><b>La piattaforma <br/> dei dati {properties.bodyIllustrazione}</b></h1>
