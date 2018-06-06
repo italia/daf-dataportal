@@ -331,8 +331,8 @@ class DatasetDetail extends Component {
                       </div>
                     </div>
                     <div className="container">
-                    <div className="row pt-5">
-                        <div hidden={this.state.showWidget} className="col-7">
+                    <div className="row">
+                        <div hidden={this.state.showWidget} className="pt-5 col-7">
                             <div>
                                 <div className="row px-3">
                                     <div hidden={!this.state.showDett} className="col-12">
@@ -552,7 +552,7 @@ class DatasetDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div hidden={!this.state.showDett} className="col-5 px-0">
+                        <div hidden={!this.state.showDett} className="col-5 px-0 pt-5">
                             <div>
                                 <div className="border-left pl-3 row">
                                     {!isPublic()&&<div className="col-12">
@@ -686,7 +686,7 @@ class DatasetDetail extends Component {
                                         </div>
                                         :
                                         <div className="row mx-auto m-0">
-                                            <i className="px-auto mx-auto">Non sono stati creati Widget con questo dataset, se vuoi essere il primo a crearli clicca qui</i>
+                                            <i className="px-auto mx-auto py-4">Non sono stati creati Widget con questo dataset, se vuoi essere il primo a crearli clicca qui</i>
                                         </div>
                                     }
                                 </div>
