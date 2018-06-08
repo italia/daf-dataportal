@@ -17,6 +17,7 @@ import UserStoryView from '../../views/UserStory/components/UserStoryView';
 import DataApplication from '../../views/Public/DataApplication/DataApplication';
 import DatasetList from '../../views/DataseList/DatasetList'
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail'
+import FooterSticky from '../../components/Footer/Public/FooterSticky'
 
 class Public extends Component {
 
@@ -68,6 +69,7 @@ class Public extends Component {
           </main>
         </div>
         <Footer/>
+        <FooterSticky/>
       </div>
       );
   }

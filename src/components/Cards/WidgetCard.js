@@ -93,14 +93,19 @@ class WidgetCard extends Component {
         const { iframe } = this.props
         var org = ''
         var sp1 = []
+        var table
         if(iframe.table){
             if(this.isMetabase()){
-                sp1[1] = iframe.table
+              table = iframe.table
             }
             else if(this.isSuperset() && iframe.table.indexOf('_o_')!==-1){
                 sp1 = iframe.table.split('_o_')
                 let sp2 = sp1[0].split('.')
                 org = sp2[1]
+                table = sp1[1]
+                if(iframe.table.indexOf('opendata__')!==-1){
+                  table = org + '_o_'+sp1[1]
+                }
             }
         } else {
             org = 'default_org'
@@ -150,12 +155,12 @@ class WidgetCard extends Component {
                             </div>
                         </div>
                         <div className="col-8 pr-0 h-100">
-                            <div title={sp1 ? (sp1[1]) : ''}>
-                                <i className="text-icon fa fa-table py-3 pr-2" /> {sp1[1] ? transformDatasetName(sp1[1]):''}
+                            <div title={table ? (table) : ''}>
+                                <i className="text-icon fa fa-table py-3 pr-2" /> {table ? transformDatasetName(table):''}
                             </div>
                         </div>
                         {sp1 && <div className="col-2 p-0 h-100">
-                            <Link to={'/private/dataset/'+sp1[1]}>
+                            <Link to={'/private/dataset/'+table}>
                                 <i className="text-primary fa fa-arrow-circle-right fa-pull-right fa-lg py-3 pr-3" title="Vai al Dataset"/>
                             </Link>
                         </div>}

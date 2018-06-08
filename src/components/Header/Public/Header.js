@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock } from '@fortawesome/fontawesome-free-solid'
 import PropTypes from 'prop-types'
@@ -9,16 +8,8 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  Button,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-
  } from 'reactstrap';
  import SearchBar from '../../SearchBar/SearchBar';
 
@@ -80,12 +71,6 @@ class Header extends Component {
     })
   }
 
-/*   toggle2(){
-    this.setState({
-      isOpen:!this.state.isOpen
-    })
-  } */
-
   openSearch(){
     this.setState({
       search: !this.state.search
@@ -121,9 +106,8 @@ class Header extends Component {
   }
 
   render(){
-    const { loggedUser, properties } = this.props
+    const { properties } = this.props
     var jsscrolled = this.state.js_scrolled ? 'js-scrolled': ''
-    var active = this.state.open?" active":""
     var show = this.state.open?" show":""
 
     return(
@@ -137,7 +121,7 @@ class Header extends Component {
           <div className="h-100 bg-primary row">
             <div className='float-left'>
               <Link to={'/'}>
-                <img src='./img/DAF_pittogramma_FU.svg' alt="" className="logo-pub mr-4"/>
+                <img src='./img/DAF_pittogramma_FU.svg' alt="" className="logo-pub mx-4"/>
                 {properties.domain!=='dataportal' && properties.domain!=='dataportal-private' && <img src={properties.headerLogo} alt="" className="float-right logo-pub-pa mr-2"/>}
               </Link>
             </div>
@@ -146,7 +130,7 @@ class Header extends Component {
                 <Link className="text-white" to={'/'}>
                   <h2 className="mr-4 mb-0">{/* props.styleProps.headerSiglaTool */}<b>DAF {properties.headerSiglaTool}</b></h2>
                 </Link>
-                <span className="badge badge-pill mt-2 h-100" style={{backgroundColor: 'rgba(0,0,0,0.2)', height: 'max-content'}}>versione alpha 1.0</span>
+                <span className="d-sm-down-none badge badge-pill align-self-center h-100" style={{backgroundColor: 'rgba(0,0,0,0.2)', height: 'max-content'}}>versione alpha 1.0</span>
               </div>
               <p className="d-sm-down-none">{/* props.styleProps.headerDescTool */}{"Data & Analytics Framework"} <b>{properties.headerDescTool}</b></p>
             </div>
