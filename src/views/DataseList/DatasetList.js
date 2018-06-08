@@ -49,6 +49,7 @@ class DatasetList extends Component {
             startDate: undefined,
             endDate: undefined,
             items: 20,
+            totalResults: 0
         }
 
         
@@ -320,7 +321,8 @@ class DatasetList extends Component {
             showDivData: false,
             showDivCategoria: nextProps.location && nextProps.location.state && nextProps.location.state.theme?true:false,
             showDivOrganizzazione: false,
-            showDivVisibilita: false
+            showDivVisibilita: false,
+            totalResults: 0
         })
         var newFilter = this.state.filter
         var elements = this.state.filter.elements
@@ -359,6 +361,16 @@ class DatasetList extends Component {
             this.setState({
                 filter: newFilter
             })
+        }
+        if(nextProps.results){
+          var total = 0
+          Object.keys(JSON.parse(nextProps.results[nextProps.results.length-4].source)).map((tipo, index) =>{
+            var tipi=JSON.parse(nextProps.results[nextProps.results.length-4].source)
+            total += parseInt(tipi[tipo])
+          })
+          this.setState({
+            totalResults: total
+          })
         }
       }
 
@@ -438,7 +450,7 @@ class DatasetList extends Component {
 
  
     render() {
-        const { results, isFetching, query, properties } = this.props
+        const { results, isFetching, properties } = this.props
         
         const queryString = require('query-string');
         var search = queryString.parse(this.props.location.search).q
@@ -467,8 +479,8 @@ class DatasetList extends Component {
                         <div>
                             <nav className="dashboardHeader text-gray-600">
                               <div className="container">
-                                {window.location.hash.indexOf('dataset')!==-1 && <div><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset</h2></div>}
-                                {window.location.hash.indexOf('dataset')===-1 && <div><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Hai cercato <i>{search}</i></h2></div>}
+                                {window.location.hash.indexOf('dataset')!==-1 && <div><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset trovati <i>{this.state.totalResults}</i></h2></div>}
+                                {window.location.hash.indexOf('dataset')===-1 && <div><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Hai cercato <i className="mr-1">{search?search:"' '"}</i> trovati <i>{this.state.totalResults}</i> risultati</h2></div>}
                               </div>
                             </nav>
                             <nav className={"dashboardHeader b-t-1 b-b-1 "+(this.state.showDivSearch?"mb-0":"")}>

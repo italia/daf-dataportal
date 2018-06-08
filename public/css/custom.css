@@ -583,7 +583,6 @@
 .js-scrolled .logo-pub{
     height: 34px;
     width: 40px;
-    margin-top: 0.5rem!important;
     margin-bottom: auto;
 }
 
@@ -753,4 +752,13 @@ li.bg-footer:last-child{
   .paragrafo h2{
     font: 200 32px/38px "Titillium Web";
   }
+}
+
+.footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1020;
+  height: 80px;
+  background-color: var(--primary);
 }

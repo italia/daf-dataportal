@@ -11,7 +11,7 @@ class Vocabulary extends Component {
     return (
       <div>
       <Switch>
-        <Route path="/vocabulary/list" exact component={VocabularyList} />
+        <Route path="/private/vocabulary/list" exact component={VocabularyList} />
       </Switch>
     </div>
     )

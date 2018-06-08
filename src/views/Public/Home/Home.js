@@ -132,8 +132,8 @@ class Home extends Component{
                 <h5 className="text-gray-600 mb-4">{properties.bodyEsplora}</h5>
               </div>
             </div>
-            <div className="row mt-2 mb-3">
-              <div className="col-lg-7 col-md-7 col-12 pr-0">              
+            <div className="row">
+              <div className="col-lg-7 col-md-7 col-12 pr-0 my-3">              
                 <div className="search-pub pl-0">
                     <form onSubmit={()=> this.handleSearch(this.refs.auto.value, undefined)}>
                         <div className="input-group">
@@ -145,8 +145,8 @@ class Home extends Component{
                     </form>
                 </div>
               </div>
-              <h5 className="text-gray-600 vertical-align-middle mx-4 my-3">oppure</h5>
-              <button className="btn btn-accento" onClick={()=> this.handleSearch(undefined, true)}>Esplora per categoria</button>            
+              <h5 className="text-gray-600 align-self-center mx-4">oppure</h5>
+              <button className="btn btn-accento my-3" onClick={()=> this.handleSearch(undefined, true)}>Esplora per categoria</button>            
             </div>
           </div>
         </div>

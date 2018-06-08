@@ -25,6 +25,21 @@ import '../styles/custom.css';
 
 const widgetService = new WidgetService();
 
+const months = {
+  '1': 'Gennaio',
+  '2': 'Febbraio',
+  '3': 'Marzo',
+  '4': 'Aprile',
+  '5': 'Maggio',
+  '6': 'Giugno',
+  '7': 'Luglio',
+  '8': 'Agosto',
+  '9': 'Settembre',
+  '10': 'Ottobre',
+  '11': 'Novembre',
+  '12': 'Dicembre',
+}
+
 class UserStoryEditorContainer extends Component {
   constructor(props) {
     super(props);
@@ -381,8 +396,11 @@ class UserStoryEditorContainer extends Component {
           placeholder="Title"
           disableHtml={true}
         ></TextEditor>
-        {this.props.readonly && <div className="my-5 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+        {this.props.readonly && <div className="mt-5 mb-3 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
           Autore <i>{this.state.dataStory.user}</i>
+        </div>}
+        {this.props.readonly && <div className="mb-5 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+          {this.state.dataStory.timestamp.dayOfMonth+" "+months[this.state.dataStory.timestamp.monthValue]+", "+this.state.dataStory.timestamp.year}
         </div>}
         <SectionTitle readonly={this.props.readonly} title="Sottotitolo"/>
         <TextEditor 

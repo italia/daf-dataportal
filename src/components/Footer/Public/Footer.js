@@ -29,6 +29,15 @@ class Footer extends Component {
                 <li className="list-group-item bg-footer"><Link to={'/partecipa'}>Partecipa</Link></li>                
               </ul>
             </div>
+            <div className="col-12 col-sm-3">
+              <h4 className="text-white font-weight-bold mb-3">Seguici su</h4>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item bg-footer social-links">
+                  <a className="bg-accento rounded-circle text-footer-social py-1 px-2" target="_blank" href="https://twitter.com/teamdigitaleIT?lang=it" title="Twitter"><i className="fab fa-twitter"/></a>
+                  <a className="bg-accento rounded-circle text-footer-social py-1 px-2 mx-2" target="_blank" href="https://medium.com/team-per-la-trasformazione-digitale" title="Medium"><i className="fab fa-medium-m"/></a>
+                </li>               
+              </ul>
+            </div>
           </div>
           <div className="row">
             {/* <div className="col-12 col-sm-3">
@@ -40,15 +49,7 @@ class Footer extends Component {
                 <li className="list-group-item bg-footer"><a href="#/private">Faq</a></li>                
               </ul>
             </div> */}
-            <div className="col-12 col-sm-3">
-              <h4 className="text-white font-weight-bold mb-3">Seguici su</h4>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item bg-footer social-links">
-                  <a className="bg-accento rounded-circle text-footer-social py-1 px-2" target="_blank" href="https://twitter.com/teamdigitaleIT?lang=it" title="Twitter"><i className="fab fa-twitter"/></a>
-                  <a className="bg-accento rounded-circle text-footer-social py-1 px-2 mx-2" target="_blank" href="https://medium.com/team-per-la-trasformazione-digitale" title="Medium"><i className="fab fa-medium-m"/></a>
-                </li>               
-              </ul>
-            </div>
+            
           </div>
         </footer>
       </div>
