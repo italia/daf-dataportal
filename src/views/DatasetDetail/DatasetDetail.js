@@ -338,11 +338,11 @@ class DatasetDetail extends Component {
                                     <div hidden={!this.state.showDett} className="col-12">
                                         <p className="desc-dataset" dangerouslySetInnerHTML={{__html: dataset.dcatapit.notes}}/> 
                                     </div>
-                                    <div hidden={!this.state.showDett} className="col-4">
+                                    <div hidden={!this.state.showDett} className="col-2 mx-auto">
                                         {(dataset.operational.ext_opendata &&
                                             dataset.operational.ext_opendata.url) &&
-                                            <a className="w-25" href={serviceurl.urlCkan + dataset.operational.ext_opendata.name} target='_blank'>
-                                                <p className="card-text text-primary"><strong>APRI CKAN</strong> </p>
+                                            <a className="btn btn-accento px-3 py-2 text-dark" href={serviceurl.urlCkan + dataset.operational.ext_opendata.name} target='_blank'>
+                                                APRI CKAN
                                             </a>
                                         }
                                     </div>
