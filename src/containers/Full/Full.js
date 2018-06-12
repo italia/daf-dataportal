@@ -183,7 +183,7 @@ class Full extends Component {
   }
 
   onPvtChangeStory(e, value){
-    if(this.pvt.value == 0){
+    if(this.pvtStory.value == 0){
       this.setState({
         orgStory: 'default_org'
       });

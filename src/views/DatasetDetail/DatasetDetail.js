@@ -435,7 +435,7 @@ class DatasetDetail extends Component {
                                         {this.state.previewState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
                                     </div>
                                     <div hidden={!this.state.showAPI} className="col-12 card-text">
-                                        <div className="row">
+                                        <div className="row desc-dataset text-dark">
                                             <div className="col-12">
                                                 <label>API Endpoint</label><br />
                                                 <input className='w-75' value={this.state.value} onChange={({ target: { value } }) => this.setState({ value, copied: false })} disabled='true' />
@@ -447,7 +447,7 @@ class DatasetDetail extends Component {
                                             </div>
                                         </div>
                                         <br /><br /><br />
-                                        <div className="row">
+                                        <div className="desc-dataset text-dark row">
                                             <div className="col-12">
                                                 <p>Ti ricordiamo che per poter effettuare la chiamata alla REST API occorre fornire i seguenti parametri di Basic Authentication:</p>
                                                 <div>
@@ -470,7 +470,7 @@ class DatasetDetail extends Component {
                                                     <div>
                                                         {this.state.supersetLink.map((link, index) => {
                                                             return (
-                                                                <div key={index}>
+                                                                <div className="desc-dataset text-dark" key={index}>
                                                                     <p>Accedi alla tabella <strong><a href={link.url} target='_blank'>{link.name}</a></strong> su Superset.</p>
                                                                 </div>
                                                             )
@@ -478,7 +478,7 @@ class DatasetDetail extends Component {
                                                         }
                                                     </div>
                                                     :
-                                                    <p>La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso.</p>
+                                                    <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso.</p>
                                                 }
                                             </div>
                                         }
@@ -490,24 +490,24 @@ class DatasetDetail extends Component {
                                             </div>
                                         </div>
                                         {this.state.hasMetabase &&
-                                            <div>
+                                            <div className="desc-dataset text-dark">
                                                 <p>Collegati a <a href={serviceurl.urlMetabase + '/question/new'} target='_blank'>Metabase</a> e cerca il dataset per creare nuovi widget.</p>
                                             </div>
                                         }
-                                        {!this.state.hasMetabase && <p>Il dataset non è ancora stato associato a Metabase</p>}
+                                        {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>}
                                         <div className="col-12">
                                             <div className="row text-muted">
                                                 <i className="text-icon fa fa-sticky-note fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Jupyter</b></h4>
                                             </div>
                                             {this.state.hasPreview &&
                                                 <div>
-                                                    <div className="row">
+                                                    <div className="desc-dataset text-dark row">
                                                         <p>Leggi attentamente le <a href="https://daf-dataportal.readthedocs.io/it/latest/datascience/jupyter/index.html#creazione-e-configurazione-di-un-notebook" target='_blank'>istruzioni </a> e collegati a <a href={serviceurl.urlJupiter} target='_blank'>Jupyter</a>.  </p>
                                                         <p>Dopo aver attivato la sessione seguendo le istruzioni potrai analizzare il file al percorso:</p>
                                                         <p><strong>{dataset.operational.physical_uri}</strong>.</p>
                                                         <p>Usa i seguenti comandi per caricare il file nel notebook:</p>
                                                     </div>
-                                                    <div className="row">
+                                                    <div className="desc-dataset text-dark row">
                                                         <div className="col-2">
                                                             <strong> Pyspark </strong>
                                                         </div>
@@ -522,7 +522,7 @@ class DatasetDetail extends Component {
                                                             </code>
                                                         </div>
                                                     </div>
-                                                    <div className="row">
+                                                    <div className="desc-dataset text-dark row">
                                                         <div className="col-2">
                                                             <strong> Spark Sql</strong>
                                                         </div>
@@ -534,7 +534,7 @@ class DatasetDetail extends Component {
                                                             </code>
                                                         </div>
                                                     </div>
-                                                    <div className="row">
+                                                    <div className="desc-dataset text-dark row">
                                                         <div className="col-2">
                                                             <strong> Spark Sql </strong>
                                                         </div>
@@ -547,7 +547,7 @@ class DatasetDetail extends Component {
                                                     <br /><br />
                                                 </div>}
                                         </div>
-                                        {!this.state.hasPreview && <p>Non è possibile usare Jupyter per questo dataset</p>}
+                                        {!this.state.hasPreview && <p className="desc-dataset text-dark">Non è possibile usare Jupyter per questo dataset</p>}
                                     </div>
                                 </div>
                             </div>

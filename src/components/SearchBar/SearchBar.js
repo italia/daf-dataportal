@@ -45,7 +45,7 @@ class SearchBar extends Component{
                 'theme':[],
                 'date': "",
                 'status': [],
-                'order':"desc"
+                'order':"score"
             }
         }else{
             newFilter = filter?filter:{
@@ -55,7 +55,7 @@ class SearchBar extends Component{
                 'theme':[],
                 'date': "",
                 'status': [],
-                'order':"desc"
+                'order':"score"
             }
         }
 

@@ -105,7 +105,7 @@ class Home extends Component{
 }
 
   render(){
-    const { listDataset, listStories, isLoading } = this.state
+    const { listDataset, isLoading } = this.state
     const { properties } = this.props
     
     return(
