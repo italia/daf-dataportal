@@ -28,14 +28,14 @@ class DatasetList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            order_filter: 'desc',
+            order_filter: 'score',
             category_filter: props.history.location.state && props.history.location.state.category_filter,
             group_filter: props.history.location.state && props.history.location.state.group_filter,
             organization_filter: props.history.location.state && props.history.location.state.organization_filter,
             query: props.history.location.state && props.history.location.state.query,
             filter:{'da':'',
                     'a':'',
-                    'order': 'desc',
+                    'order': 'score',
                     'elements': []},
             selectedOrg: '',
             selectedCat: '',
