@@ -22,7 +22,7 @@ export const serviceurl = {
   urlMetabase: 'https://graph.daf.teamdigitale.it',
   urlSuperset: 'https://bi.daf.teamdigitale.it',
   urlJupiter: 'https://datascience.daf.teamdigitale.it',
-  urlCkan: "https://ckan-geo.daf.teamdigitale.it/", 
+  urlCkan: "https://ckan-geo.daf.teamdigitale.it/dataset/", 
   domain: ".daf.teamdigitale.it"
  
 // TEST  

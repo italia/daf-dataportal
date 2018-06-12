@@ -11,7 +11,7 @@ class Missione extends Component{
       <div className="container p-5 mt-2">
         <div className="row mt-4">
           <div className="paragrafo col-12 mx-0">
-            <h1>Missione</h1>
+            <h1 className="ml-0">Missione</h1>
           </div>
           <div className="paragrafo col-7 mx-0">
             <h5 className="">
