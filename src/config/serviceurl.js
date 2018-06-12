@@ -11,6 +11,7 @@ export const serviceurl = {
 */
   
 // PROD
+/*
   apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
   apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
   apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
@@ -24,21 +25,21 @@ export const serviceurl = {
   urlJupiter: 'https://datascience.daf.teamdigitale.it',
   urlCkan: "https://ckan-geo.daf.teamdigitale.it/", 
   domain: ".daf.teamdigitale.it"
- 
+  */ 
+
 // TEST  
-/*  
-  apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
-  apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
-  apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
-  apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
-  apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1",
-  apiCKAN: "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy",
-  apiMedium: "https://api.daf.teamdigitale.it/dati-gov/medium", 
-  urlSemantic: "https://api.daf.teamdigitale.it/stanbol/ontonethub/ontologies/find",
-  urlMetabase: 'https://graph.daf.teamdigitale.it',
-  urlSuperset: 'https://bi.daf.teamdigitale.it',
-  urlJupiter: 'https://datascience.daf.teamdigitale.it',
-  urlCkan: "https://ckan-geo.daf.teamdigitale.it/", 
-  domain: ".daf.teamdigitale.it"
-*/
+  apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
+  apiURLDatiGov: "https://api.daf.teamdigitale.test/dati-gov/v1", 
+  apiURLCatalog: "https://api.daf.teamdigitale.test/catalog-manager/v1",
+  apiURLSecurity : "https://api.daf.teamdigitale.test/security-manager/v1",
+  apiURLDataset : "https://api.daf.teamdigitale.test/dataset-manager/v1",
+  apiCKAN: "https://api.daf.teamdigitale.test/dati-gov/ckan_proxy",
+  apiMedium: "https://api.daf.teamdigitale.test/dati-gov/medium", 
+  urlSemantic: "https://api.daf.teamdigitale.test/stanbol/ontonethub/ontologies/find",
+  urlMetabase: 'https://graph.daf.teamdigitale.test',
+  urlSuperset: 'https://bi.daf.teamdigitale.test',
+  urlJupiter: 'https://datascience.daf.teamdigitale.test',
+  urlCkan: "https://ckan-geo.daf.teamdigitale.test/", 
+  domain: ".daf.teamdigitale.test"
+
 }
