@@ -4,10 +4,7 @@ import Dashboard, { addWidget } from 'react-dazzle';
 
 import SectionTitle from './SectionTitle';
 import TextEditor from './editor/TextEditor';
-/* import TextWidget from '../../DashboardManager/components/widgets/TextWidget';
-import ProfileView from './editor/ProfileView';
-import GraphEditor from './editor/GraphEditor';
-import ImageEditor from './editor/ImageEditor'; */
+import ShareButton from '../../../components/ShareButton/ShareButton';
 import CustomFrame from './CustomFrame';
 import IframeWidget from './widgets/IframeWidget';
 import TextWidget from './widgets/TextWidget';
@@ -385,7 +382,11 @@ class UserStoryEditorContainer extends Component {
    */
   render() {
     return (
-    <div className="bg-white story-content container">
+    <div>
+      { this.props.readonly && 
+        <ShareButton className="mt-5 float-right" />
+      }
+      <div className="bg-white story-content container">
         <SectionTitle readonly={this.props.readonly} title="Titolo"/>
         <TextEditor 
           readonly={this.props.readonly}
@@ -429,6 +430,7 @@ class UserStoryEditorContainer extends Component {
           addWidget={this.addWidget}
         />}
         
+      </div>
     </div>
     );
   }
