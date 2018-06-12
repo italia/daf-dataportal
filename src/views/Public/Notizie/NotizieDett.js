@@ -3,6 +3,7 @@ import { serviceurl } from '../../../config/serviceurl.js'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+
 class NotizieDetail extends Component {
     constructor(props) {
       super(props)
@@ -12,7 +13,7 @@ class NotizieDetail extends Component {
     componentDidMount(){
         // ORIG URL  https://medium.com/feed/team-per-la-trasformazione-digitale
         // FINAL URL https://datipubblici.daf.teamdigitale.it/dati-gov/medium/medium.com/feed/team-per-la-trasformazione-digitale
-        let url = serviceurl.apiMedium + this.props.properties.mediumURL
+        let url = serviceurl.apiMedium + this.props.properties.notizieURL
         this.load(url, this.props.match.params.id);
     }
  
@@ -36,31 +37,25 @@ class NotizieDetail extends Component {
     
       render() {
         return (
-			<div className="container p-5 mt-2">
-                <h1>Dettaglio Notizia</h1>
-                <div className="row mt-4">
-                    {this.state.item ? 
-                    <div className="col-8">
-                        <div>
-                            <h2 className="mt-4">
-                                {this.state.item.title[0]}
-                            </h2>
-                            <h5 className="mt-4">
-                                {this.state.item['dc:creator'][0]}
-                            </h5>
-                            <h5 className="mt-4">
-                                {this.state.item.pubDate[0]}                            
-                            </h5>
-                            <p dangerouslySetInnerHTML={{__html: this.state.item['content:encoded'][0]}}></p>
-                        </div>
-                    </div>
-                     :
-                     <div className="col-8">
-                         <h5>Caricamento... </h5>
-                     </div>
-                     }
+			    <div className="container p-5 mt-2">
+            {this.state.item ? 
+            <div className="paragrafo">
+                <div>
+                    <h2 className="mt-4">
+                        {this.state.item.title[0]}
+                    </h2>
+                    <h5 className="mt-4">
+                        {this.state.item['dc:creator'][0]}
+                    </h5>
+                    <h5 className="mt-4">
+                        {this.state.item.pubDate[0]}                            
+                    </h5>
+                    <p dangerouslySetInnerHTML={{__html: this.state.item['content:encoded'][0]}}></p>
                 </div>
             </div>
+              :<h3><i className="fa fa-spin fa-circle-notch mr-2"/>Caricamento... </h3>
+              }
+        </div>
         )
     }
 }
