@@ -49,14 +49,14 @@ class WidgetImage extends React.Component {
             base64Icon = "base64," + this.state.imageSrc.replace(/"/g, '')
         }
         return this.state.loading === true ? <p>Caricamento ...</p> : (
-            this.state.imageSrc ?
+            this.state.imageSrc &&
             <div style={imgStyle}>    
                 {this.state.imageSrc && <img src={"data:image/jpg;" + base64Icon} />}
             </div>
-            :
+            /* :
             <div style={imgStyle}> 
                 {React.createElement(wid, {...widgets[widget].props, class: "no-click", onLoad: () => onLoadIframe(key)})}
-            </div>
+            </div> */
         );
     }
 }
