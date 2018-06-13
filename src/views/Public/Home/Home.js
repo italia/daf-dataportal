@@ -79,7 +79,7 @@ class Home extends Component{
           'theme':[],
           'date': "",
           'status': [],
-          'order':""
+          'order':"desc"
       }
       this.props.history.push('/dataset/list');
       dispatch(search('', filter, isPublic()))
