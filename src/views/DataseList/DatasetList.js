@@ -27,15 +27,19 @@ moment.locale('it', localization)
 class DatasetList extends Component {
     constructor(props) {
         super(props)
+        let defaultOrder = 'desc'
+        if(window.location.hash.indexOf('search')!==-1)
+          defaultOrder = 'score'
+        
         this.state = {
-            order_filter: 'score',
+            order_filter: defaultOrder,
             category_filter: props.history.location.state && props.history.location.state.category_filter,
             group_filter: props.history.location.state && props.history.location.state.group_filter,
             organization_filter: props.history.location.state && props.history.location.state.organization_filter,
             query: props.history.location.state && props.history.location.state.query,
             filter:{'da':'',
                     'a':'',
-                    'order': 'score',
+                    'order': defaultOrder,
                     'elements': []},
             selectedOrg: '',
             selectedCat: '',
@@ -133,7 +137,7 @@ class DatasetList extends Component {
 
         let filter = {
             'text': dataset?'':query,
-            'index': dataset?['catalog_test','ext_opendata']:[],
+            'index': [],
             'org': org,
             'theme':[],
             'date': this.state.filter.da && this.state.filter.a ? this.state.filter.da.locale('it').format("YYYY-MM-DD")+ ' ' +this.state.filter.a.locale('it').format("YYYY-MM-DD") : '',
@@ -356,6 +360,12 @@ class DatasetList extends Component {
                 })
             }
 
+            if(nextProps.filter.order!==''){
+              this.setState({
+                  order_filter: nextProps.filter.order
+              })
+          }
+
             newFilter.elements = elements;
 
             this.setState({
@@ -488,7 +498,7 @@ class DatasetList extends Component {
                                   <div className="row h-100">
                                     <div className="mr-auto col-lg-4 col-md-7 h-100" >
                                         <div className="btn-group h-100" role="group" aria-label="Basic example">
-                                            {window.location.hash.indexOf('dataset')===-1 && <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button>}
+                                            <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivData ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickData}>Data <i className={"fa " + (this.state.showDivData ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivCategoria ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickCategoria}>Categoria <i className={"fa " + (this.state.showDivCategoria ? "fa-angle-up" : "fa-angle-down")}></i></button>
                                             {orgFilter && <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showDivOrganizzazione ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickOrganizzazione}>Organizzazione <i className={"fa " + (this.state.showDivOrganizzazione ? "fa-angle-up" : "fa-angle-down")}></i></button>}
@@ -575,7 +585,7 @@ class DatasetList extends Component {
                                 <nav className="dashboardHeader container py-2 px-5">
                                 {this.state.filter.elements.length>0 && this.state.filter.elements.map((fi, index) => {
                                     switch(fi.type){
-                                        case 0: return(window.location.hash.indexOf('dataset')===-1 && <span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key={index}>{decodeTipo(fi.value)}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
+                                        case 0: return(<span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key={index}>{decodeTipo(fi.value)}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
                                         break;
                                         case 1: return(<span className="badge badge-pill badge-info my-2 mr-2 pl-3 py-2 filter-val" key={index}>{decodeTheme(fi.value)}<button type="button" className="p-0 ml-2 btn btn-link text-gray-600" onClick={this.removeFilter.bind(this, index)}><i className="ml-2 fa fa-times-circle"></i></button></span>);
                                         break;
