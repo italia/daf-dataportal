@@ -131,12 +131,12 @@ class Full extends Component {
                     setCookie(json)
                   }
                 })
-                dispatch(getApplicationCookie('jupyter'))
+                /*dispatch(getApplicationCookie('jupyter'))
                 .then(json => {
                   if (json) {
                     setCookie(json)
                   }
-                })
+                })*/
                 /* dispatch(getApplicationCookie('grafana'))
                 .then(json => {
                   if (json) {
