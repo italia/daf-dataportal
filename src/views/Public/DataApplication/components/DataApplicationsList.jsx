@@ -34,11 +34,17 @@ const DataApplication = props => {
           <hr />
           <Nav>
             <NavLink href={sharingLinks.github}>
-              <i className="fab fa-github fa-lg" /> Vai al codice sorgente
-        </NavLink>
-            <NavLink href={sharingLinks.medium}>
-              <i className="fab fa-medium fa-lg" /> Vai al post su Medium
-        </NavLink>
+            <span>
+              <i className="fab fa-github fa-2x" />
+              <span className="lead"> Github</span>
+            </span>
+            </NavLink>
+            {sharingLinks.medium && <NavLink href={sharingLinks.medium}>
+              <span>
+                <i className="fab fa-medium fa-2x" />
+                <span className="lead"> Medium</span>
+              </span>
+            </NavLink>}
           </Nav>
         </Col>
         <Col sm={4}>
@@ -67,7 +73,7 @@ class DataApplicationsList extends React.Component {
   render() {
     return this.props.hasFetched
       ? createDataApplications(this.props.data)
-      : (this.props.error ? (<Alert color="danger">Errore</Alert>) : null)
+      : /* this.props.error ? (<Alert color="danger">Errore</Alert>) : */ null
   }
 }
 
