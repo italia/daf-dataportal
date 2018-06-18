@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Container,
   Row,
@@ -9,20 +9,27 @@ import {
   NavLink,
   CardImg,
   Button
-} from 'reactstrap'
+} from "reactstrap";
 
 const DataApplication = props => {
-  const { applicationURL, title, author, previewBase64, description, sharingLinks } = props
+  const {
+    applicationURL,
+    title,
+    author,
+    previewBase64,
+    description,
+    sharingLinks
+  } = props;
   return (
     <Jumbotron className="alert-secondary pb-4">
       <Row>
         <Col sm={8}>
-          <a href={applicationURL}>
+          <a href={applicationURL} target="_blank">
             <h1
               className="display-4"
               style={{
-                font: '700 40px/48px Titillium Web',
-                color: 'rgb(21, 27, 30)'
+                font: "700 40px/48px Titillium Web",
+                color: "rgb(21, 27, 30)"
               }}
             >
               {title}
@@ -30,21 +37,23 @@ const DataApplication = props => {
           </a>
           <p className="lead">{author}</p>
           <hr />
-          <p style={{ font: '400 21px/32px Titillium Web' }}>{description}</p>
+          <p style={{ font: "400 21px/32px Titillium Web" }}>{description}</p>
           <hr />
           <Nav>
-            <NavLink href={sharingLinks.github}>
-            <span>
-              <i className="fab fa-github fa-2x" />
-              <span className="lead"> Github</span>
-            </span>
-            </NavLink>
-            {sharingLinks.medium && <NavLink href={sharingLinks.medium}>
+            <NavLink href={sharingLinks.github} target="_blank">
               <span>
-                <i className="fab fa-medium fa-2x" />
-                <span className="lead"> Medium</span>
+                <i className="fab fa-github fa-2x" />
+                <span className="lead"> Github</span>
               </span>
-            </NavLink>}
+            </NavLink>
+            {sharingLinks.medium && (
+              <NavLink href={sharingLinks.medium} target="_blank">
+                <span>
+                  <i className="fab fa-medium fa-2x" />
+                  <span className="lead"> Medium</span>
+                </span>
+              </NavLink>
+            )}
           </Nav>
         </Col>
         <Col sm={4}>
@@ -55,26 +64,28 @@ const DataApplication = props => {
         </Col>
       </Row>
     </Jumbotron>
-  )
-}
+  );
+};
 
 const mapDataApplications = dataApps =>
-  dataApps.map((dataApp, index) => <DataApplication key={index} {...dataApp} />)
+  dataApps.map((dataApp, index) => (
+    <DataApplication key={index} {...dataApp} />
+  ));
 
 const createDataApplications = dataApps => (
   <Container className="pt-4">{mapDataApplications(dataApps)}</Container>
-)
+);
 
 class DataApplicationsList extends React.Component {
   componentDidMount() {
-    this.props.requestDataApplicationsList()
+    this.props.requestDataApplicationsList();
   }
 
   render() {
     return this.props.hasFetched
       ? createDataApplications(this.props.data)
-      : /* this.props.error ? (<Alert color="danger">Errore</Alert>) : */ null
+      : /* this.props.error ? (<Alert color="danger">Errore</Alert>) : */ null;
   }
 }
 
-export default DataApplicationsList
+export default DataApplicationsList;
