@@ -40,12 +40,14 @@ const DataApplication = props => {
           <p style={{ font: "400 21px/32px Titillium Web" }}>{description}</p>
           <hr />
           <Nav>
-            <NavLink href={sharingLinks.github} target="_blank">
-              <span>
-                <i className="fab fa-github fa-2x" />
-                <span className="lead"> Github</span>
-              </span>
-            </NavLink>
+            {sharingLinks.github && (
+              <NavLink href={sharingLinks.github} target="_blank">
+                <span>
+                  <i className="fab fa-github fa-2x" />
+                  <span className="lead"> Github</span>
+                </span>
+              </NavLink>
+            )}
             {sharingLinks.medium && (
               <NavLink href={sharingLinks.medium} target="_blank">
                 <span>
