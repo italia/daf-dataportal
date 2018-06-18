@@ -21,7 +21,7 @@ const DataApplication = props => {
     sharingLinks
   } = props;
   return (
-    <Jumbotron className="alert-secondary pb-4">
+    <Jumbotron className="alert-light pb-4">
       <Row>
         <Col sm={8}>
           <a href={applicationURL} target="_blank">
