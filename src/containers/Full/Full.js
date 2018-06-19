@@ -274,6 +274,14 @@ class Full extends Component {
     this.setState({
       isOpenStory: true
     });
+
+    this.titleStory.value = ''
+    this.pvtStory.value = 0
+    this.orgStory.value = ''
+    this.setState({
+      validationMSgOrg: 'Campo obbligatorio',
+      validationMSg: 'Campo obbligatorio'
+    });
   };
   
   hideModalStory = () => {
@@ -285,6 +293,14 @@ class Full extends Component {
   openModalDash = () => {
     this.setState({
       isOpenDash: true
+    });
+
+    this.titleDash.value = ''
+    this.pvtDash.value = 0
+    this.orgDash.value = ''
+    this.setState({
+      validationMSgOrg: 'Campo obbligatorio',
+      validationMSg: 'Campo obbligatorio'
     });
   };
   

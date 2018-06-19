@@ -107,7 +107,7 @@ class UserStoryEditor extends Component {
             saving: false,
             modified: false
           })
-          if(window.location === '/userstory/create/'){
+          if(window.location.hash.indexOf('/userstory/create')!==-1){
             this.state.dataStory.id = data.message;
             this.props.history.push('/private/userstory/list/'+ data.message + '/edit');
           }
@@ -158,7 +158,8 @@ class UserStoryEditor extends Component {
               status={this.state.dataStory.published}
               onSave={this.save}
               onRemove={this.onRemove}
-              saving={this.state.modified}
+              modified={this.state.modified}
+              saving={this.state.saving}
               pvt={this.state.dataStory.pvt}
           ></EditBarTop>
           <UserStoryEditorContainer 
