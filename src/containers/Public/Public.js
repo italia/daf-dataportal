@@ -31,6 +31,7 @@ class Public extends Component {
     var bg = 'bg-white'
     var p = ''
 
+    if(window.location.hash.indexOf('data-applications') !== -1) bg = 'bg-light'
     if(window.location.hash.indexOf('search')!==-1)
       p='py-5'
     if(window.location.hash.indexOf('userstory/list')!==-1){
