@@ -139,9 +139,11 @@ class WidgetCard extends Component {
                         <div className="row m-0 b-b-card">
                             <div className="crop col-12 w-100">
                                 <div>
-                                    {this.state.imageSrc && this.state.imageSrc !== 'noimage' ? <img src={"data:image/jpg;base64," + this.state.imageSrc} alt={iframe.table?transformWidgetName(iframe.table):''}/> :
+                                    {this.state.imageSrc && this.state.imageSrc !== 'noimage' &&
+                                    <img src={"data:image/jpg;base64," + this.state.imageSrc} alt={iframe.table?transformWidgetName(iframe.table):''}/> 
+/*                                     :
                                     
-                                        React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click" })
+                                        React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click" }) */
                                     }
                                 </div>
                             </div>

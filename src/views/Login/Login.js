@@ -128,10 +128,10 @@ class Login extends Component {
                 .then(json => {
                   if (json) {
                     setCookie(json)
-                    dispatch(getApplicationCookie('jupyter'))
-                      .then(json => {
-                        if (json) {
-                          setCookie(json)
+                    //dispatch(getApplicationCookie('jupyter'))
+                    //  .then(json => {
+                    //    if (json) {
+                    //      setCookie(json)
                           // GRAFANA DISABLED
                           /* dispatch(getApplicationCookie('grafana'))
                             .then(json => {
@@ -147,8 +147,8 @@ class Login extends Component {
                                   })
                               //}
                             //})
-                        }
-                      })
+                       // }
+                      //})
                   }
                 })
               }

@@ -383,7 +383,7 @@ class UserStoryEditorContainer extends Component {
   render() {
     return (
     <div>
-      { this.props.readonly && 
+      { this.props.readonly && isPublic() && 
         <ShareButton className="mt-5 float-right" />
       }
       <div className="bg-white story-content container">
