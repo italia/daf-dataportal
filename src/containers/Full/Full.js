@@ -166,12 +166,16 @@ class Full extends Component {
                 authed: false,
                 loading: false
               })
+              logout();
+              this.props.history.push('/login')
             })
           } else {
             this.setState({
               authed: false,
               loading: false
             })
+            logout();
+            this.props.history.push('/login')
           }
         }
       }
@@ -390,7 +394,7 @@ class Full extends Component {
     if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1)
       mainDiv='bg-light'
     
-    if (window.location.hash.indexOf('/private/userstory/list')!==-1)
+    if (window.location.hash.indexOf('/private/userstory/list/')!==-1)
       mainDiv='bg-white'
       
     if (window.location.hash.indexOf('/private/home')!==-1 || window.location.hash.indexOf('/private/search')!==-1 || window.location.hash.indexOf('/private/dataset')!==-1)
