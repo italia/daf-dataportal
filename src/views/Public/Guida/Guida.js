@@ -10,7 +10,7 @@ class Guida extends Component{
     return(
       <div className="w-100">
       <div className="header-story">
-        <img src="./img/beatriz-perez-moya-111685-unsplash.jpg"/>
+        <img src="./img/patrick-tomasso-71909-unsplash.jpg"/>
       </div>
       <div className="container paragrafo p-5 mt-2">
         <h1>Il progetto - Linee guida</h1>
