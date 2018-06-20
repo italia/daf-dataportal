@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Components from 'react';
 import Dashboard, { addWidget } from 'react-dazzle';
-
+import { toastr } from 'react-redux-toastr'
 import SectionTitle from './SectionTitle';
 import TextEditor from './editor/TextEditor';
 import ShareButton from '../../../components/ShareButton/ShareButton';
@@ -64,6 +64,7 @@ class UserStoryEditorContainer extends Component {
     this.addWidget = this.addWidget.bind(this);
     this.saveTextWidget = this.saveTextWidget.bind(this);
     this.save = this.save.bind(this);
+    this.isLastText = this.isLastText.bind(this)
   }
 
   componentDidMount(){
@@ -132,7 +133,7 @@ class UserStoryEditorContainer extends Component {
    */
   loadIframe = (iframes) => {
     iframes.map(iframe => {
-      /* const response = this.loadImage(iframe.identifier)
+      const response = this.loadImage(iframe.identifier)
       response.then(response => {
         if (response.ok)
           response.text().then(text => {
@@ -149,7 +150,7 @@ class UserStoryEditorContainer extends Component {
               }
             }
           })
-        else */
+        else
           this.widgetsTypes[iframe.identifier] = {
             "type": IframeWidget,
             "title": iframe.title,
@@ -162,7 +163,7 @@ class UserStoryEditorContainer extends Component {
               "origin": iframe.origin
             }
           }
-      //})
+      })
     })
   }
   /**
@@ -180,47 +181,63 @@ class UserStoryEditorContainer extends Component {
     this.setLayout(this.state.layout);
   }
 
+  isLastText(){
+    let rowsLength = this.state.layout.rows.length
+    if(rowsLength > 0){
+      var prevWidget = this.state.layout.rows[rowsLength-1].columns[0].widgets[0].key
+      if(prevWidget.indexOf('TextWidget')!==-1)
+        return true
+    }
+    
+    return false
+  }
+
   /**
 * Add widget
 */
   addWidget = function (widgetKey, row) {
-    console.log(this)
-    if (row == undefined) {
-      row = this.state.layout.rows.length
-      this.addRow();
-    }
-
-    let newWidget = {};
-    let newKey = ""
-    //count widget of type
-    if (widgetKey === "TextWidget") {
-      let progressive = this.getNextProgressive(widgetKey);
-      //assign key to widget
-      newKey = widgetKey + "_" + progressive;
-
-      newWidget = {
-        "type": TextWidget,
-        "title": "Testo",
-        "props": {
-          "onSave": this.saveTextWidget.bind(this),
-          "wid_key": newKey
-        }
+    
+    if(widgetKey === "TextWidget" && this.isLastText()){
+      toastr.info('Attenzione', 'Hai già inserito un testo sopra questo elemento, modificalo per aggiungere paragrafi')
+      return
+    }else{
+      if (row == undefined) {
+        row = this.state.layout.rows.length
+        this.addRow();
       }
-    } else {
-      newWidget = this.widgetsTypes[widgetKey];
-      newKey = widgetKey
-      newWidget.type = IframeWidget
-    }
-    if (!newWidget.props)
-      newWidget.props = {};
-    newWidget.props.wid_key = newKey;
 
-    console.log(this.widgetsTypes)
-    //add widget to list
-    this.state.widgets[newKey] = newWidget;
-    //add widget to layout
-    this.state.layout.rows[row].columns[0].widgets.push({ key: newKey });
-    this.setLayout(this.state.layout);
+      let newWidget = {};
+      let newKey = ""
+      //count widget of type
+      if (widgetKey === "TextWidget") {
+        let progressive = this.getNextProgressive(widgetKey);
+        //assign key to widget
+        newKey = widgetKey + "_" + progressive;
+
+        newWidget = {
+          "type": TextWidget,
+          "title": "Testo",
+          "props": {
+            "onSave": this.saveTextWidget.bind(this),
+            "wid_key": newKey
+          }
+        }
+      } else {
+        newWidget = this.widgetsTypes[widgetKey];
+        newKey = widgetKey
+        newWidget.type = IframeWidget
+      }
+      if (!newWidget.props)
+        newWidget.props = {};
+      newWidget.props.wid_key = newKey;
+
+      //console.log(this.widgetsTypes)
+      //add widget to list
+      this.state.widgets[newKey] = newWidget;
+      //add widget to layout
+      this.state.layout.rows[row].columns[0].widgets.push({ key: newKey });
+      this.setLayout(this.state.layout);
+    }
 
   }
 
@@ -243,9 +260,6 @@ class UserStoryEditorContainer extends Component {
         "onSave": this.saveTextWidget.bind(this)
       }
     },
-  }
-
-  componentWillReceiveProps() {
   }
 
   onChange = function(key, value) {
