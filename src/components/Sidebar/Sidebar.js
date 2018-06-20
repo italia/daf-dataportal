@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap'
+import { toastr } from 'react-redux-toastr'
 import {
   loadDatasets,
   unloadDatasets,
@@ -56,19 +57,30 @@ class Sidebar extends Component {
   }
 
   openModal(name, url){
-    this.setState({
-      isOpen: true,
-      url: url,
-      name: name
-    });
+    if(name!=='Jupyter'){
+      const toastrConfirmOptions = {
+        okText: 'Vai',
+        cancelText: 'Annulla',
+        onOk: () => this.hideModalAndRedirect(url),
+        onCancel: () => console.log('CANCEL: clicked')
+      };
+      toastr.confirm('Stai per essere reindirizzato a ' + name, toastrConfirmOptions);
+    }else{
+      const toastrConfirmOptions = {
+        okText: 'Vai',
+        cancelText: 'Annulla',
+        onOk: () => this.hideModalAndRedirect('https://developersitalia.slack.com/messages/C760XQX9Q/'),
+        onCancel: () => console.log('CANCEL: clicked')
+      };
+      toastr.confirm('Al momento Jupyter può essere usato solo da pubbliche amministrazione e utenti certificati. Se vuoi provarlo contattaci su slack developers.italia.it canale #daf', toastrConfirmOptions);
+    }
   };
   
-  hideModalAndRedirect = (e) => {
-    e.preventDefault();
+  hideModalAndRedirect(url){
     this.setState({
       isOpen: false
     });
-    window.open(this.state.url);
+    window.open(url);
   };
 
   hideModal = (e) => {
@@ -96,18 +108,10 @@ class Sidebar extends Component {
 
   createDash(){
     this.props.openModalDash();
-    /* this.props.history.push({
-      pathname: '/dashboard/list',
-      state: { 'isOpen': true }
-    }) */
   }
 
   createStory(){
     this.props.openModalStory();
-    /* this.props.history.push({
-      pathname: '/userstory/list',
-      state: { 'isOpen': true }
-    }) */
   }
 
   render() {
@@ -122,25 +126,6 @@ class Sidebar extends Component {
       home = 'nav-link-primary'
     return (
       <div>
-        <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
-        <form>
-          <ModalHeader>
-            <ModalTitle>Reindirizzamento</ModalTitle>
-            <ModalClose onClick={this.hideModal}/>
-          </ModalHeader>
-          <ModalBody>
-          <div className="form-group">
-            <p>Stai per essere renidirizzato nell'applicazione {this.state.name}.</p>
-          </div>
-          </ModalBody>
-          <ModalFooter>
-            <button className='btn btn-gray-200' onClick={this.hideModal}>
-              Chiudi
-            </button>
-            <button className='btn btn-gray-200' onClick={this.hideModalAndRedirect}>Scegli</button>
-          </ModalFooter>
-        </form>
-      </Modal>
         <div className="sidebar ">
           <nav className="sidebar-nav b-t-1 b-r-1">
             <ul className="nav">
@@ -224,7 +209,7 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link" onClick={() => this.openModal('Jupiter', serviceurl.urlJupiter)}><i className="fa fa-sticky-note fa-lg text-secondary" />  Jupyter</a>
+                    <a href className="nav-link" onClick={() => this.openModal('Jupyter', serviceurl.urlJupiter)}><i className="fa fa-sticky-note fa-lg text-secondary" />  Jupyter</a>
                   </li>
                 </ul>
               </li>
