@@ -136,8 +136,14 @@ class UserStoryEditor extends Component {
    * onRemove
    */
   onRemove() {
+    this.setState({
+      removing: true
+    })
     userStoryService.remove(this.state.dataStory.id).then(() => {
       window.location = isPublic()?'#/userstory/list':'#/private/userstory/list';
+      this.setState({
+        removing: false
+      })
     })
   }
 
@@ -160,7 +166,10 @@ class UserStoryEditor extends Component {
               onRemove={this.onRemove}
               modified={this.state.modified}
               saving={this.state.saving}
+              removing={this.state.removing}
               pvt={this.state.dataStory.pvt}
+              author={this.state.dataStory.user}
+              loggedUser={this.props.loggedUser}
           ></EditBarTop>
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory} 
