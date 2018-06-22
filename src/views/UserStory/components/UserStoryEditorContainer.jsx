@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import Helmet from 'react-helmet'
 import Dashboard, { addWidget } from 'react-dazzle';
 import { toastr } from 'react-redux-toastr'
 import SectionTitle from './SectionTitle';
@@ -133,7 +134,7 @@ class UserStoryEditorContainer extends Component {
    */
   loadIframe = (iframes) => {
     iframes.map(iframe => {
-      const response = this.loadImage(iframe.identifier)
+      /* const response = this.loadImage(iframe.identifier)
       response.then(response => {
         if (response.ok)
           response.text().then(text => {
@@ -150,7 +151,7 @@ class UserStoryEditorContainer extends Component {
               }
             }
           })
-        else
+        else */
           this.widgetsTypes[iframe.identifier] = {
             "type": IframeWidget,
             "title": iframe.title,
@@ -164,7 +165,7 @@ class UserStoryEditorContainer extends Component {
             }
           }
       })
-    })
+    //})
   }
   /**
 * Add row
@@ -388,15 +389,37 @@ class UserStoryEditorContainer extends Component {
     }
   }
 
-
+  getFirstWidget(widgets){
+    var wid;
+    for(wid in widgets){
+      if(wid.indexOf('TextWidget')===-1){
+        return wid
+        break
+      }
+    }
+  }
 
 
   /**
    * Render Function
    */
   render() {
+    var firstWid = this.getFirstWidget(this.state.widgets)
+    var url = ''
+    if (firstWid)
+      url = serviceurl.urlCacher +'plot/'+firstWid+'/330x280'
     return (
     <div>
+
+      <Helmet
+        meta={[
+          {"property": "og:type", "content": "article"},
+          {"property": "og:image", "content": url},
+          {"property": "og:title", "content": this.state.dataStory.title},
+          {"property": "og:url", "content": window.location.href},
+          {"property": "og:description", "content": this.state.dataStory.subtitle}
+        ]}
+      />
       { this.props.readonly && isPublic() && 
         <ShareButton className="mt-5 float-right" />
       }

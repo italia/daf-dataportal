@@ -22,7 +22,8 @@ export const serviceurl = {
   urlMetabase: 'https://graph.daf.teamdigitale.it',
   urlSuperset: 'https://bi.daf.teamdigitale.it',
   urlJupiter: 'https://datascience.daf.teamdigitale.it',
-  urlCkan: "https://ckan-geo.daf.teamdigitale.it/dataset/", 
+  urlCkan: "https://ckan-geo.daf.teamdigitale.it/dataset/",
+  urlCacher: "https://daf-cacher-fe.daf.teamdigitale.it/", 
   domain: ".daf.teamdigitale.it"
  
 // TEST  

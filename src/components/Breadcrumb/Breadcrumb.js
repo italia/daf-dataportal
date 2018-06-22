@@ -28,7 +28,7 @@ const BreadcrumbsItem = ({ ...rest, match }) => {
       ) :
       (
         <BreadcrumbItem>
-          <Link to={match.url || ''}>
+          <Link className="text-primary" to={match.url || ''}>
             {routeName}
           </Link>
         </BreadcrumbItem>
