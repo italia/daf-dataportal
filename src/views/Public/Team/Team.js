@@ -8,6 +8,10 @@ class Team extends Component{
 
   render(){
     return(
+      <div className="w-100">
+      <div className="header-story">
+        <img src="./img/james-carol-lee-418089-unsplash.jpg"/>
+      </div>
       <div className="container paragrafo p-5 mt-2">
         <h1>Chi siamo</h1>
         <h5 className="">
@@ -19,6 +23,7 @@ class Team extends Component{
           <h5><li className="">Istituto di Scienze e Tecnologie della Cognizione (ISTC) del CNR per la parte relativa alla standardizzazione e semantica dei dati;</li></h5>
           <h5><li className="">GeoSolutions srl per l’abilitazione della raccolta automatica dei dati nel catalogo CKAN, conformi al profilo di metadatazione nazionale DCAT-AP_IT</li></h5>
         </ul>
+      </div>
       </div>
     )
   }

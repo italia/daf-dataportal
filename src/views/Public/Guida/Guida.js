@@ -8,6 +8,10 @@ class Guida extends Component{
 
   render(){
     return(
+      <div className="w-100">
+      <div className="header-story">
+        <img src="./img/patrick-tomasso-71909-unsplash.jpg"/>
+      </div>
       <div className="container paragrafo p-5 mt-2">
         <h1>Il progetto - Linee guida</h1>
         <h2>Documentazione</h2>          
@@ -48,6 +52,7 @@ class Guida extends Component{
         raccolga i dati delle amministrazioni locali. A tal proposito il Dataportal implementa la politica di raccolta dati come specificata nelle linee guida per la valorizzazione 
         del patrimonio informativo pubblico.
         </h5>
+      </div>
       </div>
     )
   }

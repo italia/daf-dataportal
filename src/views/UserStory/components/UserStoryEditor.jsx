@@ -107,7 +107,7 @@ class UserStoryEditor extends Component {
             saving: false,
             modified: false
           })
-          if(window.location === '/userstory/create/'){
+          if(window.location.hash.indexOf('/userstory/create')!==-1){
             this.state.dataStory.id = data.message;
             this.props.history.push('/private/userstory/list/'+ data.message + '/edit');
           }
@@ -136,8 +136,14 @@ class UserStoryEditor extends Component {
    * onRemove
    */
   onRemove() {
+    this.setState({
+      removing: true
+    })
     userStoryService.remove(this.state.dataStory.id).then(() => {
       window.location = isPublic()?'#/userstory/list':'#/private/userstory/list';
+      this.setState({
+        removing: false
+      })
     })
   }
 
@@ -158,8 +164,12 @@ class UserStoryEditor extends Component {
               status={this.state.dataStory.published}
               onSave={this.save}
               onRemove={this.onRemove}
-              saving={this.state.modified}
+              modified={this.state.modified}
+              saving={this.state.saving}
+              removing={this.state.removing}
               pvt={this.state.dataStory.pvt}
+              author={this.state.dataStory.user}
+              loggedUser={this.props.loggedUser}
           ></EditBarTop>
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory} 

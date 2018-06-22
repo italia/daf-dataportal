@@ -31,6 +31,7 @@ class Public extends Component {
     var bg = 'bg-white'
     var p = ''
 
+    if(window.location.hash.indexOf('data-applications') !== -1) bg = 'bg-light'
     if(window.location.hash.indexOf('search')!==-1)
       p='py-5'
     if(window.location.hash.indexOf('userstory/list')!==-1){
@@ -58,7 +59,7 @@ class Public extends Component {
                 <Route path="/team" name="Chi Siamo" exact component={Team}/>
                 <Route path="/lineeguida" name="Linee Guida" exact component={Guida}/>
                 <Route path="/partecipa" name="Partecipa" exact component={Partecipa}/>
-                <Route path="/datapplication" name="Data Applcation" exact component={DataApplication}/>
+                <Route path="/data-applications" name="Data Applications" exact component={DataApplication}/>
                 <Route path="/notizie" name="Notizie" exact component={Notizie}/>
                 <Route path="/notizie/:id" name="Dettaglio Notizie" exact component={NotizieDett}/>
                 <Route path="/dataset/list" name="Lista Dataset" exact component={DatasetList}/>
