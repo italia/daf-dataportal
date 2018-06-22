@@ -115,7 +115,7 @@ class DatasetDetail extends Component {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
 
             if (isExtOpendata) {
-                dispatch(getFileFromStorageManager(nextProps.dataset.operational.logical_uri))
+                dispatch(getFileFromStorageManager(nextProps.dataset.operational.physical_uri))
                     .then(json => { this.setState({ hasPreview: true, dafIndex: this.state.dafIndex + 3 }) })
                     .catch(error => { this.setState({ hasPreview: false }) })
             } else {
