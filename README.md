@@ -2,6 +2,13 @@
 
 React/Redux `dataportal` skeleton
 
+Set the environment variables:
+Create a ```.env``` file in the project directory containing 
+
+```
+PORT=80
+```
+
 Start in Debug Mode:
 ```
 npm install
