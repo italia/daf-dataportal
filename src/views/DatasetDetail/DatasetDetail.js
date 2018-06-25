@@ -199,7 +199,7 @@ class DatasetDetail extends Component {
         console.log(nome)
         this.setState({name:nome})
         this.load(nome, query, true)
-        this.props.history.push(isPublic()?'/dataset/' + nome:'/private/dataset/' + nome)
+        this.props.history.push('/private/dataset/' + nome)
     }
 
     handlePreview(nomeFile, logical_uri, e) {
