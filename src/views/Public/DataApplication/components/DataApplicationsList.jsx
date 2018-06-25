@@ -88,7 +88,7 @@ const createDataApplications = dataApps => (
           Data Applications
         </h1>
         <p style={{ font: "400 21px/32px Titillium Web" }}>
-          Vuoi proporci una applicazione fatta utilizzando open data e scritta
+          Vuoi proporci un'applicazione creata utilizzando open data e scritta
           con codice o strumenti open source?<br />
           Contattaci su slack sul canale{" "}
           <a
