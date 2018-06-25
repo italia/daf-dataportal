@@ -8,10 +8,14 @@ class Missione extends Component{
 
   render(){
     return(
+      <div className="w-100">
+      <div className="header-story">
+        <img src="./img/quino-al-95074-unsplash.jpg"/>
+      </div>
       <div className="container p-5 mt-2">
         <div className="row mt-4">
           <div className="paragrafo col-12 mx-0">
-            <h1>Missione</h1>
+            <h1 className="ml-0">Missione</h1>
           </div>
           <div className="paragrafo col-7 mx-0">
             <h5 className="">
@@ -44,6 +48,7 @@ class Missione extends Component{
             </ul>
           </div>
         </div>
+      </div>
       </div>
     )
   }

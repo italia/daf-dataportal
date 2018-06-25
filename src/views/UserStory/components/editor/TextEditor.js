@@ -53,7 +53,6 @@ class TextEditor extends Component {
       {
         this.props.readonly==true &&
         <div dangerouslySetInnerHTML={{__html: this.state.text}} />
-        
       }
     </div>
     );
