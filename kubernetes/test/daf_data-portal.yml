@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: data-portal
-        image: nexus.teamdigitale.test/data-portal:1.0.0-SNAPSHOT
+        image: nexus.teamdigitale.test/data-portal:1.0.2-SNAPSHOT
         imagePullPolicy: Always
         lifecycle:
           postStart:
