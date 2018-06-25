@@ -975,8 +975,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
     export function getFileFromStorageManager(logical_uri) {
       var token = '';
-
-      var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
+      var url = serviceurl.apiURLhdfs + logical_uri + '?op=LISTSTATUS';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
           token = localStorage.getItem('token')
