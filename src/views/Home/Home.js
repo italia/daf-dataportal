@@ -170,7 +170,7 @@ class Home extends Component {
             'theme':[],
             'date': "",
             'status': [],
-            'order':""
+            'order':"desc"
         }
         this.props.history.push('/private/dataset/');
         dispatch(search('', filter, false))

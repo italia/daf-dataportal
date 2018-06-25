@@ -10,7 +10,7 @@ class Partecipa extends Component{
     return(
       <div className="w-100">
         <div className="header-story">
-          <img src="./img/olu-eletu-13086-unsplash.jpg"/>
+          <img src="./img/danilo-batista-334883-unsplash.jpg"/>
         </div>
         <div className="container paragrafo my-5">
           <h1 className="mt-3">Partecipa</h1>         

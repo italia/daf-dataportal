@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getAuthToken, loginAction, addUserOrganization, loadDatasets, getApplicationCookie, receiveLogin } from './../../actions.js'
+import { getAuthToken, loginAction, isValidToken, logout, getApplicationCookie, receiveLogin } from './../../actions.js'
 import PropTypes from 'prop-types'
 import {
   Modal,
@@ -25,17 +25,92 @@ class Login extends Component {
     super(props);
     this.props = props;
     this.state = {
+      authed: false,
+      loading: true,
       isOpen: false,
       loginMessage: null,
       uploading: false
     }
   }
 
+  componentDidMount() {
+    const { dispatch } = this.props
+      if (this.props.loggedUser && this.props.loggedUser.mail) {
+        this.setState({
+          authed: true,
+          loading: false
+        })
+        this.props.history.push('/private/home')
+      } else {
+        if (localStorage.getItem('username') && localStorage.getItem('token') &&
+          localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
+          dispatch(isValidToken(localStorage.getItem('token')))
+          .then(ok => {
+            if (ok) {
+                  dispatch(getApplicationCookie('superset'))
+                  .then(json => {
+                    if (json) {
+                      setCookie(json)
+                    }
+                  })
+                  dispatch(getApplicationCookie('metabase'))
+                  .then(json => {
+                    if (json) {
+                      setCookie(json)
+                    }
+                  })
+                  dispatch(getApplicationCookie('jupyter'))
+                  .then(json => {
+                    if (json) {
+                      setCookie(json)
+                    }
+                  })
+                  /* dispatch(getApplicationCookie('grafana'))
+                  .then(json => {
+                    if (json) {
+                      setCookie(json)
+                    }
+                  }) */
+                  dispatch(loginAction())
+                    .then(json => {
+                        dispatch(receiveLogin(json))
+                        /* dispatch(addUserOrganization(json.uid)) */
+                        this.setState({
+                            authed: true,
+                            loading: false
+                          })
+                        this.props.history.push('/private/home')
+                  })
+                } else {
+                  this.setState({
+                    authed: false,
+                    loading: false
+                  })
+                  logout();
+                }
+              })
+              .catch((error) => {
+                this.setState({
+                  authed: false,
+                  loading: false
+                })
+                logout();
+              })
+            } else {
+              this.setState({
+                authed: false,
+                loading: false
+              })
+              logout();
+            }
+          }
+      }
+
 
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { dispatch, selectDataset } = this.props
+    const { dispatch } = this.props
     this.setState({
       loginMessage:undefined,
       uploading: true
@@ -53,10 +128,10 @@ class Login extends Component {
                 .then(json => {
                   if (json) {
                     setCookie(json)
-                    dispatch(getApplicationCookie('jupyter'))
-                      .then(json => {
-                        if (json) {
-                          setCookie(json)
+                    //dispatch(getApplicationCookie('jupyter'))
+                    //  .then(json => {
+                    //    if (json) {
+                    //      setCookie(json)
                           // GRAFANA DISABLED
                           /* dispatch(getApplicationCookie('grafana'))
                             .then(json => {
@@ -72,8 +147,8 @@ class Login extends Component {
                                   })
                               //}
                             //})
-                        }
-                      })
+                       // }
+                      //})
                   }
                 })
               }
@@ -99,27 +174,8 @@ class Login extends Component {
   };
 
   render() {
-    return (
+    return (this.state.loading? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :
       <div className="container">
-        <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
-          <form>
-            <ModalHeader>
-              <ModalClose onClick={this.hideModal} />
-              <ModalTitle>Recupero password</ModalTitle>
-            </ModalHeader>
-            <ModalBody>
-              <div className="form-group">
-                <p>Se hai dimenticato la password contattaci al seguente indirizzo email: alessandro@teamdigitale.governo.it</p>
-              </div>
-
-            </ModalBody>
-            <ModalFooter>
-              <button className='btn btn-gray-200' onClick={this.hideModal}>
-                Chiudi
-              </button>
-            </ModalFooter>
-          </form>
-        </Modal>
         <div className="row justify-content-center">
           <div className="col-md-8">
               <div className="card-group mb-0">

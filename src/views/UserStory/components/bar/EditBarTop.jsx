@@ -147,7 +147,7 @@ class EditBarTop extends React.Component {
           }
           <div className="col-sm-2">
           {
-            (!this.props.saving) ? <span className="badge badge-success float-right">Salvato</span> : <span className="badge badge-warning float-right">Modificato</span>
+            (!this.props.modified) ? <span className="badge badge-success float-right">Salvato</span> : <span className="badge badge-warning float-right">Modificato</span>
           }
           </div>
         </div>
@@ -161,9 +161,11 @@ class EditBarTop extends React.Component {
             </button>
           </Link> */}
           
-          <button type="button" className="btn btn-link" onClick={() => this.onRemove()}>
+          {isAdmin() || (this.props.loggedUser.uid===this.props.author) && (this.props.removing?<button type="button" className="btn btn-link" disabled={true} title="Salva">              
+            <i className="fa fa-spin fa-circle-notch fa-lg m-t-2"></i>
+          </button>:<button type="button" className="btn btn-link" onClick={() => this.onRemove()}>
               <i className="fa fa-trash fa-lg m-t-2"></i>
-          </button>
+          </button>)}
 
           <Link role="button" to={"/private/userstory/list/" + this.props.id }>
             <button type="button" className="btn btn-link">              
@@ -177,9 +179,11 @@ class EditBarTop extends React.Component {
               <i className="fa fa-paper-plane fa-lg m-t-2"></i>
             </button>
           }
-          <button type="button" className="btn btn-link" title="Salva" onClick={this.onSave}>              
+          {this.props.saving?<button type="button" className="btn btn-link" disabled={true} title="Salva" onClick={this.onSave}>              
+            <i className="fa fa-spin fa-circle-notch fa-lg m-t-2"></i>
+          </button>:<button type="button" className="btn btn-link" title="Salva" onClick={this.onSave}>              
             <i className="fa fa-save fa-lg m-t-2"></i>
-          </button>
+          </button>}
         </div>
 
         

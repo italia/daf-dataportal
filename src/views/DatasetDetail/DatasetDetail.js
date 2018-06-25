@@ -115,7 +115,7 @@ class DatasetDetail extends Component {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
 
             if (isExtOpendata) {
-                dispatch(getFileFromStorageManager(nextProps.dataset.operational.logical_uri))
+                dispatch(getFileFromStorageManager(nextProps.dataset.operational.physical_uri))
                     .then(json => { this.setState({ hasPreview: true, dafIndex: this.state.dafIndex + 3 }) })
                     .catch(error => { this.setState({ hasPreview: false }) })
             } else {
@@ -338,11 +338,11 @@ class DatasetDetail extends Component {
                                     <div hidden={!this.state.showDett} className="col-12">
                                         <p className="desc-dataset" dangerouslySetInnerHTML={{__html: dataset.dcatapit.notes}}/> 
                                     </div>
-                                    <div hidden={!this.state.showDett} className="col-4">
+                                    <div hidden={!this.state.showDett} className="col-2 mx-auto">
                                         {(dataset.operational.ext_opendata &&
                                             dataset.operational.ext_opendata.url) &&
-                                            <a className="w-25" href={serviceurl.urlCkan + dataset.operational.ext_opendata.name} target='_blank'>
-                                                <p className="card-text text-primary"><strong>APRI CKAN</strong> </p>
+                                            <a className="btn btn-accento px-3 py-2 text-dark" href={serviceurl.urlCkan + dataset.operational.ext_opendata.name} target='_blank'>
+                                                APRI CKAN
                                             </a>
                                         }
                                     </div>
@@ -495,59 +495,6 @@ class DatasetDetail extends Component {
                                             </div>
                                         }
                                         {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>}
-                                        <div className="col-12">
-                                            <div className="row text-muted">
-                                                <i className="text-icon fa fa-sticky-note fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Jupyter</b></h4>
-                                            </div>
-                                            {this.state.hasPreview &&
-                                                <div>
-                                                    <div className="desc-dataset text-dark row">
-                                                        <p>Leggi attentamente le <a href="https://daf-dataportal.readthedocs.io/it/latest/datascience/jupyter/index.html#creazione-e-configurazione-di-un-notebook" target='_blank'>istruzioni </a> e collegati a <a href={serviceurl.urlJupiter} target='_blank'>Jupyter</a>.  </p>
-                                                        <p>Dopo aver attivato la sessione seguendo le istruzioni potrai analizzare il file al percorso:</p>
-                                                        <p><strong>{dataset.operational.physical_uri}</strong>.</p>
-                                                        <p>Usa i seguenti comandi per caricare il file nel notebook:</p>
-                                                    </div>
-                                                    <div className="desc-dataset text-dark row">
-                                                        <div className="col-2">
-                                                            <strong> Pyspark </strong>
-                                                        </div>
-                                                        <div className="col-10">
-                                                            <code>
-                                                                path_dataset = "<strong>{dataset.operational.physical_uri}</strong>" <br />
-                                                                df = (spark.read.format("parquet") <br />
-                                                                .option("inferSchema", "true") <br />
-                                                                .load(path_dataset) <br />
-                                                                ) <br />
-                                                                df.printSchema <br />
-                                                            </code>
-                                                        </div>
-                                                    </div>
-                                                    <div className="desc-dataset text-dark row">
-                                                        <div className="col-2">
-                                                            <strong> Spark Sql</strong>
-                                                        </div>
-                                                        <div className="col-10">
-                                                            <code>
-                                                                df.createOrReplaceTempView("{dataset.dcatapit.title}") <br />
-                                                                %%spark -c sql <br />
-                                                                select * from  {dataset.dcatapit.title} limit 10 <br />
-                                                            </code>
-                                                        </div>
-                                                    </div>
-                                                    <div className="desc-dataset text-dark row">
-                                                        <div className="col-2">
-                                                            <strong> Spark Sql </strong>
-                                                        </div>
-                                                        <div className="col-10">
-                                                            <code>
-                                                                spark.sql("SELECT * FROM opendata.<strong>{dataset.dcatapit.title}</strong>").show()
-                                                        </code>
-                                                        </div>
-                                                    </div>
-                                                    <br /><br />
-                                                </div>}
-                                        </div>
-                                        {!this.state.hasPreview && <p className="desc-dataset text-dark">Non è possibile usare Jupyter per questo dataset</p>}
                                     </div>
                                 </div>
                             </div>

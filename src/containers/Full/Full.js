@@ -131,12 +131,12 @@ class Full extends Component {
                     setCookie(json)
                   }
                 })
-                dispatch(getApplicationCookie('jupyter'))
+                /*dispatch(getApplicationCookie('jupyter'))
                 .then(json => {
                   if (json) {
                     setCookie(json)
                   }
-                })
+                })*/
                 /* dispatch(getApplicationCookie('grafana'))
                 .then(json => {
                   if (json) {
@@ -166,12 +166,16 @@ class Full extends Component {
                 authed: false,
                 loading: false
               })
+              logout();
+              this.props.history.push('/login')
             })
           } else {
             this.setState({
               authed: false,
               loading: false
             })
+            logout();
+            this.props.history.push('/login')
           }
         }
       }
@@ -270,6 +274,14 @@ class Full extends Component {
     this.setState({
       isOpenStory: true
     });
+
+    this.titleStory.value = ''
+    this.pvtStory.value = 0
+    this.orgStory.value = ''
+    this.setState({
+      validationMSgOrg: 'Campo obbligatorio',
+      validationMSg: 'Campo obbligatorio'
+    });
   };
   
   hideModalStory = () => {
@@ -281,6 +293,14 @@ class Full extends Component {
   openModalDash = () => {
     this.setState({
       isOpenDash: true
+    });
+
+    this.titleDash.value = ''
+    this.pvtDash.value = 0
+    this.orgDash.value = ''
+    this.setState({
+      validationMSgOrg: 'Campo obbligatorio',
+      validationMSg: 'Campo obbligatorio'
     });
   };
   
@@ -390,7 +410,7 @@ class Full extends Component {
     if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1)
       mainDiv='bg-light'
     
-    if (window.location.hash.indexOf('/private/userstory/list')!==-1)
+    if (window.location.hash.indexOf('/private/userstory/list/')!==-1)
       mainDiv='bg-white'
       
     if (window.location.hash.indexOf('/private/home')!==-1 || window.location.hash.indexOf('/private/search')!==-1 || window.location.hash.indexOf('/private/dataset')!==-1)

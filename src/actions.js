@@ -885,13 +885,20 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       })
         .then(response => response.json())
         .then(jsonDataset => {
-              dispatch(getFeedDetail(jsonDataset.dcatapit.owner_org, jsonDataset.dcatapit.name))
-              .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
-              .then(jsonFeed => {
-                dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
-                .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query)))
+              console.log(jsonDataset)
+              if(!jsonDataset.operational.ext_opendata){
+                dispatch(getFeedDetail(jsonDataset.dcatapit.owner_org, jsonDataset.dcatapit.name))
+                .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
+                .then(jsonFeed => {
+                  dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
+                  .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
+                  .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query)))
                 })
+              }else{
+                dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
+                  .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
+                  .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, undefined, jsonIFrames, query)))
+              }
               })
         .catch(error => {
           console.log('Nessun Dataset con questo nome');
@@ -968,8 +975,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
     export function getFileFromStorageManager(logical_uri) {
       var token = '';
-
-      var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
+      var url = serviceurl.apiURLhdfs + logical_uri + '?op=LISTSTATUS';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
           token = localStorage.getItem('token')

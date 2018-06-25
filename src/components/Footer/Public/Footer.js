@@ -8,10 +8,18 @@ class Footer extends Component {
       <div className="section bg-footer clearfix">
         <footer className="container py-5">
           <div className="row mb-5">
-            <div className="col-12">
-              <img src="https://www.spid.gov.it/assets/img/agid-logo-bb.svg" alt="Logo Agid" title="Logo AGID" height='80px' className="mb-5"/>
+            <div className="col-12 row">
+              <img src="https://teamdigitale.governo.it/images/loghi/governo.svg" alt="Logo Governo" title="Logo Governo" height='80px' className="mb-3 mr-3"/>
+              <img src="https://teamdigitale.governo.it/images/loghi/demo.png" alt="Logo Team" title="Logo Team" height='80px' className="mb-3 mr-3" />
+              <h4 className="text-white pl-3" style={{borderLeft: '1px solid white'}}>
+                TEAM PER LA
+                <br/>
+                TRASFORMAZIONE
+                <br/>
+                DIGITALE
+              </h4>
             </div>
-            <div className="col-12 col-sm-3">
+            <div className="mt-3 col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">Il DAF Italia</h4>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-footer"><Link to={'/team'}>Chi Siamo</Link></li>
@@ -20,7 +28,7 @@ class Footer extends Component {
                 <li className="list-group-item bg-footer"><Link to={'/private'}>Area privata e strumenti</Link></li>                
               </ul>
             </div>
-            <div className="col-12 col-sm-3">
+            <div className="mt-3 col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">Open data in Italia</h4>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-footer"><Link to={'/dataset/list'}>Il catalogo dei dataset</Link></li>
@@ -29,7 +37,7 @@ class Footer extends Component {
                 <li className="list-group-item bg-footer"><Link to={'/partecipa'}>Partecipa</Link></li>                
               </ul>
             </div>
-            <div className="col-12 col-sm-3">
+            <div className="mt-3 col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">Seguici su</h4>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-footer social-links">
