@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
 #RUN  "/swapfile   none    swap    sw    0   0" >> /etc/fstab
 
 # Copy all local files into the image.
-RUN git clone -b test https://github.com/italia/daf-dataportal
+RUN git clone -b newSecurity https://github.com/italia/daf-dataportal
 
 WORKDIR /daf-dataportal
 
