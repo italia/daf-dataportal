@@ -32,7 +32,7 @@ class DashboardCard extends Component {
         return response
     }
 
-    componentDidMount(){
+    /* componentDidMount(){
         const {widgetA, widgetB } = this.props
         const responseA = this.loadImage(widgetA)
         .then(response => {
@@ -66,15 +66,7 @@ class DashboardCard extends Component {
                 })
             }
         })
-    }
-
-    componentWillUnmount(){
-        this.setState({
-            loading: '',
-            image1: '',
-            image2: ''
-        })
-    }
+    } */
 
     openVisibility(){
         const { id } = this.props
@@ -128,20 +120,20 @@ class DashboardCard extends Component {
     }
 
     render(){
-        const { image1, image2, open, published, dropdownStyle } = this.state;
-        const { dash, imageA, imageB, id } = this.props;
+        const { open, published, dropdownStyle } = this.state;
+        const { dash, id, widgetA, widgetB } = this.props;
         const iframeStyle = {
             width: '100%',
             height: '160px',
         }
 
-        let prima = imageA
-        let seconda = imageB
+/*         let prima = imageA
+        let seconda = imageB */
 
-        if(imageA==='noimage' || !imageA)
+/*         if(imageA==='noimage' || !imageA)
             prima = image1
         if(imageB==='noimage' || !imageB && image2!=='noimage')
-            seconda = image2
+            seconda = image2 */
         
 
         var active = open? ' active' : ''
@@ -151,8 +143,8 @@ class DashboardCard extends Component {
                 <div className="card b-a-1 b-t-3 bg-gray-100 card-dash">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {prima && <div className={"crop " + (seconda ? "pr-0 b-r-dash col-6" : "col-12")}><img className="bn-dash" src={"data:image/jpg;base64," + prima} /></div>}
-                            {seconda && <div className="crop col-6 pl-0"><img className="bn-dash" src={"data:image/jpg;base64," + seconda} /></div>}
+                            {widgetA && <div className={"crop " + (widgetB ? "pr-0 b-r-dash col-6" : "col-12")}><img className="bn-dash" src={serviceurl.urlCacher + 'plot/'+widgetA+'/330x280'} /></div>}
+                            {widgetB && <div className="crop col-6 pl-0"><img className="bn-dash" src={serviceurl.urlCacher + 'plot/'+widgetB+'/330x280'} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0 b-t-dash">

@@ -18,6 +18,7 @@ import DataApplication from '../../views/Public/DataApplication/DataApplication'
 import DatasetList from '../../views/DataseList/DatasetList'
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail'
 import FooterSticky from '../../components/Footer/Public/FooterSticky'
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 
 class Public extends Component {
 

@@ -61,7 +61,7 @@ class UserstoryCard extends Component {
         })
     }
 
-    componentDidMount(){
+/*     componentDidMount(){
         const { imageA, widgetA, id } = this.props
         if (imageA === 'noimage'){
             const responseA = this.loadImage(widgetA)
@@ -81,7 +81,7 @@ class UserstoryCard extends Component {
                     }
                 })
         }
-    }
+    } */
 
     openVisibility(){
         const { id } = this.props
@@ -102,7 +102,7 @@ class UserstoryCard extends Component {
     }
 
     render(){
-        const { story, imageA, time, id } = this.props
+        const { story, imageA, widgetA, time, id } = this.props
         const { image, open, dropdownStyle, published } = this.state
 
         const iframeStyle = {
@@ -118,7 +118,7 @@ class UserstoryCard extends Component {
                 <div className="card b-a-0 border-primary bg-white card-story">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {imageA && <div className="crop col-12"><img src={"data:image/jpg;base64," + image} /></div>}
+                            {imageA && <div className="crop col-12"><img src={serviceurl.urlCacher + 'plot/'+widgetA+'/330x280'} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0">
