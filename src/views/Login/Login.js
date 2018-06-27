@@ -72,7 +72,9 @@ class Login extends Component {
                     }
                   }) */
                   dispatch(loginAction())
-                    .then(json => {
+                  .then(response => {
+                    if (response.ok) {
+                      response.json().then(json => {
                         dispatch(receiveLogin(json))
                         /* dispatch(addUserOrganization(json.uid)) */
                         this.setState({
@@ -81,6 +83,14 @@ class Login extends Component {
                           })
                         this.props.history.push('/private/home')
                   })
+                  } else {
+                    console.log('Login Action Response: ' + response.statusText)
+                    this.setState({
+                      authed: false,
+                      loading: false
+                    })
+                  }
+                })
                 } else {
                   this.setState({
                     authed: false,
@@ -117,7 +127,9 @@ class Login extends Component {
     })
     var token=''
     dispatch(getAuthToken(this.email.value, this.pw.value))
-      .then(json => {
+    .then(response => {
+      if (response.ok) {
+        response.json().then(json => {
             localStorage.setItem('token', json);
             token = json;
             dispatch(getApplicationCookie('superset'))
@@ -138,13 +150,24 @@ class Login extends Component {
                               if (json) {
                                 setCookie(json) */
                                 dispatch(loginAction())
-                                  .then(json => {
+                                .then(response => {
+                                  if (response.ok) {
+                                    response.json().then(json => {
+
                                     localStorage.setItem('user', json.uid);
                                     let dataportalCookie = json.givenname +'/'+token;
                                     setCookie(JSON.parse('[{"name":"dataportal","value":"'+ dataportalCookie +'","path":"/"}]'))
                                     dispatch(receiveLogin(json))
                                     this.props.history.push('/private/home')
                                   })
+                                }else{
+                                  console.log('Login Action Response: ' + response.statusText)
+                                  this.setState({
+                                    loginMessage: 'Errore durante il login. Si prega di riprovare più tardi.',
+                                    uploading: false
+                                  })
+                                }
+                              })
                               //}
                             //})
                        // }
@@ -153,12 +176,23 @@ class Login extends Component {
                 })
               }
             })
-          }).catch((error) => {
-              this.setState({
-                loginMessage: 'Nome utente o password non corretto.',
-                uploading: false
-              })
+          })
+        }else{
+          console.log('Get Autentication Token Response: ' + response.statusText)
+          response.json().then(json => {
+            console.log('Get Autentication Token json: ' + JSON.stringify(json))
+          })
+          this.setState({
+            loginMessage: 'Errore durante il login. Si prega di riprovare più tardi.',
+            uploading: false
+          })
+        }
+        }).catch((error) => {
+            this.setState({
+              loginMessage: 'Nome utente o password non corretto.',
+              uploading: false
             })
+          })
   }
 
   openModal = () => {

@@ -59,7 +59,7 @@ class Organizations extends Component {
 
     load(){
         const { loggedUser } = this.props
-        if(loggedUser.role !='daf_editors'){
+        if(isEditor(loggedUser)){
             let response = organizationService.organizations();
             response.then((json)=> {
                 this.setState({
@@ -490,7 +490,7 @@ class Organizations extends Component {
                                     return(
                                 <li className={"list-group-item "+ (org===organization?"active":"")} key={organization}>{organization}
                                     <button type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.getUsers(organization)}}><i className="fa fa-user-plus fa-lg" /></button>
-                                    {loggedUser.role==='daf_admins'&&<button type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.openOrgModal(organization)}}><i className="fa fa-trash fa-lg" /></button>}
+                                    {isAdmin(loggedUser) && <button type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.openOrgModal(organization)}}><i className="fa fa-trash fa-lg" /></button>}
                                 </li>);
                                 })
                             }

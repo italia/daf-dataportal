@@ -367,7 +367,7 @@ class Crea extends Component {
                 
                 <h3 className="card-title">Cosa vuoi creare?</h3>
                 <div className="row">
-                    {(isEditor() || isAdmin()) &&
+                    {(isEditor(loggedUser) || isAdmin(loggedUser)) &&
                     <div className="col-3">
                         <div className="card text-center">
                             <h3 className="card-title pt-4">Dataset</h3>

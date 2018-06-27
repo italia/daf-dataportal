@@ -102,7 +102,7 @@ class UserstoryCard extends Component {
     }
 
     render(){
-        const { story, imageA, time, id } = this.props
+        const { story, imageA, time, id, loggedUser } = this.props
         const { image, open, dropdownStyle, published } = this.state
 
         const iframeStyle = {
@@ -183,7 +183,7 @@ class UserstoryCard extends Component {
                                                 </div>
                                             </div>
                                         </button>
-                                        {story.pvt!=1 &&(isEditor() || isAdmin()) && <button className="dropdown-item bg-light b-l-open" onClick={this.saveStory.bind(this, 2)}>
+                                        {story.pvt!=1 &&(isEditor(loggedUser) || isAdmin(loggedUser)) && <button className="dropdown-item bg-light b-l-open" onClick={this.saveStory.bind(this, 2)}>
                                         
                                             <div className="row">
                                                 <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faGlobe} className="mx-2"/></h5>

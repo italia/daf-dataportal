@@ -10,6 +10,7 @@ import { change } from 'redux-form';
 import { connect } from 'react-redux'
 import licenze from '../../data/licenze'
 import themes from '../../data/themes'
+import { getEditorAdminOrganizations } from '../../utility'
 
 import {
   Modal,
@@ -141,7 +142,7 @@ class WizardForm extends Component {
                 {page ===2 &&  <WizardFormFirstPage
                       previousPage={this.previousPage}
                       onSubmit={this.nextPage}
-                      organizations={loggedUser.organizations}
+                      organizations={getEditorAdminOrganizations(loggedUser)}
                       licenze={licenze}
                       openModal={this.openModal}
                   />}
