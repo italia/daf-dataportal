@@ -89,7 +89,7 @@ class EditBarTop extends React.Component {
   }
 
   render = function(){
-
+    const { loggedUser } = this.props
     return (
       <div>
         <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
@@ -107,7 +107,7 @@ class EditBarTop extends React.Component {
               <button className='btn btn-gray-200' onClick={this.pubblica}>
                 Condividi con la tua Organizzazione
                   </button>
-              {this.state.pvt != 1 &&(isEditor() || isAdmin()) &&
+              {this.state.pvt != 1 &&(isEditor(loggedUser) || isAdmin(loggedUser)) &&
                 <button className='btn btn-gray-200' onClick={this.condividi}>
                 Condividi con tutti
               </button>

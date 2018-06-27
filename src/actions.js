@@ -442,7 +442,7 @@ export function getAuthToken(username, pw) {
           method: 'GET',
           headers: headers
         })
-        .then(response => response.json())
+        .then(response => response)
   }
 }
 
@@ -476,7 +476,7 @@ export function loginAction() {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         })
-        .then(response => response.json())
+        .then(response => response)
   }
 }
 

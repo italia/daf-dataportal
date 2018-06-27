@@ -54,40 +54,33 @@ export function transformName(name){
     }
   }
 
-  export function isEditor(){
-    var isEditor = false;
-    var token = localStorage.getItem('token')
-    if(token){
-      var jwtDecode = require('jwt-decode');
-      var decoded = jwtDecode(token);
-      try{
-        decoded['memberOf'].map((elem) => {
-          if(elem.indexOf('cn=daf_editors') !== -1)
-            isEditor = true
-        })
-      }catch(error){
-        console.log('error isEditor: ' + error)
+  export function isAdmin(loggedUser){
+    var isAdmin = false;
+    loggedUser && loggedUser.roles.map((role) => {
+      if(role.indexOf('daf_adm_')>-1)
+      isAdmin = true
       }
-    }
+    )
+    return isAdmin
+  }
+
+  export function isEditor(loggedUser){
+    var isEditor = false;
+    loggedUser && loggedUser.roles.map((role) => {
+      if(role.indexOf('daf_edt_')>-1)
+        isEditor = true
+      }
+    )
     return isEditor
   }
 
-  export function isAdmin(){
-    var isEditor = false;
-    var token = localStorage.getItem('token')
-    if(token){
-      var jwtDecode = require('jwt-decode');
-      var decoded = jwtDecode(token);
-      try{
-        decoded['memberOf'].map((elem) => {
-          if(elem.indexOf('cn=daf_admins') !== -1)
-            isEditor = true
-        })
-      }catch(error){
-        console.log('error isEditor: ' + error)
-      }
-    }
-    return isEditor
+  export function getEditorAdminOrganizations(loggedUser){
+    var result=[]
+    loggedUser && loggedUser.organizations.map((org) => {
+       if(loggedUser.roles.indexOf('daf_edt_' + org)>-1 || loggedUser.roles.indexOf('daf_adm_' + org)>-1)
+          result.push(org)
+    })
+    return result
   }
 
   export function isPublic(){

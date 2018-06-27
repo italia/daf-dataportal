@@ -11,7 +11,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import { loginAction, addUserOrganization, isValidToken, receiveLogin, getApplicationCookie, logout } from './../../actions.js'
-import { setCookie } from '../../utility'
+import { setCookie, isEditor, isAdmin } from '../../utility'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -46,22 +46,22 @@ function PrivateRoute({ component: Component, authed, ...rest }) {
   )
 }
 
-function PrivateRouteAdmin({ component: Component, authed, role, ...rest }) {
+function PrivateRouteAdmin({ component: Component, authed, loggedUser, ...rest }) {
   return (
     <Route
       {...rest}
-      render={(props) => (authed === true && role==='daf_admins')
+      render={(props) => (authed === true && isAdmin(loggedUser))
         ? <Component {...props} />
         : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
     />
   )
 }
 
-function PrivateRouteEditor({ component: Component, authed, role, ...rest }) {
+function PrivateRouteEditor({ component: Component, authed, loggedUser, ...rest }) {
   return (
     <Route
       {...rest}
-      render={(props) => (authed === true && (role === 'daf_editors' || role === 'daf_admins'))
+      render={(props) => (authed === true && (isAdmin(loggedUser) || isEditor(loggedUser)))
         ? <Component {...props} />
         : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
     />
@@ -144,14 +144,22 @@ class Full extends Component {
                   }
                 }) */
                 dispatch(loginAction())
-                  .then(json => {
+                .then(response => {
+                  if (response.ok) {
+                    response.json().then(json => {
                       dispatch(receiveLogin(json))
-                      /* dispatch(addUserOrganization(json.uid)) */
                       this.setState({
                           authed: true,
                           loading: false
                         })
-                })
+                  })
+                }else{
+                  console.log('Login Action Response: ' + response.statusText)
+                  this.setState({
+                    authed: true,
+                    loading: false
+                  })
+                }})
               } else {
                 this.setState({
                   authed: false,
@@ -422,9 +430,6 @@ class Full extends Component {
     if (window.location.hash.indexOf('/private/dataset/')!==-1)
       paddingTop = ''
 
-    var role = ''
-    if(this.props.loggedUser)
-      role = this.props.loggedUser.role
     if (this.props.authed)
       this.state.authed = true;  
     return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
@@ -569,7 +574,7 @@ class Full extends Component {
             <div className={paddingTop+ " container-fluid "+home }>
               <Switch>
                 <PrivateRoute authed={this.state.authed} path="/private/home" name="Home" exact component={Home}/>
-                <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
+                <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies" name="Ontologies" component={Ontologies} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabulary" name="Vocabulary" component={Vocabulary} />
                 <PrivateRoute authed={this.state.authed} path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
@@ -581,9 +586,9 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
                 <PrivateRoute authed={this.state.authed} path="/private/settings" name="Settings" component={Settings} />
-                <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/organizations" name="Organizations" component={Organizations} />
+                <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
                 <PrivateRoute authed={this.state.authed} path="/private/users" name="Users" component={Users} />
-                <PrivateRouteAdmin authed={this.state.authed} role={role} path="/private/crea" name="Crea" component={Crea} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/crea" name="Crea" component={Crea} />
                 <Redirect from="/private" to="/private/home"/>
               </Switch>
             </div>

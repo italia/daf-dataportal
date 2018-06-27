@@ -116,7 +116,6 @@ class Sidebar extends Component {
 
   render() {
     const { loggedUser } = this.props
-    let role = loggedUser.role
     var crea = 'nav-link-light'
     var home = 'nav-link-light'
     let open = this.state.dropdownOpen ? "show" : "" 
@@ -170,7 +169,7 @@ class Sidebar extends Component {
               <li className="nav-item nav-dropdown b-r-1">
                 <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-plus fa-lg text-secondary"></i> Crea</a>
                 <ul className="nav-dropdown-items bg-light">
-                  {(isEditor() || isAdmin()) && <li className="nav-item" onClick={(e) => {
+                  {(isEditor(loggedUser) || isAdmin(loggedUser)) && <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
@@ -276,11 +275,11 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/userstory/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li> */}
-              {role && role != 'daf_viewers' && <div>
+              {isAdmin(loggedUser) && <div>
               <li className="nav-title text-secondary">
                 Amministrazione
               </li>
-              {role && role === 'daf_admins' &&
+              {isAdmin(loggedUser) &&
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
