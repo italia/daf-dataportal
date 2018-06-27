@@ -1,5 +1,5 @@
 const routes = {
-  '/': 'Home',
+  //'/': 'Home',
   '/private': 'Area Privata',
   '/private/home': 'DAF - Data Analytics Framework',
   '/private/dashboard/list': 'Dashboard',
