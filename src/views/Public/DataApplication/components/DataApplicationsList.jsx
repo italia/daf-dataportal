@@ -75,7 +75,33 @@ const mapDataApplications = dataApps =>
   ));
 
 const createDataApplications = dataApps => (
-  <Container className="pt-4">{mapDataApplications(dataApps)}</Container>
+  <Container className="pt-4">
+    <Row>
+      <Col>
+        <h1
+          className="display-4"
+          style={{
+            font: "700 40px/48px Titillium Web",
+            color: "rgb(21, 27, 30)"
+          }}
+        >
+          Data Applications
+        </h1>
+        <p style={{ font: "400 21px/32px Titillium Web" }}>
+          Vuoi proporci una applicazione fatta utilizzando open data e scritta
+          con codice o strumenti open source?<br />
+          Contattaci su slack sul canale{" "}
+          <a
+            href="https://developersitalia.slack.com/archives/C760XQX9Q"
+            target="_blank"
+          >
+            #daf
+          </a>
+        </p>
+      </Col>
+    </Row>
+    {mapDataApplications(dataApps)}
+  </Container>
 );
 
 class DataApplicationsList extends React.Component {

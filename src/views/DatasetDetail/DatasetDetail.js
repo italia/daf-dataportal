@@ -104,7 +104,7 @@ class DatasetDetail extends Component {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
 
             if (isExtOpendata) {
-                dispatch(getFileFromStorageManager(nextProps.dataset.operational.logical_uri))
+                dispatch(getFileFromStorageManager(nextProps.dataset.operational.physical_uri))
                     .then(json => { this.setState({ hasPreview: true, dafIndex: this.state.dafIndex + 3 }) })
                     .catch(error => { this.setState({ hasPreview: false }) })
             } else {
@@ -188,7 +188,7 @@ class DatasetDetail extends Component {
         console.log(nome)
         this.setState({name:nome})
         this.load(nome, query, true)
-        this.props.history.push(isPublic()?'/dataset/' + nome:'/private/dataset/' + nome)
+        this.props.history.push('/private/dataset/' + nome)
     }
 
     handlePreview(nomeFile, logical_uri, e) {
