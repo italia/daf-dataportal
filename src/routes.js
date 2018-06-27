@@ -1,10 +1,11 @@
 const routes = {
-  //'/': 'Home',
+  '/': 'Home',
   '/private': 'Area Privata',
   '/private/home': 'DAF - Data Analytics Framework',
   '/private/dashboard/list': 'Dashboard',
   '/private/userstory/list': 'Storie',
-  '/private/ingestionform': 'Ingestion',
+  '/private/userstory/create': 'Nuova storia',
+  '/private/ingestionwizzard': 'Nuovo dataset',
   '/private/vocabulary/list': 'Vocabolari e standard',
   '/private/dataset':'Dataset',
   '/private/widget' : 'Widget',
