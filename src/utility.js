@@ -54,11 +54,22 @@ export function transformName(name){
     }
   }
 
+  export function isSysAdmin(loggedUser){
+    var isAdmin = false;
+    loggedUser && loggedUser.roles.map((role) => {
+      if(role === 'daf_sys_admin')
+      isAdmin = true
+      }
+    )
+    return isAdmin
+  }
+
+  //sys_admin is an admin
   export function isAdmin(loggedUser){
     var isAdmin = false;
     loggedUser && loggedUser.roles.map((role) => {
-      if(role.indexOf('daf_adm_')>-1)
-      isAdmin = true
+      if(role.indexOf('daf_adm_')>-1 || role === 'daf_sys_admin')
+        isAdmin = true
       }
     )
     return isAdmin
