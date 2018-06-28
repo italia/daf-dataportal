@@ -94,6 +94,7 @@ class UserStoryEditor extends Component {
 
   save() {
       const { dataStory } = this.state
+      console.log(dataStory)
       this.setState({
         saving: true
       });
@@ -159,6 +160,7 @@ class UserStoryEditor extends Component {
       {/* <Header title="La Tua Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/> */}
           <EditBarTop 
               title={this.state.dataStory.title}
+              org={this.state.dataStory.org}
               onPublish={this.onPublish}
               id={this.state.dataStory.id}
               status={this.state.dataStory.published}

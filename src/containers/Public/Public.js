@@ -6,7 +6,7 @@ import Home from '../../views/Public/Home/Home';
 import Missione from '../../views/Public/Missione/Missione';
 import Header from '../../components/Header/Public/Header'
 import Footer from '../../components/Footer/Public/Footer'
-import UserStory from '../../views/UserStory/UserStory'
+//import UserStory from '../../views/UserStory/UserStory'
 import Team from '../../views/Public/Team/Team';
 import Guida from '../../views/Public/Guida/Guida';
 import Partecipa from '../../views/Public/Partecipa/Partecipa';
@@ -18,13 +18,13 @@ import DataApplication from '../../views/Public/DataApplication/DataApplication'
 import DatasetList from '../../views/DataseList/DatasetList'
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail'
 import FooterSticky from '../../components/Footer/Public/FooterSticky'
-import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+//import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 
 class Public extends Component {
 
-  constructor(props){
+  /* constructor(props){
     super(props)
-  }
+  } */
   
 
   render() {
@@ -84,7 +84,6 @@ Public.propTypes = {
 
 function mapStateToProps(state) {
   const { loggedUser, authed } = state.userReducer['obj'] || {}
-  const { properties } = state.propertiesReducer['prop'] || {}
   return { loggedUser, authed }
 }
 

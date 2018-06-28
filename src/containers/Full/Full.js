@@ -344,6 +344,7 @@ class Full extends Component {
           'story': request,
           'modified':true
         })
+        console.log(request)
         this.hideModalStory();
       }
     }else{
