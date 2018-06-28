@@ -16,8 +16,6 @@ import {
   RECEIVE_ACTIVATION,
   RECEIVE_ACTIVATION_ERROR,
   RECEIVE_ADD_DATASET,
-  RECEIVE_ONTOLOGIES,
-  RECEIVE_VOCABULARY,
   RECEIVE_PROPERTIES,
   REQUEST_PROPERTIES,
   REQUEST_REGISTRATION,
@@ -201,17 +199,6 @@ function userReducer(state = {}, action) {
   }
 }
 
-function ontologiesReducer(state = {}, action) {
-  switch (action.type) {
-    case RECEIVE_ONTOLOGIES:
-      return Object.assign({}, state, { 'ont': { 'ontologies': action.ontologies, 'error': action.error } })
-    case RECEIVE_VOCABULARY:
-      return Object.assign({}, state, { 'voc': { 'ontologies': action.ontologies, 'vocabulary': action.vocabulary, 'error': action.error } })
-    default:
-      return state
-  }
-}
-
 function searchReducer(state = {}, action) {
   switch (action.type) {
     case REQUEST_SEARCH:
@@ -230,7 +217,6 @@ const rootReducer = combineReducers({
   datasetReducer,
   userReducer,
   searchReducer,
-  ontologiesReducer,
   propertiesReducer,
   toastr: toastrReducer, // <- Mounted at toastr.
   dataApplicationsList: dataApplicationsReducer
