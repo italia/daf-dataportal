@@ -59,27 +59,25 @@ class Organizations extends Component {
 
     load(){
         const { loggedUser } = this.props
-        if(isEditor(loggedUser)){
+        if(isAdmin(loggedUser)){
             let response = organizationService.organizations();
             response.then((json)=> {
                 this.setState({
-                    organizations: json.orgs,
-                    filter: json.orgs
+                    organizations: json.elem,
+                    filter: json.elem
                 });
             });
         }
-        const users = organizationService.users("default_org")
+        const users = organizationService.users("open_data_group")
         let allUsers = []
         let tmp = {}
         users.then((json)=>{
             json.member_user.map(user => {
-                if (user.indexOf("default_admin") === -1){
-                    tmp = {
-                        'value': user,
-                        'label': user
-                    }
-                    allUsers.push(tmp);
+                tmp = {
+                    'value': user,
+                    'label': user
                 }
+                allUsers.push(tmp);
             })
             this.setState({
                 allUsers: allUsers,
