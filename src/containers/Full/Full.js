@@ -19,8 +19,6 @@ import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 import Home from '../../views/Home/Home';
 import IngestionWizard from '../../views/IngestionWizard/';
-import Ontologies from '../../views/Ontologies/';
-import Vocabulary from '../../views/Vocabulary/';
 import Dashboard from '../../views/Dashboard/';
 import Dataset from '../../views/Dataset/';
 import DatasetList from '../../views/DataseList/';
@@ -570,8 +568,6 @@ class Full extends Component {
               <Switch>
                 <PrivateRoute authed={this.state.authed} path="/private/home" name="Home" exact component={Home}/>
                 <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
-                <PrivateRoute authed={this.state.authed} path="/private/ontologies" name="Ontologies" component={Ontologies} />
-                <PrivateRoute authed={this.state.authed} path="/private/vocabulary" name="Vocabulary" component={Vocabulary} />
                 <PrivateRoute authed={this.state.authed} path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
                 <PrivateRoute authed={this.state.authed} path="/private/userstory" name="User Story" component={UserStory} />
                 <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} />
