@@ -5,6 +5,8 @@ const routes = {
   '/private/dashboard/list': 'Dashboard',
   '/private/userstory/list': 'Storie',
   '/private/ingestionform': 'Ingestion',
+  '/private/ontologies': 'Ontologie',
+  '/private/vocabularies': 'Vocabolari',
   '/private/dataset':'Dataset',
   '/private/widget' : 'Widget',
   '/private/search': 'Ricerca',
