@@ -121,7 +121,7 @@ class DashboardCard extends Component {
 
     render(){
         const { open, published, dropdownStyle } = this.state;
-        const { dash, id, widgetA, widgetB } = this.props;
+        const { dash, id, widgetA, widgetB, loggedUser } = this.props;
         const iframeStyle = {
             width: '100%',
             height: '160px',
