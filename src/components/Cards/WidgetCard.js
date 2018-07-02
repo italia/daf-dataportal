@@ -52,7 +52,7 @@ class WidgetCard extends Component {
         return url
     }
 
-    componentDidMount(){
+    /* componentDidMount(){
         const { iframe } = this.props
         let url = '';
         if(iframe.identifier)
@@ -83,7 +83,7 @@ class WidgetCard extends Component {
             loading: false,
             imageSrc: undefined
         })
-    }
+    } */
 
     linkTo(nome){
         this.props.history.push('/private/dataset/'+nome)
@@ -110,6 +110,13 @@ class WidgetCard extends Component {
         } else {
             org = 'default_org'
         }
+
+        var url = ''
+
+        if(iframe.identifier)
+          url = serviceurl.urlCacher + 'plot/' + iframe.identifier + '/330x280';
+        if(iframe.props)
+          url = serviceurl.urlCacher + 'plot/' + iframe.props.identifier + '/330x280';
         
         return(
             <div className="mx-auto">
@@ -139,9 +146,9 @@ class WidgetCard extends Component {
                         <div className="row m-0 b-b-card">
                             <div className="crop col-12 w-100">
                                 <div>
-                                    {this.state.imageSrc && this.state.imageSrc !== 'noimage' &&
-                                    <img src={"data:image/jpg;base64," + this.state.imageSrc} alt={iframe.table?transformWidgetName(iframe.table):''}/> 
-/*                                     :
+                                    
+                                    <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''}/> 
+{/*                                     
                                     
                                         React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click" }) */
                                     }

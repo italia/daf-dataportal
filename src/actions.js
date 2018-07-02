@@ -4,8 +4,6 @@ import { serviceurl } from './config/serviceurl.js'
 // MOCK
 //import page from './data/dataset'
 //import det from './data/datasetdetail'
-import ont from './data/ontologies'
-import voc from './data/vocabulary'
 import settings from './data/settings'
 
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
@@ -29,8 +27,6 @@ export const RECEIVE_RESET_ERROR = 'RECEIVE_RESET_ERROR'
 export const RECEIVE_ACTIVATION = 'RECEIVE_ACTIVATION'
 export const RECEIVE_ACTIVATION_ERROR = 'RECEIVE_ACTIVATION_ERROR'
 export const RECEIVE_ADD_DATASET = 'RECEIVE_ADD_DATASET'
-export const RECEIVE_ONTOLOGIES = 'RECEIVE_ONTOLOGIES'
-export const RECEIVE_VOCABULARY = 'RECEIVE_VOCABULARY'
 export const RECEIVE_PROPERTIES = 'RECEIVE_PROPERTIES'
 export const REQUEST_PROPERTIES = 'REQUEST_PROPERTIES'
 export const REQUEST_REGISTRATION = 'REQUEST_REGISTRATION'
@@ -192,29 +188,6 @@ export function receiveLogin(response) {
       user: response,
       receivedAt: Date.now(),
       ope: 'RECEIVE_LOGIN'
-  }
-}
-
-function receiveOntologies(response) {
-  return {
-      type: RECEIVE_ONTOLOGIES,
-      //ontologies: response,
-      ontologies: ont,
-      error: '',
-      receivedAt: Date.now(),
-      ope: 'RECEIVE_ONTOLOGIES'
-  }
-}
-
-function receiveVocabulary(response) {
-  return {
-      type: RECEIVE_VOCABULARY,
-      //vocabulary: response,
-      vocabulary: voc,
-      ontologies: ont,
-      error: '',
-      receivedAt: Date.now(),
-      ope: 'RECEIVE_VOCABULARY'
   }
 }
 
@@ -973,7 +946,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
     }
 
-    export function getFileFromStorageManager(logical_uri) {
+    export function checkFileOnHdfs(logical_uri) {
       var token = '';
       var url = serviceurl.apiURLhdfs + logical_uri + '?op=LISTSTATUS';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
@@ -993,6 +966,27 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(json => json)
         }
       }
+
+      export function getFileFromStorageManager(logical_uri) {
+        var token = '';
+        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+          localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+            token = localStorage.getItem('token')
+          }
+        return dispatch => {
+            return fetch(url, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              }
+            })
+            .then(response => response.json())
+            .then(json => json)
+          }
+        }
 
       export function checkMetabase(nomeDataset) {
         var token = '';
@@ -1039,44 +1033,6 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
     }
 
 /******************************************************************************* */
-
-export function loadOntologies() {
-  console.log('Load Ontologies');
-  /*var url = 'http://localhost:3001/catalog-manager/v1/ontologies';  
-  return dispatch => {
-      return fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => response.json())
-        .then(json => dispatch(receiveOntologies(json)))
-    }*/
-    return dispatch => {
-      dispatch(receiveOntologies(undefined));
-    }
-  }
-
-  export function loadVocabulary() {
-    console.log('Load Vocabulary');
-    /*var url = 'http://localhost:3001/catalog-manager/v1/ontologies';  
-    return dispatch => {
-        return fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(response => response.json())
-          .then(json => dispatch(receiveOntologies(json)))
-      }*/
-      return dispatch => {
-        dispatch(receiveVocabulary(undefined));
-      }
-    }
 
     export function getSchema(filesToUpload, typeFile) {
       console.log('getSchema'); 

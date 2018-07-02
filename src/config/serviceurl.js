@@ -24,7 +24,8 @@ export const serviceurl = {
     urlSuperset: 'https://bi.daf.teamdigitale.it',
     urlJupiter: 'https://datascience.daf.teamdigitale.it',
     urlCkan: "https://ckan-geo.daf.teamdigitale.it/dataset/", 
-    domain: ".daf.teamdigitale.it"  */
+    urlCacher: "https://daf-cacher-fe.daf.teamdigitale.it/", 
+    domain: ".daf.teamdigitale.it" */
    
   // TEST   
     apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
@@ -40,5 +41,6 @@ export const serviceurl = {
     urlSuperset: 'https://bi.daf.teamdigitale.test',
     urlJupiter: 'https://datascience.daf.teamdigitale.test',
     urlCkan: "https://ckan-geo.daf.teamdigitale.test/", 
-    domain: ".daf.teamdigitale.test"
+    domain: ".daf.teamdigitale.test" 
   }
+

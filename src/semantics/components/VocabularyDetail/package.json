@@ -1,0 +1,6 @@
+{
+  "name": "VocabularyDetail",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./VocabularyDetail.jsx"
+}

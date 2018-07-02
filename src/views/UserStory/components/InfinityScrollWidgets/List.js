@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import InfiniteScroll from '../../../../components/InfinityScroll';
+import { serviceurl } from "../../../../config/serviceurl"
 import $ from 'jquery';
 
 class List extends Component {
@@ -69,9 +70,10 @@ class List extends Component {
                         {" [" + this.transformName(widgets[widget].table) + "] " + widgets[widget].title}
                       </h6>
                       <div className="preview-widget">
-                      {widgets[widget].image &&
+                      {
                         <div style={{ width: '100%' }}>
-                          <img src={"data:image/jpg;base64," + widgets[widget].image} />
+                          {/* <img src={"data:image/jpg;base64," + widgets[widget].image} /> */}
+                          <img src={serviceurl.urlCacher + 'plot/' + widget + '/330x280'}/>
                         </div>
                        /*  :
                         <div style={{ width: '100%' }}>
