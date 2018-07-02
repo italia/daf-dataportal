@@ -31,12 +31,8 @@ class Settings extends Component {
             medium: '',
             news:'',
             forum: '',
-            footer_logoA: '',
-            footer_logoB: '',
-            footer_logoC: '',
-            footerName: '',
-            privacy: '',
-            legal: '',
+            bodyIllustrazione:'',
+            bodyEsplora:'',
             isChanged: false,
             showDiv: true,
             newDomain: true,
@@ -109,12 +105,8 @@ class Settings extends Component {
                 medium: json.mediumURL?json.mediumURL:'',
                 news: json.notizieURL?json.notizieURL:'',
                 forum: json.forumURL?json.forumURL:'',
-                footer_logoA: json.footerLogoAGID?json.footerLogoAGID:'',
-                footer_logoB: json.footerLogoGov?json.footerLogoGov:'',
-                footer_logoC: json.footerLogoDevITA?json.footerLogoDevITA:'',
-                footerName: json.footerNomeEnte?json.footerNomeEnte:'',
-                privacy: json.footerPrivacy?json.footerPrivacy:'',
-                legal: json.footerLegal?json.footerLegal:'',
+                bodyIllustrazione:json.bodyIllustrazione?json.bodyIllustrazione:'',
+                bodyEsplora:json.bodyEsplora?json.bodyEsplora:'',
             });
         });
     }
@@ -135,12 +127,8 @@ class Settings extends Component {
         mediumURL: this.state.medium,
         notizieURL: this.state.news,
         forumURL: this.state.forum,
-        footerLogoAGID: this.state.footer_logoA,
-        footerLogoGov: this.state.footer_logoB,
-        footerLogoDevITA: this.state.footer_logoC,
-        footerNomeEnte: this.state.footerName,
-        footerPrivacy: this.state.privacy,
-        footerLegal: this.state.legal
+        bodyIllustrazione:this.state.bodyIllustrazione,
+        bodyEsplora:this.state.bodyEsplora,
     }
 
     const response = this.save(json, this.state.domain);
@@ -249,66 +237,6 @@ class Settings extends Component {
         settings.medium = value;
         this.saveSettings(settings);
     }
-    
-    onFootAChange(value) {
-        this.setState({
-            footer_logoA: value,
-            isChanged: true
-        });
-        let settings = this.state;
-        settings.footer_logoA = value;
-        this.saveSettings(settings);
-    }
-
-    onFootBChange(value) {
-        this.setState({
-            footer_logoB: value,
-            isChanged: true
-        });
-        let settings = this.state;
-        settings.footer_logoB = value;
-        this.saveSettings(settings);
-    }
-
-    onFootCChange(value) {
-        this.setState({
-            footer_logoC: value,
-            isChanged: true
-        });
-        let settings = this.state;
-        settings.footer_logoC = value;
-        this.saveSettings(settings);
-    }
-
-    onFootnameChange(value) {
-        this.setState({
-            footerName: value,
-            isChanged: true
-        });
-        let settings = this.state;
-        settings.footerName = value;
-        this.saveSettings(settings);
-    }
-
-    onPrivacyChange(value) {
-        this.setState({
-            privacy: value,
-            isChanged: true
-        });
-        let settings = this.state;
-        settings.privacy = value;
-        this.saveSettings(settings);
-    }
-
-    onLegalChange(value) {
-        this.setState({
-            legal: value,
-            isChanged: true
-        });
-        let settings = this.state;
-        settings.legal = value;
-        this.saveSettings(settings);
-    }
 
     onNewsChange(value) {
         this.setState({
@@ -328,6 +256,26 @@ class Settings extends Component {
         let settings = this.state;
         settings.forum = value;
         this.saveSettings(settings);
+    }
+
+    onBodyEsplora(value) {
+      this.setState({
+          bodyEsplora: value,
+          isChanged: true
+      });
+      let settings = this.state;
+      settings.bodyEsplora = value;
+      this.saveSettings(settings);
+    }
+  
+    onBodyIllustrazione(value) {
+      this.setState({
+          bodyIllustrazione: value,
+          isChanged: true
+      });
+      let settings = this.state;
+      settings.bodyIllustrazione = value;
+      this.saveSettings(settings);
     }
 
     onDomainChange(newValue){
@@ -514,45 +462,17 @@ class Settings extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-2 col-form-label">Footer Logo 1</label>
+                                    <label className="col-2 col-form-label">Illustrazione in body</label>
                                     <div className="col-10">
-                                        <input className="form-control" type="search" value={this.state.footer_logoA} 
-                                            onChange={(e) => this.onFootAChange(e.target.value)}/>
+                                        <input className="form-control" type="search" value={this.state.bodyIllustrazione} 
+                                            onChange={(e) => this.onBodyIllustrazione(e.target.value)}/>
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-2 col-form-label">Footer Logo 2</label>
+                                    <label className="col-2 col-form-label">Esplora in body</label>
                                     <div className="col-10">
-                                        <input className="form-control" type="search" value={this.state.footer_logoB}
-                                            id="example-search-input" onChange={(e) => this.onFootBChange(e.target.value)} />
-                                    </div>
-                                </div>
-                                <div className="form-group row">
-                                    <label className="col-2 col-form-label">Footer Logo 3</label>
-                                    <div className="col-10">
-                                        <input className="form-control" type="search" value={this.state.footer_logoC} 
-                                            onChange={(e) => this.onFootCChange(e.target.value)}/>
-                                    </div>
-                                </div>
-                                <div className="form-group row">
-                                    <label className="col-2 col-form-label">Footer Nome</label>
-                                    <div className="col-10">
-                                        <input className="form-control" type="search" value={this.state.footerName} 
-                                            onChange={(e) => this.onFootnameChange(e.target.value)}/>
-                                    </div>
-                                </div>
-                                <div className="form-group row">
-                                    <label className="col-2 col-form-label">Privacy Policy</label>
-                                    <div className="col-10">
-                                        <input className="form-control" type="search" value={this.state.privacy} 
-                                            onChange={(e) => this.onPrivacyChange(e.target.value)}/>
-                                    </div>
-                                </div>
-                                <div className="form-group row">
-                                    <label className="col-2 col-form-label">Note Legali</label>
-                                    <div className="col-10">
-                                        <input className="form-control" type="search" value={this.state.legal} 
-                                            onChange={(e) => this.onLegalChange(e.target.value)}/>
+                                        <input className="form-control" type="search" value={this.state.bodyEsplora}
+                                            id="example-search-input" onChange={(e) => this.onBodyEsplora(e.target.value)} />
                                     </div>
                                 </div>
                             </div>

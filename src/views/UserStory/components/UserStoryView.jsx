@@ -8,6 +8,7 @@ import ViewBar from './bar/ViewBar';
 import UserStoryEditorContainer from './UserStoryEditorContainer';
 import IframeWidget from './widgets/IframeWidget';
 import TextWidget from './widgets/TextWidget';
+import { isPublic } from '../../../utility'
 
 // SERVICES
 import UserStoryService from './services/UserStoryService';
@@ -21,7 +22,8 @@ class UserStoryEditor extends Component {
     
     //init state
     this.state={
-      id: this.props.match.params.id
+      id: this.props.match.params.id,
+      loading: true,
     };
 
     //bind functions
@@ -43,11 +45,12 @@ class UserStoryEditor extends Component {
 
       this.setState({
         dataStory: story,
-        widgets: wids
+        widgets: wids,
+        loading: false,
       });
-      this.setState({
+      /* this.setState({
         dataStory: story
-      });
+      }); */
     }catch(error){console.log('error in getting story')}
     });
 
@@ -58,13 +61,20 @@ class UserStoryEditor extends Component {
    */
   render() {
     console.log(this.state.dataStory)
-    return (
+    return (this.state.loading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>:
     <Container>
       {
         this.state.dataStory &&
         <div>
-        <Header title="La Tua Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/>
-          <ViewBar title={this.state.dataStory.title} id={this.state.id}></ViewBar>
+        {/* <Header title="Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/> */}
+          {!isPublic() &&
+            <ViewBar 
+              pvt={this.state.dataStory.pvt} 
+              org={this.state.dataStory.org} 
+              title={this.state.dataStory.title} 
+              id={this.state.id}>
+            </ViewBar>
+          }
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory}
             widgets={this.state.widgets}

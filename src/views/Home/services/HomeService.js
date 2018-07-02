@@ -6,8 +6,9 @@ export default class HomeService {
     
     dashboardUrl = serviceurl.apiURLDatiGov + "/dashboards";
     storyUrl =  serviceurl.apiURLDatiGov + "/user-stories";
-    iframesUrl = serviceurl.apiURLDatiGov + '/dashboard/iframesbyorg/default_org';
+    iframesUrl = serviceurl.apiURLDatiGov + '/dashboard/iframes';
     homeUrl = serviceurl.apiURLDatiGov + '/elasticsearch/home';
+    publicHomeUrl = serviceurl.apiURLDatiGov + '/public/elasticsearch/home';
 
     constructor() {
 
@@ -77,5 +78,20 @@ export default class HomeService {
         })
 
         return response.json()
+    }
+
+    async publicHome(org){
+      //var url = serviceurl.apiURLDatiGov + '/elasticsearch/home';
+      var token = localStorage.getItem('token')
+      var url = this.publicHomeUrl+(org?'?org='+org:'')
+      const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          }
+      })
+
+      return response.json()
     }
 } 

@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import Helmet from 'react-helmet'
 import Dashboard, { addWidget } from 'react-dazzle';
-
+import { toastr } from 'react-redux-toastr'
 import SectionTitle from './SectionTitle';
 import TextEditor from './editor/TextEditor';
-/* import TextWidget from '../../DashboardManager/components/widgets/TextWidget';
-import ProfileView from './editor/ProfileView';
-import GraphEditor from './editor/GraphEditor';
-import ImageEditor from './editor/ImageEditor'; */
+import ShareButton from '../../../components/ShareButton/ShareButton';
 import CustomFrame from './CustomFrame';
 import IframeWidget from './widgets/IframeWidget';
 import TextWidget from './widgets/TextWidget';
@@ -15,6 +13,8 @@ import BtnControlWidget from './widgets/BtnControlWidget';
 import WidgetService from '../../DashboardManager/components/services/WidgetService';
 import EditBar from './bar/EditBar'
 import { serviceurl } from "../../../config/serviceurl";
+import { isPublic } from '../../../utility'
+
 
 // Default styes of dazzle.
 import 'react-dazzle/lib/style/style.css';
@@ -23,6 +23,21 @@ import 'react-dazzle/lib/style/style.css';
 import '../styles/custom.css';
 
 const widgetService = new WidgetService();
+
+const months = {
+  '1': 'Gennaio',
+  '2': 'Febbraio',
+  '3': 'Marzo',
+  '4': 'Aprile',
+  '5': 'Maggio',
+  '6': 'Giugno',
+  '7': 'Luglio',
+  '8': 'Agosto',
+  '9': 'Settembre',
+  '10': 'Ottobre',
+  '11': 'Novembre',
+  '12': 'Dicembre',
+}
 
 class UserStoryEditorContainer extends Component {
   constructor(props) {
@@ -37,10 +52,13 @@ class UserStoryEditorContainer extends Component {
     let org = props.dataStory.org
     if(props.dataStory.pvt==0)
       org = 'default_org'
-    let response = widgetService.getIframe(org)
-    response.then(iframes => {
-      this.loadIframe(iframes);
-    })
+    
+    if(!props.readonly){
+      let response = widgetService.getIframe(org)
+      response.then(iframes => {
+        this.loadIframe(iframes);
+      })
+    }
 
     this.onChange = this.onChange.bind(this);
     this.setLayout = this.setLayout.bind(this);
@@ -48,6 +66,7 @@ class UserStoryEditorContainer extends Component {
     this.addWidget = this.addWidget.bind(this);
     this.saveTextWidget = this.saveTextWidget.bind(this);
     this.save = this.save.bind(this);
+    this.isLastText = this.isLastText.bind(this)
   }
 
   componentDidMount(){
@@ -116,7 +135,7 @@ class UserStoryEditorContainer extends Component {
    */
   loadIframe = (iframes) => {
     iframes.map(iframe => {
-      const response = this.loadImage(iframe.identifier)
+      /* const response = this.loadImage(iframe.identifier)
       response.then(response => {
         if (response.ok)
           response.text().then(text => {
@@ -133,7 +152,7 @@ class UserStoryEditorContainer extends Component {
               }
             }
           })
-        else
+        else */
           this.widgetsTypes[iframe.identifier] = {
             "type": IframeWidget,
             "title": iframe.title,
@@ -147,7 +166,7 @@ class UserStoryEditorContainer extends Component {
             }
           }
       })
-    })
+    //})
   }
   /**
 * Add row
@@ -164,47 +183,63 @@ class UserStoryEditorContainer extends Component {
     this.setLayout(this.state.layout);
   }
 
+  isLastText(){
+    let rowsLength = this.state.layout.rows.length
+    if(rowsLength > 0){
+      var prevWidget = this.state.layout.rows[rowsLength-1].columns[0].widgets[0].key
+      if(prevWidget.indexOf('TextWidget')!==-1)
+        return true
+    }
+    
+    return false
+  }
+
   /**
 * Add widget
 */
   addWidget = function (widgetKey, row) {
-    console.log(this)
-    if (row == undefined) {
-      row = this.state.layout.rows.length
-      this.addRow();
-    }
-
-    let newWidget = {};
-    let newKey = ""
-    //count widget of type
-    if (widgetKey === "TextWidget") {
-      let progressive = this.getNextProgressive(widgetKey);
-      //assign key to widget
-      newKey = widgetKey + "_" + progressive;
-
-      newWidget = {
-        "type": TextWidget,
-        "title": "Testo",
-        "props": {
-          "onSave": this.saveTextWidget.bind(this),
-          "wid_key": newKey
-        }
+    
+    if(widgetKey === "TextWidget" && this.isLastText()){
+      toastr.info('Attenzione', 'Hai già inserito un testo sopra questo elemento, modificalo per aggiungere paragrafi')
+      return
+    }else{
+      if (row == undefined) {
+        row = this.state.layout.rows.length
+        this.addRow();
       }
-    } else {
-      newWidget = this.widgetsTypes[widgetKey];
-      newKey = widgetKey
-      newWidget.type = IframeWidget
-    }
-    if (!newWidget.props)
-      newWidget.props = {};
-    newWidget.props.wid_key = newKey;
 
-    console.log(this.widgetsTypes)
-    //add widget to list
-    this.state.widgets[newKey] = newWidget;
-    //add widget to layout
-    this.state.layout.rows[row].columns[0].widgets.push({ key: newKey });
-    this.setLayout(this.state.layout);
+      let newWidget = {};
+      let newKey = ""
+      //count widget of type
+      if (widgetKey === "TextWidget") {
+        let progressive = this.getNextProgressive(widgetKey);
+        //assign key to widget
+        newKey = widgetKey + "_" + progressive;
+
+        newWidget = {
+          "type": TextWidget,
+          "title": "Testo",
+          "props": {
+            "onSave": this.saveTextWidget.bind(this),
+            "wid_key": newKey
+          }
+        }
+      } else {
+        newWidget = this.widgetsTypes[widgetKey];
+        newKey = widgetKey
+        newWidget.type = IframeWidget
+      }
+      if (!newWidget.props)
+        newWidget.props = {};
+      newWidget.props.wid_key = newKey;
+
+      //console.log(this.widgetsTypes)
+      //add widget to list
+      this.state.widgets[newKey] = newWidget;
+      //add widget to layout
+      this.state.layout.rows[row].columns[0].widgets.push({ key: newKey });
+      this.setLayout(this.state.layout);
+    }
 
   }
 
@@ -227,9 +262,6 @@ class UserStoryEditorContainer extends Component {
         "onSave": this.saveTextWidget.bind(this)
       }
     },
-  }
-
-  componentWillReceiveProps() {
   }
 
   onChange = function(key, value) {
@@ -358,15 +390,32 @@ class UserStoryEditorContainer extends Component {
     }
   }
 
-
+  getFirstWidget(widgets){
+    var wid;
+    for(wid in widgets){
+      if(wid.indexOf('TextWidget')===-1){
+        return wid
+        break
+      }
+    }
+  }
 
 
   /**
    * Render Function
    */
   render() {
+    var firstWid = this.getFirstWidget(this.state.widgets)
+    var url = ''
+
+    if (firstWid)
+      url = serviceurl.urlCacher +'plot/'+firstWid+'/330x280'
     return (
-    <div className="story-content">
+      <div>
+      { this.props.readonly && isPublic() && 
+        <ShareButton className="mt-5 float-right" />
+      }
+      <div className="bg-white story-content container">
         <SectionTitle readonly={this.props.readonly} title="Titolo"/>
         <TextEditor 
           readonly={this.props.readonly}
@@ -377,7 +426,15 @@ class UserStoryEditorContainer extends Component {
           placeholder="Title"
           disableHtml={true}
         ></TextEditor>
-        
+        {this.props.readonly && <div className="mt-5 mb-2 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+          Autore <i>{this.state.dataStory.user}</i>
+        </div>}
+        {this.props.readonly && <div className="mb-3 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+          Organizzazione <i>{this.state.dataStory.org}</i>
+        </div>}
+        {this.props.readonly && <div className="mb-5 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+          {this.state.dataStory.timestamp.dayOfMonth+" "+months[this.state.dataStory.timestamp.monthValue]+", "+this.state.dataStory.timestamp.year}
+        </div>}
         <SectionTitle readonly={this.props.readonly} title="Sottotitolo"/>
         <TextEditor 
           readonly={this.props.readonly}
@@ -388,43 +445,6 @@ class UserStoryEditorContainer extends Component {
           placeholder="Subtitle"
         ></TextEditor>
         <SectionTitle readonly={this.props.readonly} title="Contenuto della Storia" />
-        {/* <SectionTitle readonly={this.props.readonly} title="Grafico"/>
-        <GraphEditor 
-          readonly={this.props.readonly}
-          keyValue="graph1"
-          graph={this.state.dataStory.graph1}
-          onChange={this.onChange}
-          org={this.state.dataStory.org}
-        ></GraphEditor>
-
-        <SectionTitle readonly={this.props.readonly} title="La Tua Storia"/>
-        <TextEditor 
-          readonly={this.props.readonly}
-          keyValue="text"
-          text={this.state.dataStory.text} 
-          className="text-editor-content"
-          onChange={this.onChange}
-          placeholder="Tell your story..."
-        ></TextEditor>
-
-        <SectionTitle readonly={this.props.readonly} title="Grafico"/>
-        <GraphEditor 
-          readonly={this.props.readonly}
-          keyValue="graph2"
-          graph={this.state.dataStory.graph2}
-          onChange={this.onChange}
-          org={this.state.dataStory.org}
-        ></GraphEditor>
-
-        <SectionTitle readonly={this.props.readonly} title="Footer"/>
-        <TextEditor 
-          readonly={this.props.readonly}
-          keyValue="footer"
-          text={this.state.dataStory.footer} 
-          className="text-editor-footer"
-          onChange={this.onChange}
-          placeholder="Footer"
-        ></TextEditor> */}
         <Dashboard
           frameComponent={CustomFrame}
           onRemove={this.onRemoveWidget}
@@ -442,6 +462,7 @@ class UserStoryEditorContainer extends Component {
           addWidget={this.addWidget}
         />}
         
+      </div>
     </div>
     );
   }

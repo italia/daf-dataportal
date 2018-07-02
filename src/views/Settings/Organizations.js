@@ -350,7 +350,7 @@ class Organizations extends Component {
     validatePsw(val) {
         // pattern to match : Atleast one capital letter, one number and 8 chars length
         if (val !== '') {
-            var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>]{8,}$")
+            var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>-]{8,}$")
             if (reg.test(val)) {
                 this.setState({
                     pswok: true,
@@ -541,6 +541,7 @@ class Organizations extends Component {
                                     <li>Almeno 8 caratteri</li>
                                     <li>Almeno una lettera maiuscola</li>
                                     <li>Almeno un numero</li>
+                                    <li>I caratteri speciali consentiti sono: "{"%@#,;:_\'/<([{^=$!|}.>-"}"</li>
                                 </ul>
                             </div>
                         </div>

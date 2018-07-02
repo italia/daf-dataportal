@@ -16,8 +16,6 @@ import {
   RECEIVE_ACTIVATION,
   RECEIVE_ACTIVATION_ERROR,
   RECEIVE_ADD_DATASET,
-  RECEIVE_ONTOLOGIES,
-  RECEIVE_VOCABULARY,
   RECEIVE_PROPERTIES,
   REQUEST_PROPERTIES,
   REQUEST_REGISTRATION,
@@ -29,11 +27,24 @@ import {
   RECEIVE_SEARCH,
   RECEIVE_METADATA
 } from './actions'
-import {reducer as toastrReducer} from 'react-redux-toastr'
+import { reducer as toastrReducer } from 'react-redux-toastr'
 
+import {
+  dataApplicationsReducer
+} from './views/Public/DataApplication/reducers/dataApplicationsReducer'
+
+// semantic's reducers
+import {
+  ontListReducer,
+  ontDetailReducer
+} from "./semantics/reducers/ontologiesReducers";
+import {
+  vocListReducer,
+  vocDetailReducer
+} from "./semantics/reducers/vocabulariesReducers";
 
 //Object.assign({}, state, .. create a new copy of the state
-function datasets( state = { isFetching: false, didInvalidate: false, items: [], dataset: null, ope:'' }, action
+function datasets(state = { isFetching: false, didInvalidate: false, items: [], dataset: null, ope: '' }, action
 ) {
   switch (action.type) {
     case REQUEST_DATASETS:
@@ -72,7 +83,7 @@ function datasets( state = { isFetching: false, didInvalidate: false, items: [],
         lastUpdated: action.receivedAt,
         ope: action.ope
       })
-    case RECEIVE_DATASET_DETAIL_ERROR : 
+    case RECEIVE_DATASET_DETAIL_ERROR:
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
@@ -89,13 +100,13 @@ function datasets( state = { isFetching: false, didInvalidate: false, items: [],
         ope: action.ope
       })
     case RECEIVE_FILE_STORAGEMANAGER:
-    return Object.assign({}, state, {
-      isFetching: false,
-      didInvalidate: false,
-      json: action.json,
-      lastUpdated: action.receivedAt,
-      ope: action.ope
-    })
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: false,
+        json: action.json,
+        lastUpdated: action.receivedAt,
+        ope: action.ope
+      })
     case RECEIVE_METADATA:
       return Object.assign({}, state, {
         isFetching: false,
@@ -108,7 +119,7 @@ function datasets( state = { isFetching: false, didInvalidate: false, items: [],
   }
 }
 
-function user( state = { isFetching: false, didInvalidate: false, user }, action
+function user(state = { isFetching: false, didInvalidate: false, user }, action
 ) {
   switch (action.type) {
     case REQUEST_LOGIN:
@@ -128,7 +139,7 @@ function user( state = { isFetching: false, didInvalidate: false, user }, action
   }
 }
 
-function org( state = { isFetching: false, didInvalidate: false, user }, action
+function org(state = { isFetching: false, didInvalidate: false, user }, action
 ) {
   switch (action.type) {
     case RECEIVE_ORGANIZATION:
@@ -141,7 +152,7 @@ function org( state = { isFetching: false, didInvalidate: false, user }, action
 }
 
 function propertiesReducer(state = {}, action) {
-  switch(action.type){
+  switch (action.type) {
     case RECEIVE_PROPERTIES:
       return Object.assign({}, state, { 'prop': { 'properties': action.properties, 'organization': action.organization, 'error': action.error } })
     default:
@@ -162,10 +173,11 @@ function datasetReducer(state = {}, action) {
     case REQUEST_DATASETS:
     case RECEIVE_FILE_STORAGEMANAGER:
     case RECEIVE_METADATA:
-      return Object.assign({}, state, {'obj': datasets(state[action], action)
+      return Object.assign({}, state, {
+        'obj': datasets(state[action], action)
       })
     case RECEIVE_ADD_DATASET:
-      return Object.assign({}, state, {'msg': action.message})
+      return Object.assign({}, state, { 'msg': action.message })
     default:
       return state
   }
@@ -177,9 +189,9 @@ function userReducer(state = {}, action) {
     case RECEIVE_ACTIVATION:
     case RECEIVE_REGISTRATION_ERROR:
     case RECEIVE_REGISTRATION:
-      return Object.assign({}, state, {'msg': action.message, 'error': action.error})
+      return Object.assign({}, state, { 'msg': action.message, 'error': action.error })
     case REQUEST_REGISTRATION:
-      return Object.assign({}, state, {'msg': undefined, 'error': undefined})
+      return Object.assign({}, state, { 'msg': undefined, 'error': undefined })
     case RECEIVE_RESET_ERROR:
     case REQUEST_RESET:
       return Object.assign({}, state, { 'msg': undefined, 'error': undefined })
@@ -187,23 +199,12 @@ function userReducer(state = {}, action) {
       return Object.assign({}, state, { 'msg': action.message, 'error': action.error })
     case REQUEST_LOGIN:
     case RECEIVE_LOGIN:
-      return Object.assign({}, state, {'obj': user(state[action], action)})
+      return Object.assign({}, state, { 'obj': user(state[action], action) })
     case RECEIVE_ORGANIZATION:
-      return Object.assign({}, state, {'org': org(state[action], action)})
+      return Object.assign({}, state, { 'org': org(state[action], action) })
     case REMOVE_LOGGED_USER:
-      return Object.assign({}, state, {'obj': null })
+      return Object.assign({}, state, { 'obj': null })
     default:
-      return state
-  }
-}
-
-function ontologiesReducer(state = {}, action) {
-  switch (action.type) {
-    case RECEIVE_ONTOLOGIES:
-      return Object.assign({}, state, {'ont': {'ontologies': action.ontologies, 'error': action.error}})
-    case RECEIVE_VOCABULARY:
-      return Object.assign({}, state, {'voc': { 'ontologies': action.ontologies, 'vocabulary': action.vocabulary, 'error': action.error}})
-      default:
       return state
   }
 }
@@ -211,10 +212,10 @@ function ontologiesReducer(state = {}, action) {
 function searchReducer(state = {}, action) {
   switch (action.type) {
     case REQUEST_SEARCH:
-      return Object.assign({}, state, {'search': {'isFetching': true, 'results': undefined}})
+      return Object.assign({}, state, { 'search': { 'isFetching': true, 'results': undefined } })
     case RECEIVE_SEARCH:
-      return Object.assign({}, state, {'search': { 'isFetching': action.isFetching, 'results': action.results, 'query': action.query, 'filter': action.filter}})
-      default:
+      return Object.assign({}, state, { 'search': { 'isFetching': action.isFetching, 'results': action.results, 'query': action.query, 'filter': action.filter } })
+    default:
       return state
   }
 }
@@ -226,9 +227,14 @@ const rootReducer = combineReducers({
   datasetReducer,
   userReducer,
   searchReducer,
-  ontologiesReducer,
   propertiesReducer,
-  toastr: toastrReducer // <- Mounted at toastr.
+  toastr: toastrReducer, // <- Mounted at toastr.
+  dataApplicationsList: dataApplicationsReducer,
+  // semantic's reducers
+  ontologiesList: ontListReducer,
+  ontologyDetail: ontDetailReducer,
+  vocabulariesList: vocListReducer,
+  vocabularyDetail: vocDetailReducer
 })
 
 export default rootReducer

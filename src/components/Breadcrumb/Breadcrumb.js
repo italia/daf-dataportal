@@ -28,12 +28,21 @@ const BreadcrumbsItem = ({ ...rest, match }) => {
       ) :
       (
         <BreadcrumbItem>
-          <Link to={match.url || ''}>
+          <Link className="text-primary" to={match.url || ''}>
             {routeName}
           </Link>
         </BreadcrumbItem>
       )
     );
+  }else if(!routeName && match.isExact){
+    if(match.url.indexOf('dataset')!==-1)
+      return <BreadcrumbItem active>Dettaglio Dataset</BreadcrumbItem>
+
+    if(match.url.indexOf('userstory')!==-1)
+      return <BreadcrumbItem active>Dettaglio Storia</BreadcrumbItem>
+
+    if(match.url.indexOf('dashboard')!==-1)
+      return <BreadcrumbItem active>Dettaglio Dashboard</BreadcrumbItem>
   }
   return null;
 };
@@ -42,14 +51,14 @@ const Breadcrumbs = ({ ...rest, location : { pathname }, match }) => {
   const paths = getPaths(pathname);
   const items = paths.map((path, i) => <Route key={i++} path={path} component={BreadcrumbsItem} />);
   return (
-    <Breadcrumb>
+    <Breadcrumb className="mb-0 b-b-0">
       {items}
     </Breadcrumb>
   );
 };
 
 export default props => (
-  <div>
+  <div className="">
     <Route path="/:path" component={Breadcrumbs} {...props} />
   </div>
 );

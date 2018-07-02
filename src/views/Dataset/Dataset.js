@@ -124,7 +124,7 @@ class Dataset extends Component {
     .then(()=>this.props.history.push('/dataset/'+name)) */
     //this.props.history.push('/dataset/'+name)
     this.props.history.push({
-      pathname: '/dataset/'+name,
+      pathname: '/private/dataset/'+name,
       state: {'query': query,
               'category_filter': category_filter,
               'organization_filter': organization_filter,

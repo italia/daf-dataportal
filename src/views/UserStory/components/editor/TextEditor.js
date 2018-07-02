@@ -38,7 +38,7 @@ class TextEditor extends Component {
    */
   render() {
     return (
-    <div className={"text-editor " + this.props.className}>
+    <div className={"text-left mx-auto text-editor " + this.props.className}>
       {
         this.props.readonly!=true &&
 
@@ -53,7 +53,6 @@ class TextEditor extends Component {
       {
         this.props.readonly==true &&
         <div dangerouslySetInnerHTML={{__html: this.state.text}} />
-        
       }
     </div>
     );

@@ -57,35 +57,47 @@ export function transformName(name){
   export function isEditor(){
     var isEditor = false;
     var token = localStorage.getItem('token')
-    var jwtDecode = require('jwt-decode');
-    var decoded = jwtDecode(token);
-    try{
-      decoded['memberOf'].map((elem) => {
-        if(elem.indexOf('cn=daf_editors') !== -1)
-          isEditor = true
-      })
-    }catch(error){
-      console.log('error isEditor: ' + error)
+    if(token){
+      var jwtDecode = require('jwt-decode');
+      var decoded = jwtDecode(token);
+      try{
+        decoded['memberOf'].map((elem) => {
+          if(elem.indexOf('cn=daf_editors') !== -1)
+            isEditor = true
+        })
+      }catch(error){
+        console.log('error isEditor: ' + error)
+      }
     }
-
     return isEditor
   }
 
   export function isAdmin(){
     var isEditor = false;
     var token = localStorage.getItem('token')
-    var jwtDecode = require('jwt-decode');
-    var decoded = jwtDecode(token);
-    try{
-      decoded['memberOf'].map((elem) => {
-        if(elem.indexOf('cn=daf_admins') !== -1)
-          isEditor = true
-      })
-    }catch(error){
-      console.log('error isEditor: ' + error)
+    if(token){
+      var jwtDecode = require('jwt-decode');
+      var decoded = jwtDecode(token);
+      try{
+        decoded['memberOf'].map((elem) => {
+          if(elem.indexOf('cn=daf_admins') !== -1)
+            isEditor = true
+        })
+      }catch(error){
+        console.log('error isEditor: ' + error)
+      }
+    }
+    return isEditor
+  }
+
+  export function isPublic(){
+    var route = window.location.hash
+    if(route && route.indexOf('/private/') != -1){
+      return false
+    } else {
+      return true
     }
 
-    return isEditor
   }
 
   export function getKyloSchema(kyloSchema, value){

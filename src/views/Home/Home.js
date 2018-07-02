@@ -35,37 +35,60 @@ class Home extends Component {
             items: 3,
             isLoading: true,
         }
-        
-        this.searchDataset();
-        this.counters();
-
-        let dash = homeService.dashboards();
-        dash.then(json => {
-            this.setState({
-                listDashboards: json
-            })
-        })
-
-        let stories = homeService.stories();
-        stories.then(json => {
-            this.setState({
-                listStories: json
-            })
-        })
 
         let iframes = homeService.iframes();
         iframes.then(json => {
             this.setState({
                 listIframes: json
             })
-        })
+        }) 
 
         this.updatePredicate = this.updatePredicate.bind(this);
-        
+        this.handleSearch = this.handleSearch.bind(this);
 
     }
 
     componentDidMount() {
+      var datasets = []
+      var stories = []
+      var dashboards = []
+      var counter = {}
+      let home = homeService.homeElements();
+        home.then(json =>{
+          try{
+            json.map((element, index)=>{
+                switch(element.type){
+                    case 'catalog_test':
+                        datasets.push(element)
+                        break;
+                    case 'ext_opendata':
+                        datasets.push(element)
+                        break;
+                    case 'dashboards':
+                        let dashboard = JSON.parse(element.source)
+                        dashboards.push(dashboard)
+                        break;
+                    case 'stories':
+                        let story = JSON.parse(element.source)
+                        stories.push(story)
+                        break;
+                    case 'type':
+                        let type = JSON.parse(element.source)
+                        counter = type
+                        break;
+                }
+            })
+            this.setState({
+              listDataset: datasets,
+              listDashboards: dashboards,
+              listStories: stories,
+              counter: counter,
+              isLoading: false
+            })
+          }
+          catch(error){console.log('error in getting elements')}
+        })
+        
         this.updatePredicate()
         window.addEventListener("resize", this.updatePredicate);
     }
@@ -74,13 +97,13 @@ class Home extends Component {
         window.removeEventListener("resize", this.updatePredicate);
     }
 
-        componentWillReceiveProps(nextProps){
+        /* componentWillReceiveProps(nextProps){
             if(nextProps.results){
                 this.setState({
                     counter: JSON.parse(nextProps.results[nextProps.results.length-4].source)
                 })
             }
-        }
+        } */
 
     updatePredicate() {
         if (window.innerWidth <= 1200)
@@ -91,9 +114,9 @@ class Home extends Component {
             this.setState({items: 3});
     }
 
-    searchDataset(query, category, group, organization, order) {
-        const { dispatch } = this.props
-        dispatch(loadDatasets(query, 0, '', category, group, organization, order))
+    searchDataset() {
+        //const { dispatch } = this.props
+        //dispatch(loadDatasets(query, 0, '', category, group, organization, order))
     }
 
     counters(){
@@ -138,11 +161,34 @@ class Home extends Component {
         dispatch(search('', filter))
     }
 
+    handleSearch(){
+        const { dispatch } = this.props
+        let filter = {
+            'text': '',
+            'index': ['catalog_test','ext_opendata'],
+            'org': [],
+            'theme':[],
+            'date': "",
+            'status': [],
+            'order':"desc"
+        }
+        this.props.history.push('/private/dataset/');
+        dispatch(search('', filter, false))
+    }
+
+
     render(){
-        const { datasets, isFetching, results } = this.props
-        const { listDashboards, listStories, listIframes, counter, items } = this.state
+        const { isFetching, results } = this.props
+        const { listDataset, listDashboards, listStories, listIframes, counter, items } = this.state
         //const { listDashboards, listStories, listDataset, listIframes, items, counter, isLoading } = this.state
         //var counter = JSON.parse(results[results.length-4].source)
+        var totData = 0
+        if(counter){
+            if(counter.catalog_test)
+                totData += parseInt(counter.catalog_test)
+            if(counter.ext_opendata)
+                totData += parseInt(counter.ext_opendata)
+        }
         return isFetching === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
             <div>
                 <div className="top-home w-100 bg-grey-n d-md-down-none">
@@ -155,7 +201,7 @@ class Home extends Component {
                                         </button>
                                     </div> */}
                                     <i className="fa fa-table bg-primary p-4 font-2xl mr-3 float-left"></i>
-                                    <div className="h5 text-muted mb-0 pt-3">{counter.catalog_test?counter.catalog_test:'-'}</div>
+                                    <div className="h5 text-muted mb-0 pt-3">{(totData>=0)?totData:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dataset</div>
                                 </div>
                             </div>
@@ -207,9 +253,12 @@ class Home extends Component {
                     </div>
                     <div className="row mx-auto m-0">
                         {
-                            datasets&&Array.isArray(datasets)&&datasets.slice(0, items).map((dataset, index) => {
+                            listDataset&&Array.isArray(listDataset)&&listDataset.slice(0, items).map((element, index) => {
+                                var open = element.type==="ext_opendata"
+                                var dataset = JSON.parse(element.source)
                                 return (
                                     <DatasetCard
+                                        open={open}
                                         dataset={dataset}
                                         key={index}
                                     />
@@ -218,9 +267,9 @@ class Home extends Component {
                         }
                     </div>
                     <div className="w-100 text-center">
-                        <Link to={'/dataset'}>
+                        <a className="pointer" onClick={this.handleSearch.bind(this)}>
                             <h4 className="text-primary"><u>Vedi tutti</u></h4>
-                        </Link>
+                        </a>
                     </div>
                 </div>
                 <div className="py-3 bg-light">
@@ -236,12 +285,13 @@ class Home extends Component {
                                             iframe={iframe}
                                             key={index}
                                         />)
-                                }): 
-                                <h1 className="w-100 text-center py-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>
+                                    }): 
+                                    <h1 className="w-100 text-center py-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>
+                                               
                             }
                         </div>
                         <div className="w-100 text-center">
-                            <Link to={'/widget'}>
+                            <Link to={'/private/widget'}>
                                 <h4 className="text-primary"><u>Vedi tutti</u></h4>
                             </Link>
                         </div>
@@ -310,7 +360,7 @@ class Home extends Component {
                         }
                     </div>
                     <div className="w-100 text-center">
-                        <Link to={'/dashboard/list'}>
+                        <Link to={'/private/dashboard/list'}>
                             <h4 className="text-primary"><u>Vedi tutte</u></h4>
                         </Link>
                     </div>
@@ -379,7 +429,7 @@ class Home extends Component {
                         }
                     </div>
                     <div className="w-100 text-center">
-                        <Link to={'/user_story/list'}>
+                        <Link to={'/private/userstory/list'}>
                             <h4 className="text-primary"><u>Vedi tutte</u></h4>
                         </Link>
                     </div>

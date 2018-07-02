@@ -173,9 +173,9 @@ class EditBarTop extends React.Component {
               <div className="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">
                 <div className="btn-group mr-1" data-toggle="buttons" aria-label="First group">
                   
-                  <button type="button" className="btn btn-link float-right" title="Torna alla lista Dashboard" onClick={this.back.bind(this)}>
+{/*                   <button type="button" className="btn btn-link float-right" title="Torna alla lista Dashboard" onClick={this.back.bind(this)}>
                     <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
-                  </button>
+                  </button> */}
                   
                   {this.state.dashboard.id &&
                   <button type="button" className="btn btn-link float-right" onClick={() => this.onRemove()}  title="Elimina">

@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import WizardFormFirstPage from './WizardFormFirstPage'
-import WizardFormSecondPage from './WizardFormSecondPage'
-import WizardFormThirdPage from './WizardFormThirdPage'
 import WizardOperational from './WizardOperational'
 import WizardFormMetadata from './WizardFormMetadata'
 import {getJsonDataschema} from './inputform_reader.js'
-import { change } from 'redux-form';
 import { connect } from 'react-redux'
 import licenze from '../../data/licenze'
 import themes from '../../data/themes'
-
+import Steps, { Step } from 'rc-steps';
 import {
   Modal,
   ModalHeader,
@@ -20,6 +17,11 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 
+import 'rc-steps/assets/index.css'
+import 'rc-steps/assets/iconfont.css'
+
+const steps = [{'title': 'Carica file e descrivi le colonne'},{'title': 'Aggiuungi i Metadati'},{'title': 'Modalità di invio'}]
+
 class WizardForm extends Component {
   constructor(props) {
     super(props)
@@ -28,7 +30,7 @@ class WizardForm extends Component {
     this.previousPage = this.previousPage.bind(this)
     this.setUploading = this.setUploading.bind(this)
     this.state = {
-      page: 1,
+      page: 0,
       dataschema : {},
       isOpen: false,
       uploading: false,
@@ -114,23 +116,22 @@ class WizardForm extends Component {
     const { page } = this.state
     return (
       <div>
-        <div className="row">
+        <Steps current={page}>
+          {steps.map((s, i) => {
+            return (
+              <Step
+                key={i}
+                title={s.title}
+              />)
+            }
+          )}
+        </Steps>
+        <div className="row mt-4">
           <div className="col-md-12">
             <div className="card">
-              <div className="card-header">
-                {page === 1 &&
-                <div><strong> Passo 1:</strong> Carica file e descrivi le colonne</div> 
-                }
-                {page === 2 &&
-                <div><strong> Passo 2:</strong> Metadati </div> 
-                }
-              {page === 3 &&
-                <div><strong> Passo 3: </strong> Modalitá di invio</div> 
-                }
-              </div>
               <div className="card-block">
 
-                {page === 1 &&
+                {page === 0 &&
                 <WizardFormMetadata
                       onSubmit={this.nextPage}
                       setUploading={this.setUploading}
@@ -138,14 +139,14 @@ class WizardForm extends Component {
                       errorUpload={this.state.errorUpload}
                       setTipi={this.setTipi}
                       tipi={this.state.tipi}/>}
-                {page ===2 &&  <WizardFormFirstPage
+                {page ===1 &&  <WizardFormFirstPage
                       previousPage={this.previousPage}
                       onSubmit={this.nextPage}
                       organizations={loggedUser.organizations}
                       licenze={licenze}
                       openModal={this.openModal}
                   />}
-                {page === 3 &&
+                {page === 2 &&
                     <WizardOperational
                       previousPage={this.previousPage}
                       onSubmit={onSubmit}

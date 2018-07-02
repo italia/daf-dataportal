@@ -6,7 +6,7 @@ import { serviceurl } from "../../config/serviceurl";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
-import { isAdmin, isEditor } from '../../utility.js'
+import { isAdmin, isEditor, isPublic } from '../../utility.js'
 
 class UserstoryCard extends Component {
     constructor(props){
@@ -61,7 +61,7 @@ class UserstoryCard extends Component {
         })
     }
 
-    componentDidMount(){
+/*     componentDidMount(){
         const { imageA, widgetA, id } = this.props
         if (imageA === 'noimage'){
             const responseA = this.loadImage(widgetA)
@@ -81,7 +81,7 @@ class UserstoryCard extends Component {
                     }
                 })
         }
-    }
+    } */
 
     openVisibility(){
         const { id } = this.props
@@ -102,7 +102,7 @@ class UserstoryCard extends Component {
     }
 
     render(){
-        const { story, imageA, time, id } = this.props
+        const { story, imageA, widgetA, time, id } = this.props
         const { image, open, dropdownStyle, published } = this.state
 
         const iframeStyle = {
@@ -118,18 +118,19 @@ class UserstoryCard extends Component {
                 <div className="card b-a-0 border-primary bg-white card-story">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {imageA && <div className="crop col-12"><img src={"data:image/jpg;base64," + image} /></div>}
+                            {imageA && <div className="crop col-12"><img src={serviceurl.urlCacher + 'plot/'+widgetA+'/330x280'} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0">
                         <div className="title-dash">
-                            <Link to={"/user_story/list/" + story.id}>
+                            <Link to={!isPublic()?"/private/userstory/list/" + story.id:"/userstory/list/" + story.id}>
                                 <h3 className="card-title text-primary">{story.title}</h3>
                             </Link>
                         </div>
                         <div className="card-text row m-0 mt-3 ml-4">
                             <p className="col-8 pl-0 m-0">{story.user}</p>
                             <div className="col-4">
+                                {!isPublic() ?
                                 <div className={"fa-pull-right dropdown" + show }>
                                 {this.state.saving ? <i className="fa fa-spin fa-circle-notch text-icon"/> :
                                     <button className={"btn-status text-icon text-center"+active} id={'dropdown_'+id} data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.openVisibility.bind(this)}>
@@ -195,6 +196,9 @@ class UserstoryCard extends Component {
                                         </button>}
                                     </div>
                                 </div>
+                                :
+                                <i className="fa fa-lg fa-globe mt-1 pr-2 fa-pull-right text-icon mx-auto"/>
+                                }
                             </div>
                         </div>
                         {/* story.pvt == 1 &&

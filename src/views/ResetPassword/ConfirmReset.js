@@ -71,7 +71,7 @@ class ConfirmReset extends Component {
         console.log('Cambio password utente token: ' + this.token);
         const { dispatch } = this.props
         this.setState({uploading: true})
-        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>]{8,}$")
+        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>-]{8,}$")
         if (reg.test(this.password.value)){
           if(this.password.value === this.password2.value){
             dispatch(changePwd(this.token, this.password.value, this.password2.value))
@@ -99,19 +99,19 @@ class ConfirmReset extends Component {
             this.setState(setErrorMsg('Le password inserite non corrispondono'))
           }
         }else{
-          this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+          this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero. I caratteri speciali consentiti sono: "%@#,;:_\'/<([{^=$!|}.>-"'))
         }
     }
 
     validate(){
       if(this.password.value){
-        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>]{8,}$")
+        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>-]{8,}$")
         if(reg.test(this.password.value)){
           this.setState({
             msg: null,
           })
         }else{
-          this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+          this.setState(setErrorMsg('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero. I caratteri speciali consentiti sono: "%@#,;:_\'/<([{^=$!|}.>-"'))
         }
       }else{
         this.setState({

@@ -4,8 +4,7 @@ import { serviceurl } from './config/serviceurl.js'
 // MOCK
 //import page from './data/dataset'
 //import det from './data/datasetdetail'
-import ont from './data/ontologies'
-import voc from './data/vocabulary'
+import settings from './data/settings'
 
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
@@ -28,8 +27,6 @@ export const RECEIVE_RESET_ERROR = 'RECEIVE_RESET_ERROR'
 export const RECEIVE_ACTIVATION = 'RECEIVE_ACTIVATION'
 export const RECEIVE_ACTIVATION_ERROR = 'RECEIVE_ACTIVATION_ERROR'
 export const RECEIVE_ADD_DATASET = 'RECEIVE_ADD_DATASET'
-export const RECEIVE_ONTOLOGIES = 'RECEIVE_ONTOLOGIES'
-export const RECEIVE_VOCABULARY = 'RECEIVE_VOCABULARY'
 export const RECEIVE_PROPERTIES = 'RECEIVE_PROPERTIES'
 export const REQUEST_PROPERTIES = 'REQUEST_PROPERTIES'
 export const REQUEST_REGISTRATION = 'REQUEST_REGISTRATION'
@@ -88,6 +85,14 @@ function requestLogin() {
     type: REQUEST_LOGIN
   }
 }
+
+function receiveMetadataAndResources(jsonMetadata){
+    return{
+        type: RECEIVE_METADATA,
+        metadata: jsonMetadata,
+        ope: 'RECEIVE_METADATA'
+    }
+  }
 
 function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter) {
   return {
@@ -191,29 +196,6 @@ export function receiveLogin(response) {
       user: response,
       receivedAt: Date.now(),
       ope: 'RECEIVE_LOGIN'
-  }
-}
-
-function receiveOntologies(response) {
-  return {
-      type: RECEIVE_ONTOLOGIES,
-      //ontologies: response,
-      ontologies: ont,
-      error: '',
-      receivedAt: Date.now(),
-      ope: 'RECEIVE_ONTOLOGIES'
-  }
-}
-
-function receiveVocabulary(response) {
-  return {
-      type: RECEIVE_VOCABULARY,
-      //vocabulary: response,
-      vocabulary: voc,
-      ontologies: ont,
-      error: '',
-      receivedAt: Date.now(),
-      ope: 'RECEIVE_VOCABULARY'
   }
 }
 
@@ -349,9 +331,9 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
   };
   return dispatch => {
     dispatch(requestRegistration())
-    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>-]{8,}$")    
     if(reg.test(pw)){
-      if(pw===pw2){
+       if(pw===pw2){
       return fetch(url, {
         method: 'POST',
         headers: {
@@ -373,12 +355,12 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
             });
           }
         })
-      .catch(error => dispatch(receiveRegistrationError(error)))
+      .catch(error => dispatch(receiveRegistrationError(error))) 
       } else{
         dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
       }
     } else{
-      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero. I caratteri speciali consentiti sono: "%@#,;:_\'/<([{^=$!|}.>-"'))
     }
   }
 }
@@ -487,15 +469,10 @@ export function logout() {
 }
 
 function deleteDataportalCookies() {
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        if(name.trim()=='dataportal')
-          document.cookie = "dataportal=; path=/; domain=" + serviceurl.domain;
-    }
+    document.cookie = "dataportal=;path=/;domain=" + serviceurl.domain
+    document.cookie = "session=;path=/;domain=" + serviceurl.domain
+    document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
+    document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
 }
 
 export function addUserOrganization(uid) {
@@ -565,7 +542,7 @@ export function changePwd(token, pwd1, pwd2) {
 
   return dispatch => {
     dispatch(requestRegistration())
-    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$")
+    var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>-]{8,}$")
     if (reg.test(pwd1)) {
       if (pwd1 === pwd2) {
         return fetch(url, {
@@ -580,7 +557,7 @@ export function changePwd(token, pwd1, pwd2) {
         dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
       }
     } else {
-      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero.'))
+      dispatch(receiveRegistrationError('La password inserita non rispetta i criteri. La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero. I caratteri speciali consentiti sono: "%@#,;:_\'/<([{^=$!|}.>-"'))
     }
   }
 }
@@ -629,7 +606,7 @@ function receiveResetError(json) {
 
 /******************************** DATASET ************************************** */
 export function fetchProperties(org) {
-  var url = serviceurl.apiURLDatiGov + "/settings?organization="+ org
+  var url = serviceurl.apiURLDatiGov + "/settings?domain="+ org
   return dispatch => {
     return fetch(url, {
       method: 'GET',
@@ -640,6 +617,9 @@ export function fetchProperties(org) {
     })
       .then(response => response.json())
       .then(json => dispatch(receiveProperties(json)))
+    .catch(error => {
+      console.log('Errore nel caricamento delle properties, carico default')
+      dispatch(receiveProperties(settings))})
   }
 }
 
@@ -760,26 +740,26 @@ export function unloadDatasets() {
   }
 }
 
-export function datasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
+export function datasetDetail(datasetname, query, isPublic) {
   console.log('Dataset Detail action');
   return (dispatch, getState) => {
-      return dispatch(fetchDatasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter))
+      return dispatch(fetchDatasetDetail(datasetname, query, isPublic))
   }
 }
 
-export function datasetMetadata(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
-  console.log('Metadata Detail action');
-  return (dispatch, getState) => {
-      return dispatch(fetchMetadataAndResources(datasetname))
+export function datasetMetadata(datasetname, query) {
+    console.log('Metadata Detail action');
+    return (dispatch, getState) => {
+        return dispatch(fetchMetadataAndResources(datasetname))
+    }
   }
-}
-
+  
 export function getOpendataResources(datasetname) {
-  console.log('Opendata resources Detail action');
-  return (dispatch, getState) => {
-      return dispatch(fetchOpendataResources(datasetname))
+    console.log('Opendata resources Detail action');
+    return (dispatch, getState) => {
+        return dispatch(fetchOpendataResources(datasetname))
+    }
   }
-}
 
 export function addDataset(inputJson, token, fileType) {
   console.log("Called action addDataset");
@@ -798,6 +778,58 @@ export function addDataset(inputJson, token, fileType) {
   }
 }
 
+function fetchOpendataResources(datasetname) {
+    var token = '';
+    var url = serviceurl.apiURLDatiGov + '/public/opendata_resource/' + datasetname
+    if(localStorage.getItem('username') && localStorage.getItem('token') &&
+      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+        token = localStorage.getItem('token')
+      }
+    return dispatch => {
+        return fetch(url, {
+          method: 'GET',
+         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            //'Authorization': 'Bearer ' + token
+          }
+        })
+          .then(response => response.json())
+          .catch(error => {
+            console.log('Nessun Metadato trovato con questo nome');
+            
+          }) 
+      }
+    }
+  
+  function fetchMetadataAndResources(datasetname) {
+    var token = '';
+    var url = serviceurl.apiURLDatiGov + '/public/opendata/' + datasetname    
+    if(localStorage.getItem('username') && localStorage.getItem('token') &&
+      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+        token = localStorage.getItem('token')
+      }
+    return dispatch => {
+        dispatch(requestDatasetDetail())
+        return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            //'Authorization': 'Bearer ' + token
+          }
+        })
+          .then(response => response.json())
+          .then(json => {
+            dispatch(receiveMetadataAndResources(json))
+          })
+          .catch(error => {
+            console.log('Nessun Metadato trovato con questo nome');
+            
+          }) 
+      }
+    }
+  
 export function addDatasetKylo(json, token, fileType) {
   console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/kylo/feed/" + fileType
@@ -815,61 +847,9 @@ export function addDatasetKylo(json, token, fileType) {
   }
 }
 
-function fetchOpendataResources(datasetname) {
+function fetchDatasetDetail(datasetname, query, isPublic) {
   var token = '';
-  var url = serviceurl.apiURLDatiGov + '/public/opendata_resource/' + datasetname
-  if(localStorage.getItem('username') && localStorage.getItem('token') &&
-    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
-      token = localStorage.getItem('token')
-    }
-  return dispatch => {
-      return fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      })
-        .then(response => response.json())
-        .catch(error => {
-          console.log('Nessun Metadato trovato con questo nome');
-          
-        }) 
-    }
-  }
-
-function fetchMetadataAndResources(datasetname) {
-  var token = '';
-  var url = serviceurl.apiURLDatiGov + 'public/opendata/' + datasetname
-  if(localStorage.getItem('username') && localStorage.getItem('token') &&
-    localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
-      token = localStorage.getItem('token')
-    }
-  return dispatch => {
-      dispatch(requestDatasetDetail())
-      return fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      })
-        .then(response => response.json())
-        .then(json => {
-          dispatch(receiveMetadataAndResources(json))
-        })
-        .catch(error => {
-          console.log('Nessun Metadato trovato con questo nome');
-          
-        }) 
-    }
-  }
-
-function fetchDatasetDetail(datasetname, query, category_filter, group_filter, organization_filter, order_filter) {
-  var token = '';
-  var url = serviceurl.apiURLCatalog + '/catalog-ds/getbyname/'  + datasetname;
+  var url = serviceurl.apiURLCatalog + (isPublic?'/public/catalog-ds/getbyname/'  + datasetname:'/catalog-ds/getbyname/'  + datasetname)
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
       token = localStorage.getItem('token')
@@ -886,23 +866,30 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
       })
         .then(response => response.json())
         .then(jsonDataset => {
-              dispatch(getFeedDetail(jsonDataset.dcatapit.owner_org, jsonDataset.dcatapit.name))
-              .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
-              .then(jsonFeed => {
-                dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
-                .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter)))
+              console.log(jsonDataset)
+              if(!jsonDataset.operational.ext_opendata){
+                dispatch(getFeedDetail(jsonDataset.dcatapit.owner_org, jsonDataset.dcatapit.name))
+                .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
+                .then(jsonFeed => {
+                  dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
+                  .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
+                  .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query)))
                 })
+              }else{
+                dispatch(getDatasetIframes(jsonDataset.dcatapit.name))
+                  .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
+                  .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, undefined, jsonIFrames, query)))
+              }
               })
         .catch(error => {
           console.log('Nessun Dataset con questo nome');
-          dispatch(receiveDatasetDetailError(query, category_filter, group_filter, organization_filter, order_filter))
+          dispatch(receiveDatasetDetailError(query))
         }) 
       }
   }
 
-  export function search(query, filter) {
-    var url = serviceurl.apiURLDatiGov + '/elasticsearch/search'
+  export function search(query, filter, isPublic) {
+    var url = serviceurl.apiURLDatiGov + (isPublic?'/public':'')+'/elasticsearch/search'
     return dispatch => {
       dispatch(requestSearch())
       return fetch(url, {
@@ -911,7 +898,6 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('token')
-          /* 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyIkaW50X3Blcm1zIjpbXSwic3ViIjoib3JnLnBhYzRqLmxkYXAucHJvZmlsZS5MZGFwUHJvZmlsZSNsdWNhcGljIiwiJGludF9yb2xlcyI6W10sIm1lbWJlck9mIjpbImNuPWRhZl9hZG1pbnMsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPXRlc3Rfb3JnMyxjbj1ncm91cHMsY249YWNjb3VudHMsZGM9ZXhhbXBsZSxkYz10ZXN0IiwiY249aXBhdXNlcnMsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPXRlc3Rfb3JnMixjbj1ncm91cHMsY249YWNjb3VudHMsZGM9ZXhhbXBsZSxkYz10ZXN0IiwiY249Y29tdW5lX2RpX3JvbWEsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPXRlc3Rfb3JnLGNuPWdyb3Vwcyxjbj1hY2NvdW50cyxkYz1leGFtcGxlLGRjPXRlc3QiLCJjbj1kYWYsY249Z3JvdXBzLGNuPWFjY291bnRzLGRjPWV4YW1wbGUsZGM9dGVzdCIsImNuPWRlZmF1bHRfb3JnLGNuPWdyb3Vwcyxjbj1hY2NvdW50cyxkYz1leGFtcGxlLGRjPXRlc3QiXSwiZXhwIjoxNTI0NTkzMDYyfQ.qxUWtye--LOM_5vwyOkObgXeP2faYENmH21bY17tc30' */
         },
         body: JSON.stringify(filter)
       })
@@ -968,10 +954,9 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
       }
     }
 
-    export function getFileFromStorageManager(logical_uri) {
+    export function checkFileOnHdfs(logical_uri) {
       var token = '';
-
-      var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
+      var url = serviceurl.apiURLhdfs + logical_uri + '?op=LISTSTATUS';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
           token = localStorage.getItem('token')
@@ -989,6 +974,27 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
           .then(json => json)
         }
       }
+
+      export function getFileFromStorageManager(logical_uri) {
+        var token = '';
+        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+          localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+            token = localStorage.getItem('token')
+          }
+        return dispatch => {
+            return fetch(url, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              }
+            })
+            .then(response => response.json())
+            .then(json => json)
+          }
+        }
 
       export function checkMetabase(nomeDataset) {
         var token = '';
@@ -1035,44 +1041,6 @@ function fetchDatasetDetail(datasetname, query, category_filter, group_filter, o
     }
 
 /******************************************************************************* */
-
-export function loadOntologies() {
-  console.log('Load Ontologies');
-  /*var url = 'http://localhost:3001/catalog-manager/v1/ontologies';  
-  return dispatch => {
-      return fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => response.json())
-        .then(json => dispatch(receiveOntologies(json)))
-    }*/
-    return dispatch => {
-      dispatch(receiveOntologies(undefined));
-    }
-  }
-
-  export function loadVocabulary() {
-    console.log('Load Vocabulary');
-    /*var url = 'http://localhost:3001/catalog-manager/v1/ontologies';  
-    return dispatch => {
-        return fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(response => response.json())
-          .then(json => dispatch(receiveOntologies(json)))
-      }*/
-      return dispatch => {
-        dispatch(receiveVocabulary(undefined));
-      }
-    }
 
     export function getSchema(filesToUpload, typeFile) {
       console.log('getSchema'); 

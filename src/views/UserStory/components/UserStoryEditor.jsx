@@ -14,6 +14,7 @@ import TextWidget from './widgets/TextWidget';
 
 // SERVICES
 import UserStoryService from './services/UserStoryService';
+import { isPublic } from '../../../utility';
 
 const userStoryService = new UserStoryService();
 
@@ -93,6 +94,7 @@ class UserStoryEditor extends Component {
 
   save() {
       const { dataStory } = this.state
+      console.log(dataStory)
       this.setState({
         saving: true
       });
@@ -106,9 +108,9 @@ class UserStoryEditor extends Component {
             saving: false,
             modified: false
           })
-          if(window.location === '/user_story/create/'){
+          if(window.location.hash.indexOf('/userstory/create')!==-1){
             this.state.dataStory.id = data.message;
-            this.props.history.push('/user_story/list/'+ data.message + '/edit');
+            this.props.history.push('/private/userstory/list/'+ data.message + '/edit');
           }
           toastr.success('Completato', 'Storia salvata con successo')
         })
@@ -135,8 +137,14 @@ class UserStoryEditor extends Component {
    * onRemove
    */
   onRemove() {
+    this.setState({
+      removing: true
+    })
     userStoryService.remove(this.state.dataStory.id).then(() => {
-      window.location = '#/user_story/list';
+      window.location = isPublic()?'#/userstory/list':'#/private/userstory/list';
+      this.setState({
+        removing: false
+      })
     })
   }
 
@@ -149,16 +157,21 @@ class UserStoryEditor extends Component {
     <Container>
     {this.state.dataStory &&
       <div>
-      <Header title="La Tua Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/>
+      {/* <Header title="La Tua Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/> */}
           <EditBarTop 
               title={this.state.dataStory.title}
+              org={this.state.dataStory.org}
               onPublish={this.onPublish}
               id={this.state.dataStory.id}
               status={this.state.dataStory.published}
               onSave={this.save}
               onRemove={this.onRemove}
-              saving={this.state.modified}
+              modified={this.state.modified}
+              saving={this.state.saving}
+              removing={this.state.removing}
               pvt={this.state.dataStory.pvt}
+              author={this.state.dataStory.user}
+              loggedUser={this.props.loggedUser}
           ></EditBarTop>
           <UserStoryEditorContainer 
             dataStory={this.state.dataStory} 

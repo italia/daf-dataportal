@@ -10,6 +10,8 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
+import { loginAction, addUserOrganization, isValidToken, receiveLogin, getApplicationCookie, logout } from './../../actions.js'
+import { setCookie } from '../../utility'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -17,8 +19,6 @@ import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 import Home from '../../views/Home/Home';
 import IngestionWizard from '../../views/IngestionWizard/';
-import Ontologies from '../../views/Ontologies/';
-import Vocabulary from '../../views/Vocabulary/';
 import Dashboard from '../../views/Dashboard/';
 import Dataset from '../../views/Dataset/';
 import DatasetList from '../../views/DataseList/';
@@ -32,6 +32,56 @@ import Users from '../../views/Settings/Users';
 import Crea from "../../views/Crea/Crea";
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
+
+// semantic's containers imports
+import Vocabularies from '../../semantics/containers/Vocabularies.js'
+import Vocabulary from '../../semantics/containers/Vocabulary.js'
+import Ontologies from '../../semantics/containers/Ontologies.js'
+import Ontology from '../../semantics/containers/Ontology.js'
+
+function PrivateRoute({ component: Component, authed, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => authed === true
+        ? <Component {...props} />
+        : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
+    />
+  )
+}
+
+function PrivateRouteAdmin({ component: Component, authed, role, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => (authed === true && role==='daf_admins')
+        ? <Component {...props} />
+        : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
+    />
+  )
+}
+
+function PrivateRouteEditor({ component: Component, authed, role, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => (authed === true && (role === 'daf_editors' || role === 'daf_admins'))
+        ? <Component {...props} />
+        : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
+    />
+  )
+}
+
+function PublicRoute({ component: Component, authed, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => authed === false
+        ? <Component {...props} />
+        : <Redirect to='/home' />}
+    />
+  )
+}
 
 class Full extends Component {
 
@@ -47,6 +97,8 @@ class Full extends Component {
       orgDash: 'default_org',
       validationMSg: 'Campo obbligatorio',
       validationMSgOrg: 'Campo obbligatorio',
+      authed: false,
+      loading: true,
     }
 
     this.openSearch = this.openSearch.bind(this)
@@ -58,6 +110,80 @@ class Full extends Component {
     this.handleSaveDash = this.handleSaveDash.bind(this)
   }
 
+  componentDidMount() {
+    const { dispatch } = this.props
+    if (this.props.loggedUser && this.props.loggedUser.mail) {
+      this.setState({
+        authed: true,
+        loading: false
+      })
+    } else {
+      if (localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
+        dispatch(isValidToken(localStorage.getItem('token')))
+        .then(ok => {
+          if (ok) {
+                dispatch(getApplicationCookie('superset'))
+                .then(json => {
+                  if (json) {
+                    setCookie(json)
+                  }
+                })
+                dispatch(getApplicationCookie('metabase'))
+                .then(json => {
+                  if (json) {
+                    setCookie(json)
+                  }
+                })
+                /*dispatch(getApplicationCookie('jupyter'))
+                .then(json => {
+                  if (json) {
+                    setCookie(json)
+                  }
+                })*/
+                /* dispatch(getApplicationCookie('grafana'))
+                .then(json => {
+                  if (json) {
+                    setCookie(json)
+                  }
+                }) */
+                dispatch(loginAction())
+                  .then(json => {
+                      dispatch(receiveLogin(json))
+                      /* dispatch(addUserOrganization(json.uid)) */
+                      this.setState({
+                          authed: true,
+                          loading: false
+                        })
+                })
+              } else {
+                this.setState({
+                  authed: false,
+                  loading: false
+                })
+                logout();
+                this.props.history.push('/login')
+              }
+            })
+            .catch((error) => {
+              this.setState({
+                authed: false,
+                loading: false
+              })
+              logout();
+              this.props.history.push('/login')
+            })
+          } else {
+            this.setState({
+              authed: false,
+              loading: false
+            })
+            logout();
+            this.props.history.push('/login')
+          }
+        }
+      }
+
   openSearch(){
     this.setState({
       open: !this.state.open
@@ -65,7 +191,7 @@ class Full extends Component {
   }
 
   onPvtChangeStory(e, value){
-    if(this.pvt.value == 0){
+    if(this.pvtStory.value == 0){
       this.setState({
         orgStory: 'default_org'
       });
@@ -152,6 +278,14 @@ class Full extends Component {
     this.setState({
       isOpenStory: true
     });
+
+    this.titleStory.value = ''
+    this.pvtStory.value = 0
+    this.orgStory.value = ''
+    this.setState({
+      validationMSgOrg: 'Campo obbligatorio',
+      validationMSg: 'Campo obbligatorio'
+    });
   };
   
   hideModalStory = () => {
@@ -163,6 +297,14 @@ class Full extends Component {
   openModalDash = () => {
     this.setState({
       isOpenDash: true
+    });
+
+    this.titleDash.value = ''
+    this.pvtDash.value = 0
+    this.orgDash.value = ''
+    this.setState({
+      validationMSgOrg: 'Campo obbligatorio',
+      validationMSg: 'Campo obbligatorio'
     });
   };
   
@@ -199,13 +341,14 @@ class Full extends Component {
           published: 0
         };
 /*         userStoryService.save(request).then((data)=> {
-            this.props.history.push('/user_story/list/'+ data.message + '/edit');
+            this.props.history.push('/userstory/list/'+ data.message + '/edit');
         }); */
         this.props.history.push({
-          'pathname':'/user_story/create',
+          'pathname':'/private/userstory/create',
           'story': request,
           'modified':true
         })
+        console.log(request)
         this.hideModalStory();
       }
     }else{
@@ -243,7 +386,7 @@ class Full extends Component {
         };
         
         this.props.history.push({
-          pathname: '/dashboard/create',
+          pathname: '/private/dashboard/create',
           state: { 'dash': request, 'modified':true }})
         
         this.hideModalDash();
@@ -261,22 +404,38 @@ class Full extends Component {
 
   render() {
     const { history, loggedUser } = this.props
-    const divStyle = {
+/*     const divStyle = {
       'paddingLeft': '10px',
       'paddingRigth': '0px',
-    };
+    }; */
     let mainDiv = 'bg-white'
     let home = ''
+    let paddingTop = 'pt-3'
 
-    if (history.location.pathname === '/user_story/list' || history.location.pathname === '/widget')
+    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1)
       mainDiv='bg-light'
     
-    if (history.location.pathname === '/home' || history.location.pathname.indexOf('/search')!==-1 || history.location.pathname.indexOf('/dataset')!==-1)
+    if (window.location.hash.indexOf('/private/userstory/list/')!==-1)
+      mainDiv='bg-white'
+      
+    if (window.location.hash.indexOf('/private/home')!==-1 || window.location.hash.indexOf('/private/search')!==-1 || window.location.hash.indexOf('/private/dataset')!==-1)
       home = 'p-0'
-    return (
+
+    if (window.location.hash.indexOf('/private/home')!==-1)
+      paddingTop = ''
+    
+    if (window.location.hash.indexOf('/private/dataset/')!==-1)
+      paddingTop = ''
+
+    var role = ''
+    if(this.props.loggedUser)
+      role = this.props.loggedUser.role
+    if (this.props.authed)
+      this.state.authed = true;  
+    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
       <div className="app">
       {/* Modal per creazione nuova Storia */}
-      <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
+      {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
           <form>
             <ModalHeader>
               <ModalTitle>Crea una Storia</ModalTitle>
@@ -335,11 +494,11 @@ class Full extends Component {
               </button>
             </ModalFooter>
           </form>
-        </Modal>
+        </Modal>}
 
         {/* Modal per creazione nuova Dash */}
 
-        <Modal isOpen={this.state.isOpenDash} onRequestHide={this.hideModalDash}>
+        {loggedUser && <Modal isOpen={this.state.isOpenDash} onRequestHide={this.hideModalDash}>
           <form>
             <ModalHeader>
               <ModalTitle>Crea una Dashboard</ModalTitle>
@@ -403,33 +562,36 @@ class Full extends Component {
               </button>
             </ModalFooter>
           </form>
-        </Modal>
+        </Modal>}
 
 
         <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>
         <div className="app-body">
-          <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>
+          {loggedUser && <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>}
           <main className={"main "+mainDiv} >
             {this.state.open && <SearchBar history={history} open={this.state.open}/>}
             <Breadcrumb />
-            <div className={"container-fluid "+home} style={divStyle}>
+            <div className={paddingTop+ " container-fluid "+home }>
               <Switch>
-                <Route path="/home" name="Home" exact component={Home}/>
-                <Route path="/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
-                <Route path="/ontologies" name="Ontologies" component={Ontologies} />
-                <Route path="/vocabulary" name="Vocabulary" component={Vocabulary} />
-                <Route path="/dashboard" name="Dashboard manager" component={DashboardManager} />
-                <Route path="/user_story" name="User Story" component={UserStory} />
-                <Route path="/widget" name="Widget" component={Widgets} />
-                <Route exact path="/dataset" name="Dataset" component={DatasetList} />
-                <Route exact path="/search" name="Search" component={DatasetList} />
-                <Route exact path="/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
-                <Route path="/profile" name="Profile" component={Profile} />
-                <Route path="/settings" name="Settings" component={Settings} />
-                <Route path="/organizations" name="Organizations" component={Organizations} />
-                <Route path="/users" name="Users" component={Users} />
-                <Route path="/crea" name="Crea" component={Crea} />
-                <Redirect from="/" to="/home"/>
+                <PrivateRoute authed={this.state.authed} path="/private/home" name="Home" exact component={Home}/>
+                <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
+                <PrivateRoute authed={this.state.authed} path="/private/ontologies/" name="Ontologies" exact component={Ontologies} />
+                <PrivateRoute authed={this.state.authed} path="/private/ontologies/:filter" name="Ontology" component={Ontology} />
+                <PrivateRoute authed={this.state.authed} path="/private/vocabularies" name="Vocabularies" exact component={Vocabularies} />
+                <PrivateRoute authed={this.state.authed} path="/private/vocabularies/:filter" name="Vocabulary" component={Vocabulary} />
+                <PrivateRoute authed={this.state.authed} path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
+                <PrivateRoute authed={this.state.authed} path="/private/userstory" name="User Story" component={UserStory} />
+                <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} />
+                {<PrivateRoute authed={this.state.authed} exact path="/private/dataset_old" name="Dataset" component={Dataset} />}
+                {<PrivateRoute authed={this.state.authed} exact path="/private/dataset" name="Dataset" component={DatasetList} />}
+                {<PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />} 
+                <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
+                <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
+                <PrivateRoute authed={this.state.authed} path="/private/settings" name="Settings" component={Settings} />
+                <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/organizations" name="Organizations" component={Organizations} />
+                <PrivateRoute authed={this.state.authed} path="/private/users" name="Users" component={Users} />
+                <PrivateRouteAdmin authed={this.state.authed} role={role} path="/private/crea" name="Crea" component={Crea} />
+                <Redirect from="/private" to="/private/home"/>
               </Switch>
             </div>
           </main>

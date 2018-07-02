@@ -2,6 +2,8 @@ import React from 'react';
 import { Bar } from 'react-chartjs';
 import { getRandomInt } from './util';
 import {Modal} from 'react-modal-bootstrap';
+import { toastr } from 'react-redux-toastr'
+
 
 import App from '../InfinityScrollWidgets/App.js'
 
@@ -13,8 +15,8 @@ class BtnControlWidget extends React.Component {
             isModalOpen: false
         }
 
-        this.addWidgetOpenModal = this.addWidgetOpenModal.bind(this)
-        this.addWidget = this.addWidget.bind(this)
+        /* this.addWidgetOpenModal = this.addWidgetOpenModal.bind(this)
+        this.addWidget = this.addWidget.bind(this) */
         this.closeModal = this.closeModal.bind(this)
     }
 
@@ -23,8 +25,13 @@ class BtnControlWidget extends React.Component {
         let from = index;
         let to = index + 1;
 
-        rows.splice(to, 0, rows.splice(from, 1)[0]);
-        this.props.setLayout(this.props.layout);
+        if(this.props.layout.rows[to+1] && (this.props.layout.rows[to+1].columns[0].widgets[0].key.indexOf('TextWidget')!==-1)){
+          toastr.info('Attenzione', 'Hai già inserito un testo sotto questo elemento, modificalo per aggiungere paragrafi')
+        }
+        else{
+          rows.splice(to, 0, rows.splice(from, 1)[0])
+          this.props.setLayout(this.props.layout)
+        }
     }
 
     moveUp = function(index) {
@@ -32,8 +39,14 @@ class BtnControlWidget extends React.Component {
         let from = index;
         let to = index - 1;
 
-        rows.splice(to, 0, rows.splice(from, 1)[0]);
-        this.props.setLayout(this.props.layout);
+        
+        if(this.props.layout.rows[to-1] && (this.props.layout.rows[to-1].columns[0].widgets[0].key.indexOf('TextWidget')!==-1)){
+          toastr.info('Attenzione', 'Hai già inserito un testo sopra questo elemento, modificalo per aggiungere paragrafi')
+        }
+        else{
+          rows.splice(to, 0, rows.splice(from, 1)[0])
+          this.props.setLayout(this.props.layout)
+        }
     }
 
     removeCol = function () {
@@ -65,7 +78,7 @@ class BtnControlWidget extends React.Component {
         })
     }
 
-    addWidgetOpenModal = function() {
+/*     addWidgetOpenModal = function() {
         this.setState({
             isModalAddOpen: true
         });
@@ -74,7 +87,7 @@ class BtnControlWidget extends React.Component {
     addWidget = function(widgetName) {
         this.props.addWidget(widgetName, this.props.index);
         this.onRequestClose();
-    }
+    } */
 
     onRequestClose = () => {
         this.setState({
@@ -86,10 +99,10 @@ class BtnControlWidget extends React.Component {
     render() {
         return (
             <div className="btn-control-widget">
-                <button type="button" className="btn btn-sm btn-gray-200" aria-label="Add Widget"
+                {/* <button type="button" className="btn btn-sm btn-gray-200" aria-label="Add Widget"
                     onClick={this.addWidgetOpenModal}>
                     <span className="fa fa-plus" aria-hidden="true"></span>
-                </button>
+                </button> */}
 
                 { this.props.index != 0 &&
                     <button type="button" className="btn btn-sm btn-gray-200" aria-label="Move Up"
@@ -108,12 +121,12 @@ class BtnControlWidget extends React.Component {
                     <span className="fa fa-trash" aria-hidden="true"></span>
                 </button>
 
-                <App 
+{/*                 <App 
                 widgets={this.props.widgets}
                 isModalOpen={this.state.isModalAddOpen}
                 onWidgetSelect={this.addWidget}
                 onRequestClose={this.onRequestClose}
-                    />
+                    /> */}
 
                 {/*<AddWidgetDialog
                     widgets={this.props.widgets}

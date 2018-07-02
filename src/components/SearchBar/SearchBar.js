@@ -13,6 +13,7 @@ import {
 } from '../../actions'
 import { createBrowserHistory } from 'history';
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
+import { isPublic } from '../../utility';
 
 class SearchBar extends Component{
     constructor(props){
@@ -30,35 +31,37 @@ class SearchBar extends Component{
 
     handleLoadDatasetClick(event) {
         event.preventDefault();
-        const { dispatch, filter } = this.props;
+        const { dispatch, filter, properties } = this.props;
         
         let newFilter = { }
-
-        if(window.location.hash.indexOf('dataset')!==-1){
+        var org = []
+        if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
+          org.push(properties.organization)
+        if(window.location.hash.indexOf('search')===-1){
             newFilter = {
                 'text': '',
                 'index': [],
-                'org': [],
+                'org': org,
                 'theme':[],
                 'date': "",
                 'status': [],
-                'order':"desc"
+                'order':"score"
             }
         }else{
             newFilter = filter?filter:{
                 'text': '',
                 'index': [],
-                'org': [],
+                'org': org,
                 'theme':[],
                 'date': "",
                 'status': [],
-                'order':"desc"
+                'order':"score"
             }
         }
 
         newFilter.text = this.refs.auto.value.toLowerCase();
-        this.props.history.push('/search?q='+this.refs.auto.value);
-        dispatch(search(this.refs.auto.value, newFilter))
+        this.props.history.push(isPublic()?'/search?q='+this.refs.auto.value:'/private/search?q='+this.refs.auto.value);
+        dispatch(search(this.refs.auto.value, newFilter, isPublic()))
     }
 
     render(){
@@ -89,7 +92,8 @@ SearchBar.propTypes = {
 
 function mapStateToProps(state) {
     const { isFetching, results, query, filter } = state.searchReducer['search'] || { isFetching: false, results: []}
-    return { filter }
+    const { properties } = state.propertiesReducer['prop'] || {}    
+    return { filter, properties }
 }
 
 export default connect(mapStateToProps)(SearchBar)

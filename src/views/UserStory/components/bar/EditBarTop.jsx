@@ -9,6 +9,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap'
 import { isEditor, isAdmin } from '../../../../utility'
+import { Tooltip } from 'reactstrap';
 
 class EditBarTop extends React.Component {
 
@@ -19,7 +20,8 @@ class EditBarTop extends React.Component {
       title : this.props.title,
       status : this.props.status || false,
       isOpen : false,
-      pvt : this.props.pvt
+      pvt : this.props.pvt,
+      tooltipOpen: false
     }
 
     // bind functions
@@ -28,6 +30,13 @@ class EditBarTop extends React.Component {
     this.hideModal = this.hideModal.bind(this);
     this.condividi = this.condividi.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -147,39 +156,51 @@ class EditBarTop extends React.Component {
           }
           <div className="col-sm-2">
           {
-            (!this.props.saving) ? <span className="badge badge-success float-right">Salvato</span> : <span className="badge badge-warning float-right">Modificato</span>
+            (!this.props.modified) ? <span className="badge badge-success float-right">Salvato</span> : <span className="badge badge-warning float-right">Modificato</span>
           }
           </div>
         </div>
 
-
         {/* BUTTON BAR */}          
-        <div className="box text-right">
-          <Link role="button" to="/user_story/list">
+        <div className="row">
+{/*           <Link role="button" to="/private/userstory/list">
             <button type="button" className="btn btn-link" >
               <i className="fa fa-chevron-circle-left fa-lg m-t-2"></i>
             </button>
-          </Link>
-          
-          <button type="button" className="btn btn-link" onClick={() => this.onRemove()}>
-              <i className="fa fa-trash fa-lg m-t-2"></i>
-          </button>
+          </Link> */}
+          {this.props.pvt === "1" && <div><button className="text-primary mr-auto btn btn-link" id="DisabledAutoHideExample"><i className="fa fa-lock fa-lg"/></button>
+          <Tooltip placement="bottom" isOpen={this.state.tooltipOpen} autohide={true} target="DisabledAutoHideExample" toggle={this.toggle}>
+            La storia è riservata per l'organizzazione {this.props.org}
+          </Tooltip></div>}
+          {this.props.pvt === "0" && <div><button className="text-primary mr-auto btn btn-link" id="DisabledAutoHideExample"><i className="fa fa-globe fa-lg"/></button>
+          <Tooltip placement="bottom" isOpen={this.state.tooltipOpen} autohide={true} target="DisabledAutoHideExample" toggle={this.toggle}>
+            La storia è aperta dall'organizzazione {this.props.org}
+          </Tooltip></div>}
+          <div className="ml-auto">           
+            {isAdmin() || (this.props.loggedUser.uid===this.props.author) && (this.props.removing?<button type="button" className="btn btn-link" disabled={true} title="Salva">              
+              <i className="fa fa-spin fa-circle-notch fa-lg m-t-2"></i>
+            </button>:<button type="button" className="text-primary btn btn-link" onClick={() => this.onRemove()}>
+                <i className="fa fa-trash fa-lg m-t-2"></i>
+            </button>)}
 
-          <Link role="button" to={"/user_story/list/" + this.props.id }>
-            <button type="button" className="btn btn-link">              
-              <i className="fa fa-eye fa-lg m-t-2"></i>
-            </button>
-          </Link>
+            <Link role="button" to={"/private/userstory/list/" + this.props.id }>
+              <button type="button" className="text-primary btn btn-link">              
+                <i className="fa fa-eye fa-lg m-t-2"></i>
+              </button>
+            </Link>
 
-          {
-            (!this.state.status || this.state.status==false || this.state.status === 1) &&
-            <button type="button" className="btn btn-link" onClick={() => this.openModal()}>
-              <i className="fa fa-paper-plane fa-lg m-t-2"></i>
-            </button>
-          }
-          <button type="button" className="btn btn-link" title="Salva" onClick={this.onSave}>              
-            <i className="fa fa-save fa-lg m-t-2"></i>
-          </button>
+            {
+              (!this.state.status || this.state.status==false || this.state.status === 1) &&
+              <button type="button" className="text-primary btn btn-link" onClick={() => this.openModal()}>
+                <i className="fa fa-paper-plane fa-lg m-t-2"></i>
+              </button>
+            }
+            {this.props.saving?<button type="button" className="btn btn-link" disabled={true} title="Salva" onClick={this.onSave}>              
+              <i className="fa fa-spin fa-circle-notch fa-lg m-t-2"></i>
+            </button>:<button type="button" className="text-primary btn btn-link" title="Salva" onClick={this.onSave}>              
+              <i className="fa fa-save fa-lg m-t-2"></i>
+            </button>}
+          </div>
         </div>
 
         
