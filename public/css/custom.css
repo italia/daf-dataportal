@@ -883,3 +883,9 @@ li.bg-footer:last-child{
   color: #fff;
   background-color: var(--primary);
 }
+
+
+.rc-steps-item-process .rc-steps-item-icon{
+  background: var(--primary)!important;
+  border-color: var(--primary)!important
+}

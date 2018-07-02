@@ -6,10 +6,6 @@ export default class WidgetService {
 
     iframesUrl = serviceurl.apiURLDatiGov + '/dashboard/iframes'
 
-    constructor() {
-
-    }
-
     async iframes() {
         const response = await fetch(this.iframesUrl, {
             method: 'GET',

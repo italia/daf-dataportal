@@ -946,7 +946,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
     }
 
-    export function getFileFromStorageManager(logical_uri) {
+    export function checkFileOnHdfs(logical_uri) {
       var token = '';
       var url = serviceurl.apiURLhdfs + logical_uri + '?op=LISTSTATUS';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
@@ -966,6 +966,27 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(json => json)
         }
       }
+
+      export function getFileFromStorageManager(logical_uri) {
+        var token = '';
+        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+          localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+            token = localStorage.getItem('token')
+          }
+        return dispatch => {
+            return fetch(url, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              }
+            })
+            .then(response => response.json())
+            .then(json => json)
+          }
+        }
 
       export function checkMetabase(nomeDataset) {
         var token = '';

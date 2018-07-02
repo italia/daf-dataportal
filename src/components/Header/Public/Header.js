@@ -197,7 +197,7 @@ class Header extends Component {
                 <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
               </NavItem>
               <NavItem>
-                <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Applications</Link>
+                <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Application</Link>
               </NavItem>
             </Nav>
           <Collapse isOpen={this.state.navbar} navbar>

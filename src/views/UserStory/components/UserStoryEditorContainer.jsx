@@ -15,6 +15,7 @@ import EditBar from './bar/EditBar'
 import { serviceurl } from "../../../config/serviceurl";
 import { isPublic } from '../../../utility'
 
+
 // Default styes of dazzle.
 import 'react-dazzle/lib/style/style.css';
 
@@ -406,20 +407,11 @@ class UserStoryEditorContainer extends Component {
   render() {
     var firstWid = this.getFirstWidget(this.state.widgets)
     var url = ''
+
     if (firstWid)
       url = serviceurl.urlCacher +'plot/'+firstWid+'/330x280'
     return (
-    <div>
-
-      <Helmet
-        meta={[
-          {"property": "og:type", "content": "article"},
-          {"property": "og:image", "content": url},
-          {"property": "og:title", "content": this.state.dataStory.title},
-          {"property": "og:url", "content": window.location.href},
-          {"property": "og:description", "content": this.state.dataStory.subtitle}
-        ]}
-      />
+      <div>
       { this.props.readonly && isPublic() && 
         <ShareButton className="mt-5 float-right" />
       }
@@ -434,8 +426,11 @@ class UserStoryEditorContainer extends Component {
           placeholder="Title"
           disableHtml={true}
         ></TextEditor>
-        {this.props.readonly && <div className="mt-5 mb-3 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+        {this.props.readonly && <div className="mt-5 mb-2 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
           Autore <i>{this.state.dataStory.user}</i>
+        </div>}
+        {this.props.readonly && <div className="mb-3 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+          Organizzazione <i>{this.state.dataStory.org}</i>
         </div>}
         {this.props.readonly && <div className="mb-5 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
           {this.state.dataStory.timestamp.dayOfMonth+" "+months[this.state.dataStory.timestamp.monthValue]+", "+this.state.dataStory.timestamp.year}
