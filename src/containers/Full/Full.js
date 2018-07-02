@@ -579,7 +579,7 @@ class Full extends Component {
             <div className={paddingTop+ " container-fluid "+home }>
               <Switch>
                 <PrivateRoute authed={this.state.authed} path="/private/home" name="Home" exact component={Home}/>
-                <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
+                <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies/" name="Ontologies" exact component={Ontologies} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies/:filter" name="Ontology" component={Ontology} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies" name="Vocabularies" exact component={Vocabularies} />
