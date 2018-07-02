@@ -44,7 +44,7 @@ const createOntology = ontology => {
             <CardText className="text-muted">
               <strong>Titolare:</strong>
               <br />
-              {ont.owners.map(owner => <div>{`${owner.value}`}</div>)}
+              {ont.owners.map((owner, index) => <div key={index}>{`${owner.value}`}</div>)}
             </CardText>
 
             <CardText className="text-muted">

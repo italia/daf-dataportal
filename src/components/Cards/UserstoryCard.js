@@ -102,7 +102,7 @@ class UserstoryCard extends Component {
     }
 
     render(){
-        const { story, imageA, widgetA, time, id } = this.props
+        const { story, imageA, widgetA, time, id, loggedUser } = this.props
         const { image, open, dropdownStyle, published } = this.state
 
         const iframeStyle = {
