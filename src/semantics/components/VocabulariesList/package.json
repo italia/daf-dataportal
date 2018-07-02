@@ -1,0 +1,6 @@
+{
+  "name": "VocabulariesList",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./VocabulariesList.jsx"
+}
