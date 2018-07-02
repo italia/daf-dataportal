@@ -3,34 +3,24 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
     loadDatasets,
-    unloadDatasets,
     datasetDetail,
     getFileFromStorageManager,
     getSupersetUrl,
     checkMetabase,
     datasetMetadata,
-    getOpendataResources
+    getOpendataResources,
+    checkFileOnHdfs
 } from '../../actions'
 import ReactJson from 'react-json-view'
-import { transformName } from '../../utility'
 import download from 'downloadjs'
-import StarRatingComponent from 'react-star-rating-component';
-import { Link } from 'react-router-dom'
 import { serviceurl } from "../../config/serviceurl";
 // Services
-import UserStoryService from '../UserStory/components/services/UserStoryService';
-import DatasetService from './services/DatasetService';
-import { transformWidgetName } from '../../utility'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import IframeWidget from './widgets/IframeWidget';
 import WidgetCard from '../../components/Cards/WidgetCard';
 import { decodeTheme, isPublic } from '../../utility'
 import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
-
-const userStoryService = new UserStoryService();
-const datasetService = new DatasetService();
-const Timestamp = require('react-timestamp');
+import ShareButton from '../../components/ShareButton/ShareButton';
 
 class DatasetDetail extends Component {
     constructor(props) {
@@ -115,7 +105,7 @@ class DatasetDetail extends Component {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
 
             if (isExtOpendata) {
-                dispatch(getFileFromStorageManager(nextProps.dataset.operational.physical_uri))
+                dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
                     .then(json => { this.setState({ hasPreview: true, dafIndex: this.state.dafIndex + 3 }) })
                     .catch(error => { this.setState({ hasPreview: false }) })
             } else {
@@ -199,7 +189,7 @@ class DatasetDetail extends Component {
         console.log(nome)
         this.setState({name:nome})
         this.load(nome, query, true)
-        this.props.history.push(isPublic()?'/dataset/' + nome:'/private/dataset/' + nome)
+        this.props.history.push('/private/dataset/' + nome)
     }
 
     handlePreview(nomeFile, logical_uri, e) {
@@ -328,6 +318,7 @@ class DatasetDetail extends Component {
                             </li>}
                         </ul>
                         {!isPublic()&&<button className="btn btn-accento buttons-nav" style={{ right: '20%', height: '48px' }} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>}
+                        {isPublic() &&<ShareButton background="bg-white" className="mt-4"/>}
                       </div>
                     </div>
                     <div className="container">
@@ -546,7 +537,11 @@ class DatasetDetail extends Component {
 
                                     <div className="col-12 my-3">
                                         <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + dataset.dcatapit.modified}</p>
-                                        <i className="fa fa-balance-scale text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{dataset.dcatapit.license_title}</p>
+                                        <i className="fa fa-balance-scale text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{dataset.dcatapit.license_title?dataset.dcatapit.license_title:'Licenza non trovata'}</p>
+                                        {dataset.dcatapit.privatex?
+                                          <div><i className="fa fa-lock text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è privato</p></div>:
+                                          <div><i className="fa fa-globe text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p></div>
+                                          }
                                     </div>
 
                                     <div className="col-12 my-3">
@@ -655,6 +650,7 @@ class DatasetDetail extends Component {
                                 <a className={!this.state.showRes ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleResources.bind(this, metadata.name)}><i className="text-icon fa fa-info-circle pr-2" />Risorse</a>
                             </li>
                         </ul>
+                        {isPublic() &&<ShareButton background="bg-white" className="mt-4"/>}
                       </div>
                     </div>
                     <div className="container">
@@ -764,6 +760,7 @@ class DatasetDetail extends Component {
                                         <div className="col-12 my-3">
                                             <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + metadata.metadata_created}</p>
                                             <i className="fa fa-balance-scale text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{metadata.license_title}</p>
+                                            <i className="fa fa-lock text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p>
                                         </div>
 
                                         <div className="col-12 my-3">

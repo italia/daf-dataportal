@@ -94,8 +94,10 @@ class App extends Component {
             <Route path="/private/dashboard" name="Dashboard" component={Full} />
             <Route path="/private/widget" name="Widget" component={Full} />
             <Route path="/private/ingestionwizzard" name="Ingestion" component={Full} />
-            <Route path="/private/ontologies" name="Ontologies" component={Full} />
-            <Route path="/private/vocabulary" name="Vocabulary" component={Full} />
+            <Route path="/private/ontologies" name="Ontologies" exact component={Full} />
+            <Route path="/private/ontologies/:filter" name="Ontology" component={Full} />
+            <Route path="/private/vocabularies" name="Vocabularies" exact component={Full} />
+            <Route path="/private/vocabularies/:filter" name="Vocabulary" component={Full} />
             <Route exact path="/private/dataset" name="Dataset" component={Full} />
             <Route exact path="/private/dataset_old" name="Dataset" component={Full} />
             {<Route exact path="/private/search" name="Search" component={Full} />}

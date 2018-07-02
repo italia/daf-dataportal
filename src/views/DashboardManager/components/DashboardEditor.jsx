@@ -112,7 +112,7 @@ class DashboardEditor extends Component {
    */
   loadIframe = (iframes) => {
     iframes.map(iframe => {
-      const response = this.loadImage(iframe.identifier)
+/*       const response = this.loadImage(iframe.identifier)
       response.then(response => {
         if(response.ok)
           response.text().then(text => {
@@ -129,7 +129,7 @@ class DashboardEditor extends Component {
               }
             }
           })
-        else
+        else */
           this.widgetsTypes[iframe.identifier] = {
             "type": IframeWidget,
             "title": iframe.title,
@@ -143,7 +143,7 @@ class DashboardEditor extends Component {
             }
           }
       })
-    })
+    //})
   }
   
 

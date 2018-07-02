@@ -216,11 +216,22 @@ class Sidebar extends Component {
               <li className="nav-title text-secondary">
                 INFO
               </li>
-              <li className="nav-item" onClick={(e) => {
-                e.preventDefault();
-                document.body.classList.toggle('sidebar-mobile-show');
-              }}>
-                <NavLink to={'/private/vocabulary/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-book text-secondary"></i> Dizionari e standard</NavLink>
+              <li className="nav-item nav-dropdown b-r-1">
+                <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-sitemap fa-lg text-secondary"></i> Semantica</a>
+                <ul className="nav-dropdown-items bg-light">
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <NavLink to={'/private/ontologies'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-book fa-lg text-secondary" /> Ontologie</NavLink>
+                  </li>
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <NavLink to={'/private/vocabularies'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-book fa-lg text-secondary" /> Vocabolari</NavLink>
+                  </li>
+                </ul>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();

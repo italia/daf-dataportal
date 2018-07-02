@@ -30,7 +30,8 @@ class Header extends Component {
 			this.toggleCrea = this.toggleCrea.bind(this)
 			this.mobileSidebarToggle = this.mobileSidebarToggle.bind(this)
 			this.createDash = this.createDash.bind(this)
-			this.createStory = this.createStory.bind(this)
+      this.createStory = this.createStory.bind(this)
+      this.closeMenu = this.closeMenu.bind(this)
 
 			this.state = {
 				mobile: false,
@@ -46,9 +47,9 @@ class Header extends Component {
 		toggleCrea(){
 			this.setState({
 				crea: !this.state.crea,
-				dropdownOpen: false,
-				revealed: false
-			})
+			}, () => {
+        document.addEventListener('click', this.closeMenu);
+      });
 			if(this.state.revealed === true)
 				this.props.openSearch();
 		}
@@ -56,20 +57,19 @@ class Header extends Component {
 		toggle() {
 			this.setState({
 				dropdownOpen: !this.state.dropdownOpen,
-				crea: false,
-				revealed: false
-			});
+			}, () => {
+        document.addEventListener('click', this.closeMenu);
+      });
 			if(this.state.revealed === true)
 				this.props.openSearch();
 		}
 
 		toggleNav() {
 			this.setState({
-				dropdownOpen: false,
-				crea: false,
-				revealed: false,
 				navigation: !this.state.navigation,
-			});
+			}, () => {
+        document.addEventListener('click', this.closeMenu);
+      });
 			if(this.state.revealed === true)
 				this.props.openSearch();
 		}
@@ -146,7 +146,22 @@ class Header extends Component {
 			}) */
 			this.props.openModalStory();
 			this.toggleCrea()
-		}
+    }
+    
+    closeMenu() {
+      if(this.state.revealed === true)
+        this.props.openSearch();
+      this.setState({ 
+        mobile: false,
+				revealed: false,
+				dropdownOpen: false,
+				crea: false,
+        accento: false,
+        navigation: false 
+      }, () => {
+        document.removeEventListener('click', this.closeMenu);
+      });
+    }
 
 		render() {
 			const { loggedUser, properties } = this.props

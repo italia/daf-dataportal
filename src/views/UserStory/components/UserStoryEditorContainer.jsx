@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Components from 'react';
+import Helmet from 'react-helmet'
 import Dashboard, { addWidget } from 'react-dazzle';
 import { toastr } from 'react-redux-toastr'
 import SectionTitle from './SectionTitle';
@@ -13,6 +14,7 @@ import WidgetService from '../../DashboardManager/components/services/WidgetServ
 import EditBar from './bar/EditBar'
 import { serviceurl } from "../../../config/serviceurl";
 import { isPublic } from '../../../utility'
+
 
 // Default styes of dazzle.
 import 'react-dazzle/lib/style/style.css';
@@ -133,7 +135,7 @@ class UserStoryEditorContainer extends Component {
    */
   loadIframe = (iframes) => {
     iframes.map(iframe => {
-      const response = this.loadImage(iframe.identifier)
+      /* const response = this.loadImage(iframe.identifier)
       response.then(response => {
         if (response.ok)
           response.text().then(text => {
@@ -150,7 +152,7 @@ class UserStoryEditorContainer extends Component {
               }
             }
           })
-        else
+        else */
           this.widgetsTypes[iframe.identifier] = {
             "type": IframeWidget,
             "title": iframe.title,
@@ -164,7 +166,7 @@ class UserStoryEditorContainer extends Component {
             }
           }
       })
-    })
+    //})
   }
   /**
 * Add row
@@ -388,15 +390,28 @@ class UserStoryEditorContainer extends Component {
     }
   }
 
-
+  getFirstWidget(widgets){
+    var wid;
+    for(wid in widgets){
+      if(wid.indexOf('TextWidget')===-1){
+        return wid
+        break
+      }
+    }
+  }
 
 
   /**
    * Render Function
    */
   render() {
+    var firstWid = this.getFirstWidget(this.state.widgets)
+    var url = ''
+
+    if (firstWid)
+      url = serviceurl.urlCacher +'plot/'+firstWid+'/330x280'
     return (
-    <div>
+      <div>
       { this.props.readonly && isPublic() && 
         <ShareButton className="mt-5 float-right" />
       }
@@ -411,8 +426,11 @@ class UserStoryEditorContainer extends Component {
           placeholder="Title"
           disableHtml={true}
         ></TextEditor>
-        {this.props.readonly && <div className="mt-5 mb-3 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+        {this.props.readonly && <div className="mt-5 mb-2 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
           Autore <i>{this.state.dataStory.user}</i>
+        </div>}
+        {this.props.readonly && <div className="mb-3 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
+          Organizzazione <i>{this.state.dataStory.org}</i>
         </div>}
         {this.props.readonly && <div className="mb-5 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
           {this.state.dataStory.timestamp.dayOfMonth+" "+months[this.state.dataStory.timestamp.monthValue]+", "+this.state.dataStory.timestamp.year}
