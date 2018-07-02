@@ -33,6 +33,16 @@ import {
   dataApplicationsReducer
 } from './views/Public/DataApplication/reducers/dataApplicationsReducer'
 
+// semantic's reducers
+import {
+  ontListReducer,
+  ontDetailReducer
+} from "./semantics/reducers/ontologiesReducers";
+import {
+  vocListReducer,
+  vocDetailReducer
+} from "./semantics/reducers/vocabulariesReducers";
+
 //Object.assign({}, state, .. create a new copy of the state
 function datasets(state = { isFetching: false, didInvalidate: false, items: [], dataset: null, ope: '' }, action
 ) {
@@ -219,7 +229,12 @@ const rootReducer = combineReducers({
   searchReducer,
   propertiesReducer,
   toastr: toastrReducer, // <- Mounted at toastr.
-  dataApplicationsList: dataApplicationsReducer
+  dataApplicationsList: dataApplicationsReducer,
+  // semantic's reducers
+  ontologiesList: ontListReducer,
+  ontologyDetail: ontDetailReducer,
+  vocabulariesList: vocListReducer,
+  vocabularyDetail: vocDetailReducer
 })
 
 export default rootReducer
