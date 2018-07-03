@@ -5,7 +5,7 @@ import { Route, Link } from 'react-router-dom';
 import { serviceurl } from "../../config/serviceurl";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { faLock, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
+import { faUser, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
 import { isAdmin, isEditor, isPublic } from '../../utility.js'
 
 class UserstoryCard extends Component {
@@ -153,7 +153,7 @@ class UserstoryCard extends Component {
                                         !published &&
                                         //<span className="badge badge-pill badge-secondary fa-pull-right badge-dash" title="In bozza"> </span>
                                         //<i className="fa fa-lock fa-lg fa-pull-right text-icon" title="In Bozza"/>
-                                        <span title="Privata" className="ml-2"><FontAwesomeIcon icon={faLock} className="mx-auto"/></span>
+                                        <span title="Privata" className="ml-2"><FontAwesomeIcon icon={faUser} className="mx-auto"/></span>
                                     }
 
                                     </button>}
@@ -163,7 +163,7 @@ class UserstoryCard extends Component {
                                             
                                             
                                             <div className="row">
-                                                <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faLock} className="mx-2"/></h5>
+                                                <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faUser} className="mx-2"/></h5>
                                                 <div className="row col-11 ml-1">
                                                     <div className="col-12 pl-1"><p className="mb-0"><b>Solo tu</b></p></div>
                                                     

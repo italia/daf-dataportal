@@ -25,11 +25,10 @@ class EditBarTop extends React.Component {
       open : false,
       pvt : this.props.pvt,
       tooltipOpen: false,
-      dropdownStyle: {width: '261px', left: 'auto', right: '0'},
+      dropdownStyle: {width: '261px'},
     }
 
     // bind functions
-    this.handleChange = this.handleChange.bind(this);
     this.condividi = this.condividi.bind(this);
     this.onSave = this.onSave.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -46,12 +45,6 @@ class EditBarTop extends React.Component {
       title : nextProps.title,
       id : nextProps.id
     });
-  }
-
-  handleChange(event) {
-    this.setState({title: event.target.value});
-    if(this.props.onChange)
-      this.props.onChange(event.target.value);
   }
 
   condividi(status) {
@@ -82,11 +75,11 @@ class EditBarTop extends React.Component {
     
     if(info[0].bottom > 800 || window.location.hash === '#/home')
         this.setState({
-            dropdownStyle: {width: '261px', left: 'auto', right: '0', top: '0', transform: `translate(${0}px, ${-285}px)`}
+            dropdownStyle: {width: '261px', transform: `translate(${0}px, ${-285}px)`}
         })
     else
         this.setState({
-            dropdownStyle: {width: '261px', left: 'auto', right: '0'}
+            dropdownStyle: {width: '261px' }
         })
   }
 
@@ -96,29 +89,6 @@ class EditBarTop extends React.Component {
     var active = this.state.open? ' active' : ''
     return (
       <div>
-{/*         <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
-          <form>
-            <ModalHeader>
-              <ModalTitle>Condivisione</ModalTitle>
-              <ModalClose onClick={this.hideModal} />
-            </ModalHeader>
-            <ModalBody>
-              <div className="form-group">
-                <p>Come vuoi condividere la Storia <b>{this.state.title}</b>?</p>
-              </div>
-            </ModalBody>
-            <ModalFooter>
-              <button className='btn btn-gray-200' onClick={this.pubblica}>
-                Condividi con la tua Organizzazione
-                  </button>
-              {this.state.pvt != 1 &&(isEditor() || isAdmin()) &&
-                <button className='btn btn-gray-200' onClick={this.condividi}>
-                Condividi con tutti
-              </button>
-              }
-            </ModalFooter>
-          </form>
-        </Modal> */}
 
         {/* BUTTON BAR */}          
         <div className="row">
@@ -153,7 +123,7 @@ class EditBarTop extends React.Component {
               }
 
               </button>}
-              <div className={"dropdown-menu dropdown-menu-right m-0" + show} style={dropdownStyle} aria-labelledby="dropdownMenuButton">
+              <div className={"dropdown-menu m-0" + show} style={dropdownStyle} aria-labelledby="dropdownMenuButton">
                   <h6 className="dropdown-header bg-white"><b>CHI PUÒ VISUALIZZARE?</b></h6>
                   <button className="dropdown-item bg-light b-l-pvt" onClick={this.condividi.bind(this, 0)}>
                       
