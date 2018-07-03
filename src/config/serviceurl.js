@@ -25,6 +25,7 @@ export const serviceurl = {
     urlJupiter: 'https://datascience.daf.teamdigitale.it',
     urlCkan: "https://ckan-geo.daf.teamdigitale.it/dataset/", 
     urlCacher: "https://daf-cacher-fe.daf.teamdigitale.it/", 
+    urlKatalod: "https://api.daf.teamdigitale.it/daf-semantic-katalod",
     domain: ".daf.teamdigitale.it" 
    
   // TEST   
@@ -41,6 +42,7 @@ export const serviceurl = {
     urlSuperset: 'https://bi.daf.teamdigitale.test',
     urlJupiter: 'https://datascience.daf.teamdigitale.test',
     urlCkan: "https://ckan-geo.daf.teamdigitale.test/", 
+    urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
     domain: ".daf.teamdigitale.test" */
   }
 
