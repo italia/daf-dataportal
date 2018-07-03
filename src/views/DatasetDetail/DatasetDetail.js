@@ -661,6 +661,11 @@ class DatasetDetail extends Component {
                                     <div className="col-12">
                                         <p className="desc-dataset" dangerouslySetInnerHTML={{__html: metadata.notes}}/>
                                     </div>
+                                    <div className="col-2 mx-auto">
+                                            <a className="btn btn-accento px-3 py-2 text-dark" href={serviceurl.urlCkan + metadata.name} target='_blank'>
+                                                APRI CKAN
+                                            </a>
+                                    </div>  
                                     <div className="col-12 card-text mt-4">
                                         <div className="row">
                                             <div className="col-12">
