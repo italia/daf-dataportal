@@ -66,9 +66,9 @@ class UserStoryEditor extends Component {
       {
         this.state.dataStory &&
         <div>
-        {/* <Header title="Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/> */}
           {!isPublic() &&
-            <ViewBar 
+            <ViewBar
+              story={this.state.dataStory} 
               pvt={this.state.dataStory.pvt} 
               org={this.state.dataStory.org} 
               title={this.state.dataStory.title} 
