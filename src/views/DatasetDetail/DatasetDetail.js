@@ -17,10 +17,17 @@ import { serviceurl } from "../../config/serviceurl";
 // Services
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import WidgetCard from '../../components/Cards/WidgetCard';
-import { decodeTheme, isPublic } from '../../utility'
+import { decodeTheme, isPublic, decodeCkan } from '../../utility'
 import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
 import ShareButton from '../../components/ShareButton/ShareButton';
+
+function checkIsLink(val){
+  if(val.indexOf('http')!==-1 && val.indexOf('{')===-1)
+    return <a className="text-primary" href={val} target='_blank'>{val}</a>
+  
+  return val
+}
 
 class DatasetDetail extends Component {
     constructor(props) {
@@ -280,7 +287,6 @@ class DatasetDetail extends Component {
         }
         return name
     }
-    
 
     render() {
         const { dataset, metadata, ope, feed, iframes, isFetching, query } = this.props
@@ -742,8 +748,8 @@ class DatasetDetail extends Component {
                                                         {metadata.extras && metadata.extras.map((extra, index) => {
                                                             return(
                                                                 <tr key={index}>
-                                                                    <th className="bg-white" style={{ width: "192px" }}><strong>{extra.key}</strong></th>
-                                                                    <td className="bg-grigino">{extra.value}</td>
+                                                                    <th className="bg-white" style={{ width: "192px" }}><strong>{decodeCkan(extra.key)}</strong></th>
+                                                                    <td className="bg-grigino">{checkIsLink(extra.value)}</td>
                                                                 </tr>
                                                                 )
                                                             })

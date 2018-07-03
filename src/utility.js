@@ -17,7 +17,24 @@ export const themes = [
   { 'val': 'TRAN', 'name': 'TRASPORTO' }
 ]
 
-export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}]
+export const ckanTranslate = [
+  {'key': 'contact_name','val': 'Contact Name'},
+  {'key': 'contact_uri','val': 'Contact URI'},
+  {'key': 'guid','val': 'GUID'},
+  /* {'key': 'source_catalog_description','val': ''},
+  {'key': 'source_catalog_homepage','val': ''},
+  {'key': 'source_catalog_language','val': ''},
+  {'key': 'source_catalog_modified','val': ''},
+  {'key': 'source_catalog_publisher','val': ''},
+  {'key': 'source_catalog_title','val': ''}, */
+  {'key':'contact_email', 'val': 'Contact email	'},
+  {'key':'publisher_uri', 'val': 'Publisher URI'},
+
+  {'key': 'uri','val': 'URI'},
+
+]
+
+export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}, {'val':'ext_opendata', 'name':'Ext. Opendata'}]
 
 export const visibilita = [{ 'val': '2','name': 'Open data'},{ 'val': '0','name': 'Privato'},{ 'val': '1','name': 'Organizzazione'}]
 
@@ -227,6 +244,17 @@ export function transformName(name){
     return found
   }
 
+  export function decodeCkan(value){
+    var found=value
+    for(var i = 0; i < ckanTranslate.length; i++) {
+      if (ckanTranslate[i].key == value) {
+          found = ckanTranslate[i].val
+          break
+      }
+    }
+    return found
+  }
+
   export function decodeVisibilita(value){
     var found=value
     for(var i = 0; i < visibilita.length; i++) {
@@ -237,7 +265,6 @@ export function transformName(name){
     }
     return found
   }
-
 
 /* 
   export default themes
