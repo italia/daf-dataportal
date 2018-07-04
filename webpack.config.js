@@ -49,7 +49,7 @@ const commonConfig = {
       rules.scssRule(scssPlugin),
       rules.cssFontRule(cssFontPlugin),
       rules.fontRule,
-      /* rules.htmlRule, */
+      rules.htmlRule,
       rules.imgRule
     ]
   }

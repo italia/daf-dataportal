@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Components from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Route, Link } from 'react-router-dom';
-import ListBar from './bar/ListBar';
+import ListBar from './bar/ListBar.jsx';
 import UserstoryCard from "../../../components/Cards/UserstoryCard";
 import { isPublic } from '../../../utility'
 

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Components from 'react';
 
 // App components
-import Header from './Header';
 import Container from './Container.jsx';
 import ViewBar from './bar/ViewBar.jsx';
 import UserStoryEditorContainer from './UserStoryEditorContainer.jsx';

@@ -52,10 +52,10 @@ const fontRule = {
   options: { name: './fonts/[name].[hash:8].[ext]' }
 }
 
-/* const htmlRule = {
+const htmlRule = {
   test: /\.html$/,
   use: [{ loader: 'html-loader', options: { minimize: true } }]
-} */
+}
 
 const imgRule = {
   test: /\.(png|jpe?g|gif|ico)$/,
@@ -75,6 +75,7 @@ const imgRule = {
 module.exports = {
   jsRule,
   scssRule,
+  htmlRule,
   cssFontRule,
   fontRule,
   imgRule
