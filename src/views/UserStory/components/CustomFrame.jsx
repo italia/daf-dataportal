@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const CustomFrame = ({children, onRemove, editable, title}) => {
+const CustomFrame = ({children, onRemove, editable}) => {
   return (
     <div  /* style={{height:'400px'}} */>
       {editable && <div className="x_title">
@@ -19,7 +19,6 @@ CustomFrame.propTypes = {
   children: PropTypes.element,
   onRemove: PropTypes.func,
   editable: PropTypes.bool,
-  title: PropTypes.string,
 };
 
 export default CustomFrame;

@@ -1,13 +1,5 @@
 import React, { PropTypes } from 'react';
 import { Route, Link } from 'react-router-dom';
-import {
-  Modal,
-  ModalHeader,
-  ModalTitle,
-  ModalClose,
-  ModalBody,
-  ModalFooter
-} from 'react-modal-bootstrap'
 import { isEditor, isAdmin } from '../../../../utility'
 import { Tooltip } from 'reactstrap';
 import fontawesome from '@fortawesome/fontawesome'
