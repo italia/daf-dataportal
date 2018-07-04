@@ -6,12 +6,12 @@ import { toastr } from 'react-redux-toastr'
 import SectionTitle from './SectionTitle';
 import TextEditor from './editor/TextEditor';
 import ShareButton from '../../../components/ShareButton/ShareButton';
-import CustomFrame from './CustomFrame';
+import CustomFrame from './CustomFrame.jsx';
 import IframeWidget from './widgets/IframeWidget';
 import TextWidget from './widgets/TextWidget';
 import BtnControlWidget from './widgets/BtnControlWidget';
 import WidgetService from '../../DashboardManager/components/services/WidgetService';
-import EditBar from './bar/EditBar'
+import EditBar from './bar/EditBar.jsx'
 import { serviceurl } from "../../../config/serviceurl";
 import { isPublic } from '../../../utility'
 

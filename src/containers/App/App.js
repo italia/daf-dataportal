@@ -14,9 +14,13 @@ import Public from '../Public/';
 const history = createBrowserHistory();
 
 class App extends Component {
-  state = {
-    loading: true,
-  }
+
+  constructor(props){
+    super(props)
+    this.state = {
+      loading: true,
+    }
+}
 
   componentDidMount() {
     const { dispatch } = this.props

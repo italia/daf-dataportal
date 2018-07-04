@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import DashboardEditor from './components/DashboardEditor';
-import DashboardList from './components/DashboardList';
-import DashboardView from './components/DashboardView';
+import DashboardEditor from './components/DashboardEditor.jsx';
+import DashboardList from './components/DashboardList.jsx';
+import DashboardView from './components/DashboardView.jsx';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 class DashboardManager extends Component {

@@ -12,8 +12,8 @@ import Guida from '../../views/Public/Guida/Guida';
 import Partecipa from '../../views/Public/Partecipa/Partecipa';
 import Notizie from '../../views/Public/Notizie/NotizieList';
 import NotizieDett from '../../views/Public/Notizie/NotizieDett';
-import UserStoryList from '../../views/UserStory/components/UserStoryList';
-import UserStoryView from '../../views/UserStory/components/UserStoryView';
+import UserStoryList from '../../views/UserStory/components/UserStoryList.jsx';
+import UserStoryView from '../../views/UserStory/components/UserStoryView.jsx';
 import DataApplication from '../../views/Public/DataApplication/DataApplication';
 import DatasetList from '../../views/DataseList/DatasetList'
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail'

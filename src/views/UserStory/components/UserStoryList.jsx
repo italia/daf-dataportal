@@ -8,8 +8,8 @@ import UserstoryCard from "../../../components/Cards/UserstoryCard";
 import { isPublic } from '../../../utility'
 
 // App components
-import Header from './Header';
-import Container from './Container';
+import Header from './Header.jsx';
+import Container from './Container.jsx';
 
 // Services
 import UserStoryService from './services/UserStoryService';
