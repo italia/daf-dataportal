@@ -9,6 +9,10 @@
       }
     }]
   ],
-  "plugins": ["transform-class-properties"]
-
+  "plugins": [
+    ["transform-class-properties"],
+    ["transform-runtime", {
+      "regenerator": true
+    }]
+  ]
 }

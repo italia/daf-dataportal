@@ -6,10 +6,9 @@ import Full from '../Full/'
 import Home from '../Home/'
 import PropTypes from 'prop-types'
 import { fetchProperties } from './../../actions.js'
-import { serviceurl } from '../../config/serviceurl.js'
-import { setCookie } from '../../utility'
 import ReduxToastr from 'react-redux-toastr'
 import Public from '../Public/';
+
 
 const history = createBrowserHistory();
 
