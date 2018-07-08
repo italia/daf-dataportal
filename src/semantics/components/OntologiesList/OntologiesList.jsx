@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  // Container,
   Row,
   Col,
   Card,
@@ -9,48 +8,55 @@ import {
   CardText,
   Badge
 } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
-import LinkWrap from '../LinkWrap'
 import Error from '../Error'
+import Loading from '../Loading'
 
 const ontologiesError = 'Errore durante il caricamento delle ontologie'
 
 const mapOntologies = ontologies =>
   ontologies.map(ont => (
-    <LinkWrap key={ont.id} to={`/private/ontologies/${ont.id}`} className="text-dark">
-      <Card className="border-0">
-        <CardBody>
-          <CardTitle className="text-primary">
+    <Card key={`ontology-${ont.id}`}>
+      <CardBody
+        className="text-dark"
+        style={{ font: "400 16px/23px Titillium Web" }}
+      >
+        <Link to={`/private/ontologies/${ont.id}`}>
+          <CardTitle
+            className="text-primary"
+            style={{ font: "500 24.5px/29.4px Titillium Web" }}
+          >
             {ont.titles.map(title => title.value)}
           </CardTitle>
+        </Link>
 
-          <CardText className="text-muted">{ont.url}</CardText>
+        <CardText className="text-muted">{ont.url}</CardText>
 
-          <CardText className="text-muted">
-            <strong>Descrizione:</strong>
-            <br />
-            {ont.descriptions.map(desc => desc.value)}
-          </CardText>
+        <CardText>
+          <strong>Descrizione:</strong>
+          <br />
+          {ont.descriptions.map(desc => desc.value)}
+        </CardText>
 
-          <CardText className="text-muted">
-            <strong>Data ultima modifica: </strong>
-            {ont.lastEditDate}
-          </CardText>
+        <CardText>
+          <strong>Data ultima modifica:</strong>
+          <br />
+          {ont.lastEditDate}
+        </CardText>
 
-          <CardText className="text-muted">
-            <Badge color="primary" className="px-3 py-2">
-              Ontologia
-            </Badge>
-            <strong> TAG: </strong>
-            {ont.tags.map(tag => tag.value).join(' - ')}
-          </CardText>
-        </CardBody>
-      </Card>
-    </LinkWrap>
+        <CardText>
+          <Badge color="primary" className="px-3 py-2">
+            Ontologia
+          </Badge>
+          <strong> TAG: </strong>
+          {ont.tags.map(tag => tag.value).join(' - ')}
+        </CardText>
+      </CardBody>
+    </Card>
   ))
 
-const createOntologies = ontologies => {
-  return (
+const createOntologies = ontologies => (
     <Row>
       <Col sm={2} />
       <Col sm={8}>{mapOntologies(ontologies)}</Col>
@@ -65,7 +71,6 @@ const createOntologies = ontologies => {
       </Col>
     </Row>
   )
-}
 
 export default class OntologiesList extends React.Component {
   componentWillMount() {
@@ -77,6 +82,8 @@ export default class OntologiesList extends React.Component {
       createOntologies(this.props.data)
     ) : this.props.error ? (
       <Error msg={ontologiesError} />
-    ) : null
+    ) : (
+      <Loading />
+    )
   }
 }
