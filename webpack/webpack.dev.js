@@ -6,9 +6,11 @@ module.exports =  {
   devServer: {
     hot: true,
     open: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    //https: true,
     // contentBase: 'dist',
-    // port: 8080
+    port: 80,
+    //host: 'dataportal.daf.teamdigitale.local'
   },
   watch: true,
   plugins: [

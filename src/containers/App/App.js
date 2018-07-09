@@ -23,9 +23,15 @@ class App extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    var domain = window.location.host
-    var split = domain.split('.')
-    dispatch(fetchProperties(split[0]))
+    var host = window.location.host
+    var domain = ''
+    if(host==='localhost'){
+      domain = 'dataportal'
+    }else{
+      var split = host.split('.')
+      domain = split[0]
+    }
+    dispatch(fetchProperties(domain))
     .then(json => {
       var html = document.getElementsByTagName('html')[0];
       if(json){

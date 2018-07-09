@@ -4,6 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const merge = require('webpack-merge')
 
 const sourceDirectory = path.resolve(__dirname, './src')
@@ -32,6 +33,9 @@ const commonConfig = {
       template: './public/index.html',
       filename: 'index.html',
       inject: 'body'
+    }),
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, 'src/sw.js'),
     }),
     cssFontPlugin,
     scssPlugin,

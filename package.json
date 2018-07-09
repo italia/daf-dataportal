@@ -16,8 +16,8 @@
     "downloadjs": "^1.4.7",
     "draft-js": "^0.10.1",
     "draftjs-to-html": "^0.7.5",
-    "html-loader": "^0.5.5",
     "extract-text-webpack-plugin": "^3.0.2",
+    "html-loader": "^0.5.5",
     "html-to-draftjs": "0.1.0-beta14",
     "immutable": "^3.8.1",
     "jquery": "^3.2.1",
@@ -73,6 +73,7 @@
     "redux-form-dropzone": "0.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "serviceworker-webpack-plugin": "^0.2.3",
     "set-default-browser": "^1.0.1",
     "superagent": "^3.8.3",
     "superagent-mock": "^3.4.0",
@@ -98,7 +99,7 @@
     "webpack-merge": "^4.1.1"
   },
   "scripts": {
-    "start": "webpack-dev-server --host dataportal.local.daf.teamdigitale.it --port 80",
+    "start": "webpack-dev-server --progress",
     "build": "webpack --env.prod --progress",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
