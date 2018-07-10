@@ -79,7 +79,7 @@ class TextWidget extends Component {
               data-placeholder="Inserisci il testo"
               text={this.state.text}
               onChange={this.onEditorStateChange}
-              options={{toolbar: {buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],}}}
+              options={{toolbar: {buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],}, paste: {forcePlainText: false,}}}
             />
 
             {/*  OLD EDITOR
