@@ -81,7 +81,7 @@ class List extends Component {
                         </h6>
                         <div className="preview-widget">
                           <div style={{width: '100%'}}>
-                            <img src={serviceurl.urlCacher +'plot/'+widget+'/330x280'} />
+                            <img src={serviceurl.urlCacher +widget+'.png'} />
                           </div>
                         </div>
                       </a>
