@@ -24,9 +24,17 @@ class BtnControlWidget extends React.Component {
         let rows = this.props.layout.rows;
         let from = index;
         let to = index + 1;
+        let prevWid = this.props.layout.rows[from-1]?this.props.layout.rows[from-1].columns[0].widgets[0].key:''
+        let currWid = this.props.layout.rows[from].columns[0].widgets[0].key
+        let nextWid = this.props.layout.rows[to]?this.props.layout.rows[to].columns[0].widgets[0].key:''
+        let doubleNextWid = this.props.layout.rows[to+1] ? this.props.layout.rows[to+1].columns[0].widgets[0].key:''
 
-        if(this.props.layout.rows[to+1] && (this.props.layout.rows[to+1].columns[0].widgets[0].key.indexOf('TextWidget')!==-1)){
+
+        if(currWid.indexOf('TextWidget')!==-1 && (doubleNextWid.indexOf('TextWidget')!==-1)){
           toastr.info('Attenzione', 'Hai già inserito un testo sotto questo elemento, modificalo per aggiungere paragrafi')
+        }
+        else if(prevWid.indexOf('TextWidget')!==-1 && (nextWid.indexOf('TextWidget')!==-1)){
+          toastr.info('Attenzione', 'Spostando sotto questo widget avrai due testi consecutivi, modifica il testo al posto di muovere il widget')
         }
         else{
           rows.splice(to, 0, rows.splice(from, 1)[0])
@@ -38,10 +46,16 @@ class BtnControlWidget extends React.Component {
         let rows = this.props.layout.rows;
         let from = index;
         let to = index - 1;
-
+        let prevWid = this.props.layout.rows[from+1]?this.props.layout.rows[from+1].columns[0].widgets[0].key:''
+        let currWid = this.props.layout.rows[from].columns[0].widgets[0].key
+        let nextWid = this.props.layout.rows[to] ? this.props.layout.rows[to].columns[0].widgets[0].key:''
+        let doubleNextWid = this.props.layout.rows[to-1] ? this.props.layout.rows[to-1].columns[0].widgets[0].key:''
         
-        if(this.props.layout.rows[to-1] && (this.props.layout.rows[to-1].columns[0].widgets[0].key.indexOf('TextWidget')!==-1)){
+        if(currWid.indexOf('TextWidget')!==-1 && (doubleNextWid.indexOf('TextWidget')!==-1)){
           toastr.info('Attenzione', 'Hai già inserito un testo sopra questo elemento, modificalo per aggiungere paragrafi')
+        }
+        else if(prevWid.indexOf('TextWidget')!==-1 && (nextWid.indexOf('TextWidget')!==-1)){
+          toastr.info('Attenzione', 'Spostando sopra questo widget avrai due testi consecutivi, modifica il testo al posto di muovere il widget')
         }
         else{
           rows.splice(to, 0, rows.splice(from, 1)[0])

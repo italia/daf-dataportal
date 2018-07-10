@@ -24,36 +24,42 @@ class UserStoryEditor extends Component {
     this.state={
       id: this.props.match.params.id,
       loading: true,
+      dataStory: undefined,
+      widgets: undefined
     };
 
     //bind functions
 
     //load data
+    
+
+  }
+
+  componentDidMount(){
     let response = userStoryService.get(this.state.id);
     response.then((story) => {
       try{
-      let wids = JSON.parse(story.widgets)
+        console.log(story)
+        var wids = JSON.parse(story.widgets)
 
-      Object.keys(wids).map(wid => {
-        if (wids[wid].props.wid_key.indexOf("TextWidget") != -1){
-          wids[wid].type = TextWidget
-          wids[wid].props.readOnly = true
-        }
-        else
-          wids[wid].type = IframeWidget
-      })
+        Object.keys(wids).map(wid => {
+          if (wids[wid].props.wid_key.indexOf("TextWidget") != -1){
+            wids[wid].type = TextWidget
+            wids[wid].props.readOnly = true
+          }
+          else
+            wids[wid].type = IframeWidget
+        })
+
+      }catch(error){console.log('error in getting story')}
 
       this.setState({
         dataStory: story,
         widgets: wids,
         loading: false,
       });
-      /* this.setState({
-        dataStory: story
-      }); */
-    }catch(error){console.log('error in getting story')}
-    });
 
+    });
   }
 
   /**

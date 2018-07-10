@@ -41,6 +41,14 @@ class App extends Component {
               loading: false
             })
             break;
+          case "3":
+            html.style.setProperty("--primary", "#7f0019")
+            html.style.setProperty("--lightblue", "#8e001c")
+            html.style.setProperty("--accento", "#b5bec6" )
+            this.setState({
+              loading: false
+            })
+            break;
           default:
             html.style.setProperty("--primary", "#0066CC");
             html.style.setProperty("--lightblue", "#1A75D1");
