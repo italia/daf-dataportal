@@ -409,7 +409,7 @@ class UserStoryEditorContainer extends Component {
     var url = ''
 
     if (firstWid)
-      url = serviceurl.urlCacher +'plot/'+firstWid+'/330x280'
+      url = serviceurl.urlCacher +firstWid+'.png'
     return (
       <div>
       { this.props.readonly && isPublic() && 

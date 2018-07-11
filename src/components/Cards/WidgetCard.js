@@ -66,9 +66,9 @@ class WidgetCard extends Component {
         var url = ''
 
         if(iframe.identifier)
-          url = serviceurl.urlCacher + 'plot/' + iframe.identifier + '/330x280';
+          url = serviceurl.urlCacher  + iframe.identifier + '.png';
         if(iframe.props)
-          url = serviceurl.urlCacher + 'plot/' + iframe.props.identifier + '/330x280';
+          url = serviceurl.urlCacher  + iframe.props.identifier + '.png';
         
         return(
             <div className="mx-auto">

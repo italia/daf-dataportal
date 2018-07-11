@@ -143,8 +143,8 @@ class DashboardCard extends Component {
                 <div className="card b-a-1 b-t-3 bg-gray-100 card-dash">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {widgetA && <div className={"crop " + (widgetB ? "pr-0 b-r-dash col-6" : "col-12")}><img className="bn-dash" src={serviceurl.urlCacher + 'plot/'+widgetA+'/330x280'} /></div>}
-                            {widgetB && <div className="crop col-6 pl-0"><img className="bn-dash" src={serviceurl.urlCacher + 'plot/'+widgetB+'/330x280'} /></div>}
+                            {widgetA && <div className={"crop " + (widgetB ? "pr-0 b-r-dash col-6" : "col-12")}><img className="bn-dash" src={serviceurl.urlCacher + widgetA+'.png'} /></div>}
+                            {widgetB && <div className="crop col-6 pl-0"><img className="bn-dash" src={serviceurl.urlCacher +widgetB+'.png'} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0 b-t-dash">

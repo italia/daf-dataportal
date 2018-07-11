@@ -72,7 +72,7 @@ class UserstoryCard extends Component {
                 <div className="card b-a-0 border-primary bg-white card-story">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {imageA && <div className="crop col-12"><img src={serviceurl.urlCacher + 'plot/'+widgetA+'/330x280'} /></div>}
+                            {imageA && <div className="crop col-12"><img src={serviceurl.urlCacher +widgetA+'.png'} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0">

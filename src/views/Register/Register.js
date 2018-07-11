@@ -42,8 +42,8 @@ class Register extends Component {
     const { messaggio, error } = this.props
     return (
       <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-6">
+        <div className="row">
+          <div className="mx-auto col-md-6">
             <div className="card mx-2">
               <div className="card-block p-2">
                 <h1>Registrati</h1>

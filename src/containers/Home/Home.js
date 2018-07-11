@@ -15,9 +15,9 @@ const mapStateToProps = state => ({
 class Home extends React.Component {
   render() {
     return (
-      <div>
+      <div className="app">
         <HomeHeader/>
-        <div data-reactroot className="app flex-row align-items-center">
+        <div data-reactroot className="app-body pub flex-row align-items-center">
             <Switch>
               <Route path='/private' exact component={Login} />
               <Route path="/login" component={Login} />
