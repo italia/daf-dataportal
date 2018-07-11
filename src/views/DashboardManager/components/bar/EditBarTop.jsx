@@ -25,7 +25,7 @@ class EditBarTop extends React.Component {
       open : false,
       pvt : this.props.pvt,
       tooltipOpen: false,
-      dropdownStyle: {width: '261px', left: 'auto', right: '0'},
+      dropdownStyle: {width: '261px'},
     }
 
     this.save = this.save.bind(this)

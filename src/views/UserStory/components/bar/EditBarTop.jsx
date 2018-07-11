@@ -67,7 +67,7 @@ class EditBarTop extends React.Component {
     
     if(info[0].bottom > 800 || window.location.hash === '#/home')
         this.setState({
-            dropdownStyle: {width: '261px', transform: `translate(${0}px, ${-285}px)`}
+            dropdownStyle: {width: '261px', top: '0', transform: `translate(${0}px, ${-285}px)`}
         })
     else
         this.setState({
