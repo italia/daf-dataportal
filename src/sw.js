@@ -1,5 +1,8 @@
 const DEBUG = false
 
+//const toastr = require('react-redux-toastr')
+//const toastr = require('react-redux-toastr/src/toastrEmitter')
+import { toastr } from 'react-redux-toastr'
 // When the user navigates to your site,
 // the browser tries to redownload the script file that defined the service
 // worker in the background.
@@ -14,6 +17,30 @@ let assetsToCache = [...assets, './']
 assetsToCache = assetsToCache.map(path => {
   return new URL(path, global.location).toString()
 })
+
+function messageToClient(client, msg){
+  return new Promise(function(resolve, reject){
+      var msg_chan = new MessageChannel();
+
+      msg_chan.port1.onmessage = function(event){
+          if(event.data.error){
+              reject(event.data.error);
+          }else{
+              resolve(event.data);
+          }
+      };
+
+      client.postMessage("SW Says: '"+msg+"'", [msg_chan.port2]);
+  });
+}
+
+function messageToAllClients(msg){
+  clients.matchAll().then(clients => {
+      clients.forEach(client => {
+        messageToClient(client, msg).then(m => console.log("SW Received Message: "+m));
+      })
+  })
+}
 
 // When the service worker is first added to a computer.
 self.addEventListener('install', event => {
@@ -66,6 +93,7 @@ self.addEventListener('activate', event => {
 })
 
 self.addEventListener('message', event => {
+  console.log('message: ' + event)
   switch (event.data.action) {
     case 'skipWaiting':
       if (self.skipWaiting) {
@@ -86,6 +114,8 @@ self.addEventListener('push', function(event) {
   const options = {
     body: data.body,
   };
+
+  messageToAllClients(data)
 
   event.waitUntil(self.registration.showNotification(title, options));
 });
