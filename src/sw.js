@@ -30,7 +30,7 @@ function messageToClient(client, msg){
           }
       };
 
-      client.postMessage("SW Says: '"+msg+"'", [msg_chan.port2]);
+      client.postMessage(msg, [msg_chan.port2]);
   });
 }
 

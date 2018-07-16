@@ -887,3 +887,10 @@ li.bg-footer:last-child{
   background: var(--primary)!important;
   border-color: var(--primary)!important
 }
+
+.b-new-notif{
+  border-left: 4px solid var(--primary);
+  border-top: 0.5px solid #f0f3f5;
+  border-bottom: 0.5px solid #f0f3f5;
+  border-right: 0;
+}

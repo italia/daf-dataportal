@@ -10,6 +10,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
+import { toastr } from 'react-redux-toastr'
 import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout } from './../../actions.js'
 import { setCookie } from '../../utility'
 import Header from '../../components/Header/';
@@ -90,7 +91,8 @@ function listenMessage(dispatch){
     navigator.serviceWorker.addEventListener('message', function(event){
         console.log("Client Received Message: " + event.data);
         /* event.ports[0].postMessage("Client 1 Says 'Hello back!'"); */
-        dispatch(isValidToken(localStorage.getItem('token')))
+        toastr.info(event.data.title, event.data.body)
+        //dispatch(isValidToken(localStorage.getItem('token')))
     });
   }
 }
@@ -503,7 +505,7 @@ class Full extends Component {
     if (this.props.authed)
       this.state.authed = true;  
     return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
-      <div className="app">
+      <div className="app aside-menu-show">
       {/* Modal per creazione nuova Storia */}
       {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
           <form>

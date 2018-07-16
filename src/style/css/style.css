@@ -12946,7 +12946,7 @@ hr.transparent {
   pointer-events: none
 }
 
-.preview-widget-container .list-group-item:hover {
+.preview-widget-container {
   background-color: #efeeee;
   border: 1px solid #a29b9b;
 }
