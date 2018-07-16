@@ -176,8 +176,8 @@ class Login extends Component {
   render() {
     return (this.state.loading? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :
       <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-8">
+        <div className="row">
+          <div className="col-md-8 mx-auto">
               <div className="card-group mb-0">
                 <div className="card p-2">
                   <div className="card-block">
