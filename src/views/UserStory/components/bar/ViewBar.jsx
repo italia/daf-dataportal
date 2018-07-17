@@ -19,7 +19,7 @@ class ViewBar extends React.Component {
       open: false,
       saving: false,
       status: props.story.published,
-      dropdownStyle: {width: '261px', left: 'auto', right: '0'},
+      dropdownStyle: {width: '261px'},
     }
 
     this.toggle = this.toggle.bind(this);
@@ -71,11 +71,11 @@ class ViewBar extends React.Component {
     
     if(info[0].bottom > 800 || window.location.hash === '#/home')
         this.setState({
-            dropdownStyle: {width: '261px', left: 'auto', right: '0', top: '0', transform: `translate(${0}px, ${-285}px)`}
+            dropdownStyle: {width: '261px', top: '0', transform: `translate(${0}px, ${-285}px)`}
         })
     else
         this.setState({
-            dropdownStyle: {width: '261px', left: 'auto', right: '0'}
+            dropdownStyle: {width: '261px'}
         })
   }
 
@@ -122,7 +122,7 @@ class ViewBar extends React.Component {
               }
 
               </button>}
-              <div className={"dropdown-menu dropdown-menu-right m-0" + show} style={dropdownStyle} aria-labelledby="dropdownMenuButton">
+              <div className={"dropdown-menu m-0" + show} style={dropdownStyle} aria-labelledby="dropdownMenuButton">
                   <h6 className="dropdown-header bg-white"><b>CHI PUÒ VISUALIZZARE?</b></h6>
                   <button className="dropdown-item bg-light b-l-pvt" onClick={this.condividi.bind(this, 0)}>
                       

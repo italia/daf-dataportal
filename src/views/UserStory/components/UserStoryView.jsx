@@ -36,7 +36,7 @@ class UserStoryEditor extends Component {
   }
 
   componentDidMount(){
-    let response = userStoryService.get(this.state.id);
+    let response = isPublic()?userStoryService.getPbc(this.state.id):userStoryService.getPvt(this.state.id);
     response.then((story) => {
       try{
         console.log(story)
