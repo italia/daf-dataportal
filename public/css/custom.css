@@ -281,7 +281,6 @@
 .btn-header:active, .btn-header.active, .show > .btn-header.dropdown-toggle {
   background-color: var(--lightblue);
 }
-
 .btn-header:hover{
   background-color: var(--lightblue);
 }
@@ -679,6 +678,10 @@
 
 li.bg-footer:last-child{
   border-bottom: 1px solid #536C79 !important;
+}
+
+li.bg-footer:last-child.social-links {
+  border-bottom: none !important
 }
 
 .bg-footer a {
