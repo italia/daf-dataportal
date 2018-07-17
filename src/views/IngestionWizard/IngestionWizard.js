@@ -76,8 +76,13 @@ hideModalAndRedirect = (e) => {
         dispatch(addDataset(transformed, localStorage.getItem('token'), fileType))
         .then(response => {
           if(response.ok){
-            console.log('Caricamento metadati avvenuto con successo')
-            dispatch(addDatasetKylo(transformed, localStorage.getItem('token'), fileType))
+            console.log('Caricamento metadati avvenuto con successo a breve verrà avviato il caricamento su Kylo')
+            this.setSending(false, undefined);
+            localStorage.removeItem('kyloSchema')
+            this.setState({saving: false})
+            toastr.success('Complimenti', 'Il caricamento dei metadati è avvenuto con successo a breve verrà avviato il caricamento su Kylo')
+            this.props.history.push('/private/dataset/' + transformed.dcatapit.name)
+            /* dispatch(addDatasetKylo(transformed, localStorage.getItem('token'), fileType))
             .then((response) => {
               if(response.ok){
                 this.setSending(false, undefined);
@@ -97,7 +102,7 @@ hideModalAndRedirect = (e) => {
               this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
               this.setState({saving: false})
             })
-            console.log('invio effettuato');
+            console.log('invio effettuato'); */
           }else{
             this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
             console.log('Errore durante il caricamento dei metadati')
