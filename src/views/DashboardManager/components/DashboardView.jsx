@@ -113,10 +113,10 @@ class DashboardView extends Component {
         title: dashboard.title,
         subtitle: dashboard.subtitle,
         org: dashboard.org,
-        pvt: dashboard.pvt
+        pvt: dashboard.pvt,
+        dashboard: dashboard
         /* widgets: dashboard.widgets */
       });
-      console.log(this.state);
 
           //get iframe from server
       let org = dashboard.org
@@ -144,13 +144,16 @@ class DashboardView extends Component {
     
     return (
     <Container>
-      <ViewBar title={this.state.title} subtitle={this.state.subtitle} id={this.state.id} org={this.state.org} pvt={this.state.pvt}></ViewBar>
-      <Dashboard
-        frameComponent={CustomFrame}
-        layout={this.state.layout}
-        widgets={this.state.widgets}
-        editable={false}
-        />
+    {this.state.dashboard && 
+      <div>
+        <ViewBar dashboard={this.state.dashboard} title={this.state.title} subtitle={this.state.subtitle} id={this.state.id} org={this.state.org} pvt={this.state.pvt}></ViewBar>
+        <Dashboard
+          frameComponent={CustomFrame}
+          layout={this.state.layout}
+          widgets={this.state.widgets}
+          editable={false}
+          />
+        </div>}
     </Container>
     );
   }

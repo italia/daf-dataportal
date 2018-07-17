@@ -60,17 +60,17 @@ class ConfirmRegistration extends Component {
          dispatch(activateUser(this.token))
          .then((response)=> {
             if(response.ok){
-              /* this.setState(setSuccessMsg('Attivazione avvenuta con successo.')) */
+              this.setState(setSuccessMsg('Attivazione avvenuta con successo.')) 
               toastr.success('Complimenti', 'Attivazione avvenuta con successo')
               this.props.history.push('/login')
             }else{
               response.json().then(json => {
                 if(json.code===1){
-                  /* this.setState(setErrorMsg(json.message)) */
-                  toastr.danger('Errore', json.message, { timeOut: 0 })
+                  this.setState(setErrorMsg(json.message))
+                  toastr.error('Errore', json.message, { timeOut: 0 })
                 }else{
                   this.setState(setErrorMsg('Errore durante l\' attivazione.'))
-                  toastr.danger('Errore', 'Errore durante l\' attivazione.', { timeOut: 0 })
+                  toastr.error('Errore', 'Errore durante l\' attivazione.', { timeOut: 0 })
                 }
               });
             }
@@ -83,30 +83,22 @@ class ConfirmRegistration extends Component {
     const { messaggio, error } = this.props
     return (
       <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-6">
+        <div className="row">
+          <div className="mx-auto col-md-6">
           <OverlayLoader 
-              color={'#06c'} 
-              loader="ScaleLoader" 
+              color={'#fff'}
+              loader="ClipLoader"
               text="Conferma registrazione in corso..." 
               active={this.state.uploading} 
               backgroundColor={'grey'}
               >
-              {this.state.error===1? 
               <div>
-                <div className="alert alert-danger" role="alert">
-                  {this.state.msg}
-                </div>
-                <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/login')} >Indietro</button>
+                <h1>Conferma Registrazione</h1>
+                <p className="text-muted">Se la tua registrazione è andata a buon fine entra subito nel <a href="/#/login">DAF</a>.</p>    
+                <p className="text-muted">Segnalaci eventuali problemi su slack sul canale{" "}
+                  <a href="https://developersitalia.slack.com/archives/C760XQX9Q" target="_blank">#daf</a> 
+                </p>
               </div>
-              : 
-              <div>
-                <div className="alert alert-success" role="alert">
-                  {this.state.msg}
-                </div>
-                <button type="button" className="btn btn-primary active mt-1" onClick={() => this.props.history.push('/login')} >Login</button>     
-              </div>
-              }       
             </OverlayLoader>
           </div>
         </div>

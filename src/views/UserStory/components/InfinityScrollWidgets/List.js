@@ -73,7 +73,7 @@ class List extends Component {
                       {
                         <div style={{ width: '100%' }}>
                           {/* <img src={"data:image/jpg;base64," + widgets[widget].image} /> */}
-                          <img src={serviceurl.urlCacher + 'plot/' + widget + '/330x280'}/>
+                          <img src={serviceurl.urlCacher  + widget + '.png'}/>
                         </div>
                        /*  :
                         <div style={{ width: '100%' }}>
