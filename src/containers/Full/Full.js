@@ -33,6 +33,8 @@ import Crea from "../../views/Crea/Crea";
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
 
+import { serviceurl } from '../../config/serviceurl'
+
 // semantic's containers imports
 import Vocabularies from '../../semantics/containers/Vocabularies.js'
 import Vocabulary from '../../semantics/containers/Vocabulary.js'
@@ -127,13 +129,18 @@ async function subscribeUserToPush() {
 
   const subscription = await registration.pushManager.subscribe(subscribeOptions);
   console.log('Received PushSubscription: ', JSON.stringify(subscription));
-  await fetch('http://localhost:3000/subscribe', {
+  await fetch(serviceurl.apiURLDatiGov + '/subscribe', {
     method: 'POST',
     body: JSON.stringify(subscription),
     headers: {
-      'content-type': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-  });
+  })
+  .then(function(result){
+    console.log(result)
+  })
 }
 
 function urlBase64ToUint8Array(base64String) {
@@ -667,7 +674,7 @@ class Full extends Component {
               </Switch>
             </div>
           </main>
-          <Aside />
+          {/* <Aside /> */}
         </div>
         <Footer />
       </div>

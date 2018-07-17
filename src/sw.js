@@ -1,8 +1,5 @@
 const DEBUG = false
 
-//const toastr = require('react-redux-toastr')
-//const toastr = require('react-redux-toastr/src/toastrEmitter')
-import { toastr } from 'react-redux-toastr'
 // When the user navigates to your site,
 // the browser tries to redownload the script file that defined the service
 // worker in the background.
@@ -45,12 +42,15 @@ function messageToAllClients(msg){
 // When the service worker is first added to a computer.
 self.addEventListener('install', event => {
   // Perform install steps.
+  
+  self.skipWaiting()
+
   if (DEBUG) {
     console.log('[SW] Install event')
   }
 
   // Add core website files to cache during serviceworker installation.
-  event.waitUntil(
+  /* event.waitUntil(
     global.caches
       .open(CACHE_NAME)
       .then(cache => {
@@ -65,7 +65,7 @@ self.addEventListener('install', event => {
         console.error(error)
         throw error
       })
-  )
+  ) */
 })
 
 // After the install event.
@@ -108,16 +108,21 @@ self.addEventListener('message', event => {
 
 self.addEventListener('push', function(event) {
   console.log('[Service Worker] Push Received.');
-  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+
   const data = event.data.json()
-  const title = data.title;
-  const options = {
-    body: data.body,
-  };
 
-  messageToAllClients(data)
+  if(data.username===localStorage.getItem('username')){
+    console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
 
-  event.waitUntil(self.registration.showNotification(title, options));
+    const title = data.title;
+    const options = {
+      body: data.body,
+    };
+
+    messageToAllClients(data)
+
+    event.waitUntil(self.registration.showNotification(title, options));
+  }
 });
 
 self.addEventListener('fetch', event => {
@@ -196,4 +201,3 @@ self.addEventListener('fetch', event => {
 
   event.respondWith(resource)
 })
-

@@ -206,11 +206,11 @@ class Header extends Component {
 						{/* <button className="w-100 h-100 btn btn-header" onClick={this.crea.bind(this)}><i className="fa fa-plus fa-lg"/></button> */}
 					</li>
 				</ul>
-				<ul className="navbar-nav h-100 mr-2">
+{/* 				<ul className="navbar-nav h-100 mr-2">
 					<li className="nav-item h-100">
 							<button className="w-100 h-100 btn btn-primary nav-link text-white" onClick={this.toggleAsideMenu}><i className="fa fa-bell fa-lg" /><span className="badge badge-gray-200 badge-pill">3</span></button>
 					</li>
-				</ul>
+				</ul> */}
 				<ul className="nav navbar-nav mr-2">
 					<li className="nav-item">
 						<div className={"dropdown " + open}>
