@@ -12,7 +12,7 @@ class UserstoryCard extends Component {
     constructor(props){
         super(props);
         this.state = {
-            image: props.imageA,
+            //image: props.imageA,
             open: false,
             dropdownStyle: {width: '261px', left: 'auto', right: '0'},
             published: props.story.published,
