@@ -1,0 +1,6 @@
+{
+  "name": "Faqs",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./Faqs.jsx"
+}
