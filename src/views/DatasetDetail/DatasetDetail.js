@@ -521,7 +521,7 @@ class DatasetDetail extends Component {
                                             }
                                             {!feed.has_job &&
                                                 <div className="progress" style={{ height: '30px' }}>
-                                                    <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">In attesa di caricamento</div>
+                                                    <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Feed in fase di creazione</div>
                                                 </div>
                                             }
                                         </div>

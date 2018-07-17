@@ -10,8 +10,9 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
-import { loginAction, addUserOrganization, isValidToken, receiveLogin, getApplicationCookie, logout } from './../../actions.js'
 import { setCookie, isEditor, isAdmin } from '../../utility'
+import { toastr } from 'react-redux-toastr'
+import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout } from './../../actions.js'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -19,7 +20,6 @@ import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 import Home from '../../views/Home/Home';
 import IngestionWizard from '../../views/IngestionWizard/';
-import Dashboard from '../../views/Dashboard/';
 import Dataset from '../../views/Dataset/';
 import DatasetList from '../../views/DataseList/';
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail';
@@ -33,11 +33,15 @@ import Crea from "../../views/Crea/Crea";
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
 
+import { serviceurl } from '../../config/serviceurl'
+
 // semantic's containers imports
 import Vocabularies from '../../semantics/containers/Vocabularies.js'
 import Vocabulary from '../../semantics/containers/Vocabulary.js'
 import Ontologies from '../../semantics/containers/Ontologies.js'
 import Ontology from '../../semantics/containers/Ontology.js'
+
+const publicVapidKey = 'BI28-LsMRvryKklb9uk84wCwzfyiCYtb8cTrIgkXtP3EYlnwq7jPzOyhda1OdyCd1jqvrJZU06xHSWSxV1eZ_0o';
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
@@ -83,6 +87,77 @@ function PublicRoute({ component: Component, authed, ...rest }) {
   )
 }
 
+function listenMessage(dispatch){
+  if('serviceWorker' in navigator){
+    // Handler for messages coming from the service worker
+    navigator.serviceWorker.addEventListener('message', function(event){
+        console.log("Client Received Message: " + event.data);
+        /* event.ports[0].postMessage("Client 1 Says 'Hello back!'"); */
+        toastr.info(event.data.title, event.data.body)
+        //dispatch(isValidToken(localStorage.getItem('token')))
+    });
+  }
+}
+
+function askPermission() {
+  if(Notification.permission === 'default' )
+    return new Promise(function(resolve, reject) {
+      const permissionResult = Notification.requestPermission(function(result) {
+        resolve(result);
+      });
+
+      if (permissionResult) {
+        permissionResult.then(resolve, reject);
+      }
+    })
+    .then(function(permissionResult) {
+      if (permissionResult !== 'granted') {
+        throw new Error('We weren\'t granted permission.');
+      }else if (permissionResult==='granted'){
+        subscribeUserToPush()
+      }
+    });
+}
+
+async function subscribeUserToPush() {
+  const registration = await navigator.serviceWorker.register('sw.js',  {scope: '/'})
+  
+  const subscribeOptions = {
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+  };
+
+  const subscription = await registration.pushManager.subscribe(subscribeOptions);
+  console.log('Received PushSubscription: ', JSON.stringify(subscription));
+  await fetch(serviceurl.apiURLDatiGov + '/subscribe', {
+    method: 'POST',
+    body: JSON.stringify(subscription),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+  })
+  .then(function(result){
+    console.log(result)
+  })
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
 class Full extends Component {
 
   constructor(props){
@@ -111,12 +186,15 @@ class Full extends Component {
   }
 
   componentDidMount() {
+    
     const { dispatch } = this.props
+    listenMessage(dispatch)
     if (this.props.loggedUser && this.props.loggedUser.mail) {
       this.setState({
         authed: true,
         loading: false
       })
+      askPermission(this.props.loggedUser.uid)
     } else {
       if (localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
@@ -156,13 +234,15 @@ class Full extends Component {
                           authed: true,
                           loading: false
                         })
+                        askPermission(this.props.loggedUser.uid)
                   })
                 }else{
                   console.log('Login Action Response: ' + response.statusText)
                   this.setState({
-                    authed: true,
+                    authed: false,
                     loading: false
                   })
+                  this.props.history.push('/login')
                 }})
               } else {
                 this.setState({
@@ -438,7 +518,7 @@ class Full extends Component {
     if (this.props.authed)
       this.state.authed = true;  
     return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
-      <div className="app">
+      <div className="app aside-menu-show">
       {/* Modal per creazione nuova Storia */}
       {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
           <form>
@@ -600,7 +680,7 @@ class Full extends Component {
               </Switch>
             </div>
           </main>
-          <Aside />
+          {/* <Aside /> */}
         </div>
         <Footer />
       </div>

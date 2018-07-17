@@ -3,18 +3,12 @@ import Components from 'react';
 import Dashboard, { addWidget } from 'react-dazzle';
 
 // App components
-import Header from './Header';
-import EditBar from './bar/EditBar';
-import Container from './Container';
-import CustomFrame from './CustomFrame';
-import ViewBar from './bar/ViewBar';
+import Container from './Container.jsx';
+import CustomFrame from './CustomFrame.jsx';
+import ViewBar from './bar/ViewBar.jsx';
 
 // Widgets of the dashboard.
 import TextWidget from './widgets/TextWidget';
-import BtnControlWidget from './widgets/BtnControlWidget';
-import BarChart from './widgets/BarChart';
-import LineChart from './widgets/LineChart';
-import DoughnutChart from './widgets/DoughnutChart';
 import IframeWidget from './widgets/IframeWidget';
 
 // Services

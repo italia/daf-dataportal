@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
-import Components from 'react';
 import { Route, Link } from 'react-router-dom';
 import { serviceurl } from "../../config/serviceurl";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faUser, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
 import { isAdmin, isEditor, isPublic } from '../../utility.js'
+import UserStoryService from '../../views/UserStory/components/services/UserStoryService'
+
+const userStoryService = new UserStoryService();
 
 class UserstoryCard extends Component {
     constructor(props){
@@ -20,35 +21,10 @@ class UserstoryCard extends Component {
         }
     }
 
-    async loadImage(widget) {
-        let url = serviceurl.apiURLDatiGov +'/plot/' + widget + '/330x280';
-        const response = await fetch(url, {
-            method: 'GET'
-        })
-
-        return response
-    }
-
-    async save(story) {
-        story['timestamp'] = new Date(); 
-        console.log('Salvataggio story: ' + story);
-        const response = await fetch( serviceurl.apiURLDatiGov  + "/save/user-stories", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: JSON.stringify(story)
-        })
-        
-        return response.json();
-    }
-
     saveStory(status){
         const { story } = this.props
         story.published = status
-        let response = this.save(story)
+        let response = userStoryService.save(story)
         this.setState({
             saving: true,
             open: !this.state.open
@@ -60,28 +36,6 @@ class UserstoryCard extends Component {
             })
         })
     }
-
-/*     componentDidMount(){
-        const { imageA, widgetA, id } = this.props
-        if (imageA === 'noimage'){
-            const responseA = this.loadImage(widgetA)
-                .then(response => {
-                    if (response.ok) {
-                        response.text().then(text => {
-                            this.setState({
-                                loading: false,
-                                image: text.replace(/"/g, '')
-                            })
-                        });
-                    } else {
-                        this.setState({
-                            loading: false,
-                            image: imageA
-                        })
-                    }
-                })
-        }
-    } */
 
     openVisibility(){
         const { id } = this.props

@@ -6,23 +6,32 @@ import Full from '../Full/'
 import Home from '../Home/'
 import PropTypes from 'prop-types'
 import { fetchProperties } from './../../actions.js'
-import { serviceurl } from '../../config/serviceurl.js'
-import { setCookie } from '../../utility'
 import ReduxToastr from 'react-redux-toastr'
 import Public from '../Public/';
+
 
 const history = createBrowserHistory();
 
 class App extends Component {
-  state = {
-    loading: true,
-  }
+
+  constructor(props){
+    super(props)
+    this.state = {
+      loading: true,
+    }
+}
 
   componentDidMount() {
     const { dispatch } = this.props
-    var domain = window.location.host
-    var split = domain.split('.')
-    dispatch(fetchProperties(split[0]))
+    var host = window.location.host
+    var domain = ''
+    if(host==='localhost'){
+      domain = 'dataportal'
+    }else{
+      var split = host.split('.')
+      domain = split[0]
+    }
+    dispatch(fetchProperties(domain))
     .then(json => {
       var html = document.getElementsByTagName('html')[0];
       if(json){
@@ -124,7 +133,7 @@ class App extends Component {
           timeOut={6000}
           newestOnTop={true}
           preventDuplicates
-          position="top-right"
+          position="bottom-right"
           transitionIn="fadeIn"
           transitionOut="fadeOut"
           progressBar/>

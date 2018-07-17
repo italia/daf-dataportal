@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import Components from 'react';
 
 // App components
-import Header from './Header';
-import Container from './Container';
-import ViewBar from './bar/ViewBar';
-import UserStoryEditorContainer from './UserStoryEditorContainer';
+import Container from './Container.jsx';
+import ViewBar from './bar/ViewBar.jsx';
+import UserStoryEditorContainer from './UserStoryEditorContainer.jsx';
 import IframeWidget from './widgets/IframeWidget';
 import TextWidget from './widgets/TextWidget';
 import { isPublic } from '../../../utility'

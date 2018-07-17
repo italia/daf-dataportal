@@ -6,10 +6,10 @@ import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 
 // App components
-import EditBar from './bar/EditBar';
-import EditBarTop from './bar/EditBarTop';
-import Container from './Container';
-import CustomFrame from './CustomFrame';
+import EditBar from './bar/EditBar.jsx';
+import EditBarTop from './bar/EditBarTop.jsx';
+import Container from './Container.jsx';
+import CustomFrame from './CustomFrame.jsx';
 
 // Widgets of the dashboard.
 import TextWidget from './widgets/TextWidget';

@@ -94,11 +94,6 @@ class Header extends Component {
 				this.props.openSearch();
 		}
 
-		asideToggle(e) {
-			e.preventDefault();
-			document.body.classList.toggle('aside-menu-hidden');
-		}
-
 		handleChange(event) {
 			this.setState({value: event.target.value});
 		}
@@ -163,6 +158,11 @@ class Header extends Component {
       });
     }
 
+    toggleAsideMenu(){
+      document.body.classList.toggle('aside-menu-xl-show')
+      document.body.classList.toggle('aside-menu-hidden');
+    }
+
 		render() {
 			const { loggedUser, properties } = this.props
 			let open = this.state.dropdownOpen ? "show" : "" 
@@ -206,9 +206,9 @@ class Header extends Component {
 						{/* <button className="w-100 h-100 btn btn-header" onClick={this.crea.bind(this)}><i className="fa fa-plus fa-lg"/></button> */}
 					</li>
 				</ul>
-				{/* <ul className="navbar-nav h-100 mr-2">
+{/* 				<ul className="navbar-nav h-100 mr-2">
 					<li className="nav-item h-100">
-							<button className="w-100 h-100 btn btn-primary nav-link text-white"><i className="fa fa-bell-o" /><span className="badge badge-gray-100 badge-pill"></span></button>
+							<button className="w-100 h-100 btn btn-primary nav-link text-white" onClick={this.toggleAsideMenu}><i className="fa fa-bell fa-lg" /><span className="badge badge-gray-200 badge-pill">3</span></button>
 					</li>
 				</ul> */}
 				<ul className="nav navbar-nav mr-2">
