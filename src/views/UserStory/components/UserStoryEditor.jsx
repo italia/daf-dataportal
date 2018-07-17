@@ -39,7 +39,7 @@ class UserStoryEditor extends Component {
     
     //load data
     if (this.state.id) {
-      let response = userStoryService.get(this.state.id);
+      let response = userStoryService.getPvt(this.state.id);
       response.then((story) => {
         let wids = JSON.parse(story.widgets)
 
