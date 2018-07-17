@@ -15,6 +15,7 @@ import NotizieDett from '../../views/Public/Notizie/NotizieDett';
 import UserStoryList from '../../views/UserStory/components/UserStoryList';
 import UserStoryView from '../../views/UserStory/components/UserStoryView';
 import DataApplication from '../../views/Public/DataApplication/DataApplication';
+import Faqs from '../../views/Public/Faqs'
 import DatasetList from '../../views/DataseList/DatasetList'
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail'
 import FooterSticky from '../../components/Footer/Public/FooterSticky'
@@ -25,7 +26,6 @@ class Public extends Component {
   /* constructor(props){
     super(props)
   } */
-  
 
   render() {
     const { history } = this.props
@@ -44,7 +44,7 @@ class Public extends Component {
       bg='bg-white'
     }
      if(window.location.hash.indexOf('dataset/list')!==-1)
-      p='py-5' 
+      p='py-5'
 
       window.scrollTo(0,0)
     return (
@@ -61,11 +61,12 @@ class Public extends Component {
                 <Route path="/lineeguida" name="Linee Guida" exact component={Guida}/>
                 <Route path="/partecipa" name="Partecipa" exact component={Partecipa}/>
                 <Route path="/data-applications" name="Data Applications" exact component={DataApplication}/>
+                <Route path="/faqs" name="Faqs" exact component={Faqs}/>
                 <Route path="/notizie" name="Notizie" exact component={Notizie}/>
                 <Route path="/notizie/:id" name="Dettaglio Notizie" exact component={NotizieDett}/>
                 <Route path="/dataset/list" name="Lista Dataset" exact component={DatasetList}/>
                 <Route path="/dataset/:id" name="Dettaglio Dataset" exact component={DatasetDetail}/>
-                <Route path="/search" name="Search" exact component={DatasetList}/>                                                
+                <Route path="/search" name="Search" exact component={DatasetList}/>
                 <Redirect from="/" to="/home"/>
               </Switch>
           </main>
