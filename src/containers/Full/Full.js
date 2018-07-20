@@ -12,7 +12,7 @@ import {
 } from 'react-modal-bootstrap';
 import { setCookie, isEditor, isAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
-import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout } from './../../actions.js'
+import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications } from './../../actions.js'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -91,10 +91,10 @@ function listenMessage(dispatch){
   if('serviceWorker' in navigator){
     // Handler for messages coming from the service worker
     navigator.serviceWorker.addEventListener('message', function(event){
-        console.log("Client Received Message: " + event.data);
+        console.log(event.data);
         /* event.ports[0].postMessage("Client 1 Says 'Hello back!'"); */
         toastr.info(event.data.title, event.data.body)
-        //dispatch(isValidToken(localStorage.getItem('token')))
+        dispatch(fetchNotifications(localStorage.getItem('user')))
     });
   }
 }
@@ -158,6 +158,16 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
+function postUserToSw(username){
+  if('serviceWorker' in navigator){
+    const msg = {
+      'type': 'register_user',
+      'username': username
+    }
+    navigator.serviceWorker.controller.postMessage(msg);
+  }
+}
+
 class Full extends Component {
 
   constructor(props){
@@ -195,6 +205,7 @@ class Full extends Component {
         loading: false
       })
       askPermission(this.props.loggedUser.uid)
+      dispatch(fetchNotifications(this.props.loggedUser.uid))
     } else {
       if (localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
@@ -235,6 +246,8 @@ class Full extends Component {
                           loading: false
                         })
                         askPermission(this.props.loggedUser.uid)
+                        dispatch(fetchNotifications(this.props.loggedUser.uid))
+                        //postUserToSw(this.props.loggedUser.uid)
                   })
                 }else{
                   console.log('Login Action Response: ' + response.statusText)
@@ -680,7 +693,7 @@ class Full extends Component {
               </Switch>
             </div>
           </main>
-          {/* <Aside /> */}
+          <Aside history={history}/>
         </div>
         <Footer />
       </div>

@@ -33,6 +33,8 @@ export const REQUEST_REGISTRATION = 'REQUEST_REGISTRATION'
 export const RECEIVE_FILE_STORAGEMANAGER = 'RECEIVE_FILE_STORAGEMANAGER'
 export const REQUEST_SEARCH = 'REQUEST_SEARCH'
 export const RECEIVE_SEARCH = 'RECEIVE_SEARCH'
+export const REQUEST_NOTIFICATIONS = 'REQUEST_NOTIFICATIONS'
+export const RECEIVE_NOTIFICATIONS = 'RECEIVE_NOTIFICATIONS'
 
 
 /*********************************** REDUX ************************************************ */
@@ -44,6 +46,16 @@ function receiveProperties(json, org){
     organization: org,
     receivedAt: Date.now(),
     ope: 'RECEIVE_PROPERTIES'
+  }
+}
+
+function receiveNotifications(json){
+  console.log('receiveNotifications');
+  return {
+    type: RECEIVE_NOTIFICATIONS,
+    notifications: json,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_NOTIFICATIONS'
   }
 }
 
@@ -65,6 +77,12 @@ function receiveDataset(json, value) {
 function requestProperties(){
   return {
     type: REQUEST_PROPERTIES
+  }
+}
+
+function requestNotifications(){
+  return {
+    type: REQUEST_NOTIFICATIONS
   }
 }
 
@@ -596,7 +614,6 @@ function receiveResetError(json) {
   }
 }
 
-/******************************** DATASET ************************************** */
 export function fetchProperties(org) {
   var url = serviceurl.apiURLDatiGov + "/settings?domain="+ org
   return dispatch => {
@@ -615,6 +632,32 @@ export function fetchProperties(org) {
   }
 }
 
+export function fetchNotifications(user){
+  var token = ''
+  var url = serviceurl.apiURLDatiGov +'/notifications/'+user
+  if(localStorage.getItem('username') && localStorage.getItem('token') &&
+  localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+  return dispatch => {
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        /* 'Accept': 'application/json', */
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then(response => response.json())
+      .then(json => dispatch(receiveNotifications(json)))
+    .catch(error => {
+      console.log('Errore nel caricamento delle notifiche')
+      console.error(error)
+    })
+  }
+}
+
+/******************************** DATASET ************************************** */
 function fetchDataset(query, start, owner, category_filter, group_filter, organization_filter, order_filter) {
   var queryurl='';
   var ownerurl='';
@@ -1101,6 +1144,29 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + token
             }
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function updateNotifications(unreadNotifications){
+        var url = serviceurl.apiURLDatiGov + '/notifications/update'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              //'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }, 
+            body: JSON.stringify(unreadNotifications)
           })
           .then(response => response.json())
         }

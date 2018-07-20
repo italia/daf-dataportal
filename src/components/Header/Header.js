@@ -9,9 +9,9 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faGlobe } from '@fortawesome/fontawesome-free-solid'
 import {
 	loadDatasets,
-	unloadDatasets,
-	datasetDetail,
-	logout
+  logout,
+  updateNotifications,
+  fetchNotifications,
 } from '../../actions'
 import { createBrowserHistory } from 'history';
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
@@ -32,6 +32,7 @@ class Header extends Component {
 			this.createDash = this.createDash.bind(this)
       this.createStory = this.createStory.bind(this)
       this.closeMenu = this.closeMenu.bind(this)
+      this.toggleAsideMenu = this.toggleAsideMenu.bind(this)
 
 			this.state = {
 				mobile: false,
@@ -39,10 +40,28 @@ class Header extends Component {
 				dropdownOpen: false,
 				crea: false,
 				accento: false,
-				value: ''
+        value: '',
+        unread : 0,
+        unreadNotifications: []
 			};
 		}
-	
+  
+    
+    componentWillReceiveProps(nextProps){
+      
+      if(nextProps.notifications){
+        var unreadNot = nextProps.notifications.filter(notification =>{
+            return notification.status===0
+        })
+
+        console.log(unreadNot)
+
+        this.setState({
+          unread: unreadNot.length,
+          unreadNotifications: unreadNot
+        })
+      }
+    }
 	
 		toggleCrea(){
 			this.setState({
@@ -159,8 +178,32 @@ class Header extends Component {
     }
 
     toggleAsideMenu(){
+      const { dispatch } = this.props
       document.body.classList.toggle('aside-menu-xl-show')
       document.body.classList.toggle('aside-menu-hidden');
+      var unreadNot = this.state.unreadNotifications
+      if(unreadNot.length>0){
+        unreadNot.map(not => {
+          not.status = 1
+        })
+
+        console.log(unreadNot)
+        dispatch(updateNotifications(unreadNot))
+        .then(json => {
+          console.log(json)
+          this.setState({
+            isLoading: true,
+            unreadNotifications: []
+          })
+          dispatch(fetchNotifications(localStorage.getItem('user')))
+          .then(json => {
+            console.log(json)
+            this.setState({
+              isLoading: false
+            })
+          })
+        })
+      }
     }
 
 		render() {
@@ -206,11 +249,11 @@ class Header extends Component {
 						{/* <button className="w-100 h-100 btn btn-header" onClick={this.crea.bind(this)}><i className="fa fa-plus fa-lg"/></button> */}
 					</li>
 				</ul>
-{/* 				<ul className="navbar-nav h-100 mr-2">
-					<li className="nav-item h-100">
-							<button className="w-100 h-100 btn btn-primary nav-link text-white" onClick={this.toggleAsideMenu}><i className="fa fa-bell fa-lg" /><span className="badge badge-gray-200 badge-pill">3</span></button>
+        <ul className="navbar-nav mr-2">
+					<li className="nav-item">
+							<button className="btn btn-primary nav-link text-white" onClick={this.toggleAsideMenu}><i className={this.state.unread===0?"fa fa-bell fa-lg":"far fa-bell fa-lg"} /><span className="badge badge-white badge-pill text-primary">{this.state.unread===0?'':this.state.unread}</span></button>
 					</li>
-				</ul> */}
+				</ul>
 				<ul className="nav navbar-nav mr-2">
 					<li className="nav-item">
 						<div className={"dropdown " + open}>
@@ -308,8 +351,9 @@ Header.propTypes = {
 
 function mapStateToProps(state) {
 	const { loggedUser } = state.userReducer['obj'] || { }
-	const { properties } = state.propertiesReducer['prop'] || {}
-	return { loggedUser, properties }
+  const { properties } = state.propertiesReducer['prop'] || {}
+  const { notifications } = state.notificationsReducer || {}
+	return { loggedUser, properties, notifications }
 }
 
 export default connect(mapStateToProps)(Header)
