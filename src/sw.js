@@ -11,6 +11,8 @@ const CACHE_NAME = new Date().toISOString()
 
 let assetsToCache = [...assets, './']
 
+//importScripts('localforage')
+
 assetsToCache = assetsToCache.map(path => {
   return new URL(path, global.location).toString()
 })
@@ -75,7 +77,7 @@ self.addEventListener('activate', event => {
   }
 
   // Clean the caches
-  event.waitUntil(
+/*   event.waitUntil(
     global.caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.filter(function(cacheName) {
@@ -89,7 +91,7 @@ self.addEventListener('activate', event => {
         })
       )
     })
-  )
+  ) */
 })
 
 self.addEventListener('message', event => {
@@ -110,19 +112,36 @@ self.addEventListener('push', function(event) {
   console.log('[Service Worker] Push Received.');
 
   const data = event.data.json()
-
-  if(data.username===localStorage.getItem('username')){
-    console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
-
-    const title = data.title;
-    const options = {
-      body: data.body,
-    };
-
-    messageToAllClients(data)
-
-    event.waitUntil(self.registration.showNotification(title, options));
+  
+  var title = '';
+  var options = {
+    body: '',
+  };
+  
+  switch(data.notificationtype){
+    case 'kylo_feed':
+      title = 'Caricamento Kylo feed'
+      options.body = 'Il dataset '+ data.info.title+ ' è stato caricato correttamente su Kylo'
   }
+
+  var notification = {'title':title, 'body':options.body}
+
+  messageToAllClients(notification)
+
+  event.waitUntil(self.registration.showNotification(title, options));
+
+});
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('[Service Worker] Notification click Received.');
+
+  event.notification.close();
+
+  console.log('SW Notification: ' + JSON.stringify(event))
+  event.waitUntil(
+    clients.openWindow('https://dataportal.daf.teamdigitale.it/#/private/home')
+    //clients.openWindow('localhost/#/private/home')
+  );
 });
 
 self.addEventListener('fetch', event => {
@@ -174,7 +193,7 @@ self.addEventListener('fetch', event => {
           console.log(`[SW] URL ${requestUrl.href} fetched`)
         }
 
-        const responseCache = responseNetwork.clone()
+        /* const responseCache = responseNetwork.clone()
 
         global.caches
           .open(CACHE_NAME)
@@ -186,7 +205,7 @@ self.addEventListener('fetch', event => {
               console.log(`[SW] Cache asset: ${requestUrl.href}`)
             }
           })
-
+ */
         return responseNetwork
       })
       .catch(() => {

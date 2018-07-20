@@ -20,6 +20,16 @@ function setErrorMsg(error) {
   }
 }
 
+function postUserToSw(username){
+  if('serviceWorker' in navigator){
+    const msg = {
+      'type': 'register_user',
+      'username': username
+    }
+    navigator.serviceWorker.controller.postMessage(msg);
+  }
+}
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -79,6 +89,7 @@ class Login extends Component {
                             authed: true,
                             loading: false
                           })
+                        //postUserToSw(json.uid)
                         this.props.history.push('/private/home')
                   })
                 } else {
