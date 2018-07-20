@@ -99,7 +99,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --progress",
-    "build": "react-scripts build ",
+    "build": "webpack --env.prod --progress",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "mock": "concurrently \"npm run start-mock-server\" \"npm start\" ",
