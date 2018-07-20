@@ -18,6 +18,8 @@ import {
   RECEIVE_ADD_DATASET,
   RECEIVE_PROPERTIES,
   REQUEST_PROPERTIES,
+  RECEIVE_NOTIFICATIONS,
+  REQUEST_NOTIFICATIONS,
   REQUEST_REGISTRATION,
   RECEIVE_FILE_STORAGEMANAGER,
   REQUEST_RESET,
@@ -160,6 +162,15 @@ function propertiesReducer(state = {}, action) {
   }
 }
 
+function notificationsReducer(state = {}, action) {
+  switch (action.type) {
+    case RECEIVE_NOTIFICATIONS:
+      return Object.assign({}, state, { 'notifications': action.notifications})
+    default:
+      return state
+  }
+}
+
 //The reducer is just an action that take two parameter state and action
 //The reducer that handle the action will make a copy of the state,
 //modify it with the data from the action and then  returns the new state
@@ -228,6 +239,7 @@ const rootReducer = combineReducers({
   userReducer,
   searchReducer,
   propertiesReducer,
+  notificationsReducer,
   toastr: toastrReducer, // <- Mounted at toastr.
   dataApplicationsList: dataApplicationsReducer,
   // semantic's reducers

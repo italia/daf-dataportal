@@ -5,10 +5,9 @@ import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 
 // App components
-import Header from './Header';
-import Container from './Container';
-import UserStoryEditorContainer from './UserStoryEditorContainer';
-import EditBarTop from './bar/EditBarTop';
+import Container from './Container.jsx';
+import UserStoryEditorContainer from './UserStoryEditorContainer.jsx';
+import EditBarTop from './bar/EditBarTop.jsx';
 import IframeWidget from './widgets/IframeWidget';
 import TextWidget from './widgets/TextWidget';
 

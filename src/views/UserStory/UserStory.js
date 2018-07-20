@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import UserStoryEditor from './components/UserStoryEditor';
-import UserStoryList from './components/UserStoryList';
-import UserStoryView from './components/UserStoryView';
+import UserStoryEditor from './components/UserStoryEditor.jsx';
+import UserStoryList from './components/UserStoryList.jsx';
+import UserStoryView from './components/UserStoryView.jsx';
 import { Switch, Route } from 'react-router-dom';
 
 // Our styles
