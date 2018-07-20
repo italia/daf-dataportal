@@ -433,7 +433,7 @@ class UserStoryEditorContainer extends Component {
           Organizzazione <i>{this.state.dataStory.org}</i>
         </div>}
         {this.props.readonly && <div className="mb-5 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
-          {this.state.dataStory.timestamp.dayOfMonth+" "+months[this.state.dataStory.timestamp.monthValue]+", "+this.state.dataStory.timestamp.year}
+          {this.state.dataStory && this.state.dataStory.timestamp && this.state.dataStory.timestamp.dayOfMonth+" "+months[this.state.dataStory.timestamp.monthValue]+", "+this.state.dataStory.timestamp.year}
         </div>}
         <SectionTitle readonly={this.props.readonly} title="Sottotitolo"/>
         <TextEditor 

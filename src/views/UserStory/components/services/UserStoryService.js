@@ -4,15 +4,13 @@ import { isPublic } from '../../../../utility'
 export default class UserStoryService {
     
 
-    baseUrl = serviceurl.apiURLDatiGov  + (isPublic()?'/public':'') +"/user-stories";
+    baseUrlPvt = serviceurl.apiURLDatiGov  + "/user-stories";
+    baseUrlPbc = serviceurl.apiURLDatiGov  + "/public/user-stories";    
     baseUrlSave = serviceurl.apiURLDatiGov  + "/save/user-stories";
     baseUrlRemove = serviceurl.apiURLDatiGov  + "/delete/user-stories";
-    constructor() {
 
-    }
-
-    async get(id) {
-        const response = await fetch( this.baseUrl + "/" + id , {
+    async getPvt(id) {
+        const response = await fetch( this.baseUrlPvt + "/" + id , {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -23,8 +21,35 @@ export default class UserStoryService {
         return response.json();
     }
 
-    async list(org) {
-      let url = this.baseUrl + (org?('?org='+org):'')
+    async getPbc(id) {
+      const response = await fetch( this.baseUrlPbc + "/" + id , {
+          method: 'GET',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+      })
+      return response.json();
+  }
+
+    async listPvt(org) {
+      let url = this.baseUrlPvt + (org?('?org='+org):'')
+      const response = await fetch( url, {
+          method: 'GET',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+      })
+      //mock
+      //const response = await fetch( this.baseUrl + "/list");
+      return response.json();
+    }
+
+    async listPbc(org) {
+      let url = this.baseUrlPbc + (org?('?org='+org):'')
       const response = await fetch( url, {
           method: 'GET',
           headers: {

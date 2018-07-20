@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Container,
   Row,
   Col,
   Card,
@@ -12,6 +11,7 @@ import {
 
 import Error from '../Error'
 import VocabularyHierarchy from './VocabularyHierarchy.jsx'
+import Loading from '../Loading'
 
 const vocabularyError = 'Errore durante il caricamento del vocabolario'
 
@@ -19,80 +19,83 @@ const createVocabulary = vocabulary => {
   const voc = vocabulary
   return (
     <Row>
-      <Col sm={2} />
-      <Col sm={8}>
+      <Col sm={1} />
+      <Col sm={10}>
         <Card className="border-0">
-          <CardHeader className="bg-danger text-white border-0">
-            <strong>Vocabolario</strong>
-          </CardHeader>
-          <CardBody>
-            <CardTitle className="text-danger">
+          <CardHeader>
+            <h2 className="text-primary title-dataset mb-0">
               {voc.titles.map(title => title.value)}
-            </CardTitle>
-
-            <CardText className="text-muted">
+            </h2>
+          </CardHeader>
+          <CardBody style={{ font: "400 18px/23px Titillium Web" }}>
+            <CardText>
               <strong>Descrizione:</strong>
               <br />
               {voc.descriptions.map(desc => desc.value)}
             </CardText>
 
-            <CardText className="text-muted">
+            <CardText>
               <strong>URL:</strong>
               <br />
               {voc.url}
             </CardText>
 
-            <CardText className="text-muted">
+            <CardText>
               <strong>Titolare:</strong>
               <br />
               {voc.owners.map(owner => (
-                <div>{`${owner.value} (${owner.uri})`}</div>
+                <span>{`${owner.value} (${owner.uri})`}</span>
               ))}
             </CardText>
 
-            <CardText className="text-muted">
+            <CardText>
               <strong>Pubblicato da:</strong>
               <br />
               {voc.publishedBy.map(publisher => (
-                <div>{`${publisher.value} (${publisher.uri})`}</div>
+                <span>{`${publisher.value} (${publisher.uri})`}</span>
               ))}
             </CardText>
 
-            <CardText className="text-muted">
+            <CardText>
               <strong>Creato da:</strong>
               <br />
               {voc.creators.map(creator => (
-                <div>{`${creator.value} (${creator.uri})`}</div>
+                <span>{`${creator.value} (${creator.uri})`}</span>
               ))}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>Data di creazione: </strong>
+            <CardText>
+              <strong>Data di creazione:</strong>
+              <br />
               {voc.creationDate}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>Data ultima modifica: </strong>
+            <CardText>
+              <strong>Data ultima modifica:</strong>
+              <br />
               {voc.lastEditDate}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>Versioni: </strong>
+            <CardText>
+              <strong>Versioni:</strong>
+              <br />
               {/* {voc.versions.map(version => version.number).join(' - ')} */}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>Licenza: </strong>
+            <CardText>
+              <strong>Licenza:</strong>
+              <br />
               {voc.licenses.map(license => license.value)}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>Lingue: </strong>
+            <CardText>
+              <strong>Lingue:</strong>
+              <br />
               {voc.langs.join(' - ')}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>TAG: </strong>
+            <CardText>
+              <strong>TAG:</strong>
               <br />
               {voc.tags.map(tag => tag.value).join(' - ')}
             </CardText>
@@ -100,15 +103,16 @@ const createVocabulary = vocabulary => {
             <hr />
 
             {voc.hierarchy ? (
-              <CardText className="text-muted mb-0">
+              <CardText className="mb-0">
                 <strong>Gerarchia:</strong>
+                <br />
               </CardText>
             ) : null}
-            <VocabularyHierarchy hierarchy={voc.hierarchy} />
+            {<Loading /> && <VocabularyHierarchy hierarchy={voc.hierarchy} />}
           </CardBody>
         </Card>
       </Col>
-      <Col sm={2} />
+      <Col sm={1} />
     </Row>
   )
 }
@@ -123,6 +127,8 @@ export default class VocabularyDetail extends React.Component {
       createVocabulary(this.props.data)
     ) : this.props.error ? (
       <Error msg={vocabularyError} />
-    ) : null
+    ) : (
+      <Loading />
+    )
   }
 }

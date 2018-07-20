@@ -13,7 +13,7 @@ class UserstoryCard extends Component {
     constructor(props){
         super(props);
         this.state = {
-            image: props.imageA,
+            //image: props.imageA,
             open: false,
             dropdownStyle: {width: '261px', left: 'auto', right: '0'},
             published: props.story.published,
@@ -72,7 +72,7 @@ class UserstoryCard extends Component {
                 <div className="card b-a-0 border-primary bg-white card-story">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {imageA && <div className="crop col-12"><img src={serviceurl.urlCacher +widgetA+'.png'} /></div>}
+                            {widgetA && <div className="crop col-12"><img src={serviceurl.urlCacher +widgetA+'.png'} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0">

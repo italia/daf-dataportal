@@ -75,7 +75,7 @@ class App extends Component {
       }
     })
   }
-      
+
   componentWillUnmount() {
     this.removeListener()
   }
@@ -90,16 +90,17 @@ class App extends Component {
             <Route path='/lineeguida' exact component={Public} />
             <Route path='/partecipa' exact component={Public} />
             <Route path='/data-applications' exact component={Public} />
+            <Route path='/faqs' exact component={Public} />
             <Route path='/userstory/list' exact component={Public} />
             <Route path='/userstory/list/:id' exact component={Public} />
-            <Route path='/team' exact component={Public} />            
+            <Route path='/team' exact component={Public} />
             <Route path='/notizie' exact component={Public} />
             <Route path='/notizie/:id' exact component={Public} />
             <Route path='/storie' exact component={Public} />
             <Route path='/team' exact component={Public} />
-            <Route path='/search' exact component={Public} /> 
-            <Route path='/dataset/list' exact component={Public} />  
-            <Route path='/dataset/:id' exact component={Public} />      
+            <Route path='/search' exact component={Public} />
+            <Route path='/dataset/list' exact component={Public} />
+            <Route path='/dataset/:id' exact component={Public} />
             <Route path='/private' exact component={Home} />
             <Route path="/login" component={Home} />
             <Route path="/register" component={Home} />

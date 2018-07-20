@@ -43,7 +43,7 @@ class UserStoryList extends Component {
     if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
       org = properties.organization
 
-    let response = userStoryService.list(org);
+    let response = isPublic()?userStoryService.listPbc(org):userStoryService.listPvt(org);
     response.then((list) => {
       this.originalUserStories = list;
       this.setState({
