@@ -33,4 +33,4 @@ RUN npm install -g serve
 EXPOSE 5000
 
 # Set the command to start the node server.
-CMD serve -s build -l 5000
+CMD serve -s dist -l 5000

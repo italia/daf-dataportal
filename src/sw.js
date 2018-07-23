@@ -120,8 +120,11 @@ self.addEventListener('push', function(event) {
   
   switch(data.notificationtype){
     case 'kylo_feed':
-      title = 'Caricamento Kylo feed'
-      options.body = 'Il dataset '+ data.info.title+ ' è stato caricato correttamente su Kylo'
+      title = 'Creazione Dataset'
+      options.body = 'Il dataset '+ data.info.title+ ' è stato creato correttamente.'
+    case 'kylo_feed_error':
+      title = 'Errore creazione Dataset'
+      options.body = "C'è stato un problema nella creazione del dataset " + data.info.title +": " + data.info.errors
   }
 
   var notification = {'title':title, 'body':options.body}
