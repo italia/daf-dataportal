@@ -76,12 +76,13 @@ hideModalAndRedirect = (e) => {
         dispatch(addDataset(transformed, localStorage.getItem('token'), fileType))
         .then(response => {
           if(response.ok){
-            console.log('Caricamento metadati avvenuto con successo a breve verrà avviato il caricamento su Kylo')
+            console.log('La richiesta di creazione è avvenuta con successo. Riceverai una notifica a creazione completata')
             this.setSending(false, undefined);
             localStorage.removeItem('kyloSchema')
             this.setState({saving: false})
-            toastr.success('Complimenti', 'Il caricamento dei metadati è avvenuto con successo a breve verrà avviato il caricamento su Kylo')
-            this.props.history.push('/private/dataset/' + transformed.dcatapit.name)
+            toastr.success('Complimenti', "La richiesta di creazione è avvenuta con successo. Riceverai una notifica a creazione completata", {timeOut: 20000})
+            this.props.history.push('/private/home')
+            //this.props.history.push('/private/dataset/' + transformed.dcatapit.name)
             /* dispatch(addDatasetKylo(transformed, localStorage.getItem('token'), fileType))
             .then((response) => {
               if(response.ok){

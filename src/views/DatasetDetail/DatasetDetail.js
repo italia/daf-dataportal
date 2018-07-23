@@ -519,7 +519,12 @@ class DatasetDetail extends Component {
                                                     <div className="progress-bar bg-danger w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Caricamento non riuscito</div>
                                                 </div>
                                             }
-                                            {!feed.has_job &&
+                                            {!feed.has_job && (feed.state === 'ENABLED') &&
+                                                <div className="progress" style={{ height: '30px' }}>
+                                                    <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Feed attivo in attesa di caricamento</div>
+                                                </div>
+                                            }
+                                            {!feed.has_job && (feed.state !== 'ENABLED') &&
                                                 <div className="progress" style={{ height: '30px' }}>
                                                     <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Feed in fase di creazione</div>
                                                 </div>
