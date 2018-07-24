@@ -6,12 +6,12 @@ import { toastr } from 'react-redux-toastr'
 import SectionTitle from './SectionTitle';
 import TextEditor from './editor/TextEditor';
 import ShareButton from '../../../components/ShareButton/ShareButton';
-import CustomFrame from './CustomFrame';
+import CustomFrame from './CustomFrame.jsx';
 import IframeWidget from './widgets/IframeWidget';
 import TextWidget from './widgets/TextWidget';
 import BtnControlWidget from './widgets/BtnControlWidget';
 import WidgetService from '../../DashboardManager/components/services/WidgetService';
-import EditBar from './bar/EditBar'
+import EditBar from './bar/EditBar.jsx'
 import { serviceurl } from "../../../config/serviceurl";
 import { isPublic } from '../../../utility'
 
@@ -409,7 +409,7 @@ class UserStoryEditorContainer extends Component {
     var url = ''
 
     if (firstWid)
-      url = serviceurl.urlCacher +'plot/'+firstWid+'/330x280'
+      url = serviceurl.urlCacher +firstWid+'.png'
     return (
       <div>
       { this.props.readonly && isPublic() && 
@@ -433,7 +433,7 @@ class UserStoryEditorContainer extends Component {
           Organizzazione <i>{this.state.dataStory.org}</i>
         </div>}
         {this.props.readonly && <div className="mb-5 text-left mx-auto text-editor" style={{maxWidth: '600px'}}>
-          {this.state.dataStory.timestamp.dayOfMonth+" "+months[this.state.dataStory.timestamp.monthValue]+", "+this.state.dataStory.timestamp.year}
+          {this.state.dataStory && this.state.dataStory.timestamp && this.state.dataStory.timestamp.dayOfMonth+" "+months[this.state.dataStory.timestamp.monthValue]+", "+this.state.dataStory.timestamp.year}
         </div>}
         <SectionTitle readonly={this.props.readonly} title="Sottotitolo"/>
         <TextEditor 

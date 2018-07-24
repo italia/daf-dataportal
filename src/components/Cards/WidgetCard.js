@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import IframeWidget from '../../views/DatasetDetail/widgets/IframeWidget';
 import { transformWidgetName, truncateWidgetTitle, transformDatasetName } from "../../utility";
 import { serviceurl } from "../../config/serviceurl";
-import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { faLock, faGlobe, faUsers } from '@fortawesome/fontawesome-free-solid'
-
 
 
 class WidgetCard extends Component {
@@ -17,16 +12,6 @@ class WidgetCard extends Component {
         this.isSuperset = this.isSuperset.bind(this)
         this.isMetabase = this.isMetabase.bind(this)
     }
-
-    async loadImage(widget) {
-        let url = serviceurl.apiURLDatiGov + '/plot/' + widget + '/330x280';
-        const response = await fetch(url, {
-            method: 'GET'
-        })
-
-        return response
-    }
-
     isSuperset(){
         const { iframe } = this.props
         if((iframe.identifier && iframe.identifier.indexOf('superset')!== -1) || (iframe.props && iframe.props.identifier.indexOf('superset')!== -1))
@@ -51,39 +36,6 @@ class WidgetCard extends Component {
             }
         return url
     }
-
-    /* componentDidMount(){
-        const { iframe } = this.props
-        let url = '';
-        if(iframe.identifier)
-            url = serviceurl.apiURLDatiGov + '/plot/' + iframe.identifier + '/330x280';
-        if(iframe.props)
-            url = serviceurl.apiURLDatiGov + '/plot/' + iframe.props.identifier + '/330x280';
-        const response = fetch(url, {
-            method: 'GET'
-        }).then(response => {
-            if (response.ok) {
-                response.text().then(text => {
-                    this.setState({
-                        loading: false,
-                        imageSrc: text.replace(/"/g, '')
-                    })
-                });
-            } else {
-                this.setState({
-                    loading: false,
-                    imageSrc: undefined
-                })
-            }
-        })
-    }
-
-    componentWillUnmount(){
-        this.setState({
-            loading: false,
-            imageSrc: undefined
-        })
-    } */
 
     linkTo(nome){
         this.props.history.push('/private/dataset/'+nome)
@@ -114,9 +66,9 @@ class WidgetCard extends Component {
         var url = ''
 
         if(iframe.identifier)
-          url = serviceurl.urlCacher + 'plot/' + iframe.identifier + '/330x280';
+          url = serviceurl.urlCacher  + iframe.identifier + '.png';
         if(iframe.props)
-          url = serviceurl.urlCacher + 'plot/' + iframe.props.identifier + '/330x280';
+          url = serviceurl.urlCacher  + iframe.props.identifier + '.png';
         
         return(
             <div className="mx-auto">

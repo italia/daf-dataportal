@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
-import Components from 'react';
 import { Route, Link } from 'react-router-dom';
 import { serviceurl } from "../../config/serviceurl";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { faLock, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
+import { faUser, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
 import { isAdmin, isEditor, isPublic } from '../../utility.js'
+import UserStoryService from '../../views/UserStory/components/services/UserStoryService'
+
+const userStoryService = new UserStoryService();
 
 class UserstoryCard extends Component {
     constructor(props){
         super(props);
         this.state = {
-            image: props.imageA,
+            //image: props.imageA,
             open: false,
             dropdownStyle: {width: '261px', left: 'auto', right: '0'},
             published: props.story.published,
@@ -20,35 +21,10 @@ class UserstoryCard extends Component {
         }
     }
 
-    async loadImage(widget) {
-        let url = serviceurl.apiURLDatiGov +'/plot/' + widget + '/330x280';
-        const response = await fetch(url, {
-            method: 'GET'
-        })
-
-        return response
-    }
-
-    async save(story) {
-        story['timestamp'] = new Date(); 
-        console.log('Salvataggio story: ' + story);
-        const response = await fetch( serviceurl.apiURLDatiGov  + "/save/user-stories", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: JSON.stringify(story)
-        })
-        
-        return response.json();
-    }
-
     saveStory(status){
         const { story } = this.props
         story.published = status
-        let response = this.save(story)
+        let response = userStoryService.save(story)
         this.setState({
             saving: true,
             open: !this.state.open
@@ -60,28 +36,6 @@ class UserstoryCard extends Component {
             })
         })
     }
-
-/*     componentDidMount(){
-        const { imageA, widgetA, id } = this.props
-        if (imageA === 'noimage'){
-            const responseA = this.loadImage(widgetA)
-                .then(response => {
-                    if (response.ok) {
-                        response.text().then(text => {
-                            this.setState({
-                                loading: false,
-                                image: text.replace(/"/g, '')
-                            })
-                        });
-                    } else {
-                        this.setState({
-                            loading: false,
-                            image: imageA
-                        })
-                    }
-                })
-        }
-    } */
 
     openVisibility(){
         const { id } = this.props
@@ -118,7 +72,7 @@ class UserstoryCard extends Component {
                 <div className="card b-a-0 border-primary bg-white card-story">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {imageA && <div className="crop col-12"><img src={serviceurl.urlCacher + 'plot/'+widgetA+'/330x280'} /></div>}
+                            {widgetA && <div className="crop col-12"><img src={serviceurl.urlCacher +widgetA+'.png'} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0">
@@ -153,7 +107,7 @@ class UserstoryCard extends Component {
                                         !published &&
                                         //<span className="badge badge-pill badge-secondary fa-pull-right badge-dash" title="In bozza"> </span>
                                         //<i className="fa fa-lock fa-lg fa-pull-right text-icon" title="In Bozza"/>
-                                        <span title="Privata" className="ml-2"><FontAwesomeIcon icon={faLock} className="mx-auto"/></span>
+                                        <span title="Privata" className="ml-2"><FontAwesomeIcon icon={faUser} className="mx-auto"/></span>
                                     }
 
                                     </button>}
@@ -163,7 +117,7 @@ class UserstoryCard extends Component {
                                             
                                             
                                             <div className="row">
-                                                <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faLock} className="mx-2"/></h5>
+                                                <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faUser} className="mx-2"/></h5>
                                                 <div className="row col-11 ml-1">
                                                     <div className="col-12 pl-1"><p className="mb-0"><b>Solo tu</b></p></div>
                                                     

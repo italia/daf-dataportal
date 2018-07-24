@@ -6,18 +6,14 @@ import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 
 // App components
-import Header from './Header';
-import EditBar from './bar/EditBar';
-import EditBarTop from './bar/EditBarTop';
-import Container from './Container';
-import CustomFrame from './CustomFrame';
+import EditBar from './bar/EditBar.jsx';
+import EditBarTop from './bar/EditBarTop.jsx';
+import Container from './Container.jsx';
+import CustomFrame from './CustomFrame.jsx';
 
 // Widgets of the dashboard.
 import TextWidget from './widgets/TextWidget';
 import BtnControlWidget from './widgets/BtnControlWidget';
-import BarChart from './widgets/BarChart';
-import LineChart from './widgets/LineChart';
-import DoughnutChart from './widgets/DoughnutChart';
 import IframeWidget from './widgets/IframeWidget';
 
 // Services
@@ -535,7 +531,9 @@ class DashboardEditor extends Component {
    */
   render() {
     return (
-    <Container>
+    <Container>{
+      this.state.dashboard &&
+      <div>
       <EditBarTop 
           dashboard={this.state.dashboard}
           onBack={this.back}
@@ -546,6 +544,8 @@ class DashboardEditor extends Component {
           onPublish={this.onPublish}
           onRemove={this.onRemove}
           org={this.state.dashboard.org}
+          pvt={this.state.dashboard.pvt}
+          status={this.state.dashboard.status}
       ></EditBarTop>
       <Dashboard
         frameComponent={CustomFrame}
@@ -566,6 +566,7 @@ class DashboardEditor extends Component {
         when={this.state.modified}
         message={'Ci sono delle modifiche non salvate, sei sicuro di voler lasciare la pagina?'}
       />
+      </div>}
     </Container>
 
     );

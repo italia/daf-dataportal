@@ -189,6 +189,7 @@ class Header extends Component {
                 <div className={"dropdown-menu " + (this.state.community ? "show":"")} aria-labelledby="dropdownMenuButton">
                   <Link to={'/userstory/list'} className="dropdown-item text-primary font-lg">Storie</Link>
                   <Link to={'/notizie'} className="dropdown-item text-primary font-lg">Notizie</Link>
+                  <Link to={'/faqs'} className="dropdown-item text-primary font-lg">Faqs</Link>
                   <a href="https://forum.italia.it/" target="_blank" className="dropdown-item text-primary font-lg">Forum</a>
                 </div>
               </div>

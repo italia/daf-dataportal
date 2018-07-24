@@ -7,7 +7,7 @@ export function createOperational (values, data) {
   data[operational]['theme'] = values.domain
   data[operational]['subtheme'] = values.subdomain
   data[operational]['read_type'] = values.read_type
-
+  data[operational]['file_type'] = values.filetype?values.filetype:'csv'
 //properties:
   data[operational]['dataset_proc'] = { 
      "merge_strategy" : values.merge_strategy,

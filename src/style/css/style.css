@@ -1,17 +1,3 @@
-/*!
- * CoreUI - Open Source Bootstrap Admin Template
- * @version v1.0.10
- * @link http://coreui.io
- * Copyright (c) 2018 creativeLabs Łukasz Holeczek
- * @license MIT
- */
-
-/*!
- * Bootstrap v4.0.0 (https://getbootstrap.com)
- * Copyright 2011-2018 The Bootstrap Authors
- * Copyright 2011-2018 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
 :root {
   --blue: #20a8d8;
   --indigo: #6610f2;
@@ -4404,7 +4390,7 @@ tbody.collapse.show {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   padding: 0.75rem 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
   list-style: none;
   background-color: #fff; }
 
@@ -8636,7 +8622,7 @@ body {
 
 .breadcrumb {
   position: relative;
-  border-bottom: 1px solid #a4b7c1; }
+  /* border-bottom: 1px solid #a4b7c1; */ }
 
 button {
   cursor: pointer; }
@@ -10464,8 +10450,8 @@ base-chart.chart {
     padding: 0.5rem 1rem;
     margin-right: 0;
     background-color: #fff;
-    background-image: url("../img/logo.png");
-    background-repeat: no-repeat;
+/*     background-image: url("../img/logo.png");
+ */    background-repeat: no-repeat;
     background-position: center center;
     background-size: 70px auto;
     border-bottom: 1px solid #a4b7c1; }
@@ -10565,7 +10551,7 @@ base-chart.chart {
   .brand-minimized .app-header.navbar .navbar-brand {
     width: 50px;
     background-color: #fff;
-    background-image: url("../img/logo-symbol.png");
+    /* background-image: url("../img/logo-symbol.png"); */
     background-size: 24px;
     border-bottom: 1px solid #a4b7c1; } }
 
@@ -12960,7 +12946,7 @@ hr.transparent {
   pointer-events: none
 }
 
-.preview-widget-container .list-group-item:hover {
+.preview-widget-container {
   background-color: #efeeee;
   border: 1px solid #a29b9b;
 }

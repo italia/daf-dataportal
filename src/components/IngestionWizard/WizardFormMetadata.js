@@ -354,7 +354,7 @@ class WizardFormMetadata extends Component {
                 <label htmlFor='tests'>Carica il file (max 1MB):</label>
                   <Dropzone
                     name="input"
-                    className="dropzone"
+                    className="dropzone w-100"
                     multiple={false}
                     maxSize={10485760}
                     onDrop={( filesToUpload, e ) => {

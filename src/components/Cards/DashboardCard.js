@@ -5,7 +5,7 @@ import { Route, Link } from 'react-router-dom';
 import { serviceurl } from "../../config/serviceurl";
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { faLock, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
+import { faUser, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
 import { isAdmin, isEditor } from '../../utility.js'
 
 class DashboardCard extends Component {
@@ -143,8 +143,8 @@ class DashboardCard extends Component {
                 <div className="card b-a-1 b-t-3 bg-gray-100 card-dash">
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
-                            {widgetA && <div className={"crop " + (widgetB ? "pr-0 b-r-dash col-6" : "col-12")}><img className="bn-dash" src={serviceurl.urlCacher + 'plot/'+widgetA+'/330x280'} /></div>}
-                            {widgetB && <div className="crop col-6 pl-0"><img className="bn-dash" src={serviceurl.urlCacher + 'plot/'+widgetB+'/330x280'} /></div>}
+                            {widgetA && <div className={"crop " + (widgetB ? "pr-0 b-r-dash col-6" : "col-12")}><img className="bn-dash" src={serviceurl.urlCacher + widgetA+'.png'} /></div>}
+                            {widgetB && <div className="crop col-6 pl-0"><img className="bn-dash" src={serviceurl.urlCacher +widgetB+'.png'} /></div>}
                         </div>
                     </div>
                     <div className="card-body p-0 b-t-dash">
@@ -179,7 +179,7 @@ class DashboardCard extends Component {
                                         published == 0 &&
                                         //<span className="badge badge-pill badge-secondary fa-pull-right badge-dash" title="In bozza"> </span>
                                         //<i className="fa fa-lock fa-lg fa-pull-right text-icon" title="In Bozza"/>
-                                        <span title="Privata" className="ml-2"><FontAwesomeIcon icon={faLock} className="mx-auto"/></span>
+                                        <span title="Privata" className="ml-2"><FontAwesomeIcon icon={faUser} className="mx-auto"/></span>
                                     }
 
                                     </button>}
@@ -189,7 +189,7 @@ class DashboardCard extends Component {
                                             
                                             
                                             <div className="row">
-                                                <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faLock} className="mx-2"/></h5>
+                                                <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faUser} className="mx-2"/></h5>
                                                 <div className="row col-11 ml-1">
                                                     <div className="col-12 pl-1"><p className="mb-0"><b>Solo tu</b></p></div>
                                                     

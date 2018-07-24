@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import Components from 'react';
-import { Route, Link } from 'react-router-dom';
-import ListBar from './bar/ListBar';
-import Dimensions from 'react-dimensions'
+import ListBar from './bar/ListBar.jsx';
 import { serviceurl } from "../../../config/serviceurl";
 
 // App components
-import Header from './Header';
-import Container from './Container';
+import Header from './Header.jsx';
+import Container from './Container.jsx';
 import DashboardCard from "../../../components/Cards/DashboardCard";
 
 // Services

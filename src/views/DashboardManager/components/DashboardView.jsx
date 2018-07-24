@@ -3,18 +3,12 @@ import Components from 'react';
 import Dashboard, { addWidget } from 'react-dazzle';
 
 // App components
-import Header from './Header';
-import EditBar from './bar/EditBar';
-import Container from './Container';
-import CustomFrame from './CustomFrame';
-import ViewBar from './bar/ViewBar';
+import Container from './Container.jsx';
+import CustomFrame from './CustomFrame.jsx';
+import ViewBar from './bar/ViewBar.jsx';
 
 // Widgets of the dashboard.
 import TextWidget from './widgets/TextWidget';
-import BtnControlWidget from './widgets/BtnControlWidget';
-import BarChart from './widgets/BarChart';
-import LineChart from './widgets/LineChart';
-import DoughnutChart from './widgets/DoughnutChart';
 import IframeWidget from './widgets/IframeWidget';
 
 // Services
@@ -113,10 +107,10 @@ class DashboardView extends Component {
         title: dashboard.title,
         subtitle: dashboard.subtitle,
         org: dashboard.org,
-        pvt: dashboard.pvt
+        pvt: dashboard.pvt,
+        dashboard: dashboard
         /* widgets: dashboard.widgets */
       });
-      console.log(this.state);
 
           //get iframe from server
       let org = dashboard.org
@@ -144,13 +138,16 @@ class DashboardView extends Component {
     
     return (
     <Container>
-      <ViewBar title={this.state.title} subtitle={this.state.subtitle} id={this.state.id} org={this.state.org} pvt={this.state.pvt}></ViewBar>
-      <Dashboard
-        frameComponent={CustomFrame}
-        layout={this.state.layout}
-        widgets={this.state.widgets}
-        editable={false}
-        />
+    {this.state.dashboard && 
+      <div>
+        <ViewBar dashboard={this.state.dashboard} title={this.state.title} subtitle={this.state.subtitle} id={this.state.id} org={this.state.org} pvt={this.state.pvt}></ViewBar>
+        <Dashboard
+          frameComponent={CustomFrame}
+          layout={this.state.layout}
+          widgets={this.state.widgets}
+          editable={false}
+          />
+        </div>}
     </Container>
     );
   }

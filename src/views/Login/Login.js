@@ -20,6 +20,16 @@ function setErrorMsg(error) {
   }
 }
 
+function postUserToSw(username){
+  if('serviceWorker' in navigator){
+    const msg = {
+      'type': 'register_user',
+      'username': username
+    }
+    navigator.serviceWorker.controller.postMessage(msg);
+  }
+}
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -81,6 +91,7 @@ class Login extends Component {
                             authed: true,
                             loading: false
                           })
+                        //postUserToSw(json.uid)
                         this.props.history.push('/private/home')
                   })
                   } else {
@@ -210,15 +221,15 @@ class Login extends Component {
   render() {
     return (this.state.loading? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :
       <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-8">
+        <div className="row">
+          <div className="col-md-8 mx-auto">
               <div className="card-group mb-0">
                 <div className="card p-2">
                   <div className="card-block">
                   
                   <OverlayLoader
-                    color={'#06c'}
-                    loader="ScaleLoader"
+                    color={'#fff'}
+                    loader="ClipLoader"
                     text="Caricamento in corso..."
                     active={this.state.uploading}
                     backgroundColor={'grey'}
@@ -232,7 +243,6 @@ class Login extends Component {
                       </div>
                     }
 
-
                       <div className="input-group mb-1" style={{position: 'initial'}}>
                         <span className="input-group-text">
                           <i className="icon-user"></i>
@@ -241,7 +251,7 @@ class Login extends Component {
                           style={{position: 'initial', zIndex: 'initial'}}/>
                       </div>
                     
-                      <form onSubmit={this.handleSubmit.bind(this)}>
+                      <form onSubmit={this.handleSubmit.bind(this)}>                      
                       <div className="input-group mb-2" style={{ position: 'initial' }}>
                         <span className="input-group-text">
                           <i className="icon-lock"></i>

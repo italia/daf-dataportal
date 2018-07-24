@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Container,
   Row,
   Col,
   Card,
@@ -11,84 +10,92 @@ import {
 } from 'reactstrap'
 
 import Error from '../Error'
+import Loading from '../Loading'
 
-const ontologyError = "Errore durante il caricamento dell'ontologia"
+const ontologyError = `Errore durante il caricamento dell'ontologia`
 
 const createOntology = ontology => {
   const ont = ontology
   return (
     <Row>
-      <Col sm={2} />
-      <Col sm={8}>
+      <Col sm={1} />
+      <Col sm={10}>
         <Card className="border-0">
-          <CardHeader className="bg-primary text-white border-0">
-            <strong>Ontologia</strong>
-          </CardHeader>
-          <CardBody>
-            <CardTitle className="text-primary">
+          <CardHeader>
+            <h2 className="text-primary title-dataset mb-0">
               {ont.titles.map(title => title.value)}
-            </CardTitle>
-
-            <CardText className="text-muted">
+            </h2>
+          </CardHeader>
+          <CardBody style={{ font: "400 18px/23px Titillium Web" }}>
+            <CardText>
               <strong>Descrizione:</strong>
               <br />
               {ont.descriptions.map(desc => desc.value)}
             </CardText>
 
-            <CardText className="text-muted">
+            <CardText>
               <strong>URL:</strong>
               <br />
               {ont.url}
             </CardText>
 
-            <CardText className="text-muted">
+            <CardText>
               <strong>Titolare:</strong>
               <br />
-              {ont.owners.map((owner, index) => <div key={index}>{`${owner.value}`}</div>)}
+              {ont.owners.map(owner => (
+                <span>{`${owner.value} (${owner.uri})`}</span>
+                ))}
             </CardText>
 
-            <CardText className="text-muted">
+            <CardText>
               <strong>Pubblicato da:</strong>
               <br />
               {ont.publishedBy.map(publisher => (
-                <div>{`${publisher.value}`}</div>
+                <span>{`${publisher.value} (${publisher.uri})`}</span>
               ))}
             </CardText>
 
-            <CardText className="text-muted">
+            <CardText>
               <strong>Creato da:</strong>
               <br />
-              {ont.creators.map(creator => <div>{`${creator.value}`}</div>)}
+              {ont.creators.map(creator => (
+                <span>{`${creator.value} (${creator.uri})`}</span>
+              ))}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>Data ultima modifica: </strong>
+            <CardText>
+              <strong>Data ultima modifica:</strong>
+              <br />
               {ont.lastEditDate}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>Versioni: </strong>
+            <CardText>
+              <strong>Versioni:</strong>
+              <br />
               {/* {ont.versions.map(version => version.number).join(' - ')} */}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>Licenza: </strong>
+            <CardText>
+              <strong>Licenza:</strong>
+              <br />
               {ont.licenses.map(license => license.value).join(' ')}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>Lingue: </strong>
+            <CardText>
+              <strong>Lingue:</strong>
+              <br />
               {ont.langs.join(' - ')}
             </CardText>
 
-            <CardText className="text-muted">
-              <strong>TAG: </strong>
+            <CardText>
+              <strong>TAG:</strong>
+              <br />
               {ont.tags.map(tag => tag.value).join(' - ')}
             </CardText>
           </CardBody>
         </Card>
       </Col>
-      <Col sm={2} />
+      <Col sm={1} />
     </Row>
   )
 }
@@ -103,6 +110,8 @@ export default class OntologyDetail extends React.Component {
       createOntology(this.props.data)
     ) : this.props.error ? (
       <Error msg={ontologyError} />
-    ) : null
+    ) : (
+      <Loading />
+    )
   }
 }
