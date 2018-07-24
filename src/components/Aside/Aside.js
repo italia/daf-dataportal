@@ -73,7 +73,7 @@ Aside.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { notifications } = state.notificationsReducer || { }
+  const { notifications } = state.notificationsReducer['notifications'] || { }
   return { notifications }
 }
 

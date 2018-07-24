@@ -164,8 +164,10 @@ function propertiesReducer(state = {}, action) {
 
 function notificationsReducer(state = {}, action) {
   switch (action.type) {
+    case REQUEST_NOTIFICATIONS:
+      return Object.assign({}, state, { 'notifications': {'isFetching': true, 'notifications': undefined}})
     case RECEIVE_NOTIFICATIONS:
-      return Object.assign({}, state, { 'notifications': action.notifications})
+      return Object.assign({}, state, { 'notifications': {'isFetching': false, 'notifications': action.notifications}})
     default:
       return state
   }

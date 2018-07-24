@@ -93,7 +93,6 @@ function listenMessage(dispatch){
     navigator.serviceWorker.addEventListener('message', function(event){
       console.log(event.data);
         /* event.ports[0].postMessage("Client 1 Says 'Hello back!'"); */
-        toastr.info(event.data.title, event.data.body)
         dispatch(fetchNotifications(localStorage.getItem('user')))
     });
   }
@@ -193,6 +192,31 @@ class Full extends Component {
     this.openModalDash = this.openModalDash.bind(this)
     this.hideModalDash = this.hideModalDash.bind(this)
     this.handleSaveDash = this.handleSaveDash.bind(this)
+    this.startPoll = this.startPoll.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.notifications !== nextProps.notifications) {
+      clearTimeout(this.timeout);
+      if (!nextProps.isFetching) {
+          this.startPoll();
+      }
+    }
+  }
+
+/*   componentWillMount() {
+    const { dispatch } = this.props
+    if (localStorage.getItem('user'))
+      dispatch(fetchNotifications(localStorage.getItem('user')))
+  } */
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
+
+  startPoll() {
+    const { dispatch } = this.props
+    this.timeout = setTimeout(() => dispatch(fetchNotifications(this.props.loggedUser.uid)), 120000);
   }
 
   componentDidMount() {
@@ -701,7 +725,8 @@ Full.propTypes = {
 
 function mapStateToProps(state) {
   const { loggedUser, authed } = state.userReducer['obj'] || {}
-  return { loggedUser, authed }
+  const { notifications, isFetching } = state.notificationsReducer['notifications'] || {}
+  return { loggedUser, authed, notifications, isFetching }
 }
 
 export default connect(mapStateToProps)(Full);
