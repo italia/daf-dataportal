@@ -13,6 +13,7 @@ import {
 import { setCookie, isEditor, isAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
 import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications } from './../../actions.js'
+import { setCookie } from '../../utility'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -91,9 +92,8 @@ function listenMessage(dispatch){
   if('serviceWorker' in navigator){
     // Handler for messages coming from the service worker
     navigator.serviceWorker.addEventListener('message', function(event){
-        console.log(event.data);
+      console.log(event.data);
         /* event.ports[0].postMessage("Client 1 Says 'Hello back!'"); */
-        toastr.info(event.data.title, event.data.body)
         dispatch(fetchNotifications(localStorage.getItem('user')))
     });
   }
@@ -193,6 +193,31 @@ class Full extends Component {
     this.openModalDash = this.openModalDash.bind(this)
     this.hideModalDash = this.hideModalDash.bind(this)
     this.handleSaveDash = this.handleSaveDash.bind(this)
+    this.startPoll = this.startPoll.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.notifications !== nextProps.notifications) {
+      clearTimeout(this.timeout);
+      if (!nextProps.isFetching) {
+          this.startPoll();
+      }
+    }
+  }
+
+/*   componentWillMount() {
+    const { dispatch } = this.props
+    if (localStorage.getItem('user'))
+      dispatch(fetchNotifications(localStorage.getItem('user')))
+  } */
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
+
+  startPoll() {
+    const { dispatch } = this.props
+    this.timeout = setTimeout(() => dispatch(fetchNotifications(this.props.loggedUser.uid)), 120000);
   }
 
   componentDidMount() {
@@ -247,7 +272,6 @@ class Full extends Component {
                         })
                         askPermission(this.props.loggedUser.uid)
                         dispatch(fetchNotifications(this.props.loggedUser.uid))
-                        //postUserToSw(this.props.loggedUser.uid)
                   })
                 }else{
                   console.log('Login Action Response: ' + response.statusText)
@@ -513,7 +537,7 @@ class Full extends Component {
     let home = ''
     let paddingTop = 'pt-3'
 
-    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1)
+    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1 || window.location.hash.indexOf('private/vocabularies')!==-1 || window.location.hash.indexOf('private/ontologies')!==-1)
       mainDiv='bg-light'
     
     if (window.location.hash.indexOf('/private/userstory/list/')!==-1)
@@ -708,7 +732,8 @@ Full.propTypes = {
 
 function mapStateToProps(state) {
   const { loggedUser, authed } = state.userReducer['obj'] || {}
-  return { loggedUser, authed }
+  const { notifications, isFetching } = state.notificationsReducer['notifications'] || {}
+  return { loggedUser, authed, notifications, isFetching }
 }
 
 export default connect(mapStateToProps)(Full);

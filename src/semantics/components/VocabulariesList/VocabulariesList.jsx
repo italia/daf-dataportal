@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Container,
   Row,
   Col,
   Card,
@@ -9,44 +8,52 @@ import {
   CardText,
   Badge
 } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
-import LinkWrap from '../LinkWrap'
 import Error from '../Error'
+import Loading from '../Loading'
 
 const vocabulariesError = 'Errore durante il caricamento dei vocabolari'
 
 const mapVocabularies = vocabularies =>
   vocabularies.map(voc => (
-    <LinkWrap key={voc.id} to={`/private/vocabularies/${voc.id}`} className="text-dark">
-      <Card className="border-0">
-        <CardBody>
-          <CardTitle className="text-danger">
+    <Card key={`vocabulary-${voc.id}`}>
+      <CardBody
+        className="text-dark"
+        style={{ font: "400 16px/23px Titillium Web" }}
+      >
+        <Link to={`/private/vocabularies/${voc.id}`}>
+          <CardTitle
+            className="text-primary"
+            style={{ font: "500 24.5px/29.4px Titillium Web" }}
+          >
             {voc.titles.map(title => title.value)}
           </CardTitle>
+        </Link>
 
-          <CardText className="text-muted">{voc.url}</CardText>
+        <CardText className="text-muted">{voc.url}</CardText>
 
-          <CardText className="text-muted">
-            <strong>Descrizione:</strong>
-            <br />
-            {voc.descriptions.map(desc => desc.value)}
-          </CardText>
+        <CardText>
+          <strong>Descrizione:</strong>
+          <br />
+          {voc.descriptions.map(desc => desc.value)}
+        </CardText>
 
-          <CardText className="text-muted">
-            <strong>Data ultima modifica: </strong>
-            {voc.lastEditDate}
-          </CardText>
+        <CardText>
+          <strong>Data ultima modifica:</strong>
+          <br />
+          {voc.lastEditDate}
+        </CardText>
 
-          <CardText className="text-muted">
-            <Badge color="danger" className="px-3 py-2">
-              Vocabolario
-            </Badge>
-            <strong> TAG: </strong>
-            {voc.tags.map(tag => tag.value).join(' - ')}
-          </CardText>
-        </CardBody>
-      </Card>
-    </LinkWrap>
+        <CardText>
+          <Badge color="primary" className="px-3 py-2">
+            Vocabolario
+          </Badge>
+          <strong> TAG: </strong>
+          {voc.tags.map(tag => tag.value).join(' - ')}
+        </CardText>
+      </CardBody>
+    </Card>
   ))
 
 const createVocabularies = vocabularies => (
@@ -54,7 +61,7 @@ const createVocabularies = vocabularies => (
     <Col sm={2} />
     <Col sm={8}>{mapVocabularies(vocabularies)}</Col>
     <Col sm={2}>
-      <div className="callout callout-danger">
+      <div className="callout callout-primary">
         <small className="text-muted">Risultato della ricerca</small>
         <br />
 
@@ -77,6 +84,8 @@ export default class VocabulariesList extends React.Component {
       createVocabularies(this.props.data)
     ) : this.props.error ? (
       <Error msg={vocabulariesError} />
-    ) : null
+    ) : (
+      <Loading />
+    )
   }
 }

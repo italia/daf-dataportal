@@ -640,6 +640,7 @@ export function fetchNotifications(user){
     token = localStorage.getItem('token')
   }
   return dispatch => {
+    dispatch(requestNotifications())
     return fetch(url,{
       method: 'GET',
       headers: {
@@ -798,7 +799,7 @@ export function getOpendataResources(datasetname) {
 
 export function addDataset(inputJson, token, fileType) {
   console.log("Called action addDataset");
-  var url = serviceurl.apiURLCatalog + "/catalog-ds/add";
+  var url = serviceurl.apiURLCatalog + "/catalog-ds/add-queue";
   return dispatch => {
       return fetch(url, {
           method: 'POST',

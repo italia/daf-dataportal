@@ -9,10 +9,11 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faGlobe } from '@fortawesome/fontawesome-free-solid'
 import {
 	loadDatasets,
-  logout,
   updateNotifications,
   fetchNotifications,
+	logout
 } from '../../actions'
+import { toastr } from 'react-redux-toastr'
 import { createBrowserHistory } from 'history';
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 import { isEditor, isAdmin } from '../../utility'
@@ -46,7 +47,6 @@ class Header extends Component {
 			};
 		}
   
-    
     componentWillReceiveProps(nextProps){
       
       if(nextProps.notifications){
@@ -54,14 +54,22 @@ class Header extends Component {
             return notification.status===0
         })
 
-        console.log(unreadNot)
-
+        //console.log(unreadNot)
+        unreadNot.map(not=>{
+          switch(not.notificationtype){
+            case 'kylo_feed':
+              toastr.success("Caricamento Dataset","Il dataset "+not.info.title+" è stato creato correttamente")
+            case 'kylo_feed_error':
+              toastr.error("Errore","C'è stato un problema nella creazione del dataset "+not.info.title+": "+not.info.errors)
+          }
+        })
         this.setState({
           unread: unreadNot.length,
           unreadNotifications: unreadNot
         })
       }
     }
+      
 	
 		toggleCrea(){
 			this.setState({
@@ -180,7 +188,7 @@ class Header extends Component {
     toggleAsideMenu(){
       const { dispatch } = this.props
       document.body.classList.toggle('aside-menu-xl-show')
-      document.body.classList.toggle('aside-menu-hidden');
+      document.body.classList.toggle('aside-menu-hidden')
       var unreadNot = this.state.unreadNotifications
       if(unreadNot.length>0){
         unreadNot.map(not => {
@@ -250,10 +258,10 @@ class Header extends Component {
 					</li>
 				</ul>
         <ul className="navbar-nav mr-2">
-					<li className="nav-item">
-							<button className="btn btn-primary nav-link text-white" onClick={this.toggleAsideMenu}><i className={this.state.unread===0?"fa fa-bell fa-lg":"far fa-bell fa-lg"} /><span className="badge badge-white badge-pill text-primary">{this.state.unread===0?'':this.state.unread}</span></button>
-					</li>
-				</ul>
+          <li className="nav-item">
+            <button className="btn btn-primary nav-link text-white" onClick={this.toggleAsideMenu}><i className={this.state.unread===0?"fa fa-bell fa-lg":"far fa-bell fa-lg"} /><span className="badge badge-white badge-pill text-primary">{this.state.unread===0?'':this.state.unread}</span></button>
+ 					</li>
+        </ul>
 				<ul className="nav navbar-nav mr-2">
 					<li className="nav-item">
 						<div className={"dropdown " + open}>
@@ -351,8 +359,8 @@ Header.propTypes = {
 
 function mapStateToProps(state) {
 	const { loggedUser } = state.userReducer['obj'] || { }
-  const { properties } = state.propertiesReducer['prop'] || {}
-  const { notifications } = state.notificationsReducer || {}
+	const { properties } = state.propertiesReducer['prop'] || {}
+  const { notifications } = state.notificationsReducer['notifications'] || {}
 	return { loggedUser, properties, notifications }
 }
 
