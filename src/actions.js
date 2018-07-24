@@ -641,6 +641,7 @@ export function fetchNotifications(user){
     token = localStorage.getItem('token')
   }
   return dispatch => {
+    dispatch(requestNotifications())
     return fetch(url,{
       method: 'GET',
       headers: {

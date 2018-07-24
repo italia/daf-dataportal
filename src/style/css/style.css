@@ -4390,7 +4390,7 @@ tbody.collapse.show {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   padding: 0.75rem 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
   list-style: none;
   background-color: #fff; }
 
@@ -8622,7 +8622,7 @@ body {
 
 .breadcrumb {
   position: relative;
-  border-bottom: 1px solid #a4b7c1; }
+  /* border-bottom: 1px solid #a4b7c1; */ }
 
 button {
   cursor: pointer; }

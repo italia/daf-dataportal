@@ -13,6 +13,7 @@ import {
   fetchNotifications,
 	logout
 } from '../../actions'
+import { toastr } from 'react-redux-toastr'
 import { createBrowserHistory } from 'history';
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 import { isEditor, isAdmin } from '../../utility'
@@ -53,8 +54,15 @@ class Header extends Component {
             return notification.status===0
         })
 
-        console.log(unreadNot)
-
+        //console.log(unreadNot)
+        unreadNot.map(not=>{
+          switch(not.notificationtype){
+            case 'kylo_feed':
+              toastr.success("Caricamento Dataset","Il dataset "+not.info.title+" è stato creato correttamente")
+            case 'kylo_feed_error':
+              toastr.error("Errore","C'è stato un problema nella creazione del dataset "+not.info.title+": "+not.info.errors)
+          }
+        })
         this.setState({
           unread: unreadNot.length,
           unreadNotifications: unreadNot
@@ -352,7 +360,7 @@ Header.propTypes = {
 function mapStateToProps(state) {
 	const { loggedUser } = state.userReducer['obj'] || { }
 	const { properties } = state.propertiesReducer['prop'] || {}
-  const { notifications } = state.notificationsReducer || {}
+  const { notifications } = state.notificationsReducer['notifications'] || {}
 	return { loggedUser, properties, notifications }
 }
 

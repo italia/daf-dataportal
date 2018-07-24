@@ -209,7 +209,6 @@ class Login extends Component {
                       </div>
                     }
 
-                      <form onSubmit={this.handleSubmit.bind(this)}>
                       <div className="input-group mb-1" style={{position: 'initial'}}>
                         <span className="input-group-text">
                           <i className="icon-user"></i>
@@ -218,7 +217,7 @@ class Login extends Component {
                           style={{position: 'initial', zIndex: 'initial'}}/>
                       </div>
                     
-                      
+                      <form onSubmit={this.handleSubmit.bind(this)}>                      
                       <div className="input-group mb-2" style={{ position: 'initial' }}>
                         <span className="input-group-text">
                           <i className="icon-lock"></i>
