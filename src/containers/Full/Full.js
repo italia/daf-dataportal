@@ -13,7 +13,6 @@ import {
 import { setCookie, isEditor, isAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
 import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications } from './../../actions.js'
-import { setCookie } from '../../utility'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
