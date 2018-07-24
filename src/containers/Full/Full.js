@@ -216,7 +216,7 @@ class Full extends Component {
 
   startPoll() {
     const { dispatch } = this.props
-    this.timeout = setTimeout(() => dispatch(fetchNotifications(this.props.loggedUser.uid)), 120000);
+    this.timeout = setTimeout(() => dispatch(fetchNotifications(this.props.loggedUser.uid)), 30000);
   }
 
   componentDidMount() {
