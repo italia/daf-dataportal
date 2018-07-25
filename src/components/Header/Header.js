@@ -55,14 +55,6 @@ class Header extends Component {
         })
 
         //console.log(unreadNot)
-        unreadNot.map(not=>{
-          switch(not.notificationtype){
-            case 'kylo_feed':
-              toastr.success("Caricamento Dataset","Il dataset "+not.info.title+" è stato creato correttamente")
-            case 'kylo_feed_error':
-              toastr.error("Errore","C'è stato un problema nella creazione del dataset "+not.info.title+": "+not.info.errors)
-          }
-        })
         this.setState({
           unread: unreadNot.length,
           unreadNotifications: unreadNot
