@@ -44,14 +44,14 @@ class Aside extends Component {
               switch(notification.notificationtype){
                 case 'kylo_feed':
                 return(
-                  <div className={notification.status===0?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index} onClick={this.pushTo.bind(this,'dataset', notification.info.name)}>
+                  <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index} onClick={this.pushTo.bind(this,'dataset', notification.info.name)}>
                     {notification.info && <p>Il dataset <b>{notification.info.title}</b> è stato creato correttamente</p>}
                     <p>{notification.timestamp}</p>
                   </div>
                 )
                 case 'kylo_feed_error':
                 return(
-                  <div className={notification.status===0?"list-group-item b-new-notif pointer bg-danger":"list-group-item pointer bg-danger"} key={index}>
+                  <div className={notification.status===1?"list-group-item b-new-notif pointer bg-danger":"list-group-item pointer bg-danger"} key={index}>
                     {notification.info && <p>C'è stato un problema nella creazione del dataset <b>{notification.info.title}</b>: {notification.info.errors}</p>}
                     <p>{notification.timestamp}</p>
                   </div>

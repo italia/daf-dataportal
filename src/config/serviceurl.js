@@ -11,7 +11,7 @@ export const serviceurl = {
   */
     
   // PROD
-     apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
+    apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
     apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
     apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
     apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
