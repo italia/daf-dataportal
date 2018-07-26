@@ -122,9 +122,11 @@ self.addEventListener('push', function(event) {
     case 'kylo_feed':
       title = 'Creazione Dataset'
       options.body = 'Il dataset '+ data.info.title+ ' è stato creato correttamente.'
+      break;
     case 'kylo_feed_error':
       title = 'Errore creazione Dataset'
       options.body = "C'è stato un problema nella creazione del dataset " + data.info.title +": " + data.info.errors
+      break;
   }
 
   var notification = {'title':title, 'body':options.body}
