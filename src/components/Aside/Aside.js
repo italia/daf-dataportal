@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { datasetDetail } from '../../actions'
+import { Link } from 'react-router-dom'
 
 
 class Aside extends Component {
@@ -40,19 +41,19 @@ class Aside extends Component {
           <div className="list-group-item list-group-item-secondary border-0 m-0 text-center font-weight-bold text-muted text-uppercase small">Notifiche</div>
           {
             notifications.length>0 ?
-            notifications.map((notification, index) =>{
+            notifications.slice(0,21).map((notification, index) =>{
               switch(notification.notificationtype){
                 case 'kylo_feed':
                 return(
                   <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index} onClick={this.pushTo.bind(this,'dataset', notification.info.name)}>
-                    {notification.info && <p>Il dataset <b>{notification.info.title}</b> è stato creato correttamente</p>}
+                    {notification.info && <p><i className="fas fa-check-circle text-success mr-2"/>Il dataset <b>{notification.info.title}</b> è stato creato correttamente</p>}
                     <p>{notification.timestamp}</p>
                   </div>
                 )
                 case 'kylo_feed_error':
                 return(
-                  <div className={notification.status===1?"list-group-item b-new-notif pointer bg-danger":"list-group-item pointer bg-danger"} key={index}>
-                    {notification.info && <p>C'è stato un problema nella creazione del dataset <b>{notification.info.title}</b>: {notification.info.errors}</p>}
+                  <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index}>
+                    {notification.info && <p><i className="fas fa-exclamation-circle text-danger mr-2"/>C'è stato un problema nella creazione del dataset <b>{notification.info.title}</b>: {notification.info.errors}</p>}
                     <p>{notification.timestamp}</p>
                   </div>
                 )
@@ -60,8 +61,10 @@ class Aside extends Component {
             }) : <div className="list-group-item border-0 m-0 text-center font-weight-bold text-muted">Non hai nessuna notifica</div>
             }
         </div>
-        <div className="text-center">
-            {/* <b className="text-primary">Vedi tutte</b> */}
+        <div className="text-center my-2">
+            <Link to="/private/notifications">
+              <b className="text-primary">Vedi tutte</b>
+            </Link>
         </div>
       </aside>
     )

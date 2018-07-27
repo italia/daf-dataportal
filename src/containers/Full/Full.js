@@ -27,6 +27,7 @@ import UserStory from '../../views/UserStory/';
 import Profile from '../../views/Profile/';
 import Settings from '../../views/Settings/';
 import DashboardManager from '../../views/DashboardManager/DashboardManager';
+import Notifications from '../../views/Notifications/Notifications'
 import Organizations from '../../views/Settings/Organizations';
 import Users from '../../views/Settings/Users';
 import Crea from "../../views/Crea/Crea";
@@ -211,7 +212,7 @@ class Full extends Component {
       .then(function(json){
         console.info(json)
       })
-      dispatch(fetchNotifications(localStorage.getItem('user'), 20))
+      //dispatch(fetchNotifications(localStorage.getItem('user'), 20))
   }
 
   componentWillUnmount() {
@@ -233,7 +234,7 @@ class Full extends Component {
         loading: false
       })
       askPermission(this.props.loggedUser.uid)
-      dispatch(fetchNotifications(this.props.loggedUser.uid))
+      dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
     } else {
       if (localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
@@ -273,7 +274,7 @@ class Full extends Component {
                           loading: false
                         })
                         askPermission(this.props.loggedUser.uid)
-                        dispatch(fetchNotifications(this.props.loggedUser.uid))
+                        dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
                 })
               } else {
                 this.setState({
@@ -531,7 +532,7 @@ class Full extends Component {
     let home = ''
     let paddingTop = 'pt-3'
 
-    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1 || window.location.hash.indexOf('private/vocabularies')!==-1 || window.location.hash.indexOf('private/ontologies')!==-1)
+    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1 || window.location.hash.indexOf('private/vocabularies')!==-1 || window.location.hash.indexOf('private/ontologies')!==-1 || window.location.hash.indexOf('private/notifications')!==-1)
       mainDiv='bg-light'
     
     if (window.location.hash.indexOf('/private/userstory/list/')!==-1)
@@ -699,7 +700,7 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies" name="Vocabularies" exact component={Vocabularies} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies/:filter" name="Vocabulary" component={Vocabulary} />
                 <PrivateRoute authed={this.state.authed} path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
-                <PrivateRoute authed={this.state.authed} path="/private/notifications" name="Notification Center" component={DashboardManager} />
+                <PrivateRoute authed={this.state.authed} path="/private/notifications" name="Notification Center" component={Notifications} />
                 <PrivateRoute authed={this.state.authed} path="/private/userstory" name="User Story" component={UserStory} />
                 <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} />
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset_old" name="Dataset" component={Dataset} />}
