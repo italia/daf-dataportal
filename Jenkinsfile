@@ -35,7 +35,7 @@ pipeline {
         }
       }
     }
-   /* stage('Staging') {
+   stage('Staging') {
       steps { 
         script {
           if(env.BRANCH_NAME=='testCI' ){
@@ -44,6 +44,6 @@ pipeline {
           }
         }
       }
-    }*/  
+    }  
   }
 }
