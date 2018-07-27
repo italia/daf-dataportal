@@ -39,8 +39,8 @@ pipeline {
       steps { 
         script {
           if(env.BRANCH_NAME=='testCI' ){
-          sh ''' COMMIT_ID=$(echo ${GIT_COMMIT}|cut -c 1-6);
-              sed "s#image: nexus.teamdigitale.test/daf-dati.*#image: nexus.teamdigitale.test/daf-datipubblici:$BUILD_NUMBER-$COMMIT_ID#" kubernetes/test/ 	daf_data-portal.yml > daf-dataportal1.yaml ;kubectl apply -f daf-dataportal1.yaml --validate=false --namespace=testci'''             
+          sh ''' COMMIT_ID=$(echo ${GIT_COMMIT}|cut -c 1-6); cd kubernetes/test;
+              sed "s#image: nexus.teamdigitale.test/daf-dati.*#image: nexus.teamdigitale.test/daf-datipubblici:$BUILD_NUMBER-$COMMIT_ID#"  	daf_data-portal.yml > daf-dataportal1.yaml ;kubectl apply -f daf-dataportal1.yaml --validate=false --namespace=testci'''             
           }
         }
       }
