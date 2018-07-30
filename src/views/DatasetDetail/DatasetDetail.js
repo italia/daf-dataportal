@@ -21,6 +21,7 @@ import { decodeTheme, isPublic, decodeCkan } from '../../utility'
 import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
 import ShareButton from '../../components/ShareButton/ShareButton';
+import DatasetAdmin from './DatasetAdmin';
 
 function checkIsLink(val){
   if(val.indexOf('http')!==-1 && val.indexOf('{')===-1)
@@ -53,6 +54,7 @@ class DatasetDetail extends Component {
             showAPI: false,
             showTools: false,
             showWidget: false,
+            showAdmin: false,
             downloadState: 3, // 1-Success, 2-Error, 3-loading
             supersetState: 3,
             previewState: 3,
@@ -108,7 +110,7 @@ class DatasetDetail extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { dispatch } = this.props
-        if (nextProps.dataset || nextProps.feed) {
+        if ((nextProps.dataset || nextProps.feed) && !nextProps.notifications) {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
             var dafIndex = 0
             if (isExtOpendata) {
@@ -214,6 +216,7 @@ class DatasetDetail extends Component {
             showAPI: false,
             showTools: false,
             showWidget: false,
+            showAdmin: false,
             showDownload: false,
             showDett: false,
             previewState: 3
@@ -245,6 +248,7 @@ class DatasetDetail extends Component {
             showAPI: false,
             showPreview: false,
             showWidget: false,
+            showAdmin: false,
             showDownload: false,
             showDett: false,
             supersetState: 3,
@@ -315,19 +319,22 @@ class DatasetDetail extends Component {
                         <h2 className="title-dataset px-4 text-primary" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title, 75)}</h2>
                         <ul className="nav b-b-0 nav-tabs w-100 buttons-nav pl-4">
                             <li className="nav-item">
-                                <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
+                                <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showAdmin: false, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
                             </li>
                             {!isPublic()&&<li className="nav-item h-100">
                                 <a className={!this.state.showPreview ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handlePreview.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="text-icon fa fa-eye pr-2" /> Anteprima</a>
                             </li>}
                             {!isPublic()&&<li className="nav-item h-100">
-                                <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
+                                <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showAdmin: false, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
                             </li>}
                             {!isPublic()&&<li className="nav-item h-100">
                                 <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
                             </li>}
                             {!isPublic()&&<li className="nav-item h-100">
-                                <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
+                                <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
+                            </li>}
+                            {!isPublic()&&<li className="nav-item h-100">
+                                <a className={!this.state.showAdmin ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAdmin: true, showWidget: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fas fa-cogs pr-2" />Amministrazione</a>
                             </li>}
                         </ul>
                         {!isPublic()&&<button className="btn btn-accento buttons-nav" style={{ right: '20%', height: '48px' }} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>}
@@ -462,6 +469,7 @@ class DatasetDetail extends Component {
                                             </div>
                                         </div>
                                     </div>
+                                    {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin}/>}
                                     <div hidden={!this.state.showTools} className="col-12 card-text">
                                         <div className="col-12">
                                             <div className="row text-muted">
@@ -639,7 +647,7 @@ class DatasetDetail extends Component {
                                             })
                                             }
                                             <div className="w-100 text-center">
-                                                <button className="btn btn-link" onClick={() => { this.setState({ showWidget: true, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}>
+                                                <button className="btn btn-link" onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}>
                                                     <h4 className="text-primary"><u>Vedi tutti</u></h4>
                                                 </button>
                                             </div>
