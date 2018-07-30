@@ -181,10 +181,10 @@ class Home extends Component{
                                     break
                             }
                             const dashWidgets = JSON.parse(story.widgets)
-                            var imageA = undefined
+                            //var imageA = undefined
                             if (firstLayout != '') {
                                 const firstWidget = dashWidgets[firstLayout];
-                                imageA = firstWidget.image
+                                //imageA = firstWidget.image
                             }
                             var time = 0
                             let widgets = Object.keys(dashWidgets)
@@ -203,7 +203,6 @@ class Home extends Component{
                             <UserstoryCard
                                 story={story}
                                 widgetA={firstLayout}
-                                imageA={imageA}
                                 time={time}
                                 id={index}
                                 key={index}
