@@ -38,6 +38,8 @@ export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashbo
 
 export const visibilita = [{ 'val': '2','name': 'Open data'},{ 'val': '0','name': 'Privato'},{ 'val': '1','name': 'Organizzazione'}]
 
+export const roles = [{"key":"daf_sys_admin", "label":"Amministratore di sistema"},{"key":"daf_adm", "label":"Amministratore"},{"key":"daf_vwr", "label":"Utente base"},{"key":"daf_edt", "label":"Editor"}]
+
 String.prototype.replaceAll = function (search, replacement) {
   var target = this;
   return target.replace(new RegExp(search, 'g'), replacement);
@@ -81,11 +83,10 @@ export function transformName(name){
     return isAdmin
   }
 
-  //sys_admin is an admin
   export function isAdmin(loggedUser){
     var isAdmin = false;
     loggedUser && loggedUser.roles.map((role) => {
-      if(role.indexOf('daf_adm_')>-1 || role === 'daf_sys_admin')
+      if(role.indexOf('daf_adm_')>-1)
         isAdmin = true
       }
     )
