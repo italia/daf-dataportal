@@ -28,7 +28,7 @@ pipeline {
     stage('Upload'){
       steps {
         script { 
-          if(env.BRANCH_NAME == 'testCI'  || env.BRANCH_NAME=='newSecurity'){ 
+          if(env.BRANCH_NAME == 'citest'  || env.BRANCH_NAME=='newSecurity'){ 
             sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker push $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID' 
             sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker rmi $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID'  
           }       
@@ -38,7 +38,7 @@ pipeline {
    stage('Staging') {
       steps { 
         script {
-          if(env.BRANCH_NAME=='testCI' || env.BRANCH_NAME=='newSecurity'){
+          if(env.BRANCH_NAME=='citest' || env.BRANCH_NAME=='newSecurity'){
           sh ''' COMMIT_ID=$(echo ${GIT_COMMIT}|cut -c 1-6); cd kubernetes/test;
               sed "s#image: nexus.teamdigitale.test/data-.*#image: nexus.teamdigitale.test/daf-datipubblici:$BUILD_NUMBER-$COMMIT_ID#"  	daf_data-portal.yml > daf-dataportal1.yaml ;kubectl apply -f daf-dataportal1.yaml --validate=false --namespace=testci'''             
           }
