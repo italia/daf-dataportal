@@ -8,7 +8,8 @@ class DatasetAdmin extends Component{
   constructor(props){
     super(props)
     this.state={
-      message: ''
+      message: '',
+      acl: []
     }
   }
 
@@ -21,11 +22,16 @@ class DatasetAdmin extends Component{
         this.setState({
           message: json.message
         })
+      }else{
+        this.setState({
+          acl:json
+        })
       }
     })
   }
 
   render(){
+    const { acl } = this.state
     return(
       <div hidden={!this.props.showAdmin} className="col-12 card-text">
         <div className="col-12">
@@ -35,17 +41,24 @@ class DatasetAdmin extends Component{
         </div>
         <div className="col-12">
           {this.state.message}
+          {acl.length>0 &&
           <table className="table table-striped">
             <thead>
                 <tr>
-                <th scope="col">Organizzazione</th>
-                <th scope="col">Ruolo</th>
-                <th scope="col">Workgroup</th>
+                  <th scope="col">Gruppo</th>
                 </tr>
             </thead>
             <tbody>
+              {acl.map((permission,index) => {
+                return(
+                  <tr key={index}>
+                    <td>{permission.groupName}</td>
+                  </tr>
+                )
+              })
+              }
             </tbody>
-          </table>
+          </table>}
         </div>
       </div>
     )

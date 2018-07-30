@@ -469,7 +469,6 @@ class DatasetDetail extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin}/>}
                                     <div hidden={!this.state.showTools} className="col-12 card-text">
                                         <div className="col-12">
                                             <div className="row text-muted">
@@ -624,6 +623,8 @@ class DatasetDetail extends Component {
                             Vuoi scoprire maggiori informazioni sul dataset? <button type="button" className="ml-3 p-3 btn btn-accento" onClick={()=>this.props.history.push('/private/dataset/'+dataset.dcatapit.name)}>Accedi all'area Privata</button>
                           </div>
                         }
+
+                        {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin}/>}
                         </div>
                     </div>
                     {!isPublic() && <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
