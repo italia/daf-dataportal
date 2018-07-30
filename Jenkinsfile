@@ -8,7 +8,7 @@ pipeline {
     stage('Build') {
       steps { 
         script {          
-        sh 'cd Dockerfile/test; COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker build . -t $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID' 
+        sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker build . -f Dockerfile/test/Dockerfile --no-cache -t $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID' 
         }
       }
     }
