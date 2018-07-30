@@ -699,8 +699,10 @@ export function fetchNewNotifications(user){
       .then(response => response.json())
       .then(json => {
         dispatch(receiveNewNotifications(json))
-        if(json.length > 0)
-          fetchNotifications(user, 20)
+        if(json.length > 0){
+          console.log("nuova-notifica")
+          dispatch(fetchNotifications(user, 20))
+        }
       })
     .catch(error => {
       console.log('Errore nel caricamento delle nuove notifiche')

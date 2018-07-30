@@ -94,7 +94,7 @@ function listenMessage(dispatch){
     navigator.serviceWorker.addEventListener('message', function(event){
       console.log(event.data);
         /* event.ports[0].postMessage("Client 1 Says 'Hello back!'"); */
-        dispatch(fetchNewNotifications(localStorage.getItem('user')))
+        //dispatch(fetchNewNotifications(localStorage.getItem('user')))
     });
   }
 }
@@ -199,21 +199,18 @@ class Full extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.newNotifications !== nextProps.newNotifications) {
       clearTimeout(this.timeout);
-      if (!nextProps.isFetching) {
+      if (!nextProps.isNewFetching) {
           this.startPoll();
       }
     }
   }
 
-  componentWillMount() {
+/*   componentWillMount() {
     const { dispatch } = this.props
     if (localStorage.getItem('user'))
-      dispatch(fetchNewNotifications(localStorage.getItem('user')))
-      .then(function(json){
-        console.info(json)
-      })
+      //dispatch(fetchNewNotifications(localStorage.getItem('user')))
       //dispatch(fetchNotifications(localStorage.getItem('user'), 20))
-  }
+  } */
 
   componentWillUnmount() {
     clearTimeout(this.timeout);
@@ -221,7 +218,7 @@ class Full extends Component {
 
   startPoll() {
     const { dispatch } = this.props
-    this.timeout = setTimeout(() => dispatch(fetchNewNotifications(this.props.loggedUser.uid)), 60000);
+    this.timeout = setTimeout(() => dispatch(fetchNewNotifications(this.props.loggedUser.uid)), 30000);
   }
 
   componentDidMount() {
@@ -234,6 +231,7 @@ class Full extends Component {
         loading: false
       })
       askPermission(this.props.loggedUser.uid)
+      dispatch(fetchNewNotifications(localStorage.getItem('user')))
       dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
     } else {
       if (localStorage.getItem('username') && localStorage.getItem('token') &&
@@ -274,6 +272,7 @@ class Full extends Component {
                           loading: false
                         })
                         askPermission(this.props.loggedUser.uid)
+                        dispatch(fetchNewNotifications(localStorage.getItem('user')))
                         dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
                 })
               } else {
@@ -731,8 +730,8 @@ Full.propTypes = {
 
 function mapStateToProps(state) {
   const { loggedUser, authed } = state.userReducer['obj'] || {}
-  const { notifications, isFetching, newNotifications } = state.notificationsReducer['notifications'] || {}
-  return { loggedUser, authed, notifications, isFetching, newNotifications }
+  const { notifications, isFetching, isNewFetching, newNotifications } = state.notificationsReducer['notifications'] || {}
+  return { loggedUser, authed, notifications, isFetching, newNotifications, isNewFetching }
 }
 
 export default connect(mapStateToProps)(Full);
