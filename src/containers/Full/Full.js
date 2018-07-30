@@ -12,7 +12,7 @@ import {
 } from 'react-modal-bootstrap';
 import { setCookie, isEditor, isAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
-import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications } from './../../actions.js'
+import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications } from './../../actions.js'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -27,6 +27,7 @@ import UserStory from '../../views/UserStory/';
 import Profile from '../../views/Profile/';
 import Settings from '../../views/Settings/';
 import DashboardManager from '../../views/DashboardManager/DashboardManager';
+import Notifications from '../../views/Notifications/Notifications'
 import Organizations from '../../views/Settings/Organizations';
 import Users from '../../views/Settings/Users';
 import Crea from "../../views/Crea/Crea";
@@ -93,7 +94,7 @@ function listenMessage(dispatch){
     navigator.serviceWorker.addEventListener('message', function(event){
       console.log(event.data);
         /* event.ports[0].postMessage("Client 1 Says 'Hello back!'"); */
-        dispatch(fetchNotifications(localStorage.getItem('user')))
+        dispatch(fetchNewNotifications(localStorage.getItem('user')))
     });
   }
 }
@@ -196,7 +197,7 @@ class Full extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.notifications !== nextProps.notifications) {
+    if (this.props.newNotifications !== nextProps.newNotifications) {
       clearTimeout(this.timeout);
       if (!nextProps.isFetching) {
           this.startPoll();
@@ -204,11 +205,15 @@ class Full extends Component {
     }
   }
 
-/*   componentWillMount() {
+  componentWillMount() {
     const { dispatch } = this.props
     if (localStorage.getItem('user'))
-      dispatch(fetchNotifications(localStorage.getItem('user')))
-  } */
+      dispatch(fetchNewNotifications(localStorage.getItem('user')))
+      .then(function(json){
+        console.info(json)
+      })
+      //dispatch(fetchNotifications(localStorage.getItem('user'), 20))
+  }
 
   componentWillUnmount() {
     clearTimeout(this.timeout);
@@ -216,7 +221,7 @@ class Full extends Component {
 
   startPoll() {
     const { dispatch } = this.props
-    this.timeout = setTimeout(() => dispatch(fetchNotifications(this.props.loggedUser.uid)), 30000);
+    this.timeout = setTimeout(() => dispatch(fetchNewNotifications(this.props.loggedUser.uid)), 60000);
   }
 
   componentDidMount() {
@@ -229,7 +234,7 @@ class Full extends Component {
         loading: false
       })
       askPermission(this.props.loggedUser.uid)
-      dispatch(fetchNotifications(this.props.loggedUser.uid))
+      dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
     } else {
       if (localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
@@ -536,7 +541,7 @@ class Full extends Component {
     let home = ''
     let paddingTop = 'pt-3'
 
-    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1 || window.location.hash.indexOf('private/vocabularies')!==-1 || window.location.hash.indexOf('private/ontologies')!==-1)
+    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1 || window.location.hash.indexOf('private/vocabularies')!==-1 || window.location.hash.indexOf('private/ontologies')!==-1 || window.location.hash.indexOf('private/notifications')!==-1)
       mainDiv='bg-light'
     
     if (window.location.hash.indexOf('/private/userstory/list/')!==-1)
@@ -701,6 +706,7 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies" name="Vocabularies" exact component={Vocabularies} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies/:filter" name="Vocabulary" component={Vocabulary} />
                 <PrivateRoute authed={this.state.authed} path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
+                <PrivateRoute authed={this.state.authed} path="/private/notifications" name="Notification Center" component={Notifications} />
                 <PrivateRoute authed={this.state.authed} path="/private/userstory" name="User Story" component={UserStory} />
                 <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} />
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset_old" name="Dataset" component={Dataset} />}
@@ -731,8 +737,8 @@ Full.propTypes = {
 
 function mapStateToProps(state) {
   const { loggedUser, authed } = state.userReducer['obj'] || {}
-  const { notifications, isFetching } = state.notificationsReducer['notifications'] || {}
-  return { loggedUser, authed, notifications, isFetching }
+  const { notifications, isFetching, newNotifications } = state.notificationsReducer['notifications'] || {}
+  return { loggedUser, authed, notifications, isFetching, newNotifications }
 }
 
 export default connect(mapStateToProps)(Full);
