@@ -100,7 +100,7 @@ function listenMessage(dispatch){
 }
 
 function askPermission() {
-  if(Notification.permission === 'default' )
+  if(Notification&&Notification.permission === 'default' )
     return new Promise(function(resolve, reject) {
       const permissionResult = Notification.requestPermission(function(result) {
         resolve(result);
