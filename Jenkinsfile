@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment
   { 
-      REPOSITORY='nexus.teamdigitale.test/daf-datipubblici'
+      REPOSITORY='nexus.teamdigitale.test/data-portal'
   }
   stages {
     stage('Build') {
@@ -40,7 +40,7 @@ pipeline {
         script {
           if(env.BRANCH_NAME=='citest' || env.BRANCH_NAME=='newSecurity'){
           sh ''' COMMIT_ID=$(echo ${GIT_COMMIT}|cut -c 1-6); cd kubernetes/test;
-              sed "s#image: nexus.teamdigitale.test/data-.*#image: nexus.teamdigitale.test/daf-datipubblici:$BUILD_NUMBER-$COMMIT_ID#" daf_data-portal.yml > daf-dataportal1.yaml ;kubectl apply -f daf-dataportal1.yaml --validate=false '''             
+              sed "s#image: nexus.teamdigitale.test/data-.*#image: nexus.teamdigitale.test/daf-data-portal:$BUILD_NUMBER-$COMMIT_ID#" daf_data-portal.yml > daf-dataportal1.yaml ;kubectl apply -f daf-dataportal1.yaml --validate=false '''             
           }
         }
       }
