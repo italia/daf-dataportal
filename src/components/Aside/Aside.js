@@ -61,7 +61,7 @@ class Aside extends Component {
             }
         </div>
         <div className="text-center">
-            <b className="text-primary">Vedi tutte</b>
+            {/* <b className="text-primary">Vedi tutte</b> */}
         </div>
       </aside>
     )

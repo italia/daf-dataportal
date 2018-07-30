@@ -110,25 +110,32 @@ class DatasetDetail extends Component {
         const { dispatch } = this.props
         if (nextProps.dataset || nextProps.feed) {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
-
+            var dafIndex = 0
             if (isExtOpendata) {
                 dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-                    .then(json => { this.setState({ hasPreview: true, dafIndex: this.state.dafIndex + 3 }) })
+                    .then(json => { dafIndex = dafIndex + 3; this.setState({ hasPreview: true, dafIndex: dafIndex }) })
                     .catch(error => { this.setState({ hasPreview: false }) })
             } else {
                 if (nextProps.feed && nextProps.feed.has_job && (nextProps.feed.job_status === 'COMPLETED' || nextProps.feed.job_status === 'STARTED')) {
-                    this.setState({ hasPreview: true, dafIndex: this.state.dafIndex + 3 })
+                    dafIndex = dafIndex + 3
+                    this.setState({ hasPreview: true, dafIndex: dafIndex })
                 } else {
                     this.setState({ hasPreview: false })
                 }
             }
 
             dispatch(getSupersetUrl(nextProps.dataset.dcatapit.name, nextProps.dataset.dcatapit.owner_org, isExtOpendata))
-                .then(json => { this.setState({ hasSuperset: json.length > 0 ? true : false, dafIndex: json.length > 0 ? this.state.dafIndex + 1 : this.state.dafIndex }) })
+                .then(json => { 
+                  dafIndex = json.length > 0 ? dafIndex + 1 : dafIndex
+                  this.setState({ hasSuperset: json.length > 0 ? true : false, dafIndex: dafIndex }) 
+                })
                 .catch(error => { this.setState({ hasSuperset: false }) })
 
             dispatch(checkMetabase(nextProps.dataset.dcatapit.name))
-                .then(json => { this.setState({ hasMetabase: json.is_on_metabase, dafIndex: json.is_on_metabase ? this.state.dafIndex + 1 : this.state.dafIndex }) })
+                .then(json => { 
+                  dafIndex = json.is_on_metabase ? dafIndex + 1 : dafIndex
+                  this.setState({ hasMetabase: json.is_on_metabase, dafIndex: dafIndex }) 
+                })
                 .catch(error => { this.setState({ hasMetabase: false }) })
         }
     }
