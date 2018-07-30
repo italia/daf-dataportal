@@ -51,7 +51,7 @@ class Header extends Component {
       
       if(nextProps.notifications){
         var unreadNot = nextProps.notifications.filter(notification =>{
-            return notification.status===0
+            return notification.status===1
         })
 
         //console.log(unreadNot)
@@ -184,7 +184,7 @@ class Header extends Component {
       var unreadNot = this.state.unreadNotifications
       if(unreadNot.length>0){
         unreadNot.map(not => {
-          not.status = 1
+          not.status = 2
         })
 
         console.log(unreadNot)
@@ -352,8 +352,8 @@ Header.propTypes = {
 function mapStateToProps(state) {
 	const { loggedUser } = state.userReducer['obj'] || { }
 	const { properties } = state.propertiesReducer['prop'] || {}
-  const { notifications } = state.notificationsReducer['notifications'] || {}
-	return { loggedUser, properties, notifications }
+  const { notifications, newNotifications } = state.notificationsReducer['notifications'] || {}
+	return { loggedUser, properties, notifications, newNotifications }
 }
 
 export default connect(mapStateToProps)(Header)

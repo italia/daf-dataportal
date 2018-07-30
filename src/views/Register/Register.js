@@ -23,15 +23,22 @@ class Register extends Component {
       this.props = props;
       this.state = {
         messaggio: null,
-        error: null
+        error: null,
+        nome: '',
+        cognome: '',
+        username: '',
+        email: '',
+        password: '',
+        password2: '',
       }
       
   }
   
   handleSubmit = (e) => {
       e.preventDefault()
-      const { dispatch, selectDataset } = this.props
-      dispatch(registerUser(this.nome.value, this.cognome.value, this.username.value, this.email.value, this.password.value, this.password2.value))
+      const { dispatch } = this.props
+      const { nome, cognome, username, email, password, password2 } = this.state
+      dispatch(registerUser(nome, cognome, username, email, password, password2))
   }
 
   handleRedirect = (e) => {
@@ -40,6 +47,7 @@ class Register extends Component {
 
   render() {
     const { messaggio, error } = this.props
+    const { nome, cognome, username, email, password, password2 } = this.state
     return (
       <div className="container">
         <div className="row">
@@ -61,31 +69,31 @@ class Register extends Component {
                 <div className="input-group mb-1">
                   <span className="input-group-text">
                     <i className="icon-user"></i></span>
-                  <input type="text" className="form-control" ref={(username) => this.username = username} placeholder="Nome Utente" />
+                  <input type="text" className="form-control" value={username} onChange={(e) => {this.setState({username: e.target.value.toLowerCase().trim()})}} placeholder="Nome Utente" />
                 </div>
                 <div className="input-group mb-1">
                   <span className="input-group-text">
                     <i className="icon-user"></i></span>
-                  <input type="text" className="form-control" ref={(nome) => this.nome = nome} placeholder="Nome" />
+                  <input type="text" className="form-control" value={nome} onChange={(e) => {this.setState({nome: e.target.value})}} placeholder="Nome" />
                 </div>
                 <div className="input-group mb-1">
                   <span className="input-group-text">
                     <i className="icon-user"></i></span>
-                  <input type="text" className="form-control" ref={(cognome) => this.cognome = cognome} placeholder="Cognome" />
+                  <input type="text" className="form-control" value={cognome} onChange={(e) => {this.setState({cognome: e.target.value})}} placeholder="Cognome" />
                 </div>
                 <div className="input-group mb-1">
                   <span className="input-group-text">@</span>
-                  <input type="text" className="form-control" ref={(email) => this.email = email} placeholder="Email" />
+                  <input type="text" className="form-control" value={email} onChange={(e) => {this.setState({email: e.target.value.toLowerCase().trim()})}} placeholder="Email" />
                 </div>
                 <div className="input-group mb-1">
                   <span className="input-group-text">
                     <i className="icon-lock"></i></span>
-                  <input type="password" className="form-control" ref={(password) => this.password = password} placeholder="Password" />
+                  <input type="password" className="form-control" value={password} onChange={(e) => {this.setState({password: e.target.value.trim()})}} placeholder="Password" />
                 </div>
                 <div className="input-group mb-2">
                   <span className="input-group-text">
                     <i className="icon-lock"></i></span>
-                  <input type="password" className="form-control" ref={(password2) => this.password2 = password2} placeholder="Ripeti password" />
+                  <input type="password" className="form-control" value={password2} onChange={(e) => {this.setState({password2: e.target.value.trim()})}} placeholder="Ripeti password" />
                 </div>
                 <div className="input-group mb-1">
                   <div className="g-recaptcha" data-sitekey="6LcUNjQUAAAAAG-jQyivW5xijDykXzslKqL2PMLr"></div>
