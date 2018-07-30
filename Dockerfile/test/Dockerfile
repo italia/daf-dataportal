@@ -22,7 +22,8 @@ ENV NPM_CONFIG_LOGLEVEL warn
 # Copy files from the repo
 COPY . . 
 
-WORKDIR /daf-dataportal
+WORKDIR . 
+#/daf-dataportal
 
 RUN npm install
 
