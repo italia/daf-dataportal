@@ -19,8 +19,8 @@ pipeline {
 	COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); 
         CONTAINERID=$(docker run -d $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID);
         sleep 5s;
-        docker stop $(docker ps -a -q); 
-        docker rm $(docker ps -a -q)
+        docker stop ${CONTAINERID}; 
+        docker rm ${CONTAINERID}
 	''' 
       }
     }
@@ -40,7 +40,7 @@ pipeline {
         script {
           if(env.BRANCH_NAME=='citest' || env.BRANCH_NAME=='newSecurity'){
           sh ''' COMMIT_ID=$(echo ${GIT_COMMIT}|cut -c 1-6); cd kubernetes/test;
-              sed "s#image: nexus.teamdigitale.test/data-.*#image: nexus.teamdigitale.test/daf-datipubblici:$BUILD_NUMBER-$COMMIT_ID#"  	daf_data-portal.yml > daf-dataportal1.yaml ;kubectl apply -f daf-dataportal1.yaml --validate=false --namespace=testci'''             
+              sed "s#image: nexus.teamdigitale.test/data-.*#image: nexus.teamdigitale.test/daf-datipubblici:$BUILD_NUMBER-$COMMIT_ID#" daf_data-portal.yml > daf-dataportal1.yaml ;kubectl apply -f daf-dataportal1.yaml --validate=false '''             
           }
         }
       }
