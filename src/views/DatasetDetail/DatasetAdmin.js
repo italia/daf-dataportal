@@ -4,6 +4,11 @@ import {
   getDatasetACL
 } from '../../actions.js'
 
+import OrganizationService from '../Settings/services/OrganizationService.js'
+
+const organizationService = new OrganizationService()
+
+
 class DatasetAdmin extends Component{
   constructor(props){
     super(props)
@@ -22,10 +27,33 @@ class DatasetAdmin extends Component{
         this.setState({
           message: json.message
         })
-      }else{
-        this.setState({
-          acl:json
+      }else if(!json.code){
+        var acls = []
+        var acl = {"groupName": "", "groupType": "", "groupParent": ""}
+        json.map((permission)=>{
+          let response = organizationService.groupInfo(permission.groupName)
+          response.then(json =>{
+            var tipo = ""
+            var parent = ""
+            if(json.memberof_group && json.memberof_group[0]===('daf_workgroups')){
+              tipo = "Working group"
+              parent = json.memberof_group[1]
+            }else if(json.memberof_group && json.memberof_group[0]===('daf_organizations')){
+              tipo = "Organizzazione"
+            }
+            acl.groupName = permission.groupName
+            acl.groupType = tipo
+            acl.groupParent = parent
+
+            acls.push(acl)
+            this.setState({
+              acl: acls
+            })
+          })
         })
+/*         this.setState({
+          acl:json
+        }) */
       }
     })
   }
@@ -46,6 +74,8 @@ class DatasetAdmin extends Component{
             <thead>
                 <tr>
                   <th scope="col">Gruppo</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Organizzazione</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +83,8 @@ class DatasetAdmin extends Component{
                 return(
                   <tr key={index}>
                     <td>{permission.groupName}</td>
+                    <td>{permission.groupType}</td>
+                    <td>{permission.groupParent}</td>
                   </tr>
                 )
               })
