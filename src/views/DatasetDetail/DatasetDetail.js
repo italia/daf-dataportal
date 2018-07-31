@@ -110,7 +110,7 @@ class DatasetDetail extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { dispatch } = this.props
-        if ((nextProps.dataset || nextProps.feed) && !nextProps.notifications) {
+        if ((nextProps.dataset || nextProps.feed) && (this.props.dataset!==nextProps.dataset || this.props.feed!==nextProps.feed)) {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
             var dafIndex = 0
             if (isExtOpendata) {
@@ -624,7 +624,7 @@ class DatasetDetail extends Component {
                           </div>
                         }
 
-                        {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin}/>}
+                        {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} owner={dataset.operational.group_own}/>}
                         </div>
                     </div>
                     {!isPublic() && <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
@@ -893,7 +893,8 @@ DatasetDetail.propTypes = {
 
 function mapStateToProps(state) {
     const { isFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
-    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes }
+    const { newNotifications } = state.notificationsReducer['notifications'] || {}
+    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications }
 }
 
 export default connect(mapStateToProps)(DatasetDetail)
