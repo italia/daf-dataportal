@@ -108,7 +108,7 @@ class DatasetDetail extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { dispatch } = this.props
-        if (nextProps.dataset || nextProps.feed) {
+        if ((nextProps.dataset || nextProps.feed) && (this.props.dataset!==nextProps.dataset || this.props.feed!==nextProps.feed)) {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
             var dafIndex = 0
             if (isExtOpendata) {
