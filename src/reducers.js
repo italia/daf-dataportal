@@ -20,6 +20,8 @@ import {
   REQUEST_PROPERTIES,
   RECEIVE_NOTIFICATIONS,
   REQUEST_NOTIFICATIONS,
+  RECEIVE_NEW_NOTIFICATIONS,
+  REQUEST_NEW_NOTIFICATIONS,
   REQUEST_REGISTRATION,
   RECEIVE_FILE_STORAGEMANAGER,
   REQUEST_RESET,
@@ -164,6 +166,10 @@ function propertiesReducer(state = {}, action) {
 
 function notificationsReducer(state = {}, action) {
   switch (action.type) {
+    case REQUEST_NEW_NOTIFICATIONS:
+      return Object.assign({}, state, { 'notifications': {'isNewFetching': true, 'newNotifications': undefined}})
+    case RECEIVE_NEW_NOTIFICATIONS:
+      return Object.assign({}, state, { 'notifications': {'isNewFetching': false, 'newNotifications': action.newNotifications}})
     case REQUEST_NOTIFICATIONS:
       return Object.assign({}, state, { 'notifications': {'isFetching': true, 'notifications': undefined}})
     case RECEIVE_NOTIFICATIONS:
