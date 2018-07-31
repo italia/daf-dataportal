@@ -115,7 +115,8 @@ class Organizations extends Component {
                 org: org,
                 workgroupUsers: undefined,
                 workgroupError:undefined,
-                removeUserWG:undefined
+                removeUserWG:undefined,
+                selectedOrg:org
             });
         });
     }
@@ -640,7 +641,7 @@ class Organizations extends Component {
                                     return( <li className={"list-group-item "+ (org===organization?"active":"")} key={organization}>{organization}
                                                 <button title="Gestione Utenti" type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.getUsers(organization)}}><i className="fa fa-user-plus fa-lg" /></button>
                                                 <button title="Gestione Workgroups" type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.getWorkgroups(organization)}}><i className="fa fa-users fa-lg" /></button>
-                                                {isAdmin(loggedUser) && <button title="Elimina Organizzazione" type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.openOrgModal(organization)}}><i className="fa fa-trash fa-lg" /></button>}
+                                                {isSysAdmin(loggedUser) && <button title="Elimina Organizzazione" type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.openOrgModal(organization)}}><i className="fa fa-trash fa-lg" /></button>}
 
                                             </li>);
                                 })
