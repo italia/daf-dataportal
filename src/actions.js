@@ -35,6 +35,8 @@ export const REQUEST_SEARCH = 'REQUEST_SEARCH'
 export const RECEIVE_SEARCH = 'RECEIVE_SEARCH'
 export const REQUEST_NOTIFICATIONS = 'REQUEST_NOTIFICATIONS'
 export const RECEIVE_NOTIFICATIONS = 'RECEIVE_NOTIFICATIONS'
+export const REQUEST_NEW_NOTIFICATIONS = 'REQUEST_NEW_NOTIFICATIONS'
+export const RECEIVE_NEW_NOTIFICATIONS = 'RECEIVE_NEW_NOTIFICATIONS'
 
 
 /*********************************** REDUX ************************************************ */
@@ -56,6 +58,16 @@ function receiveNotifications(json){
     notifications: json,
     receivedAt: Date.now(),
     ope: 'RECEIVE_NOTIFICATIONS'
+  }
+}
+
+function receiveNewNotifications(json){
+  console.log('receiveNewNotifications');
+  return {
+    type: RECEIVE_NEW_NOTIFICATIONS,
+    newNotifications: json,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_NEW_NOTIFICATIONS'
   }
 }
 
@@ -83,6 +95,12 @@ function requestProperties(){
 function requestNotifications(){
   return {
     type: REQUEST_NOTIFICATIONS
+  }
+}
+
+function requestNewNotifications(){
+  return {
+    type: REQUEST_NEW_NOTIFICATIONS
   }
 }
 
@@ -632,9 +650,11 @@ export function fetchProperties(org) {
   }
 }
 
-export function fetchNotifications(user){
+/******************************** NOTIFICATIONS ************************************** */
+
+export function fetchNotifications(user, counter){
   var token = ''
-  var url = serviceurl.apiURLDatiGov +'/notifications/'+user
+  var url = serviceurl.apiURLDatiGov +'/notifications/'+user+ (counter?'?limit='+counter:'')
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
   localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
     token = localStorage.getItem('token')
@@ -653,6 +673,38 @@ export function fetchNotifications(user){
       .then(json => dispatch(receiveNotifications(json)))
     .catch(error => {
       console.log('Errore nel caricamento delle notifiche')
+      console.error(error)
+    })
+  }
+}
+
+export function fetchNewNotifications(user){
+  var token = ''
+  var url = serviceurl.apiURLDatiGov +'/notifications/check-new/'+user
+  if(localStorage.getItem('username') && localStorage.getItem('token') &&
+  localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+  return dispatch => {
+    dispatch(requestNewNotifications())
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        /* 'Accept': 'application/json', */
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then(response => response.json())
+      .then(json => {
+        dispatch(receiveNewNotifications(json))
+        if(json.length > 0){
+          console.log("nuova-notifica")
+          dispatch(fetchNotifications(user, 20))
+        }
+      })
+    .catch(error => {
+      console.log('Errore nel caricamento delle nuove notifiche')
       console.error(error)
     })
   }

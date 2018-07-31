@@ -110,6 +110,7 @@ class App extends Component {
             <Route path="/private/home" name="Home" component={Full} />
             <Route path="/private/prova" name="Home" component={Full} />
             <Route path="/private/dashboard" name="Dashboard" component={Full} />
+            <Route path="/private/notifications" name="Notification Center" component={Full} />
             <Route path="/private/widget" name="Widget" component={Full} />
             <Route path="/private/ingestionwizzard" name="Ingestion" component={Full} />
             <Route path="/private/ontologies" name="Ontologies" exact component={Full} />
