@@ -1225,3 +1225,104 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
       
+      export function getDatasetACL(datasetname){
+        var url = serviceurl.apiURLSecurity + '/daf/datasetACL/' + datasetname
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+        
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function setDatasetACL(datasetname, groupname){
+        var url = serviceurl.apiURLSecurity + '/daf/datasetACL/' + datasetname + '/setPermission'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        var payload = {
+          "groupName": groupname,
+          "groupType": "group",
+          "permission": "rwx"
+        }
+        
+        return dispatch => {
+          return fetch(url, {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function deleteDatasetACL(datasetname, groupname){
+        var url = serviceurl.apiURLSecurity + '/daf/datasetACL/' + datasetname + '/deletePermission'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        var payload = {
+          "groupName": groupname,
+          "groupType": "group",
+        }
+        
+        return dispatch => {
+          return fetch(url, {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function groupsInfo(groups){
+        var url = serviceurl.apiURLSecurity + '/daf/getGroupsInfo'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(groups)
+          })
+          .then(response => response.json())
+        }
+      }
