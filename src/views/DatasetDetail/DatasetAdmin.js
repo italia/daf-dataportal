@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import {
   getDatasetACL,
   setDatasetACL,
-  deleteDatasetACL
+  deleteDatasetACL,
+  groupsInfo
 } from '../../actions.js'
 import { toastr } from 'react-redux-toastr'
 import {
@@ -15,6 +16,8 @@ import {
   ModalFooter 
 } from 'react-modal-bootstrap';
 import Select from 'react-select'
+import { serviceurl } from '../../config/serviceurl.js'
+
 
 import OrganizationService from '../Settings/services/OrganizationService.js'
 
@@ -78,26 +81,13 @@ class DatasetAdmin extends Component{
         })
       }else if(json.code===undefined){
         var acls = []
-        var acl = {"groupName": "", "groupType": "", "groupParent": ""}
         json.map((permission)=>{
-          let response = organizationService.groupInfo(permission.groupName)
-          response.then(json =>{
-            var tipo = ""
-            var parent = ""
-            if(json.memberof_group && json.memberof_group[0]===('daf_workgroups')){
-              tipo = "Working group"
-              parent = json.memberof_group[1]
-            }else if(json.memberof_group && json.memberof_group[0]===('daf_organizations')){
-              tipo = "Organizzazione"
-            }
-            acl.groupName = permission.groupName
-            acl.groupType = tipo
-            acl.groupParent = parent
-
-            acls.push(acl)
-            this.setState({
-              acl: acls
-            })
+          acls.push(permission.groupName)
+        })
+        dispatch(groupsInfo(acls))
+        .then(json=>{
+          this.setState({
+            acl: json
           })
         })
       }
@@ -105,14 +95,16 @@ class DatasetAdmin extends Component{
   }
 
   toggle(){
+    const { loggedUser, dataset } = this.props
     this.setState({
       aggiungi: !this.state.aggiungi,
       loading: true
     })
-    const response = organizationService.organizations()
     let allOrgs = []
     let tmp = {}
-    response.then(json => {
+    if(loggedUser.roles.indexOf("daf_sys_admin")>-1 || loggedUser.roles.indexOf("daf_adm_"+dataset.dcatapit.owner_org)>-1){
+      const response = organizationService.organizations()
+      response.then(json => {
         json.elem.map(org=>{
           tmp = {
             'value': org,
@@ -124,7 +116,20 @@ class DatasetAdmin extends Component{
           loading: false,
           orgs: allOrgs
         })
-    })
+      })
+    }else{
+      loggedUser.organizations.map(org=>{
+        tmp = {
+          'value': org,
+          'label': org
+        }
+        allOrgs.push(tmp)
+      })
+      this.setState({
+        loading: false,
+        orgs: allOrgs
+      })
+    }
   }
 
   updateValueOrg(newValue) {
@@ -158,7 +163,9 @@ class DatasetAdmin extends Component{
     this.setState({
       aggiungi: false,
       selectedOrg: '',
-      selectedWg: ''
+      selectedWg: '',
+      workgroups: [],
+      orgs: []
     })
   }
 
@@ -189,30 +196,18 @@ class DatasetAdmin extends Component{
           })
         }else if(risp.code===undefined){
           var acls = []
-          var acl = {"groupName": "", "groupType": "", "groupParent": ""}
+
           risp.map((permission)=>{
-            let response = organizationService.groupInfo(permission.groupName)
-            response.then(org =>{
-              var tipo = ""
-              var parent = ""
-              if(org.memberof_group && org.memberof_group[0]===('daf_workgroups')){
-                tipo = "Working group"
-                parent = org.memberof_group[1]
-              }else if(org.memberof_group && org.memberof_group[0]===('daf_organizations')){
-                tipo = "Organizzazione"
-              }
-              acl.groupName = permission.groupName
-              acl.groupType = tipo
-              acl.groupParent = parent
-  
-              acls.push(acl)
-              this.setState({
-                acl: acls,
-                aggiungi: false,
-                selectedOrg: '',
-                selectedWg: '',
-                message: ''
-              })
+            acls.push(permission.groupName)
+          })
+          dispatch(groupsInfo(acls))
+          .then(json=>{
+            this.setState({
+              acl: json,
+              aggiungi: false,
+              selectedOrg: '',
+              selectedWg: '',
+              message: ''
             })
           })
         }
@@ -246,31 +241,25 @@ class DatasetAdmin extends Component{
           })
         }else if(risp.code===undefined){
           var acls = []
-          var acl = {"groupName": "", "groupType": "", "groupParent": ""}
           if(risp.length>0){
             risp.map((permission)=>{
-              let response = organizationService.groupInfo(permission.groupName)
-              response.then(org =>{
-                var tipo = ""
-                var parent = ""
-                if(org.memberof_group && org.memberof_group[0]===('daf_workgroups')){
-                  tipo = "Working group"
-                  parent = org.memberof_group[1]
-                }else if(org.memberof_group && org.memberof_group[0]===('daf_organizations')){
-                  tipo = "Organizzazione"
-                }
-                acl.groupName = permission.groupName
-                acl.groupType = tipo
-                acl.groupParent = parent
-    
-                acls.push(acl)
+              acls.push(permission.groupName)
+            })
+            dispatch(groupsInfo(acls))
+            .then(json=>{
+              this.setState({
+                acl: json,
+                aggiungi: false,
+                selectedOrg: '',
+                selectedWg: '',
+                message: ''
               })
             })
+          }else{
+            this.setState({
+              message: "Nessun permesso disponibile"
+            })
           }
-          this.setState({
-            acl: acls,
-            message: "Nessun permesso disponibile"
-          })
         }
       })
     })
@@ -359,10 +348,10 @@ class DatasetAdmin extends Component{
               {acl.map((permission,index) => {
                 return(
                   <tr key={index}>
-                    <td>{permission.groupName}</td>
-                    <td>{permission.groupType}</td>
-                    <td>{permission.groupParent}</td>
-                    {ableToEdit(acl, loggedUser, dataset) && <td><button className="float-right text-primary btn btn-link" onClick={this.deleteACL.bind(this, permission.groupName)}><i className={this.state.deleting?"fa fa-spinner fa-spin fa-lg":"fas fa-times fa-lg"}/></button></td>}
+                    <td>{permission.groupCn}</td>
+                    <td>{permission.dafGroupType==="Organization"?"Organizzazione":permission.dafGroupType}</td>
+                    <td>{permission.parentGroup}</td>
+                    {ableToEdit(acl, loggedUser, dataset) && <td><button className="float-right text-primary btn btn-link" onClick={this.deleteACL.bind(this, permission.groupCn)}><i className={this.state.deleting?"fa fa-spinner fa-spin fa-lg":"fas fa-times fa-lg"}/></button></td>}
                   </tr>
                 )
               })

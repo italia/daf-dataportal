@@ -1303,3 +1303,26 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(response => response.json())
         }
       }
+
+      export function groupsInfo(groups){
+        var url = serviceurl.apiURLSecurity + '/daf/getGroupsInfo'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(groups)
+          })
+          .then(response => response.json())
+        }
+      }
