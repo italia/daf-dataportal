@@ -199,6 +199,7 @@ class Full extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.newNotifications !== nextProps.newNotifications) {
       clearTimeout(this.timeout);
+
       if (!nextProps.isNewFetching) {
           this.startPoll();
       }

@@ -195,7 +195,7 @@ class Header extends Component {
             isLoading: true,
             unreadNotifications: []
           })
-          dispatch(fetchNotifications(localStorage.getItem('user')))
+          dispatch(fetchNotifications(localStorage.getItem('user'), 20))
           .then(json => {
             console.log(json)
             this.setState({

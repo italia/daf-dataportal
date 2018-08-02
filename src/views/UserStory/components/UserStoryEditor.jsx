@@ -153,39 +153,40 @@ class UserStoryEditor extends Component {
   render() {
     return (
       
-    <Container>
-    {this.state.dataStory &&
-      <div>
-      {/* <Header title="La Tua Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/> */}
-          <EditBarTop 
-              title={this.state.dataStory.title}
-              org={this.state.dataStory.org}
-              onPublish={this.onPublish}
-              id={this.state.dataStory.id}
-              status={this.state.dataStory.published}
-              onSave={this.save}
-              onRemove={this.onRemove}
-              modified={this.state.modified}
-              saving={this.state.saving}
-              removing={this.state.removing}
-              pvt={this.state.dataStory.pvt}
-              author={this.state.dataStory.user}
-              loggedUser={this.props.loggedUser}
-          ></EditBarTop>
-          <UserStoryEditorContainer 
-            dataStory={this.state.dataStory} 
-            onChange={this.onChange}
-            widgets={this.state.widgets}
-            readonly={false}
+      <div className="container body">
+        <div className="main_container">
+        {this.state.dataStory &&
+          <div>
+          {/* <Header title="La Tua Storia" org={this.state.dataStory.org} pvt={this.state.dataStory.pvt}/> */}
+              <EditBarTop 
+                  title={this.state.dataStory.title}
+                  org={this.state.dataStory.org}
+                  onPublish={this.onPublish}
+                  id={this.state.dataStory.id}
+                  status={this.state.dataStory.published}
+                  onSave={this.save}
+                  onRemove={this.onRemove}
+                  modified={this.state.modified}
+                  saving={this.state.saving}
+                  removing={this.state.removing}
+                  pvt={this.state.dataStory.pvt}
+                  author={this.state.dataStory.user}
+                  loggedUser={this.props.loggedUser}
+              ></EditBarTop>
+              <UserStoryEditorContainer 
+                dataStory={this.state.dataStory} 
+                onChange={this.onChange}
+                widgets={this.state.widgets}
+                readonly={false}
+              />
+          </div>
+          }
+          <Prompt
+            when={this.state.modified}
+            message={'Ci sono delle modifiche non salvate, sei sicuro di voler lasciare la pagina?'}
           />
-      </div>
-      }
-      <Prompt
-        when={this.state.modified}
-        message={'Ci sono delle modifiche non salvate, sei sicuro di voler lasciare la pagina?'}
-      />    
-    </Container>
-  
+        </div>
+      </div>    
     );
   }
 
