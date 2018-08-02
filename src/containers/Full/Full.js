@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
-import { setCookie, isEditor, isAdmin } from '../../utility'
+import { setCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
 import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications } from './../../actions.js'
 import Header from '../../components/Header/';
@@ -30,7 +30,6 @@ import DashboardManager from '../../views/DashboardManager/DashboardManager';
 import Notifications from '../../views/Notifications/Notifications'
 import Organizations from '../../views/Settings/Organizations';
 import Users from '../../views/Settings/Users';
-import Crea from "../../views/Crea/Crea";
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
 
@@ -59,7 +58,7 @@ function PrivateRouteAdmin({ component: Component, authed, loggedUser, ...rest }
   return (
     <Route
       {...rest}
-      render={(props) => (authed === true && isAdmin(loggedUser))
+      render={(props) => (authed === true && (isAdmin(loggedUser) || isSysAdmin(loggedUser)))
         ? <Component {...props} />
         : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
     />
@@ -714,10 +713,9 @@ class Full extends Component {
                 {<PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />} 
                 <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
-                <PrivateRoute authed={this.state.authed} path="/private/settings" name="Settings" component={Settings} />
-                <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
-                <PrivateRoute authed={this.state.authed} path="/private/users" name="Users" component={Users} />
-                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/crea" name="Crea" component={Crea} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/settings" name="Settings" component={Settings} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/users" name="Users" component={Users} />
                 <Redirect from="/private" to="/private/home"/>
               </Switch>
             </div>

@@ -20,7 +20,7 @@ import {
 import PropTypes from 'prop-types'
 import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 import { serviceurl } from '../../config/serviceurl.js'
-import { isEditor, isAdmin } from '../../utility'
+import { isEditor, isAdmin, isSysAdmin } from '../../utility'
 
 class Sidebar extends Component {
   constructor(props) {
@@ -286,11 +286,11 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/userstory/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li> */}
-              {isAdmin(loggedUser) && <div>
+              {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) && <div>
               <li className="nav-title text-secondary">
                 Amministrazione
               </li>
-              {isAdmin(loggedUser) &&
+              {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) &&
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
