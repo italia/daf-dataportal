@@ -23,7 +23,7 @@ class Organizations extends Component {
     constructor(props){
         super(props)
         this.state = {
-            organizations: this.props.loggedUser.organizations,
+            organizations: [],
             users: [],
             allUsers: [],
             org: "",
@@ -33,7 +33,7 @@ class Organizations extends Component {
             userEdit: false,
             createOrg: false,
             query: '',
-            filter: this.props.loggedUser.organizations,
+            filter: [],
             nome:'',
             nomeWG:'',
             mail:'',
@@ -47,10 +47,14 @@ class Organizations extends Component {
             delete: '',
             disableSave: true,
             workgroupError:'',
-            workgroups:[]
+            workgroups:[],
+            removingUser:false,
+            userToRemove:'',
+            removingWg:false,
+            wgToRemove:'',
+            removingWgUser:false,
+            workgroupUserToRemove:''
         }
-
-        this.load()
         
         this.openOrgCreate = this.openOrgCreate.bind(this)
         this.openWGCreate = this.openWGCreate.bind(this)
@@ -63,7 +67,7 @@ class Organizations extends Component {
         this.checkDoublePassword = this.checkDoublePassword.bind(this)
     }
 
-    load(){
+    componentDidMount(){
         const { loggedUser } = this.props
         if(isSysAdmin(loggedUser)){
             console.log('utente sys admin, prendo tutte le organizzazioni')
@@ -176,11 +180,18 @@ class Organizations extends Component {
     removeWorkgroup(workgroup, selectedOrg){
         console.log('Elimino ' + workgroup)
         this.setState({
-            workgroupError: undefined
+            workgroupError: undefined,
+            removingWg:true,
+            wgToRemove:workgroup
         })        
         let response = organizationService.workgroupDel(workgroup)
         response.then((response) => {
             if (response.ok) {
+                this.setState({
+                    workgroupError: undefined,
+                    removingWg:false,
+                    wgToRemove:''
+                })    
                 this.getWorkgroups(selectedOrg)
                 toastr.success('Completato', 'Workgroup eliminato con successo')
             }else {
@@ -189,9 +200,15 @@ class Organizations extends Component {
                     if(json.code===1){
                         this.setState({
                             workgroupError: json.message,
+                            removingWg:false,
+                            wgToRemove:''
                         })
                         toastr.error('Errore', 'Errore durante l\'eliminazione del workgroup: ' + json.message)
                     }else{
+                        this.setState({
+                            removingWg:false,
+                            wgToRemove:''
+                        })
                         toastr.error('Errore', 'Errore durante l\'eliminazione del workgroup')
                     }
                 })
@@ -201,18 +218,34 @@ class Organizations extends Component {
 
     removeWorkgroupUser(workgroupuser, user){
         console.log('remove workgroupuser: ' + workgroupuser)
+        this.setState({
+            removingWgUser: true,
+            workgroupUserToRemove: user
+        })
         const { org } = this.state
         let response = organizationService.userDelWg(workgroupuser, user)
         response.then((response) => {
             if (response.ok) {
+                this.setState({
+                    removingWgUser:false,
+                    workgroupUserToRemove:''
+                })      
                 toastr.success('Completato', 'Utente eliminato con successo dal workgroup')
                 this.getWorkGroupUsers(workgroupuser)                   
             }else{
                 response.json().then(json => {
                     if (json.code == '1') {
+                        this.setState({
+                            removingWgUser:false,
+                            workgroupUserToRemove:''
+                        })     
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dal workgroup: ' + json.message)
                         console.log('User remove WG error: ' + json.message)
                     }else{
+                        this.setState({
+                            removingWgUser:false,
+                            workgroupUserToRemove:''
+                        })     
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dal workgroup')
                     }
                 })
@@ -222,21 +255,36 @@ class Organizations extends Component {
 
     removeUser(user){
         const { org } = this.state
+        this.setState({
+            removingUser:true,
+            userToRemove:user
+        })
         let response = organizationService.userDelOrg(org, user)
         response.then((response) => {
             if (response.ok) {
                 response.json().then(json => {
                     if (json.code != '0') {
+                        this.setState({
+                            removingUser:false,
+                            userToRemove:''
+                        })
                         this.getUsers(org);
-                        this.removeUserFromWorkgroups(user,org)                        
                         toastr.success('Completato', 'Utente eliminato con successo dall\'organizzazione')
                     }else{
+                        this.setState({
+                            removingUser:false,
+                            userToRemove:''
+                        })                        
                         this.getUsers(org);
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione: ' + json.message)
                         console.log('User remove error: ' + json.message)
                     }
                 })
             }else{
+                this.setState({
+                    removingUser:false,
+                    userToRemove:''
+                })     
                 toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione')
                 console.log('User remove error: ' + response.text())
             }
@@ -553,7 +601,7 @@ class Organizations extends Component {
 
     render() {
         const { loggedUser } = this.props
-        const { users, allUsers, organizations, filter, user, org, orgModal, userModal, userModalType ,userEdit, createOrg, checked, workgroupEdit, workgroups, workgroupUsers, orgUsers, selectedWorkgroup, selectedOrg, createWG} = this.state
+        const { users, allUsers, removingUser, userToRemove, removingWg, wgToRemove, removingWgUser, workgroupUserToRemove, filter, user, org, orgModal, userModal, userModalType ,userEdit, createOrg, checked, workgroupEdit, workgroups, workgroupUsers, orgUsers, selectedWorkgroup, selectedOrg, createWG} = this.state
     
         return (
             <div>
@@ -626,7 +674,7 @@ class Organizations extends Component {
                             <div className="col-5">
                                 <label htmlFor="example-search-input">Organizzazioni</label>
                             </div>
-                            {isAdmin(loggedUser) &&
+                            {isSysAdmin(loggedUser) &&
                             <div className="col-7">
                                 <button type="button" className="btn btn-link fa-pull-right p-0" title="Crea nuova organizzazione" onClick={this.openOrgCreate}>
                                     <i className="fa fa-plus-circle fa-lg"></i>
@@ -701,23 +749,23 @@ class Organizations extends Component {
                     {userEdit && 
                     <div className="form-group ml-5">
                         <label htmlFor="example-search-input" className="col-2 mb-3">Utenti</label>
-                        {isAdmin(loggedUser) &&
+                        {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) &&
                                 <button type="button" className="btn btn-link fa-pull-right p-0" title="Aggiungi nuovo utente" onClick={this.openUserModal.bind(this,'org')}>
                                     <i className="fa fa-plus-circle fa-lg" />
                                 </button>
                         }
                         <ul className="list-group">
-                            {(users && users.length>0)?users.map(users => {
-                                if (users.indexOf("default_admin") === -1)
+                            {(users && users.length>0)?users.map(user => {
+                                if (user.indexOf("default_admin") === -1)
                                     return(
-                                        <li className="list-group-item" key={users}>{users}
-                                            <button type="button" className="btn btn-link float-right" onClick={this.removeUser.bind(this, users)}><i className="fa fa-times fa-1" /></button>
+                                        <li className="list-group-item" key={user}>{user}
+                                            <button type="button" className="btn btn-link float-right" title="Rimuovi utente" onClick={this.removeUser.bind(this, user)}>{removingUser&&user===userToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-1" />}</button>
                                         </li>)
                                 }
                             ):<label className="m-2 col-form-label">Non ci sono utenti</label>
                             }
                         </ul>
-                        {/*isAdmin(loggedUser) &&
+                        {/*isSysAdmin(loggedUser) &&
                             <button type="button" className="btn btn-link fa-pull-right mt-3" title="Aggiungi nuovo utente" onClick={this.openUserModal.bind(this,'org')}>
                                 <i className="fa fa-plus-circle fa-lg" />
                             </button>
@@ -725,8 +773,8 @@ class Organizations extends Component {
                     </div>}
                     {workgroupEdit && 
                     <div className="form-group ml-5">
-                        <label htmlFor="example-search-input" className="col-2 mb-3">Workgroups</label>
-                        {isAdmin(loggedUser) &&
+                        <label htmlFor="example-search-input" className="mb-3">Workgroups <i>{selectedOrg}</i></label>
+                        {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) &&
                             <button type="button" className="btn btn-link fa-pull-right p-0" title="Crea nuovo Workgroup" onClick={this.openWGCreate}>
                                 <i className="fa fa-plus-circle fa-lg"></i>
                             </button>
@@ -735,7 +783,7 @@ class Organizations extends Component {
                             {(workgroups && workgroups.length > 0)?workgroups.map(workgroup => {
                                         return( 
                                             <li className={"list-group-item "+ (workgroup===selectedWorkgroup?"active":"")} key={workgroup}>{workgroup}
-                                                <button title="Elimina Workgroup" type="button"  className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={this.removeWorkgroup.bind(this, workgroup, selectedOrg)}><i className="fa fa-times fa-1" /></button>
+                                                <button title="Elimina Workgroup" type="button"  className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={this.removeWorkgroup.bind(this, workgroup, selectedOrg)}>{removingWg&&workgroup===wgToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-1" />}</button>
                                                 <button title="Gestione Utenti Workgroup" type="button" className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={()=>{this.getWorkGroupUsers(workgroup)}}><i className="fa fa-user-plus fa-lg" /></button>
                                             </li>)
                                     }
@@ -794,7 +842,7 @@ class Organizations extends Component {
                     {workgroupUsers && 
                         <div className="form-group ml-5">
                             <label htmlFor="example-search-input" className="mb-3">Utenti <i>{selectedWorkgroup}</i></label>
-                            {isAdmin(loggedUser) &&
+                            {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) &&
                                 <button type="button" className="btn btn-link fa-pull-right p-0" title="Aggiungi utente a workgroup" onClick={this.openUserModal.bind(this,'wg')}>
                                     <i className="fa fa-plus-circle fa-lg"></i>
                                 </button>
@@ -802,7 +850,7 @@ class Organizations extends Component {
                             {workgroupUsers.length > 0 && workgroupUsers.map(workgroupUser => {
                                 return(
                                     <li className="list-group-item" key={workgroupUser}>{workgroupUser}
-                                        <button title="Elimina Utente Workgroup" type="button" className="btn btn-link float-right" onClick={this.removeWorkgroupUser.bind(this, selectedWorkgroup, workgroupUser)}><i className="fa fa-times fa-1" /></button>
+                                        <button title="Elimina Utente Workgroup" type="button" className="btn btn-link float-right" onClick={this.removeWorkgroupUser.bind(this, selectedWorkgroup, workgroupUser)}>{removingWgUser&&workgroupUser===workgroupUserToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-1" />}</button>
                                      </li>)
                                 })
                             }
