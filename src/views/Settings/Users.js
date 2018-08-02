@@ -12,6 +12,7 @@ import {
     ModalBody,
     ModalFooter 
 } from 'react-modal-bootstrap';
+import { toastr } from 'react-redux-toastr'
 import UserService from "./services/UserService";
 
 const userService = new UserService()
@@ -45,7 +46,8 @@ class Users extends Component {
             message: '',
             pswok: true,
             enableSave: true,
-            saving: false
+            saving: false,
+            loading: true
         }
 
         this.load()
@@ -90,6 +92,7 @@ class Users extends Component {
                     delete:'',
                     saving: false
                 })
+                toastr.success('Completato', 'Utente creato con successo')
                 this.load();
             }else{
                 this.setState({
@@ -99,6 +102,7 @@ class Users extends Component {
                     saving: false,
                     message: json.message
                 })
+                toastr.error('Errore', 'Si è verificato un errore nella creazione dell\'utente: ' + json.message)
                 console.log('Create Error: ' + json.message)
             }
         })
@@ -109,6 +113,9 @@ class Users extends Component {
 
     load(){
         const { loggedUser } = this.props
+        this.setState({
+            loading: true
+        })
         if(isSysAdmin(loggedUser)){
             const users = userService.users("open_data_group")
             var userList = []
@@ -117,10 +124,11 @@ class Users extends Component {
                     if (user.indexOf("default_admin") === -1) {
                         userList.push(user)
                     }
-                    this.setState({
-                        users: userList,
-                        filter: userList
-                    })
+                })
+                this.setState({
+                    users: userList,
+                    filter: userList,
+                    loading: false
                 })
             })
         }else if(isAdmin(loggedUser)){
@@ -132,13 +140,22 @@ class Users extends Component {
                     users.then((json)=>{
                         json.member_user.map(user => {
                             if (user.indexOf("default_admin") === -1) {
-                                    this.state.users.push(user)
-                                    this.state.filter.push(user)
-                                }
+                                userList.push(user)                            }
                             })
+                        this.setState({
+                            users: userList,
+                            filter: userList,
+                            loading: false
+                        })
                         })
                     }
                 })
+            console.log('load terminato')
+        } else {
+            console.log('Utente non amministratore')
+            this.setState({
+                loading: false
+            })
         }
     }
 
@@ -211,10 +228,9 @@ class Users extends Component {
     }
 
     edit(){
-
-        console.log('User roles iniziali: ' + this.state.userRoles)
-        console.log('User roles adesso: ' + this.state.newUserRoles)
-
+        this.setState({
+            edit:undefined
+        })
         var rolesToAdd=[]
         var rolesToDelete=[]
         if(this.state.newUserRoles && this.state.newUserRoles.length>0){
@@ -229,15 +245,21 @@ class Users extends Component {
                 }
             }
         }
-        console.log('rolesToAdd: ' + rolesToAdd)
-        console.log('rolesToDelete: ' + rolesToDelete)
+        const { userAct, givenname, sn } = this.state
+        const { loggedUser } = this.props
 
-        const { userAct, givenname, sn, role } = this.state
-        var json = {
-            givenname: givenname,
-            sn: sn,
-            rolesToAdd: rolesToAdd,
-            rolesToDelete: rolesToDelete
+        if(isSysAdmin(loggedUser)){
+            var json = {
+                givenname: givenname,
+                sn: sn,
+                rolesToAdd: rolesToAdd,
+                rolesToDelete: rolesToDelete
+            }
+        } else {
+            var json = {
+                rolesToAdd: rolesToAdd,
+                rolesToDelete: rolesToDelete
+            }
         }
         let response = userService.saveChanges(userAct, json)
         this.setState({
@@ -246,23 +268,23 @@ class Users extends Component {
         response.then((json)=>{
             if(json.fields){
                 this.setState({
-                    userEdit: false,
-                    givenname: '',
-                    sn: '',
-                    role: '',
+                    userEdit: true,
                     edit: json.fields,
                     create: '',
                     delete: '',
                     saving: false
                 })
+                toastr.success('Completato', 'Utente modificato con successo')
             }else{
                 this.setState({
+                    userEdit: true,
                     edit: 'ko',
                     create: '',
                     delete: '',
                     message: json.message,
                     saving: false
                 })
+                toastr.error('Errore', 'Errore durante la modifica dell\'utente: ' + json.message)
                 console.log('Edit error: ' + json.message)
             }
         }) 
@@ -285,6 +307,7 @@ class Users extends Component {
                     edit: '',
                     saving: false
                 })
+                toastr.success('Completato', 'Utente eliminato con successo')
                 this.load();
             }else{
                 this.setState({
@@ -296,6 +319,7 @@ class Users extends Component {
                     edit: '',
                     saving: false
                 })
+                toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente: ' + json.message)
             }
         })
     }
@@ -351,41 +375,11 @@ class Users extends Component {
 
     render() {
         const { loggedUser } = this.props
-        const { users, filter, userAct, userModal, userEdit, createUser, uid, givenname, sn, mail, userpassword, repeatPassword, checked, role, userOrganizations, userRoles, newUserRoles} = this.state
+        const { users, filter, loading, userAct, userModal, userEdit, createUser, uid, givenname, sn, mail, userpassword, repeatPassword, checked, role, userOrganizations, userRoles, newUserRoles} = this.state
         console.log('userRoles: ' + userRoles)
         console.log('newUserRoles: ' + newUserRoles)
         return (
             <div>
-                {this.state.create === 'ok' && <div className="col-sm-10">
-                    <div className="alert alert-success" role="alert">
-                        <i className="fa fa-check-circle fa-lg m-t-2"></i> Utente creata con successo
-                    </div>
-                </div>}
-                {this.state.create === 'ko' && <div className="col-sm-10">
-                    <div className="alert alert-danger" role="alert">
-                        <i className="fa fa-times-circle fa-lg m-t-2"></i> Si è verificato un errore nella creazione dell'utente: {this.state.message}
-                    </div>
-                </div>}
-                {this.state.delete === 'ok' && <div className="col-sm-10">
-                    <div className="alert alert-success" role="alert">
-                        <i className="fa fa-check-circle fa-lg m-t-2"></i> Utente eliminata con successo
-                    </div>
-                </div>}
-                {this.state.delete === 'ko' && <div className="col-sm-10">
-                    <div className="alert alert-danger" role="alert">
-                        <i className="fa fa-times-circle fa-lg m-t-2"></i> Non è stato possibile eliminare l'utente: {this.state.message}
-                    </div>
-                </div>}
-                {this.state.edit === 'ok' && <div className="col-sm-10">
-                    <div className="alert alert-success" role="alert">
-                        <i className="fa fa-check-circle fa-lg m-t-2"></i> Utente modificato con successo
-                    </div>
-                </div>}
-                {this.state.edit === 'ko' && <div className="col-sm-10">
-                    <div className="alert alert-danger" role="alert">
-                        <i className="fa fa-times-circle fa-lg m-t-2"></i> Si è verificato un errore nella modifica dell'utente: {this.state.message}
-                    </div>
-                </div>}
                 <Modal
                     contentLabel="Delete Organization"
                     className="Modal__Bootstrap modal-dialog modal-60"
@@ -415,14 +409,17 @@ class Users extends Component {
                                 <label htmlFor="example-search-input">Utenti</label>
                             </div>
                             <div className="col-7">
+                                {isSysAdmin(loggedUser) &&
                                 <button type="button" className="btn btn-link fa-pull-right p-0" title="Crea nuovo utente" onClick={this.openUserCreate}>
                                     <i className="fa fa-plus-circle fa-lg"></i>
                                 </button>
+                                }
                             </div>
                         </div>
                         <ul className="list-group">
                             <li className="list-group-item"><input className="form-control" onChange={(e)=>{this.searchBy(e.target.value)}}></input></li>
-                            {filter && filter.length > 0 && filter.map(user =>
+                            
+                            {loading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>:filter && filter.length > 0 && filter.map(user =>
                                 <li className={"list-group-item " + (userAct===user?"active":"")} key={user} >{user}
                                     <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.editUser(user) }}><i className="fa fa-edit fa-lg" /></button>
                                     <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.openUserModal(user) }}><i className="fa fa-trash fa-lg" /></button>
@@ -430,9 +427,11 @@ class Users extends Component {
                             )
                             }
                         </ul>
+                        {isSysAdmin(loggedUser) &&
                         <button type="button" className="btn btn-link float-right mt-3" title="Crea nuovo utente" onClick={this.openUserCreate}>
                             <i className="fa fa-plus-circle fa-lg"></i>
                         </button>
+                        }
                     </div>
                     {createUser && 
                     <div className="col-7">
@@ -500,13 +499,13 @@ class Users extends Component {
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Nome</label>
                                 <div className="col-6">
-                                    <input className="form-control" type="search" value={givenname} onChange={(e) => { this.setState({ givenname: e.target.value }) }} />
+                                    <input className="form-control" type="search" disabled={!isSysAdmin(loggedUser)} value={givenname} onChange={(e) => { this.setState({ givenname: e.target.value }) }} />
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Cognome</label>
                                 <div className="col-6">
-                                    <input className="form-control" type="search" value={sn} onChange={(e) => { this.setState({ sn: e.target.value }) }} />
+                                    <input className="form-control" type="search" disabled={!isSysAdmin(loggedUser)} value={sn} onChange={(e) => { this.setState({ sn: e.target.value }) }} />
                                 </div>
                             </div>
                             {/* <div className="form-group row">
