@@ -16,33 +16,19 @@ import {
   ModalFooter 
 } from 'react-modal-bootstrap';
 import Select from 'react-select'
-import { serviceurl } from '../../config/serviceurl.js'
 
 
 import OrganizationService from '../Settings/services/OrganizationService.js'
 
 const organizationService = new OrganizationService()
 
-function ableToEdit(acl, user, dataset){
+function ableToEdit(user, dataset){
   var able = false
   if(user.uid === dataset.operational.group_own){
     able = true
-  }else{
-    for(var i=0; i<acl.length; i++){
-      if(user.organizations.indexOf(acl[i].groupName)!==-1){
-        able = true
-        break
-      }else{
-        for(var j=0; j<user.workgroups.length; j++ ){
-          if(user.workgroups[j].indexOf(acl[i].groupName)!==-1){
-            able = true
-            break
-          }
-        }
-      }
-    }
-  }
-
+  }/* else if((user.roles.indexOf('daf_adm_'+dataset.dcatapit.owner_org)!==-1) || (user.roles.indexOf('daf_edt_'+dataset.dcatapit.owner_org)!==-1)){
+    able = true
+  } */
   return able
 }
 
@@ -102,7 +88,7 @@ class DatasetAdmin extends Component{
     })
     let allOrgs = []
     let tmp = {}
-    if(loggedUser.roles.indexOf("daf_sys_admin")>-1 || loggedUser.roles.indexOf("daf_adm_"+dataset.dcatapit.owner_org)>-1){
+    if(loggedUser.roles.indexOf("daf_adm_"+dataset.dcatapit.owner_org)>-1){
       const response = organizationService.organizations()
       response.then(json => {
         json.elem.map(org=>{
@@ -118,13 +104,13 @@ class DatasetAdmin extends Component{
         })
       })
     }else{
-      loggedUser.organizations.map(org=>{
-        tmp = {
-          'value': org,
-          'label': org
-        }
-        allOrgs.push(tmp)
-      })
+      tmp = {
+        'value': dataset.dcatapit.owner_org,
+        'label': dataset.dcatapit.owner_org
+      }
+
+      allOrgs.push(tmp)
+
       this.setState({
         loading: false,
         orgs: allOrgs
@@ -328,7 +314,7 @@ class DatasetAdmin extends Component{
           <div className="col text-muted">
               <i className="text-icon fa-pull-left fas fa-unlock fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Permessi</b></h4>
           </div>
-          {ableToEdit(acl, loggedUser, dataset) && <div className="col ml-auto mb-4">
+          {ableToEdit( loggedUser, dataset) && <div className="col ml-auto mb-4">
               <button className="float-right btn btn-primary" onClick={this.toggle}><i className="fa fa-plus fa-lg"/></button>
           </div>}
         </div>
@@ -341,7 +327,7 @@ class DatasetAdmin extends Component{
                   <th scope="col">Gruppo</th>
                   <th scope="col">Tipo</th>
                   <th scope="col">Appartenente a</th>
-                  {ableToEdit(acl, loggedUser, dataset) && <th scope="col"> </th>}
+                  {ableToEdit(loggedUser, dataset) && <th scope="col"> </th>}
                 </tr>
             </thead>
             <tbody>
@@ -351,7 +337,7 @@ class DatasetAdmin extends Component{
                     <td>{permission.groupCn}</td>
                     <td>{permission.dafGroupType==="Organization"?"Organizzazione":permission.dafGroupType}</td>
                     <td>{permission.parentGroup}</td>
-                    {ableToEdit(acl, loggedUser, dataset) && <td><button className="float-right text-primary btn btn-link" onClick={this.deleteACL.bind(this, permission.groupCn)}><i className={this.state.deleting?"fa fa-spinner fa-spin fa-lg":"fas fa-times fa-lg"}/></button></td>}
+                    {ableToEdit(loggedUser, dataset) && <td><button className="float-right text-primary btn btn-link" onClick={this.deleteACL.bind(this, permission.groupCn)}><i className={this.state.deleting?"fa fa-spinner fa-spin fa-lg":"fas fa-times fa-lg"}/></button></td>}
                   </tr>
                 )
               })
