@@ -203,12 +203,22 @@ class Organizations extends Component {
                             removingWg:false,
                             wgToRemove:''
                         })
+                        console.log('Errore durante l\'eliminazione del workgroup: ' + json.message)
                         toastr.error('Errore', 'Errore durante l\'eliminazione del workgroup: ' + json.message)
-                    }else{
+                    }else if(json.code===0){
+                        this.setState({
+                            workgroupError: json.message,
+                            removingWg:false,
+                            wgToRemove:''
+                        })
+                        console.log('Errore durante l\'eliminazione del workgroup: ' + json.message)
+                        toastr.error('Errore', 'Errore durante l\'eliminazione del workgroup')
+                    }else {
                         this.setState({
                             removingWg:false,
                             wgToRemove:''
                         })
+                        console.log('Errore durante l\'eliminazione del workgroup')
                         toastr.error('Errore', 'Errore durante l\'eliminazione del workgroup')
                     }
                 })
@@ -239,13 +249,21 @@ class Organizations extends Component {
                             removingWgUser:false,
                             workgroupUserToRemove:''
                         })     
-                        toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dal workgroup: ' + json.message)
                         console.log('User remove WG error: ' + json.message)
-                    }else{
+                        toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dal workgroup: ' + json.message)
+                    }else  if (json.code == '0') {
                         this.setState({
                             removingWgUser:false,
                             workgroupUserToRemove:''
-                        })     
+                        }) 
+                        console.log('User remove WG error: ' + json.message)    
+                        toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dal workgroup')
+                    }else {
+                        this.setState({
+                            removingWgUser:false,
+                            workgroupUserToRemove:''
+                        })  
+                        console.log('User remove WG error')   
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dal workgroup')
                     }
                 })
@@ -281,12 +299,30 @@ class Organizations extends Component {
                     }
                 })
             }else{
-                this.setState({
-                    removingUser:false,
-                    userToRemove:''
-                })     
-                toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione')
-                console.log('User remove error: ' + response.text())
+                response.json().then(json => {
+                    if (json.code == '1') {
+                        this.setState({
+                            removingUser:false,
+                            userToRemove:''
+                        })     
+                        toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione: ' + json.message)
+                        console.log('User remove error: ' + json.message)
+                    } else if (json.code == '0') {
+                        this.setState({
+                            removingUser:false,
+                            userToRemove:''
+                        })     
+                        toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione')
+                        console.log('User remove error: ' + json.message)
+                    } else {
+                        this.setState({
+                            removingUser:false,
+                            userToRemove:''
+                        })     
+                        toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione')
+                        console.log('User remove error')
+                    }
+                })
             }
         })   
     }
@@ -325,12 +361,22 @@ class Organizations extends Component {
                         console.log('User Add error: '+json.message)
                         toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente all\'organizzazione: ' + json.message)
                     
+                    } else if(json.code== '0'){
+                        this.getUsers(org);
+                        this.setState({
+                            user: '',
+                            userModal: false,
+                            saving: false
+                        })
+                        console.log('User Add error: '+json.message)
+                        toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente all\'organizzazione')                    
                     } else {
                         this.setState({
                             user:'',
                             saving: false
                         })
                         toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente all\'organizzazione')
+                        console.log('User Add error')
                     }
                 })
             }
@@ -361,12 +407,22 @@ class Organizations extends Component {
                         console.log('User Add error: '+json.message)
                         toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente al workgroup: ' + json.message)
                     
+                    } else  if(json.code== '0'){
+                        this.setState({
+                            user: '',
+                            userModal: false,
+                            saving: false
+                        })
+                        console.log('User Add error: '+json.message)
+                        toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente al workgroup')
+                    
                     } else {
                         this.setState({
                             user:'',
                             saving: false
                         })
                         toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente al workgroup')
+                        console.log('User Add error')
                     }
                 })
             }
@@ -399,11 +455,18 @@ class Organizations extends Component {
                         })
                         console.log('Create wg error: '+ json.message)
                         toastr.error('Errore', 'Errore durante la creazione del workgroup: ' + json.message)
-                    }else{
+                    } else if(json.code== '0'){
+                        this.setState({
+                            saving: false
+                        })
+                        console.log('Create wg error: '+ json.message)
+                        toastr.error('Errore', 'Errore durante la creazione del workgroup')
+                    } else {
                         this.setState({
                             saving: false
                         })
                         toastr.error('Errore', 'Errore durante la creazione del workgroup')
+                        console.log('Create wg error')
                     }
                 })
             }
@@ -436,6 +499,13 @@ class Organizations extends Component {
 
                         })
                         toastr.error('Errore', 'Errore durante la creazione dell\'organizzazione: ' + json.message)
+                        console.log('Create org error: '+ json.message)
+                    } else if(json.code=='0'){
+                        this.setState({
+                            saving: false
+
+                        })
+                        toastr.error('Errore', 'Errore durante la creazione dell\'organizzazione')
                         console.log('Create org error: '+ json.message)
                     } else {
                         this.setState({
@@ -470,14 +540,21 @@ class Organizations extends Component {
                                 saving: false
                             })
                             toastr.error('Errore', 'Errore durante l\'eliminazione dell\'organizzazione: ' + json.message)
-                            this.load();
-                        }else{
+                        } else if (json.code=='0') {
+                            this.setState({
+                                orgModal: false,
+                                message: json.message,
+                                saving: false
+                            })
+                            console.log('Errore durante l\'eliminazione dell\'organizzazione ' +  json.message)
+                            toastr.error('Errore', 'Errore durante l\'eliminazione dell\'organizzazione')
+                        } else {
                             this.setState({
                                 orgModal: false,
                                 saving: false
                             })
+                            console.log('Errore durante l\'eliminazione dell\'organizzazione')
                             toastr.error('Errore', 'Errore durante l\'eliminazione dell\'organizzazione')
-                            this.load();
                     }
                 })
             }
