@@ -44,7 +44,8 @@ class DatasetAdmin extends Component{
       workgroups: [],
       selectedWg: '',
       saving: false,
-      deleting: false
+      deleting: false,
+      isLoading: true
     }
 
     this.toggle = this.toggle.bind(this)
@@ -63,7 +64,8 @@ class DatasetAdmin extends Component{
       console.log(json)
       if(json.code!==undefined){
         this.setState({
-          message: json.message
+          message: json.message,
+          isLoading: false
         })
       }else if(json.code===undefined){
         var acls = []
@@ -73,7 +75,8 @@ class DatasetAdmin extends Component{
         dispatch(groupsInfo(acls))
         .then(json=>{
           this.setState({
-            acl: json
+            acl: json,
+            isLoading: false
           })
         })
       }
@@ -164,7 +167,8 @@ class DatasetAdmin extends Component{
     dispatch(setDatasetACL(dataset.dcatapit.name,(selectedWg!==''?selectedWg:selectedOrg)))
     .then(json=>{
       this.setState({
-        saving:false
+        saving:false,
+        isLoading: true
       })
       if(json.code!==undefined){
         toastr.error("Errore", json.message)
@@ -178,7 +182,8 @@ class DatasetAdmin extends Component{
       .then(risp => {
         if(risp.code!==undefined){
           this.setState({
-            message: risp.message
+            message: risp.message,
+            isLoading: false
           })
         }else if(risp.code===undefined){
           var acls = []
@@ -191,6 +196,7 @@ class DatasetAdmin extends Component{
             this.setState({
               acl: json,
               aggiungi: false,
+              isLoading: false,
               selectedOrg: '',
               selectedWg: '',
               message: ''
@@ -209,7 +215,8 @@ class DatasetAdmin extends Component{
     dispatch(deleteDatasetACL(dataset.dcatapit.name, groupname))
     .then(json=>{
       this.setState({
-        deleting:false
+        deleting:false,
+        isLoading: true
       })
       if(json.code!==undefined){
         toastr.error("Errore", json.message)
@@ -223,7 +230,8 @@ class DatasetAdmin extends Component{
       .then(risp => {
         if(risp.code!==undefined){
           this.setState({
-            message: risp.message
+            message: risp.message,
+            isLoading: false
           })
         }else if(risp.code===undefined){
           var acls = []
@@ -236,6 +244,7 @@ class DatasetAdmin extends Component{
               this.setState({
                 acl: json,
                 aggiungi: false,
+                isLoading: false,
                 selectedOrg: '',
                 selectedWg: '',
                 message: ''
@@ -318,7 +327,7 @@ class DatasetAdmin extends Component{
               <button className="float-right btn btn-primary" onClick={this.toggle}><i className="fa fa-plus fa-lg"/></button>
           </div>}
         </div>
-        <div className="col-12">
+        {this.state.isLoading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :<div className="col-12">
           {this.state.message}
           {acl.length>0 &&
           <table className="table table-striped">
@@ -344,7 +353,7 @@ class DatasetAdmin extends Component{
               }
             </tbody>
           </table>}
-        </div>
+        </div>}
       </div>
     )
   }
