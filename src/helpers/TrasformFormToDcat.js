@@ -21,7 +21,7 @@ export function createOperational (values, data) {
   var input_src = 'input_src'
   if(values.modalitacaricamento==1){
     var param = "format=".concat(values.filetype?values.filetype:'csv')
-    var url = "/home/".concat(localStorage.getItem('user').toLowerCase()).concat("/").concat(values.domain).concat("/").concat(values.subdomain).concat("/").concat(values.nome)
+    var url = "/home/".concat(localStorage.getItem('user').toLowerCase()).concat("/ftp/").concat(values.domain).concat("/").concat(values.subdomain).concat("/").concat(values.nome)
     data[operational][input_src] = {"sftp": [{
         "name": "sftp_local",
         "url": url,

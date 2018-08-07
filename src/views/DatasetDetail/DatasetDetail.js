@@ -17,7 +17,7 @@ import { serviceurl } from "../../config/serviceurl";
 // Services
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import WidgetCard from '../../components/Cards/WidgetCard';
-import { decodeTheme, isPublic, decodeCkan } from '../../utility'
+import { decodeTheme, isPublic, decodeCkan, isSysAdmin } from '../../utility'
 import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
 import ShareButton from '../../components/ShareButton/ShareButton';
@@ -28,6 +28,14 @@ function checkIsLink(val){
     return <a className="text-primary" href={val} target='_blank'>{val}</a>
   
   return val
+}
+
+function ableToPublish(user, dataset){
+  var able = false
+  if((user.uid === dataset.operational.group_own) && ((user.roles.indexOf('daf_adm_'+dataset.dcatapit.owner_org)!==-1) || isSysAdmin(user))){
+    able = true
+  }
+  return able
 }
 
 class DatasetDetail extends Component {
@@ -299,6 +307,38 @@ class DatasetDetail extends Component {
         return name
     }
 
+    pubblicaDataset(){
+      const { dispatch, query } = this.props
+      dispatch(setDatasetACL(dataset.dcatapit.name,'open_data_group'))
+      .then(json => {
+        if(json.code!==undefined){
+          toastr.error("Errore", json.message)
+          console.error(json.message)
+        }
+        if(json.fields && json.fields==="ok"){
+          toastr.success("Completato", "Il dataset è un Open data!")
+          console.log(json.message)
+          dispatch(datasetDetail(nome, query, isPublic()))
+          .catch(error => { console.log('Errore durante il caricamento del dataset ' + nome); console.error(error); this.setState({ hidden: false }) })
+        }
+      })
+    }
+
+    publish(){
+      const toastrConfirmOptions = {
+        okText: 'Pubblica',
+        cancelText: 'Annulla',
+        onOk: () => console.log('OK: clicked'),
+        onCancel: () => console.log('CANCEL: clicked'),
+        component: () => (
+          <div className="rrt-message">
+            Stai rendendo il dataset un <b>Open data</b>, sei sicuro di questa scelta?
+          </div>
+        )
+      };
+      toastr.confirm(null, toastrConfirmOptions)
+    }
+
     render() {
         const { dataset, metadata, ope, feed, iframes, isFetching, query } = this.props
         var metadataThemes = undefined
@@ -560,11 +600,11 @@ class DatasetDetail extends Component {
                                         </div>
                                     }
 
-                                    <div className="col-12 my-3">
+                                    <div className="col-8 my-3">
                                         <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + dataset.dcatapit.modified}</p>
                                         <i className="fa fa-balance-scale text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{dataset.dcatapit.license_title?dataset.dcatapit.license_title:'Licenza non trovata'}</p>
                                         {dataset.dcatapit.privatex?
-                                          <div><i className="fa fa-lock text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è privato</p></div>:
+                                          <div className="text-muted pb-1 mb-2"><i className="fa fa-lock text-icon pr-3" />Il dataset è privato{ableToPublish(this.props.loggedUser, dataset) && <i className="fas fa-paper-plane text-primary fa-lg pointer fa-pull-right" style={{ lineHeight: '1' }} onClick={this.publish.bind(this)}/>}</div>:
                                           <div><i className="fa fa-globe text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p></div>
                                           }
                                     </div>
@@ -792,7 +832,7 @@ class DatasetDetail extends Component {
                                         <div className="col-12 my-3">
                                             <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + metadata.metadata_created}</p>
                                             <i className="fa fa-balance-scale text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{metadata.license_title}</p>
-                                            <i className="fa fa-lock text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p>
+                                            <i className="fa fa-globe text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p>
                                         </div>
 
                                         <div className="col-12 my-3">
@@ -894,7 +934,8 @@ DatasetDetail.propTypes = {
 function mapStateToProps(state) {
     const { isFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
     const { newNotifications } = state.notificationsReducer['notifications'] || {}
-    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications }
+    const { loggedUser } = state.userReducer['obj'] || {}
+    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser }
 }
 
 export default connect(mapStateToProps)(DatasetDetail)

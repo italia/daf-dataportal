@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
-import { setCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
+import { setCookie, setSupersetCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
 import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications } from './../../actions.js'
 import Header from '../../components/Header/';
@@ -183,6 +183,7 @@ class Full extends Component {
       validationMSgOrg: 'Campo obbligatorio',
       authed: false,
       loading: true,
+      iframe: ''
     }
 
     this.openSearch = this.openSearch.bind(this)
@@ -232,6 +233,7 @@ class Full extends Component {
       askPermission(this.props.loggedUser.uid)
       dispatch(fetchNewNotifications(localStorage.getItem('user')))
       dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
+      document.forms['supset_open'].submit()
     } else {
       if (localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
@@ -241,7 +243,7 @@ class Full extends Component {
                 dispatch(getApplicationCookie('superset'))
                 .then(json => {
                   if (json) {
-                    setCookie(json)
+                    setSupersetCookie(json)
                   }
                 })
                 dispatch(getApplicationCookie('metabase'))
@@ -275,6 +277,7 @@ class Full extends Component {
                         //dispatch(fetchNotifications(this.props.loggedUser.uid))
                         dispatch(fetchNewNotifications(localStorage.getItem('user')))
                         dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
+                        document.forms['supset_open'].submit()
                   })
                 }else{
                   console.log('Login Action Response: ' + response.statusText)
@@ -310,6 +313,7 @@ class Full extends Component {
             this.props.history.push('/login')
           }
         }
+        
       }
 
   openSearch(){
@@ -557,8 +561,10 @@ class Full extends Component {
 
     if (this.props.authed)
       this.state.authed = true;  
-    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
-      <div className="app aside-menu-show">
+    return (
+    <div> 
+      { this.state.loading && (<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>)} 
+      {!this.state.loading && <div className="app aside-menu-show">
       {/* Modal per creazione nuova Storia */}
       {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
           <form>
@@ -724,7 +730,14 @@ class Full extends Component {
         </div>
         <Footer />
       </div>
+      }
     );
+    <form id="supset_open" target="open_supset" action={serviceurl.urlSupersetOpen +'/managed/bi-open-login'} method="POST">
+      <input name="Authorization" type="text" value={"Bearer "+localStorage.getItem('token')} hidden/>
+    </form>
+    <iframe name="open_supset" hidden/>
+    </div>
+    )
   }
 }
 

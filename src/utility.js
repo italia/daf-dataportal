@@ -73,6 +73,18 @@ export function transformName(name){
     }
   }
 
+  export function setSupersetCookie(json){
+    if(json.error!=1){
+      if(json.length>0){
+        for(let i in json) {
+          let cookie = json[i];
+          if(cookie)
+            document.cookie = cookie.name+"="+ cookie.value + "; path="+cookie.path+"; domain=.dataportal" + serviceurl.domain;
+        }
+      }
+    }
+  }
+
   export function isSysAdmin(loggedUser){
     var isAdmin = false;
     loggedUser && loggedUser.roles.map((role) => {
