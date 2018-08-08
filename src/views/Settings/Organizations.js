@@ -68,6 +68,10 @@ class Organizations extends Component {
     }
 
     componentDidMount(){
+        this.load()
+    }
+
+    load(){
         const { loggedUser } = this.props
         if(isSysAdmin(loggedUser)){
             console.log('utente sys admin, prendo tutte le organizzazioni')
