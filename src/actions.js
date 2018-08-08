@@ -1326,3 +1326,20 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(response => response.json())
         }
       }
+
+      export function getSupersetOpenCookie() {
+        console.log("Called getSupersetOpenCookie");
+        var url = serviceurl.apiURLSSOManager + '/secured/bi-open-loginH'
+        return dispatch => {
+            return fetch(url, {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  //'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+              })
+              .then(response => response.text())
+              .catch(error => JSON.parse("{}"))
+        }
+      }

@@ -4,6 +4,7 @@ export function createOperational (values, data) {
   var operational = 'operational'
   data[operational] = {}
   data[operational]['group_own'] = localStorage.getItem('user').toLowerCase() //values.ownership
+  data[operational]['acl'] = []
   data[operational]['theme'] = values.domain
   data[operational]['subtheme'] = values.subdomain
   data[operational]['read_type'] = values.read_type
@@ -21,7 +22,7 @@ export function createOperational (values, data) {
   var input_src = 'input_src'
   if(values.modalitacaricamento==1){
     var param = "format=".concat(values.filetype?values.filetype:'csv')
-    var url = "/home/".concat(localStorage.getItem('user').toLowerCase()).concat("/").concat(values.domain).concat("/").concat(values.subdomain).concat("/").concat(values.nome)
+    var url = "/home/".concat(localStorage.getItem('user').toLowerCase()).concat("/ftp/").concat(values.domain).concat("/").concat(values.subdomain).concat("/").concat(values.nome)
     data[operational][input_src] = {"sftp": [{
         "name": "sftp_local",
         "url": url,

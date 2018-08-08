@@ -16,33 +16,19 @@ import {
   ModalFooter 
 } from 'react-modal-bootstrap';
 import Select from 'react-select'
-import { serviceurl } from '../../config/serviceurl.js'
 
 
 import OrganizationService from '../Settings/services/OrganizationService.js'
 
 const organizationService = new OrganizationService()
 
-function ableToEdit(acl, user, dataset){
+function ableToEdit(user, dataset){
   var able = false
   if(user.uid === dataset.operational.group_own){
     able = true
-  }else{
-    for(var i=0; i<acl.length; i++){
-      if(user.organizations.indexOf(acl[i].groupName)!==-1){
-        able = true
-        break
-      }else{
-        for(var j=0; j<user.workgroups.length; j++ ){
-          if(user.workgroups[j].indexOf(acl[i].groupName)!==-1){
-            able = true
-            break
-          }
-        }
-      }
-    }
-  }
-
+  }/* else if((user.roles.indexOf('daf_adm_'+dataset.dcatapit.owner_org)!==-1) || (user.roles.indexOf('daf_edt_'+dataset.dcatapit.owner_org)!==-1)){
+    able = true
+  } */
   return able
 }
 
@@ -58,7 +44,8 @@ class DatasetAdmin extends Component{
       workgroups: [],
       selectedWg: '',
       saving: false,
-      deleting: false
+      deleting: false,
+      isLoading: true
     }
 
     this.toggle = this.toggle.bind(this)
@@ -77,7 +64,8 @@ class DatasetAdmin extends Component{
       console.log(json)
       if(json.code!==undefined){
         this.setState({
-          message: json.message
+          message: json.message,
+          isLoading: false
         })
       }else if(json.code===undefined){
         var acls = []
@@ -87,7 +75,8 @@ class DatasetAdmin extends Component{
         dispatch(groupsInfo(acls))
         .then(json=>{
           this.setState({
-            acl: json
+            acl: json,
+            isLoading: false
           })
         })
       }
@@ -102,7 +91,7 @@ class DatasetAdmin extends Component{
     })
     let allOrgs = []
     let tmp = {}
-    if(loggedUser.roles.indexOf("daf_sys_admin")>-1 || loggedUser.roles.indexOf("daf_adm_"+dataset.dcatapit.owner_org)>-1){
+    if(loggedUser.roles.indexOf("daf_adm_"+dataset.dcatapit.owner_org)>-1){
       const response = organizationService.organizations()
       response.then(json => {
         json.elem.map(org=>{
@@ -118,13 +107,13 @@ class DatasetAdmin extends Component{
         })
       })
     }else{
-      loggedUser.organizations.map(org=>{
-        tmp = {
-          'value': org,
-          'label': org
-        }
-        allOrgs.push(tmp)
-      })
+      tmp = {
+        'value': dataset.dcatapit.owner_org,
+        'label': dataset.dcatapit.owner_org
+      }
+
+      allOrgs.push(tmp)
+
       this.setState({
         loading: false,
         orgs: allOrgs
@@ -178,7 +167,8 @@ class DatasetAdmin extends Component{
     dispatch(setDatasetACL(dataset.dcatapit.name,(selectedWg!==''?selectedWg:selectedOrg)))
     .then(json=>{
       this.setState({
-        saving:false
+        saving:false,
+        isLoading: true
       })
       if(json.code!==undefined){
         toastr.error("Errore", json.message)
@@ -192,7 +182,8 @@ class DatasetAdmin extends Component{
       .then(risp => {
         if(risp.code!==undefined){
           this.setState({
-            message: risp.message
+            message: risp.message,
+            isLoading: false
           })
         }else if(risp.code===undefined){
           var acls = []
@@ -205,6 +196,7 @@ class DatasetAdmin extends Component{
             this.setState({
               acl: json,
               aggiungi: false,
+              isLoading: false,
               selectedOrg: '',
               selectedWg: '',
               message: ''
@@ -223,7 +215,8 @@ class DatasetAdmin extends Component{
     dispatch(deleteDatasetACL(dataset.dcatapit.name, groupname))
     .then(json=>{
       this.setState({
-        deleting:false
+        deleting:false,
+        isLoading: true
       })
       if(json.code!==undefined){
         toastr.error("Errore", json.message)
@@ -237,7 +230,8 @@ class DatasetAdmin extends Component{
       .then(risp => {
         if(risp.code!==undefined){
           this.setState({
-            message: risp.message
+            message: risp.message,
+            isLoading: false
           })
         }else if(risp.code===undefined){
           var acls = []
@@ -250,6 +244,7 @@ class DatasetAdmin extends Component{
               this.setState({
                 acl: json,
                 aggiungi: false,
+                isLoading: false,
                 selectedOrg: '',
                 selectedWg: '',
                 message: ''
@@ -328,11 +323,11 @@ class DatasetAdmin extends Component{
           <div className="col text-muted">
               <i className="text-icon fa-pull-left fas fa-unlock fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Permessi</b></h4>
           </div>
-          {ableToEdit(acl, loggedUser, dataset) && <div className="col ml-auto mb-4">
+          {ableToEdit( loggedUser, dataset) && <div className="col ml-auto mb-4">
               <button className="float-right btn btn-primary" onClick={this.toggle}><i className="fa fa-plus fa-lg"/></button>
           </div>}
         </div>
-        <div className="col-12">
+        {this.state.isLoading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :<div className="col-12">
           {this.state.message}
           {acl.length>0 &&
           <table className="table table-striped">
@@ -341,7 +336,7 @@ class DatasetAdmin extends Component{
                   <th scope="col">Gruppo</th>
                   <th scope="col">Tipo</th>
                   <th scope="col">Appartenente a</th>
-                  {ableToEdit(acl, loggedUser, dataset) && <th scope="col"> </th>}
+                  {ableToEdit(loggedUser, dataset) && <th scope="col"> </th>}
                 </tr>
             </thead>
             <tbody>
@@ -351,14 +346,14 @@ class DatasetAdmin extends Component{
                     <td>{permission.groupCn}</td>
                     <td>{permission.dafGroupType==="Organization"?"Organizzazione":permission.dafGroupType}</td>
                     <td>{permission.parentGroup}</td>
-                    {ableToEdit(acl, loggedUser, dataset) && <td><button className="float-right text-primary btn btn-link" onClick={this.deleteACL.bind(this, permission.groupCn)}><i className={this.state.deleting?"fa fa-spinner fa-spin fa-lg":"fas fa-times fa-lg"}/></button></td>}
+                    {ableToEdit(loggedUser, dataset) && <td><button className="float-right text-primary btn btn-link" onClick={this.deleteACL.bind(this, permission.groupCn)}><i className={this.state.deleting?"fa fa-spinner fa-spin fa-lg":"fas fa-times fa-lg"}/></button></td>}
                   </tr>
                 )
               })
               }
             </tbody>
           </table>}
-        </div>
+        </div>}
       </div>
     )
   }

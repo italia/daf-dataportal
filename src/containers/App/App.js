@@ -30,6 +30,9 @@ class App extends Component {
     }else{
       var split = host.split('.')
       domain = split[0]
+      if(split[0]==='localhost'){
+        domain = 'dataportal'
+      }
     }
     dispatch(fetchProperties(domain))
     .then(json => {

@@ -8197,6 +8197,13 @@ button.bg-gray-900:focus {
 a.text-primary:hover, a.text-primary:focus {
   color: #0066CC!important; }
 
+
+.text-accento {
+  color: var(--accento)!important; }
+
+a.text-accento:hover, a.text-accento:focus {
+  color: var(--accento)!important; }
+
 .text-secondary {
   color: #a4b7c1 !important; }
 
