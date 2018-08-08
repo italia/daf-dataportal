@@ -4,6 +4,7 @@ export function createOperational (values, data) {
   var operational = 'operational'
   data[operational] = {}
   data[operational]['group_own'] = localStorage.getItem('user').toLowerCase() //values.ownership
+  data[operational]['acl'] = []
   data[operational]['theme'] = values.domain
   data[operational]['subtheme'] = values.subdomain
   data[operational]['read_type'] = values.read_type
