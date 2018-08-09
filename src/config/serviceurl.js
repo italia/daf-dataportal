@@ -36,7 +36,7 @@ export const serviceurl = {
     apiURLCatalog: "https://api.daf.teamdigitale.test/catalog-manager/v1",
     apiURLSecurity : "https://api.daf.teamdigitale.test/security-manager/v1",
     apiURLDataset : "https://api.daf.teamdigitale.test/dataset-manager/v1",
-    apiURLhdfs: "http://api.daf.teamdigitale.test/hdfs/proxy",
+    apiURLhdfs: "https://api.daf.teamdigitale.test/hdfs/proxy",
     apiCKAN: "https://api.daf.teamdigitale.test/dati-gov/ckan_proxy",
     apiMedium: "https://api.daf.teamdigitale.test/dati-gov/medium", 
     urlSemantic: "https://api.daf.teamdigitale.test/stanbol/ontonethub/ontologies/find",
