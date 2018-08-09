@@ -6,13 +6,13 @@ import WizardFormThirdPage from './WizardFormThirdPage';
 import Steps, { Step } from 'rc-steps';
 import themes from '../../data/themes'
 import { connect  } from 'react-redux';
-import { getSchema, getSystemNameKylo } from '../../actions';
+import { getSchema, getSchemaWS, getSystemNameKylo } from '../../actions';
 import { change, reset } from 'redux-form'
 
 import 'rc-steps/assets/index.css'
 import 'rc-steps/assets/iconfont.css'
 
-const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiuungi i Metadati'},{'title': 'Modalità di invio'}]
+const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiuungi i Metadati'}]
 
 class WizardForm extends Component {
   constructor(props) {
@@ -21,6 +21,10 @@ class WizardForm extends Component {
     this.previousPage = this.previousPage.bind(this);
     this.setUploading = this.setUploading.bind(this);
     this.onDropFunction = this.onDropFunction.bind(this) 
+    this.addSemanticToForm = this.addSemanticToForm.bind(this)
+    this.aggiornaStato = this.aggiornaStato.bind(this)
+    this.setName = this.setName.bind(this)
+    this.getSchemaFromWS = this.getSchemaFromWS.bind(this)
     this.state = {
       page: 0,
       uploading: false,
@@ -31,16 +35,17 @@ class WizardForm extends Component {
     };
   }
 
-  addSemanticToForm(semantics, id, context, subject, predicate, rdf_object, uri_voc, index, aggiornaStato){
+  addSemanticToForm(semantics, id, context, subject, predicate, rdf_object, uri_voc, index){
     console.log('addSemanticToForm')
     const { dispatch } = this.props
-    aggiornaStato(context, uri_voc, index)
+    this.aggiornaStato(context, uri_voc, index)
     dispatch(change('wizard', 'inferred['+index+'].id_concetto', id))
     dispatch(change('wizard', 'inferred['+index+'].subject', subject))
     dispatch(change('wizard', 'inferred['+index+'].predicate', predicate))
     dispatch(change('wizard', 'inferred['+index+'].rdf_object', rdf_object))
     dispatch(change('wizard', 'inferred['+index+'].uri_voc', uri_voc))
-    this.input.onChange(semantics)
+    dispatch(change('wizard', 'inferred['+index+'].concetto', semantics))
+    //this.input.onChange(semantics)
   }
 
   aggiornaStato(context, uri_voc, index){
@@ -102,6 +107,29 @@ class WizardForm extends Component {
    return appo;
   }
 
+  getSchemaFromWS(fields, urlws){
+    console.log('getSchemaFromWS: ' + urlws) 
+    const { dispatch } = this.props;
+    this.setUploading(true, undefined);
+    dispatch(getSchemaWS( urlws, 'csv'))
+    .then(json => { 
+      if(json.status=='error'){
+        this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+        console.log('error: ' + json.message);
+      }else{
+        this.calcDataFields(fields, json)
+        this.setUploading(false, undefined);
+      }
+    })
+  }
+
+  setName(e){
+    console.log(e.target.value)
+    const { dispatch } = this.props;
+    dispatch(getSystemNameKylo(e.target.value))
+    .then(json => dispatch(change('wizard', 'nome', json.system_name)))
+  }
+
   onDropFunction(fields, filesToUpload, e){
     console.log('props: ' + this.props)
     const { dispatch } = this.props
@@ -113,19 +141,13 @@ class WizardForm extends Component {
                         this.setUploading(false, undefined);
                         dispatch(change('wizard', 'separator', json.separator))
                         dispatch(change('wizard', 'filesToUpload', filesToUpload))
+                        dispatch(change('wizard', 'nomefile', filesToUpload[0].name))
                         this.nextPage()
                     })
         .catch(exception => {
                         console.log('Eccezione !!! ' + exception)
                         this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
                         })
-
-    let nomeFile = filesToUpload[0].name.toLowerCase().split(".")[0]
-    nomeFile = nomeFile.toLowerCase()
-    nomeFile.split(" ").join("-")
-    dispatch(change('wizard', 'title', nomeFile))
-    dispatch(getSystemNameKylo(nomeFile))
-        .then(json => dispatch(change('wizard', 'nome', json.system_name)))
     }else{
         setUploading(false, 'Dimensioni file non consentite. Il file non può superare 10MB');
     }
@@ -150,9 +172,9 @@ class WizardForm extends Component {
 
   render() {
     const { onSubmit } = this.props;
-    const { page, tipi } = this.state;
+    const { page, tipi, context } = this.state;
     return (
-      <div className="row">
+      <div className="row mb-5">
         <div className="col-md-10">
         <Steps current={page}>
           {steps.map((s, i) => {
@@ -167,19 +189,23 @@ class WizardForm extends Component {
         {page === 0 && 
           <WizardFormFirstPage 
             onSubmit={this.nextPage} 
+            previousPage={this.previousPage}
             getCategoria={this.getCategoria}
             setUploading={this.setUploading}
             onDropFunction={this.onDropFunction}
+            reset={reset}
+            setName={this.setName}
+            getSchemaFromWS={this.getSchemaFromWS}
           />}
         {page === 1 &&
           <WizardFormSecondPage
             previousPage={this.previousPage}
             onSubmit={this.nextPage}
-            reset={reset}
             tipi={tipi}
             addTagsToForm={this.addTagsToForm}
             aggiornaStato={this.aggiornaStato}
             addSemanticToForm={this.addSemanticToForm}
+            context={context}
           />}
         {page === 2 &&
           <WizardFormThirdPage
