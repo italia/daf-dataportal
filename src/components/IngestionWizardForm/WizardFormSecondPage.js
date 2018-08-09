@@ -1,10 +1,10 @@
 import React from 'react';
-import { Field, FieldArray, reduxForm, formValueSelector, reset } from 'redux-form';
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { connect  } from 'react-redux';
 import validate from './validate';
 import AutocompleteSemantic from '../Autocomplete/AutocompleteSemantic'
 import { yesOrNoOptions } from './const'
-import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderFieldInputButton, renderTipi, renderFieldTags} from './renderField';
+import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderTipi, renderFieldTags, renderContesti, renderFieldCheckbox} from './renderField';
 import Collapse from 'rc-collapse'
 import 'rc-collapse/assets/index.css'
 
@@ -16,43 +16,26 @@ const renderError = ({ meta: { touched, error } }) =>
 
   
 let WizardFormSecondPage = props => {
-  const { fields, handleSubmit, reset, addTagsToForm, previousPage, tipi, aggiornaStato, addSemanticToForm } = props;
+  const { fields, handleSubmit, addTagsToForm, previousPage, tipi, aggiornaStato, addSemanticToForm, context } = props;
   return (
      <form onSubmit={handleSubmit} className="col-12 mt-5">
       {(fields && fields.length > 0) &&
         <FieldArray
               name="inferred"
               component={renderFieldArray}
-              reset={reset}
               tipi={tipi}
               addTagsToForm={addTagsToForm}
               aggiornaStato={aggiornaStato}
               addSemanticToForm={addSemanticToForm}
+              context={context}
+              previousPage={previousPage}
         />
       }
     </form> 
   )}
 
-const renderFieldArray = ({fields, reset, tipi, addTagsToForm, aggiornaStato, addSemanticToForm, meta : {touched, error} }) =>
+const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemanticToForm, context, previousPage, meta : {touched, error} }) =>
         <div>
-          <Field
-              name="title"
-              type="text"
-              component={renderFieldInputButton}
-              label="Nome File"
-              readonly="readonly"
-              hidden="true"
-              buttonLabel="Elimina"
-              onClick={reset}
-            />
-            <Field
-              name={'private'}
-              type="text"
-              options={yesOrNoOptions}
-              component={renderFieldSelect}
-              label="Privato"
-            />
-        
           {fields.map((field, index) => 
             <div className="card" key={index}>
               <div className="card-body">
@@ -62,7 +45,6 @@ const renderFieldArray = ({fields, reset, tipi, addTagsToForm, aggiornaStato, ad
                     <Panel header="Informazioni Principali" headerClass="my-header-class">
                       <Field
                           name={`${field}.nome`}
-                          type="text"
                           component={renderFieldInput}
                           label="ID Campo"
                           value={`${field}.nome`}
@@ -70,7 +52,6 @@ const renderFieldArray = ({fields, reset, tipi, addTagsToForm, aggiornaStato, ad
                         />
                         <Field
                           name={`${field}.tipo`}
-                          type="text"
                           component={renderTipi}
                           label="Tipo"
                           value={`${field}.tipo`}
@@ -79,22 +60,18 @@ const renderFieldArray = ({fields, reset, tipi, addTagsToForm, aggiornaStato, ad
                         />
                         <Field
                           name={`${field}.nomehr`}
-                          type="text"
                           component={renderFieldInput}
                           label="Nome"
                           value={`${field}.nomehr`}
-                          readonly="readonly"
                         />
                         <Field
                           name={`${field}.desc`}
-                          type="text"
                           component={renderFieldTextArea}
                           label="Descrizione"
                           value={`${field}.desc`}
                         /> 
                         <Field
                           name={`${field}.tag`}
-                          type="text"
                           component={renderFieldTags}
                           label="Tags"
                           value={`${field}.tag`}
@@ -102,7 +79,6 @@ const renderFieldArray = ({fields, reset, tipi, addTagsToForm, aggiornaStato, ad
                         />
                         <Field
                           name={`${field}.concetto`}
-                          type="text"
                           component={AutocompleteSemantic}
                           label="Concetto"
                           value={`${field}.concetto`}
@@ -111,173 +87,146 @@ const renderFieldArray = ({fields, reset, tipi, addTagsToForm, aggiornaStato, ad
                           aggiornaStato={aggiornaStato}
                         />
                     </Panel>
-                    <Panel header="Formato e Convenzioni">this is 
+                    <Panel header="Formato e Convenzioni">
+                      <Field
+                        name={`${field}.tipoinformazione`}
+                        options={[]}
+                        component={renderFieldSelect}
+                        label="Tipo Informazione"
+                        value={`${field}.tipoinformazione`}
+                      />
+                      <Field
+                        name={`${field}.standardformat`}
+                        options={[]}
+                        component={renderFieldSelect}
+                        label="Standard Format"
+                        value={`${field}.standardformat`}
+                      />
+                      <Field
+                        name={`${field}.convenzioni`}
+                        options={[]}
+                        component={renderFieldSelect}
+                        label="Convenzioni"
+                        value={`${field}.convenzioni`}
+                      />
+                       <Field
+                        name={`${field}.vocabolariocontrollato`}
+                        options={[]}
+                        component={renderFieldSelect}
+                        label="Vocabolario Controllato"
+                        value={`${field}.vocabolariocontrollato`}
+                      />
                     </Panel>
-                    <Panel header="Semantica e Ontologie">this is 
+                    <Panel header="Semantica e Ontologie">
+                      <Field
+                        name={`${field}.contesto`}
+                        component={renderContesti}
+                        label="Contesto"
+                        value={`${field}.contesto`}
+                        contesti={context[index]}
+                        index={index}
+                      /> 
+                      <Field
+                          name={`${field}.idgruppocampi`}
+                          component={renderFieldInput}
+                          label="ID Gruppo Campi"
+                          value={`${field}.idgruppocampi`}
+                        />
+                      <Field
+                          name={`${field}.rdfsoggetto`}
+                          component={renderFieldInput}
+                          label="RDF Soggetto"
+                          value={`${field}.rdfsoggetto`}
+                        />
+                      <Field
+                          name={`${field}.rdfpredicato`}
+                          component={renderFieldInput}
+                          label="RDF Predicato"
+                          value={`${field}.rdfpredicato`}
+                        />
+                      <Field
+                          name={`${field}.rdfcomplemento`}
+                          component={renderFieldInput}
+                          label="RDF Complemento"
+                          value={`${field}.rdfcomplemento`}
+                        />
+                      <Field
+                          name={`${field}.gerarchiacampi`}
+                          component={renderFieldInput}
+                          label="Gerarchia Campi"
+                          value={`${field}.gerarchiacampi`}
+                        />
                     </Panel>
-                    <Panel header="Informazioni Operazionali">this is 
+                    <Panel header="Informazioni Operazionali">
+                      <Field
+                          name={`${field}.obbligatorio`}
+                          component={renderFieldCheckbox}
+                          label="Campo Obbligatorio"
+                          value={`${field}.obbligatorio`}
+                        />
+                        <Field
+                          name={`${field}.datacreazione`}
+                          component={renderFieldCheckbox}
+                          label="Data di Creazione"
+                          value={`${field}.datacreazione`}
+                        />
+                        <Field
+                          name={`${field}.dataaggiornamento`}
+                          component={renderFieldCheckbox}
+                          label="Data di Aggiornamento"
+                          value={`${field}.dataaggiornamento`}
+                        />
+                        <Field
+                          name={`${field}.indicizzare`}
+                          component={renderFieldCheckbox}
+                          label="Indicizzare il Campo"
+                          value={`${field}.indicizzare`}
+                        />
+                        <Field
+                          name={`${field}.profiloindicizzazione`}
+                          component={renderFieldCheckbox}
+                          label="Creare Profilo per Indicizzazione"
+                          value={`${field}.profiloindicizzazione`}
+                        />
                     </Panel>
-                    <Panel header="Dati Personali">this is 
+                    <Panel header="Dati Personali">
+                      <Field
+                          name={`${field}.datipersonali`}
+                          component={renderFieldCheckbox}
+                          label="Contiene Dati Personali"
+                          value={`${field}.datipersonali`}
+                        />
+                      <Field
+                          name={`${field}.tipodatopersonale`}
+                          options={[]}
+                          component={renderFieldSelect}
+                          label="Tipo Dato Personale"
+                          value={`${field}.tipodatopersonale`}
+                      />
+                      <Field
+                          name={`${field}.tipomascheramento`}
+                          options={[]}
+                          component={renderFieldSelect}
+                          label="Tipo di Mascheramento"
+                          value={`${field}.tipomascheramento`}
+                      />
+                        <Field
+                          name={`${field}.disponibileanalisi`}
+                          component={renderFieldCheckbox}
+                          label="Disponibile per Analisi"
+                          value={`${field}.disponibileanalisi`}
+                        />
                     </Panel>
                   </Collapse>
                 </div>
-                     
               </div>  
             </div>
             )}
-      </div>
-
-
-
-              {/* <Field
-                name={`${field}.concetto`}
-                type="text"
-                component={AutocompleteSemantic}
-                label="Concetto"
-                value={`${field}.concetto`}
-                addSemanticToForm={addSemanticToForm}
-                index={index}
-                wizard={wizard}
-                dispatchAction={dispatchAction}
-                aggiornaStato={aggiornaStato}
-              />
-              {this.state.context && this.state.context[index] && this.state.context[index].length>0 &&
-                <div>
-                  <Field
-                    name={`${field}.contesto`}
-                    type="text"
-                    component={renderContesti}
-                    label="Contesto"
-                    value={`${field}.contesto`}
-                    contesti={this.state.context[index]}
-                    index={index}
-                  /> 
-                  <Field
-                  name={`${field}.uri_voc`}
-                  type="text"
-                  component={renderField}
-                  label="Uri Vocabulary"
-                  value={`${field}.uri_voc`}
-                  />
-                   <Field
-                  name={`${field}.uri_property`}
-                  type="text"
-                  component={renderField}
-                  label="Uri Property"
-                  value={`${field}.uri_property`}
-                  />
-                   <Field
-                  name={`${field}.gerarchia`}
-                  type="text"
-                  component={renderField}
-                  label="Gerarchia"
-                  value={`${field}.gerarchia`}
-                  />
-                </div>
-              } 
-              <Field
-                name={`${field}.desc`}
-                type="text"
-                component={renderFieldTextArea}
-                label="Descrizione"
-                value={`${field}.desc`}
-              />
-              <Field
-                name={`${field}.tag`}
-                type="text"
-                component={renderFieldInput}
-                label="Tags"
-                value={`${field}.tag`}
-                //addTagsToForm={addTagsToForm}
-              />
-{/*               <div className="form-group row">
-                <div className="col-md-12">
-                  <button type="button" className={"b-t-0 b-b-0 btn "+ (this.state.showMore ? "btn-secondary":"btn-light")} onClick={handleToggleClickMore}>Opzioni avanzate <i className={"fa " + (this.state.showMore ? "fa-angle-up" : "fa-angle-down")}></i></button>
-                </div>
-              </div> */}
-              {/*this.state.showMore &&
-              <div>
-                  <Field
-                    name={`${field}.personale`}
-                    type="text"
-                    component={renderYesNoSelector}
-                    label="Personale"
-                    value={`${field}.personale`}
-                  />
-                  <Field
-                    name={`${field}.cat`}
-                    type="text"
-                    component={renderField}
-                    label="Categoria"
-                    value={`${field}.cat`}
-                  />
-                  <Field
-                    name={`${field}.format_std_name`}
-                    type="text"
-                    component={renderField}
-                    label="STD-Nome"
-                    value={`${field}.format_std_name`}
-                  />
-                  <Field
-                    name={`${field}.format_std_param`}
-                    type="text"
-                    component={renderField}
-                    label="STD-Parametri"
-                    value={`${field}.format_std_param`}
-                  />
-                  <Field
-                    name={`${field}.field_profile_is_index`}
-                    type="text"
-                    component={renderField}
-                    label="FP-Indice"
-                    value={`${field}.field_profile_is_index`}
-                  />
-                  <Field
-                    name={`${field}.field_profile_is_profile`}
-                    type="text"
-                    component={renderField}
-                    label="FP-Profilo"
-                    value={`${field}.field_profile_is_profile`}
-                  />
-                  <Field
-                    name={`${field}.field_profile_validation`}
-                    type="text"
-                    component={renderField}
-                    label="FP-Validazione"
-                    value={`${field}.field_profile_validation`}
-                  />
-                  <Field
-                    name={`${field}.field_profile_standardization`}
-                    type="text"
-                    component={renderField}
-                    label="FP-Standardizazione"
-                    value={`${field}.field_profile_standardization`}
-                  />
-              </div> */
-              }
-{/*           <div className="col-md-6">
-            <div className="form-group">
-              <div className="card">
-                <div className="card-header">
-                  <strong>Dati colonna {field.nome}</strong>
-                </div>
-                <div className="card-block">
-                  {field.data && field.data.map((row, index) => 
-                    <p key={index}>{row}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div> 
+        <div>
+          <button type="button" className="btn btn-primary float-left" onClick={previousPage}>Indietro</button>
+          <button type="submit" className="btn btn-primary float-right">Avanti</button>
         </div>
-      )}
-      {fields.length > 0 &&
-      <div className="form-group row">
-          <div className="col-12">
-            <button type="submit" className="btn btn-primary float-right">Avanti</button>
-          </div>
-      </div>}
-      </div>*/}
+      </div>
 
 WizardFormSecondPage = reduxForm({
   form: 'wizard',

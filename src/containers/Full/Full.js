@@ -20,6 +20,7 @@ import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 import Home from '../../views/Home/Home';
 import IngestionWizard from '../../views/IngestionWizard/';
+import IngestionWizardNew from '../../views/IngestionWizard/IngestionWizardNew';
 import Dataset from '../../views/Dataset/';
 import DatasetList from '../../views/DataseList/';
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail';
@@ -706,6 +707,7 @@ class Full extends Component {
               <Switch>
                 <PrivateRoute authed={this.state.authed} path="/private/home" name="Home" exact component={Home}/>
                 <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
+                <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/ingestionwizzardnew" name="Forms" component={IngestionWizardNew} history={history} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies/" name="Ontologies" exact component={Ontologies} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies/:filter" name="Ontology" component={Ontology} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies" name="Vocabularies" exact component={Vocabularies} />

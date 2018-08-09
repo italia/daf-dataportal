@@ -1,21 +1,21 @@
 import React from 'react';
 import TagsInput from './tags/TagsInput'
 
-export const renderFieldInput = ({ input, label, type, meta: { touched, error } }) => (
+export const renderFieldInput = ({ input, label, readonly, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}</label>
     <div className="col-sm-10">
-      <input {...input} type={type} className="form-control" />
+      <input {...input} type='text' readOnly={readonly} className="form-control" />
       {touched && error && <span>{error}</span>}
     </div>
   </div>
 );
 
-export const renderFieldInputButton = ({ input, label, type, buttonLabel, onClick, meta: { touched, error } }) => (
+export const renderFieldInputButton = ({ input, label, buttonLabel, onClick, readonly, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}</label>
     <div className="col-sm-8">
-      <input {...input} type={type} className="form-control" />
+      <input {...input} type='text' readOnly={readonly} className="form-control" />
       {touched && error && <span>{error}</span>}
     </div>
     <div className="col-2">
@@ -24,23 +24,21 @@ export const renderFieldInputButton = ({ input, label, type, buttonLabel, onClic
   </div>
 );
 
-
-
-export const renderFieldTextArea = ({ input, label, type, meta: { touched, error } }) => (
+export const renderFieldTextArea = ({ input, label, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}</label>
     <div className="col-sm-10">
-      <textarea {...input} type={type} className="form-control" />
+      <textarea {...input} type='text' className="form-control" />
       {touched && error && <span>{error}</span>}
     </div>
   </div>
 );
 
-export const renderFieldSelect = ({ input, label, options, type, meta: { touched, error } }) => (
+export const renderFieldSelect = ({ input, label, options, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}</label>
       <div className="col-sm-10">
-        <select className="form-control" type={type} {...input}>
+        <select className="form-control" type='text' {...input}>
           <option value="" defaultValue></option>
           {options.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
         </select>
@@ -51,7 +49,7 @@ export const renderFieldSelect = ({ input, label, options, type, meta: { touched
 
 const tipiKylo = ['bigint','binary','boolean','date','decimal','double','float','int','string','timestamp','tinyint']
 
-export const renderTipi = ({ input, label, type, tipi, index, meta: { touched, error } }) => (
+export const renderTipi = ({ input, label, tipi, index, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}</label>
     <div className="col-sm-10">
@@ -69,7 +67,7 @@ export const renderTipi = ({ input, label, type, tipi, index, meta: { touched, e
  </div>
  );
 
- export const renderFieldTags = ({input, label, type, value, readonly, addTagsToForm, meta: { touched, error } }) => (
+ export const renderFieldTags = ({input, label, addTagsToForm, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}</label>
     <div className="col-sm-10">
@@ -78,3 +76,28 @@ export const renderTipi = ({ input, label, type, tipi, index, meta: { touched, e
       </div>
   </div>
   )
+
+  export const renderContesti = ({ input, label, contesti, index, meta: { touched, error } }) => (
+    <div className="form-group row">
+    <label className="col-sm-2 col-form-label">{label}</label>
+    <div className="col-sm-10">
+        <select className="form-control" type='text' {...input}>
+          {contesti && contesti.length>0 && contesti.map(value => {
+           return(<option value={value.id} key={value.id}>{value.humanlabel}</option>)
+          }
+         )}
+        </select>
+      {touched && error && <div className="text-danger">{error}</div>}
+    </div>
+   </div>
+   );
+   
+   export const renderFieldCheckbox = ({ input, label, meta: { touched, error } }) => (
+    <div className="form-group row">
+      <label className="col-sm-3 col-form-label">{label}</label>
+      <div className="col-sm-2">
+        <input {...input} type='checkbox' className="form-control" />
+        {touched && error && <span>{error}</span>}
+      </div>
+    </div>
+  );

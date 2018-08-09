@@ -1,35 +1,38 @@
 import React from 'react'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { connect  } from 'react-redux';
-import { renderFieldInput, renderFieldTextArea, renderFieldSelect} from './renderField';
+import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderFieldInputButton} from './renderField';
 import { publicOptions, tipodatasetOptions, modalitacaricamentoOptions } from './const';
 import validate from './validate';
 import FileInput from './FileInput'
 
 
-const renderFieldArray = ({fields, name, onDropFunction, getCategoria, sottocategoria, tipodataset, modalitacaricamento, meta : {touched, error} }) => <div>
-  <Field
+const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottocategoria, tipodataset, modalitacaricamento, nomefile, reset, previousPage, meta : {touched, error} }) => <div>
+            <Field
+              name="titolo"
+              component={renderFieldInput}
+              label="Titolo"
+              onChange={setName}
+            />
+          <Field
               name="nome"
-              type="text"
               component={renderFieldInput}
               label="Nome"
+              readonly="true"
             />
             <Field
               name="public"
-              type="text"
               options={publicOptions}
               component={renderFieldSelect}
               label="Pubblico/OpenData"
             />
             <Field
               name="descrizione"
-              type="text"
               component={renderFieldTextArea}
               label="Descrizione"
             />
             <Field
               name="categoria"
-              type="text"
               options={getCategoria(1,undefined)}
               component={renderFieldSelect}
               label="Categoria"
@@ -37,7 +40,6 @@ const renderFieldArray = ({fields, name, onDropFunction, getCategoria, sottocate
             {(sottocategoria && sottocategoria.length>0) &&
                 <Field
                   name="sottocategoria"
-                  type="text"
                   options={sottocategoria}
                   component={renderFieldSelect}
                   label="Sotto categoria"
@@ -45,33 +47,45 @@ const renderFieldArray = ({fields, name, onDropFunction, getCategoria, sottocate
             }
             <Field
               name="tags"
-              type="text"
               component={renderFieldInput}
               label="Tags"
             />
             <Field
               name="tipodataset"
-              type="text"
               options={tipodatasetOptions}
               component={renderFieldSelect}
               label="Tipo Dataset"
             />
             <Field
               name="template"
-              type="text"
               component={renderFieldInput}
               label="Template"
             />
             {tipodataset &&
               <Field
                 name="modalitacaricamento"
-                type="text"
                 options={modalitacaricamentoOptions}
                 component={renderFieldSelect}
                 label="Modalità Caricamento"
               />
             }
-            {(modalitacaricamento === 'sftp') && 
+            {nomefile? 
+              <div>
+                <Field
+                name="nomefile"
+                component={renderFieldInputButton}
+                label="Nome File Caricato"
+                readonly="true"
+                buttonLabel="Elimina"
+                onClick={reset}
+              />
+              <div>
+                <button type="button" className="btn btn-primary float-left" onClick={previousPage}>Indietro</button>
+                <button type="submit" className="btn btn-primary float-right">Avanti</button>
+              </div>
+            </div>
+            :
+            (modalitacaricamento === 'sftp') && 
                 <FileInput
                   name="filesftp"
                   label="Caricamento:"
@@ -85,13 +99,15 @@ const renderFieldArray = ({fields, name, onDropFunction, getCategoria, sottocate
                   fields={fields}
                 >
                 <span>Add more</span>
-                </FileInput>}
+                </FileInput>
+            }
+
 </div>
 
 
 
 let WizardFormFirstPage = props => {
-  const { onDropFunction, handleSubmit, categoria, tipodataset, modalitacaricamento, getCategoria } = props;
+  const { onDropFunction, handleSubmit, reset, categoria, tipodataset, modalitacaricamento, getCategoria, setName, nomefile, previousPage } = props;
   var sottocategoria = getCategoria(2,categoria)
   return (
       <div className="mt-5">
@@ -110,6 +126,10 @@ let WizardFormFirstPage = props => {
                   tipodataset={tipodataset}
                   modalitacaricamento={modalitacaricamento}
                   getCategoria={getCategoria}
+                  reset={reset}
+                  setName={setName}
+                  nomefile={nomefile}
+                  previousPage={previousPage}
             />
         </form>
       </div>
@@ -128,7 +148,8 @@ WizardFormFirstPage = connect(state => {
   const categoria = selector(state, 'categoria')
   const tipodataset = selector(state, 'tipodataset')
   const modalitacaricamento = selector(state, 'modalitacaricamento')
-  return { categoria, tipodataset, modalitacaricamento }
+  const nomefile = selector(state, 'nomefile')
+  return { categoria, tipodataset, modalitacaricamento, nomefile }
 })(WizardFormFirstPage)
 
 export default WizardFormFirstPage
