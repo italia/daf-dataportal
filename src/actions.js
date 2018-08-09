@@ -1304,6 +1304,25 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
 
+      export function uploadHdfsFile(url, file){
+        var token = '' 
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'PUT',
+            headers: {
+              'Authorization': 'Bearer ' + token
+            },
+            body: file
+          })
+          .then(response => response)
+        }
+      }
+
       export function groupsInfo(groups){
         var url = serviceurl.apiURLSecurity + '/daf/getGroupsInfo'
         var token = ''

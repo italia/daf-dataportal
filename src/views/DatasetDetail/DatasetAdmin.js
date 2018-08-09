@@ -34,6 +34,17 @@ function ableToEdit(user, dataset){
   return able
 }
 
+function isOpenData(acl){
+  var openData = false
+  for(var i=0; i<acl.length; i++){
+    if(acl[i].groupCn === "open_data_group"){
+      openData=true
+      break
+    }
+  }
+  return openData
+}
+
 class DatasetAdmin extends Component{
   constructor(props){
     super(props)
@@ -334,7 +345,7 @@ class DatasetAdmin extends Component{
           <div className="col text-muted">
               <i className="text-icon fa-pull-left fas fa-unlock fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Permessi</b></h4>
           </div>
-          {ableToEdit( loggedUser, dataset) && <div className="col ml-auto mb-4">
+          {ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto mb-4">
               <button className="float-right btn btn-primary" onClick={this.toggle}><i className="fa fa-plus fa-lg"/></button>
           </div>}
         </div>
@@ -352,14 +363,24 @@ class DatasetAdmin extends Component{
             </thead>
             <tbody>
               {acl.map((permission,index) => {
-                return(
-                  <tr key={index}>
-                    <td>{permission.groupCn}</td>
-                    <td>{permission.dafGroupType==="Organization"?"Organizzazione":permission.dafGroupType}</td>
-                    <td>{permission.parentGroup}</td>
-                    {ableToEdit(loggedUser, dataset) && <td><button className="float-right text-primary btn btn-link" onClick={this.deleteACL.bind(this, permission.groupCn)}><i className={this.state.deleting?"fa fa-spinner fa-spin fa-lg":"fas fa-times fa-lg"}/></button></td>}
-                  </tr>
-                )
+                if(permission.groupCn==="open_data_group")
+                  return(
+                    <tr key={index}>
+                      <td>Gruppo Open Data</td>
+                      <td> </td>
+                      <td> </td>
+                      {ableToEdit(loggedUser, dataset) && <td><button className="float-right text-primary btn btn-link" onClick={this.deleteACL.bind(this, permission.groupCn)}><i className={this.state.deleting?"fa fa-spinner fa-spin fa-lg":"fas fa-times fa-lg"}/></button></td>}
+                    </tr>
+                  )
+                else
+                  return(
+                    <tr className={isOpenData(acl)?'text-icon bg-light':''} key={index}>
+                      <td>{permission.groupCn}</td>
+                      <td>{permission.dafGroupType==="Organization"?"Organizzazione":permission.dafGroupType}</td>
+                      <td>{permission.parentGroup}</td>
+                      {ableToEdit(loggedUser, dataset) && <td>{!isOpenData(acl) && <button className="float-right text-primary btn btn-link" onClick={this.deleteACL.bind(this, permission.groupCn)}><i className={this.state.deleting?"fa fa-spinner fa-spin fa-lg":"fas fa-times fa-lg"}/></button>}</td>}
+                    </tr>
+                  )
               })
               }
             </tbody>
