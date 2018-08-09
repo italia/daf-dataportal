@@ -9,7 +9,8 @@ import {
     checkMetabase,
     datasetMetadata,
     getOpendataResources,
-    checkFileOnHdfs
+    checkFileOnHdfs,
+    setDatasetACL,
 } from '../../actions'
 import ReactJson from 'react-json-view'
 import download from 'downloadjs'
@@ -86,6 +87,7 @@ class DatasetDetail extends Component {
         this.handleTools = this.handleTools.bind(this)
         this.handleResources = this.handleResources.bind(this)
         this.searchDataset = this.searchDataset.bind(this)
+        this.pubblicaDataset = this.pubblicaDataset.bind(this)
     }
 
     componentDidMount() {
@@ -308,7 +310,7 @@ class DatasetDetail extends Component {
     }
 
     pubblicaDataset(){
-      const { dispatch, query } = this.props
+      const { dispatch, query, dataset } = this.props
       dispatch(setDatasetACL(dataset.dcatapit.name,'open_data_group'))
       .then(json => {
         if(json.code!==undefined){
@@ -318,8 +320,8 @@ class DatasetDetail extends Component {
         if(json.fields && json.fields==="ok"){
           toastr.success("Completato", "Il dataset è un Open data!")
           console.log(json.message)
-          dispatch(datasetDetail(nome, query, isPublic()))
-          .catch(error => { console.log('Errore durante il caricamento del dataset ' + nome); console.error(error); this.setState({ hidden: false }) })
+          dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
+          .catch(error => { console.log('Errore durante il caricamento del dataset ' + dataset.dcatapit.name); console.error(error); this.setState({ hidden: false }) })
         }
       })
     }
@@ -328,7 +330,7 @@ class DatasetDetail extends Component {
       const toastrConfirmOptions = {
         okText: 'Pubblica',
         cancelText: 'Annulla',
-        onOk: () => console.log('OK: clicked'),
+        onOk: () => this.pubblicaDataset(),
         onCancel: () => console.log('CANCEL: clicked'),
         component: () => (
           <div className="rrt-message">
