@@ -114,6 +114,7 @@ const renderModalitaSelector = ({ input, type, label, value, meta: { touched, er
       <option value="0" defaultValue key="0"></option>
       <option value="1" key='1'>Drag and Drop </option>
       <option value="2" key='2'>Web Service</option>
+      <option value="3" key='3'>Web HDFS</option>
     </select>
     {touched && error && <div className="text-danger">{error}</div>}
   </div>
@@ -348,7 +349,7 @@ class WizardFormMetadata extends Component {
                 </div>
               </div>
             }
-            {modalitacaricamento==1 &&
+            {(modalitacaricamento==1 || modalitacaricamento==3) && 
               <div className="form-group">
                 <div className="col-md-12">
                 <label htmlFor='tests'>Carica il file (max 1MB):</label>
@@ -378,6 +379,7 @@ class WizardFormMetadata extends Component {
                         nomeFile = nomeFile.toLowerCase()
                         nomeFile.split(" ").join("-")
                         dispatch(change('wizard', 'title', nomeFile))
+                        dispatch(change('wizard', 'nomeFile', filesToUpload[0].name))
                         dispatch(getSystemNameKylo(nomeFile))
                         .then(json => dispatch(change('wizard', 'nome', json.system_name)))
                       }else{
