@@ -1,35 +1,38 @@
 import React from 'react'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { connect  } from 'react-redux';
-import { renderFieldInput, renderFieldTextArea, renderFieldSelect} from './renderField';
+import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderFieldInputButton} from './renderField';
 import { publicOptions, tipodatasetOptions, modalitacaricamentoOptions } from './const';
 import validate from './validate';
 import FileInput from './FileInput'
 
 
-const renderFieldArray = ({fields, name, onDropFunction, getCategoria, sottocategoria, tipodataset, modalitacaricamento, meta : {touched, error} }) => <div>
-  <Field
+const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottocategoria, tipodataset, modalitacaricamento, nomefile, urlws, reset, previousPage, getSchemaFromWS, meta : {touched, error} }) => <div>
+            <Field
+              name="titolo"
+              component={renderFieldInput}
+              label="Titolo"
+              onChange={setName}
+            />
+          <Field
               name="nome"
-              type="text"
               component={renderFieldInput}
               label="Nome"
+              readonly="true"
             />
             <Field
               name="public"
-              type="text"
               options={publicOptions}
               component={renderFieldSelect}
               label="Pubblico/OpenData"
             />
             <Field
               name="descrizione"
-              type="text"
               component={renderFieldTextArea}
               label="Descrizione"
             />
             <Field
               name="categoria"
-              type="text"
               options={getCategoria(1,undefined)}
               component={renderFieldSelect}
               label="Categoria"
@@ -37,7 +40,6 @@ const renderFieldArray = ({fields, name, onDropFunction, getCategoria, sottocate
             {(sottocategoria && sottocategoria.length>0) &&
                 <Field
                   name="sottocategoria"
-                  type="text"
                   options={sottocategoria}
                   component={renderFieldSelect}
                   label="Sotto categoria"
@@ -45,53 +47,93 @@ const renderFieldArray = ({fields, name, onDropFunction, getCategoria, sottocate
             }
             <Field
               name="tags"
-              type="text"
               component={renderFieldInput}
               label="Tags"
             />
             <Field
               name="tipodataset"
-              type="text"
               options={tipodatasetOptions}
               component={renderFieldSelect}
               label="Tipo Dataset"
             />
             <Field
               name="template"
-              type="text"
               component={renderFieldInput}
               label="Template"
             />
             {tipodataset &&
               <Field
                 name="modalitacaricamento"
-                type="text"
                 options={modalitacaricamentoOptions}
                 component={renderFieldSelect}
                 label="Modalità Caricamento"
               />
             }
-            {(modalitacaricamento === 'sftp') && 
-                <FileInput
-                  name="filesftp"
-                  label="Caricamento:"
-                  classNameLabel="file-input-label"
-                  className="file-input"
-                  dropzone_options={{
-                    multiple: false,
-                    accept: 'image/*'
-                  }}
-                  onDropFunction={onDropFunction}
-                  fields={fields}
-                >
-                <span>Add more</span>
-                </FileInput>}
+            {nomefile? 
+              <div>
+                <Field
+                  name="nomefile"
+                  component={renderFieldInputButton}
+                  label="Nome File Caricato"
+                  readonly="true"
+                  buttonLabel="Elimina File"
+                  onClick={reset}
+                  iconClassName="fa fa-trash fa-lg"
+                />
+              <div>
+                <button type="button" className="btn btn-primary float-left" onClick={previousPage}>Indietro</button>
+                <button type="submit" className="btn btn-primary float-right">Avanti</button>
+              </div>
+            </div>
+            :
+            <div>
+              {modalitacaricamento==1 && 
+                  <FileInput
+                    name="filesftp"
+                    label="Caricamento:"
+                    classNameLabel="file-input-label"
+                    className="file-input"
+                    dropzone_options={{
+                      multiple: false,
+                      accept: 'image/*'
+                    }}
+                    onDropFunction={onDropFunction}
+                    fields={fields}
+                  >
+                  <span>Add more</span>
+                  </FileInput>
+              }
+              {modalitacaricamento==2 &&
+               <div className="card">
+                <div className="card-body">
+                 <h5 className="card-title">Caricamento tramite Web Service</h5>
+                    <div className="form-group">
+                    <div className="col-md-12">
+                      {/* <input placeholder="http://" type="text" ref={(url) => this.url = url} id="url" className="form-control-90"/>
+                      <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off" onClick={getSchemaFromWS.bind(this,fields)}><i className="fa fa-plus"></i></button>
+                      */}       
+                        <Field
+                          name="urlws"
+                          component={renderFieldInputButton}
+                          label="Inserisci URL"
+                          buttonLabel="Carica"
+                          onClick={getSchemaFromWS.bind(this,fields, urlws)}
+                          iconClassName="fa fa-plus"
+                          placeholder="http://"
+                        />
+                    </div>
+                  </div> 
+                </div>
+              </div>  
+              } 
+            </div>     
+          }
 </div>
 
 
 
 let WizardFormFirstPage = props => {
-  const { onDropFunction, handleSubmit, categoria, tipodataset, modalitacaricamento, getCategoria } = props;
+  const { onDropFunction, handleSubmit, reset, categoria, tipodataset, modalitacaricamento, getCategoria, setName, nomefile, urlws, previousPage, getSchemaFromWS } = props;
   var sottocategoria = getCategoria(2,categoria)
   return (
       <div className="mt-5">
@@ -110,6 +152,12 @@ let WizardFormFirstPage = props => {
                   tipodataset={tipodataset}
                   modalitacaricamento={modalitacaricamento}
                   getCategoria={getCategoria}
+                  reset={reset}
+                  setName={setName}
+                  nomefile={nomefile}
+                  previousPage={previousPage}
+                  getSchemaFromWS={getSchemaFromWS}
+                  urlws={urlws}
             />
         </form>
       </div>
@@ -128,7 +176,9 @@ WizardFormFirstPage = connect(state => {
   const categoria = selector(state, 'categoria')
   const tipodataset = selector(state, 'tipodataset')
   const modalitacaricamento = selector(state, 'modalitacaricamento')
-  return { categoria, tipodataset, modalitacaricamento }
+  const nomefile = selector(state, 'nomefile')
+  const urlws = selector(state, 'urlws')
+  return { categoria, tipodataset, modalitacaricamento, nomefile, urlws }
 })(WizardFormFirstPage)
 
 export default WizardFormFirstPage
