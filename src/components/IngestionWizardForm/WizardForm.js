@@ -6,13 +6,13 @@ import WizardFormThirdPage from './WizardFormThirdPage';
 import Steps, { Step } from 'rc-steps';
 import themes from '../../data/themes'
 import { connect  } from 'react-redux';
-import { getSchema, getSystemNameKylo } from '../../actions';
+import { getSchema, getSchemaWS, getSystemNameKylo } from '../../actions';
 import { change, reset } from 'redux-form'
 
 import 'rc-steps/assets/index.css'
 import 'rc-steps/assets/iconfont.css'
 
-const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiuungi i Metadati'},{'title': 'Modalità di invio'}]
+const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiuungi i Metadati'}]
 
 class WizardForm extends Component {
   constructor(props) {
@@ -24,6 +24,7 @@ class WizardForm extends Component {
     this.addSemanticToForm = this.addSemanticToForm.bind(this)
     this.aggiornaStato = this.aggiornaStato.bind(this)
     this.setName = this.setName.bind(this)
+    this.getSchemaFromWS = this.getSchemaFromWS.bind(this)
     this.state = {
       page: 0,
       uploading: false,
@@ -106,6 +107,22 @@ class WizardForm extends Component {
    return appo;
   }
 
+  getSchemaFromWS(fields, urlws){
+    console.log('getSchemaFromWS: ' + urlws) 
+    const { dispatch } = this.props;
+    this.setUploading(true, undefined);
+    dispatch(getSchemaWS( urlws, 'csv'))
+    .then(json => { 
+      if(json.status=='error'){
+        this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+        console.log('error: ' + json.message);
+      }else{
+        this.calcDataFields(fields, json)
+        this.setUploading(false, undefined);
+      }
+    })
+  }
+
   setName(e){
     console.log(e.target.value)
     const { dispatch } = this.props;
@@ -178,6 +195,7 @@ class WizardForm extends Component {
             onDropFunction={this.onDropFunction}
             reset={reset}
             setName={this.setName}
+            getSchemaFromWS={this.getSchemaFromWS}
           />}
         {page === 1 &&
           <WizardFormSecondPage
@@ -191,11 +209,6 @@ class WizardForm extends Component {
           />}
         {page === 2 &&
           <WizardFormThirdPage
-            previousPage={this.previousPage}
-            onSubmit={onSubmit}
-          />}
-        {page === 3 &&
-          <WizardFormFourthPage
             previousPage={this.previousPage}
             onSubmit={onSubmit}
           />}

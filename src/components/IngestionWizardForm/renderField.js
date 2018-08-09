@@ -11,15 +11,15 @@ export const renderFieldInput = ({ input, label, readonly, meta: { touched, erro
   </div>
 );
 
-export const renderFieldInputButton = ({ input, label, buttonLabel, onClick, readonly, meta: { touched, error } }) => (
+export const renderFieldInputButton = ({ input, buttonLabel, label, placeholder, onClick, readonly, iconClassName, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}</label>
     <div className="col-sm-8">
-      <input {...input} type='text' readOnly={readonly} className="form-control" />
+      <input {...input} placeholder={placeholder} type='text' readOnly={readonly} className="form-control" />
       {touched && error && <span>{error}</span>}
     </div>
     <div className="col-2">
-      <button type="button" className="btn btn-primary" onClick={onClick}>{buttonLabel}</button>
+      <button title={buttonLabel} type="button" className="btn btn-link" onClick={onClick}><i className={iconClassName}></i></button>
     </div>
   </div>
 );

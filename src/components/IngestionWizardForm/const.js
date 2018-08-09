@@ -10,9 +10,9 @@ export const tipodatasetOptions = [
 ]
 
 export const modalitacaricamentoOptions = [
-    {'val' : 'sftp', 'name' : 'SFTP'},
-    {'val' : 'webservice', 'name' : 'Web Service'},
-    {'val' : 'both', 'name' : 'SFTP e Web Service'}
+    {'val' : '1', 'name' : 'SFTP'},
+    {'val' : '2', 'name' : 'Web Service'},
+    {'val' : '3', 'name' : 'SFTP e Web Service'}
 ]
 
 export const yesOrNoOptions = [
