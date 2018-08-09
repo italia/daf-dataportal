@@ -264,7 +264,7 @@ class Full extends Component {
                   if (json) {
                     setCookie(json)
                   }
-                }) */
+                })*/ 
                 dispatch(loginAction())
                 .then(response => {
                   if (response.ok) {

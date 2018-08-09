@@ -4,8 +4,10 @@ import {
   getDatasetACL,
   setDatasetACL,
   deleteDatasetACL,
-  groupsInfo
+  groupsInfo,
+  datasetDetail
 } from '../../actions.js'
+import { isPublic } from '../../utility'
 import { toastr } from 'react-redux-toastr'
 import {
   Modal,
@@ -226,37 +228,46 @@ class DatasetAdmin extends Component{
         toastr.success("Completato", "Permesso rimosso con successo")
         console.log(json.message)
       }
-      dispatch(getDatasetACL(dataset.dcatapit.name))
-      .then(risp => {
-        if(risp.code!==undefined){
-          this.setState({
-            message: risp.message,
-            isLoading: false
-          })
-        }else if(risp.code===undefined){
-          var acls = []
-          if(risp.length>0){
-            risp.map((permission)=>{
-              acls.push(permission.groupName)
+      if(groupname==='open_data_group'){
+        dispatch(datasetDetail(dataset.dcatapit.name, '', isPublic()))
+      }else{
+        dispatch(getDatasetACL(dataset.dcatapit.name))
+        .then(risp => {
+          if(risp.code!==undefined){
+            this.setState({
+              message: risp.message,
+              isLoading: false
             })
-            dispatch(groupsInfo(acls))
-            .then(json=>{
+          }else if(risp.code===undefined){
+            var acls = []
+            if(risp.length>0){
+              risp.map((permission)=>{
+                acls.push(permission.groupName)
+              })
+              dispatch(groupsInfo(acls))
+              .then(json=>{
+                this.setState({
+                  acl: json,
+                  aggiungi: false,
+                  isLoading: false,
+                  selectedOrg: '',
+                  selectedWg: '',
+                  message: ''
+                })
+              })
+            }else{
               this.setState({
-                acl: json,
+                message: "Nessun permesso disponibile",
+                acl: risp,
                 aggiungi: false,
                 isLoading: false,
                 selectedOrg: '',
                 selectedWg: '',
-                message: ''
               })
-            })
-          }else{
-            this.setState({
-              message: "Nessun permesso disponibile"
-            })
+            }
           }
-        }
-      })
+        })
+      }
     })
   }
   
