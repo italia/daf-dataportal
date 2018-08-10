@@ -889,13 +889,13 @@ class Organizations extends Component {
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label className="col-3 col-form-label">Password amministratore <button className="btn btn-link p-0" data-toggle="tooltip" data-placement="top" title="La password deve essere lunga almeno 8 caratteri e contenere almeno un lettera maiuscola e un numero"><i className="fa fa-info-circle" /></button></label>
+                                <label className="col-3 col-form-label">Password <button className="btn btn-link p-0" data-toggle="tooltip" data-placement="top" title="La password deve essere lunga almeno 8 caratteri e contenere almeno un lettera maiuscola e un numero"><i className="fa fa-info-circle" /></button></label>
                                 <div className="col-6">
                                     <input className="form-control" type="password" value={this.state.psw} onChange={(e) => { this.setState({ psw: e.target.value, checked: e.target.value === '' ? true : false }); this.validatePsw(e.target.value) }}/>
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label className="col-3 col-form-label">Ripeti Password amministratore</label>
+                                <label className="col-3 col-form-label">Ripeti Password </label>
                                 <div className="col-6">
                                     <input className="form-control" type="password" value={this.state.repeatPassword} onChange={(e) => { this.setState({ repeatPassword: e.target.value }); this.checkDoublePassword(e.target.value) }} />
                                 </div>
