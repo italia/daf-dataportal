@@ -28,7 +28,7 @@ import Dropzone from 'react-dropzone'
 // Services
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import WidgetCard from '../../components/Cards/WidgetCard';
-import { decodeTheme, isPublic, decodeCkan, isSysAdmin, fileToBase64, getTimestamp } from '../../utility'
+import { decodeTheme, isPublic, decodeCkan, isSysAdmin, getTimestamp } from '../../utility'
 import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
 import ShareButton from '../../components/ShareButton/ShareButton';
@@ -103,6 +103,7 @@ class DatasetDetail extends Component {
         this.searchDataset = this.searchDataset.bind(this)
         this.pubblicaDataset = this.pubblicaDataset.bind(this)
         this.toggleUploadFile = this.toggleUploadFile.bind(this)
+        this.fileToBase64 = this.fileToBase64.bind(this)
     }
 
     componentDidMount() {
@@ -364,6 +365,20 @@ class DatasetDetail extends Component {
       })
     }
 
+    fileToBase64(file) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        this.setState({
+          file: reader.result
+        })
+      }
+      console.log(reader)
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      };
+   }
+
     uploadFile(){
       const { dispatch, dataset } = this.props
       const { file, fileName } = this.state
@@ -375,6 +390,7 @@ class DatasetDetail extends Component {
       this.setState({
         uploading: true
       })
+      /* console.log(file) */
       dispatch(uploadHdfsFile(url, file))
       .then(response =>{
         if(response.ok){
@@ -418,14 +434,24 @@ class DatasetDetail extends Component {
                       multiple={false}
                       maxSize={10485760}
                       onDrop={( filesToUpload, e ) => {
-                        console.log(filesToUpload[0])
-                        var base64 = fileToBase64(filesToUpload[0])
-                        this.setState({
-                          file: base64,
-                          fileName: filesToUpload[0].name
+                        filesToUpload.forEach(file=>{
+                          console.log(file)
+                          const reader = new FileReader();
+                          reader.readAsText(file);
+                          reader.onload = () => {
+                            const fileAsBinaryString = reader.result;
+                            this.setState({
+                              file: fileAsBinaryString
+                            })
+                            // do whatever you want with the file content
+                          };
+/*                         this.fileToBase64(filesToUpload[0])
+  */                      this.setState({
+                            fileName: file.name
+                          })
                         })
-                        }
-                      }> 
+                      }}
+                      > 
                         <div style={{position: 'absolute', top: '50%', bottom:'50%', left: '0', right:'0'}}>
                           <div className="text-center">
                             <h5 className="font-weight-bold">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</h5>
@@ -440,7 +466,7 @@ class DatasetDetail extends Component {
                       <button type="button" className='btn btn-gray-200' onClick={this.toggleUploadFile}>
                         Annulla
                       </button>
-                      <button type="button" className="btn btn-primary px-2" onClick={this.uploadFile.bind(this)}>
+                      <button type="button" className="btn btn-primary px-2" onClick={this.uploadFile.bind(this)} disabled={this.state.fileName===''}>
                         {this.state.uploading?<i className="fas fa-circle-notch fa-spin"/>:'Carica'}
                       </button>
                     </ModalFooter>
