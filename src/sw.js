@@ -149,6 +149,19 @@ self.addEventListener('notificationclick', function(event) {
   );
 });
 
+self.addEventListener('notificationclick', function(event) {
+  console.log('[Service Worker] Notification click Received.');
+
+  event.notification.close();
+
+  console.log('SW Notification: ' + JSON.stringify(event))
+  event.waitUntil(
+    //clients.openWindow('dataportal.daf.teamdigitale.it/#/private/home')
+    clients.openWindow('localhost/#/private/home')
+  );
+});
+
+
 self.addEventListener('fetch', event => {
   const request = event.request
 

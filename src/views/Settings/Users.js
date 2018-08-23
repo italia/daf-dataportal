@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { fetchProperties } from '../../actions';
 import { serviceurl } from '../../config/serviceurl'
+import { roles, isSysAdmin, isAdmin } from '../../utility'
 import {
     Modal,
     ModalHeader,
@@ -11,6 +12,7 @@ import {
     ModalBody,
     ModalFooter 
 } from 'react-modal-bootstrap';
+import { toastr } from 'react-redux-toastr'
 import UserService from "./services/UserService";
 
 const userService = new UserService()
@@ -26,6 +28,9 @@ class Users extends Component {
             givenname: '',
             sn: '',
             mail: '',
+            userOrganizations:[],
+            userRoles:[],
+            newUserRoles:[],
             userpassword: '',
             repeatPassword: '',
             role: '',
@@ -41,7 +46,8 @@ class Users extends Component {
             message: '',
             pswok: true,
             enableSave: true,
-            saving: false
+            saving: false,
+            loading: true
         }
 
         this.load()
@@ -54,17 +60,17 @@ class Users extends Component {
         this.edit = this.edit.bind(this)
         this.checkDoublePassword = this.checkDoublePassword.bind(this)
         this.validatePsw = this.validatePsw.bind(this)
+        this.handleChange = this.handleChange.bind(this)
     }
 
     save(){
-        const { uid, givenname, mail,sn, userpassword, role} = this.state
+        const { uid, givenname, mail,sn, userpassword} = this.state
         const json =  {
             uid: uid,
             givenname: givenname,
             sn: sn,
             mail: mail,
-            userpassword: userpassword,
-            role: role
+            userpassword: userpassword
         }
         let response = userService.saveUser(json)
         this.setState({
@@ -86,6 +92,7 @@ class Users extends Component {
                     delete:'',
                     saving: false
                 })
+                toastr.success('Completato', 'Utente creato con successo')
                 this.load();
             }else{
                 this.setState({
@@ -95,26 +102,61 @@ class Users extends Component {
                     saving: false,
                     message: json.message
                 })
+                toastr.error('Errore', 'Si è verificato un errore nella creazione dell\'utente: ' + json.message)
                 console.log('Create Error: ' + json.message)
             }
         })
 
     }
 
+
+
     load(){
-        const users = userService.users("default_org")
-        var userList = []
-        users.then((json)=>{
-            json.member_user.map(user => {
-                if (user.indexOf("default_admin") === -1) {
-                    userList.push(user)
-                }
+        const { loggedUser } = this.props
+        this.setState({
+            loading: true
+        })
+        if(isSysAdmin(loggedUser)){
+            const users = userService.users("open_data_group")
+            var userList = []
+            users.then((json)=>{
+                json.member_user.map(user => {
+                    if (user.indexOf("default_admin") === -1) {
+                        userList.push(user)
+                    }
+                })
                 this.setState({
                     users: userList,
-                    filter: userList
+                    filter: userList,
+                    loading: false
                 })
             })
-        })
+        }else if(isAdmin(loggedUser)){
+            console.log('prendo gli utenti dove utente è admin')
+            var userList = []
+            loggedUser && loggedUser.roles.map((role) => {
+                if(role.indexOf('daf_adm_')>-1){
+                    const users = userService.users(role.replace('daf_adm_',''))
+                    users.then((json)=>{
+                        json.member_user.map(user => {
+                            if (user.indexOf("default_admin") === -1) {
+                                userList.push(user)                            }
+                            })
+                        this.setState({
+                            users: userList,
+                            filter: userList,
+                            loading: false
+                        })
+                        })
+                    }
+                })
+            console.log('load terminato')
+        } else {
+            console.log('Utente non amministratore')
+            this.setState({
+                loading: false
+            })
+        }
     }
 
     openUserCreate(){
@@ -167,24 +209,57 @@ class Users extends Component {
         this.setState({
             userEdit: true,
             createUser: false,
-            userAct: user
+            userAct: user,
+            userRoles: [],
+            newUserRoles: []
         })
         let response = userService.userDetail(user);
         response.then((json) => {
             this.setState({
                 givenname: json.givenname,
                 sn: json.sn,
-                role: json.role
+                role: json.role,
+                uid: json.uid,
+                userOrganizations: json.organizations,
+                userRoles: json.roles,
+                newUserRoles: json.roles
             })
         })
     }
 
     edit(){
-        const { userAct, givenname, sn, role } = this.state
-        var json = {
-            givenname: givenname,
-            sn: sn,
-            role: role
+        this.setState({
+            edit:undefined
+        })
+        var rolesToAdd=[]
+        var rolesToDelete=[]
+        if(this.state.newUserRoles && this.state.newUserRoles.length>0){
+            for(var i=0;i<this.state.newUserRoles.length;i++){
+                if(this.state.userRoles.indexOf(this.state.newUserRoles[i])===-1){
+                    rolesToAdd.push(this.state.newUserRoles[i])
+                }
+            }
+            for(var j=0;j<this.state.userRoles.length;j++){
+                if(this.state.newUserRoles.indexOf(this.state.userRoles[j])===-1){
+                    rolesToDelete.push(this.state.userRoles[j])
+                }
+            }
+        }
+        const { userAct, givenname, sn } = this.state
+        const { loggedUser } = this.props
+
+        if(isSysAdmin(loggedUser)){
+            var json = {
+                givenname: givenname,
+                sn: sn,
+                rolesToAdd: rolesToAdd,
+                rolesToDelete: rolesToDelete
+            }
+        } else {
+            var json = {
+                rolesToAdd: rolesToAdd,
+                rolesToDelete: rolesToDelete
+            }
         }
         let response = userService.saveChanges(userAct, json)
         this.setState({
@@ -193,26 +268,27 @@ class Users extends Component {
         response.then((json)=>{
             if(json.fields){
                 this.setState({
-                    userEdit: false,
-                    givenname: '',
-                    sn: '',
-                    role: '',
+                    userEdit: true,
                     edit: json.fields,
                     create: '',
                     delete: '',
                     saving: false
                 })
+                toastr.success('Completato', 'Utente modificato con successo')
             }else{
                 this.setState({
+                    userEdit: true,
                     edit: 'ko',
                     create: '',
                     delete: '',
                     message: json.message,
                     saving: false
                 })
+                toastr.error('Errore', 'Errore durante la modifica dell\'utente: ' + json.message)
                 console.log('Edit error: ' + json.message)
             }
-        })
+        }) 
+
     }
 
     delete(){
@@ -231,6 +307,7 @@ class Users extends Component {
                     edit: '',
                     saving: false
                 })
+                toastr.success('Completato', 'Utente eliminato con successo')
                 this.load();
             }else{
                 this.setState({
@@ -242,6 +319,7 @@ class Users extends Component {
                     edit: '',
                     saving: false
                 })
+                toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente: ' + json.message)
             }
         })
     }
@@ -284,42 +362,24 @@ class Users extends Component {
             })
     }
 
+    handleChange(org,e){
+        console.log('aggiungo nuovo ruolo: ' + e.target.value);
+        var r = this.state.newUserRoles.filter((role)=>{
+            return !role.endsWith(org)
+        });
+        r.push(e.target.value)
+        this.setState({
+            newUserRoles: r
+        })
+      }
+
     render() {
         const { loggedUser } = this.props
-        const { users, filter, userAct, userModal, userEdit, createUser, uid, givenname, sn, mail, userpassword, repeatPassword, checked, role} = this.state
-    
+        const { users, filter, loading, userAct, userModal, userEdit, createUser, uid, givenname, sn, mail, userpassword, repeatPassword, checked, role, userOrganizations, userRoles, newUserRoles} = this.state
+        console.log('userRoles: ' + userRoles)
+        console.log('newUserRoles: ' + newUserRoles)
         return (
             <div>
-                {this.state.create === 'ok' && <div className="col-sm-10">
-                    <div className="alert alert-success" role="alert">
-                        <i className="fa fa-check-circle fa-lg m-t-2"></i> Utente creata con successo
-                    </div>
-                </div>}
-                {this.state.create === 'ko' && <div className="col-sm-10">
-                    <div className="alert alert-danger" role="alert">
-                        <i className="fa fa-times-circle fa-lg m-t-2"></i> Si è verificato un errore nella creazione dell'utente: {this.state.message}
-                    </div>
-                </div>}
-                {this.state.delete === 'ok' && <div className="col-sm-10">
-                    <div className="alert alert-success" role="alert">
-                        <i className="fa fa-check-circle fa-lg m-t-2"></i> Utente eliminata con successo
-                    </div>
-                </div>}
-                {this.state.delete === 'ko' && <div className="col-sm-10">
-                    <div className="alert alert-danger" role="alert">
-                        <i className="fa fa-times-circle fa-lg m-t-2"></i> Non è stato possibile eliminare l'utente: {this.state.message}
-                    </div>
-                </div>}
-                {this.state.edit === 'ok' && <div className="col-sm-10">
-                    <div className="alert alert-success" role="alert">
-                        <i className="fa fa-check-circle fa-lg m-t-2"></i> Utente modificato con successo
-                    </div>
-                </div>}
-                {this.state.edit === 'ko' && <div className="col-sm-10">
-                    <div className="alert alert-danger" role="alert">
-                        <i className="fa fa-times-circle fa-lg m-t-2"></i> Si è verificato un errore nella modifica dell'utente: {this.state.message}
-                    </div>
-                </div>}
                 <Modal
                     contentLabel="Delete Organization"
                     className="Modal__Bootstrap modal-dialog modal-60"
@@ -349,14 +409,17 @@ class Users extends Component {
                                 <label htmlFor="example-search-input">Utenti</label>
                             </div>
                             <div className="col-7">
+                                {isSysAdmin(loggedUser) &&
                                 <button type="button" className="btn btn-link fa-pull-right p-0" title="Crea nuovo utente" onClick={this.openUserCreate}>
                                     <i className="fa fa-plus-circle fa-lg"></i>
                                 </button>
+                                }
                             </div>
                         </div>
                         <ul className="list-group">
                             <li className="list-group-item"><input className="form-control" onChange={(e)=>{this.searchBy(e.target.value)}}></input></li>
-                            {filter && filter.length > 0 && filter.map(user =>
+                            
+                            {loading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>:filter && filter.length > 0 && filter.map(user =>
                                 <li className={"list-group-item " + (userAct===user?"active":"")} key={user} >{user}
                                     <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.editUser(user) }}><i className="fa fa-edit fa-lg" /></button>
                                     <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.openUserModal(user) }}><i className="fa fa-trash fa-lg" /></button>
@@ -364,9 +427,11 @@ class Users extends Component {
                             )
                             }
                         </ul>
+                        {isSysAdmin(loggedUser) &&
                         <button type="button" className="btn btn-link float-right mt-3" title="Crea nuovo utente" onClick={this.openUserCreate}>
                             <i className="fa fa-plus-circle fa-lg"></i>
                         </button>
+                        }
                     </div>
                     {createUser && 
                     <div className="col-7">
@@ -408,17 +473,6 @@ class Users extends Component {
                                     <input className="form-control" type="password" value={repeatPassword} onChange={(e) => { this.setState({ repeatPassword: e.target.value }); this.checkDoublePassword(e.target.value) }} />
                                 </div>
                             </div>
-                            <div className="form-group row">
-                                <label className="col-3 col-form-label">Ruolo</label>
-                                <div className="col-6">
-                                    <select className="form-control" value={role} onChange={(e) => { this.setState({ role: e.target.value }) }}>
-                                        <option value=""></option>
-                                        <option value="daf_admins">daf_admins</option>
-                                        <option value="daf_editors">daf_editors</option>
-                                        <option value="daf_viewers">daf_viewers</option>
-                                    </select>                                
-                                </div>
-                            </div>
                             <button type="submit" className="btn btn-primary" disabled={this.state.enableSave} onClick={this.save}>{this.state.saving&&<i className="fa fa-spinner fa-spin fa-lg"/>}{!this.state.saving&&"Crea"}</button>
                         </div>
                         <div hidden={checked} className="ml-5 w-100">
@@ -445,16 +499,16 @@ class Users extends Component {
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Nome</label>
                                 <div className="col-6">
-                                    <input className="form-control" type="search" value={givenname} onChange={(e) => { this.setState({ givenname: e.target.value }) }} />
+                                    <input className="form-control" type="search" disabled={!isSysAdmin(loggedUser)} value={givenname} onChange={(e) => { this.setState({ givenname: e.target.value }) }} />
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Cognome</label>
                                 <div className="col-6">
-                                    <input className="form-control" type="search" value={sn} onChange={(e) => { this.setState({ sn: e.target.value }) }} />
+                                    <input className="form-control" type="search" disabled={!isSysAdmin(loggedUser)} value={sn} onChange={(e) => { this.setState({ sn: e.target.value }) }} />
                                 </div>
                             </div>
-                            <div className="form-group row">
+                            {/* <div className="form-group row">
                                 <label className="col-3 col-form-label">Ruolo</label>
                                 <div className="col-6">
                                     <select className="form-control" value={role} onChange={(e) => { this.setState({ role: e.target.value }) }}>
@@ -463,7 +517,38 @@ class Users extends Component {
                                         <option value="daf_viewers">daf_viewers</option>
                                     </select>
                                 </div>
+                            </div> */}
+                            {userOrganizations && userOrganizations.length>0 && 
+                            <div className="form-group row">
+                                <table className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                        <th scope="col">Organizzazione</th>
+                                        <th scope="col">Ruolo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {userOrganizations.map((org, index) => { 
+                                        var roleInOrg = ''
+                                        return <tr key={index}>
+                                                    <td>{org}</td>
+                                                     <td>
+                                                        <select onChange={this.handleChange.bind(this,org)} id={'select_' + uid + '_' + org}>
+                                                            <option value=""  defaultValue></option>
+                                                            {roles.map(role => {
+                                                                if(role.key !== 'daf_sys_admin')
+                                                                    return userRoles.indexOf(role.key+'_' + org)>-1?<option value={role.key+'_'+org} key={role.key+'_'+org} selected>{role.label}</option>: <option value={role.key+'_'+org} key={role.key+'_'+org}>{role.label}</option>
+                                                                }    
+                                                            )}
+                                                        </select>
+                                                    </td> 
+                                            </tr>
+                                        }
+                                    )}
+                                    </tbody>
+                                </table>
                             </div>
+                            }
                             <button type="submit" className="btn btn-primary" onClick={this.edit}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving &&"Modifica"}</button>
                         </div>
                     </div>}

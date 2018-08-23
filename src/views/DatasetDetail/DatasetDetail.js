@@ -9,24 +9,44 @@ import {
     checkMetabase,
     datasetMetadata,
     getOpendataResources,
-    checkFileOnHdfs
+    checkFileOnHdfs,
+    setDatasetACL,
+    uploadHdfsFile
 } from '../../actions'
 import ReactJson from 'react-json-view'
 import download from 'downloadjs'
 import { serviceurl } from "../../config/serviceurl";
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
+import Dropzone from 'react-dropzone'
 // Services
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import WidgetCard from '../../components/Cards/WidgetCard';
-import { decodeTheme, isPublic, decodeCkan } from '../../utility'
+import { decodeTheme, isPublic, decodeCkan, isSysAdmin, getTimestamp } from '../../utility'
 import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
 import ShareButton from '../../components/ShareButton/ShareButton';
+import DatasetAdmin from './DatasetAdmin';
 
 function checkIsLink(val){
   if(val.indexOf('http')!==-1 && val.indexOf('{')===-1)
     return <a className="text-primary" href={val} target='_blank'>{val}</a>
   
   return val
+}
+
+function ableToPublish(user, dataset){
+  var able = false
+  if((user.uid === dataset.operational.group_own) && ((user.roles.indexOf('daf_adm_'+dataset.dcatapit.owner_org)!==-1) || isSysAdmin(user))){
+    able = true
+  }
+  return able
 }
 
 class DatasetDetail extends Component {
@@ -53,6 +73,7 @@ class DatasetDetail extends Component {
             showAPI: false,
             showTools: false,
             showWidget: false,
+            showAdmin: false,
             downloadState: 3, // 1-Success, 2-Error, 3-loading
             supersetState: 3,
             previewState: 3,
@@ -67,7 +88,11 @@ class DatasetDetail extends Component {
             hasPreview: false,
             hasSuperset: false,
             hasMetabase: false,
-            dafIndex: 0
+            dafIndex: 0,
+            uploadFile: false,
+            file: '',
+            fileName: '',
+            uploading: false
 
         }
 
@@ -76,6 +101,9 @@ class DatasetDetail extends Component {
         this.handleTools = this.handleTools.bind(this)
         this.handleResources = this.handleResources.bind(this)
         this.searchDataset = this.searchDataset.bind(this)
+        this.pubblicaDataset = this.pubblicaDataset.bind(this)
+        this.toggleUploadFile = this.toggleUploadFile.bind(this)
+        this.fileToBase64 = this.fileToBase64.bind(this)
     }
 
     componentDidMount() {
@@ -108,7 +136,7 @@ class DatasetDetail extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { dispatch } = this.props
-        if (nextProps.dataset || nextProps.feed) {
+        if ((nextProps.dataset || nextProps.feed) && (this.props.dataset!==nextProps.dataset || this.props.feed!==nextProps.feed)) {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
             var dafIndex = 0
             if (isExtOpendata) {
@@ -214,6 +242,7 @@ class DatasetDetail extends Component {
             showAPI: false,
             showTools: false,
             showWidget: false,
+            showAdmin: false,
             showDownload: false,
             showDett: false,
             previewState: 3
@@ -245,6 +274,7 @@ class DatasetDetail extends Component {
             showAPI: false,
             showPreview: false,
             showWidget: false,
+            showAdmin: false,
             showDownload: false,
             showDett: false,
             supersetState: 3,
@@ -295,6 +325,89 @@ class DatasetDetail extends Component {
         return name
     }
 
+    pubblicaDataset(){
+      const { dispatch, query, dataset } = this.props
+      dispatch(setDatasetACL(dataset.dcatapit.name,'open_data_group'))
+      .then(json => {
+        if(json.code!==undefined){
+          toastr.error("Errore", json.message)
+          console.error(json.message)
+        }
+        if(json.fields && json.fields==="ok"){
+          toastr.success("Completato", "Il dataset è un Open data!")
+          console.log(json.message)
+          dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
+          .catch(error => { console.log('Errore durante il caricamento del dataset ' + dataset.dcatapit.name); console.error(error); this.setState({ hidden: false }) })
+        }
+      })
+    }
+
+    publish(){
+      const toastrConfirmOptions = {
+        okText: 'Pubblica',
+        cancelText: 'Annulla',
+        onOk: () => this.pubblicaDataset(),
+        onCancel: () => console.log('CANCEL: clicked'),
+        component: () => (
+          <div className="rrt-message">
+            Stai rendendo il dataset un <b>Open data</b>, sei sicuro di questa scelta?
+          </div>
+        )
+      };
+      toastr.confirm(null, toastrConfirmOptions)
+    }
+
+    toggleUploadFile(){
+      this.setState({
+        uploadFile: !this.state.uploadFile,
+        file: '',
+        fileName: ''
+      })
+    }
+
+    fileToBase64(file) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        this.setState({
+          file: reader.result
+        })
+      }
+      console.log(reader)
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      };
+   }
+
+    uploadFile(){
+      const { dispatch, dataset } = this.props
+      const { file, fileName } = this.state
+      var nome = fileName.split(".")
+      var nomeFile = nome[0]+'_'+getTimestamp()+'.'+nome[1]
+      var url = dataset.operational.input_src.srv_push[0].url + nomeFile + '?op=CREATE'
+      /* https://api.daf.teamdigitale.test/hdfs/proxy/uploads/luca_test/AGRI/produzione_agricola/agency_infer_hdfs_prova2/file.csv?op=CREATE */
+      //var url = serviceurl.apiURLhdfs + '/uploads/'+localStorage.getItem('username')+'/'+dataset.operational.theme+'/'+dataset.operational.subtheme+'/'+datase.dcatapit.name+'/'+this.state.fileName+'?op=CREATE'
+      this.setState({
+        uploading: true
+      })
+      /* console.log(file) */
+      dispatch(uploadHdfsFile(url, file))
+      .then(response =>{
+        if(response.ok){
+          toastr.success('Complimenti', 'Upload eseguito con successo')
+          this.toggleUploadFile()
+        }else{
+          response.json().then(json=>{
+            toastr.error('Errore', "C'è stato un problema nell'upload del file")
+            console.error(json)
+        })
+        }
+        this.setState({
+          uploading: false
+        })
+      })
+    }
+
     render() {
         const { dataset, metadata, ope, feed, iframes, isFetching, query } = this.props
         var metadataThemes = undefined
@@ -309,25 +422,77 @@ class DatasetDetail extends Component {
         return isFetching === true ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (<div>
             {(ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') && (dataset) &&
                 <div>
+                    <Modal isOpen={this.state.uploadFile} onRequestHide={this.toggleUploadFile}>
+                    <ModalHeader>
+                      <ModalTitle>Carica il file</ModalTitle>
+                      <ModalClose onClick={this.toggleUploadFile}/>
+                    </ModalHeader>
+                    <ModalBody>
+                      {this.state.file==='' && <Dropzone
+                      name="hdfs_file"
+                      className="dropzone w-100 position-relative"
+                      multiple={false}
+                      maxSize={10485760}
+                      onDrop={( filesToUpload, e ) => {
+                        filesToUpload.forEach(file=>{
+                          console.log(file)
+                          const reader = new FileReader();
+                          reader.readAsText(file);
+                          reader.onload = () => {
+                            const fileAsBinaryString = reader.result;
+                            this.setState({
+                              file: fileAsBinaryString
+                            })
+                            // do whatever you want with the file content
+                          };
+/*                         this.fileToBase64(filesToUpload[0])
+  */                      this.setState({
+                            fileName: file.name
+                          })
+                        })
+                      }}
+                      > 
+                        <div style={{position: 'absolute', top: '50%', bottom:'50%', left: '0', right:'0'}}>
+                          <div className="text-center">
+                            <h5 className="font-weight-bold">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</h5>
+                          </div>
+                        </div>
+                      </Dropzone>}
+                      {this.state.file!=='' && 
+                      <h5>File <b>{this.state.fileName}</b> pronto per il caricamento</h5>
+                      }
+                    </ModalBody>
+                    <ModalFooter>
+                      <button type="button" className='btn btn-gray-200' onClick={this.toggleUploadFile}>
+                        Annulla
+                      </button>
+                      <button type="button" className="btn btn-primary px-2" onClick={this.uploadFile.bind(this)} disabled={this.state.fileName===''}>
+                        {this.state.uploading?<i className="fas fa-circle-notch fa-spin"/>:'Carica'}
+                      </button>
+                    </ModalFooter>
+                    </Modal>
                     <div className='top-dataset'>
                       <div className="container pt-4">
                         <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary"></i>
                         <h2 className="title-dataset px-4 text-primary" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title, 75)}</h2>
                         <ul className="nav b-b-0 nav-tabs w-100 buttons-nav pl-4">
                             <li className="nav-item">
-                                <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
+                                <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showAdmin: false, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
                             </li>
                             {!isPublic()&&<li className="nav-item h-100">
                                 <a className={!this.state.showPreview ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handlePreview.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="text-icon fa fa-eye pr-2" /> Anteprima</a>
                             </li>}
                             {!isPublic()&&<li className="nav-item h-100">
-                                <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
+                                <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showAdmin: false, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
                             </li>}
                             {!isPublic()&&<li className="nav-item h-100">
                                 <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
                             </li>}
                             {!isPublic()&&<li className="nav-item h-100">
-                                <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
+                                <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
+                            </li>}
+                            {!isPublic()&&<li className="nav-item h-100">
+                                <a className={!this.state.showAdmin ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAdmin: true, showWidget: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fas fa-cogs pr-2" />Amministrazione</a>
                             </li>}
                         </ul>
                         {!isPublic()&&<button className="btn btn-accento buttons-nav" style={{ right: '20%', height: '48px' }} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>}
@@ -421,6 +586,32 @@ class DatasetDetail extends Component {
                                                             </tr>
                                                         </tbody>
                                                     </table>
+                                                }
+                                                {!isPublic()&&dataset.operational.input_src.srv_push &&
+                                                  <div>
+                                                    <table className="table table-bordered table-striped table-responsive d-inline-table">
+                                                        <tbody className="w-100">
+                                                            <tr>
+                                                                <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th><td className="bg-grigino">Web HDFS</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th className="bg-white" style={{ width: "192px" }}><strong>API di Upload: </strong></th>
+                                                                <td className="bg-grigino" title={dataset.operational.input_src.srv_push[0].url}>{this.truncate(dataset.operational.input_src.srv_push[0].url, 30)}
+                                                                    <CopyToClipboard text={dataset.operational.input_src.srv_push[0].url}>
+                                                                        <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
+                                                                    </CopyToClipboard>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th className="bg-white" style={{ width: "192px" }}><strong>Utente: </strong></th><td className="bg-grigino">{dataset.operational.input_src.srv_push[0].username}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    {(this.props.loggedUser.uid===dataset.operational.input_src.srv_push[0].username) && 
+                                                    <div className="text-center mt-5">
+                                                      <p className="desc-dataset">Vuoi caricare direttamente il file?</p> <button className="btn btn-primary" onClick={this.toggleUploadFile.bind(this)}>Carica</button>
+                                                    </div>}
+                                                  </div>
                                                 }
                                             </div>
                                         </div>
@@ -553,11 +744,11 @@ class DatasetDetail extends Component {
                                         </div>
                                     }
 
-                                    <div className="col-12 my-3">
+                                    <div className="col-8 my-3">
                                         <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + dataset.dcatapit.modified}</p>
                                         <i className="fa fa-balance-scale text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{dataset.dcatapit.license_title?dataset.dcatapit.license_title:'Licenza non trovata'}</p>
                                         {dataset.dcatapit.privatex?
-                                          <div><i className="fa fa-lock text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è privato</p></div>:
+                                          <div className="text-muted pb-1 mb-2"><i className="fa fa-lock text-icon pr-3" />Il dataset è privato{ableToPublish(this.props.loggedUser, dataset) && <i className="fas fa-paper-plane text-primary fa-lg pointer fa-pull-right" style={{ lineHeight: '1' }} onClick={this.publish.bind(this)}/>}</div>:
                                           <div><i className="fa fa-globe text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p></div>
                                           }
                                     </div>
@@ -616,6 +807,8 @@ class DatasetDetail extends Component {
                             Vuoi scoprire maggiori informazioni sul dataset? <button type="button" className="ml-3 p-3 btn btn-accento" onClick={()=>this.props.history.push('/private/dataset/'+dataset.dcatapit.name)}>Accedi all'area Privata</button>
                           </div>
                         }
+
+                        {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} owner={dataset.operational.group_own}/>}
                         </div>
                     </div>
                     {!isPublic() && <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
@@ -639,7 +832,7 @@ class DatasetDetail extends Component {
                                             })
                                             }
                                             <div className="w-100 text-center">
-                                                <button className="btn btn-link" onClick={() => { this.setState({ showWidget: true, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}>
+                                                <button className="btn btn-link" onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}>
                                                     <h4 className="text-primary"><u>Vedi tutti</u></h4>
                                                 </button>
                                             </div>
@@ -783,7 +976,7 @@ class DatasetDetail extends Component {
                                         <div className="col-12 my-3">
                                             <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + metadata.metadata_created}</p>
                                             <i className="fa fa-balance-scale text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{metadata.license_title}</p>
-                                            <i className="fa fa-lock text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p>
+                                            <i className="fa fa-globe text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p>
                                         </div>
 
                                         <div className="col-12 my-3">
@@ -884,7 +1077,9 @@ DatasetDetail.propTypes = {
 
 function mapStateToProps(state) {
     const { isFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
-    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes }
+    const { newNotifications } = state.notificationsReducer['notifications'] || {}
+    const { loggedUser } = state.userReducer['obj'] || {}
+    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser }
 }
 
 export default connect(mapStateToProps)(DatasetDetail)

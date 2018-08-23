@@ -10,9 +10,9 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
+import { setCookie, setSupersetCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
 import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications } from './../../actions.js'
-import { setCookie } from '../../utility'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -20,6 +20,7 @@ import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 import Home from '../../views/Home/Home';
 import IngestionWizard from '../../views/IngestionWizard/';
+import IngestionWizardNew from '../../views/IngestionWizard/IngestionWizardNew';
 import Dataset from '../../views/Dataset/';
 import DatasetList from '../../views/DataseList/';
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail';
@@ -30,7 +31,6 @@ import DashboardManager from '../../views/DashboardManager/DashboardManager';
 import Notifications from '../../views/Notifications/Notifications'
 import Organizations from '../../views/Settings/Organizations';
 import Users from '../../views/Settings/Users';
-import Crea from "../../views/Crea/Crea";
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
 
@@ -55,22 +55,22 @@ function PrivateRoute({ component: Component, authed, ...rest }) {
   )
 }
 
-function PrivateRouteAdmin({ component: Component, authed, role, ...rest }) {
+function PrivateRouteAdmin({ component: Component, authed, loggedUser, ...rest }) {
   return (
     <Route
       {...rest}
-      render={(props) => (authed === true && role==='daf_admins')
+      render={(props) => (authed === true && (isAdmin(loggedUser) || isSysAdmin(loggedUser)))
         ? <Component {...props} />
         : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
     />
   )
 }
 
-function PrivateRouteEditor({ component: Component, authed, role, ...rest }) {
+function PrivateRouteEditor({ component: Component, authed, loggedUser, ...rest }) {
   return (
     <Route
       {...rest}
-      render={(props) => (authed === true && (role === 'daf_editors' || role === 'daf_admins'))
+      render={(props) => (authed === true && (isAdmin(loggedUser) || isEditor(loggedUser)))
         ? <Component {...props} />
         : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
     />
@@ -100,7 +100,7 @@ function listenMessage(dispatch){
 }
 
 function askPermission() {
-  if(Notification.permission === 'default' )
+  if(Notification&&Notification.permission === 'default' )
     return new Promise(function(resolve, reject) {
       const permissionResult = Notification.requestPermission(function(result) {
         resolve(result);
@@ -184,6 +184,7 @@ class Full extends Component {
       validationMSgOrg: 'Campo obbligatorio',
       authed: false,
       loading: true,
+      iframe: ''
     }
 
     this.openSearch = this.openSearch.bind(this)
@@ -233,6 +234,7 @@ class Full extends Component {
       askPermission(this.props.loggedUser.uid)
       dispatch(fetchNewNotifications(localStorage.getItem('user')))
       dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
+      document.forms['supset_open'].submit()
     } else {
       if (localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
@@ -242,7 +244,7 @@ class Full extends Component {
                 dispatch(getApplicationCookie('superset'))
                 .then(json => {
                   if (json) {
-                    setCookie(json)
+                    setSupersetCookie(json)
                   }
                 })
                 dispatch(getApplicationCookie('metabase'))
@@ -262,19 +264,30 @@ class Full extends Component {
                   if (json) {
                     setCookie(json)
                   }
-                }) */
+                })*/ 
                 dispatch(loginAction())
-                  .then(json => {
+                .then(response => {
+                  if (response.ok) {
+                    response.json().then(json => {
                       dispatch(receiveLogin(json))
-                      /* dispatch(addUserOrganization(json.uid)) */
                       this.setState({
                           authed: true,
                           loading: false
                         })
                         askPermission(this.props.loggedUser.uid)
+                        //dispatch(fetchNotifications(this.props.loggedUser.uid))
                         dispatch(fetchNewNotifications(localStorage.getItem('user')))
                         dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
-                })
+                        document.forms['supset_open'].submit()
+                  })
+                }else{
+                  console.log('Login Action Response: ' + response.statusText)
+                  this.setState({
+                    authed: false,
+                    loading: false
+                  })
+                  this.props.history.push('/login')
+                }})
               } else {
                 this.setState({
                   authed: false,
@@ -301,6 +314,7 @@ class Full extends Component {
             this.props.history.push('/login')
           }
         }
+        
       }
 
   openSearch(){
@@ -546,13 +560,12 @@ class Full extends Component {
     if (window.location.hash.indexOf('/private/dataset/')!==-1)
       paddingTop = ''
 
-    var role = ''
-    if(this.props.loggedUser)
-      role = this.props.loggedUser.role
     if (this.props.authed)
       this.state.authed = true;  
-    return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
-      <div className="app aside-menu-show">
+    return (
+    <div> 
+      { this.state.loading && (<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>)} 
+      {!this.state.loading && <div className="app aside-menu-show">
       {/* Modal per creazione nuova Storia */}
       {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
           <form>
@@ -693,7 +706,8 @@ class Full extends Component {
             <div className={paddingTop+ " container-fluid "+home }>
               <Switch>
                 <PrivateRoute authed={this.state.authed} path="/private/home" name="Home" exact component={Home}/>
-                <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
+                <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/ingestionwizzard" name="Forms" component={IngestionWizard} history={history} />
+                <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/ingestionwizzardnew" name="Forms" component={IngestionWizardNew} history={history} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies/" name="Ontologies" exact component={Ontologies} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies/:filter" name="Ontology" component={Ontology} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies" name="Vocabularies" exact component={Vocabularies} />
@@ -707,10 +721,9 @@ class Full extends Component {
                 {<PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />} 
                 <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
-                <PrivateRoute authed={this.state.authed} path="/private/settings" name="Settings" component={Settings} />
-                <PrivateRouteEditor authed={this.state.authed} role={role} path="/private/organizations" name="Organizations" component={Organizations} />
-                <PrivateRoute authed={this.state.authed} path="/private/users" name="Users" component={Users} />
-                <PrivateRouteAdmin authed={this.state.authed} role={role} path="/private/crea" name="Crea" component={Crea} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/settings" name="Settings" component={Settings} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/users" name="Users" component={Users} />
                 <Redirect from="/private" to="/private/home"/>
               </Switch>
             </div>
@@ -719,7 +732,14 @@ class Full extends Component {
         </div>
         <Footer />
       </div>
+      }
     );
+    <form id="supset_open" target="open_supset" action={serviceurl.urlSupersetOpen +'/managed/bi-open-login'} method="POST">
+      <input name="Authorization" type="text" value={"Bearer "+localStorage.getItem('token')} hidden/>
+    </form>
+    <iframe name="open_supset" hidden/>
+    </div>
+    )
   }
 }
 

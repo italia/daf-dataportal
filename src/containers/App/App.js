@@ -30,6 +30,9 @@ class App extends Component {
     }else{
       var split = host.split('.')
       domain = split[0]
+      if(split[0]==='localhost'){
+        domain = 'dataportal'
+      }
     }
     dispatch(fetchProperties(domain))
     .then(json => {
@@ -113,6 +116,7 @@ class App extends Component {
             <Route path="/private/notifications" name="Notification Center" component={Full} />
             <Route path="/private/widget" name="Widget" component={Full} />
             <Route path="/private/ingestionwizzard" name="Ingestion" component={Full} />
+            <Route path="/private/ingestionwizzardnew" name="Ingestion" component={Full} />
             <Route path="/private/ontologies" name="Ontologies" exact component={Full} />
             <Route path="/private/ontologies/:filter" name="Ontology" component={Full} />
             <Route path="/private/vocabularies" name="Vocabularies" exact component={Full} />

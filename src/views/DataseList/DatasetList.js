@@ -490,7 +490,7 @@ class DatasetList extends Component {
                             <nav className="dashboardHeader text-gray-600">
                               <div className="container">
                                 {window.location.hash.indexOf('dataset')!==-1 && <div><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset trovati <i>{this.state.totalResults}</i></h2></div>}
-                                {window.location.hash.indexOf('dataset')===-1 && <div><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Hai cercato <i className="mr-1">{search?search:"' '"}</i> trovati <i>{this.state.totalResults}</i> risultati</h2></div>}
+                                {window.location.hash.indexOf('dataset')===-1 && <div><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>{search && 'Hai cercato ' }<i className="mr-1">{search?search:""}</i> trovati <i>{this.state.totalResults}</i> risultati</h2></div>}
                               </div>
                             </nav>
                             <nav className={"dashboardHeader b-t-1 b-b-1 "+(this.state.showDivSearch?"mb-0":"")}>
