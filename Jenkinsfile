@@ -39,7 +39,7 @@ pipeline {
    stage('Staging') {
       steps { 
         script {
-          if(env.BRANCH_NAME=='citest' || env.BRANCH_NAME=='newSecurity'){
+          if(env.BRANCH_NAME=='ci4newserver' || env.BRANCH_NAME=='newSecurity'){
           sh ''' COMMIT_ID=$(echo ${GIT_COMMIT}|cut -c 1-6); cd kubernetes/test;
               sed "s#image: nexus.teamdigitale.test/data-.*#image: nexus.teamdigitale.test/data-portal:$BUILD_NUMBER-$COMMIT_ID#" daf_data-portal.yml > daf-dataportal$BUILD_NUMBER-$COMMIT_ID.yaml ;kubectl  --kubeconfig=../../../../.kube/config.teamdigitale-staging apply -f daf-dataportal$BUILD_NUMBER-$COMMIT_ID.yaml --force --validate=false --testci '''             
           slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' https://cd.daf.teamdigitale.it/blue/organizations/jenkins/CI-DataPortal_Frontend/activity")
