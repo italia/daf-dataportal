@@ -29,7 +29,7 @@ pipeline {
     stage('Upload'){
       steps {
         script { 
-          if(env.BRANCH_NAME == 'citest'  || env.BRANCH_NAME=='newSecurity'){ 
+          if(env.BRANCH_NAME=='ci4newserver' || env.BRANCH_NAME == 'citest'  || env.BRANCH_NAME=='newSecurity'){ 
             sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker push $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID' 
             sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker rmi $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID'  
           }       
