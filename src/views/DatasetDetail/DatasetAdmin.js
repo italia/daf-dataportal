@@ -67,6 +67,7 @@ class DatasetAdmin extends Component{
     this.updateValueWg = this.updateValueWg.bind(this)
     this.setACL = this.setACL.bind(this)
     this.deleteACL = this.deleteACL.bind(this)
+    this.publish = this.publish.bind(this)
     
   }
 
@@ -137,28 +138,37 @@ class DatasetAdmin extends Component{
   updateValueOrg(newValue) {
     this.setState({
         selectedOrg: newValue,
+        selectedWg: ""
     });
     let response = organizationService.groupInfo(newValue)
     let allWg = []
     let tmp = {}
     response.then((json) => {
-      json.member_group.map(user => {
+      if(json.member_group){
+        json.member_group.map(user => {
           tmp = {
-              'value': user,
-              'label': user
+            'value': user,
+            'label': user
           }
           allWg.push(tmp);
-      })
+        })
+      }
       this.setState({
-          workgroups: allWg,
+        workgroups: allWg,
       })
     })
   }
 
   updateValueWg(newValue) {
-    this.setState({
+    if(newValue!==this.state.selectedWg){
+      this.setState({
         selectedWg: newValue,
-    });
+      })
+    }else{
+      this.setState({
+        selectedWg: "",
+      })
+    }
   }
 
   toggleClose(){
@@ -281,11 +291,50 @@ class DatasetAdmin extends Component{
       }
     })
   }
+
+  pubblicaDataset(){
+    const { dispatch, query, dataset } = this.props
+    dispatch(setDatasetACL(dataset.dcatapit.name,'open_data_group'))
+    .then(json => {
+      if(json.code!==undefined){
+        toastr.error("Errore", json.message)
+        console.error(json.message)
+      }
+      if(json.fields && json.fields==="ok"){
+        toastr.success("Completato", "Il dataset è un Open data!")
+        console.log(json.message)
+        dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
+        .catch(error => { console.log('Errore durante il caricamento del dataset ' + dataset.dcatapit.name); console.error(error); this.setState({ hidden: false }) })
+      }
+    })
+  }
+
+  publish(){
+    const toastrConfirmOptions = {
+      okText: 'Pubblica',
+      cancelText: 'Annulla',
+      onOk: () => this.pubblicaDataset(),
+      onCancel: () => console.log('CANCEL: clicked'),
+      component: () => (
+        <div className="rrt-message">
+          Stai rendendo il dataset un <b>Open data</b>, sei sicuro di questa scelta?
+        </div>
+      )
+    };
+    toastr.confirm(null, toastrConfirmOptions)
+  }
   
   render(){
     const { acl, aggiungi, orgs, workgroups } = this.state
     const {dataset, loggedUser } = this.props
-
+    var result = ""
+    if(this.state.selectedOrg!=="" && this.state.selectedOrg!==null){
+      if(this.state.selectedWg!=="" && this.state.selectedWg!==null){
+        result = <h5>Stai condividendo il dataset con gli utenti del workgroup <b>{this.state.selectedWg}</b> dell'organizzazione <b>{this.state.selectedOrg}</b></h5>
+      }else{
+        result = <h5>Stai condividendo il dataset con gli utenti dell'organizzazione <b>{this.state.selectedOrg}</b></h5>
+      }
+    }
     return(
       <div hidden={!this.props.showAdmin} className="col-12 card-text">
         <Modal
@@ -297,43 +346,63 @@ class DatasetAdmin extends Component{
               <ModalClose onClick={this.toggleClose} />
           </ModalHeader>
           <ModalBody>
-            Organizazione
-            <Select
-              id="state-select"
-              onBlurResetsInput={false}
-              onSelectResetsInput={false}
-              options={orgs}
-              simpleValue
-              clearable={true}
-              name="selected-user"
-              value={this.state.selectedOrg}
-              onChange={this.updateValueOrg}
-              rtl={false}
-              searchable={true}
-              className="mb-3" 
-            />
-            {this.state.selectedOrg!=="" &&
-             <div> 
-            Workgroup
-            <Select
-              id="state-select"
-              onBlurResetsInput={false}
-              onSelectResetsInput={false}
-              options={workgroups}
-              simpleValue
-              clearable={true}
-              name="selected-user"
-              value={this.state.selectedWg}
-              onChange={this.updateValueWg}
-              rtl={false}
-              searchable={true}
-              className="mb-3" 
-            />
+            <div className="row">
+              <div className="col-3">
+              Organizazione
+              <Select
+                id="state-select"
+                onBlurResetsInput={false}
+                onSelectResetsInput={false}
+                options={orgs}
+                simpleValue
+                clearable={true}
+                name="selected-user"
+                value={this.state.selectedOrg}
+                onChange={this.updateValueOrg}
+                rtl={false}
+                searchable={true}
+                className="my-3" 
+              />
+              </div>
+              {(this.state.selectedOrg!=="" && this.state.selectedOrg!==null) &&
+              <div className="col">
+                <div> 
+                Workgroup
+                {/* <Select
+                  id="state-select"
+                  onBlurResetsInput={false}
+                  onSelectResetsInput={false}
+                  options={workgroups}
+                  simpleValue
+                  clearable={true}
+                  name="selected-user"
+                  value={this.state.selectedWg}
+                  onChange={this.updateValueWg}
+                  rtl={false}
+                  searchable={true}
+                  className="my-3" 
+                /> */}
+                <ul className="my-3 list-group">
+                  {workgroups && workgroups.length > 0 && workgroups.map((wg, index) => {
+                      return(
+                        <li className={"list-group-item "+(this.state.selectedWg===wg.value?"list-group-item-primary":"")} key={index} onClick={this.updateValueWg.bind(this, wg.value)}>{wg.value}
+                          {this.state.selectedWg===wg.value && <i className="fas fa-check fa-lg fa-pull-right" style={{lineHeight: "1"}}/>}
+                        </li>
+                      )
+                    })
+                  }
+                  {
+                    workgroups.length === 0 && <p>Nessun Workgroup disponibile per l'organizazzione selezionata</p>
+                  }
+                </ul>
+                </div>
+              </div>
+              }
             </div>
-            }
+            <div className="text-muted text-center">{result}</div>
           </ModalBody>
           <ModalFooter>
-              <button className='btn btn-primary' onClick={this.setACL} disabled={(this.state.selectedOrg.length===0 || this.state.saving)}>
+              <button className='btn btn-primary' onClick={this.setACL} disabled={(this.state.selectedOrg == '' || this.state.saving)}>
               {this.state.saving?<i className="fa fa-spinner fa-spin fa-lg" />:"Aggiungi permesso"}
               </button>
               <button className='btn btn-secondary' onClick={this.toggleClose}>
@@ -346,7 +415,10 @@ class DatasetAdmin extends Component{
               <i className="text-icon fa-pull-left fas fa-unlock fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Permessi</b></h4>
           </div>
           {ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto mb-4">
-              <button className="float-right btn btn-primary" onClick={this.toggle}><i className="fa fa-plus fa-lg"/></button>
+            <div className="btn-group float-right">
+              <button className="btn btn-outline-primary" onClick={this.publish}><i className="fas fa-paper-plane fa-lg"/></button>
+              <button className="btn btn-outline-primary" onClick={this.toggle}><i className="fa fa-plus fa-lg"/></button>
+            </div>
           </div>}
         </div>
         {this.state.isLoading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :<div className="col-12">

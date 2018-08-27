@@ -101,7 +101,6 @@ class DatasetDetail extends Component {
         this.handleTools = this.handleTools.bind(this)
         this.handleResources = this.handleResources.bind(this)
         this.searchDataset = this.searchDataset.bind(this)
-        this.pubblicaDataset = this.pubblicaDataset.bind(this)
         this.toggleUploadFile = this.toggleUploadFile.bind(this)
         this.fileToBase64 = this.fileToBase64.bind(this)
     }
@@ -323,38 +322,6 @@ class DatasetDetail extends Component {
             }
         }
         return name
-    }
-
-    pubblicaDataset(){
-      const { dispatch, query, dataset } = this.props
-      dispatch(setDatasetACL(dataset.dcatapit.name,'open_data_group'))
-      .then(json => {
-        if(json.code!==undefined){
-          toastr.error("Errore", json.message)
-          console.error(json.message)
-        }
-        if(json.fields && json.fields==="ok"){
-          toastr.success("Completato", "Il dataset è un Open data!")
-          console.log(json.message)
-          dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
-          .catch(error => { console.log('Errore durante il caricamento del dataset ' + dataset.dcatapit.name); console.error(error); this.setState({ hidden: false }) })
-        }
-      })
-    }
-
-    publish(){
-      const toastrConfirmOptions = {
-        okText: 'Pubblica',
-        cancelText: 'Annulla',
-        onOk: () => this.pubblicaDataset(),
-        onCancel: () => console.log('CANCEL: clicked'),
-        component: () => (
-          <div className="rrt-message">
-            Stai rendendo il dataset un <b>Open data</b>, sei sicuro di questa scelta?
-          </div>
-        )
-      };
-      toastr.confirm(null, toastrConfirmOptions)
     }
 
     toggleUploadFile(){
@@ -748,7 +715,7 @@ class DatasetDetail extends Component {
                                         <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + dataset.dcatapit.modified}</p>
                                         <i className="fa fa-balance-scale text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{dataset.dcatapit.license_title?dataset.dcatapit.license_title:'Licenza non trovata'}</p>
                                         {dataset.dcatapit.privatex?
-                                          <div className="text-muted pb-1 mb-2"><i className="fa fa-lock text-icon pr-3" />Il dataset è privato{ableToPublish(this.props.loggedUser, dataset) && <i className="fas fa-paper-plane text-primary fa-lg pointer fa-pull-right" style={{ lineHeight: '1' }} onClick={this.publish.bind(this)}/>}</div>:
+                                          <div><i className="fa fa-lock text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è privato</p></div>:
                                           <div><i className="fa fa-globe text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p></div>
                                           }
                                     </div>
