@@ -687,7 +687,7 @@ class Full extends Component {
         <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>
         <div className="app-body">
           {loggedUser && <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>}
-          <main className={"main "+mainDiv} style={{marginRight: 0}}>
+          <main className={"main mr-0 "+mainDiv}>
             {this.state.open && <SearchBar history={history} open={this.state.open}/>}
             <Breadcrumb />
             <div className={paddingTop+ " container-fluid "+home }>
