@@ -342,11 +342,14 @@ class DatasetAdmin extends Component{
           className="Modal__Bootstrap modal-dialog modal-60"
           isOpen={aggiungi}>
           <ModalHeader>
-              <ModalTitle>Aggiungi permesso</ModalTitle>
+              <ModalTitle>Condivisione</ModalTitle>
               <ModalClose onClick={this.toggleClose} />
           </ModalHeader>
           <ModalBody>
             <div className="row">
+              <div className="col-12 mb-3">
+                <h5>Scegli un'organizzazione o un suo workgroup a cui condividere il dataset.</h5>
+              </div>
               <div className="col-3">
               Organizazione
               <Select
@@ -410,14 +413,18 @@ class DatasetAdmin extends Component{
               </button>
           </ModalFooter>
         </Modal>
+        <div className="col-12 text-muted text-justify mb-4">
+          {ableToEdit( loggedUser, dataset) && <h5>Questa è la pagina di amministrazione del tuo dataset, puoi scegliere con chi condividerlo o rendelo un Open data aperto a tutti</h5>}
+          {!ableToEdit( loggedUser, dataset) && <h5>In questa pagina puoi vedere chi ha accesso al dataset, per condividerlo con altri utenti chiedi l'assistenza al suo proprietario</h5>}
+        </div>
         <div className="row mb-4">
           <div className="col text-muted">
-              <i className="text-icon fa-pull-left fas fa-unlock fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Permessi</b></h4>
+              <i className="text-icon fa-pull-left fas fa-users fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4><b>Condivisione</b></h4>
           </div>
-          {ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto mb-4">
+          {ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto">
             <div className="btn-group float-right">
-              <button className="btn btn-outline-primary" onClick={this.publish}><i className="fas fa-paper-plane fa-lg"/></button>
-              <button className="btn btn-outline-primary" onClick={this.toggle}><i className="fa fa-plus fa-lg"/></button>
+              <button className="btn btn-outline-primary" onClick={this.publish} title="Pubblica come Open Data"><i className="fas fa-paper-plane fa-lg"/></button>
+              <button className="btn btn-outline-primary" onClick={this.toggle} title="Scegli con chi condividere"><i className="fa fa-plus fa-lg"/></button>
             </div>
           </div>}
         </div>
