@@ -9,7 +9,7 @@ pipeline {
       steps { 
         script { 
           slackSend (message: "BUILD START: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' CHECK THE RESULT ON: https://cd.daf.teamdigitale.it/blue/organizations/jenkins/CI-DataPortal_Frontend/activity")         
-        sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker build . -f Dockerfile/test/Dockerfile --no-cache -t $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID' 
+        sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker build . --no-cache -t $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID' 
         }
       }
     }
@@ -29,7 +29,7 @@ pipeline {
     stage('Upload'){
       steps {
         script { 
-          if(env.BRANCH_NAME=='ci4newserver' || env.BRANCH_NAME=='newSecurity'){ 
+          if(env.BRANCH_NAME=='docker_file_update' || env.BRANCH_NAME=='newSecurity'){ 
             sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker push $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID' 
             sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker rmi $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID'  
           }       
