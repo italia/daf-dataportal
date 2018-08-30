@@ -11,7 +11,7 @@ kubectl create configmap dataportal-conf \
 --from-literal=apiURLCatalog="https://api.daf.teamdigitale.test/catalog-manager/v1" \
 --from-literal=apiURLSecurity="https://api.daf.teamdigitale.test/security-manager/v1" \
 --from-literal=apiURLDataset="https://api.daf.teamdigitale.test/dataset-manager/v1" \
---from-literal=apiURLHdfs="http://api.daf.teamdigitale.test/hdfs/proxy" \
+--from-literal=apiURLHdfs="https://api.daf.teamdigitale.test/hdfs/proxy" \
 --from-literal=apiCKAN="https://api.daf.teamdigitale.test/dati-gov/ckan_proxy" \
 --from-literal=apiMedium="https://api.daf.teamdigitale.test/dati-gov/medium" \
 --from-literal=urlSemantic="https://api.daf.teamdigitale.test/stanbol/ontonethub/ontologies/find" \
