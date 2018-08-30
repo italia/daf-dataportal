@@ -633,6 +633,10 @@ function receiveResetError(json) {
 }
 
 export function fetchProperties(org) {
+  console.log('serviceurl: ' + JSON.stringify(serviceurl))
+  console.log('process.env: ' + process.env)
+  console.log('process.env.API_URL_DATI_GOV: ' + process.env.API_URL_DATI_GOV)
+
   var url = serviceurl.apiURLDatiGov + "/settings?domain="+ org
   return dispatch => {
     return fetch(url, {
