@@ -1044,7 +1044,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
     export function checkFileOnHdfs(logical_uri) {
       var token = '';
-      var url = serviceurl.apiURLhdfs + logical_uri + '?op=LISTSTATUS';
+      var url = serviceurl.apiURLHdfs + logical_uri + '?op=LISTSTATUS';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
           token = localStorage.getItem('token')
