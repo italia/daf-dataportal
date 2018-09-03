@@ -3,23 +3,16 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { search } from '../../actions'
-import { serviceurl } from '../../config/serviceurl'
-import { boldMyWords, isPublic } from '../../utility'
+import { isPublic } from '../../utility'
 import Select from 'react-select'
-import { decodeTheme, decodeTipo, decodeVisibilita, truncateDatasetName } from '../../utility' 
-import {themes, tipi, visibilita} from '../../utility' 
-import DatePicker from 'react-datepicker';
+import { decodeTheme, decodeTipo, decodeVisibilita } from '../../utility' 
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 import WidgetCard from '../../components/Cards/WidgetCard';
 import InfiniteScroll from '../../components/InfinityScroll'
-
-
-/* const tipi = [{ 'name': 'Dataset'},{ 'name': 'Dashboard'},{ 'name': 'Storie'}]
-const visibilita = [{ 'name': 'Open data'},{ 'name': 'Privato'},{ 'name': 'Organizzazione'}] */
 
 var localization = require('moment/locale/it.js')
 moment.locale('it', localization)
@@ -49,6 +42,7 @@ class DatasetList extends Component {
             showDivOrganizzazione: false,
             showDivVisibilita: false,
             showDivSearch: false,
+            mieiContenutichecked: false,
             showDivDataset: [],
             startDate: undefined,
             endDate: undefined,
@@ -75,6 +69,7 @@ class DatasetList extends Component {
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleChangeOrdinamento = this.handleChangeOrdinamento.bind(this);
         this.addOrganization = this.addOrganization.bind(this)
+        this.toggleMiei = this.toggleMiei.bind(this)
 
 /*         if(window.location.hash==='#/dataset'){
             this.searchAll('')
@@ -105,7 +100,8 @@ class DatasetList extends Component {
             'theme':[],
             'date': "",
             'status': [],
-            'order': this.state.order_filter
+            'order': this.state.order_filter,
+            'owner': ''
         }
 
         dispatch(search(query, filter, isPublic()))
@@ -118,7 +114,7 @@ class DatasetList extends Component {
 
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
     search(order){
-        const { dispatch, properties } = this.props
+        const { dispatch, properties, loggedUser } = this.props
         
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search).q
@@ -143,6 +139,7 @@ class DatasetList extends Component {
             'date': this.state.filter.da && this.state.filter.a ? this.state.filter.da.locale('it').format("YYYY-MM-DD")+ ' ' +this.state.filter.a.locale('it').format("YYYY-MM-DD") : '',
             'status': [],
             'order': orderFilter,
+            'owner': !this.state.mieiContenutichecked?loggedUser.uid:''
         }
 
         if(this.state.filter.elements && this.state.filter.elements.length>0){
@@ -166,6 +163,8 @@ class DatasetList extends Component {
         }
 
         if(dataset){
+            if(filter.index.length===0)
+              filter.index = ['catalog_test', 'ext_opendata']
             dispatch(search('', filter, isPublic()))
         }else{
             dispatch(search(query, filter, isPublic()))
@@ -315,6 +314,13 @@ class DatasetList extends Component {
         });
         /* dispatch(search(query, newFilter)) */
         this.search(e.target.value);
+      }
+
+      toggleMiei(){
+        this.setState({
+          mieiContenutichecked: !this.state.mieiContenutichecked
+        })
+        this.search()
       }
       
       componentWillReceiveProps(nextProps){
@@ -487,10 +493,21 @@ class DatasetList extends Component {
         return (
                     <div>
                         <div>
-                            <nav className="dashboardHeader text-gray-600">
-                              <div className="container">
-                                {window.location.hash.indexOf('dataset')!==-1 && <div><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset trovati <i>{this.state.totalResults}</i></h2></div>}
-                                {window.location.hash.indexOf('dataset')===-1 && <div><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>{search && 'Hai cercato ' }<i className="mr-1">{search?search:""}</i> trovati <i>{this.state.totalResults}</i> risultati</h2></div>}
+                            <nav className="text-gray-600">
+                              <div className="container mb-3">
+                                <div className="row">
+                                  {window.location.hash.indexOf('dataset')!==-1 && <div className="col"><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset trovati <i>{this.state.totalResults}</i></h2></div>}
+                                  {window.location.hash.indexOf('dataset')===-1 && <div className="col"><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>{search && 'Hai cercato ' }<i className="mr-1">{search?search:""}</i> trovati <i>{this.state.totalResults}</i> risultati</h2></div>}
+                                  {!isPublic() && <div className="py-2"><b className="h5 font-weight-bold mr-2">I miei contenuti</b>
+                                  <label className="switch switch-3d switch-primary mr-3">
+                                    <input type="checkbox" className="switch-input" checked={this.state.mieiContenutichecked} onClick={this.toggleMiei}/>
+                                    <span className="switch-label" title="Visualizza solo i miei contenuti"></span>
+                                    <span className="switch-handle" title="Visualizza solo i miei contenuti"></span>
+                                  </label></div>}
+                                </div>  
+                              </div>
+                              <div className="container mb-3">
+                                {/* <i className="fas fa-user text-primary mr-2 fa-lg"/> */}
                               </div>
                             </nav>
                             <nav className={"dashboardHeader b-t-1 b-b-1 "+(this.state.showDivSearch?"mb-0":"")}>
@@ -1021,9 +1038,10 @@ DatasetList.propTypes = {
 }
 
 function mapStateToProps(state) {
+    const { loggedUser } = state.userReducer['obj'] || { }
     const { isFetching, results, query, filter } = state.searchReducer['search'] || { isFetching: false, results: [] }
     const { properties } = state.propertiesReducer['prop'] || {}
-    return { isFetching, results, query, filter, properties }
+    return { isFetching, results, query, filter, properties, loggedUser }
 }
 
 export default connect(mapStateToProps)(DatasetList)
