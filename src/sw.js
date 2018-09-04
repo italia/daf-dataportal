@@ -127,6 +127,9 @@ self.addEventListener('push', function(event) {
       title = 'Errore creazione Dataset'
       options.body = "C'è stato un problema nella creazione del dataset " + data.info.title +": " + data.info.errors
       break;
+    case 'generic':
+      title = data.info.title
+      options.body = data.info.decription
   }
 
   var notification = {'title':title, 'body':options.body}
