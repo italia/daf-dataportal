@@ -1362,3 +1362,70 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               .catch(error => JSON.parse("{}"))
         }
       }
+
+      export function getSubscriptions(user){
+        var url = serviceurl.apiURLDatiGov + '/subscribe/'+user
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function deleteAllSubscriptions(user){
+        var url = serviceurl.apiURLDatiGov + '/unsubscribe/'+user
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function deleteSubscription(subscription){
+        var url = serviceurl.apiURLDatiGov + '/unsubscribe'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(subscription)
+          })
+          .then(response => response.json())
+        }
+      }

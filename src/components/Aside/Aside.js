@@ -23,12 +23,16 @@ class Aside extends Component {
     }
   }
 
-  pushTo(type, name){
+  pushTo(type, linkTo){
     const { dispatch } = this.props
     switch(type){
       case 'dataset':
-        this.props.history.push('/private/dataset/'+name)
-        dispatch(datasetDetail(name,'', false))
+        this.props.history.push('/private/dataset/'+linkTo)
+        dispatch(datasetDetail(linkTo,'', false))
+        break;
+      case 'generic':
+        this.props.history.push(linkTo)
+        break;
     }
   }
 
@@ -54,6 +58,13 @@ class Aside extends Component {
                 return(
                   <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index}>
                     {notification.info && <p><i className="fas fa-exclamation-circle text-danger mr-2"/>C'è stato un problema nella creazione del dataset <b>{notification.info.title}</b>: {notification.info.errors}</p>}
+                    <p>{notification.timestamp}</p>
+                  </div>
+                )
+                case 'generic':
+                return(
+                  <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index} onClick={this.pushTo.bind(this,'generic', notification.info.link)}>
+                    {notification.info && <p><i className="fas fa-info-circle text-info mr-2"/>{notification.info.description}</p>}
                     <p>{notification.timestamp}</p>
                   </div>
                 )
