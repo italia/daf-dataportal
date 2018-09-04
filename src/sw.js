@@ -129,7 +129,7 @@ self.addEventListener('push', function(event) {
       break;
     case 'generic':
       title = data.info.title
-      options.body = data.info.decription
+      options.body = data.info.description
   }
 
   var notification = {'title':title, 'body':options.body}
