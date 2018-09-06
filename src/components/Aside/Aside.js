@@ -63,10 +63,10 @@ class Aside extends Component {
                 )
                 case 'generic':
                 return(
-                  <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index} onClick={this.pushTo.bind(this,'generic', notification.info.link)}>
+                  <a className={notification.status===1?"text-dark list-group-item b-new-notif pointer":"list-group-item pointer text-dark"} key={index} href={window.location.origin+'/#'+notification.info.link} target="_blank"/* onClick={this.pushTo.bind(this,'generic', notification.info.link)} */>
                     {notification.info && <p><i className="fas fa-info-circle text-info mr-2"/>{notification.info.description}</p>}
                     <p>{notification.timestamp}</p>
-                  </div>
+                  </a>
                 )
               }
             }) : <div className="list-group-item border-0 m-0 text-center font-weight-bold text-muted">Non hai nessuna notifica</div>

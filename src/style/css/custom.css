@@ -342,7 +342,7 @@
 
 .btn-status{
     height: 30px;
-    width: 52px;
+    min-width: 52px;
     border: 0;
     color: #B0BEC5;
     background-color: #F0F3F5;
