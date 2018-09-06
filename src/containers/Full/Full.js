@@ -197,8 +197,31 @@ class Full extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { dispatch } = this.props
     if (this.props.newNotifications !== nextProps.newNotifications) {
       clearTimeout(this.timeout);
+      if (localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
+        dispatch(isValidToken(localStorage.getItem('token')))
+        .then(ok=>{
+          if(!ok){
+            this.setState({
+              authed: false,
+              loading: false
+            })
+            logout();
+            this.props.history.push('/login')
+          }
+        })
+        .catch((error) => {
+          this.setState({
+            authed: false,
+            loading: false
+          })
+          logout();
+          this.props.history.push('/login')
+        })
+      }
       if (!nextProps.isNewFetching) {
           this.startPoll();
       }
