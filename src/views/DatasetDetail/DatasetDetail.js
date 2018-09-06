@@ -353,7 +353,7 @@ class DatasetDetail extends Component {
       var nomeFile = nome[0]+'_'+getTimestamp()+'.'+nome[1]
       var url = dataset.operational.input_src.srv_push[0].url + nomeFile + '?op=CREATE'
       /* https://api.daf.teamdigitale.test/hdfs/proxy/uploads/luca_test/AGRI/produzione_agricola/agency_infer_hdfs_prova2/file.csv?op=CREATE */
-      //var url = serviceurl.apiURLhdfs + '/uploads/'+localStorage.getItem('username')+'/'+dataset.operational.theme+'/'+dataset.operational.subtheme+'/'+datase.dcatapit.name+'/'+this.state.fileName+'?op=CREATE'
+      //var url = serviceurl.apiURLHdfs + '/uploads/'+localStorage.getItem('username')+'/'+dataset.operational.theme+'/'+dataset.operational.subtheme+'/'+datase.dcatapit.name+'/'+this.state.fileName+'?op=CREATE'
       this.setState({
         uploading: true
       })
