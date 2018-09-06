@@ -66,7 +66,8 @@ class UserStoryEditor extends Component {
   render() {
     console.log(this.state.dataStory)
     return (this.state.loading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>:
-    <Container>
+    <div className="container body">
+      <div className="main_container">
       {
         this.state.dataStory &&
         <div>
@@ -86,7 +87,8 @@ class UserStoryEditor extends Component {
           />
         </div>
       }
-    </Container>
+      </div>
+    </div>
     );
   }
 

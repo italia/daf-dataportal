@@ -820,10 +820,8 @@ class DatasetList extends Component {
                                                 break
                                             }
                                             const dashWidgets = JSON.parse(dashboard.widgets)
-                                            var imageA = undefined
                                             if (firstLayout != '') {
                                                 var firstWidget = dashWidgets[firstLayout];
-                                                imageA = firstWidget.image
                                             }
                                         } 
 
@@ -934,10 +932,8 @@ class DatasetList extends Component {
                                                 break
                                             }
                                             const dashWidgets = JSON.parse(story.widgets)
-                                            var imageA = undefined
                                             if (firstLayout != '') {
                                                 var firstWidget = dashWidgets[firstLayout];
-                                                imageA = firstWidget.image
                                             }
                                         }
                                         return(
