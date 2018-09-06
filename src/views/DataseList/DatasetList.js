@@ -88,7 +88,7 @@ class DatasetList extends Component {
     }
 
     searchAll(query){
-        const { dispatch, properties } = this.props
+        const { dispatch, properties, loggedUser } = this.props
         var dataset = window.location.hash.indexOf('dataset')!==-1
         var org = []
         if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
@@ -101,19 +101,20 @@ class DatasetList extends Component {
             'date': "",
             'status': [],
             'order': this.state.order_filter,
-            'owner': ''
+            'owner': this.state.mieiContenutichecked?loggedUser.uid:''
         }
 
         dispatch(search(query, filter, isPublic()))
         .catch((error) => {
         this.setState({
+          mieiContenutichecked: false,
           isFetching: false
         })
       })
     }
 
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
-    search(order){
+    search(order, owner, lastFilter){
         const { dispatch, properties, loggedUser } = this.props
         
         const queryString = require('query-string');
@@ -124,8 +125,8 @@ class DatasetList extends Component {
             orderFilter = order
         else{
             orderFilter = this.state.filter.order
-        }  
-        
+        }
+
         var dataset = window.location.hash.indexOf('dataset')!==-1
         var org = []
         if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
@@ -139,27 +140,29 @@ class DatasetList extends Component {
             'date': this.state.filter.da && this.state.filter.a ? this.state.filter.da.locale('it').format("YYYY-MM-DD")+ ' ' +this.state.filter.a.locale('it').format("YYYY-MM-DD") : '',
             'status': [],
             'order': orderFilter,
-            'owner': !this.state.mieiContenutichecked?loggedUser.uid:''
+            'owner': owner
         }
 
-        if(this.state.filter.elements && this.state.filter.elements.length>0){
-            this.state.filter.elements.map((fi, index) => {
-                switch(fi.type){
-                    case 0:
-                        filter.index.push(fi.value)
-                        break;
-                    case 1:
-                        filter.theme.push(fi.value)
-                        break;
-                    case 2:
-                        filter.status.push(fi.value)
-                        break;
-                    case 3:
-                        filter.org.push(fi.value)
-                        break;
-                    
-                }
-            })
+        if(!lastFilter){
+          if(this.state.filter.elements && this.state.filter.elements.length>0){
+              this.state.filter.elements.map((fi, index) => {
+                  switch(fi.type){
+                      case 0:
+                          filter.index.push(fi.value)
+                          break;
+                      case 1:
+                          filter.theme.push(fi.value)
+                          break;
+                      case 2:
+                          filter.status.push(fi.value)
+                          break;
+                      case 3:
+                          filter.org.push(fi.value)
+                          break;
+                      
+                  }
+              })
+          }
         }
 
         if(dataset){
@@ -303,7 +306,8 @@ class DatasetList extends Component {
       }
       
       handleChangeOrdinamento(e) {
-        const { dispatch } = this.props
+        const { dispatch, loggedUser } = this.props
+        const { mieiContenutichecked } = this.state
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search).q  
         let newFilter = Object.assign({}, this.state.filter); 
@@ -313,14 +317,20 @@ class DatasetList extends Component {
             filter: newFilter
         });
         /* dispatch(search(query, newFilter)) */
-        this.search(e.target.value);
+        this.search(e.target.value, (mieiContenutichecked?loggedUser.uid:''), false);
       }
 
       toggleMiei(){
+        const { loggedUser } = this.props
         this.setState({
           mieiContenutichecked: !this.state.mieiContenutichecked
         })
-        this.search()
+
+        if(!this.state.mieiContenutichecked){
+          this.search(this.state.order_filter, loggedUser.uid)
+        }else{
+          this.search(this.state.order_filter, '')
+        }
       }
       
       componentWillReceiveProps(nextProps){
@@ -417,13 +427,15 @@ class DatasetList extends Component {
       }
 
       removeFilter(index) {
+        const { loggedUser } = this.props
+        const { mieiContenutichecked } = this.state
         let newFilter = Object.assign({}, this.state.filter); 
         newFilter.elements = this.state.filter.elements.filter((_, i) => i !== index)
         this.setState({ 
             filter: newFilter
         })
         if(newFilter.elements.length===0 && newFilter.a==='' && newFilter.da===''){
-            this.searchAll(this.state.query)
+            this.search(this.state.order_filter, (mieiContenutichecked?loggedUser.uid:''), true)
         }
       }
 
@@ -466,7 +478,7 @@ class DatasetList extends Component {
 
  
     render() {
-        const { results, isFetching, properties } = this.props
+        const { results, isFetching, properties, loggedUser } = this.props
         
         const queryString = require('query-string');
         var search = queryString.parse(this.props.location.search).q
@@ -614,7 +626,7 @@ class DatasetList extends Component {
                                 })
                                 }
                                 {this.state.filter.da && this.state.filter.a && <span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key='da'>{this.state.filter.da.locale('it').format("DD/MM/YYYY")} - {this.state.filter.a.locale('it').format("DD/MM/YYYY")}<button type="button" className="btn btn-link p-0 ml-2 text-gray-600" onClick={this.removeFilterDate.bind(this)}><i className="ml-2 fa fa-times-circle"></i></button></span>}
-                                {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this, this.state.order_filter)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
+                                {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this, this.state.order_filter, (this.state.mieiContenutichecked?loggedUser.uid:''), false)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
                                 </nav>
                               </div>
                             }
@@ -668,7 +680,7 @@ class DatasetList extends Component {
                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                 <div className="card mb-3 mt-0">
                                                     <div className="card-body clearfix">
-                                                        <div className="row pl-3 pt-2 h-100" >
+                                                        <div className="row pl-3 pt-2" >
                                                             <div className="col-md-2 py-1 px-1" >
                                                                 <b>Titolo: </b>
                                                             </div>
@@ -676,7 +688,7 @@ class DatasetList extends Component {
                                                             <div dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?datasetMatch['dcatapit.title']:dataset.dcatapit.title}}></div>
                                                             </div>
                                                         </div>
-                                                        <div className="row pl-3 pt-2 h-100" >
+                                                        <div className="row pl-3 pt-2" >
                                                                 <div className="col-md-2 py-1 px-1" >
                                                                     <b>Ultima modifica: </b>
                                                                 </div>
@@ -684,7 +696,7 @@ class DatasetList extends Component {
                                                                     {dataset.dcatapit.modified}
                                                                 </div>
                                                         </div>
-                                                        <div className="row pl-3 pt-2 h-100" >
+                                                        <div className="row pl-3 pt-2" >
                                                             <div className="col-md-2 py-1 px-1" >
                                                                     <b>Descrizione: </b>
                                                                 </div>
@@ -692,7 +704,7 @@ class DatasetList extends Component {
                                                                     <div dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.notes']?datasetMatch['dcatapit.notes']:dataset.dcatapit.notes}}></div>
                                                                 </div>
                                                         </div>
-                                                        <div className="row pl-3 pt-2 h-100" >
+                                                        <div className="row pl-3 pt-2" >
                                                             <div className="col-md-2 py-1 px-1" >
                                                                     <b>Campi del dataset: </b>
                                                             </div>
@@ -754,7 +766,7 @@ class DatasetList extends Component {
                                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                                 <div className="card mb-3 mt-0">
                                                                     <div className="card-body clearfix">
-                                                                        <div className="row px-3 pt-2 h-100" >
+                                                                        <div className="row px-3 pt-2" >
                                                                             <div className="col-md-2 py-1 px-1" >
                                                                                 <b>Titolo: </b>
                                                                             </div>
@@ -762,7 +774,7 @@ class DatasetList extends Component {
                                                                             <div dangerouslySetInnerHTML={{__html: datasetOpenMatch['title']?datasetOpenMatch['title']:datasetOpen.title}}></div>
                                                                             </div>
                                                                         </div>
-                                                                        <div className="row px-3 pt-2 h-100" >
+                                                                        <div className="row px-3 pt-2" >
                                                                                 <div className="col-md-2 py-1 px-1" >
                                                                                     <b>Ultima modifica: </b>
                                                                                 </div>
@@ -770,7 +782,7 @@ class DatasetList extends Component {
                                                                                     {datasetOpen.modified}
                                                                                 </div>
                                                                         </div>
-                                                                        <div className="row px-3 pt-2 h-100" >
+                                                                        <div className="row px-3 pt-2" >
                                                                             <div className="col-md-2 py-1 px-1" >
                                                                                     <b>Descrizione: </b>
                                                                                 </div>
@@ -858,7 +870,7 @@ class DatasetList extends Component {
                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                 <div className="card mb-3 mt-0">
                                                      <div className="card-body clearfix">
-                                                        <div className="row pl-3 pt-2 h-100" >
+                                                        <div className="row pl-3 pt-2" >
                                                              <div className="col-md-2 py-1 px-1" >
                                                                  <b>Titolo: </b>
                                                              </div>
@@ -866,7 +878,7 @@ class DatasetList extends Component {
                                                                  <div title={dashboard.title} dangerouslySetInnerHTML={{__html: dashboardMatch['title']?dashboardMatch['title']:dashboard.title}}></div>
                                                              </div>
                                                         </div>
-                                                        <div className="row pl-3 pt-2 h-100" >
+                                                        <div className="row pl-3 pt-2" >
                                                              <div className="col-md-2 py-1 px-1" >
                                                                  <b>Ultima modifica: </b>
                                                              </div>
@@ -874,7 +886,7 @@ class DatasetList extends Component {
                                                                  {dashboard.timestamp}
                                                              </div>
                                                         </div>
-                                                         <div className="row pl-3 pt-2 h-100" >
+                                                         <div className="row pl-3 pt-2" >
                                                              <div className="col-md-2 py-1 px-1" >
                                                                  <b>Sottotitolo: </b>
                                                              </div>
@@ -882,7 +894,7 @@ class DatasetList extends Component {
                                                                  <div title={dashboard.subtitle} dangerouslySetInnerHTML={{__html: dashboardMatch['subtitle']?dashboardMatch['subtitle']:dashboard.subtitle}}></div>
                                                              </div>
                                                          </div>
-                                                         <div className="row pl-3 pt-2 h-100" >
+                                                         <div className="row pl-3 pt-2" >
                                                              <div className="col-md-2 py-1 px-1" >
                                                                  <b>Widget: </b>
                                                              </div>
@@ -968,7 +980,7 @@ class DatasetList extends Component {
                                                 {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
                                                     <div className="card mb-3 mt-0">
                                                         <div className="card-body clearfix">
-                                                            <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="row pl-3 pt-2" >
                                                                 <div className="col-md-2 py-1 px-1" >
                                                                     <b>Titolo: </b>
                                                                 </div>
@@ -976,7 +988,7 @@ class DatasetList extends Component {
                                                                     <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?storyMatch['title']:story.title}}></div>
                                                                 </div>
                                                             </div>
-                                                            <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="row pl-3 pt-2" >
                                                                 <div className="col-md-2 py-1 px-1" >
                                                                     <b>Ultima modifica: </b>
                                                                 </div>
@@ -984,7 +996,7 @@ class DatasetList extends Component {
                                                                     {story.timestamp}
                                                                 </div>
                                                             </div>
-                                                            <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="row pl-3 pt-2" >
                                                                 <div className="col-md-2 py-1 px-1" >
                                                                     <b>Sottotitolo: </b>
                                                                 </div>
@@ -992,7 +1004,7 @@ class DatasetList extends Component {
                                                                     <div title={story.subtitle} dangerouslySetInnerHTML={{__html: storyMatch['subtitle']?storyMatch['subtitle']:story.subtitle}}></div>
                                                                 </div>
                                                             </div>
-                                                            <div className="row pl-3 pt-2 h-100" >
+                                                            <div className="row pl-3 pt-2" >
                                                                 <div className="col-md-2 py-1 px-1" >
                                                                     <b>Widget: </b>
                                                                 </div>
