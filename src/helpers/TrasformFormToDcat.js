@@ -45,7 +45,7 @@ export function createOperational (values, data) {
   if(values.modalitacaricamento==3){
     /* https://api.daf.teamdigitale.test/hdfs/proxy/uploads/luca_test/AGRI/produzione_agricola/agency_infer_hdfs_prova2/file.csv?op=CREATE */
 
-    var url = serviceurl.apiURLhdfs+"/uploads/".concat(localStorage.getItem('user').toLowerCase()).concat("/").concat(values.domain).concat("/").concat(values.subdomain).concat("/").concat(values.nome).concat("/")
+    var url = serviceurl.apiURLHdfs+"/uploads/".concat(localStorage.getItem('user').toLowerCase()).concat("/").concat(values.domain).concat("/").concat(values.subdomain).concat("/").concat(values.nome).concat("/")
     data[operational][input_src] = {"srv_push": [{
       "name": "ws_hdfs",
       "access_token": null,
