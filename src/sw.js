@@ -159,8 +159,8 @@ self.addEventListener('notificationclick', function(event) {
 
   console.log('SW Notification: ' + JSON.stringify(event))
   event.waitUntil(
-    //clients.openWindow('dataportal.daf.teamdigitale.it/#/private/home')
-    clients.openWindow('localhost/#/private/home')
+    clients.openWindow('dataportal.daf.teamdigitale.it/#/private/home')
+    //clients.openWindow('localhost/#/private/home')
   );
 });
 
