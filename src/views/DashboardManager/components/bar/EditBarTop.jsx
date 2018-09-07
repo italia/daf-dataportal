@@ -107,7 +107,7 @@ class EditBarTop extends React.Component {
               <h7 className="card-title">{this.state.dashboard.subtitle}</h7>
             </div>
             <div className={"fa-pull-right dropdown" + show }>
-          {this.props.saving ? <i className="fa fa-spin fa-circle-notch text-icon"/> :
+          {
               <button className={"h-100 btn btn-light text-primary text-center"+active} id='dropdown_story' data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.openVisibility.bind(this)}>
 
                   <FontAwesomeIcon icon={faSortDown} className="pull-left"/>
