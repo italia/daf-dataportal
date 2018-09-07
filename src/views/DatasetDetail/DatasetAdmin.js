@@ -424,13 +424,10 @@ class DatasetAdmin extends Component{
           {ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto">
             <div className="btn-group float-right">
               <button className="btn btn-accento" onClick={this.publish} title="Pubblica come Open Data" disabled={isOpenData(acl)}>Pubblica come Open Data</button>
-              <button className="btn btn-primary" onClick={this.toggle} title="Scegli con chi condividere" disabled={isOpenData(acl)}><i className="fa fa-plus fa-lg"/></button>
             </div>
           </div>}
         </div>
         {this.state.isLoading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :<div className="col-12">
-          {this.state.message}
-          {acl.length>0 &&
           <table className="table table-striped">
             <thead>
                 <tr>
@@ -441,7 +438,7 @@ class DatasetAdmin extends Component{
                 </tr>
             </thead>
             <tbody>
-              {acl.map((permission,index) => {
+              {acl.length>0 && acl.map((permission,index) => {
                 if(permission.groupCn==="open_data_group")
                   return(
                     <tr key={index}>
@@ -462,8 +459,21 @@ class DatasetAdmin extends Component{
                   )
               })
               }
+              {acl.length===0 &&
+                <tr>
+                  <td> <i>Il dataset non è ancora stato condiviso con nessuno</i> </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              }
             </tbody>
-          </table>}
+          </table>
+        </div>}
+        {!this.state.isLoading && <div className="row mt-4">
+          <div className="col ml-auto">
+            <button className="float-right btn btn-primary" onClick={this.toggle} title="Scegli con chi condividere" disabled={isOpenData(acl)}><i className="fa fa-plus fa-lg"/></button>
+          </div>
         </div>}
       </div>
     )
