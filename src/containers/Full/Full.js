@@ -608,7 +608,7 @@ class Full extends Component {
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Privata</label>
                   <div className="col-md-8">
-                  {loggedUser.organizations && loggedUser.organizations.length > 1 ?
+                  {loggedUser.organizations && loggedUser.organizations.length > 0 ?
                     <select className="form-control" ref={(pvtStory) => this.pvtStory = pvtStory} onChange= {(e) => this.onPvtChangeStory(e, e.target.value)} id="pvt" >
                       <option value="0" defaultValue key="0">No</option>
                       <option value="1" key='1'>Si</option>
@@ -618,7 +618,7 @@ class Full extends Component {
                       <select className="form-control" ref={(pvtStory) => this.pvtStory = pvtStory} onChange= {(e) => this.onPvtChangeStory(e, e.target.value)} id="pvt" >
                       <option value="0" defaultValue key="0">No</option>
                       </select>
-                      <span>Puoi creare soltanto dashboards pubbliche in quanto non hai nessuna organizzazione associata</span>
+                      <span>Puoi creare soltanto storie pubbliche in quanto non hai nessuna organizzazione associata</span>
                     </div>
                   }
                   </div>
@@ -677,7 +677,7 @@ class Full extends Component {
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Privata</label>
                   <div className="col-md-8">
-                  {loggedUser.organizations && loggedUser.organizations.length > 1 ?
+                  {loggedUser.organizations && loggedUser.organizations.length > 0 ?
                     <select className="form-control" ref={(pvtDash) => this.pvtDash = pvtDash} onChange={(e) => this.onPvtChangeDash(e, e.target.value)} id="pvt" >
                       <option value="0" defaultValue key="0">No</option>
                       <option value="1" key='1'>Si</option>
@@ -772,9 +772,9 @@ Full.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { loggedUser, authed } = state.userReducer['obj'] || {}
+  const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }   
   const { notifications, isFetching, isNewFetching, newNotifications } = state.notificationsReducer['notifications'] || {}
-  return { loggedUser, authed, notifications, isFetching, newNotifications, isNewFetching }
+  return { loggedUser, notifications, isFetching, newNotifications, isNewFetching }
 }
 
 export default connect(mapStateToProps)(Full);

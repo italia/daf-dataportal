@@ -20,4 +20,5 @@ kubectl create configmap dataportal-conf \
 --from-literal=urlJupiter="https://datascience.daf.teamdigitale.test" \
 --from-literal=urlCkan="https://ckan-geo.daf.teamdigitale.test/" \
 --from-literal=urlKatalod="https://api.daf.teamdigitale.test/daf-semantic-katalod" \
+--from-literal=urlCacher="https://s3-eu-west-1.amazonaws.com/dafimgs/" \
 --from-literal=domain=".daf.teamdigitale.test"

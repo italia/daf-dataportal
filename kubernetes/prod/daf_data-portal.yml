@@ -121,6 +121,11 @@ spec:
               configMapKeyRef:
                 name: dataportal-conf
                 key: domain
+          - name: URL_CACHER
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: urlCacher
       imagePullSecrets:
       - name: regsecret
       volumes:
