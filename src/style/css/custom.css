@@ -166,6 +166,12 @@
     border-bottom: 1px solid #a4b7c1;
 }
 
+.top-dataset-1{
+  background-color: #E7ECEF!important;
+  position: relative;
+  border-bottom: 1px solid #a4b7c1;
+}
+
 .buttons-nav{
     position: absolute;
     bottom: 0;
