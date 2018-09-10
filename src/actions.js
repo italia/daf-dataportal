@@ -451,7 +451,7 @@ export function getAuthToken(username, pw) {
           method: 'GET',
           headers: headers
         })
-        .then(response => response.json())
+        .then(response => response)
   }
 }
 
@@ -485,7 +485,7 @@ export function loginAction() {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         })
-        .then(response => response.json())
+        .then(response => response)
   }
 }
 
@@ -631,7 +631,6 @@ function receiveResetError(json) {
     ope: 'RECEIVE_RESET_ERROR'
   }
 }
-
 
 export function fetchProperties(org) {
   var url = serviceurl.apiURLDatiGov + "/settings?domain="+ org
@@ -1045,7 +1044,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
     export function checkFileOnHdfs(logical_uri) {
       var token = '';
-      var url = serviceurl.apiURLhdfs + logical_uri + '?op=LISTSTATUS';
+      var url = serviceurl.apiURLHdfs + logical_uri + '?op=LISTSTATUS';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
           token = localStorage.getItem('token')
@@ -1226,3 +1225,207 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
       
+      export function getDatasetACL(datasetname){
+        var url = serviceurl.apiURLSecurity + '/daf/datasetACL/' + datasetname
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+        
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function setDatasetACL(datasetname, groupname){
+        var url = serviceurl.apiURLSecurity + '/daf/datasetACL/' + datasetname + '/setPermission'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        var payload = {
+          "groupName": groupname,
+          "groupType": "group",
+          "permission": "rwx"
+        }
+        
+        return dispatch => {
+          return fetch(url, {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function deleteDatasetACL(datasetname, groupname){
+        var url = serviceurl.apiURLSecurity + '/daf/datasetACL/' + datasetname + '/deletePermission'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        var payload = {
+          "groupName": groupname,
+          "groupType": "group",
+        }
+        
+        return dispatch => {
+          return fetch(url, {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function uploadHdfsFile(url, file){
+        var token = '' 
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'PUT',
+            headers: {
+              'Authorization': 'Bearer ' + token
+            },
+            body: file
+          })
+          .then(response => response)
+        }
+      }
+
+      export function groupsInfo(groups){
+        var url = serviceurl.apiURLSecurity + '/daf/getGroupsInfo'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(groups)
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function getSupersetOpenCookie() {
+        console.log("Called getSupersetOpenCookie");
+        var url = serviceurl.apiURLSSOManager + '/secured/bi-open-loginH'
+        return dispatch => {
+            return fetch(url, {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  //'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+              })
+              .then(response => response.text())
+              .catch(error => JSON.parse("{}"))
+        }
+      }
+
+      export function getSubscriptions(user){
+        var url = serviceurl.apiURLDatiGov + '/subscribe/'+user
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function deleteAllSubscriptions(user){
+        var url = serviceurl.apiURLDatiGov + '/unsubscribe/'+user
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function deleteSubscription(subscription){
+        var url = serviceurl.apiURLDatiGov + '/unsubscribe'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(subscription)
+          })
+          .then(response => response.json())
+        }
+      }

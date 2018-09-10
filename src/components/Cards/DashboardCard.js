@@ -121,7 +121,7 @@ class DashboardCard extends Component {
 
     render(){
         const { open, published, dropdownStyle } = this.state;
-        const { dash, id, widgetA, widgetB } = this.props;
+        const { dash, id, widgetA, widgetB, loggedUser } = this.props;
         const iframeStyle = {
             width: '100%',
             height: '160px',
@@ -209,7 +209,7 @@ class DashboardCard extends Component {
                                                 </div>
                                             </div>
                                         </button>
-                                        {dash.pvt!=1 &&(isEditor() || isAdmin()) && <button className="dropdown-item bg-light b-l-open" onClick={this.saveDash.bind(this, 2)}>
+                                        {dash.pvt!=1 &&(isEditor(loggedUser) || isAdmin(loggedUser)) && <button className="dropdown-item bg-light b-l-open" onClick={this.saveDash.bind(this, 2)}>
                                         
                                             <div className="row">
                                                 <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faGlobe} className="mx-2"/></h5>

@@ -1,5 +1,7 @@
 # DAF Data Portal
 
+[Build Status](http://131.1.252.41/job/CI-DataPortal_Frontend/job/testCI/badge/icon)
+
 React/Redux `dataportal` skeleton
 
 Start in Debug Mode:

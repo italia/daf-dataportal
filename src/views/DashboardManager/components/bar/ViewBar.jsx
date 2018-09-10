@@ -46,6 +46,8 @@ class ViewBar extends React.Component {
     });
 
     dash.status = status
+    dash.layout = JSON.stringify(this.props.dashboard.layout)
+    dash.widgets = JSON.stringify(this.props.dashboard.widgets)
 
     this.save(dash)
     

@@ -153,7 +153,7 @@ class ViewBar extends React.Component {
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Privata</label>
                   <div className="col-md-8">
-                  {loggedUser && loggedUser.organizations && loggedUser.organizations.length > 1 ?
+                  {loggedUser && loggedUser.organizations && loggedUser.organizations.length > 0 ?
                     <select className="form-control" ref={(pvt) => this.pvt = pvt} onChange= {(e) => this.onPvtChange(e, e.target.value)} id="pvt" >
                       <option value="0" defaultValue key="0">No</option>
                       <option value="1" key='1'>Si</option>
@@ -163,7 +163,7 @@ class ViewBar extends React.Component {
                       <select className="form-control" ref={(pvt) => this.pvt = pvt} onChange= {(e) => this.onPvtChange(e, e.target.value)} id="pvt" >
                       <option value="0" defaultValue key="0">No</option>
                       </select>
-                      <span>Puoi creare soltanto dashboards pubbliche in quanto non hai nessuna organizzazione associata</span>
+                      <span>Puoi creare soltanto storie pubbliche in quanto non hai nessuna organizzazione associata</span>
                     </div>
                   }
                   </div>
@@ -207,7 +207,7 @@ class ViewBar extends React.Component {
                   <input id="prependedInput" className="form-control transparent-frame" size="25" type="text" onChange={this.props.onChange} placeholder="Filtra la lista ..."/>
               </div>
             </div>
-            {(!isPublic() && (isEditor() || isAdmin())) &&
+            {(!isPublic() && (isEditor(loggedUser) || isAdmin(loggedUser))) &&
             <div className="col-md-2">
               <button type="button" className="btn btn-link float-right" title="Aggiungi Dashboard" onClick={this.openModal}>
                 <i className="fa fa-plus-circle fa-lg m-t-2"></i>
@@ -240,7 +240,7 @@ ViewBar.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const loggedUser = state.userReducer['obj'] && state.userReducer['obj'].loggedUser || { } 
+    const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }   
     return { loggedUser }
 }
 

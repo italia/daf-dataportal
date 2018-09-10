@@ -4,6 +4,9 @@ import {
   fetchNotifications
 } from '../../actions.js'
 import { Link } from 'react-router-dom'
+import {
+  convertNotificationTime
+} from '../../utility.js'
 
 function checkDate(timestamp) {
   var date = new Date();
@@ -38,10 +41,12 @@ class Notifications extends Component{
       notifications: [],
       checkedOk: true,
       checkedErr: true,
+      checkedGeneric: true,
     }
 
     this.toggleOk = this.toggleOk.bind(this)
     this.toggleErr = this.toggleErr.bind(this)
+    this.toggleGeneric = this.toggleGeneric.bind(this)
     
   }
 
@@ -77,8 +82,14 @@ class Notifications extends Component{
     })
   }
 
+  toggleGeneric(){
+    this.setState({
+      checkedGeneric: !this.state.checkedGeneric
+    })
+  }
+
   render(){
-    const { notifications, checkedErr, checkedOk } = this.state
+    const { notifications, checkedErr, checkedOk, checkedGeneric } = this.state
     return(
       <div className="container body">
         <div className="main_container">
@@ -97,8 +108,14 @@ class Notifications extends Component{
           <span className="switch-handle"></span>
         </label>
         <i className="fas fa-exclamation-circle text-danger mr-2 fa-lg"/>
-        <label className="switch switch-3d switch-danger">
+        <label className="switch switch-3d switch-danger mr-3 mb-4">
           <input type="checkbox" className="switch-input" checked={checkedErr} onClick={this.toggleErr}/>
+          <span className="switch-label"></span>
+          <span className="switch-handle"></span>
+        </label>
+        <i className="fas fa-info-circle text-info mr-2 fa-lg"/>
+        <label className="switch switch-3d switch-info mr-3 mb-4">
+          <input type="checkbox" className="switch-input" checked={checkedGeneric} onClick={this.toggleGeneric}/>
           <span className="switch-label"></span>
           <span className="switch-handle"></span>
         </label>
@@ -115,7 +132,7 @@ class Notifications extends Component{
                       <small>{checkDate(notification.timestamp)}</small>
                     </div>
                     <p className="mb-1">Il dataset <b>{notification.info.title}</b> è stato creato correttamente</p>
-                    <small>{notification.timestamp}</small>
+                    <small>{convertNotificationTime(notification.timestamp)}</small>
                   </Link>)
                 break
               case 'kylo_feed_error':
@@ -127,9 +144,21 @@ class Notifications extends Component{
                         <small>{checkDate(notification.timestamp)}</small>
                       </div>
                       <p className="mb-1">C'è stato un problema nella creazione del dataset <b>{notification.info.title}</b>: {notification.info.errors}</p>
-                      <small>{notification.timestamp}</small>
+                      <small>{convertNotificationTime(notification.timestamp)}</small>
                     </a>
                   )
+                break
+              case 'generic':
+                if(checkedGeneric)
+                  return (
+                  <Link to={(notification.info.link!==null?notification.info.link:"/")} className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
+                    <div className="d-flex w-100 justify-content-between">
+                      <h5 className="mb-1"><i className="fas fa-info-circle text-info mr-2"/>{notification.info.title}</h5>
+                      <small>{checkDate(notification.timestamp)}</small>
+                    </div>
+                    <p className="mb-1">{notification.info.description}</p>
+                    <small>{convertNotificationTime(notification.timestamp)}</small>
+                  </Link>)
                 break
             }
           })

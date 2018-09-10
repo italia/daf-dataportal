@@ -7,6 +7,8 @@ import {getJsonDataschema} from './inputform_reader.js'
 import { connect } from 'react-redux'
 import licenze from '../../data/licenze'
 import themes from '../../data/themes'
+import { getEditorAdminOrganizations } from '../../utility'
+
 import Steps, { Step } from 'rc-steps';
 import {
   Modal,
@@ -142,7 +144,7 @@ class WizardForm extends Component {
                 {page ===1 &&  <WizardFormFirstPage
                       previousPage={this.previousPage}
                       onSubmit={this.nextPage}
-                      organizations={loggedUser.organizations}
+                      organizations={getEditorAdminOrganizations(loggedUser)}
                       licenze={licenze}
                       openModal={this.openModal}
                   />}

@@ -127,6 +127,9 @@ self.addEventListener('push', function(event) {
       title = 'Errore creazione Dataset'
       options.body = "C'è stato un problema nella creazione del dataset " + data.info.title +": " + data.info.errors
       break;
+    case 'generic':
+      title = data.info.title
+      options.body = data.info.description
   }
 
   var notification = {'title':title, 'body':options.body}
@@ -148,6 +151,19 @@ self.addEventListener('notificationclick', function(event) {
     //clients.openWindow('localhost/#/private/home')
   );
 });
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('[Service Worker] Notification click Received.');
+
+  event.notification.close();
+
+  console.log('SW Notification: ' + JSON.stringify(event))
+  event.waitUntil(
+    clients.openWindow('dataportal.daf.teamdigitale.it/#/private/home')
+    //clients.openWindow('localhost/#/private/home')
+  );
+});
+
 
 self.addEventListener('fetch', event => {
   const request = event.request
