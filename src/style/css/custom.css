@@ -435,6 +435,12 @@
     box-shadow: 0 0 8px 0 rgba(50,50,50,0.15);
 }
 
+.risultato-1 {
+  box-sizing: border-box;
+  border: 1px solid #CAD4DC;
+  box-shadow: 0 0 8px 0 rgba(50,50,50,0.15);
+}
+
 .filter-val {
 	color: #151B1E;
 	font-family: Arial;
