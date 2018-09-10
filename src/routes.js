@@ -2,6 +2,7 @@ const routes = {
   /* '/': 'Home', */
   '/private': 'Area Privata',
   '/private/home': 'DAF - Data Analytics Framework',
+  '/private/notifications': 'Notifiche',
   '/private/dashboard/list': 'Dashboard',
   '/private/userstory/list': 'Storie',
   '/private/userstory/create': 'Nuova storia',
