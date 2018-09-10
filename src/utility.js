@@ -302,6 +302,13 @@ export function transformName(name){
     return str;
   }
 
+  export function convertNotificationTime(timestamp){
+    var sp = timestamp.split('_')
+    var dateSp = sp[0].split('-')
+
+    return (dateSp[2]+'/'+dateSp[1]+'/'+dateSp[0]+' '+sp[1])
+  }
+
 /* 
   export default themes
 

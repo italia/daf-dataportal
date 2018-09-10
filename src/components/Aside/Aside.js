@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { datasetDetail } from '../../actions'
+import { convertNotificationTime } from '../../utility'
 import { Link } from 'react-router-dom'
 
 
@@ -51,21 +52,21 @@ class Aside extends Component {
                 return(
                   <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index} onClick={this.pushTo.bind(this,'dataset', notification.info.name)}>
                     {notification.info && <p><i className="fas fa-check-circle text-success mr-2"/>Il dataset <b>{notification.info.title}</b> è stato creato correttamente</p>}
-                    <p>{notification.timestamp}</p>
+                    <p>{convertNotificationTime(notification.timestamp)}</p>
                   </div>
                 )
                 case 'kylo_feed_error':
                 return(
                   <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index}>
                     {notification.info && <p><i className="fas fa-exclamation-circle text-danger mr-2"/>C'è stato un problema nella creazione del dataset <b>{notification.info.title}</b>: {notification.info.errors}</p>}
-                    <p>{notification.timestamp}</p>
+                    <p>{convertNotificationTime(notification.timestamp)}</p>
                   </div>
                 )
                 case 'generic':
                 return(
                   <a className={notification.status===1?"text-dark list-group-item b-new-notif pointer":"list-group-item pointer text-dark"} key={index} href={window.location.origin+'/#'+notification.info.link} target="_blank"/* onClick={this.pushTo.bind(this,'generic', notification.info.link)} */>
                     {notification.info && <p><i className="fas fa-info-circle text-info mr-2"/>{notification.info.description}</p>}
-                    <p>{notification.timestamp}</p>
+                    <p>{convertNotificationTime(notification.timestamp)}</p>
                   </a>
                 )
               }
