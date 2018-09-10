@@ -665,7 +665,7 @@ class DatasetList extends Component {
                                                             <div className="col-md-2 py-1 px-3" >
                                                                 <div title={dataset.dcatapit.owner_org} className="text-truncate" dangerouslySetInnerHTML={{__html: dataset.dcatapit.owner_org}}></div>
                                                             </div>
-                                                            <div className="col-sm-2 py-2 pl-4">
+                                                            <div className="col-sm-2 py-1 pl-4">
                                                                 <div className="row">
                                                                     <div className="ml-auto pr-3">
                                                                         {!dataset.dcatapit.privatex && <i className="fa fa-globe fa-lg text-icon pt-1"/>}
@@ -754,7 +754,7 @@ class DatasetList extends Component {
                                                                             <div className="col-md-2 py-1 px-1" >
                                                                                 <div title={datasetOpen.organization.name} className="text-truncate" dangerouslySetInnerHTML={{__html: datasetOpen.organization.name}}></div>
                                                                             </div>
-                                                                            <div className="col-sm-2 py-2 pl-4">
+                                                                            <div className="col-sm-2 py-1 pl-4">
                                                                                 <div className="row">
                                                                                     <div className="ml-auto pr-3">
                                                                                         <i className="fa fa-globe fa-lg text-icon pt-1"/>
@@ -858,7 +858,7 @@ class DatasetList extends Component {
                                                             <div className="col-md-2 py-1 px-1" >
                                                                 <div title={dashboard.org} className="text-truncate" dangerouslySetInnerHTML={{__html: dashboard.org}}></div>
                                                             </div>
-                                                            <div className="col-sm-2 py-2 pl-4">
+                                                            <div className="col-sm-2 py-1 pl-4">
                                                                 <div className="row">
                                                                     <div className="ml-auto pr-3">
                                                                         {dashboard.status===2 && <i className="fa fa-globe fa-lg text-icon pt-1"/>}
@@ -970,7 +970,7 @@ class DatasetList extends Component {
                                                         <div className="col-md-2 py-1 px-1" >
                                                             <div title={story.org} className="text-truncate" dangerouslySetInnerHTML={{__html: story.org}}></div>
                                                         </div>
-                                                        <div className="col-sm-2 py-2 pl-4">
+                                                        <div className="col-sm-2 py-1 pl-4">
                                                             <div className="row">
                                                                 <div className="ml-auto pr-3">
                                                                     {story.published===2 && <i className="fa fa-globe fa-lg text-icon pt-1"/>}

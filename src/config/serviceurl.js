@@ -19,7 +19,7 @@ export const serviceurl = {
     domain: process.env.DOMAIN */
 
     // TEST   
-    apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
+/*     apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
     urlSupersetOpen: 'https://api.open.daf.teamdigitale.test/sso-manager',
     apiURLDatiGov: "https://api.daf.teamdigitale.test/dati-gov/v1", 
     apiURLCatalog: "https://api.daf.teamdigitale.test/catalog-manager/v1",
@@ -35,7 +35,7 @@ export const serviceurl = {
     urlCkan: "https://ckan-geo.daf.teamdigitale.test/", 
     urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
     urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
-    domain: ".daf.teamdigitale.test"
+    domain: ".daf.teamdigitale.test" */
 
 /*     // NEW SEC   
     apiURLSSOManager: "https://api.daf-sec.teamdigitale.it/sso-manager",
@@ -57,7 +57,7 @@ export const serviceurl = {
     domain: ".daf-sec.teamdigitale.it" */
 
     // PROD   
-/*  apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
+    apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
     urlSupersetOpen: 'https://api.open.daf.teamdigitale.it/sso-manager',
     apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
     apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
@@ -73,7 +73,7 @@ export const serviceurl = {
     urlCkan: "https://ckan-geo.daf.teamdigitale.it/", 
     urlKatalod: "https://api.daf.teamdigitale.it/daf-semantic-katalod",
     urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
-    domain: ".daf.teamdigitale.it" */
+    domain: ".daf.teamdigitale.it"
 
   }
 
