@@ -756,7 +756,6 @@ class Full extends Component {
         <Footer />
       </div>
       }
-    );
     <form id="supset_open" target="open_supset" action={serviceurl.urlSupersetOpen +'/managed/bi-open-login'} method="POST">
       <input name="Authorization" type="text" value={"Bearer "+localStorage.getItem('token')} hidden/>
     </form>
