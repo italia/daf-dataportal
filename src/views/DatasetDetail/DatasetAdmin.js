@@ -470,7 +470,7 @@ class DatasetAdmin extends Component{
             </tbody>
           </table>
         </div>}
-        {!this.state.isLoading && <div className="row mt-4">
+        {!this.state.isLoading && ableToEdit(loggedUser, dataset) && <div className="row mt-4">
           <div className="col ml-auto">
             <button className="float-right btn btn-primary" onClick={this.toggle} title="Scegli con chi condividere" disabled={isOpenData(acl)}><i className="fa fa-plus fa-lg"/></button>
           </div>
