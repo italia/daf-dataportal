@@ -766,7 +766,6 @@ class Organizations extends Component {
                         <ul className="list-group">
                             <li className="list-group-item"><input className="form-control" onChange={(e)=>{this.searchBy(e.target.value)}}></input></li>
                             {filter && filter.length > 0 && filter.map(organization => {
-                                if(organization!="default_org")
                                     return( <li className={"list-group-item "+ (org===organization?"active":"")} key={organization}>{organization}
                                                 <button title="Gestione Utenti" type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.getUsers(organization)}}><i className="fa fa-user-plus fa-lg" /></button>
                                                 <button title="Gestione Workgroups" type="button" className={"float-right btn " + ((org === organization ? "btn-active" : "btn-link"))} onClick={()=>{this.getWorkgroups(organization)}}><i className="fa fa-users fa-lg" /></button>

@@ -114,8 +114,6 @@ class DashboardView extends Component {
 
           //get iframe from server
       let org = dashboard.org
-      if(dashboard.pvt==0)
-        org = 'default_org'
       let iframeTypes = widgetService.getIframe(org);
       iframeTypes.then(iframes => {
         this.loadIframe(iframes);
