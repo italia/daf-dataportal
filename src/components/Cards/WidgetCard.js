@@ -59,8 +59,15 @@ class WidgetCard extends Component {
                   table = org + '_o_'+sp1[1]
                 }
             }
-        } else {
-            org = 'default_org'
+        }
+
+        //TODO: need review (PPL 11/09/2018)
+        //iframe_url:"https://bi.dataportal
+        var open
+        if(iframe.iframe_url && iframe.iframe_url.indexOf('https://bi.dataportal')===0){
+            open = false
+        }else if(iframe.iframe_url && iframe.iframe_url.indexOf('https://bi.open.dataportal')===0){
+            open = true
         }
 
         var url = ''
@@ -79,16 +86,9 @@ class WidgetCard extends Component {
                                 <a href={this.getLink(iframe.iframe_url?iframe.iframe_url:iframe.props.url)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
                             </div>
                             <div className="col-3 my-2">
-                                {
-                                    org !== 'default_org' &&
-                                    //<span className="badge badge-pill badge-danger fa-pull-right badge-dash" title="Il widget è privato"> </span>
-                                    //<i className="fa fa-lock fa-lg fa-pull-right text-icon my-1 pointer" title="Il widget è privato"/>
+                                {!open?
                                     <span className="pointer" title='Il widget è privato'><i className="fas fa-lock fa-pull-right text-icon pointer" style={{fontSize: '16px'}}/></span>
-                                }
-                                {
-                                    org === 'default_org' &&
-                                    //<span className="badge badge-pill badge-success fa-pull-right badge-dash" title="Il widget è pubblico"> </span>
-                                    //<i className="fa fa-globe fa-pull-right fa-lg text-icon my-1 pointer" title='Il widget è pubblico'/>
+                                :
                                     <span className="pointer" title='Il widget è pubblico'><i className="fas fa-globe fa-pull-right text-icon pointer" style={{ fontSize: '16px' }}/></span>
                                 }
                             </div>
