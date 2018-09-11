@@ -45,7 +45,7 @@ const renderOrganization = ({ input, label, type, organizations, pvt, meta: { to
         <select className="form-control" {...input}>
           <option value=""  key='organization' defaultValue></option>
           {organizations.map(organization => 
-              organization != 'default_org' && <option value={organization} key={organization}>{organization}</option>
+              <option value={organization} key={organization}>{organization}</option>
               )}
         </select>
       </div>

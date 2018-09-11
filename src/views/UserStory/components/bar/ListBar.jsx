@@ -28,17 +28,11 @@ class ViewBar extends React.Component {
         isOpen: props.isOpen?props.isOpen:false,
         validationMSg: 'Campo obbligatorio',
         validationMSgOrg: 'Campo obbligatorio',
-        pvt: '0',
-        org: 'default_org'
+        pvt: '0'
       }
   }
   
   onPvtChange(e, value){
-    if(this.pvt.value == 0){
-      this.setState({
-        org: 'default_org'
-      });
-    }
     this.setState({
         pvt: value
     });
@@ -96,10 +90,6 @@ class ViewBar extends React.Component {
       if(!this.org || this.org.value == ''){
         this.setState({
           validationMSgOrg: 'Campo obbligatorio'
-        });
-      }else if(this.org.value=='default_org' && this.pvt.value == 1){
-        this.setState({
-          validationMSgOrg: 'Non è possibile creare una storia privata con l\'organizzazione selezionata'
         });
       }else{
         let layout = { rows: [] };
