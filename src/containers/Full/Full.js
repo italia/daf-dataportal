@@ -177,9 +177,9 @@ class Full extends Component {
       isOpenStory: false,
       isOpenDash: false,
       pvtStory: '0',
-      orgStory: 'default_org',
+      orgStory: '',
       pvtDash: '0',
-      orgDash: 'default_org',
+      orgDash: '',
       validationMSg: 'Campo obbligatorio',
       validationMSgOrg: 'Campo obbligatorio',
       authed: false,
@@ -347,11 +347,6 @@ class Full extends Component {
   }
 
   onPvtChangeStory(e, value){
-    if(this.pvtStory.value == 0){
-      this.setState({
-        orgStory: 'default_org'
-      });
-    }
     this.setState({
         pvtStory: value
     });
@@ -366,11 +361,6 @@ class Full extends Component {
   }
 
   onPvtChangeDash(e, value){
-    if(this.pvtDash.value == 0){
-      this.setState({
-        orgDash: 'default_org'
-      });
-    }
     this.setState({
         pvtDash: value
     });
@@ -480,10 +470,6 @@ class Full extends Component {
         this.setState({
           validationMSgOrg: 'Campo obbligatorio'
         });
-      }else if(this.orgStory.value=='default_org' && this.pvtStory.value == 1){
-        this.setState({
-          validationMSgOrg: 'Non è possibile creare una storia privata con l\'organizzazione selezionata'
-        });
       }else{
         let layout = { rows: [] };
         let widgets = {};
@@ -522,10 +508,6 @@ class Full extends Component {
       if(!this.orgDash || this.orgDash.value == ''){
         this.setState({
           validationMSgOrg: 'Campo obbligatorio'
-        });
-      }else if(this.orgDash.value=='default_org' && this.pvtDash.value == 1){
-        this.setState({
-          validationMSgOrg: 'Non è possibile creare una storia privata con l\'organizzazione selezionata'
         });
       }else{
         //prepara data
