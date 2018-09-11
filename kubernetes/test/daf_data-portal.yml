@@ -40,6 +40,92 @@ spec:
         volumeMounts:
         - name: hosts
           mountPath: /etc/extra_hosts
+        env:
+          - name: API_URL_SSO_MANAGER
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: apiURLSSOManager
+          - name: URL_SUPERSET_OPEN
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: urlSupersetOpen
+          - name: API_URL_DATI_GOV
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: apiURLDatiGov
+          - name: API_URL_CATALOG
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: apiURLCatalog
+          - name: API_URL_SECURITY
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: apiURLSecurity
+          - name: API_URL_DATASET
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: apiURLDataset
+          - name: API_URL_HDFS
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: apiURLHdfs
+          - name: API_CKAN
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: apiCKAN
+          - name: API_MEDIUM
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: apiMedium
+          - name: URL_SEMANTIC
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: urlSemantic
+          - name: URL_METABASE
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: urlMetabase
+          - name: URL_SUPERSET
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: urlSuperset
+          - name: URL_JUPITER
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: urlJupiter
+          - name: URL_CKAN
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: urlCkan
+          - name: URL_KATALOD
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: urlKatalod
+          - name: DOMAIN
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: domain
+          - name: URL_CACHER
+            valueFrom:
+              configMapKeyRef:
+                name: dataportal-conf
+                key: urlCacher
       imagePullSecrets:
       - name: regsecret
       volumes:

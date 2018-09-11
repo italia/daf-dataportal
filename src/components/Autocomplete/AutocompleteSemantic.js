@@ -85,13 +85,14 @@ class AutocompleteSemantic extends React.Component {
   }
 
   render() {
+    const { label } = this.props;
     return (
       <div className="form-group row">
-      <label className="col-md-3 form-control-label">Concetto Semantico</label>
-     <div className="col-md-9">
+      <label className="col-sm-2 col-form-label">{label}</label>
+      <div className="col-sm-10">
         <Autocomplete
           inputProps={{ id: 'states-autocomplete-semantic', name: this.props.input.name, type: 'text' }}
-          wrapperStyle={{ position: 'relative', display: 'block' }}
+          wrapperStyle={{ display: 'block' }}
           value={this.state.value}
           items={this.state.suggestions}
           getItemValue={(item) => item.name}
@@ -109,7 +110,7 @@ class AutocompleteSemantic extends React.Component {
             }
           }}
           renderMenu={(children, index) => (
-            <div className="menu" key={index}>
+            <div className="menu" key={index} style={{position: 'relative', zIndex: 9999}}>              
               {children}
             </div>
           )}

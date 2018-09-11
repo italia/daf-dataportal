@@ -27,17 +27,11 @@ class ListBar extends React.Component {
         isOpen: props.isOpen?props.isOpen:false,
         validationMSg: 'Campo obbligatorio',
         validationMSgOrg: 'Campo obbligatorio',
-        pvt: '0',
-        org: 'default_org'
+        pvt: '0'
       }
   }
 
   onPvtChange(e, value){
-    if(this.pvt.value == 0){
-      this.setState({
-        org: 'default_org'
-      });
-    }
     this.setState({
         pvt: value
     });
@@ -125,10 +119,6 @@ class ListBar extends React.Component {
         this.setState({
           validationMSgOrg: 'Campo obbligatorio'
         });
-      }else if(this.org.value=='default_org' && this.pvt.value == 1){
-        this.setState({
-          validationMSgOrg: 'Non è possibile creare una storia privata con l\'organizzazione selezionata'
-        });
       }else{
         //prepara data
         let layout = { rows: [] };
@@ -190,7 +180,7 @@ class ListBar extends React.Component {
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Privata</label>
                   <div className="col-md-8">
-                  {loggedUser.organizations && loggedUser.organizations.length > 1 ?
+                  {loggedUser.organizations && loggedUser.organizations.length > 0 ?
                     <select className="form-control" ref={(pvt) => this.pvt = pvt} onChange={(e) => this.onPvtChange(e, e.target.value)} id="pvt" >
                       <option value="0" defaultValue key="0">No</option>
                       <option value="1" key='1'>Si</option>
@@ -264,7 +254,7 @@ ListBar.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const loggedUser = state.userReducer['obj'].loggedUser || { } 
+    const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }   
     return { loggedUser }
 }
 

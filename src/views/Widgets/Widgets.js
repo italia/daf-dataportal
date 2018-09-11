@@ -21,14 +21,21 @@ class Widgets extends Component{
     
     componentDidMount(){
         if(this.state.listWidgets.length===0 && !this.props.widgets){
-            let response = widgetService.iframes()
-            response.then(json => {
+          let response = widgetService.iframes()
+          response.then(json => {
+              var iframes = json
+
+              let responseOpen = widgetService.iframesOpen()
+              response.then(open=>{
+                iframes = iframes.concat(open)
                 this.setState({
-                    loading: false,
-                    listWidgets: json,
-                    searched: json
+                  loading: false,
+                  listWidgets: iframes,
+                  searched: iframes
                 })
-            })
+              })
+              
+          })
         }else{
             this.setState({
                 loading: false
