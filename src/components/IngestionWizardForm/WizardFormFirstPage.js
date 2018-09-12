@@ -1,13 +1,13 @@
 import React from 'react'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { connect  } from 'react-redux';
-import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderFieldInputButton} from './renderField';
-import { publicOptions, tipodatasetOptions, modalitacaricamentoOptions } from './const';
+import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderFieldInputButton, renderFieldCheckbox} from './renderField';
+import { publicOptions, tipodatasetOptions, modalitacaricamentoOptions, tempoDiPollingOptions, timerUnita } from './const';
 import validate from './validate';
 import FileInput from './FileInput'
 
 
-const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottocategoria, tipodataset, modalitacaricamento, nomefile, urlws, reset, previousPage, getSchemaFromWS, meta : {touched, error} }) => <div>
+const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottocategoria, tipodataset, modalitacaricamento, tempopolling, nomefile, urlws, reset, previousPage, getSchemaFromWS, meta : {touched, error} }) => <div>
             <Field
               name="titolo"
               component={renderFieldInput}
@@ -61,47 +61,86 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
               component={renderFieldInput}
               label="Template"
             />
-            {tipodataset &&
-              <Field
-                name="modalitacaricamento"
-                options={modalitacaricamentoOptions}
-                component={renderFieldSelect}
-                label="Modalità Caricamento"
-              />
-            }
-            {nomefile? 
+            {tipodataset=='primitive' &&
               <div>
                 <Field
-                  name="nomefile"
-                  component={renderFieldInputButton}
-                  label="Nome File Caricato"
-                  readonly="true"
-                  buttonLabel="Elimina File"
-                  onClick={reset}
-                  iconClassName="fa fa-trash fa-lg"
+                  name="modalitacaricamento"
+                  options={modalitacaricamentoOptions}
+                  component={renderFieldSelect}
+                  label="Modalità Caricamento"
                 />
-              <div>
-                <button type="button" className="btn btn-primary float-left" onClick={previousPage}>Indietro</button>
-                <button type="submit" className="btn btn-primary float-right">Avanti</button>
-              </div>
-            </div>
-            :
-            <div>
-              {modalitacaricamento==1 && 
-                  <FileInput
-                    name="filesftp"
-                    label="Caricamento:"
-                    classNameLabel="file-input-label"
-                    className="file-input"
-                    dropzone_options={{
-                      multiple: false,
-                      accept: 'image/*'
-                    }}
-                    onDropFunction={onDropFunction}
-                    fields={fields}
-                  >
-                  <span>Add more</span>
-                  </FileInput>
+                {modalitacaricamento==1 && 
+                <div className="card">
+                <div className="card-body">
+                <h5 className="card-title">Caricamento tramite SFTP</h5>
+                    <div className="form-group">
+                      <div className="col-md-12">
+                          <Field
+                            name="caricafile"
+                            component={renderFieldCheckbox}                
+                            label="Caricare il file al termine della metadatazione"
+                          />
+                          <Field
+                            name="tempopolling"
+                            options={tempoDiPollingOptions}
+                            component={renderFieldSelect}
+                            label="Tempo di Polling"
+                          />
+                          {tempopolling==0 &&
+                              <Field
+                                name="espressionecron"
+                                component={renderFieldInput}
+                                label="Espressione"
+                            />
+                          }
+                          {tempopolling==1 &&
+                              <div>
+                                <Field
+                                  name="timerquantita"
+                                  component={renderFieldInput}
+                                  label="Quantità"
+                                />
+                                    <Field
+                                    name="timerunita"
+                                    options={timerUnita}
+                                    component={renderFieldSelect}
+                                    label="Unità"
+                                />
+                              </div>
+                          }
+                           {nomefile? 
+                            <div>
+                              <Field
+                                name="nomefile"
+                                component={renderFieldInputButton}
+                                label="Nome File Caricato"
+                                readonly="true"
+                                buttonLabel="Elimina File"
+                                onClick={reset}
+                                iconClassName="fa fa-trash fa-lg"
+                              />
+                          </div>
+                          :
+                          <FileInput
+                            name="filesftp"
+                            label="Caricamento:"
+                            classNameLabel="file-input-label"
+                            className="file-input"
+                            dropzone_options={{
+                              multiple: false,
+                              accept: 'image/*'
+                            }}
+                            onDropFunction={onDropFunction}
+                            fields={fields}
+                          >
+                          <span>Add more</span>
+                          </FileInput>
+                           }
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
               }
               {modalitacaricamento==2 &&
                <div className="card">
@@ -109,9 +148,47 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
                  <h5 className="card-title">Caricamento tramite Web Service</h5>
                     <div className="form-group">
                     <div className="col-md-12">
-                      {/* <input placeholder="http://" type="text" ref={(url) => this.url = url} id="url" className="form-control-90"/>
-                      <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off" onClick={getSchemaFromWS.bind(this,fields)}><i className="fa fa-plus"></i></button>
-                      */}       
+                        <Field
+                            name="tempopolling"
+                            options={tempoDiPollingOptions}
+                            component={renderFieldSelect}
+                            label="Tempo di Polling"
+                          />
+                          {tempopolling==0 &&
+                              <Field
+                                name="espressionecron"
+                                component={renderFieldInput}
+                                label="Espressione"
+                            />
+                          }
+                          {tempopolling==1 &&
+                              <div>
+                                <Field
+                                  name="timerquantita"
+                                  component={renderFieldInput}
+                                  label="Quantità"
+                                />
+                                    <Field
+                                    name="timerunita"
+                                    options={timerUnita}
+                                    component={renderFieldSelect}
+                                    label="Unità"
+                                />
+                              </div>
+                          }
+                      {nomefile? 
+                          <div>
+                            <Field
+                              name="nomefile"
+                              component={renderFieldInputButton}
+                              label="Nome File Caricato"
+                              readonly="true"
+                              buttonLabel="Elimina File"
+                              onClick={reset}
+                              iconClassName="fa fa-trash fa-lg"
+                            />
+                        </div>
+                        :
                         <Field
                           name="urlws"
                           component={renderFieldInputButton}
@@ -121,19 +198,53 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
                           iconClassName="fa fa-plus"
                           placeholder="http://"
                         />
+                      }
                     </div>
                   </div> 
                 </div>
               </div>  
+              }
+              {nomefile&& 
+              <div>
+                <button type="submit" className="btn btn-primary float-right">Avanti</button>
+              </div>
               } 
-            </div>     
-          }
+            </div>
+            }
+            {tipodataset=='derived_sql' &&
+              <div>
+                <Field
+                name="sqlquery"
+                component={renderFieldTextArea}
+                label="Query SQL"
+                />
+                <div>
+                  <button type="submit" className="btn btn-primary float-right">Esegui</button>
+                </div>
+              </div>
+            }
+            {tipodataset=='derived_proc_spark' &&
+              <div>
+                 <Field
+                    name="sparkprocedure"
+                    component={renderFieldInputButton}
+                    label="File Procedura"
+                    buttonLabel="Importa"
+                    onClick={getSchemaFromWS.bind(this,fields, urlws)}
+                    iconClassName="fa fa-upload"
+                    placeholder=".jar"
+                  />
+                <div>
+                  <button type="submit" className="btn btn-primary float-right">Esegui</button>
+                </div>
+              </div>
+            }
 </div>
 
 
 
 let WizardFormFirstPage = props => {
-  const { onDropFunction, handleSubmit, reset, categoria, tipodataset, modalitacaricamento, getCategoria, setName, nomefile, urlws, previousPage, getSchemaFromWS } = props;
+  const { onDropFunction, handleSubmit, reset, categoria, tipodataset, modalitacaricamento, tempopolling, getCategoria, setName, nomefile, urlws, previousPage, getSchemaFromWS } = props;
   var sottocategoria = getCategoria(2,categoria)
   return (
       <div className="mt-5">
@@ -158,6 +269,7 @@ let WizardFormFirstPage = props => {
                   previousPage={previousPage}
                   getSchemaFromWS={getSchemaFromWS}
                   urlws={urlws}
+                  tempopolling={tempopolling}
             />
         </form>
       </div>
@@ -176,9 +288,10 @@ WizardFormFirstPage = connect(state => {
   const categoria = selector(state, 'categoria')
   const tipodataset = selector(state, 'tipodataset')
   const modalitacaricamento = selector(state, 'modalitacaricamento')
+  const tempopolling = selector(state, 'tempopolling')
   const nomefile = selector(state, 'nomefile')
   const urlws = selector(state, 'urlws')
-  return { categoria, tipodataset, modalitacaricamento, nomefile, urlws }
+  return { categoria, tipodataset, modalitacaricamento, tempopolling, nomefile, urlws }
 })(WizardFormFirstPage)
 
 export default WizardFormFirstPage

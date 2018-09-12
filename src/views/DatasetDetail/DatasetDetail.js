@@ -441,7 +441,15 @@ class DatasetDetail extends Component {
                     <div className='top-dataset-1'>
                         <div className="container pt-4">
                             <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary" />
-                            <h2 className="title-dataset px-4 text-primary dashboardHeader" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title, 75)}</h2>
+                                <div className="row">
+                                    <div className="col-md-10">
+                                        <h2 className="title-dataset text-primary dashboardHeader" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title, 75)}</h2>
+                                    </div>
+                                    <div className="col-md-2">
+                                        {isPublic() && <ShareButton background="bg-white" className="mt-2" />}
+                                        {!isPublic() && <a className="btn btn-accento nav-link button-data-nav" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</a>}
+                                    </div>
+                                </div>
                             <ul className="nav b-b-0 nav-tabs w-100 pl-4" style={{ display: "inline-flex" }}>
                                 <li className="nav-item">
                                     <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showAdmin: false, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
@@ -461,12 +469,7 @@ class DatasetDetail extends Component {
                                 {!isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showAdmin ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAdmin: true, showWidget: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fas fa-cogs pr-2" />Amministrazione</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
-                                    <a className="btn btn-accento nav-link button-data-nav" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</a>
-                                </li>}
-
                             </ul>
-                            {isPublic() && <ShareButton background="bg-white" className="mt-4" />}
                         </div>
                     </div>
                     <div className="container">
@@ -488,7 +491,7 @@ class DatasetDetail extends Component {
                                         <div hidden={!this.state.showDett} className="col-12 card-text">
                                             <div className="row">
                                                 <div className="col-12 py-4">
-                                                    <table className="table table-responsive">
+                                                    <table className="table table-responsive-1">
                                                         <tbody className="w-100">
                                                             <tr>
                                                                 <th className="bg-white" style={{ width: "192px" }}><strong>Slug: </strong></th>
@@ -506,7 +509,7 @@ class DatasetDetail extends Component {
                                                 </div>}
                                                 <div className="col-12">
                                                     {!isPublic() && dataset.operational.input_src.sftp &&
-                                                        <table className="table table-responsive">
+                                                        <table className="table table-responsive-1">
                                                             <tbody className="w-100">
                                                                 <tr>
                                                                     <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th> <td className="bg-grigino">SFTP</td>
@@ -535,7 +538,7 @@ class DatasetDetail extends Component {
                                                         </table>
                                                     }
                                                     {!isPublic() && dataset.operational.input_src.srv_pull &&
-                                                        <table className="table table-striped table-responsive">
+                                                        <table className="table table-striped table-responsive-1">
                                                             <tbody className="w-100">
                                                                 <tr>
                                                                     <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th><td className="bg-grigino">Web Services</td>
@@ -559,7 +562,7 @@ class DatasetDetail extends Component {
                                                     }
                                                     {!isPublic() && dataset.operational.input_src.srv_push &&
                                                         <div>
-                                                            <table className="table table-striped table-responsive">
+                                                            <table className="table table-striped table-responsive-1">
                                                                 <tbody className="w-100">
                                                                     <tr>
                                                                         <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th><td className="bg-grigino">Web HDFS</td>
@@ -853,7 +856,7 @@ class DatasetDetail extends Component {
                                                     <p className="text-muted mb-4"><b>Metadati </b></p>
                                                 </div>
                                                 <div className="col-12">
-                                                    <table className="table table-responsive">
+                                                    <table className="table table-responsive-1">
                                                         <tbody className="w-100">
                                                             <tr>
                                                                 <th className="bg-white" style={{ width: "192px" }}><strong>Identificativo dataset</strong></th>
@@ -918,7 +921,7 @@ class DatasetDetail extends Component {
                                                     <p className="text-muted mb-4"><b>Informazioni Addizionali </b></p>
                                                 </div>
                                                 <div className="col-12">
-                                                    <table className="table table-responsive">
+                                                    <table className="table table-responsive-1">
                                                         <tbody className="w-100">
                                                             {metadata.extras && metadata.extras.map((extra, index) => {
                                                                 return (
