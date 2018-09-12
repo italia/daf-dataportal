@@ -58,7 +58,7 @@ class DashboardEditor extends Component {
     if(this.props.match.params.id)
       this.load();
     else{
-      let iframeTypes = widgetService.getIframe(this.props.history.location.state.dash.org);
+      let iframeTypes = widgetService.getIframe(this.props.history.location.state.dash.org, this.props.history.location.state.dash.pvt);
       iframeTypes.then(iframes => {
         this.loadIframe(iframes);
         //get widget from server
@@ -193,7 +193,7 @@ class DashboardEditor extends Component {
       this.setLayout(dashboard.layout);
 
       //get iframe from server
-      let iframeTypes = widgetService.getIframe(dashboard.org);
+      let iframeTypes = widgetService.getIframe(dashboard.org, dashboard.pvt);
       iframeTypes.then(iframes => {
         this.loadIframe(iframes);
         //get widget from server

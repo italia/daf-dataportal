@@ -336,67 +336,70 @@ class DatasetList extends Component {
       componentWillReceiveProps(nextProps){
         const queryString = require('query-string');
         const query = queryString.parse(nextProps.location.search).q 
-        this.setState({query: query,
-            showDivTipo: false,
-            showDivData: false,
-            showDivCategoria: nextProps.location && nextProps.location.state && nextProps.location.state.theme?true:false,
-            showDivOrganizzazione: false,
-            showDivVisibilita: false,
-            totalResults: 0
-        })
-        var newFilter = this.state.filter
-        var elements = this.state.filter.elements
-        if(nextProps.filter){
-            if(nextProps.filter.index.length===0){
-                elements = elements.filter(element => {
-                    return element.type!==0
-                })
-            }
-            if(nextProps.filter.org.length===0){
-                elements = elements.filter(element => {
-                    return element.type!==3
-                })
-            }
-            if(nextProps.filter.status.length===0){
-                elements = elements.filter(element => {
-                    return element.type!==2
-                })
-            }
-            if(nextProps.filter.theme.length===0){
-                elements = elements.filter(element => {
-                    return element.type!==1
-                })
-            }
-            if(nextProps.filter.date===''){
-                newFilter.da = ''
-                newFilter.a=''
+
+        if(nextProps.results!==this.props.results){
+          this.setState({query: query,
+              showDivTipo: false,
+              showDivData: false,
+              showDivCategoria: nextProps.location && nextProps.location.state && nextProps.location.state.theme?true:false,
+              showDivOrganizzazione: false,
+              showDivVisibilita: false,
+              totalResults: 0
+          })
+          var newFilter = this.state.filter
+          var elements = this.state.filter.elements
+          if(nextProps.filter){
+              if(nextProps.filter.index.length===0){
+                  elements = elements.filter(element => {
+                      return element.type!==0
+                  })
+              }
+              if(nextProps.filter.org.length===0){
+                  elements = elements.filter(element => {
+                      return element.type!==3
+                  })
+              }
+              if(nextProps.filter.status.length===0){
+                  elements = elements.filter(element => {
+                      return element.type!==2
+                  })
+              }
+              if(nextProps.filter.theme.length===0){
+                  elements = elements.filter(element => {
+                      return element.type!==1
+                  })
+              }
+              if(nextProps.filter.date===''){
+                  newFilter.da = ''
+                  newFilter.a=''
+                  this.setState({
+                      startDate: undefined,
+                      endDate: undefined
+                  })
+              }
+
+              if(nextProps.filter.order!==''){
                 this.setState({
-                    startDate: undefined,
-                    endDate: undefined
+                    order_filter: nextProps.filter.order
                 })
             }
 
-            if(nextProps.filter.order!==''){
+              newFilter.elements = elements;
+
               this.setState({
-                  order_filter: nextProps.filter.order
+                  filter: newFilter
               })
           }
-
-            newFilter.elements = elements;
-
-            this.setState({
-                filter: newFilter
+          if(nextProps.results){
+            var total = 0
+            Object.keys(JSON.parse(nextProps.results[nextProps.results.length-4].source)).map((tipo, index) =>{
+              var tipi=JSON.parse(nextProps.results[nextProps.results.length-4].source)
+              total += parseInt(tipi[tipo])
             })
-        }
-        if(nextProps.results){
-          var total = 0
-          Object.keys(JSON.parse(nextProps.results[nextProps.results.length-4].source)).map((tipo, index) =>{
-            var tipi=JSON.parse(nextProps.results[nextProps.results.length-4].source)
-            total += parseInt(tipi[tipo])
-          })
-          this.setState({
-            totalResults: total
-          })
+            this.setState({
+              totalResults: total
+            })
+          }
         }
       }
 

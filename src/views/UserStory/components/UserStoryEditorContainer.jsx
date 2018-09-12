@@ -52,7 +52,7 @@ class UserStoryEditorContainer extends Component {
     let org = props.dataStory.org
     
     if(!props.readonly){
-      let response = widgetService.getIframe(org)
+      let response = widgetService.getIframe(org, props.dataStory.pvt)
       response.then(iframes => {
         this.loadIframe(iframes);
       })
