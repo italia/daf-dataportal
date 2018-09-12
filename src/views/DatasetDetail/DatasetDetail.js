@@ -10,7 +10,6 @@ import {
     datasetMetadata,
     getOpendataResources,
     checkFileOnHdfs,
-    setDatasetACL,
     uploadHdfsFile
 } from '../../actions'
 import ReactJson from 'react-json-view'

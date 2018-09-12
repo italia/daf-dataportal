@@ -26,7 +26,7 @@ class Widgets extends Component{
               var iframes = json
 
               let responseOpen = widgetService.iframesOpen()
-              response.then(open=>{
+              responseOpen.then(open=>{
                 iframes = iframes.concat(open)
                 this.setState({
                   loading: false,
