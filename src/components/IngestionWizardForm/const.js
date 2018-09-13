@@ -6,7 +6,7 @@ export const publicOptions = [
 export const tipodatasetOptions = [
     {'val' : 'primitive', 'name' : 'Dataset primitivo'},
     {'val' : 'derived_sql', 'name' : 'Dataset derivato con SQL'},
-    {'val' : 'derived_procspark', 'name' : 'Dataset derivato con procedura Spark'}
+    {'val' : 'derived_proc_spark', 'name' : 'Dataset derivato con procedura Spark'}
 ]
 
 export const modalitacaricamentoOptions = [
@@ -18,6 +18,17 @@ export const modalitacaricamentoOptions = [
 export const yesOrNoOptions = [
   {'val' : '1', 'name' : 'Si'},
   {'val' : '0', 'name' : 'No'}
+]
+
+export const tempoDiPollingOptions = [
+  {'val' : '0', 'name' : 'Cron'},
+  {'val' : '1', 'name' : 'Timer'}
+]
+
+export const timerUnita = [
+  {'val' : '0', 'name' : 'Minuti'},
+  {'val' : '1', 'name' : 'Ore'},
+  {'val' : '2', 'name' : 'Giorni'}
 ]
 
 export const tipodataset = [

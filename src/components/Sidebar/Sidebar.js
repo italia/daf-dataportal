@@ -237,7 +237,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'#'} onClick={() => window.open('http://daf-docs.readthedocs.io')} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-info text-secondary"></i> Documentazione</NavLink>
+                <NavLink to={'#'} onClick={() => window.open('http://daf-dataportal.readthedocs.io/it/latest/')} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-info text-secondary"></i> Documentazione</NavLink>
               </li>
               {/* <li className={this.activeRoute("/icons")}>
                 <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
