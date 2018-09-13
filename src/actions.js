@@ -1068,9 +1068,13 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
 
-      export function getFileFromStorageManager(logical_uri) {
-        var token = '';
-        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri);
+      export function getFileFromStorageManager(logical_uri, limit) {
+        var token = ''
+        var rows = ''
+        if(limit!==null && limit!==undefined){
+          rows = '?limit='+limit
+        }
+        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) + rows;
         if(localStorage.getItem('username') && localStorage.getItem('token') &&
           localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
             token = localStorage.getItem('token')

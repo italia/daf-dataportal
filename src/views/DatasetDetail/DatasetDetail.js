@@ -245,7 +245,7 @@ class DatasetDetail extends Component {
             showDett: false,
             previewState: 3
         })
-        dispatch(getFileFromStorageManager(logical_uri))
+        dispatch(getFileFromStorageManager(logical_uri, 10))
             .then(json => { this.setState({ previewState: 1, jsonPreview: json }) })
             .catch(error => { this.setState({ previewState: 2 }) })
     }
