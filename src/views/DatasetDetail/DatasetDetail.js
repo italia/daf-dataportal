@@ -10,9 +10,10 @@ import {
     datasetMetadata,
     getOpendataResources,
     checkFileOnHdfs,
-    setDatasetACL,
     uploadHdfsFile
 } from '../../actions'
+import ReactTable from "react-table"
+import "react-table/react-table.css";
 import ReactJson from 'react-json-view'
 import download from 'downloadjs'
 import { serviceurl } from "../../config/serviceurl";
@@ -246,9 +247,9 @@ class DatasetDetail extends Component {
             showDett: false,
             previewState: 3
         })
-        dispatch(getFileFromStorageManager(logical_uri))
+        dispatch(getFileFromStorageManager(logical_uri, 20))
             .then(json => { this.setState({ previewState: 1, jsonPreview: json }) })
-            .catch(error => { this.setState({ previewState: 2 }) })
+            .catch(error => { console.error(error); this.setState({ previewState: 2 }) })
     }
 
 
@@ -375,6 +376,60 @@ class DatasetDetail extends Component {
             })
     }
 
+    renderPreview(dataset, jsonPreview){
+      if(jsonPreview){
+        if(dataset.operational.file_type==="csv"){
+          var columns=[{
+            Header: dataset.dcatapit.name,
+            columns: []
+          }]
+          Object.keys(jsonPreview[0]).map(elem=>{
+            columns[0].columns.push({
+              Header: elem,
+              accessor: elem
+            })
+          })
+          return(
+            <ReactTable 
+              data={jsonPreview}
+              columns={columns}
+              defaultPageSize={10}
+              className="-striped -highlight"
+              />
+          )
+          /* return (
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  {Object.keys(jsonPreview[0]).map((elem,index)=>{
+                    return <th scope="col" key={index}>{elem}</th>
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                {jsonPreview.map((elem,index)=>{
+                  var obj = []
+                  for (var p in elem)
+                    obj.push(elem[p])
+                  return(
+                    <tr key={index}>
+                    {obj.map((val, index)=>{
+                      return(<td key={index}>{val}</td>)
+                    })}
+                    </tr>)
+                  })
+                }
+              </tbody>
+            </table>
+          ) */
+        }else{
+          return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
+        }
+      }else{
+        return <p>Anteprima non disponibile.</p>
+      }
+    }
+
     render() {
         const { dataset, metadata, ope, feed, iframes, isFetching, query } = this.props
         var metadataThemes = undefined
@@ -474,6 +529,11 @@ class DatasetDetail extends Component {
                     </div>
                     <div className="container">
                         <div className="row">
+                            <div hidden={!this.state.showPreview} className="col-12 pt-5">
+                              {this.state.previewState === 1 && <div>{this.renderPreview(dataset, this.state.jsonPreview)}</div>}
+                              {this.state.previewState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il caricamento della risorsa, contatta l'assistenza.</div>}
+                              {this.state.previewState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
+                            </div>
                             <div hidden={this.state.showWidget} className="col-md-7 pt-5">
                                 <div>
                                     <div className="row px-3">
@@ -594,13 +654,6 @@ class DatasetDetail extends Component {
                                             {this.state.downloadState === 1 && <div className="alert alert-success">File scaricato con successo</div>}
                                             {this.state.downloadState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il download del file, contatta l'assistenza.</div>}
                                             {this.state.downloadState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Download in corso..</div>}
-                                        </div>
-
-
-                                        <div hidden={!this.state.showPreview} className="col-12 card-text">
-                                            {this.state.previewState === 1 && <div>{this.state.jsonPreview ? <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" /> : <p>Anteprima non disponibile.</p>}</div>}
-                                            {this.state.previewState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il caricamento della risorsa, contatta l'assistenza.</div>}
-                                            {this.state.previewState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
                                         </div>
                                         <div hidden={!this.state.showAPI} className="col-12 card-text">
                                             <div className="row desc-dataset text-dark">

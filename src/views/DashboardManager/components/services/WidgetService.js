@@ -3,13 +3,20 @@ import { serviceurl } from '../../../../config/serviceurl.js'
 export default class WidgetService {
     
     urlIframe = serviceurl.apiURLDatiGov + "/dashboard/iframesbyorg/";
+    urlOpenIframe = serviceurl.apiURLDatiGov + "/dashboard/open-iframes";
 
     constructor() {
 
     }
 
-    async getIframe(org) {
-        const response = await fetch( this.urlIframe + org , {
+    async getIframe(org, pvt) {
+        var url = ''
+        if(pvt==="0"){
+          url = this.urlOpenIframe
+        }else if(pvt==="1"){
+          url = this.urlIframe + org
+        }
+        const response = await fetch( url , {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

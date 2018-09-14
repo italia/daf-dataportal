@@ -10,7 +10,7 @@ module.exports =  {
     //https: true,
     // contentBase: 'dist',
     port: 80,
-    host: 'dataportal.local.daf.teamdigitale.it'
+    host: 'localhost.dataportal.daf.teamdigitale.it'
   },
   watch: true,
   plugins: [
