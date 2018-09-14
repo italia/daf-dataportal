@@ -6,7 +6,7 @@ export default class HomeService {
     
     dashboardUrl = serviceurl.apiURLDatiGov + "/dashboards";
     storyUrl =  serviceurl.apiURLDatiGov + "/user-stories";
-    iframesUrl = serviceurl.apiURLDatiGov + '/dashboard/iframes';
+    iframesUrl = serviceurl.apiURLDatiGov + '/dashboard/open-iframes';
     homeUrl = serviceurl.apiURLDatiGov + '/elasticsearch/home';
     publicHomeUrl = serviceurl.apiURLDatiGov + '/public/elasticsearch/home';
 
