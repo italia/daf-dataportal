@@ -909,3 +909,10 @@ li.bg-footer:last-child.social-links {
   border-bottom: 0.5px solid #f0f3f5;
   border-right: 0;
 }
+
+.table-responsive-1 {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}

@@ -95,7 +95,7 @@ export const renderTipi = ({ input, label, tipi, index, meta: { touched, error }
    export const renderFieldCheckbox = ({ input, label, meta: { touched, error } }) => (
     <div className="form-group row">
       <label className="col-sm-3 col-form-label">{label}</label>
-      <div className="col-sm-2">
+      <div className="col-sm-2 pt-2">
         <input {...input} type='checkbox' className="form-control" />
         {touched && error && <span>{error}</span>}
       </div>

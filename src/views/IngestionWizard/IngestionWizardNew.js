@@ -20,8 +20,8 @@ class IngestionForm extends Component {
     return (
       <div className="container">
          <WizardForm onSubmit={showResults}/>
-{/*          <Values form="wizard" />
- */}      </div>
+         {/*  <Values form="wizard" /> */}
+       </div>
     )
   }
 }
