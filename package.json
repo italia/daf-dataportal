@@ -63,6 +63,7 @@
     "react-select": "^1.0.0-rc.5",
     "react-star-rating-component": "^1.4.1",
     "react-stepzilla": "^4.7.2",
+    "react-table": "^6.8.6",
     "react-tag-input": "^4.7.2",
     "react-through": "^1.1.0",
     "react-timestamp": "^4.3.1",
