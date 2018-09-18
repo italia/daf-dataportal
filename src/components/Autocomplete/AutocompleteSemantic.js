@@ -88,8 +88,8 @@ class AutocompleteSemantic extends React.Component {
     const { label } = this.props;
     return (
       <div className="form-group row">
-      <label className="col-sm-2 col-form-label">{label}</label>
-      <div className="col-sm-10">
+      <label className="col-md-3 col-form-label">{label}</label>
+      <div className="col-md-9">
         <Autocomplete
           inputProps={{ id: 'states-autocomplete-semantic', name: this.props.input.name, type: 'text' }}
           wrapperStyle={{ display: 'block' }}

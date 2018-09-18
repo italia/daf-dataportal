@@ -1443,3 +1443,26 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(response => response.json())
         }
       }
+
+      export function publishOnCKAN(dcatapit){
+        var url = serviceurl.apiURLDatiGov + '/unsubscribe'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(dcatapit)
+          })
+          .then(response => response.json())
+        }
+      }

@@ -294,6 +294,9 @@ class DatasetAdmin extends Component{
 
   pubblicaDataset(){
     const { dispatch, query, dataset } = this.props
+    this.setState({
+      isLoading: true
+    })
     dispatch(setDatasetACL(dataset.dcatapit.name,'open_data_group'))
     .then(json => {
       if(json.code!==undefined){

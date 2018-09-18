@@ -661,7 +661,7 @@ class DatasetDetail extends Component {
                                         <div hidden={!this.state.showAPI} className="col-12 card-text">
                                             <div className="row desc-dataset text-dark">
                                                 <div className="col-12">
-                                                    <label>API Endpoint</label><br />
+                                                    <p>E' possibile accedere ai dati di questo Dataset utilizzando il seguente API Endpoint</p><br />
                                                     <input className='w-75' value={this.state.value} onChange={({ target: { value } }) => this.setState({ value, copied: false })} disabled='true' />
                                                     <CopyToClipboard text={this.state.value}
                                                         onCopy={() => this.setState({ copied: true })}>

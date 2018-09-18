@@ -419,7 +419,7 @@ class WizardFormMetadata extends Component {
             <button type="button" className="btn btn-primary" onClick={reset}>Elimina</button>
           </div>
         </div>
-        <div className="form-group row justify-content-center">
+        {/* <div className="form-group row justify-content-center" hidden>
           <div className="col-7">
             <Field
               name={'private'}
@@ -429,7 +429,7 @@ class WizardFormMetadata extends Component {
             />
           </div>
           <div className="col-3"></div>
-        </div>
+        </div> */}
       </div>
       } 
       {fields.map((test, index) => 
