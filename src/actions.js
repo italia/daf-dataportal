@@ -1445,7 +1445,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
 
       export function publishOnCKAN(dcatapit){
-        var url = serviceurl.apiURLDatiGov + '/unsubscribe'
+        var url = serviceurl.apiURLCatalog + '/ckan-geo/add'
         var token = ''
 
         if(localStorage.getItem('username') && localStorage.getItem('token') &&
@@ -1462,6 +1462,52 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify(dcatapit)
+          })
+          .then(response => response)
+        }
+      }
+
+      export function deleteOnCKAN(dcatapit){
+        var url = serviceurl.apiURLCatalog + '/ckan-geo/delete'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(dcatapit)
+          })
+          .then(response => response)
+        }
+      }
+
+      export function deleteDataset(nomeDataset, org){
+        var url = serviceurl.apiURLCatalog + 'catalog-ds/delete/'+nomeDataset+'/'+org
+
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
           })
           .then(response => response.json())
         }
