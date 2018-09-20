@@ -22,7 +22,7 @@ import {
 import 'rc-steps/assets/index.css'
 import 'rc-steps/assets/iconfont.css'
 
-const steps = [{'title': 'Carica file e descrivi le colonne'},{'title': 'Aggiuungi i Metadati'},{'title': 'Modalità di invio'}]
+const steps = [{'title': 'Carica file e descrivi le colonne'},{'title': 'Aggiungi i Metadati'},{'title': 'Modalità di invio'}]
 
 class WizardForm extends Component {
   constructor(props) {

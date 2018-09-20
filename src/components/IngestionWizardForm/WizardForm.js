@@ -12,7 +12,7 @@ import { change, reset } from 'redux-form'
 import 'rc-steps/assets/index.css'
 import 'rc-steps/assets/iconfont.css'
 
-const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiuungi i Metadati'}]
+const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiungi i Metadati'}]
 
 class WizardForm extends Component {
   constructor(props) {

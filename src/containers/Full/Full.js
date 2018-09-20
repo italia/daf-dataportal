@@ -201,28 +201,6 @@ class Full extends Component {
     const { dispatch } = this.props
     if (this.props.newNotifications !== nextProps.newNotifications) {
       clearTimeout(this.timeout);
-      if (localStorage.getItem('username') && localStorage.getItem('token') &&
-        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
-        dispatch(isValidToken(localStorage.getItem('token')))
-        .then(ok=>{
-          if(!ok){
-            this.setState({
-              authed: false,
-              loading: false
-            })
-            logout();
-            this.props.history.push('/login')
-          }
-        })
-        .catch((error) => {
-          this.setState({
-            authed: false,
-            loading: false
-          })
-          logout();
-          this.props.history.push('/login')
-        })
-      }
       if (!nextProps.isNewFetching) {
           this.startPoll();
       }
@@ -242,7 +220,35 @@ class Full extends Component {
 
   startPoll() {
     const { dispatch } = this.props
-    this.timeout = setTimeout(() => dispatch(fetchNewNotifications(this.props.loggedUser.uid)), 30000);
+    this.timeout = setTimeout(() => {
+      if (localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
+        dispatch(isValidToken(localStorage.getItem('token')))
+        .then(ok=>{
+          if(!ok){
+            this.setState({
+              authed: false,
+              loading: false
+            })
+            logout();
+            /* this.props.history.push('/login') */
+            window.location.reload()
+          }else{
+            dispatch(fetchNewNotifications(this.props.loggedUser.uid))
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+          this.setState({
+            authed: false,
+            loading: false
+          })
+          logout();
+            window.location.reload()
+            /* this.props.history.push('/login') */
+        })
+      }
+    }, 30000);
   }
 
   componentDidMount() {
@@ -739,7 +745,7 @@ class Full extends Component {
       </div>
       }
     <form id="supset_open" target="open_supset" action={serviceurl.urlSupersetOpen +'/managed/bi-open-login'} method="POST">
-      <input name="Authorization" type="text" value={"Bearer "+localStorage.getItem('token')} hidden/>
+      <input name="Authorization" type="text" value={"Bearer "+localStorage.getItem('token')} readOnly hidden/>
     </form>
     <iframe name="open_supset" hidden/>
     </div>
