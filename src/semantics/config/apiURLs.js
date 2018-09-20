@@ -19,7 +19,7 @@ export const jsonRequest = {
   cache: "no-cache"
 };
 
-export const validationFormRequest = formData => ({
+/* export const validationFormRequest = formData => ({
   method: "POST",
   body: formData
-});
+}); */

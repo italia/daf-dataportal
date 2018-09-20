@@ -1,4 +1,4 @@
-import { apiURLs, jsonRequest, validationFormRequest } from '../config/apiURLs'
+import { apiURLs, jsonRequest } from '../config/apiURLs'
 
 const requestValidatorsListPending = response => ({
   type: 'REQUEST_VALIDATORS_LIST_PENDING'
@@ -41,10 +41,12 @@ export const requestValidatorsList = () => dispatch =>
 export const requestServerValidation = formData => dispatch =>
   new Promise(() => dispatch(requestServerValidationPending())).then(
     fetch(
-      `${apiURLs.semanticValidator}/validate`,
-      validationFormRequest(formData)
-    )
-      .then(
+      `${apiURLs.semanticValidator}/validate`,{
+      method: "POST",
+      body: formData
+      }
+      //validationFormRequest(formData)
+    ).then(
         response =>
           response.ok
             ? response
