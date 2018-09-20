@@ -23,17 +23,31 @@ class DatasetList extends Component {
         let defaultOrder = 'desc'
         if(window.location.hash.indexOf('search')!==-1)
           defaultOrder = 'score'
-        
+
+        var order =  props.filterInt&&props.filterInt.order?props.filterInt.order:defaultOrder 
+        var filter = props.filterInt?props.filterInt:{'da':'',
+                                                        'a':'',
+                                                        'order': defaultOrder,
+                                                        'elements': []}
+        var totalResults = 0
+        if(props.results && props.results.length>0){
+            Object.keys(JSON.parse(props.results[props.results.length-4].source)).map((tipo, index) =>{
+                var tipi=JSON.parse(props.results[props.results.length-4].source)
+                totalResults += parseInt(tipi[tipo])
+            })            
+        }
+
+        var ownerCheck = false
+        if(props.filter && props.loggedUser){
+            ownerCheck = props.filter.owner===props.loggedUser.uid
+        }
         this.state = {
-            order_filter: defaultOrder,
-            category_filter: props.history.location.state && props.history.location.state.category_filter,
+            order_filter: order,
+            /* category_filter: props.history.location.state && props.history.location.state.category_filter,
             group_filter: props.history.location.state && props.history.location.state.group_filter,
-            organization_filter: props.history.location.state && props.history.location.state.organization_filter,
+            organization_filter: props.history.location.state && props.history.location.state.organization_filter, */
             query: props.history.location.state && props.history.location.state.query,
-            filter:{'da':'',
-                    'a':'',
-                    'order': defaultOrder,
-                    'elements': []},
+            filter:filter,
             selectedOrg: '',
             selectedCat: '',
             showDivTipo: false,
@@ -42,12 +56,12 @@ class DatasetList extends Component {
             showDivOrganizzazione: false,
             showDivVisibilita: false,
             showDivSearch: false,
-            mieiContenutichecked: false,
+            mieiContenutichecked: ownerCheck,
             showDivDataset: [],
             startDate: undefined,
             endDate: undefined,
             items: 20,
-            totalResults: 0
+            totalResults: totalResults
         }
 
         
@@ -104,7 +118,7 @@ class DatasetList extends Component {
             'owner': this.state.mieiContenutichecked?loggedUser.uid:''
         }
 
-        dispatch(search(query, filter, isPublic()))
+        dispatch(search(query, filter, isPublic(), this.state.filter))
         .catch((error) => {
         this.setState({
           mieiContenutichecked: false,
@@ -126,6 +140,9 @@ class DatasetList extends Component {
         else{
             orderFilter = this.state.filter.order
         }
+        
+        var filterInt = this.state.filter
+        filterInt.order = orderFilter
 
         var dataset = window.location.hash.indexOf('dataset')!==-1
         var org = []
@@ -168,9 +185,9 @@ class DatasetList extends Component {
         if(dataset){
             if(filter.index.length===0)
               filter.index = ['catalog_test', 'ext_opendata']
-            dispatch(search('', filter, isPublic()))
+            dispatch(search('', filter, isPublic(), filterInt))
         }else{
-            dispatch(search(query, filter, isPublic()))
+            dispatch(search(query, filter, isPublic(), filterInt))
             .catch((error) => {
                 this.setState({
                     isFetching: false
@@ -481,7 +498,7 @@ class DatasetList extends Component {
 
  
     render() {
-        const { results, isFetching, properties, loggedUser } = this.props
+        const { results, isFetching, properties, loggedUser, filter } = this.props
         
         const queryString = require('query-string');
         var search = queryString.parse(this.props.location.search).q
@@ -1058,9 +1075,9 @@ DatasetList.propTypes = {
 
 function mapStateToProps(state) {
     const { loggedUser } = state.userReducer['obj'] || { }
-    const { isFetching, results, query, filter } = state.searchReducer['search'] || { isFetching: false, results: [] }
+    const { isFetching, results, query, filter, filterInt } = state.searchReducer['search'] || { isFetching: false, results: [] }
     const { properties } = state.propertiesReducer['prop'] || {}
-    return { isFetching, results, query, filter, properties, loggedUser }
+    return { isFetching, results, query, filter, filterInt, properties, loggedUser }
 }
 
 export default connect(mapStateToProps)(DatasetList)

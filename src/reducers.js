@@ -233,7 +233,7 @@ function searchReducer(state = {}, action) {
     case REQUEST_SEARCH:
       return Object.assign({}, state, { 'search': { 'isFetching': true, 'results': undefined } })
     case RECEIVE_SEARCH:
-      return Object.assign({}, state, { 'search': { 'isFetching': action.isFetching, 'results': action.results, 'query': action.query, 'filter': action.filter } })
+      return Object.assign({}, state, { 'search': { 'isFetching': action.isFetching, 'results': action.results, 'query': action.query, 'filter': action.filter, 'filterInt': action.filterInt } })
     default:
       return state
   }

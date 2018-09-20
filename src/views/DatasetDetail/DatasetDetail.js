@@ -629,7 +629,7 @@ class DatasetDetail extends Component {
                                                                     </tr>
                                                                     <tr>
                                                                         <th className="bg-white" style={{ width: "192px" }}><strong>API di Upload: </strong></th>
-                                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_push[0].url}>{this.truncate(dataset.operational.input_src.srv_push[0].url, 30)}
+                                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_push[0].url}>{this.truncate(dataset.operational.input_src.srv_push[0].url, 60)}
                                                                             <CopyToClipboard text={dataset.operational.input_src.srv_push[0].url}>
                                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
                                                                             </CopyToClipboard>
