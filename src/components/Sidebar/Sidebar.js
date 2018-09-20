@@ -213,9 +213,6 @@ class Sidebar extends Component {
                 </ul>
               </li>
 
-              <li className="nav-title text-secondary">
-                INFO
-              </li>
               <li className="nav-item nav-dropdown b-r-1">
                 <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-sitemap fa-lg text-secondary"></i> Semantica</a>
                 <ul className="nav-dropdown-items bg-light">
@@ -231,7 +228,17 @@ class Sidebar extends Component {
                   }}>
                     <NavLink to={'/private/vocabularies'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-book fa-lg text-secondary" /> Vocabolari</NavLink>
                   </li>
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <NavLink to={'/private/validator'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-clipboard-check fa-lg text-secondary" /> Validatore</NavLink>
+                  </li>
                 </ul>
+              </li>
+
+              <li className="nav-title text-secondary">
+                INFO
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
@@ -239,6 +246,7 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'#'} onClick={() => window.open('http://daf-dataportal.readthedocs.io/it/latest/')} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-info text-secondary"></i> Documentazione</NavLink>
               </li>
+
               {/* <li className={this.activeRoute("/icons")}>
                 <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
                 <ul className="nav-dropdown-items">
@@ -256,7 +264,7 @@ class Sidebar extends Component {
                   </li>
                 </ul>
               </li>
-          
+
               <li className="nav-title">
                 Strumenti
               </li>
@@ -279,13 +287,14 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-graph"></i> Crea Dashboard</NavLink>
               </li>
-                  
+
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
                 <NavLink to={'/userstory/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li> */}
+
               {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) && <div>
               <li className="nav-title text-secondary">
                 Amministrazione
