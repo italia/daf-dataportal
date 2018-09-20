@@ -71,7 +71,8 @@ export const serviceurl = {
     urlSuperset: 'https://bi.dataportal.daf.teamdigitale.it',
     urlJupiter: 'https://datascience.daf.teamdigitale.it',
     urlCkan: "https://ckan-geo.daf.teamdigitale.it/", 
-    urlKatalod: "https://api.daf.teamdigitale.it/daf-semantic-katalod",
+    urlKatalod: "https://api.daf.teamdigitale.it/daf-semantic-katalod/kb/api/v1",
+    urlSemanticValidator: "https://api.daf.teamdigitale.it/daf-semantic-validator/validator",
     urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
     domain: ".daf.teamdigitale.it"
 

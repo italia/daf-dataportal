@@ -121,6 +121,7 @@ class App extends Component {
             <Route path="/private/ontologies/:filter" name="Ontology" component={Full} />
             <Route path="/private/vocabularies" name="Vocabularies" exact component={Full} />
             <Route path="/private/vocabularies/:filter" name="Vocabulary" component={Full} />
+            <Route path="/private/validator" name="Validator" exact component={Full} />
             <Route exact path="/private/dataset" name="Dataset" component={Full} />
             <Route exact path="/private/dataset_old" name="Dataset" component={Full} />
             {<Route exact path="/private/search" name="Search" component={Full} />}

@@ -41,6 +41,7 @@ import Vocabularies from '../../semantics/containers/Vocabularies.js'
 import Vocabulary from '../../semantics/containers/Vocabulary.js'
 import Ontologies from '../../semantics/containers/Ontologies.js'
 import Ontology from '../../semantics/containers/Ontology.js'
+import Validator from '../../semantics/containers/Validator.js'
 
 const publicVapidKey = 'BI28-LsMRvryKklb9uk84wCwzfyiCYtb8cTrIgkXtP3EYlnwq7jPzOyhda1OdyCd1jqvrJZU06xHSWSxV1eZ_0o';
 
@@ -707,10 +708,10 @@ class Full extends Component {
           </form>
         </Modal>}
 
-
         <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>
+
         <div className="app-body">
-          {loggedUser && <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>}
+          {loggedUser && <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash} />}
           <main className={"main mr-0 "+mainDiv}>
             {this.state.open && <SearchBar history={history} open={this.state.open}/>}
             <Breadcrumb />
@@ -723,13 +724,14 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies/:filter" name="Ontology" component={Ontology} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies" name="Vocabularies" exact component={Vocabularies} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies/:filter" name="Vocabulary" component={Vocabulary} />
+                <PrivateRoute authed={this.state.authed} path="/private/validator" name="Validator" exact component={Validator} />
                 <PrivateRoute authed={this.state.authed} path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
                 <PrivateRoute authed={this.state.authed} path="/private/notifications" name="Notification Center" component={Notifications} />
                 <PrivateRoute authed={this.state.authed} path="/private/userstory" name="User Story" component={UserStory} />
                 <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} />
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset_old" name="Dataset" component={Dataset} />}
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset" name="Dataset" component={DatasetList} />}
-                {<PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />} 
+                {<PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />}
                 <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/settings" name="Settings" component={Settings} />
@@ -759,7 +761,7 @@ Full.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }   
+  const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }
   const { notifications, isFetching, isNewFetching, newNotifications } = state.notificationsReducer['notifications'] || {}
   return { loggedUser, notifications, isFetching, newNotifications, isNewFetching }
 }
