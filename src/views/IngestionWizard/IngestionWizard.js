@@ -56,13 +56,20 @@ hideModalAndRedirect = (e) => {
   this.props.history.push('/private/home')
 };
 
-  /*  showResults = values =>{
-    const transformed = transformer(values)
-    console.log(transformed)
-    toastr.success('Complimenti', 'Il caricamento dei metadati è avvenuto con successo')
+ /*   showResults = values =>{
+    this.setState({
+      saving: true
+    })
+    setTimeout(() => {
+      const transformed = transformer(values)
+      console.log(transformed)
+      toastr.success('Complimenti', 'Il caricamento dei metadati è avvenuto con successo')
+      this.setState({saving: false})
+      
+    }, 1000);
   }  */
 
-     showResults = values =>{
+      showResults = values =>{
       this.setState({
         saving: true
       })
@@ -116,7 +123,7 @@ hideModalAndRedirect = (e) => {
           console.log('token non presente');
           this.setState({saving: false})
         }
-      } 
+      }  
 
 
   render() {

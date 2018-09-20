@@ -12,7 +12,7 @@ import {
 } from 'react-modal-bootstrap';
 import { setCookie, setSupersetCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
-import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications } from './../../actions.js'
+import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications, search, getSupersetUrl, datasetDetail } from './../../actions.js'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -46,11 +46,11 @@ import Validator from '../../semantics/containers/Validator.js'
 const publicVapidKey = 'BI28-LsMRvryKklb9uk84wCwzfyiCYtb8cTrIgkXtP3EYlnwq7jPzOyhda1OdyCd1jqvrJZU06xHSWSxV1eZ_0o';
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
+  console.log('rest: ' + rest)
   return (
-    <Route
-      {...rest}
+    <Route {...rest}
       render={(props) => authed === true
-        ? <Component {...props} />
+        ? <Component {...props} {...rest}/>
         : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
     />
   )
@@ -61,7 +61,7 @@ function PrivateRouteAdmin({ component: Component, authed, loggedUser, ...rest }
     <Route
       {...rest}
       render={(props) => (authed === true && (isAdmin(loggedUser) || isSysAdmin(loggedUser)))
-        ? <Component {...props} />
+        ? <Component {...props} {...rest} />
         : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
     />
   )
@@ -72,7 +72,7 @@ function PrivateRouteEditor({ component: Component, authed, loggedUser, ...rest 
     <Route
       {...rest}
       render={(props) => (authed === true && (isAdmin(loggedUser) || isEditor(loggedUser)))
-        ? <Component {...props} />
+        ? <Component {...props} {...rest}/>
         : <Redirect to={{ pathname: '/private/home', state: { from: props.location } }} />}
     />
   )
@@ -83,7 +83,7 @@ function PublicRoute({ component: Component, authed, ...rest }) {
     <Route
       {...rest}
       render={(props) => authed === false
-        ? <Component {...props} />
+        ? <Component {...props} {...rest} />
         : <Redirect to='/home' />}
     />
   )
@@ -177,24 +177,35 @@ class Full extends Component {
       open: false,
       isOpenStory: false,
       isOpenDash: false,
+      isOpenWidget: false,
       pvtStory: '0',
       orgStory: '',
       pvtDash: '0',
       orgDash: '',
+      widgetOrg: '',
+      pvtWidget: '0',
+      widgetTool: '0',
+      widgetDataset: '',
       validationMSg: 'Campo obbligatorio',
       validationMSgOrg: 'Campo obbligatorio',
+      errorMSgTable: false,
       authed: false,
       loading: true,
-      iframe: ''
+      iframe: '',
+      datasets: []
     }
 
     this.openSearch = this.openSearch.bind(this)
     this.openModalStory = this.openModalStory.bind(this)
     this.hideModalStory = this.hideModalStory.bind(this)
+    this.openModalWidget = this.openModalWidget.bind(this)
+    this.hideModalWidget = this.hideModalWidget.bind(this)
     this.handleSaveStory = this.handleSaveStory.bind(this)
     this.openModalDash = this.openModalDash.bind(this)
+    this.openModalWidget = this.openModalWidget.bind(this)
     this.hideModalDash = this.hideModalDash.bind(this)
     this.handleSaveDash = this.handleSaveDash.bind(this)
+    this.handleSaveWidget = this.handleSaveWidget.bind(this)
     this.startPoll = this.startPoll.bind(this)
   }
 
@@ -360,11 +371,62 @@ class Full extends Component {
     this.validateStory(e);
   }
 
+  onPvtChangeWidget(e, value){
+    this.setState({
+        pvtWidget: value,
+        widgetOrg: '',
+        errorMSgTable:false
+    });
+    this.widgetOrg.value=''
+    this.validateWidget(e);
+  }
+
+  onChangeWidgetTool(e, value){
+    this.setState({
+        widgetTool: value,
+        errorMSgTable:false
+
+    });
+    this.validateWidget(e);
+  }
+
   onOrganizationChangeStory(e, value){
     this.setState({
       orgStory: value
     });
     this.validateStory(e);
+  }
+
+  onOrganizationChangeWidget(e, value){
+    const { dispatch } = this.props
+    this.setState({
+      errorMSgTable:false
+    });
+    var index = []
+    if(this.state.pvtWidget==='1')
+      index = ['catalog_test']
+    else
+      index = ['ext_opendata']
+    let filter = {
+        'text': "",
+        'index': index,
+        'org': [value],
+        'theme':[],
+        'date': "",
+        'status': [],
+        'order': "desc"
+    }
+    //let filter = {'text':'','index':index,'org':[org],'theme':[],'date':'','status':[],'order':'desc'}
+    dispatch(search('', filter, false, filter))    
+    .then(response => {
+      this.setState({
+        widgetOrg: value,
+        widgetDataset: ''
+      }
+    )
+    })
+    .catch(error=>{console.log('Errore nel caricamento dei dataset: ' + error)})
+    this.validateWidget(e);
   }
 
   onPvtChangeDash(e, value){
@@ -379,6 +441,48 @@ class Full extends Component {
       orgDash: value
     });
     this.validateDash(e);
+  }
+
+  onDatasetChangeWidget(e, value){
+    this.setState({
+      widgetDataset: value,
+      errorMSgTable:false
+    });
+    this.validateWidget(e);
+  }
+  
+
+  validateWidget = (e) => {
+    e.preventDefault()
+/*     if(!this.titleWidget.value){
+      this.setState({
+        validationMSg: 'Campo obbligatorio'
+      });
+    }else{
+      this.setState({
+        validationMSg: null
+      });
+    } */
+
+     if(!this.widgetDataset || this.widgetDataset.value == ''){
+      this.setState({
+        validationMSgDataset: 'Campo obbligatorio'
+      });
+    }else{
+      this.setState({
+        validationMSgDataset: null
+      });
+    }
+
+    if(!this.widgetOrg || this.widgetOrg.value == ''){
+      this.setState({
+        validationMSgOrgWidget: 'Campo obbligatorio'
+      });
+    }else{
+      this.setState({
+        validationMSgOrgWidget: null
+      });
+    }
   }
 
   validateStory = (e) => {
@@ -447,6 +551,41 @@ class Full extends Component {
     });
   };
 
+  openModalWidget = () => {
+    //this.titleWidget.value = ''
+    this.pvtWidget.value = 0
+    this.widgetTool.value = 0
+    this.widgetOrg.value=''
+    //this.widgetDataset.value=''
+
+    this.setState({
+      //titleWidget:'',
+      pvtWidget:0,
+      widgetTool:0,
+      widgetOrg:'',
+      validationMSgDataset: 'Campo obbligatorio',
+      validationMSg: 'Campo obbligatorio',
+      validationMSgOrgWidget: 'Campo obbligatorio',
+      errorMSgTable:false,
+      isOpenWidget: true
+    });
+  };
+  
+  hideModalWidget = () => {
+    this.setState({
+      isOpenWidget: false
+    });
+  };
+
+  hideModalWidgetAndRedirect = () => {
+    const { dispatch } = this.props
+    this.setState({
+      isOpenWidget: false
+    });
+    this.props.history.push('/private/dataset/'+this.state.widgetDataset)
+    dispatch(datasetDetail(this.state.widgetDataset,'', false))
+  };
+
   openModalDash = () => {
     this.setState({
       isOpenDash: true
@@ -505,9 +644,28 @@ class Full extends Component {
           validationMSg: 'Campo obbligatorio'
         });
     }
-
   }
 
+  handleSaveWidget = (e) => {
+    this.setState({
+      errorMSgTable:false
+    });
+    e.preventDefault()
+    console.log('handleSaveWidget')
+    const { dispatch } = this.props
+    dispatch(getSupersetUrl(widgetDataset.value, widgetOrg.value, !pvtWidget))
+    .then(json => {
+      if(json.length>0){
+        let tableId = json[0].id
+        window.open(serviceurl.urlSuperset + '/superset/explore/table/' + tableId)
+      } else {
+        this.setState({
+          errorMSgTable:true
+        });
+      }
+    })
+  }
+  
   handleSaveDash = (e) => {
     e.preventDefault()
 
@@ -548,7 +706,7 @@ class Full extends Component {
   }
 
   render() {
-    const { history, loggedUser } = this.props
+    const { history, loggedUser, results } = this.props
 /*     const divStyle = {
       'paddingLeft': '10px',
       'paddingRigth': '0px',
@@ -708,10 +866,112 @@ class Full extends Component {
           </form>
         </Modal>}
 
-        <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash}/>
+        {/* Modal per creazione nuovo Widget */}
 
+        {loggedUser && <Modal isOpen={this.state.isOpenWidget} onRequestHide={this.hideModalWidget}>
+          <form>
+            <ModalHeader>
+              <ModalTitle>Crea un Widget</ModalTitle>
+              <ModalClose onClick={this.hideModalWidget}/>
+            </ModalHeader>
+            <ModalBody>
+            <div className="form-group">
+{/*                 <div className="form-group row">
+                  <label className="col-md-2 form-control-label">Titolo</label>
+                  <div className="col-md-8">
+                    <input type="text" className="form-control" ref={(titleWidget) => this.titleWidget = titleWidget} onChange={this.validateWidget.bind(this)} id="titleWidget" placeholder="Titolo"/>
+                    {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
+                  </div>
+                </div> */}
+                <div className="form-group row">
+                  <label className="col-md-2 form-control-label">Strumento</label>
+                  <div className="col-md-8">
+                    <select className="form-control" ref={(widgetTool) => this.widgetTool = widgetTool} onChange={(e) => this.onChangeWidgetTool(e, e.target.value)} id="widgetTool" >
+                      <option value="0" defaultValue key="0">Superset</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-md-2 form-control-label">Dataset Privato</label>
+                  <div className="col-md-8">
+                  {loggedUser.organizations && loggedUser.organizations.length > 0 ?
+                    <select className="form-control" ref={(pvtWidget) => this.pvtWidget = pvtWidget} onChange={(e) => this.onPvtChangeWidget(e, e.target.value)} id="pvtWidget" >
+                      <option value="0" defaultValue key="0">No</option>
+                      <option value="1" key='1'>Si</option>
+                    </select>
+                    :
+                    <div>
+                      <select className="form-control" ref={(pvtWidget) => this.pvtWidget = pvtWidget} onChange={(e) => this.onPvtChangeWidget(e, e.target.value)} id="pvtWidget" >
+                        <option value="0" defaultValue key="0">No</option>
+                      </select>
+                      <span>Puoi creare soltanto widget con dataset pubblici in quanto non hai nessuna organizzazione associata</span>
+                    </div>
+                  }
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-md-2 form-control-label">Organizzazione</label>
+                  <div className="col-md-8">
+                    <select className="form-control" ref={(widgetOrg) => this.widgetOrg = widgetOrg} onChange={(e) => this.onOrganizationChangeWidget(e, e.target.value)} id="widgetOrg" >
+                        <option value=""  key='widgetOrg' defaultValue></option>
+                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
+                            return (<option value={organization} key={organization}>{organization}</option>)
+                        })
+                        }
+                    </select>
+                    {this.state.validationMSgOrgWidget && <span>{this.state.validationMSgOrgWidget}</span>}
+                  </div>
+                </div>
+                {this.state.widgetOrg && this.state.widgetOrg!='' &&
+                <div className="form-group row">
+                  <label className="col-md-2 form-control-label">Dataset</label>
+                  {results && results.length>4?
+                    <div className="col-md-8">
+                      <select className="form-control" ref={(widgetDataset) => this.widgetDataset = widgetDataset} onChange={(e) => this.onDatasetChangeWidget(e, e.target.value)} id="widgetDataset" >
+                          <option value=""  key='widgetDataset' defaultValue></option>
+                          {results.map(result => {
+                              if(result.type=='catalog_test'){
+                                var source = JSON.parse(result.source)
+                                return (<option value={source.dcatapit.name} key={source.dcatapit.name}>{source.dcatapit.name}</option>)
+                              }else if(result.type=='ext_opendata'){
+                                var source = JSON.parse(result.source)
+                                return (<option value={source.name} key={source.name}>{source.name}</option>)
+                              }
+                          })
+                          }
+                      </select>
+                      {this.state.validationMSgDataset && <span>{this.state.validationMSgDataset}</span>}
+                    </div>
+                    :
+                    <div className="col-md-8">
+                      <span className="text-danger">Non è stato trovato nessun dataset per i criteri selezionati.</span>
+                    </div>
+                    }
+                </div>
+                }
+                <div className="form-group row">
+                    <label className="col-md-2 form-control-label"></label>
+                    <div className="col-md-8">
+                      {this.state.errorMSgTable && <span className="text-danger">Non è possibile creare un widget con il dataset selezionato. Clicca  <button type="button" className='btn btn-link px-0 btn-lg' onClick={this.hideModalWidgetAndRedirect}>qui</button> per verificare che sia stato caricato e condiviso all'interno dell'organizzazione selezionata.</span>}
+                    </div>
+                </div>
+            </div>
+            </ModalBody>
+            <ModalFooter>
+              <button type="button" className='btn btn-gray-200' onClick={this.hideModalWidget}>
+                Chiudi
+              </button>
+              <button type="button" className="btn btn-primary px-2" disabled={!(this.state.widgetDataset && this.state.widgetDataset!='')} onClick={this.handleSaveWidget.bind(this)}>
+                <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  Crea
+              </button>
+            </ModalFooter>
+          </form>
+        </Modal>}
+
+        <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash} openModalWidget={this.openModalWidget} />
         <div className="app-body">
-          {loggedUser && <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash} />}
+          {loggedUser && <Sidebar {...this.props} openModalStory={this.openModalStory} openModalDash={this.openModalDash} openModalWidget={this.openModalWidget} />}
           <main className={"main mr-0 "+mainDiv}>
             {this.state.open && <SearchBar history={history} open={this.state.open}/>}
             <Breadcrumb />
@@ -728,7 +988,7 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} path="/private/dashboard" name="Dashboard manager" component={DashboardManager} />
                 <PrivateRoute authed={this.state.authed} path="/private/notifications" name="Notification Center" component={Notifications} />
                 <PrivateRoute authed={this.state.authed} path="/private/userstory" name="User Story" component={UserStory} />
-                <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} />
+                <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} openModalWidget={this.openModalWidget} />
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset_old" name="Dataset" component={Dataset} />}
                 {<PrivateRoute authed={this.state.authed} exact path="/private/dataset" name="Dataset" component={DatasetList} />}
                 {<PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />}
@@ -763,7 +1023,8 @@ Full.propTypes = {
 function mapStateToProps(state) {
   const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }
   const { notifications, isFetching, isNewFetching, newNotifications } = state.notificationsReducer['notifications'] || {}
-  return { loggedUser, notifications, isFetching, newNotifications, isNewFetching }
+  const { results } = state.searchReducer['search'] || { isFetching: false, results: [] }
+  return { loggedUser, notifications, isFetching, newNotifications, isNewFetching, results }
 }
 
 export default connect(mapStateToProps)(Full);

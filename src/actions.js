@@ -179,12 +179,13 @@ function receiveSearchError(query) {
   }
 }
 
-function receiveSearch(json, query, filter) { 
+function receiveSearch(json, query, filter, filterInt) { 
   return {
     type: RECEIVE_SEARCH,
     results: json,
     query: query,
     filter: filter,
+    filterInt: filterInt,
     receivedAt: Date.now(),
     ope: 'RECEIVE_SEARCH',
     isFetching: false
@@ -981,7 +982,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
   }
 
-  export function search(query, filter, isPublic) {
+  export function search(query, filter, isPublic, filterInt) {
     var url = serviceurl.apiURLDatiGov + (isPublic?'/public':'')+'/elasticsearch/search'
     return dispatch => {
       dispatch(requestSearch())
@@ -996,7 +997,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       })
       .then(response => {
           if(response.ok)
-              response.json().then(json => dispatch(receiveSearch(json, query, filter)))
+              response.json().then(json => dispatch(receiveSearch(json, query, filter, filterInt)))
           else dispatch(receiveSearchError(query))
       }).catch(error => console.log('Errore durante la ricerca'))
     }
@@ -1125,6 +1126,12 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
     var token = '';
     var name = isExtOpendata ? nomeDataset :  org + '_o_' + nomeDataset;
     var url = serviceurl.apiURLDatiGov + '/superset/table/' + name
+
+    /*     if(!isExtOpendata)
+      var url = serviceurl.urlSuperset + '/tablemodelview/api/readvalues?_flt_3_table_name=' + org + '_o_' + nomeDataset
+    else
+      var url = serviceurl.urlSupersetOpen + '/tablemodelview/api/readvalues?_flt_3_table_name=' + nomeDataset */
+
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
         token = localStorage.getItem('token')
