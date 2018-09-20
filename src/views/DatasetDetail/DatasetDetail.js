@@ -454,29 +454,32 @@ class DatasetDetail extends Component {
                                 name="hdfs_file"
                                 className="dropzone w-100 position-relative"
                                 multiple={false}
-                                maxSize={10485760}
+                                maxSize={102400000}
                                 onDrop={(filesToUpload, e) => {
                                     filesToUpload.forEach(file => {
-                                        console.log(file)
-                                        const reader = new FileReader();
-                                        reader.readAsText(file);
-                                        reader.onload = () => {
-                                            const fileAsBinaryString = reader.result;
-                                            this.setState({
-                                                file: fileAsBinaryString
-                                            })
-                                            // do whatever you want with the file content
-                                        };
-/*                         this.fileToBase64(filesToUpload[0])
-  */                      this.setState({
-                                            fileName: file.name
-                                        })
+                                      console.log(file)
+                                      const reader = new FileReader();
+                                      reader.readAsText(file);
+                                      reader.onload = () => {
+                                          const fileAsBinaryString = reader.result;
+                                          this.setState({
+                                              file: fileAsBinaryString
+                                          })
+                                          // do whatever you want with the file content
+                                      };
+                                      this.setState({
+                                        fileName: file.name
+                                      })
                                     })
-                                }}
-                            >
-                                <div style={{ position: 'absolute', top: '50%', bottom: '50%', left: '0', right: '0' }}>
+                                  }}
+                                  onDropRejected={()=>{
+                                    toastr.error("Errore", "Il file selezionato è troppo grande, seleziona un file di massimo 100MB")
+                                  }}
+                                >
+                                <div style={{ position: 'absolute', top: '35%', bottom: '35%', left: '0', right: '0' }}>
                                     <div className="text-center">
                                         <h5 className="font-weight-bold">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</h5>
+                                        <h5 className="font-weight-bold">Dimensione massima 100MB</h5>
                                     </div>
                                 </div>
                             </Dropzone>}
@@ -702,7 +705,7 @@ class DatasetDetail extends Component {
                                                             }
                                                         </div>
                                                         :
-                                                        <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso.</p>
+                                                        <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso. Verifica che il dataset sia stato condiviso almeno con una tua organizzazione o workgroup</p>
                                                     }
                                                 </div>
                                             }
