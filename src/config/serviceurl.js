@@ -20,24 +20,23 @@ export const serviceurl = {
     domain: process.env.DOMAIN */
 
     // TEST   
-/*     apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
-    urlSupersetOpen: 'https://api.open.daf.teamdigitale.test/sso-manager',
-    apiURLDatiGov: "https://api.daf.teamdigitale.test/dati-gov/v1", 
-    apiURLCatalog: "https://api.daf.teamdigitale.test/catalog-manager/v1",
-    apiURLSecurity : "https://api.daf.teamdigitale.test/security-manager/v1",
-    apiURLDataset : "https://api.daf.teamdigitale.test/dataset-manager/v1",
-    apiURLHdfs: "https://api.daf.teamdigitale.test/hdfs/proxy",
-    apiCKAN: "https://api.daf.teamdigitale.test/dati-gov/ckan_proxy",
-    apiMedium: "https://api.daf.teamdigitale.test/dati-gov/medium", 
-    urlSemantic: "https://api.daf.teamdigitale.test/stanbol/ontonethub/ontologies/find",
-    urlMetabase: 'https://graph.daf.teamdigitale.test',
-    urlSuperset: 'https://bi.dataportal.daf.teamdigitale.test',
-    urlSupersetOpen: 'https://bi.open.daf.teamdigitale.test',
-    urlJupiter: 'https://datascience.daf.teamdigitale.test',
-    urlCkan: "https://ckan-geo.daf.teamdigitale.test/", 
-    urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
-    urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
-    domain: ".daf.teamdigitale.test" */
+    // apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
+    // urlSupersetOpen: 'https://api.open.daf.teamdigitale.test/sso-manager',
+    // apiURLDatiGov: "https://api.daf.teamdigitale.test/dati-gov/v1", 
+    // apiURLCatalog: "https://api.daf.teamdigitale.test/catalog-manager/v1",
+    // apiURLSecurity : "https://api.daf.teamdigitale.test/security-manager/v1",
+    // apiURLDataset : "https://api.daf.teamdigitale.test/dataset-manager/v1",
+    // apiURLHdfs: "https://api.daf.teamdigitale.test/hdfs/proxy",
+    // apiCKAN: "https://api.daf.teamdigitale.test/dati-gov/ckan_proxy",
+    // apiMedium: "https://api.daf.teamdigitale.test/dati-gov/medium", 
+    // urlSemantic: "https://api.daf.teamdigitale.test/stanbol/ontonethub/ontologies/find",
+    // urlMetabase: 'https://graph.daf.teamdigitale.test',
+    // urlSuperset: 'https://bi.dataportal.daf.teamdigitale.test',
+    // urlJupiter: 'https://datascience.daf.teamdigitale.test',
+    // urlCkan: "https://ckan-geo.daf.teamdigitale.test/", 
+    // urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
+    // urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
+    // domain: ".daf.teamdigitale.test"
 
     // PROD   
     apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",

@@ -378,7 +378,7 @@ class DatasetDetail extends Component {
 
     renderPreview(dataset, jsonPreview){
       if(jsonPreview){
-        if(dataset.operational.file_type==="csv"){
+        if(dataset.operational.file_type==="csv" || dataset.operational.input_src.sftp[0].param.indexOf('csv')>-1){
           var columns=[{
             Header: dataset.dcatapit.name,
             columns: []
@@ -454,29 +454,32 @@ class DatasetDetail extends Component {
                                 name="hdfs_file"
                                 className="dropzone w-100 position-relative"
                                 multiple={false}
-                                maxSize={10485760}
+                                maxSize={102400000}
                                 onDrop={(filesToUpload, e) => {
                                     filesToUpload.forEach(file => {
-                                        console.log(file)
-                                        const reader = new FileReader();
-                                        reader.readAsText(file);
-                                        reader.onload = () => {
-                                            const fileAsBinaryString = reader.result;
-                                            this.setState({
-                                                file: fileAsBinaryString
-                                            })
-                                            // do whatever you want with the file content
-                                        };
-/*                         this.fileToBase64(filesToUpload[0])
-  */                      this.setState({
-                                            fileName: file.name
-                                        })
+                                      console.log(file)
+                                      const reader = new FileReader();
+                                      reader.readAsText(file);
+                                      reader.onload = () => {
+                                          const fileAsBinaryString = reader.result;
+                                          this.setState({
+                                              file: fileAsBinaryString
+                                          })
+                                          // do whatever you want with the file content
+                                      };
+                                      this.setState({
+                                        fileName: file.name
+                                      })
                                     })
-                                }}
-                            >
-                                <div style={{ position: 'absolute', top: '50%', bottom: '50%', left: '0', right: '0' }}>
+                                  }}
+                                  onDropRejected={()=>{
+                                    toastr.error("Errore", "Il file selezionato è troppo grande, seleziona un file di massimo 100MB")
+                                  }}
+                                >
+                                <div style={{ position: 'absolute', top: '35%', bottom: '35%', left: '0', right: '0' }}>
                                     <div className="text-center">
                                         <h5 className="font-weight-bold">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</h5>
+                                        <h5 className="font-weight-bold">Dimensione massima 100MB</h5>
                                     </div>
                                 </div>
                             </Dropzone>}
@@ -502,26 +505,26 @@ class DatasetDetail extends Component {
                                     </div>
                                     <div className="col-md-2">
                                         {isPublic() && <ShareButton background="bg-white" className="mt-2" />}
-                                        {!isPublic() && <a className="btn btn-accento nav-link button-data-nav" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</a>}
+                                        {!isPublic() && <button className="btn btn-accento nav-link button-data-nav" disabled={!this.state.hasPreview} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>}
                                     </div>
                                 </div>
                             <ul className="nav b-b-0 nav-tabs w-100 pl-4" style={{ display: "inline-flex" }}>
                                 <li className="nav-item">
                                     <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showAdmin: false, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
                                 </li>
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showPreview ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handlePreview.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="text-icon fa fa-eye pr-2" /> Anteprima</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showAdmin: false, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showAdmin ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAdmin: true, showWidget: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fas fa-cogs pr-2" />Amministrazione</a>
                                 </li>}
                             </ul>
@@ -646,6 +649,9 @@ class DatasetDetail extends Component {
                                                                 </div>}
                                                         </div>
                                                     }
+                                                    {!this.state.hasPreview && 
+                                                      <p className="desc-dataset text-dark font-weight-bold mt-5">Non hai ancora effettuato un caricamento per questo dataset. Carica i dati con il metodo sopra indicato per sbloccare tutte le funzionalità offerte.</p>
+                                                    }
                                                 </div>
                                             </div>
                                             <br /><br />
@@ -658,7 +664,7 @@ class DatasetDetail extends Component {
                                         <div hidden={!this.state.showAPI} className="col-12 card-text">
                                             <div className="row desc-dataset text-dark">
                                                 <div className="col-12">
-                                                    <label>API Endpoint</label><br />
+                                                    <p>E' possibile accedere ai dati di questo Dataset utilizzando il seguente API Endpoint</p><br />
                                                     <input className='w-75' value={this.state.value} onChange={({ target: { value } }) => this.setState({ value, copied: false })} disabled='true' />
                                                     <CopyToClipboard text={this.state.value}
                                                         onCopy={() => this.setState({ copied: true })}>
@@ -699,7 +705,7 @@ class DatasetDetail extends Component {
                                                             }
                                                         </div>
                                                         :
-                                                        <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso.</p>
+                                                        <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso. Verifica che il dataset sia stato condiviso almeno con una tua organizzazione o workgroup</p>
                                                     }
                                                 </div>
                                             }
