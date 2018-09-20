@@ -10,6 +10,7 @@ const routes = {
   '/private/ingestionwizzard': 'Nuovo dataset',
   '/private/ontologies': 'Ontologie',
   '/private/vocabularies': 'Vocabolari',
+  '/private/validator': 'Validatore',
   '/private/dataset':'Dataset',
   '/private/widget' : 'Widget',
   '/private/search': 'Ricerca',
