@@ -243,7 +243,7 @@ class Login extends Component {
                         {this.state.loginMessage}
                       </div>
                     }
-
+                    <form onSubmit={this.handleSubmit.bind(this)}>  
                       <div className="input-group mb-1" style={{position: 'initial'}}>
                         <span className="input-group-text">
                           <i className="icon-user"></i>
@@ -252,7 +252,7 @@ class Login extends Component {
                           style={{position: 'initial', zIndex: 'initial'}}/>
                       </div>
                     
-                      <form onSubmit={this.handleSubmit.bind(this)}>                      
+                                          
                       <div className="input-group mb-2" style={{ position: 'initial' }}>
                         <span className="input-group-text">
                           <i className="icon-lock"></i>
@@ -260,16 +260,17 @@ class Login extends Component {
                         <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw}
                           style={{ position: 'initial', zIndex: 'initial' }}/>
                       </div>
-                      </form>
+                      
                    
                       <div className="row">
                         <div className="col-6" style={{ position: 'initial' }}>
-                          <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
+                          <input type="submit" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)} value="Login"/>
                         </div>
                         <div className="col-6 text-right" style={{ position: 'initial' }}>
                         <button type="button" className="btn btn-link px-0" onClick={() => this.props.history.push('/requestreset')}>Password dimenticata?</button>
                         </div>
                       </div>
+                    </form>
                     
                   </OverlayLoader>
                     

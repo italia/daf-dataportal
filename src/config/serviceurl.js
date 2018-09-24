@@ -33,7 +33,7 @@ export const serviceurl = {
     // urlMetabase: 'https://graph.daf.teamdigitale.test',
     // urlSuperset: 'https://bi.dataportal.daf.teamdigitale.test',
     // urlJupiter: 'https://datascience.daf.teamdigitale.test',
-    // urlCkan: "https://ckan-geo.daf.teamdigitale.test/", 
+    // urlCkan: "https://ckan-geo.daf.teamdigitale.test/dataset/", 
     // urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
     // urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
     // domain: ".daf.teamdigitale.test"
@@ -53,7 +53,7 @@ export const serviceurl = {
     urlSuperset: 'https://bi.dataportal.daf.teamdigitale.it',
     urlSupersetOpen: 'https://bi.open.daf.teamdigitale.it',
     urlJupiter: 'https://datascience.daf.teamdigitale.it',
-    urlCkan: "https://ckan-geo.daf.teamdigitale.it/", 
+    urlCkan: "https://ckan-geo.daf.teamdigitale.it/dataset/", 
     urlKatalod: "https://api.daf.teamdigitale.it/daf-semantic-katalod/kb/api/v1",
     urlSemanticValidator: "https://api.daf.teamdigitale.it/daf-semantic-validator/validator",
     urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 

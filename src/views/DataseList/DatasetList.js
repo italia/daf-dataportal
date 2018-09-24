@@ -41,6 +41,10 @@ class DatasetList extends Component {
         if(props.filter && props.loggedUser){
             ownerCheck = props.filter.owner===props.loggedUser.uid
         }
+        var sharedCheck = false
+        if(props.filter && props.filter.sharedCheck && props.filter.sharedCheck!==null){
+          sharedCheck = props.filter.sharedCheck
+        }
         this.state = {
             order_filter: order,
             /* category_filter: props.history.location.state && props.history.location.state.category_filter,
@@ -57,6 +61,7 @@ class DatasetList extends Component {
             showDivVisibilita: false,
             showDivSearch: false,
             mieiContenutichecked: ownerCheck,
+            sharedWithMeChecked: sharedCheck,
             showDivDataset: [],
             startDate: undefined,
             endDate: undefined,
@@ -84,6 +89,7 @@ class DatasetList extends Component {
         this.handleChangeOrdinamento = this.handleChangeOrdinamento.bind(this);
         this.addOrganization = this.addOrganization.bind(this)
         this.toggleMiei = this.toggleMiei.bind(this)
+        this.toggleShared = this.toggleShared.bind(this)
 
 /*         if(window.location.hash==='#/dataset'){
             this.searchAll('')
@@ -115,20 +121,22 @@ class DatasetList extends Component {
             'date': "",
             'status': [],
             'order': this.state.order_filter,
-            'owner': this.state.mieiContenutichecked?loggedUser.uid:''
+            'owner': this.state.mieiContenutichecked?loggedUser.uid:'',
+            'sharedWithMe': this.state.sharedWithMeChecked,
         }
 
         dispatch(search(query, filter, isPublic(), this.state.filter))
         .catch((error) => {
         this.setState({
           mieiContenutichecked: false,
+          sharedWithMeChecked: false,
           isFetching: false
         })
       })
     }
 
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
-    search(order, owner, lastFilter){
+    search(order, owner, lastFilter, sharedWithMe){
         const { dispatch, properties, loggedUser } = this.props
         
         const queryString = require('query-string');
@@ -157,7 +165,8 @@ class DatasetList extends Component {
             'date': this.state.filter.da && this.state.filter.a ? this.state.filter.da.locale('it').format("YYYY-MM-DD")+ ' ' +this.state.filter.a.locale('it').format("YYYY-MM-DD") : '',
             'status': [],
             'order': orderFilter,
-            'owner': owner
+            'owner': owner,
+            'sharedWithMe': sharedWithMe
         }
 
         if(!lastFilter){
@@ -324,7 +333,7 @@ class DatasetList extends Component {
       
       handleChangeOrdinamento(e) {
         const { dispatch, loggedUser } = this.props
-        const { mieiContenutichecked } = this.state
+        const { mieiContenutichecked, sharedWithMeChecked } = this.state
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search).q  
         let newFilter = Object.assign({}, this.state.filter); 
@@ -334,20 +343,26 @@ class DatasetList extends Component {
             filter: newFilter
         });
         /* dispatch(search(query, newFilter)) */
-        this.search(e.target.value, (mieiContenutichecked?loggedUser.uid:''), false);
+        this.search(e.target.value, (mieiContenutichecked?loggedUser.uid:''), false, sharedWithMeChecked);
       }
 
       toggleMiei(){
         const { loggedUser } = this.props
         this.setState({
-          mieiContenutichecked: !this.state.mieiContenutichecked
+          mieiContenutichecked: true,
+          sharedWithMeChecked: false
         })
 
-        if(!this.state.mieiContenutichecked){
-          this.search(this.state.order_filter, loggedUser.uid)
-        }else{
-          this.search(this.state.order_filter, '')
-        }
+        this.search(this.state.order_filter, loggedUser.uid, false, false)
+      }
+
+      toggleShared(){
+        this.setState({
+          sharedWithMeChecked: true,
+          mieiContenutichecked: false
+        })
+
+        this.search(this.state.order_filter, '', false, true)
       }
       
       componentWillReceiveProps(nextProps){
@@ -455,7 +470,7 @@ class DatasetList extends Component {
             filter: newFilter
         })
         if(newFilter.elements.length===0 && newFilter.a==='' && newFilter.da===''){
-            this.search(this.state.order_filter, (mieiContenutichecked?loggedUser.uid:''), true)
+            this.search(this.state.order_filter, (mieiContenutichecked?loggedUser.uid:''), true, this.state.sharedWithMeChecked)
         }
       }
 
@@ -530,12 +545,29 @@ class DatasetList extends Component {
                                 <div className="row">
                                   {window.location.hash.indexOf('dataset')!==-1 && <div className="col"><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset trovati <i>{this.state.totalResults}</i></h2></div>}
                                   {window.location.hash.indexOf('dataset')===-1 && <div className="col"><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>{search && 'Hai cercato ' }<i className="mr-1">{search?search:""}</i> trovati <i>{this.state.totalResults}</i> risultati</h2></div>}
-                                  {!isPublic() && <div className="py-2"><b className="h5 font-weight-bold mr-2">I miei contenuti</b>
+                                  {/* !isPublic() && <div className="py-2"><b className="h5 font-weight-bold mr-2">Condivisi con me</b>
+                                  <label className="switch switch-3d switch-primary mr-3">
+                                    <input type="checkbox" className="switch-input" checked={this.state.sharedWithMeChecked} onClick={this.toggleShared}/>
+                                    <span className="switch-label" title="Visualizza solo i dataset condivisi con me"></span>
+                                    <span className="switch-handle" title="Visualizza solo i dataset condivisi con me"></span>
+                                  </label></div> */}
+                                  {/* !isPublic() && <div className="py-2"><b className="h5 font-weight-bold mr-2">I miei contenuti</b>
                                   <label className="switch switch-3d switch-primary mr-3">
                                     <input type="checkbox" className="switch-input" checked={this.state.mieiContenutichecked} onClick={this.toggleMiei}/>
                                     <span className="switch-label" title="Visualizza solo i miei contenuti"></span>
                                     <span className="switch-handle" title="Visualizza solo i miei contenuti"></span>
-                                  </label></div>}
+                                  </label></div> */}
+                                  {!isPublic() && <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label className={"btn "+((!this.state.mieiContenutichecked&&!this.state.sharedWithMeChecked)?"btn-secondary":"btn-outline-filters")}>
+                                      <input type="radio" name="all" id="option1" onClick={()=>{this.setState({ sharedWithMeChecked: false, mieiContenutichecked: false}); this.search(this.state.order_filter, '', false, false)}}/> Tutti i contenuti 
+                                    </label>
+                                    <label className={"btn "+((!this.state.mieiContenutichecked&&this.state.sharedWithMeChecked)?"btn-secondary":"btn-outline-filters")}>
+                                      <input type="radio" name="mine" id="option2" onClick={this.toggleShared}/> Condivisi con me
+                                    </label>
+                                    <label className={"btn "+((this.state.mieiContenutichecked&&!this.state.sharedWithMeChecked)?"btn-secondary":"btn-outline-filters")}>
+                                      <input type="radio" name="shared" id="option3" onClick={this.toggleMiei}/> I miei contenuti
+                                    </label>
+                                  </div>}
                                 </div>  
                               </div>
                               <div className="container mb-3">
@@ -646,7 +678,7 @@ class DatasetList extends Component {
                                 })
                                 }
                                 {this.state.filter.da && this.state.filter.a && <span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key='da'>{this.state.filter.da.locale('it').format("DD/MM/YYYY")} - {this.state.filter.a.locale('it').format("DD/MM/YYYY")}<button type="button" className="btn btn-link p-0 ml-2 text-gray-600" onClick={this.removeFilterDate.bind(this)}><i className="ml-2 fa fa-times-circle"></i></button></span>}
-                                {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this, this.state.order_filter, (this.state.mieiContenutichecked?loggedUser.uid:''), false)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
+                                {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this, this.state.order_filter, (this.state.mieiContenutichecked?loggedUser.uid:''), false, this.state.sharedWithMeChecked)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
                                 </nav>
                               </div>
                             }
