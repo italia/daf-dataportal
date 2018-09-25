@@ -734,27 +734,27 @@ class DatasetDetail extends Component {
                                         </div>}
                                         {!isPublic() && (!dataset.operational.ext_opendata || dataset.operational.ext_opendata === {}) &&
                                             <div className="col-8 mb-3">
-                                                {feed.has_job && feed.job_status === 'COMPLETED' &&
+                                                {feed && feed.has_job && feed.job_status === 'COMPLETED' &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-success w-100 h-100 text-dark" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Attivo</div>
                                                     </div>
                                                 }
-                                                {feed.has_job && feed.job_status === 'STARTED' &&
+                                                {feed && feed.has_job && feed.job_status === 'STARTED' &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-warning w-75 h-100 text-dark" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">In attesa di verifica</div>
                                                     </div>
                                                 }
-                                                {feed.has_job && (feed.job_status === 'FAILED' || feed.job_status === 'ABANDONED') &&
+                                                {feed && feed.has_job && (feed.job_status === 'FAILED' || feed.job_status === 'ABANDONED') &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-danger w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Caricamento non riuscito</div>
                                                     </div>
                                                 }
-                                                {!feed.has_job && (feed.state === 'ENABLED') &&
+                                                {feed && !feed.has_job && (feed.state === 'ENABLED') &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Feed attivo in attesa di caricamento</div>
                                                     </div>
                                                 }
-                                                {!feed.has_job && (feed.state !== 'ENABLED') &&
+                                                {feed && !feed.has_job && (feed.state !== 'ENABLED') &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Feed in fase di creazione</div>
                                                     </div>

@@ -1,7 +1,7 @@
 export const serviceurl = {
     //KUBE
 /*  apiURLSSOManager: process.env.API_URL_SSO_MANAGER,
-    urlSupersetOpen: process.env.URL_SUPERSET_OPEN,
+    urlApiOpen: process.env.URL_API_OPEN,
     apiURLDatiGov: process.env.API_URL_DATI_GOV, 
     apiURLCatalog: process.env.API_URL_CATALOG,
     apiURLSecurity : process.env.API_URL_SECURITY,
@@ -21,7 +21,7 @@ export const serviceurl = {
 
     // TEST   
     // apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
-    // urlSupersetOpen: 'https://api.open.daf.teamdigitale.test/sso-manager',
+    // urlApiOpen: 'https://api.open.daf.teamdigitale.test/sso-manager',
     // apiURLDatiGov: "https://api.daf.teamdigitale.test/dati-gov/v1", 
     // apiURLCatalog: "https://api.daf.teamdigitale.test/catalog-manager/v1",
     // apiURLSecurity : "https://api.daf.teamdigitale.test/security-manager/v1",
@@ -40,7 +40,7 @@ export const serviceurl = {
 
     // PROD   
     apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
-    urlSupersetOpen: 'https://api.open.daf.teamdigitale.it/sso-manager',
+    urlApiOpen: 'https://api.open.daf.teamdigitale.it/sso-manager',
     apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
     apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
     apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
