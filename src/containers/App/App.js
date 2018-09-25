@@ -124,7 +124,7 @@ class App extends Component {
             <Route path="/private/validator" name="Validator" exact component={Full} />
             <Route exact path="/private/dataset" name="Dataset" component={Full} />
             <Route exact path="/private/dataset_old" name="Dataset" component={Full} />
-            {<Route exact path="/private/search" name="Search" component={Full} />}
+            <Route exact path="/private/search" name="Search" component={Full} />
             <Route exact path="/private/dataset/:id" name="Dataset Detail" component={Full} />
             <Route path="/private/dashboard/manager" name="Dash" component={Full} />
             <Route path="/private/dashboard/list" name="Dash" component={Full} />

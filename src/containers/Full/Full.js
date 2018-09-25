@@ -12,7 +12,7 @@ import {
 } from 'react-modal-bootstrap';
 import { setCookie, setSupersetCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
-import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications, search, getSupersetUrl, datasetDetail } from './../../actions.js'
+import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications, search, getSupersetUrl, datasetDetail, getAllOrganizations } from './../../actions.js'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -46,7 +46,7 @@ import Validator from '../../semantics/containers/Validator.js'
 const publicVapidKey = 'BI28-LsMRvryKklb9uk84wCwzfyiCYtb8cTrIgkXtP3EYlnwq7jPzOyhda1OdyCd1jqvrJZU06xHSWSxV1eZ_0o';
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
-  console.log('rest: ' + rest)
+  console.log('PrivateRoute rest: ' + rest)
   return (
     <Route {...rest}
       render={(props) => authed === true
@@ -192,7 +192,8 @@ class Full extends Component {
       authed: false,
       loading: true,
       iframe: '',
-      datasets: []
+      datasets: [],
+      allOrganizations: []
     }
 
     this.openSearch = this.openSearch.bind(this)
@@ -327,7 +328,7 @@ class Full extends Component {
                     authed: false,
                     loading: false
                   })
-                  this.props.history.push('/login')
+                  this.props.history.push('/login?' + window.location)
                 }})
               } else {
                 this.setState({
@@ -335,7 +336,7 @@ class Full extends Component {
                   loading: false
                 })
                 logout();
-                this.props.history.push('/login')
+                this.props.history.push('/login?' + window.location)
               }
             })
             .catch((error) => {
@@ -344,7 +345,7 @@ class Full extends Component {
                 loading: false
               })
               logout();
-              this.props.history.push('/login')
+              this.props.history.push('/login?' + window.location)
             })
           } else {
             this.setState({
@@ -352,11 +353,19 @@ class Full extends Component {
               loading: false
             })
             logout();
-            this.props.history.push('/login')
+            this.props.history.push('/login?' + window.location)
           }
         }
         
-      }
+    //SET ALL ORGANIZATIONS
+    dispatch(getAllOrganizations())
+      .then(json => {
+            this.setState({
+              allOrganizations: json.elem
+            })
+          }
+          )
+  }
 
   openSearch(){
     this.setState({
@@ -402,18 +411,19 @@ class Full extends Component {
     this.setState({
       errorMSgTable:false
     });
-    var index = []
+    var status = []
     if(this.state.pvtWidget==='1')
-      index = ['catalog_test']
+      status = ['0','1']
     else
-      index = ['ext_opendata']
+      status = ['2']
+
     let filter = {
         'text': "",
-        'index': index,
+        'index': ['catalog_test'],
         'org': [value],
         'theme':[],
         'date': "",
-        'status': [],
+        'status': status,
         'order': "desc"
     }
     //let filter = {'text':'','index':index,'org':[org],'theme':[],'date':'','status':[],'order':'desc'}
@@ -658,6 +668,9 @@ class Full extends Component {
       if(json.length>0){
         let tableId = json[0].id
         window.open(serviceurl.urlSuperset + '/superset/explore/table/' + tableId)
+        this.setState({
+          isOpenWidget:false
+        });
       } else {
         this.setState({
           errorMSgTable:true
@@ -707,6 +720,7 @@ class Full extends Component {
 
   render() {
     const { history, loggedUser, results } = this.props
+    const { allOrganizations } = this.state
 /*     const divStyle = {
       'paddingLeft': '10px',
       'paddingRigth': '0px',
@@ -876,13 +890,6 @@ class Full extends Component {
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
-{/*                 <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Titolo</label>
-                  <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(titleWidget) => this.titleWidget = titleWidget} onChange={this.validateWidget.bind(this)} id="titleWidget" placeholder="Titolo"/>
-                    {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
-                  </div>
-                </div> */}
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Strumento</label>
                   <div className="col-md-8">
@@ -912,6 +919,7 @@ class Full extends Component {
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Organizzazione</label>
                   <div className="col-md-8">
+                    {this.state.pvtWidget==1?
                     <select className="form-control" ref={(widgetOrg) => this.widgetOrg = widgetOrg} onChange={(e) => this.onOrganizationChangeWidget(e, e.target.value)} id="widgetOrg" >
                         <option value=""  key='widgetOrg' defaultValue></option>
                         {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
@@ -919,6 +927,15 @@ class Full extends Component {
                         })
                         }
                     </select>
+                    :
+                    <select className="form-control" ref={(widgetOrg) => this.widgetOrg = widgetOrg} onChange={(e) => this.onOrganizationChangeWidget(e, e.target.value)} id="widgetOrg" >
+                        <option value=""  key='widgetOrg' defaultValue></option>
+                        {allOrganizations && allOrganizations.length > 0 && allOrganizations.map(organization => {
+                            return (<option value={organization} key={organization}>{organization}</option>)
+                        })
+                        }
+                    </select>
+                    }
                     {this.state.validationMSgOrgWidget && <span>{this.state.validationMSgOrgWidget}</span>}
                   </div>
                 </div>
@@ -989,9 +1006,9 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} path="/private/notifications" name="Notification Center" component={Notifications} />
                 <PrivateRoute authed={this.state.authed} path="/private/userstory" name="User Story" component={UserStory} />
                 <PrivateRoute authed={this.state.authed} path="/private/widget" name="Widget" component={Widgets} openModalWidget={this.openModalWidget} />
-                {<PrivateRoute authed={this.state.authed} exact path="/private/dataset_old" name="Dataset" component={Dataset} />}
-                {<PrivateRoute authed={this.state.authed} exact path="/private/dataset" name="Dataset" component={DatasetList} />}
-                {<PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />}
+                <PrivateRoute authed={this.state.authed} exact path="/private/dataset_old" name="Dataset" component={Dataset} />
+                <PrivateRoute authed={this.state.authed} exact path="/private/dataset" name="Dataset" component={DatasetList} />
+                <PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />
                 <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/settings" name="Settings" component={Settings} />
@@ -1006,7 +1023,7 @@ class Full extends Component {
         <Footer />
       </div>
       }
-    <form id="supset_open" target="open_supset" action={serviceurl.urlSupersetOpen +'/managed/bi-open-login'} method="POST">
+    <form id="supset_open" target="open_supset" action={serviceurl.urlApiOpen +'/managed/bi-open-login'} method="POST">
       <input name="Authorization" type="text" value={"Bearer "+localStorage.getItem('token')} readOnly hidden/>
     </form>
     <iframe name="open_supset" hidden/>

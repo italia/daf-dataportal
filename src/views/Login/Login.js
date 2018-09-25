@@ -13,6 +13,7 @@ import {
 import { serviceurl } from '../../config/serviceurl.js'
 import { setCookie, setSupersetCookie } from '../../utility'
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
+import { faWindowRestore } from '@fortawesome/fontawesome-free-solid';
 
 function setErrorMsg(error) {
   return {
@@ -170,7 +171,14 @@ class Login extends Component {
                                     let dataportalCookie = json.givenname +'/'+token;
                                     setCookie(JSON.parse('[{"name":"dataportal","value":"'+ dataportalCookie +'","path":"/"}]'))
                                     dispatch(receiveLogin(json))
-                                    this.props.history.push('/private/home')
+                                    if(window.location.href.indexOf('?')>-1){
+                                       let array = window.location.href.split('?')
+                                       //this.props.history.push(array[1])
+                                       window.location.replace(array[1]);
+
+                                    }else{
+                                      this.props.history.push('/private/home')
+                                    }
                                   })
                                 }else{
                                   console.log('Login Action Response: ' + response.statusText)
