@@ -696,11 +696,20 @@ class DatasetDetail extends Component {
                                                     {this.state.supersetLink.length > 0 ?
                                                         <div>
                                                             {this.state.supersetLink.map((link, index) => {
+                                                              switch(link.appName){
+                                                                case "superset":
                                                                 return (
-                                                                    <div className="desc-dataset text-dark" key={index}>
-                                                                        <p>Accedi alla tabella <strong><a href={link.url} target='_blank'>{link.name}</a></strong> su Superset.</p>
-                                                                    </div>
+                                                                  <div className="desc-dataset text-dark" key={index}>
+                                                                      <p>Per creare dei widget <b>privati</b> su Superset accedi alla tabella: <b><a href={link.url} target='_blank'>{link.name}</a></b> </p>
+                                                                  </div>
                                                                 )
+                                                                case "superset_open":
+                                                                return (
+                                                                  <div className="desc-dataset text-dark" key={index}>
+                                                                      <p>Per creare dei widget <b>pubblici</b> su Superset accedi alla tabella: <b><a href={link.url} target='_blank'>{link.name}</a></b></p>
+                                                                  </div>
+                                                                )
+                                                              }
                                                             })
                                                             }
                                                         </div>

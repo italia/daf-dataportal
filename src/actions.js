@@ -1519,3 +1519,36 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(response => response.json())
         }
       }
+
+      export function sendNotification(title, description, group, link){
+        var url = serviceurl.apiURLCatalog + 'kafka/notifications/add'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        var json = {
+          "topicName": "notification",
+          "description": description,
+          "title": title,
+          "group": group,
+          "link": link,
+          "notificationType": "generic"
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(json)
+          })
+          .then(response => response.json())
+        }
+
+      }

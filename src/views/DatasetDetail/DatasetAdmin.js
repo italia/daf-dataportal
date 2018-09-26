@@ -7,7 +7,8 @@ import {
   groupsInfo,
   datasetDetail,
   deleteOnCKAN,
-  publishOnCKAN
+  publishOnCKAN,
+  sendNotification
 } from '../../actions.js'
 import { isPublic } from '../../utility'
 import { toastr } from 'react-redux-toastr'
@@ -203,6 +204,7 @@ class DatasetAdmin extends Component{
       if(json.fields && json.fields==="ok"){
         toastr.success("Completato", "Permesso aggiunto con successo")
         console.log(json.message)
+        dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" è stato appena condiviso con la tua organizzazione/workgroup "+(selectedWg!==''?selectedWg:selectedOrg), (selectedWg!==''?selectedWg:selectedOrg), "/private/dataset/"+dataset.dcatapit.name))
       }
       dispatch(getDatasetACL(dataset.dcatapit.name))
       .then(risp => {
@@ -343,7 +345,8 @@ class DatasetAdmin extends Component{
         .then(response=>{
           if(response.ok){
             response.json()
-            .then(json => { 
+            .then(json => {
+              dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" della tua organizzazione, è stato appena condiviso come Open Data", dataset.dcatapit.group_own, "/private/dataset/"+dataset.dcatapit.name))
               toastr.success("Completato", "Il dataset è un Open data!")
               console.log(json.message)
               dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
@@ -419,7 +422,7 @@ class DatasetAdmin extends Component{
                 <h5>Scegli un'organizzazione o un suo workgroup a cui condividere il dataset.</h5>
               </div>
               <div className="col-3">
-              Organizazione
+              Organizzazione
               <Select
                 id="state-select"
                 onBlurResetsInput={false}

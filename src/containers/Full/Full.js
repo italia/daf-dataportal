@@ -46,7 +46,6 @@ import Validator from '../../semantics/containers/Validator.js'
 const publicVapidKey = 'BI28-LsMRvryKklb9uk84wCwzfyiCYtb8cTrIgkXtP3EYlnwq7jPzOyhda1OdyCd1jqvrJZU06xHSWSxV1eZ_0o';
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
-  console.log('rest: ' + rest)
   return (
     <Route {...rest}
       render={(props) => authed === true
