@@ -56,7 +56,7 @@ class Sidebar extends Component {
     return this.props.location.pathname.indexOf(routeName) > -1 ? 'nav-item nav-dropdown open' : 'nav-item nav-dropdown';
   }
 
-  openModal(name, url){
+  openModal(name, url, description){
     if(name!=='Jupyter'){
       const toastrConfirmOptions = {
         okText: 'Vai',
@@ -64,7 +64,7 @@ class Sidebar extends Component {
         onOk: () => this.hideModalAndRedirect(url),
         onCancel: () => console.log('CANCEL: clicked')
       };
-      toastr.confirm('Stai per essere reindirizzato a ' + name, toastrConfirmOptions);
+      toastr.confirm('Stai per essere reindirizzato a ' + name + '. ' + description, toastrConfirmOptions);
     }else{
       const toastrConfirmOptions = {
         okText: 'Vai',
@@ -212,7 +212,13 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSuperset)}><i className="fa fa-database fa-lg text-secondary" />  Superset</a>
+                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSuperset, 'Potrai creare i tuoi widget partendo dai dataset privati condivisi con le tue organizzazioni.')}><i className="fa fa-database fa-lg text-secondary" />  Superset <span className="badge badge-light">Privato</span></a>
+                  </li>
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSupersetOpen, 'Potrai creare i tuoi widget partendo dagli opendata presenti nel DAF.')}><i className="fa fa-database fa-lg text-secondary" />  Superset <span className="badge badge-light">Open</span></a>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();

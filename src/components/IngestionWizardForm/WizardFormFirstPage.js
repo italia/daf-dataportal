@@ -2,7 +2,7 @@ import React from 'react'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { connect  } from 'react-redux';
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderFieldInputButton, renderFieldCheckbox} from './renderField';
-import { publicOptions, tipodatasetOptions, modalitacaricamentoOptions, tempoDiPollingOptions, timerUnita } from './const';
+import { ingestionFormOptions } from './const';
 import validate from './validate';
 import FileInput from './FileInput'
 
@@ -22,7 +22,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
             />
             <Field
               name="public"
-              options={publicOptions}
+              options={ingestionFormOptions.publicOptions}
               component={renderFieldSelect}
               label="Pubblico/OpenData"
             />
@@ -52,7 +52,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
             />
             <Field
               name="tipodataset"
-              options={tipodatasetOptions}
+              options={ingestionFormOptions.tipodatasetOptions}
               component={renderFieldSelect}
               label="Tipo Dataset"
             />
@@ -65,7 +65,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
               <div>
                 <Field
                   name="modalitacaricamento"
-                  options={modalitacaricamentoOptions}
+                  options={ingestionFormOptions.modalitacaricamentoOptions}
                   component={renderFieldSelect}
                   label="Modalità Caricamento"
                 />
@@ -82,7 +82,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
                           />
                           <Field
                             name="tempopolling"
-                            options={tempoDiPollingOptions}
+                            options={ingestionFormOptions.tempoDiPollingOptions}
                             component={renderFieldSelect}
                             label="Tempo di Polling"
                           />
@@ -102,7 +102,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
                                 />
                                     <Field
                                     name="timerunita"
-                                    options={timerUnita}
+                                    options={ingestionFormOptions.timerUnita}
                                     component={renderFieldSelect}
                                     label="Unità"
                                 />
@@ -150,7 +150,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
                     <div className="col-md-12">
                         <Field
                             name="tempopolling"
-                            options={tempoDiPollingOptions}
+                            options={ingestionFormOptions.tempoDiPollingOptions}
                             component={renderFieldSelect}
                             label="Tempo di Polling"
                           />
@@ -170,7 +170,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
                                 />
                                     <Field
                                     name="timerunita"
-                                    options={timerUnita}
+                                    options={ingestionFormOptions.timerUnita}
                                     component={renderFieldSelect}
                                     label="Unità"
                                 />

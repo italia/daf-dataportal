@@ -61,12 +61,10 @@ class WidgetCard extends Component {
             }
         }
 
-        //TODO: need review (PPL 11/09/2018)
-        //iframe_url:"https://bi.dataportal
         var open
-        if(iframe.iframe_url && iframe.iframe_url.indexOf('https://bi.dataportal')===0){
+        if(iframe.iframe_url && iframe.iframe_url.indexOf(serviceurl.urlSuperset)>-1){
             open = false
-        }else if(iframe.iframe_url && iframe.iframe_url.indexOf('https://bi.open.dataportal')===0){
+        }else if(iframe.iframe_url && iframe.iframe_url.indexOf(serviceurl.urlSupersetOpen)>-1){
             open = true
         }
 

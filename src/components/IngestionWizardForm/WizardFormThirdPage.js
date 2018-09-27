@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import validate from './validate';
 import { connect  } from 'react-redux';
+import { ingestionFormOptions } from './const';
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderTipi, renderFieldTags, renderContesti, renderFieldCheckbox} from './renderField';
 import Collapse from 'rc-collapse'
 import 'rc-collapse/assets/index.css'
@@ -29,19 +30,19 @@ const renderFieldArray = ({fields, previousPage, meta : {touched, error} }) =>
             <div>
               <Field
                 name="tema"
-                options={[]}
+                options={ingestionFormOptions.tema}
                 component={renderFieldSelect}
                 label="Tema"
               />
               <Field
                 name="licenza"
-                options={[]}
+                options={ingestionFormOptions.licenza}
                 component={renderFieldSelect}
                 label="Licenza"
               />
               <Field
                 name="organizzazionetitolare"
-                options={[]}
+                options={ingestionFormOptions.organizzazionetitolare}
                 component={renderFieldSelect}                
                 label="Organizzazione Titolare"
               />
@@ -52,7 +53,7 @@ const renderFieldArray = ({fields, previousPage, meta : {touched, error} }) =>
               />
               <Field
                 name="frequenzaaggiornamento"
-                options={[]}
+                options={ingestionFormOptions.frequenzaaggiornamento}
                 component={renderFieldSelect}                
                 label="Frequenza Aggiornamento"
               />
@@ -70,19 +71,19 @@ const renderFieldArray = ({fields, previousPage, meta : {touched, error} }) =>
             <div>
               <Field
                 name="gruppoproprietario"
-                options={[]}
+                options={ingestionFormOptions.gruppoproprietario}
                 component={renderFieldSelect}
                 label="Gruppo Proprietario"
               />
               <Field
                 name="gruppiaccesso"
-                options={[]}
+                options={ingestionFormOptions.gruppiaccesso}
                 component={renderFieldSelect}
                 label="Gruppi Accesso"
               />
               <Field
                 name="datasetstd"
-                options={[]}
+                options={ingestionFormOptions.datasetstd}
                 component={renderFieldCheckbox}                
                 label="Dataset standard"
               />
@@ -148,19 +149,19 @@ const renderFieldArray = ({fields, previousPage, meta : {touched, error} }) =>
                 <Panel header="Informazioni Procedurali">
                   <Field
                     name="tiposalvataggio"
-                    options={[]}
+                    options={ingestionFormOptions.tiposalvataggio}
                     component={renderFieldSelect}
                     label="Tipo Salvataggio e Lettura"
                   />
                   <Field
                     name="tipoingestiondati"
-                    options={[]}
+                    options={ingestionFormOptions.tipoingestiondati}
                     component={renderFieldSelect}
                     label="Tipo Ingestion Dati"
                   />
                   <Field
                     name="strategiamerge"
-                    options={[]}
+                    options={ingestionFormOptions.strategiamerge}
                     component={renderFieldSelect}
                     label="Strategia di Merge"
                   />
