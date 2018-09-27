@@ -7,9 +7,10 @@ import {
   groupsInfo,
   datasetDetail,
   deleteOnCKAN,
-  publishOnCKAN
+  publishOnCKAN,
+  sendNotification
 } from '../../actions.js'
-import { isPublic } from '../../utility'
+import { isPublic, isOrgAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
 import {
   Modal,
@@ -203,6 +204,7 @@ class DatasetAdmin extends Component{
       if(json.fields && json.fields==="ok"){
         toastr.success("Completato", "Permesso aggiunto con successo")
         console.log(json.message)
+        dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" è stato appena condiviso con la tua organizzazione/workgroup "+(selectedWg!==''?selectedWg:selectedOrg), (selectedWg!==''?selectedWg:selectedOrg), "/private/dataset/"+dataset.dcatapit.name))
       }
       dispatch(getDatasetACL(dataset.dcatapit.name))
       .then(risp => {
@@ -343,7 +345,8 @@ class DatasetAdmin extends Component{
         .then(response=>{
           if(response.ok){
             response.json()
-            .then(json => { 
+            .then(json => {
+              dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" della tua organizzazione, è stato appena condiviso come Open Data", dataset.dcatapit.owner_org, "/private/dataset/"+dataset.dcatapit.name))
               toastr.success("Completato", "Il dataset è un Open data!")
               console.log(json.message)
               dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
@@ -419,7 +422,7 @@ class DatasetAdmin extends Component{
                 <h5>Scegli un'organizzazione o un suo workgroup a cui condividere il dataset.</h5>
               </div>
               <div className="col-3">
-              Organizazione
+              Organizzazione
               <Select
                 id="state-select"
                 onBlurResetsInput={false}
@@ -463,7 +466,7 @@ class DatasetAdmin extends Component{
                     })
                   }
                   {
-                    workgroups.length === 0 && <p>Nessun Workgroup disponibile per l'organizazzione selezionata</p>
+                    workgroups.length === 0 && <p>Nessun Workgroup disponibile per l'organizzazione selezionata</p>
                   }
                 </ul>
                 </div>
@@ -489,7 +492,7 @@ class DatasetAdmin extends Component{
           <div className="col text-muted">
               <i className="text-icon fa-pull-left fas fa-users fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4><b>Condivisione</b></h4>
           </div>
-          {ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto">
+          {isOrgAdmin(loggedUser, dataset.dcatapit.owner_org) && ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto">
             <div className="btn-group float-right">
               <button className="btn btn-accento" onClick={this.publish} title="Pubblica come Open Data" disabled={isOpenData(acl)}>Pubblica come Open Data</button>
             </div>

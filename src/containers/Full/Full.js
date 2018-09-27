@@ -33,6 +33,7 @@ import Organizations from '../../views/Settings/Organizations';
 import Users from '../../views/Settings/Users';
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import Page404 from '../../views/404/Page404';
 
 import { serviceurl } from '../../config/serviceurl'
 
@@ -46,7 +47,6 @@ import Validator from '../../semantics/containers/Validator.js'
 const publicVapidKey = 'BI28-LsMRvryKklb9uk84wCwzfyiCYtb8cTrIgkXtP3EYlnwq7jPzOyhda1OdyCd1jqvrJZU06xHSWSxV1eZ_0o';
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
-  console.log('PrivateRoute rest: ' + rest)
   return (
     <Route {...rest}
       render={(props) => authed === true
@@ -317,7 +317,6 @@ class Full extends Component {
                           loading: false
                         })
                         askPermission(this.props.loggedUser.uid)
-                        //dispatch(fetchNotifications(this.props.loggedUser.uid))
                         dispatch(fetchNewNotifications(localStorage.getItem('user')))
                         dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
                         document.forms['supset_open'].submit()

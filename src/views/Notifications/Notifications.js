@@ -61,7 +61,7 @@ class Notifications extends Component{
   componentDidMount(){
     const { dispatch } = this.props
     if(localStorage.getItem('user')){
-      dispatch(fetchNotifications(localStorage.getItem('user')))
+      dispatch(fetchNotifications(localStorage.getItem('user'), 100))
       .then((json)=>{
         this.setState({
           notifications: json.notifications

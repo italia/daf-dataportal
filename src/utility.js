@@ -105,6 +105,16 @@ export function transformName(name){
     return isAdmin
   }
 
+  export function isOrgAdmin(loggedUser, organization){
+    var isAdmin = false;
+    
+    if(loggedUser && loggedUser.roles.indexOf('daf_adm_'+organization)>-1){
+      isAdmin = true
+    }  
+    
+    return isAdmin
+  }
+
   export function isEditor(loggedUser){
     var isEditor = false;
     loggedUser && loggedUser.roles.map((role) => {

@@ -557,15 +557,15 @@ class DatasetList extends Component {
                                     <span className="switch-label" title="Visualizza solo i miei contenuti"></span>
                                     <span className="switch-handle" title="Visualizza solo i miei contenuti"></span>
                                   </label></div> */}
-                                  {!isPublic() && <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                                    <label className={"btn "+((!this.state.mieiContenutichecked&&!this.state.sharedWithMeChecked)?"btn-secondary":"btn-outline-filters")}>
+                                  {!isPublic() && <div id="tab" className="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label className={"btn btn-outline-filters "+((!this.state.mieiContenutichecked&&!this.state.sharedWithMeChecked)?"active":"")}>
                                       <input type="radio" name="all" id="option1" onClick={()=>{this.setState({ sharedWithMeChecked: false, mieiContenutichecked: false}); this.search(this.state.order_filter, '', false, false)}}/> Tutti i contenuti 
                                     </label>
-                                    <label className={"btn "+((!this.state.mieiContenutichecked&&this.state.sharedWithMeChecked)?"btn-secondary":"btn-outline-filters")}>
-                                      <input type="radio" name="mine" id="option2" onClick={this.toggleShared}/> Condivisi con me
+                                    <label className={"btn btn-outline-filters "+((!this.state.mieiContenutichecked&&this.state.sharedWithMeChecked)?"active":"")}>
+                                      <input type="radio" name="shared" id="option2" onClick={this.toggleShared}/> Condivisi con me
                                     </label>
-                                    <label className={"btn "+((this.state.mieiContenutichecked&&!this.state.sharedWithMeChecked)?"btn-secondary":"btn-outline-filters")}>
-                                      <input type="radio" name="shared" id="option3" onClick={this.toggleMiei}/> I miei contenuti
+                                    <label className={"btn btn-outline-filters "+((this.state.mieiContenutichecked&&!this.state.sharedWithMeChecked)?"active":"")}>
+                                      <input type="radio" name="mine" id="option3" onClick={this.toggleMiei}/> I miei contenuti
                                     </label>
                                   </div>}
                                 </div>  
@@ -589,9 +589,11 @@ class DatasetList extends Component {
                                     </div>
                                     <div className="ml-auto pl-3" >
                                         <select className="form-control h-100 b-t-0 b-b-0" id="ordinamento" aria-required="true" onChange={this.handleChangeOrdinamento.bind(this)} value={this.state.order_filter}>
-                                            <option value="desc">Data decrescente</option>
-                                            <option value="asc">Data crescente</option>
                                             <option value="score">Per rilevanza</option>
+                                            <option value="asc">Data crescente</option>
+                                            <option value="desc">Data decrescente</option>
+                                            <option value="a-z">Alfabetico crescente (A - Z)</option>
+                                            <option value="z-a">Alfabetico decrescente (Z - A)</option>
                                         </select>
                                     </div>
                                   </div>
@@ -695,7 +697,7 @@ class DatasetList extends Component {
                                         try {
                                             datasetMatch = JSON.parse(result.match)
                                         } catch (error) {
-
+                                          // console.error(error)
                                         }
 
                                         let fields = datasetMatch.dataschema&&datasetMatch.dataschema.avro&&datasetMatch.dataschema.avro.fields?datasetMatch.dataschema.avro.fields:dataset.dataschema.avro.fields
@@ -785,7 +787,7 @@ class DatasetList extends Component {
                                                 let datasetOpenMatch = {}; 
                                                 try {
                                                     datasetOpen = JSON.parse(result.source)
-                                                    datasetOpenMatch = dataset
+                                                    datasetOpenMatch = datasetOpen
                                                     datasetOpenMatch = JSON.parse(result.match)
                                                     return(
                                                         <div className="container px-5" key={index}>
@@ -855,7 +857,7 @@ class DatasetList extends Component {
 
 
                                                 } catch (error) {
-                                                    
+                                                    // console.error(error)
                                                 }
                                                 
                                                     break;
@@ -865,7 +867,7 @@ class DatasetList extends Component {
                                        try {
                                            dashboardMatch = JSON.parse(result.match)
                                        } catch (error) {
-                                           
+                                        // console.error(error)
                                        }
                                        if ((dashboard.widgets && dashboard.widgets !== '{}') && (dashboard.layout && dashboard.layout !== '{}')) {
                                            const dashLayout = JSON.parse(dashboard.layout)
@@ -978,7 +980,7 @@ class DatasetList extends Component {
                                         try {
                                             storyMatch = JSON.parse(result.match)
                                         } catch (error) {
-                                            
+                                          // console.error(error)
                                         }
                                         if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
                                             const dashLayout = JSON.parse(story.layout)

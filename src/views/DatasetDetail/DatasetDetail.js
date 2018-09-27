@@ -10,7 +10,8 @@ import {
     datasetMetadata,
     getOpendataResources,
     checkFileOnHdfs,
-    uploadHdfsFile
+    uploadHdfsFile,
+    groupsInfo
 } from '../../actions'
 import ReactTable from "react-table"
 import "react-table/react-table.css";
@@ -34,6 +35,7 @@ import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
 import ShareButton from '../../components/ShareButton/ShareButton';
 import DatasetAdmin from './DatasetAdmin';
+import { Table } from 'reactstrap';
 
 function checkIsLink(val) {
     if (val.indexOf('http') !== -1 && val.indexOf('{') === -1)
@@ -139,18 +141,10 @@ class DatasetDetail extends Component {
         if ((nextProps.dataset || nextProps.feed) && (this.props.dataset !== nextProps.dataset || this.props.feed !== nextProps.feed)) {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
             var dafIndex = 0
-            if (isExtOpendata) {
-                dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-                    .then(json => { dafIndex = dafIndex + 3; this.setState({ hasPreview: true, dafIndex: dafIndex }) })
-                    .catch(error => { this.setState({ hasPreview: false }) })
-            } else {
-                if (nextProps.feed && nextProps.feed.has_job && (nextProps.feed.job_status === 'COMPLETED' || nextProps.feed.job_status === 'STARTED')) {
-                    dafIndex = dafIndex + 3
-                    this.setState({ hasPreview: true, dafIndex: dafIndex })
-                } else {
-                    this.setState({ hasPreview: false })
-                }
-            }
+
+            dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
+                .then(json => { dafIndex = dafIndex + 3; this.setState({ hasPreview: true, dafIndex: dafIndex }) })
+                .catch(error => { this.setState({ hasPreview: false }) })
 
             dispatch(getSupersetUrl(nextProps.dataset.dcatapit.name, nextProps.dataset.dcatapit.owner_org, isExtOpendata))
                 .then(json => {
@@ -283,7 +277,27 @@ class DatasetDetail extends Component {
         const isExtOpendata = (dataset.operational.ext_opendata
             && dataset.operational.ext_opendata != {}) ? true : false
         dispatch(getSupersetUrl(nomeFile, org, isExtOpendata))
-            .then(json => { this.setState({ supersetLink: json, supersetState: 1 }) })
+            .then(json => {
+              var orgs = []
+              var supersetLinks = json
+              json.map(link=>{
+                if(link.appName==="superset"){
+                  let sp1 = link.name.split('_o_')
+                  let sp2 = sp1[0].split('.')
+                  var org = sp2[1]
+                  orgs.push(org)
+                }
+              }) 
+
+              dispatch(groupsInfo(orgs))
+              .then(json=>{
+                json.map((orgInfo,key)=>{
+                  supersetLinks[key].groupInfo = orgInfo
+                })
+                console.log(supersetLinks)
+                this.setState({ supersetLink: supersetLinks, supersetState: 1 }) 
+              })
+            })
             .catch(error => { this.setState({ supersetState: 2 }) })
     }
 
@@ -431,7 +445,7 @@ class DatasetDetail extends Component {
     }
 
     render() {
-        const { dataset, metadata, ope, feed, iframes, isFetching, query } = this.props
+        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch } = this.props
         var metadataThemes = undefined
         if (metadata) {
             try {
@@ -518,7 +532,7 @@ class DatasetDetail extends Component {
                                 {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showAdmin: false, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
                                 </li>}
-                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
+                                {/* this.state.hasPreview && */ !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
                                 </li>}
                                 {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
@@ -695,14 +709,40 @@ class DatasetDetail extends Component {
                                                 <div>
                                                     {this.state.supersetLink.length > 0 ?
                                                         <div>
+                                                          <div className="desc-dataset text-dark">
+                                                            <p>Puoi creare un widget su questo dataset in Superset per le seguenti organizzazioni o gruppi: </p>
+                                                          </div>
+                                                          <Table>
+                                                            <tbody>
                                                             {this.state.supersetLink.map((link, index) => {
+                                                              switch(link.appName){
+                                                                case "superset":
+                                                                var groupType = ''
+                                                                if(link.groupInfo.dafGroupType==='Organization'){
+                                                                  groupType = 'Organizzazione'
+                                                                }else{
+                                                                  groupType = "Workgroup dell'organizzazione"+link.groupInfo.parentGroup
+                                                                }
                                                                 return (
-                                                                    <div className="desc-dataset text-dark" key={index}>
-                                                                        <p>Accedi alla tabella <strong><a href={link.url} target='_blank'>{link.name}</a></strong> su Superset.</p>
-                                                                    </div>
+                                                                  <tr key={index}>
+                                                                    <td>{link.groupInfo.groupCn}</td>
+                                                                    <td>{groupType}</td>
+                                                                    <td><a className="text-primary float-right" title="Crea un widget privato su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
+                                                                  </tr>
                                                                 )
+                                                                case "superset_open":
+                                                                return (
+                                                                  <tr key={index}>
+                                                                    <td>Open Data</td>
+                                                                    <td></td>
+                                                                    <td><a className="text-primary float-right" title="Crea un widget pubblico su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
+                                                                  </tr>
+                                                                )
+                                                              }
                                                             })
                                                             }
+                                                            </tbody>
+                                                          </Table>
                                                         </div>
                                                         :
                                                         <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso. Verifica che il dataset sia stato condiviso almeno con una tua organizzazione o workgroup</p>

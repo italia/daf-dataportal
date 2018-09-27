@@ -1522,6 +1522,39 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
 
+      export function sendNotification(title, description, group, link){
+        var url = serviceurl.apiURLCatalog + '/kafka/notifications/add'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        var json = {
+          "topicName": "notification",
+          "description": description,
+          "title": title,
+          "group": group,
+          "link": link,
+          "notificationType": "generic"
+        }
+
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(json)
+          })
+        .then(response => response.json())
+        }
+      }
+
       export function getAllOrganizations(){
         var url = serviceurl.apiURLSecurity + '/daf/organizations'
         var token = ''
@@ -1530,6 +1563,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
           token = localStorage.getItem('token')
         }
+
         return dispatch => {
           return fetch(url, {
             method: 'GET',
@@ -1537,8 +1571,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + token
-
-            }
+            },
           })
           .then(response => response.json())
         }
