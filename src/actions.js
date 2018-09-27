@@ -1521,7 +1521,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
 
       export function sendNotification(title, description, group, link){
-        var url = serviceurl.apiURLCatalog + 'kafka/notifications/add'
+        var url = serviceurl.apiURLCatalog + '/kafka/notifications/add'
         var token = ''
 
         if(localStorage.getItem('username') && localStorage.getItem('token') &&

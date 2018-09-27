@@ -38,7 +38,7 @@ export function createOperational (values, data) {
         "url": values.ws_url,
         "username": "test",
         "password": "test",
-        "param": ""
+        "param": values.filetype?values.filetype:'csv'
       }]
     }
   }
@@ -51,7 +51,7 @@ export function createOperational (values, data) {
       "access_token": null,
       "username": localStorage.getItem('user').toLowerCase(),
       "url": url,
-      "param": "",
+      "param": values.filetype?values.filetype:'csv',
       "password": "xxxxxxx"
     }]
   }

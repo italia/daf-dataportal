@@ -697,7 +697,7 @@ class DatasetList extends Component {
                                         try {
                                             datasetMatch = JSON.parse(result.match)
                                         } catch (error) {
-
+                                          // console.error(error)
                                         }
 
                                         let fields = datasetMatch.dataschema&&datasetMatch.dataschema.avro&&datasetMatch.dataschema.avro.fields?datasetMatch.dataschema.avro.fields:dataset.dataschema.avro.fields
@@ -787,7 +787,7 @@ class DatasetList extends Component {
                                                 let datasetOpenMatch = {}; 
                                                 try {
                                                     datasetOpen = JSON.parse(result.source)
-                                                    datasetOpenMatch = dataset
+                                                    datasetOpenMatch = datasetOpen
                                                     datasetOpenMatch = JSON.parse(result.match)
                                                     return(
                                                         <div className="container px-5" key={index}>
@@ -857,7 +857,7 @@ class DatasetList extends Component {
 
 
                                                 } catch (error) {
-                                                    
+                                                    // console.error(error)
                                                 }
                                                 
                                                     break;
@@ -867,7 +867,7 @@ class DatasetList extends Component {
                                        try {
                                            dashboardMatch = JSON.parse(result.match)
                                        } catch (error) {
-                                           
+                                        // console.error(error)
                                        }
                                        if ((dashboard.widgets && dashboard.widgets !== '{}') && (dashboard.layout && dashboard.layout !== '{}')) {
                                            const dashLayout = JSON.parse(dashboard.layout)
@@ -980,7 +980,7 @@ class DatasetList extends Component {
                                         try {
                                             storyMatch = JSON.parse(result.match)
                                         } catch (error) {
-                                            
+                                          // console.error(error)
                                         }
                                         if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
                                             const dashLayout = JSON.parse(story.layout)

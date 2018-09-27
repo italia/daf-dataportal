@@ -10,7 +10,7 @@ import {
   publishOnCKAN,
   sendNotification
 } from '../../actions.js'
-import { isPublic } from '../../utility'
+import { isPublic, isOrgAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
 import {
   Modal,
@@ -346,7 +346,7 @@ class DatasetAdmin extends Component{
           if(response.ok){
             response.json()
             .then(json => {
-              dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" della tua organizzazione, è stato appena condiviso come Open Data", dataset.dcatapit.group_own, "/private/dataset/"+dataset.dcatapit.name))
+              dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" della tua organizzazione, è stato appena condiviso come Open Data", dataset.dcatapit.owner_org, "/private/dataset/"+dataset.dcatapit.name))
               toastr.success("Completato", "Il dataset è un Open data!")
               console.log(json.message)
               dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
@@ -466,7 +466,7 @@ class DatasetAdmin extends Component{
                     })
                   }
                   {
-                    workgroups.length === 0 && <p>Nessun Workgroup disponibile per l'organizazzione selezionata</p>
+                    workgroups.length === 0 && <p>Nessun Workgroup disponibile per l'organizzazione selezionata</p>
                   }
                 </ul>
                 </div>
@@ -492,7 +492,7 @@ class DatasetAdmin extends Component{
           <div className="col text-muted">
               <i className="text-icon fa-pull-left fas fa-users fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4><b>Condivisione</b></h4>
           </div>
-          {ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto">
+          {isOrgAdmin(loggedUser, dataset.dcatapit.owner_org) && ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto">
             <div className="btn-group float-right">
               <button className="btn btn-accento" onClick={this.publish} title="Pubblica come Open Data" disabled={isOpenData(acl)}>Pubblica come Open Data</button>
             </div>
