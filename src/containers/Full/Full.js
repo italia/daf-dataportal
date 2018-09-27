@@ -356,15 +356,6 @@ class Full extends Component {
             this.props.history.push('/login?' + window.location)
           }
         }
-        
-    //SET ALL ORGANIZATIONS
-    dispatch(getAllOrganizations())
-      .then(json => {
-            this.setState({
-              allOrganizations: json.elem
-            })
-          }
-          )
   }
 
   openSearch(){
@@ -562,13 +553,32 @@ class Full extends Component {
   };
 
   openModalWidget = () => {
+    const { dispatch } = this.props
+
     //this.titleWidget.value = ''
     this.pvtWidget.value = 0
     this.widgetTool.value = 0
     this.widgetOrg.value=''
     //this.widgetDataset.value=''
 
-    this.setState({
+    //SET ALL ORGANIZATIONS
+    dispatch(getAllOrganizations())
+      .then(json => {
+            this.setState({
+              allOrganizations: json.elem,
+              pvtWidget:0,
+              widgetTool:0,
+              widgetOrg:'',
+              validationMSgDataset: 'Campo obbligatorio',
+              validationMSg: 'Campo obbligatorio',
+              validationMSgOrgWidget: 'Campo obbligatorio',
+              errorMSgTable:false,
+              isOpenWidget: true
+            })
+          }
+          )
+
+ /*    this.setState({
       //titleWidget:'',
       pvtWidget:0,
       widgetTool:0,
@@ -578,7 +588,7 @@ class Full extends Component {
       validationMSgOrgWidget: 'Campo obbligatorio',
       errorMSgTable:false,
       isOpenWidget: true
-    });
+    }); */
   };
   
   hideModalWidget = () => {

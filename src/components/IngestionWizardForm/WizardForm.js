@@ -137,7 +137,8 @@ class WizardForm extends Component {
     if(filesToUpload.length>0){
     this.setState({errorDrop:''})
     dispatch(getSchema(filesToUpload, 'csv'))//defaul value is csv
-        .then(json => { this.calcDataFields(fields, JSON.parse(json))
+        //.then(json => { this.calcDataFields(fields, JSON.parse(json))
+        .then(json => { this.calcDataFields(fields, json)
                         this.setUploading(false, undefined);
                         dispatch(change('wizard', 'separator', json.separator))
                         dispatch(change('wizard', 'filesToUpload', filesToUpload))

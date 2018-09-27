@@ -2,8 +2,8 @@ import React from 'react';
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { connect  } from 'react-redux';
 import validate from './validate';
-import AutocompleteSemantic from '../Autocomplete/AutocompleteSemantic'
-import { yesOrNoOptions } from './const'
+import { ingestionFormOptions } from './const';
+import AutocompleteSemantic from './AutocompleteSemantic'
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderTipi, renderFieldTags, renderContesti, renderFieldCheckbox} from './renderField';
 import Collapse from 'rc-collapse'
 import 'rc-collapse/assets/index.css'
@@ -36,7 +36,17 @@ let WizardFormSecondPage = props => {
 
 const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemanticToForm, context, previousPage, meta : {touched, error} }) =>
         <div>
-          {fields.map((field, index) => 
+          {fields.map((field, index) => {
+            var convenzioniValue = fields.get(index).convenzioni
+            var campi = []
+            if(convenzioniValue && ingestionFormOptions.convenzioni){
+              for(var i=0;i<ingestionFormOptions.convenzioni.length;i++){
+                if(ingestionFormOptions.convenzioni[i].val==convenzioniValue){
+                  campi = ingestionFormOptions.convenzioni[i].campi
+                }
+              }
+            }
+            return(
             <div className="card" key={index}>
               <div className="card-body">
                 <h5 className="card-title">Metadati campo <b>{fields.get(index).nome}</b></h5>
@@ -90,28 +100,40 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                     <Panel header="Formato e Convenzioni">
                       <Field
                         name={`${field}.tipoinformazione`}
-                        options={[]}
+                        options={ingestionFormOptions.tipoinformazione}
                         component={renderFieldSelect}
                         label="Tipo Informazione"
                         value={`${field}.tipoinformazione`}
                       />
                       <Field
                         name={`${field}.standardformat`}
-                        options={[]}
+                        options={ingestionFormOptions.standardformat}
                         component={renderFieldSelect}
                         label="Standard Format"
                         value={`${field}.standardformat`}
                       />
                       <Field
                         name={`${field}.convenzioni`}
-                        options={[]}
+                        options={ingestionFormOptions.convenzioni}
                         component={renderFieldSelect}
                         label="Convenzioni"
                         value={`${field}.convenzioni`}
                       />
+                      {campi && campi.map((campo, index) => {
+                        console.log('campo: ' + campo)
+                        return(
+                          <Field
+                            name={`${field}.campo.${campo.val}`}
+                            component={renderFieldInput}
+                            label={campo.label}
+                            value={`${field}.campo.${campo.val}`}
+                            key={index}
+                          />)
+                      })
+                      }
                        <Field
                         name={`${field}.vocabolariocontrollato`}
-                        options={[]}
+                        options={ingestionFormOptions.vocabolariocontrollato}
                         component={renderFieldSelect}
                         label="Vocabolario Controllato"
                         value={`${field}.vocabolariocontrollato`}
@@ -198,14 +220,14 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                         />
                       <Field
                           name={`${field}.tipodatopersonale`}
-                          options={[]}
+                          options={ingestionFormOptions.tipodatopersonale}
                           component={renderFieldSelect}
                           label="Tipo Dato Personale"
                           value={`${field}.tipodatopersonale`}
                       />
                       <Field
                           name={`${field}.tipomascheramento`}
-                          options={[]}
+                          options={ingestionFormOptions.tipomascheramento}
                           component={renderFieldSelect}
                           label="Tipo di Mascheramento"
                           value={`${field}.tipomascheramento`}
@@ -221,6 +243,7 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                 </div>
               </div>  
             </div>
+            )}
             )}
         <div>
           <button type="button" className="btn btn-primary float-left" onClick={previousPage}>Indietro</button>
