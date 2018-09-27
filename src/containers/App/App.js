@@ -134,6 +134,9 @@ class App extends Component {
             <Route path="/private/settings" name="Settings" component={Full} />
             <Route path="/private/organizations" name="Organizations" component={Full} />
             <Route path="/private/users" name="Users" component={Full} />
+
+            {/*404 NOT FOUND*/}
+            <Route path="*" name="404 Not Found" component={Public} />
           </Switch>
         </HashRouter>
         <ReduxToastr

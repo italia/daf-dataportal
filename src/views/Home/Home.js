@@ -9,10 +9,6 @@ import DashboardCard from '../../components/Cards/DashboardCard';
 import DatasetCard from '../../components/Cards/DatasetCard';
 
 import {
-    loadDatasets,
-    unloadDatasets,
-    datasetDetail,
-    getFileFromStorageManager,
     search
 } from '../../actions'
 
@@ -38,9 +34,16 @@ class Home extends Component {
 
         let iframes = homeService.iframes();
         iframes.then(json => {
-            this.setState({
-                listIframes: json
+            var widgets = json
+            let iframesOpen = homeService.iframesOpen()
+            iframesOpen.then(json =>{
+              var list = widgets.concat(json)
+              console.log(widgets)
+              this.setState({
+                listIframes: list
+              })
             })
+            
         }) 
 
         this.updatePredicate = this.updatePredicate.bind(this);
@@ -97,14 +100,6 @@ class Home extends Component {
         window.removeEventListener("resize", this.updatePredicate);
     }
 
-        /* componentWillReceiveProps(nextProps){
-            if(nextProps.results){
-                this.setState({
-                    counter: JSON.parse(nextProps.results[nextProps.results.length-4].source)
-                })
-            }
-        } */
-
     updatePredicate() {
         if (window.innerWidth <= 1200)
             this.setState({items: 2});
@@ -112,53 +107,6 @@ class Home extends Component {
             this.setState({items: 1});
         if (window.innerWidth > 1200)
             this.setState({items: 3});
-    }
-
-    searchDataset() {
-        //const { dispatch } = this.props
-        //dispatch(loadDatasets(query, 0, '', category, group, organization, order))
-    }
-
-    counters(){
-        const { dispatch } = this.props
-        let filter = {
-            'text': '',
-            'index': [],
-            'org': [],
-            'theme':[],
-            'date': "",
-            'status': [],
-            'order':""
-        }
-        
-        /* let elements = homeService.homeElements();
-        elements.then(json => {
-            try{
-                json.map((element, index)=>{
-                    switch(element.type){
-                        case 'catalog_test':
-                            let dataset = JSON.parse(element.source)
-                            this.state.listDataset.push(dataset)
-                            break;
-                        case 'dashboards':
-                            let dashboard = JSON.parse(element.source)
-                            this.state.listDashboards.push(dashboard)
-                            break;
-                        case 'stories':
-                            let story = JSON.parse(element.source)
-                            this.state.listStories.push(story)
-                            break;
-                        case 'type':
-                            let type = JSON.parse(element.source)
-                            this.state.counter = type
-                            break;
-                    }
-                })
-                this.state.isLoading = false
-            }
-            catch(error){console.log('error in getting elements')}
-        }) */
-        dispatch(search('', filter))
     }
 
     handleSearch(){

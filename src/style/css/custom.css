@@ -415,7 +415,11 @@
     .show > .btn-outline-filters.dropdown-toggle {
       color: #151b1e;
       background-color: #f0f3f5;
-      border: 1px solid #CAD4DC; }
+      border: 1px solid #CAD4DC;
+      box-shadow: inset 1px 1px 5px var(--gray-400);
+      -webkit-box-shadow: inset 1px 1px 5px var(--gray-400);
+      -moz-box-shadow: inset 1px 1px 5px var(--gray-400);
+      -o-box-shadow: inset 1px 1px 5px var(--gray-400); }
       .btn-outline-filters:not(:disabled):not(.disabled):active:focus, .btn-outline-filters:not(:disabled):not(.disabled).active:focus,
       .show > .btn-outline-filters.dropdown-toggle:focus {
         box-shadow: 0 0 0 0.2rem rgba(240, 243, 245, 0.5); }
