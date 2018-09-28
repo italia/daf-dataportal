@@ -275,7 +275,7 @@ class Login extends Component {
                           <input type="submit" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)} value="Login"/>
                         </div>
                         <div className="col-6 text-right" style={{ position: 'initial' }}>
-                        <button type="button" className="btn btn-link px-0" onClick={() => this.props.history.push('/requestreset')}>Password dimenticata?</button>
+                        <button type="button" className="btn btn-link text-primary px-0" onClick={() => this.props.history.push('/requestreset')}>Password dimenticata?</button>
                         </div>
                       </div>
                     </form>
