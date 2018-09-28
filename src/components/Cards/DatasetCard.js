@@ -32,9 +32,9 @@ class DatasetCard extends Component{
             openData=true
 
         var type = ''
+        var input_src = ''
         if(!open){
           if(dataset.operational.input_src){
-            var input_src = ''
             for(var key in dataset.operational.input_src){
               if (dataset.operational.input_src[key]!==null){
                 if(!dataset.operational.input_src[key][0].param && dataset.operational.input_src[key][0].param===''){
