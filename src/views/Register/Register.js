@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { registerUser } from './../../actions.js'
-import PropTypes from 'prop-types'
 import Recaptcha  from 'react-recaptcha'
 import { Tooltip } from 'reactstrap';
 
@@ -153,12 +152,6 @@ class Register extends Component {
       </div>
     )
   }
-}
-
-Register.propTypes = {
-  messaggio: PropTypes.string,
-  error: PropTypes.number,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

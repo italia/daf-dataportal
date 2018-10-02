@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { resetPwd } from './../../actions.js'
-import PropTypes from 'prop-types'
 
 function setErrorMsg(error) {
   return {
@@ -78,12 +77,6 @@ class RequestReset extends Component {
       </div>
     )
   }
-}
-
-RequestReset.propTypes = {
-  messaggio: PropTypes.string,
-  error: PropTypes.number,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

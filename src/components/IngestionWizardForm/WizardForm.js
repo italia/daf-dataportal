@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import WizardFormFirstPage from './WizardFormFirstPage';
 import WizardFormSecondPage from './WizardFormSecondPage';
 import WizardFormThirdPage from './WizardFormThirdPage';
@@ -219,10 +218,6 @@ class WizardForm extends Component {
     );
   }
 }
-
-WizardForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
 
 function mapStateToProps(state) {
   const { properties } = state.propertiesReducer['prop'] || {}

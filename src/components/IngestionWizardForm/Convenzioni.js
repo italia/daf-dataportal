@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import Dropzone from 'react-dropzone';
 import { Field } from 'redux-form';
 

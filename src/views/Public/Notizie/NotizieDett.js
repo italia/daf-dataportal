@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { serviceurl } from '../../../config/serviceurl.js'
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 
@@ -60,10 +59,6 @@ class NotizieDetail extends Component {
         )
     }
 }
-
-NotizieDetail.propTypes = {
-    properties: PropTypes.object
-  }
   
   function mapStateToProps(state) {
     const { properties } = state.propertiesReducer['prop'] || {}

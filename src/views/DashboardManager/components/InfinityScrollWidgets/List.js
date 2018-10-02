@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import InfiniteScroll from '../../../../components/InfinityScroll';
-import WidgetImage from "./WidgetImage";
 import $ from 'jquery';
 import { serviceurl } from "../../../../config/serviceurl";
 

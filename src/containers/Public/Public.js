@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../../views/Public/Home/Home';
 import Missione from '../../views/Public/Missione/Missione';
@@ -75,11 +74,6 @@ class Public extends Component {
       </div>
       );
   }
-}
-
-Public.propTypes = {
-  loggedUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

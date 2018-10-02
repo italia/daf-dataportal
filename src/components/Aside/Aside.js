@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { datasetDetail } from '../../actions'
 import { convertNotificationTime } from '../../utility'
@@ -81,10 +80,6 @@ class Aside extends Component {
       </aside>
     )
   }
-}
-
-Aside.propTypes = {
-  notifications: PropTypes.array
 }
 
 function mapStateToProps(state) {

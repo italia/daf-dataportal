@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { changePwd } from './../../actions.js'
-import PropTypes from 'prop-types'
-import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 import { toastr } from 'react-redux-toastr'
 
   function setErrorMsg(messaggio) {
@@ -182,12 +180,6 @@ class ConfirmReset extends Component {
       </div>
     )
   }
-}
-
-ConfirmReset.propTypes = {
-  messaggio: PropTypes.string,
-  error: PropTypes.number,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

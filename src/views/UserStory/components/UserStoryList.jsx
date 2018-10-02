@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Route, Link } from 'react-router-dom';
 import ListBar from './bar/ListBar.jsx';
 import UserstoryCard from "../../../components/Cards/UserstoryCard";
 import { isPublic } from '../../../utility'
@@ -146,11 +144,6 @@ class UserStoryList extends Component {
     );
   }
 
-}
-
-UserStoryList.propTypes = {
-  loggedUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

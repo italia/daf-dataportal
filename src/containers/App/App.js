@@ -4,7 +4,6 @@ import { Route, HashRouter, Redirect, Switch } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
 import Full from '../Full/'
 import Home from '../Home/'
-import PropTypes from 'prop-types'
 import { fetchProperties } from './../../actions.js'
 import ReduxToastr from 'react-redux-toastr'
 import Public from '../Public/';
@@ -151,11 +150,6 @@ class App extends Component {
 
     );
   }
-}
-
-App.propTypes = {
-  loggedUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

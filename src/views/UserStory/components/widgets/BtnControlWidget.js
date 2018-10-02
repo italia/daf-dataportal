@@ -1,11 +1,5 @@
 import React from 'react';
-import { Bar } from 'react-chartjs';
-import { getRandomInt } from './util';
-import {Modal} from 'react-modal-bootstrap';
 import { toastr } from 'react-redux-toastr'
-
-
-import App from '../InfinityScrollWidgets/App.js'
 
 class BtnControlWidget extends React.Component {
     constructor() {
@@ -14,10 +8,6 @@ class BtnControlWidget extends React.Component {
             isModalAddOpen: false,
             isModalOpen: false
         }
-
-        /* this.addWidgetOpenModal = this.addWidgetOpenModal.bind(this)
-        this.addWidget = this.addWidget.bind(this) */
-        this.closeModal = this.closeModal.bind(this)
     }
 
     moveDown = function(index) {
@@ -85,29 +75,6 @@ class BtnControlWidget extends React.Component {
         rows.splice(this.props.index, 1);
         this.props.setLayout(this.props.layout);
     }
-    
-    closeModal = function (){
-        this.setState({
-            isModalOpen: false
-        })
-    }
-
-/*     addWidgetOpenModal = function() {
-        this.setState({
-            isModalAddOpen: true
-        });
-    }
-
-    addWidget = function(widgetName) {
-        this.props.addWidget(widgetName, this.props.index);
-        this.onRequestClose();
-    } */
-
-    onRequestClose = () => {
-        this.setState({
-            isModalAddOpen: false,
-        });
-    }
 
 
     render() {
@@ -118,7 +85,7 @@ class BtnControlWidget extends React.Component {
                     <span className="fa fa-plus" aria-hidden="true"></span>
                 </button> */}
 
-                { this.props.index != 0 &&
+                {this.props.index != 0 &&
                     <button type="button" className="btn btn-sm btn-gray-200" aria-label="Move Up"
                         onClick={() => this.moveUp(this.props.index)}>
                         <span className="fa fa-chevron-up" aria-hidden="true"></span>
@@ -134,21 +101,6 @@ class BtnControlWidget extends React.Component {
                     onClick={() => this.removeCol()}>
                     <span className="fa fa-trash" aria-hidden="true"></span>
                 </button>
-
-{/*                 <App 
-                widgets={this.props.widgets}
-                isModalOpen={this.state.isModalAddOpen}
-                onWidgetSelect={this.addWidget}
-                onRequestClose={this.onRequestClose}
-                    /> */}
-
-                {/*<AddWidgetDialog
-                    widgets={this.props.widgets}
-                    isModalOpen={this.state.isModalAddOpen}
-                    onWidgetSelect={this.addWidget}
-                    onRequestClose={this.onRequestClose}
-                    >
-                </AddWidgetDialog> */}
 
             </div>
         );
