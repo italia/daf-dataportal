@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAuthToken, loginAction, isValidToken, logout, getApplicationCookie, receiveLogin } from './../../actions.js'
-import PropTypes from 'prop-types'
 import {
   Modal,
   ModalHeader,
@@ -10,10 +9,8 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
-import { serviceurl } from '../../config/serviceurl.js'
 import { setCookie, setSupersetCookie } from '../../utility'
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
-import { faWindowRestore } from '@fortawesome/fontawesome-free-solid';
 
 function setErrorMsg(error) {
   return {
@@ -298,11 +295,6 @@ class Login extends Component {
       </div>
     )
   }
-}
-
-Login.propTypes = {
-  user: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
