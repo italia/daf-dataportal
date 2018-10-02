@@ -7,9 +7,10 @@ import themes from '../../data/themes'
 import { connect  } from 'react-redux';
 import { getSchema, getSchemaWS, getSystemNameKylo } from '../../actions';
 import { change, reset } from 'redux-form'
-
+import { getEditorAdminOrganizations } from '../../utility'
 import 'rc-steps/assets/index.css'
 import 'rc-steps/assets/iconfont.css'
+import { reduxForm, formValueSelector } from 'redux-form';
 
 const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiungi i Metadati'}]
 
@@ -21,6 +22,12 @@ class WizardForm extends Component {
     this.setUploading = this.setUploading.bind(this);
     this.onDropFunction = this.onDropFunction.bind(this) 
     this.addSemanticToForm = this.addSemanticToForm.bind(this)
+    this.addConvenzioneToForm = this.addConvenzioneToForm.bind(this)
+    this.deleteConvenzioneToForm = this.deleteConvenzioneToForm.bind(this)
+    this.addGerarchiaToForm = this.addGerarchiaToForm.bind(this)
+    this.deleteGerarchiaToForm = this.deleteGerarchiaToForm.bind(this)
+    this.addGruppiToForm = this.addGruppiToForm.bind(this)
+    this.deleteGruppiToForm = this.deleteGruppiToForm.bind(this)
     this.aggiornaStato = this.aggiornaStato.bind(this)
     this.setName = this.setName.bind(this)
     this.getSchemaFromWS = this.getSchemaFromWS.bind(this)
@@ -30,7 +37,10 @@ class WizardForm extends Component {
       errorUpload: undefined,
       tipi: new Object(),
       context:[],
-      uri_voc:[]
+      uri_voc:[],
+      listaConvenzioni:[],
+      listaGerarchie: [],
+      listaGruppi: []
     };
   }
 
@@ -39,14 +49,68 @@ class WizardForm extends Component {
     const { dispatch } = this.props
     this.aggiornaStato(context, uri_voc, index)
     dispatch(change('wizard', 'inferred['+index+'].id_concetto', id))
-    dispatch(change('wizard', 'inferred['+index+'].subject', subject))
-    dispatch(change('wizard', 'inferred['+index+'].predicate', predicate))
-    dispatch(change('wizard', 'inferred['+index+'].rdf_object', rdf_object))
+    dispatch(change('wizard', 'inferred['+index+'].rdfsoggetto', subject))
+    dispatch(change('wizard', 'inferred['+index+'].rdfpredicato', predicate))
+    dispatch(change('wizard', 'inferred['+index+'].rdfcomplemento', rdf_object))
     dispatch(change('wizard', 'inferred['+index+'].uri_voc', uri_voc))
     dispatch(change('wizard', 'inferred['+index+'].concetto', semantics))
     //this.input.onChange(semantics)
   }
 
+  addConvenzioneToForm(value, index){
+    console.log('addConvenzione: ' + value)
+    const { dispatch } = this.props
+    this.state.listaConvenzioni.push(value)
+    dispatch(change('wizard', 'inferred['+index+'].convenzioni',  this.state.listaConvenzioni))
+  }
+
+  addGerarchiaToForm(value, index){
+    console.log('addGerarchia: ' + value)
+    const { dispatch } = this.props
+    this.state.listaGerarchie.push(value)
+    dispatch(change('wizard', 'inferred['+index+'].gerarchie',  this.state.listaGerarchie))
+  }
+
+  addGruppiToForm(value){
+    console.log('addGruppiToForm: ' + value)
+    const { dispatch } = this.props
+    this.state.listaGruppi.push(value)
+    dispatch(change('wizard', 'gruppiaccesso',  this.state.listaGruppi))
+  }
+
+  deleteConvenzioneToForm(index, tipo, val){
+    console.log('deleteConvenzione')
+    for(var i=0;i<this.state.listaConvenzioni.length;i++){    
+      if(this.state.listaConvenzioni[i].index==index&&this.state.listaConvenzioni[i].tipo==tipo&&this.state.listaConvenzioni[i].val==val) {
+        this.state.listaConvenzioni.splice(i, 1);
+      }
+    }
+    const { dispatch } = this.props
+    dispatch(change('wizard', 'inferred['+index+'].convenzioni',  this.state.listaConvenzioni)) 
+  }
+
+  deleteGerarchiaToForm(index, tipo, val){
+    console.log('deleteGerarchie')
+    for(var i=0;i<this.state.listaGerarchie.length;i++){    
+      if(this.state.listaGerarchie[i].index==index&&this.state.listaGerarchie[i].tipo==tipo&&this.state.listaGerarchie[i].val==val) {
+        this.state.listaGerarchie.splice(i, 1);
+      }
+    }
+    const { dispatch } = this.props
+    dispatch(change('wizard', 'inferred['+index+'].gerarchie',  this.state.listaGerarchie)) 
+  }
+
+  deleteGruppiToForm(nome, permesso){
+    console.log('deleteGruppiToForm')
+    for(var i=0;i<this.state.listaGruppi.length;i++){    
+      if(this.state.listaGruppi[i].nome==nome&&this.state.listaGruppi[i].permesso==permesso) {
+        this.state.listaGruppi.splice(i, 1);
+      }
+    }
+    const { dispatch } = this.props
+    dispatch(change('wizard', 'gruppiaccesso',  this.state.listaGruppi)) 
+  }
+  
   aggiornaStato(context, uri_voc, index){
     var contextArray = this.state.context
     contextArray[index] = context
@@ -155,7 +219,7 @@ class WizardForm extends Component {
 
 
   calcDataFields (fields, json) {
-    const { dispatch } = this.props
+    const { dispatch, categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita } = this.props
     localStorage.setItem('kyloSchema', JSON.stringify(json));
     let inferred = json["fields"];
     var tipi = new Object()
@@ -164,15 +228,23 @@ class WizardForm extends Component {
       fields.push({nome : item.name, tipo : item.derivedDataType, concetto : '', 
       desc : '', required : 0, field_type : '' , cat : '', tag : '', 
       constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
-      data :  item.sampleValues});
+      data :  item.sampleValues, gerarchiacampinome: item.name});
     })
     this.setTipi(tipi)
     dispatch(change('wizard', 'tipi', tipi))
+
+/*     //add source type
+    var source = new Object
+    source.type = "sftp"
+    source.url = "".concat(categoria).concat("/").concat(sottocategoria).concat("/").concat(nome)
+    source.user = localStorage.getItem('user').toLowerCase()
+    consolo.log('tempopolling: ' + tempopolling)
+    source.chron = '' */
   }
 
   render() {
-    const { onSubmit } = this.props;
-    const { page, tipi, context } = this.state;
+    const { onSubmit, loggedUser } = this.props;
+    const { page, tipi, context, listaConvenzioni, listaGerarchie, listaGruppi } = this.state;
     return (
       <div className="row mb-5">
         <div className="col-md-10">
@@ -205,12 +277,22 @@ class WizardForm extends Component {
             addTagsToForm={this.addTagsToForm}
             aggiornaStato={this.aggiornaStato}
             addSemanticToForm={this.addSemanticToForm}
+            addConvenzioneToForm={this.addConvenzioneToForm}
+            deleteConvenzioneToForm={this.deleteConvenzioneToForm}
+            addGerarchiaToForm={this.addGerarchiaToForm}
+            deleteGerarchiaToForm={this.deleteGerarchiaToForm}
             context={context}
+            listaConvenzioni={listaConvenzioni}
+            listaGerarchie={listaGerarchie}
           />}
         {page === 2 &&
           <WizardFormThirdPage
             previousPage={this.previousPage}
             onSubmit={onSubmit}
+            organizations={getEditorAdminOrganizations(loggedUser)}
+            addGruppiToForm={this.addGruppiToForm}
+            deleteGruppiToForm={this.deleteGruppiToForm}
+            listaGruppi={listaGruppi}
           />}
         </div>
       </div>
@@ -219,9 +301,23 @@ class WizardForm extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { properties } = state.propertiesReducer['prop'] || {}
-  return { properties }
-}
+WizardForm = reduxForm({
+  form: 'wizard',
+  destroyOnUnmount: false,
+  forceUnregisterOnUnmount: true
+})(WizardForm);
 
-export default connect(mapStateToProps)(WizardForm)
+const selector = formValueSelector('wizard') 
+WizardForm = connect(state => {
+  const categoria = selector(state, 'categoria')
+  const sottocategoria = selector(state, 'sottocategoria')
+  const nome = selector(state, 'nome')
+  const tempopolling = selector(state, 'tempopolling')
+  const espressionecron = selector(state, 'espressionecron')
+  const timerquantita = selector(state, 'timerquantita')
+  const timerunita = selector(state, 'timerunita') 
+  return { categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita  }
+})(WizardForm)
+
+export default WizardForm
+

@@ -94,10 +94,25 @@ export const renderTipi = ({ input, label, tipi, index, meta: { touched, error }
    
    export const renderFieldCheckbox = ({ input, label, meta: { touched, error } }) => (
     <div className="form-group row">
-      <label className="col-sm-3 col-form-label">{label}</label>
+      <label className="col-sm-5 col-form-label">{label}</label>
       <div className="col-sm-2 pt-2">
         <input {...input} type='checkbox' className="form-control" />
         {touched && error && <span>{error}</span>}
       </div>
     </div>
   );
+
+  export const renderOrganization = ({ input, label, organizations, meta: { touched, error } }) => (
+    <div className="form-group row">
+    <label className="col-sm-2 col-form-label">{label}</label>
+    <div className="col-sm-10">
+        <select className="form-control" type='text' {...input}>
+          {organizations && organizations.length>0 && organizations.map(organization => {
+           return(<option value={organization} key={organization}>{organization}</option>)
+          }
+         )}
+        </select>
+      {touched && error && <div className="text-danger">{error}</div>}
+    </div>
+   </div>
+   );
