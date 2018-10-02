@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ProfileService from "./services/ProfileService";
 import {
@@ -273,11 +272,6 @@ class Profile extends Component {
      </div>
     )
   }
-}
-
-Profile.propTypes = {
-  loggedUser: PropTypes.object,
-  organizations: PropTypes.array
 }
 
 function mapStateToProps(state) {

@@ -1,18 +1,8 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { Field } from 'redux-form';
 
 class FileInput extends Component {
-  static propTypes = {
-    dropzone_options: PropTypes.object,
-    meta: PropTypes.object,
-    label: PropTypes.string,
-    classNameLabel: PropTypes.string,
-    input: PropTypes.object,
-    className: PropTypes.string,
-    children: PropTypes.node,
-    cbFunction: PropTypes.func,
-  };
 
   static defaultProps = {
     className: '',

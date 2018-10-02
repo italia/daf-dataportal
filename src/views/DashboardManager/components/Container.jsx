@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 const Container = ({children}) => {
   return (
@@ -8,10 +8,6 @@ const Container = ({children}) => {
       </div>
     </div>
   );
-};
-
-Container.propTypes = {
-  children: PropTypes.array,
 };
 
 export default Container;

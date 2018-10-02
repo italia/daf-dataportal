@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import {createMetacatalog} from '../../helpers/TrasformFormToDcat.js'
 import WizardForm from '../../components/IngestionWizard/WizardForm'
-import { addDataset, addDatasetKylo } from './../../actions.js'
+import { addDataset } from './../../actions.js'
 import {reset} from 'redux-form';
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import {
   Modal,
   ModalHeader,
   ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap'
@@ -171,13 +169,6 @@ hideModalAndRedirect = (e) => {
     </div>
     )
   }
-}
-
-IngestionForm.propTypes = {
-  msg: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  resetForm: PropTypes.func,
-  loggedUser: PropTypes.object
 }
 
 function mapStateToProps(state) {

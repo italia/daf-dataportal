@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
     loadDatasets,
@@ -532,7 +531,7 @@ class DatasetDetail extends Component {
                                 {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showAdmin: false, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
                                 </li>}
-                                {/* this.state.hasPreview && */ !isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
                                 </li>}
                                 {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
@@ -699,73 +698,73 @@ class DatasetDetail extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div hidden={!this.state.showTools} className="col-12 card-text">
-                                            <div className="col-12">
-                                                <div className="row text-muted">
-                                                    <i className="text-icon fa fa-database fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Superset</b></h4>
-                                                </div>
-                                            </div>
-                                            {this.state.supersetState === 1 &&
-                                                <div>
-                                                    {this.state.supersetLink.length > 0 ?
-                                                        <div>
-                                                          <div className="desc-dataset text-dark">
-                                                            <p>Puoi creare un widget su questo dataset in Superset per le seguenti organizzazioni o gruppi: </p>
-                                                          </div>
-                                                          <Table>
-                                                            <tbody>
-                                                            {this.state.supersetLink.map((link, index) => {
-                                                              switch(link.appName){
-                                                                case "superset":
-                                                                var groupType = ''
-                                                                if(link.groupInfo.dafGroupType==='Organization'){
-                                                                  groupType = 'Organizzazione'
-                                                                }else{
-                                                                  groupType = "Workgroup dell'organizzazione"+link.groupInfo.parentGroup
-                                                                }
-                                                                return (
-                                                                  <tr key={index}>
-                                                                    <td>{link.groupInfo.groupCn}</td>
-                                                                    <td>{groupType}</td>
-                                                                    <td><a className="text-primary float-right" title="Crea un widget privato su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
-                                                                  </tr>
-                                                                )
-                                                                case "superset_open":
-                                                                return (
-                                                                  <tr key={index}>
-                                                                    <td>Open Data</td>
-                                                                    <td></td>
-                                                                    <td><a className="text-primary float-right" title="Crea un widget pubblico su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
-                                                                  </tr>
-                                                                )
-                                                              }
-                                                            })
-                                                            }
-                                                            </tbody>
-                                                          </Table>
-                                                        </div>
-                                                        :
-                                                        <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso. Verifica che il dataset sia stato condiviso almeno con una tua organizzazione o workgroup</p>
-                                                    }
-                                                </div>
-                                            }
-                                            {this.state.supersetState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante l'accesso a Superset, contatta l'assistenza.</div>}
-                                            {this.state.supersetState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
-                                            <div className="col-12">
-                                                <div className="row text-muted">
-                                                    <i className="text-icon fa fa-chart-pie fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Metabase</b></h4>
-                                                </div>
-                                            </div>
-                                            {this.state.hasMetabase &&
-                                                <div className="desc-dataset text-dark">
-                                                    <p>Collegati a <a href={serviceurl.urlMetabase + '/question/new'} target='_blank'>Metabase</a> e cerca il dataset per creare nuovi widget.</p>
-                                                </div>
-                                            }
-                                            {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div hidden={!this.state.showTools} className="col-12 card-text">
+                              <div className="col-12">
+                                  <div className="row text-muted">
+                                      <i className="text-icon fa fa-database fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Superset</b></h4>
+                                  </div>
+                              </div>
+                              {this.state.supersetState === 1 &&
+                                  <div>
+                                      {this.state.supersetLink.length > 0 ?
+                                          <div>
+                                            <div className="desc-dataset text-dark">
+                                              <p>Puoi creare un widget su questo dataset in Superset per le seguenti organizzazioni o gruppi: </p>
+                                            </div>
+                                            <Table>
+                                              <tbody>
+                                              {this.state.supersetLink.map((link, index) => {
+                                                switch(link.appName){
+                                                  case "superset":
+                                                  var groupType = ''
+                                                  if(link.groupInfo.dafGroupType==='Organization'){
+                                                    groupType = 'Organizzazione'
+                                                  }else{
+                                                    groupType = "Workgroup dell'organizzazione"+link.groupInfo.parentGroup
+                                                  }
+                                                  return (
+                                                    <tr key={index}>
+                                                      <td className="h5">{link.groupInfo.groupCn}</td>
+                                                      <td className="h5">{groupType}</td>
+                                                      <td><a className="text-primary float-right" title="Crea un widget privato su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
+                                                    </tr>
+                                                  )
+                                                  case "superset_open":
+                                                  return (
+                                                    <tr key={index}>
+                                                      <td className="h5">Gruppo Open Data</td>
+                                                      <td></td>
+                                                      <td><a className="text-primary float-right" title="Crea un widget pubblico su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
+                                                    </tr>
+                                                  )
+                                                }
+                                              })
+                                              }
+                                              </tbody>
+                                            </Table>
+                                          </div>
+                                          :
+                                          <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso. Verifica che il dataset sia stato condiviso almeno con una tua organizzazione o workgroup</p>
+                                      }
+                                  </div>
+                              }
+                              {this.state.supersetState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante l'accesso a Superset, contatta l'assistenza.</div>}
+                              {this.state.supersetState === 3 && <div className="desc-dataset"><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
+                              <div className="col-12">
+                                  <div className="row text-muted">
+                                      <i className="text-icon fa fa-chart-pie fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Metabase</b></h4>
+                                  </div>
+                              </div>
+                              {this.state.hasMetabase &&
+                                  <div className="desc-dataset text-dark">
+                                      <p>Collegati a <a href={serviceurl.urlMetabase + '/question/new'} target='_blank'>Metabase</a> e cerca il dataset per creare nuovi widget.</p>
+                                  </div>
+                              }
+                              {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>}
+                          </div>
                             <div hidden={!this.state.showDett} className="col-md-5 px-0 pt-5">
                                 <div>
                                     <div className="border-left pl-3 row">
@@ -1132,19 +1131,6 @@ class DatasetDetail extends Component {
         </div>
         )
     }
-}
-
-DatasetDetail.propTypes = {
-    selectDataset: PropTypes.string,
-    query: PropTypes.string,
-    datasets: PropTypes.array,
-    dataset: PropTypes.object,
-    isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
-    dispatch: PropTypes.func.isRequired,
-    ope: PropTypes.string,
-    feed: PropTypes.object,
-    iframes: PropTypes.array
 }
 
 function mapStateToProps(state) {

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { serviceurl } from "../../../config/serviceurl.js";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Container, Row, Col, CardImg } from "reactstrap";
 import $ from "jquery";
@@ -131,10 +130,6 @@ class NotizieList extends Component {
     );
   }
 }
-
-NotizieList.propTypes = {
-  properties: PropTypes.object
-};
 
 function mapStateToProps(state) {
   const { properties } = state.propertiesReducer["prop"] || {};

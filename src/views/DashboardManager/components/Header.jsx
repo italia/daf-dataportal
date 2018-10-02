@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 const Header = (props) => {
   return (
@@ -10,10 +10,6 @@ const Header = (props) => {
         </div>
     </div>
   );
-};
-
-Header.propTypes = {
-  title: PropTypes.string,
 };
 
 export default Header;

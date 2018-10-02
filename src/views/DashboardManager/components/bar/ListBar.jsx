@@ -1,5 +1,4 @@
-import React, { PropTypes } from 'react';
-import { Route, Link } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux'
 
 import {
@@ -247,11 +246,6 @@ class ListBar extends React.Component {
     );
   }
 };
-
-ListBar.propTypes = {
-  loggedUser: PropTypes.object,
-  organizations: PropTypes.array
-}
 
 function mapStateToProps(state) {
     const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }   

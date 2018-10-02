@@ -12,13 +12,8 @@ import {
 import { toastr } from 'react-redux-toastr'
 import {
   loadDatasets,
-  unloadDatasets,
-  datasetDetail,
-  logout,
   search
 } from '../../actions'
-import PropTypes from 'prop-types'
-import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 import { serviceurl } from '../../config/serviceurl.js'
 import { isEditor, isAdmin, isSysAdmin } from '../../utility'
 
@@ -342,11 +337,6 @@ class Sidebar extends Component {
       </div>
     )
   }
-}
-
-Sidebar.propTypes = {
-  loggedUser: PropTypes.object,
-  value: PropTypes.string
 }
 
 function mapStateToProps(state) {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import WizardFormFirstPage from './WizardFormFirstPage';
 import WizardFormSecondPage from './WizardFormSecondPage';
 import WizardFormThirdPage from './WizardFormThirdPage';
@@ -301,18 +300,6 @@ class WizardForm extends Component {
     );
   }
 }
-
-/* WizardForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
-
-function mapStateToProps(state) {
-  const organizations = state.userReducer['org'] ? state.userReducer['org'].organizations : [];
-  const loggedUser = state.userReducer['obj'].loggedUser || { } 
-  return { loggedUser, organizations }
-}
-
-export default connect(mapStateToProps)(WizardForm) */
 
 WizardForm = reduxForm({
   form: 'wizard',

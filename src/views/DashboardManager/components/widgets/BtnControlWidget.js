@@ -191,14 +191,6 @@ class BtnControlWidget extends React.Component {
                 onRequestClose={this.onRequestClose}
                     />
 
-                {/*<AddWidgetDialog
-                    widgets={this.props.widgets}
-                    isModalOpen={this.state.isModalAddOpen}
-                    onWidgetSelect={this.addWidget}
-                    onRequestClose={this.onRequestClose}
-                    >
-                </AddWidgetDialog> */}
-
                 <Modal
                     contentLabel="Set width columns"
                     className="Modal__Bootstrap modal-dialog"

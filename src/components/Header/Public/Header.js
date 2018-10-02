@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock } from '@fortawesome/fontawesome-free-solid'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import {
@@ -12,6 +11,7 @@ import {
   NavItem,
  } from 'reactstrap';
  import SearchBar from '../../SearchBar/SearchBar';
+import { isValidToken } from '../../../actions';
 
 
 class Header extends Component {
@@ -27,14 +27,31 @@ class Header extends Component {
       showMenu: false,
       community: false,
       js_scrolled: false,
+      authed: false
     }
 
     this.handleScroll = this.handleScroll.bind(this);
     this.toggleDrop = this.toggleDrop.bind(this)
     this.closeMenu = this.closeMenu.bind(this)
+    this.pushToPrivate = this.pushToPrivate.bind(this)
   }
 
   componentDidMount() {
+    const { dispatch } = this.props
+    if(localStorage.getItem('token')){
+      dispatch(isValidToken(localStorage.getItem('token')))
+      .then(ok=>{
+        if(ok){
+          this.setState({
+            authed: true
+          })
+        }else{
+          this.setState({
+            authed: false
+          })
+        }
+      })
+    }
     window.addEventListener('scroll', this.handleScroll);
   };
   
@@ -105,6 +122,11 @@ class Header extends Component {
     });
   }
 
+  pushToPrivate(){
+    document.removeEventListener('click', this.closeMenu);
+    this.props.history.push('/private/home')
+  }
+
   render(){
     const { properties } = this.props
     var jsscrolled = this.state.js_scrolled ? 'js-scrolled': ''
@@ -142,12 +164,12 @@ class Header extends Component {
                 <a className="d-sm-down-none social-button bg-white rounded-circle text-center mx-1 py-1" href={properties.mediumURL} target="_blank"><i className="fab fa-medium-m"/></a>
                 <div className="row col-12 px-4" style={{height: '56px'}}>
                   <button className={(this.state.search ? "btn-accento":"btn-header")+" h-100 btn"} style={{width: '56px'}} onClick={this.openSearch.bind(this)}><i className="fa fa-search fa-lg" /></button>
-                    {localStorage.getItem('token')?
+                    {this.state.authed?
                     <div className={"dropdown" + show }>
                     <button className="h-100 btn btn-accento px-4" style={{marginLeft: '1px'}} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.openDrop.bind(this)}><h6 className="m-0 p-0 d-lg-down-none float-left">Area Pubblica</h6><i className="float-left fa fa-globe fa-lg d-xl-none"/> <i className="fa fa-sort-down ml-2 float-right"/></button>
                     <div className={"dropdown-menu dropdown-menu-right mt-0" +show} aria-labelledby="dropdownMenuButton">
                         <h6 className="dropdown-header bg-white"><b>VAI A</b></h6>
-                        <button className="dropdown-item bg-light b-l-pvt border-primary pr-5" onClick={()=>{this.props.history.push('/private/home')}}>
+                        <button className="dropdown-item bg-light b-l-pvt border-primary pr-5" onClick={this.pushToPrivate}>
                             <div className="row">
                                 <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faLock} className="mx-2"/></h5>
                                 <div className="row col-11 ml-1">
@@ -236,11 +258,6 @@ class Header extends Component {
       </div>
     )
   }
-}
-
-Header.propTypes = {
-  loggedUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

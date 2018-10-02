@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import { Route, Link } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Tooltip } from 'reactstrap'
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
