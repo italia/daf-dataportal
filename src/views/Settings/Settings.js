@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { fetchProperties } from '../../actions';
 import { isAdmin } from '../../utility';
 import {
     Modal,
-    ModalHeader,
-    ModalTitle,
-    ModalClose,
-    ModalBody,
-    ModalFooter
 } from 'react-modal-bootstrap'
 import themes from './data/Themes'
 import Select from "react-select";
@@ -495,11 +488,6 @@ class Settings extends Component {
         </div>
     )
   }
-}
-
-Settings.propTypes = {
-  loggedUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

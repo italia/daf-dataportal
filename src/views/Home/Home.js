@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import WidgetCard from '../../components/Cards/WidgetCard';
@@ -386,18 +385,6 @@ class Home extends Component {
             </div>
         )
     }
-}
-
-Home.propTypes = {
-    selectDataset: PropTypes.string,
-    query: PropTypes.string,
-    datasets: PropTypes.array,
-    dataset: PropTypes.object,
-    isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
-    dispatch: PropTypes.func.isRequired,
-    ope: PropTypes.string,
-    json: PropTypes.array
 }
 
 function mapStateToProps(state) {

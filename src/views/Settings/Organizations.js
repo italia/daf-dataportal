@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { fetchProperties } from '../../actions';
-import { serviceurl } from '../../config/serviceurl'
 import {
     Modal,
     ModalHeader,
@@ -945,11 +942,6 @@ class Organizations extends Component {
             </div>
         )
     }
-}
-
-Organizations.propTypes = {
-  loggedUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import WizardFormFirstPage from './WizardFormFirstPage'
 import WizardOperational from './WizardOperational'
 import WizardFormMetadata from './WizardFormMetadata'
@@ -201,13 +200,6 @@ class WizardForm extends Component {
       </div>
     )
   }
-}
-
-WizardForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  loggedUser: PropTypes.object,
-  organizations: PropTypes.array,
-  saving: PropTypes.bool
 }
 
 function mapStateToProps(state) {

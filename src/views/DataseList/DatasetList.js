@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { search } from '../../actions'
@@ -1100,11 +1099,6 @@ class DatasetList extends Component {
             </div>
         )
     }
-}
-
-DatasetList.propTypes = {
-    isFetching: PropTypes.bool.isRequired,
-    results: PropTypes.array
 }
 
 function mapStateToProps(state) {

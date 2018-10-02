@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { fetchProperties } from '../../actions';
-import { serviceurl } from '../../config/serviceurl'
 import { roles, isSysAdmin, isAdmin } from '../../utility'
 import {
     Modal,
@@ -556,11 +553,6 @@ class Users extends Component {
             </div>
         )
     }
-}
-
-Users.propTypes = {
-  loggedUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

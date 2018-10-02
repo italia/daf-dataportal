@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 const CustomFrame = ({children, onRemove, editable}) => {
   return (
@@ -13,12 +13,6 @@ const CustomFrame = ({children, onRemove, editable}) => {
       </div>
     </div>
   );
-};
-
-CustomFrame.propTypes = {
-  children: PropTypes.element,
-  onRemove: PropTypes.func,
-  editable: PropTypes.bool,
 };
 
 export default CustomFrame;

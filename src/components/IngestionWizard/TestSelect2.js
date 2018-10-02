@@ -1,6 +1,5 @@
 import React from 'react';
 import createClass from 'create-react-class';
-import PropTypes from 'prop-types';
 import Select from 'react-select';
 import fetch from 'isomorphic-fetch';
 import { serviceurl } from '../../config/serviceurl.js'
@@ -56,9 +55,6 @@ function ontologiesFilter(ontologies, regex){
 
 const TestSelect2 = createClass({
 	displayName: 'Ontologies',
-	propTypes: {
-		label: PropTypes.string,
-	},
 	getInitialState () {
 		return {
 			backspaceRemoves: true,

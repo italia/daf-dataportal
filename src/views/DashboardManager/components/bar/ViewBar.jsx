@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import { Route, Link } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { toastr } from 'react-redux-toastr'
 
 import { isEditor, isAdmin } from '../../../../utility'
