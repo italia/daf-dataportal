@@ -1153,8 +1153,8 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
     export function getSchema(filesToUpload, typeFile) {
       console.log('getSchema'); 
-      //var url = serviceurl.apiURLDatiGov + "/infer/kylo/" + typeFile
-      var url = 'http://localhost:3001/dati-gov/v1/infer/kylo/csv'
+      var url = serviceurl.apiURLDatiGov + "/infer/kylo/" + typeFile
+      //var url = 'http://localhost:3001/dati-gov/v1/infer/kylo/csv'
       var token = '';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
