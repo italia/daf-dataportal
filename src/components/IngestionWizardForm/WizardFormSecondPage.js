@@ -6,6 +6,8 @@ import { ingestionFormOptions } from './const';
 import AutocompleteSemantic from './AutocompleteSemantic'
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderTipi, renderFieldTags, renderContesti, renderFieldCheckbox} from './renderField';
 import Collapse from 'rc-collapse'
+import Convenzioni from './Convenzioni'
+import Gerarchie from './Gerarchie'
 import 'rc-collapse/assets/index.css'
 
 
@@ -16,7 +18,7 @@ const renderError = ({ meta: { touched, error } }) =>
 
   
 let WizardFormSecondPage = props => {
-  const { fields, handleSubmit, addTagsToForm, previousPage, tipi, aggiornaStato, addSemanticToForm, context } = props;
+  const { fields, handleSubmit, addTagsToForm, previousPage, tipi, aggiornaStato, addSemanticToForm, addConvenzioneToForm, deleteConvenzioneToForm, addGerarchiaToForm, deleteGerarchiaToForm, context, listaConvenzioni, listaGerarchie } = props;
   return (
      <form onSubmit={handleSubmit} className="col-12 mt-5">
       {(fields && fields.length > 0) &&
@@ -27,25 +29,24 @@ let WizardFormSecondPage = props => {
               addTagsToForm={addTagsToForm}
               aggiornaStato={aggiornaStato}
               addSemanticToForm={addSemanticToForm}
+              addConvenzioneToForm={addConvenzioneToForm}
+              deleteConvenzioneToForm={deleteConvenzioneToForm}
+              addGerarchiaToForm={addGerarchiaToForm}
+              deleteGerarchiaToForm={deleteGerarchiaToForm}
               context={context}
               previousPage={previousPage}
+              listaConvenzioni={listaConvenzioni}
+              listaGerarchie={listaGerarchie}
+
         />
       }
     </form> 
   )}
 
-const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemanticToForm, context, previousPage, meta : {touched, error} }) =>
+const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemanticToForm, addConvenzioneToForm, deleteConvenzioneToForm, addGerarchiaToForm, deleteGerarchiaToForm, context, listaConvenzioni, listaGerarchie, previousPage, meta : {touched, error} }) =>
         <div>
           {fields.map((field, index) => {
-            var convenzioniValue = fields.get(index).convenzioni
-            var campi = []
-            if(convenzioniValue && ingestionFormOptions.convenzioni){
-              for(var i=0;i<ingestionFormOptions.convenzioni.length;i++){
-                if(ingestionFormOptions.convenzioni[i].val==convenzioniValue){
-                  campi = ingestionFormOptions.convenzioni[i].campi
-                }
-              }
-            }
+            var vocabolariocontrollato = fields.get(index).vocabolariocontrollato
             return(
             <div className="card" key={index}>
               <div className="card-body">
@@ -112,25 +113,6 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                         label="Standard Format"
                         value={`${field}.standardformat`}
                       />
-                      <Field
-                        name={`${field}.convenzioni`}
-                        options={ingestionFormOptions.convenzioni}
-                        component={renderFieldSelect}
-                        label="Convenzioni"
-                        value={`${field}.convenzioni`}
-                      />
-                      {campi && campi.map((campo, index) => {
-                        console.log('campo: ' + campo)
-                        return(
-                          <Field
-                            name={`${field}.campo.${campo.val}`}
-                            component={renderFieldInput}
-                            label={campo.label}
-                            value={`${field}.campo.${campo.val}`}
-                            key={index}
-                          />)
-                      })
-                      }
                        <Field
                         name={`${field}.vocabolariocontrollato`}
                         options={ingestionFormOptions.vocabolariocontrollato}
@@ -138,6 +120,20 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                         label="Vocabolario Controllato"
                         value={`${field}.vocabolariocontrollato`}
                       />
+                      {vocabolariocontrollato &&
+                         <Field
+                          name={`${field}.campovocabolariocontrollato`}
+                          component={renderFieldInput}
+                          label='Campo Vocabolario'
+                          value={`${field}.campovocabolariocontrollato`}
+                          />
+                      }
+                      <Convenzioni 
+                          addConvenzioneToForm={addConvenzioneToForm} 
+                          index={index} 
+                          listaConvenzioni={listaConvenzioni}
+                          deleteConvenzioneToForm={deleteConvenzioneToForm}
+                          />
                     </Panel>
                     <Panel header="Semantica e Ontologie">
                       <Field
@@ -173,11 +169,17 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                           value={`${field}.rdfcomplemento`}
                         />
                       <Field
-                          name={`${field}.gerarchiacampi`}
+                          name={`${field}.gerarchiacampinome`}
                           component={renderFieldInput}
                           label="Gerarchia Campi"
-                          value={`${field}.gerarchiacampi`}
+                          value={`${field}.gerarchiacampinome`}
                         />
+                      <Gerarchie
+                          addGerarchiaToForm={addGerarchiaToForm} 
+                          index={index} 
+                          listaGerarchie={listaGerarchie}
+                          deleteGerarchiaToForm={deleteGerarchiaToForm}
+                          />
                     </Panel>
                     <Panel header="Informazioni Operazionali">
                       <Field
@@ -258,7 +260,6 @@ WizardFormSecondPage = reduxForm({
   validate,
 })(WizardFormSecondPage);
 
-const selector = formValueSelector('wizard') 
 WizardFormSecondPage = connect(state => {
   //var title = selector(state, 'title')  
   const fields = state.form.wizard.values.inferred

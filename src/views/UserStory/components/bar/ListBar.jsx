@@ -176,7 +176,7 @@ class ViewBar extends React.Component {
             </ModalBody>
             <ModalFooter>
               <button className='btn btn-gray-200' onClick={this.hideModal}>
-                Close
+                Chiudi
               </button>
               <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
                 <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>

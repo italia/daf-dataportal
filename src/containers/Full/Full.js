@@ -811,7 +811,7 @@ class Full extends Component {
             </ModalBody>
             <ModalFooter>
               <button type="button" className='btn btn-gray-200' onClick={this.hideModalStory}>
-                Close
+                Chiudi
               </button>
               <button type="button" className="btn btn-primary px-2" onClick={this.handleSaveStory.bind(this)}>
                 <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>

@@ -3,26 +3,31 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import validate from './validate';
 import { connect  } from 'react-redux';
 import { ingestionFormOptions } from './const';
-import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderTipi, renderFieldTags, renderContesti, renderFieldCheckbox} from './renderField';
+import Gruppi from './Gruppi'
+import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderOrganization, renderFieldCheckbox} from './renderField';
 import Collapse from 'rc-collapse'
 import 'rc-collapse/assets/index.css'
 
 var Panel = Collapse.Panel;
 
 let WizardFormThirdPage = props => {
-  const { handleSubmit, previousPage } = props;
+  const { handleSubmit, previousPage, organizations, addGruppiToForm, deleteGruppiToForm, listaGruppi } = props;
   return (
     <form onSubmit={handleSubmit} className="col-12 mt-5">
           <FieldArray
               name="inferred"
               component={renderFieldArray}
               previousPage={previousPage}
+              organizations={organizations}
+              addGruppiToForm={addGruppiToForm}
+              deleteGruppiToForm={deleteGruppiToForm}
+              listaGruppi={listaGruppi}
         />
     </form> 
   );
 };
 
-const renderFieldArray = ({fields, previousPage, meta : {touched, error} }) => 
+const renderFieldArray = ({fields, previousPage, organizations, addGruppiToForm, deleteGruppiToForm, listaGruppi, meta : {touched, error} }) => 
       <div>
         <div className="card">
           <div className="card-body">
@@ -41,10 +46,11 @@ const renderFieldArray = ({fields, previousPage, meta : {touched, error} }) =>
                 label="Licenza"
               />
               <Field
-                name="organizzazionetitolare"
-                options={ingestionFormOptions.organizzazionetitolare}
-                component={renderFieldSelect}                
-                label="Organizzazione Titolare"
+                name="ownership"
+                type="text"
+                component={renderOrganization}
+                label="Organizzazione"
+                organizations={organizations}
               />
               <Field
                 name="ultimamodifica"
@@ -71,15 +77,15 @@ const renderFieldArray = ({fields, previousPage, meta : {touched, error} }) =>
             <div>
               <Field
                 name="gruppoproprietario"
-                options={ingestionFormOptions.gruppoproprietario}
-                component={renderFieldSelect}
+                type="text"
+                component={renderOrganization}
                 label="Gruppo Proprietario"
+                organizations={organizations}
               />
-              <Field
-                name="gruppiaccesso"
-                options={ingestionFormOptions.gruppiaccesso}
-                component={renderFieldSelect}
-                label="Gruppi Accesso"
+              <Gruppi
+                addGruppiToForm={addGruppiToForm} 
+                deleteGruppiToForm={deleteGruppiToForm}
+                listaGruppi={listaGruppi}
               />
               <Field
                 name="datasetstd"
