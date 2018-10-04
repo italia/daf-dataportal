@@ -4,6 +4,7 @@ import validate from './validate';
 import { connect  } from 'react-redux';
 import { ingestionFormOptions } from './const';
 import Gruppi from './Gruppi'
+import Sorgenti from './Sorgenti'
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderOrganization, renderFieldCheckbox} from './renderField';
 import Collapse from 'rc-collapse'
 import 'rc-collapse/assets/index.css'
@@ -11,7 +12,7 @@ import 'rc-collapse/assets/index.css'
 var Panel = Collapse.Panel;
 
 let WizardFormThirdPage = props => {
-  const { handleSubmit, previousPage, organizations, addGruppiToForm, deleteGruppiToForm, listaGruppi } = props;
+  const { handleSubmit, previousPage, organizations, addGruppiToForm, deleteGruppiToForm, listaGruppi, listaSorgenti, addSorgenteToForm, deleteSorgenteToForm } = props;
   return (
     <form onSubmit={handleSubmit} className="col-12 mt-5">
           <FieldArray
@@ -22,12 +23,15 @@ let WizardFormThirdPage = props => {
               addGruppiToForm={addGruppiToForm}
               deleteGruppiToForm={deleteGruppiToForm}
               listaGruppi={listaGruppi}
+              listaSorgenti={listaSorgenti}
+              addSorgenteToForm={addSorgenteToForm}
+              deleteSorgenteToForm={deleteSorgenteToForm}
         />
     </form> 
   );
 };
 
-const renderFieldArray = ({fields, previousPage, organizations, addGruppiToForm, deleteGruppiToForm, listaGruppi, meta : {touched, error} }) => 
+const renderFieldArray = ({fields, previousPage, organizations, addGruppiToForm, deleteGruppiToForm, listaGruppi, listaSorgenti, addSorgenteToForm, deleteSorgenteToForm, meta : {touched, error} }) => 
       <div>
         <div className="card">
           <div className="card-body">
@@ -100,30 +104,7 @@ const renderFieldArray = ({fields, previousPage, organizations, addGruppiToForm,
               />
               <Collapse accordion={true}>
                 <Panel header="Informazioni Ingestion" headerClass="my-header-class">
-                  <Field
-                      name="sftp"
-                      component={renderFieldInput}
-                      label="SFTP"
-                      readonly="readonly"
-                    />
-                  <Field
-                      name="servicepull"
-                      component={renderFieldInput}
-                      label="Service Pull"
-                      readonly="readonly"
-                    />
-                  <Field
-                      name="servicepush"
-                      component={renderFieldInput}
-                      label="Service Push"
-                      readonly="readonly"
-                    />
-                    <Field
-                      name="dafdata"
-                      component={renderFieldInput}
-                      label="DAF Data"
-                      readonly="readonly"
-                    />
+                  <Sorgenti listaSorgenti={listaSorgenti} addSorgenteToForm={addSorgenteToForm} deleteSorgenteToForm={deleteSorgenteToForm}/>
                 </Panel>
                 <Panel header="Informazioni Memorizzazione">
                   <Field

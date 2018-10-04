@@ -7,7 +7,7 @@ import validate from './validate';
 import FileInput from './FileInput'
 
 
-const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottocategoria, tipodataset, modalitacaricamento, tempopolling, nomefile, urlws, reset, previousPage, getSchemaFromWS, meta : {touched, error} }) => <div>
+const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCategoria, sottocategoria, tipodataset, modalitacaricamento, tempopolling, nomefile, urlws, reset, errorNext, getSchemaFromWS, meta : {touched, error} }) => <div>
             <Field
               name="titolo"
               component={renderFieldInput}
@@ -51,15 +51,17 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
               label="Tags"
             />
             <Field
+              name="template"
+              options={ingestionFormOptions.template}
+              component={renderFieldSelect}
+              label="Template"
+              onChange={setTemplate}
+            />
+            <Field
               name="tipodataset"
               options={ingestionFormOptions.tipodatasetOptions}
               component={renderFieldSelect}
               label="Tipo Dataset"
-            />
-            <Field
-              name="template"
-              component={renderFieldInput}
-              label="Template"
             />
             {tipodataset=='primitive' &&
               <div>
@@ -204,11 +206,6 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
                 </div>
               </div>  
               }
-              {nomefile&& 
-              <div>
-                <button type="submit" className="btn btn-primary float-right">Avanti</button>
-              </div>
-              } 
             </div>
             }
             {tipodataset=='derived_sql' &&
@@ -239,12 +236,16 @@ const renderFieldArray = ({fields, setName, onDropFunction, getCategoria, sottoc
                 </div>
               </div>
             }
+            {errorNext && <div className="text-danger">{errorNext}</div>}
+            <div>
+                <button type="submit" className="btn btn-primary float-right">Avanti</button>
+            </div>
 </div>
 
 
 
 let WizardFormFirstPage = props => {
-  const { onDropFunction, handleSubmit, reset, categoria, tipodataset, modalitacaricamento, tempopolling, getCategoria, setName, nomefile, urlws, previousPage, getSchemaFromWS } = props;
+  const { onDropFunction, handleSubmit, reset, categoria, tipodataset, setTemplate, modalitacaricamento, tempopolling, getCategoria, setName, nomefile, urlws, previousPage, getSchemaFromWS, errorNext } = props;
   var sottocategoria = getCategoria(2,categoria)
   return (
       <div className="mt-5">
@@ -270,6 +271,8 @@ let WizardFormFirstPage = props => {
                   getSchemaFromWS={getSchemaFromWS}
                   urlws={urlws}
                   tempopolling={tempopolling}
+                  errorNext={errorNext}
+                  setTemplate={setTemplate}
             />
         </form>
       </div>

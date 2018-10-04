@@ -6,7 +6,7 @@ export const renderFieldInput = ({ input, label, readonly, meta: { touched, erro
     <label className="col-sm-2 col-form-label">{label}</label>
     <div className="col-sm-10">
       <input {...input} type='text' readOnly={readonly} className="form-control" />
-      {touched && error && <span>{error}</span>}
+      {touched && error && <span className="text-danger">{error}</span>}
     </div>
   </div>
 );
@@ -16,7 +16,7 @@ export const renderFieldInputButton = ({ input, buttonLabel, label, placeholder,
     <label className="col-sm-2 col-form-label">{label}</label>
     <div className="col-sm-8">
       <input {...input} placeholder={placeholder} type='text' readOnly={readonly} className="form-control" />
-      {touched && error && <span>{error}</span>}
+      {touched && error && <span className="text-danger">{error}</span>}
     </div>
     <div className="col-2">
       <button title={buttonLabel} type="button" className="btn btn-link" onClick={onClick}><i className={iconClassName}></i></button>
@@ -29,7 +29,7 @@ export const renderFieldTextArea = ({ input, label, meta: { touched, error } }) 
     <label className="col-sm-2 col-form-label">{label}</label>
     <div className="col-sm-10">
       <textarea {...input} type='text' className="form-control" />
-      {touched && error && <span>{error}</span>}
+      {touched && error && <span className="text-danger">{error}</span>}
     </div>
   </div>
 );
@@ -42,8 +42,9 @@ export const renderFieldSelect = ({ input, label, options, meta: { touched, erro
           <option value="" defaultValue></option>
           {options.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
         </select>
+      {touched && error && <span className="text-danger">{error}</span>}
       </div>
-      {touched && error && <div className="text-danger">{error}</div>}
+
  </div>
 );
 
@@ -97,7 +98,7 @@ export const renderTipi = ({ input, label, tipi, index, meta: { touched, error }
       <label className="col-sm-5 col-form-label">{label}</label>
       <div className="col-sm-2 pt-2">
         <input {...input} type='checkbox' className="form-control" />
-        {touched && error && <span>{error}</span>}
+        {touched && error && <span className="text-danger">{error}</span>}
       </div>
     </div>
   );

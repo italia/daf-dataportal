@@ -77,6 +77,21 @@ export const ingestionFormOptions =
       ]
     }
   ],
+  'template':[
+    { 'val': 'template1', 
+      'name': 'Template 1', 
+      'value':[
+        {'name':'tempopolling', 'value':'0'},
+        {'name':'espressionecron', 'value':'5 18 * * 1-5'}
+      ]
+    },
+    { 'val': 'template2', 
+      'name': 'Template 2', 
+      'value':{
+        'tempopolling':'0',
+        'espressionecron':'5 18 * * 1-5'} 
+    }
+  ],
   'tipoinformazione': [
     { 'val': 'Opzione1', 'name': 'Opzione1' },
     { 'val': 'Opzione2', 'name': 'Opzione2' }

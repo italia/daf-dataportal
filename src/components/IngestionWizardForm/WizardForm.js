@@ -11,6 +11,8 @@ import { getEditorAdminOrganizations } from '../../utility'
 import 'rc-steps/assets/index.css'
 import 'rc-steps/assets/iconfont.css'
 import { reduxForm, formValueSelector } from 'redux-form';
+import validate from './validate';
+import { ingestionFormOptions } from './const';
 
 const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiungi i Metadati'}]
 
@@ -19,6 +21,7 @@ class WizardForm extends Component {
     super(props);
     this.nextPage = this.nextPage.bind(this);
     this.previousPage = this.previousPage.bind(this);
+    this.goToSecondPage = this.goToSecondPage.bind(this)
     this.setUploading = this.setUploading.bind(this);
     this.onDropFunction = this.onDropFunction.bind(this) 
     this.addSemanticToForm = this.addSemanticToForm.bind(this)
@@ -28,8 +31,11 @@ class WizardForm extends Component {
     this.deleteGerarchiaToForm = this.deleteGerarchiaToForm.bind(this)
     this.addGruppiToForm = this.addGruppiToForm.bind(this)
     this.deleteGruppiToForm = this.deleteGruppiToForm.bind(this)
+    this.addSorgenteToForm = this.addSorgenteToForm.bind(this)
+    this.deleteSorgenteToForm = this.deleteSorgenteToForm.bind(this)
     this.aggiornaStato = this.aggiornaStato.bind(this)
     this.setName = this.setName.bind(this)
+    this.setTemplate = this.setTemplate.bind(this)
     this.getSchemaFromWS = this.getSchemaFromWS.bind(this)
     this.state = {
       page: 0,
@@ -40,7 +46,9 @@ class WizardForm extends Component {
       uri_voc:[],
       listaConvenzioni:[],
       listaGerarchie: [],
-      listaGruppi: []
+      listaGruppi: [],
+      listaSorgenti: [],
+      errorNext: undefined
     };
   }
 
@@ -78,6 +86,14 @@ class WizardForm extends Component {
     dispatch(change('wizard', 'gruppiaccesso',  this.state.listaGruppi))
   }
 
+  addSorgenteToForm(value){
+    console.log('addSorgenteToForm: ' + value)
+    const { dispatch } = this.props
+    this.state.listaSorgenti.push(value)
+    dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+  }
+  
+
   deleteConvenzioneToForm(index, tipo, val){
     console.log('deleteConvenzione')
     for(var i=0;i<this.state.listaConvenzioni.length;i++){    
@@ -110,6 +126,17 @@ class WizardForm extends Component {
     const { dispatch } = this.props
     dispatch(change('wizard', 'gruppiaccesso',  this.state.listaGruppi)) 
   }
+
+  deleteSorgenteToForm(tipo, url, user, chron){
+    console.log('deleteSorgenteToForm')
+    for(var i=0;i<this.state.listaSorgenti.length;i++){    
+      if(this.state.listaSorgenti[i].tipo==tipo&&this.state.listaSorgenti[i].url==url&&this.state.listaSorgenti[i].user==user&&this.state.listaSorgenti[i].chron==chron) {
+        this.state.listaSorgenti.splice(i, 1);
+      }
+    }
+    const { dispatch } = this.props
+    dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+  }
   
   aggiornaStato(context, uri_voc, index){
     var contextArray = this.state.context
@@ -139,6 +166,7 @@ class WizardForm extends Component {
 
   setUploading(valueUploading, valueError){
     this.setState({
+      errorNext: undefined,
       uploading: valueUploading,
       errorUpload: valueError
     });
@@ -146,6 +174,32 @@ class WizardForm extends Component {
 
   nextPage() {
     this.setState({ page: this.state.page + 1 });
+  }
+
+  goToSecondPage(fields){
+    const { dispatch } = this.props
+    this.setState({
+      errorNext: undefined
+    });
+    if(fields.nomefile && fields.nomefile!=''){
+      //add source type
+      var sorgente = new Object
+      sorgente.tipo = "sftp"
+      sorgente.url = "".concat(fields.categoria).concat("/").concat(fields.sottocategoria).concat("/").concat(fields.nome)
+      sorgente.user = localStorage.getItem('user').toLowerCase()
+      console.log('tempopolling: ' + fields.tempopolling)
+      if(fields.tempopolling=='0')
+        sorgente.chron = '{cron:' + fields.espressionecron + '}'
+      else if (fields.tempopolling=='1')
+        sorgente.chron = '{timer: quantita:' + fields.timerquantita + ', unita: '+ fields.timerunita+'}'
+      this.state.listaSorgenti.push(sorgente)
+      dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+      this.nextPage() 
+    }else{
+      this.setState({
+        errorNext: 'Caricare il file per la metadatazione'
+      });
+    }
   }
 
   previousPage() {
@@ -200,13 +254,12 @@ class WizardForm extends Component {
     if(filesToUpload.length>0){
     this.setState({errorDrop:''})
     dispatch(getSchema(filesToUpload, 'csv'))//defaul value is csv
-        //.then(json => { this.calcDataFields(fields, JSON.parse(json))
-        .then(json => { this.calcDataFields(fields, json)
+        .then(json => { this.calcDataFields(fields, JSON.parse(json))
+        //.then(json => { this.calcDataFields(fields, json)
                         this.setUploading(false, undefined);
                         dispatch(change('wizard', 'separator', json.separator))
                         dispatch(change('wizard', 'filesToUpload', filesToUpload))
                         dispatch(change('wizard', 'nomefile', filesToUpload[0].name))
-                        this.nextPage()
                     })
         .catch(exception => {
                         console.log('Eccezione !!! ' + exception)
@@ -219,7 +272,7 @@ class WizardForm extends Component {
 
 
   calcDataFields (fields, json) {
-    const { dispatch, categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita } = this.props
+    const { dispatch } = this.props
     localStorage.setItem('kyloSchema', JSON.stringify(json));
     let inferred = json["fields"];
     var tipi = new Object()
@@ -232,19 +285,25 @@ class WizardForm extends Component {
     })
     this.setTipi(tipi)
     dispatch(change('wizard', 'tipi', tipi))
+  }
 
-/*     //add source type
-    var source = new Object
-    source.type = "sftp"
-    source.url = "".concat(categoria).concat("/").concat(sottocategoria).concat("/").concat(nome)
-    source.user = localStorage.getItem('user').toLowerCase()
-    consolo.log('tempopolling: ' + tempopolling)
-    source.chron = '' */
+  setTemplate(e){
+    console.log(e.target.value)
+    const { dispatch } = this.props;
+    for(var i=0;i<ingestionFormOptions.template.length;i++){
+      var templateValue = ingestionFormOptions.template[i].value
+      if(templateValue && templateValue.length>0){
+        for(var j=0;j<templateValue.length;j++){
+          var objTemplate = templateValue[j]
+          dispatch(change('wizard', objTemplate.name, objTemplate.value))
+        }
+      }
+    }
   }
 
   render() {
     const { onSubmit, loggedUser } = this.props;
-    const { page, tipi, context, listaConvenzioni, listaGerarchie, listaGruppi } = this.state;
+    const { page, tipi, context, listaConvenzioni, listaGerarchie, listaGruppi, listaSorgenti, errorNext } = this.state;
     return (
       <div className="row mb-5">
         <div className="col-md-10">
@@ -260,7 +319,7 @@ class WizardForm extends Component {
         </Steps>
         {page === 0 && 
           <WizardFormFirstPage 
-            onSubmit={this.nextPage} 
+            onSubmit={this.goToSecondPage} 
             previousPage={this.previousPage}
             getCategoria={this.getCategoria}
             setUploading={this.setUploading}
@@ -268,6 +327,8 @@ class WizardForm extends Component {
             reset={reset}
             setName={this.setName}
             getSchemaFromWS={this.getSchemaFromWS}
+            errorNext={errorNext}
+            setTemplate={this.setTemplate}
           />}
         {page === 1 &&
           <WizardFormSecondPage
@@ -293,6 +354,9 @@ class WizardForm extends Component {
             addGruppiToForm={this.addGruppiToForm}
             deleteGruppiToForm={this.deleteGruppiToForm}
             listaGruppi={listaGruppi}
+            listaSorgenti={listaSorgenti}
+            addSorgenteToForm={this.addSorgenteToForm}
+            deleteSorgenteToForm={this.deleteSorgenteToForm}
           />}
         </div>
       </div>
@@ -304,7 +368,8 @@ class WizardForm extends Component {
 WizardForm = reduxForm({
   form: 'wizard',
   destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true
+  forceUnregisterOnUnmount: true,
+  validate
 })(WizardForm);
 
 const selector = formValueSelector('wizard') 

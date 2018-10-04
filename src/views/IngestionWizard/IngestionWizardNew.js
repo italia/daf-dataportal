@@ -18,7 +18,7 @@ class IngestionForm extends Component {
     const { loggedUser } = this.props
     return (
       <div className="container">
-         <WizardForm onSubmit={showResults}/>
+         <WizardForm onSubmit={showResults} loggedUser={loggedUser}/>
          <Values form="wizard" />
        </div>
     )
