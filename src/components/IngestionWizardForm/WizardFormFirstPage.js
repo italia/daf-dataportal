@@ -1,41 +1,47 @@
 import React from 'react'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { connect  } from 'react-redux';
-import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderFieldInputButton, renderFieldCheckbox} from './renderField';
+import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderFieldTags, renderFieldInputButton, renderFieldCheckbox} from './renderField';
 import { ingestionFormOptions } from './const';
 import validate from './validate';
 import FileInput from './FileInput'
+import Query from './Query'
 
 
-const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCategoria, sottocategoria, tipodataset, modalitacaricamento, tempopolling, nomefile, urlws, reset, errorNext, getSchemaFromWS, meta : {touched, error} }) => <div>
+const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCategoria, sottocategoria, tipodataset, modalitacaricamento, addTagsToForm, tempopolling, nomefile, urlws, reset, errorNext, getSchemaFromWS, query, setQuery, resultQuery, executeQuery, resetQueryValue, openModalInfo, meta : {touched, error} }) => <div>
             <Field
               name="titolo"
               component={renderFieldInput}
               label="Titolo"
               onChange={setName}
+              openModalInfo={openModalInfo}
             />
           <Field
               name="nome"
               component={renderFieldInput}
               label="Nome"
               readonly="true"
+              openModalInfo={openModalInfo}
             />
             <Field
               name="public"
               options={ingestionFormOptions.publicOptions}
               component={renderFieldSelect}
               label="Pubblico/OpenData"
+              openModalInfo={openModalInfo}
             />
             <Field
               name="descrizione"
               component={renderFieldTextArea}
               label="Descrizione"
+              openModalInfo={openModalInfo}
             />
             <Field
               name="categoria"
               options={getCategoria(1,undefined)}
               component={renderFieldSelect}
               label="Categoria"
+              openModalInfo={openModalInfo}
             />
             {(sottocategoria && sottocategoria.length>0) &&
                 <Field
@@ -43,12 +49,15 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                   options={sottocategoria}
                   component={renderFieldSelect}
                   label="Sotto categoria"
+                  openModalInfo={openModalInfo}
                 />
             }
             <Field
-              name="tags"
-              component={renderFieldInput}
+              name="filetags"
+              component={renderFieldTags}
               label="Tags"
+              addTagsToForm={addTagsToForm}
+              openModalInfo={openModalInfo}
             />
             <Field
               name="template"
@@ -56,12 +65,14 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
               component={renderFieldSelect}
               label="Template"
               onChange={setTemplate}
+              openModalInfo={openModalInfo}
             />
             <Field
               name="tipodataset"
               options={ingestionFormOptions.tipodatasetOptions}
               component={renderFieldSelect}
               label="Tipo Dataset"
+              openModalInfo={openModalInfo}
             />
             {tipodataset=='primitive' &&
               <div>
@@ -70,6 +81,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                   options={ingestionFormOptions.modalitacaricamentoOptions}
                   component={renderFieldSelect}
                   label="Modalità Caricamento"
+                  openModalInfo={openModalInfo}
                 />
                 {modalitacaricamento==1 && 
                 <div className="card">
@@ -81,18 +93,21 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                             name="caricafile"
                             component={renderFieldCheckbox}                
                             label="Caricare il file al termine della metadatazione"
+                            openModalInfo={openModalInfo}
                           />
                           <Field
                             name="tempopolling"
                             options={ingestionFormOptions.tempoDiPollingOptions}
                             component={renderFieldSelect}
                             label="Tempo di Polling"
+                            openModalInfo={openModalInfo}
                           />
                           {tempopolling==0 &&
                               <Field
                                 name="espressionecron"
                                 component={renderFieldInput}
                                 label="Espressione"
+                                openModalInfo={openModalInfo}
                             />
                           }
                           {tempopolling==1 &&
@@ -101,12 +116,14 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                                   name="timerquantita"
                                   component={renderFieldInput}
                                   label="Quantità"
+                                  openModalInfo={openModalInfo}
                                 />
                                     <Field
                                     name="timerunita"
                                     options={ingestionFormOptions.timerUnita}
                                     component={renderFieldSelect}
                                     label="Unità"
+                                    openModalInfo={openModalInfo}
                                 />
                               </div>
                           }
@@ -155,12 +172,16 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                             options={ingestionFormOptions.tempoDiPollingOptions}
                             component={renderFieldSelect}
                             label="Tempo di Polling"
+                            openModalInfo={openModalInfo}
+
                           />
                           {tempopolling==0 &&
                               <Field
                                 name="espressionecron"
                                 component={renderFieldInput}
                                 label="Espressione"
+                                openModalInfo={openModalInfo}
+
                             />
                           }
                           {tempopolling==1 &&
@@ -169,12 +190,16 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                                   name="timerquantita"
                                   component={renderFieldInput}
                                   label="Quantità"
+                                  openModalInfo={openModalInfo}
+
                                 />
                                     <Field
                                     name="timerunita"
                                     options={ingestionFormOptions.timerUnita}
                                     component={renderFieldSelect}
                                     label="Unità"
+                                    openModalInfo={openModalInfo}
+
                                 />
                               </div>
                           }
@@ -188,6 +213,8 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                               buttonLabel="Elimina File"
                               onClick={reset}
                               iconClassName="fa fa-trash fa-lg"
+                              openModalInfo={openModalInfo}
+
                             />
                         </div>
                         :
@@ -199,6 +226,8 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                           onClick={getSchemaFromWS.bind(this,fields, urlws)}
                           iconClassName="fa fa-plus"
                           placeholder="http://"
+                          openModalInfo={openModalInfo}
+
                         />
                       }
                     </div>
@@ -209,16 +238,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
             </div>
             }
             {tipodataset=='derived_sql' &&
-              <div>
-                <Field
-                name="sqlquery"
-                component={renderFieldTextArea}
-                label="Query SQL"
-                />
-                <div>
-                  <button type="submit" className="btn btn-primary float-right">Esegui</button>
-                </div>
-              </div>
+              <Query query={query} setQuery={setQuery} resultQuery={resultQuery} executeQuery={executeQuery} resetQueryValue={resetQueryValue} setQuery={setQuery}/>
             }
             {tipodataset=='derived_proc_spark' &&
               <div>
@@ -230,10 +250,9 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                     onClick={getSchemaFromWS.bind(this,fields, urlws)}
                     iconClassName="fa fa-upload"
                     placeholder=".jar"
+                    openModalInfo={openModalInfo}
+
                   />
-                <div>
-                  <button type="submit" className="btn btn-primary float-right">Esegui</button>
-                </div>
               </div>
             }
             {errorNext && <div className="text-danger">{errorNext}</div>}
@@ -245,15 +264,11 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
 
 
 let WizardFormFirstPage = props => {
-  const { onDropFunction, handleSubmit, reset, categoria, tipodataset, setTemplate, modalitacaricamento, tempopolling, getCategoria, setName, nomefile, urlws, previousPage, getSchemaFromWS, errorNext } = props;
+  const { onDropFunction, handleSubmit, reset, categoria, tipodataset, setTemplate, addTagsToForm, modalitacaricamento, tempopolling, getCategoria, setName, nomefile, urlws, previousPage, getSchemaFromWS, query, setQuery, resultQuery, executeQuery, resetQueryValue, openModalInfo, errorNext } = props;
   var sottocategoria = getCategoria(2,categoria)
   return (
       <div className="mt-5">
-        <p className="text-justify"><b>Benvenuto</b> ricordati che a grandi poteri derivano grandi responsabilità</p>
-        <h4> Caricamento SFTP </h4>
-        <p className="text-justify">Carica un file di esempio minore di 1MB scegliendo Drag and Drop. Inserisci le informazioni seguendo la procedura guidata. Il file vero e proprio lo dovrai caricare all'indirizzo <b>SFTP</b> che ti abbiamo comunicato </p>
-        <h4> Caricamento web service (alpha version)</h4>
-        <p>Inserisci l'url dei dati da caricare. Inserisci le informazioni seguendo la procedura guidata. Il caricamento del file parte in automatico a intervalli regolari. Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p>
+        <p className="text-justify"><b>Benvenuto</b> ricordati che a grandi poteri derivano grandi responsabilità</p>     
         <form onSubmit={handleSubmit} className="mt-5">
             <FieldArray
                   name="inferred"
@@ -273,6 +288,13 @@ let WizardFormFirstPage = props => {
                   tempopolling={tempopolling}
                   errorNext={errorNext}
                   setTemplate={setTemplate}
+                  query={query}
+                  setQuery={setQuery}
+                  resultQuery={resultQuery}
+                  executeQuery={executeQuery}
+                  resetQueryValue={resetQueryValue}
+                  addTagsToForm={addTagsToForm}
+                  openModalInfo={openModalInfo}
             />
         </form>
       </div>

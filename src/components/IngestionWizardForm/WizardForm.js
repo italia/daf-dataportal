@@ -13,6 +13,14 @@ import 'rc-steps/assets/iconfont.css'
 import { reduxForm, formValueSelector } from 'redux-form';
 import validate from './validate';
 import { ingestionFormOptions } from './const';
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
 
 const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiungi i Metadati'}]
 
@@ -33,10 +41,15 @@ class WizardForm extends Component {
     this.deleteGruppiToForm = this.deleteGruppiToForm.bind(this)
     this.addSorgenteToForm = this.addSorgenteToForm.bind(this)
     this.deleteSorgenteToForm = this.deleteSorgenteToForm.bind(this)
+    this.addPipelineToForm = this.addPipelineToForm.bind(this)
+    this.deletePipelineToForm = this.deletePipelineToForm.bind(this)
     this.aggiornaStato = this.aggiornaStato.bind(this)
     this.setName = this.setName.bind(this)
     this.setTemplate = this.setTemplate.bind(this)
     this.getSchemaFromWS = this.getSchemaFromWS.bind(this)
+    this.setQuery = this.setQuery.bind(this)
+    this.executeQuery = this.executeQuery.bind(this)
+    this.resetQueryValue = this.resetQueryValue.bind(this)
     this.state = {
       page: 0,
       uploading: false,
@@ -48,7 +61,12 @@ class WizardForm extends Component {
       listaGerarchie: [],
       listaGruppi: [],
       listaSorgenti: [],
-      errorNext: undefined
+      listaPipelines: [],
+      errorNext: undefined,
+      query:undefined,
+      resultQuery:undefined,
+      isOpenInfo: false,
+      infoText: undefined
     };
   }
 
@@ -92,7 +110,13 @@ class WizardForm extends Component {
     this.state.listaSorgenti.push(value)
     dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
   }
-  
+
+  addPipelineToForm(value){
+    console.log('addPipelinesToForm: ' + value)
+    const { dispatch } = this.props
+    this.state.listaPipelines.push(value)
+    dispatch(change('wizard', 'pipelines', this.state.listaPipelines))
+  }  
 
   deleteConvenzioneToForm(index, tipo, val){
     console.log('deleteConvenzione')
@@ -127,6 +151,17 @@ class WizardForm extends Component {
     dispatch(change('wizard', 'gruppiaccesso',  this.state.listaGruppi)) 
   }
 
+  deletePipelineToForm(nome, parametro){
+    console.log('deletePipelinesToForm')
+    for(var i=0;i<this.state.listaPipelines.length;i++){    
+      if(this.state.listaPipelines[i].nome==nome&&this.state.listaPipelines[i].parametro==parametro) {
+        this.state.listaPipelines.splice(i, 1);
+      }
+    }
+    const { dispatch } = this.props
+    dispatch(change('wizard', 'pipelines',  this.state.listaPipelines)) 
+  }
+
   deleteSorgenteToForm(tipo, url, user, chron){
     console.log('deleteSorgenteToForm')
     for(var i=0;i<this.state.listaSorgenti.length;i++){    
@@ -138,6 +173,20 @@ class WizardForm extends Component {
     dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
   }
   
+  openModalInfo = (infoText) => {
+    console.log('infoText: ' + infoText)
+    this.setState({
+      isOpenInfo: true,
+      infoText: infoText
+    });
+  };
+
+  hideModal = () => {
+    this.setState({
+      isOpenInfo: false
+    });
+  };
+
   aggiornaStato(context, uri_voc, index){
     var contextArray = this.state.context
     contextArray[index] = context
@@ -166,9 +215,8 @@ class WizardForm extends Component {
 
   setUploading(valueUploading, valueError){
     this.setState({
-      errorNext: undefined,
       uploading: valueUploading,
-      errorUpload: valueError
+      errorNext: valueError
     });
   }
 
@@ -295,72 +343,137 @@ class WizardForm extends Component {
       if(templateValue && templateValue.length>0){
         for(var j=0;j<templateValue.length;j++){
           var objTemplate = templateValue[j]
-          dispatch(change('wizard', objTemplate.name, objTemplate.value))
+          if(e.target.value==ingestionFormOptions.template[i].val)
+            dispatch(change('wizard', objTemplate.name, objTemplate.value))
         }
       }
     }
   }
 
+  getFormValue(nome){
+    const selector = formValueSelector('wizard') 
+    const value = selector(this.state, nome) 
+    return value
+  }
+
+  resetQueryValue(){
+    this.setState({
+      query:'',
+      resultQuery:undefined
+    })
+  }
+
+  setQuery(value){
+    console.log(value)
+    const { dispatch } = this.props;
+    this.setState({
+      query: value
+    })
+    dispatch(change('wizard', 'query', value))
+  }
+  
+  executeQuery(value){
+    const { dispatch } = this.props;
+    var resultQuery = 'resultQuery'
+    this.setState({
+      resultQuery: resultQuery
+    })
+    dispatch(change('wizard', 'resultQuery', resultQuery))
+  }
+
   render() {
     const { onSubmit, loggedUser } = this.props;
-    const { page, tipi, context, listaConvenzioni, listaGerarchie, listaGruppi, listaSorgenti, errorNext } = this.state;
+    const { page, tipi, context, infoText, listaConvenzioni, listaGerarchie, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery } = this.state;
     return (
-      <div className="row mb-5">
-        <div className="col-md-10">
-        <Steps current={page}>
-          {steps.map((s, i) => {
-            return (
-              <Step
-                key={i}
-                title={s.title}
-              />)
-            }
-          )}
-        </Steps>
-        {page === 0 && 
-          <WizardFormFirstPage 
-            onSubmit={this.goToSecondPage} 
-            previousPage={this.previousPage}
-            getCategoria={this.getCategoria}
-            setUploading={this.setUploading}
-            onDropFunction={this.onDropFunction}
-            reset={reset}
-            setName={this.setName}
-            getSchemaFromWS={this.getSchemaFromWS}
-            errorNext={errorNext}
-            setTemplate={this.setTemplate}
-          />}
-        {page === 1 &&
-          <WizardFormSecondPage
-            previousPage={this.previousPage}
-            onSubmit={this.nextPage}
-            tipi={tipi}
-            addTagsToForm={this.addTagsToForm}
-            aggiornaStato={this.aggiornaStato}
-            addSemanticToForm={this.addSemanticToForm}
-            addConvenzioneToForm={this.addConvenzioneToForm}
-            deleteConvenzioneToForm={this.deleteConvenzioneToForm}
-            addGerarchiaToForm={this.addGerarchiaToForm}
-            deleteGerarchiaToForm={this.deleteGerarchiaToForm}
-            context={context}
-            listaConvenzioni={listaConvenzioni}
-            listaGerarchie={listaGerarchie}
-          />}
-        {page === 2 &&
-          <WizardFormThirdPage
-            previousPage={this.previousPage}
-            onSubmit={onSubmit}
-            organizations={getEditorAdminOrganizations(loggedUser)}
-            addGruppiToForm={this.addGruppiToForm}
-            deleteGruppiToForm={this.deleteGruppiToForm}
-            listaGruppi={listaGruppi}
-            listaSorgenti={listaSorgenti}
-            addSorgenteToForm={this.addSorgenteToForm}
-            deleteSorgenteToForm={this.deleteSorgenteToForm}
-          />}
-        </div>
-      </div>
+      <div>
+        <div className="row mb-5">
+          <div className="col-md-10">
+            <Steps current={page}>
+              {steps.map((s, i) => {
+                return (
+                  <Step
+                    key={i}
+                    title={s.title}
+                  />)
+              }
+              )}
+            </Steps>
+            {page === 0 &&
+              <WizardFormFirstPage
+                onSubmit={this.goToSecondPage}
+                previousPage={this.previousPage}
+                getCategoria={this.getCategoria}
+                setUploading={this.setUploading}
+                onDropFunction={this.onDropFunction}
+                reset={reset}
+                addTagsToForm={this.addTagsToForm}
+                setName={this.setName}
+                getSchemaFromWS={this.getSchemaFromWS}
+                errorNext={errorNext}
+                setTemplate={this.setTemplate}
+                query={query}
+                setQuery={this.setQuery}
+                resultQuery={resultQuery}
+                executeQuery={this.executeQuery}
+                resetQueryValue={this.resetQueryValue}
+                openModalInfo={this.openModalInfo}
+              />}
+            {page === 1 &&
+              <WizardFormSecondPage
+                previousPage={this.previousPage}
+                onSubmit={this.nextPage}
+                tipi={tipi}
+                addTagsToForm={this.addTagsToForm}
+                aggiornaStato={this.aggiornaStato}
+                addSemanticToForm={this.addSemanticToForm}
+                addConvenzioneToForm={this.addConvenzioneToForm}
+                deleteConvenzioneToForm={this.deleteConvenzioneToForm}
+                addGerarchiaToForm={this.addGerarchiaToForm}
+                deleteGerarchiaToForm={this.deleteGerarchiaToForm}
+                context={context}
+                listaConvenzioni={listaConvenzioni}
+                listaGerarchie={listaGerarchie}
+                openModalInfo={this.openModalInfo}
+                getFormValue={this.getFormValue}
 
+              />}
+            {page === 2 &&
+              <WizardFormThirdPage
+                previousPage={this.previousPage}
+                onSubmit={onSubmit}
+                organizations={getEditorAdminOrganizations(loggedUser)}
+                listaGruppi={listaGruppi}
+                listaSorgenti={listaSorgenti}
+                listaPipelines={listaPipelines}
+                addGruppiToForm={this.addGruppiToForm}
+                deleteGruppiToForm={this.deleteGruppiToForm}
+                addSorgenteToForm={this.addSorgenteToForm}
+                deleteSorgenteToForm={this.deleteSorgenteToForm}
+                addPipelineToForm={this.addPipelineToForm}
+                deletePipelineToForm={this.deletePipelineToForm}
+                openModalInfo={this.openModalInfo}
+
+              />}
+          </div>
+        </div>
+        <Modal
+          contentLabel="Info"
+          className="Modal__Bootstrap modal-dialog modal-80"
+          isOpen={this.state.isOpenInfo}>
+          <ModalHeader>
+            <ModalClose onClick={this.hideModal} />
+            <ModalTitle>Informazioni</ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            <p dangerouslySetInnerHTML={{__html: infoText}}></p>
+          </ModalBody>
+          <ModalFooter>
+            <button className='btn btn-gray-200' onClick={this.hideModal}>
+              Chiudi
+         </button>
+          </ModalFooter>
+        </Modal>
+      </div>
     );
   }
 }

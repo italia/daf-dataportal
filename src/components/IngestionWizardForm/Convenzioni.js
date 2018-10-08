@@ -27,7 +27,10 @@ class Convenzioni extends Component {
 
     openModalConvenzioni = () => {
         this.setState({
-            isOpenConvenzioni: true
+            isOpenConvenzioni: true,
+            convenzione: '',
+            campi: [],
+            erroMsg: undefined
         });
     }
 
@@ -90,7 +93,7 @@ class Convenzioni extends Component {
     }
 
   render() {
-    const { campi } = this.state;
+    const { campi, convenzione } = this.state;
     const { listaConvenzioni } = this.props;
     return (
       <div>
@@ -105,7 +108,7 @@ class Convenzioni extends Component {
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">Convenzioni</label>
                     <div className="col-sm-10">
-                        <select className="form-control" ref={(convenzione) => this.convenzione = convenzione} onChange= {(e) => this.onChangeConvenzione(e, e.target.value)} id="convenzione" >
+                        <select className="form-control" ref={(convenzione) => this.convenzione = convenzione} onChange= {(e) => this.onChangeConvenzione(e, e.target.value)} id="convenzione" value={convenzione} >
                             <option value="" defaultValue></option>
                                 {ingestionFormOptions.convenzioni.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
                         </select>

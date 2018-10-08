@@ -920,3 +920,7 @@ li.bg-footer:last-child.social-links {
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
+
+.react-autosuggest__input {
+  width: 100%;
+}

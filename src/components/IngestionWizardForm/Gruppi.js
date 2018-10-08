@@ -1,5 +1,8 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import { ingestionFormOptions } from './const';
+import { getAllOrganizations } from '../../actions' 
+import { connect  } from 'react-redux';
+
 import {
     Modal,
     ModalHeader,
@@ -14,6 +17,7 @@ class Gruppi extends Component {
         super(props)
         this.state = {
             isOpenGruppi: false,
+            allOrganizations: [],
             gruppo: '',
             permesso:'',
             erroMsg:''
@@ -26,6 +30,15 @@ class Gruppi extends Component {
     }
 
     openModalGruppi = () => {
+        const { dispatch } = this.props
+        //SET ALL ORGANIZATIONS
+        dispatch(getAllOrganizations())
+            .then(json => {
+                this.setState({
+                    allOrganizations: json.elem
+                })
+            })
+
         if(this.refs.gruppo)
             this.refs.gruppo.value = ''
         if(this.refs.permesso)
@@ -83,7 +96,7 @@ class Gruppi extends Component {
     }
 
   render() {
-    const { gruppo, erroMsg } = this.state;
+    const { gruppo, erroMsg, allOrganizations } = this.state;
     const { listaGruppi } = this.props;
     return (
       <div>
@@ -98,9 +111,9 @@ class Gruppi extends Component {
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">Gruppi</label>
                     <div className="col-sm-10">
-                        <select className="form-control" ref={(gruppo) => this.gruppo = gruppo} onChange= {(e) => this.onChangeGruppo(e, e.target.value)} id="gruppo" >
+                        <select className="form-control" ref={(gruppo) => this.gruppo = gruppo} onChange= {(e) => this.onChangeGruppo(e, e.target.value)} id="gruppo" value={gruppo}>
                             <option value="" defaultValue></option>
-                                {ingestionFormOptions.gruppiaccesso.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
+                                {allOrganizations.map(organization => <option value={organization} key={organization}>{organization}</option>)}
                         </select>
                     </div>
                 </div>
@@ -173,4 +186,10 @@ class Gruppi extends Component {
     );
   }
 }
-export default Gruppi
+
+function mapStateToProps(state) {
+    const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }
+    return { loggedUser }
+}
+  
+export default connect(mapStateToProps)(Gruppi);
