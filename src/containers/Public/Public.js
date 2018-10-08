@@ -21,6 +21,12 @@ import DatasetDetail from '../../views/DatasetDetail/DatasetDetail'
 import FooterSticky from '../../components/Footer/Public/FooterSticky'
 //import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 
+// semantic's containers imports
+import Vocabularies from '../../semantics/containers/Vocabularies.js'
+import Vocabulary from '../../semantics/containers/Vocabulary.js'
+import Ontologies from '../../semantics/containers/Ontologies.js'
+import Ontology from '../../semantics/containers/Ontology.js'
+
 class Public extends Component {
 
   /* constructor(props){
@@ -67,6 +73,10 @@ class Public extends Component {
                 <Route path="/dataset/list" name="Lista Dataset" exact component={DatasetList}/>
                 <Route path="/dataset/:id" name="Dettaglio Dataset" exact component={DatasetDetail}/>
                 <Route path="/search" name="Search" exact component={DatasetList}/>
+                <Route path="/ontologies" name="Ontologies" exact component={Ontologies} />
+                <Route path="/ontologies/:filter" name="Ontology" component={Ontology} />
+                <Route path="/vocabularies" name="Vocabularies" exact component={Vocabularies} />
+                <Route path="/vocabularies/:filter" name="Vocabulary" component={Vocabulary} />
                 <Redirect from="/" to="/home"/>
               </Switch>
           </main>
