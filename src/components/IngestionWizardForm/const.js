@@ -1,5 +1,10 @@
 export const ingestionFormOptions = 
 {
+  'info':{
+    'titolo': '<p>Il titolo deve essere univoco nel DAF.</p><p>Il valore di default sarà il nome del file.</p><p>Un servizio controllerà l\'univocita del titolo.</p>',
+    'nome' : '<p>Il campo nome verrà calcolato automaticamente dal sistema.</p>',
+    'modalitacaricamento': '<h4> Caricamento SFTP Push</h4><p className="text-justify">Carica un file di esempio minore di 1MB nella drop-area. Inserisci le informazioni seguendo la procedura guidata. Il file vero e proprio lo dovrai caricare all\'indirizzo <b>SFTP</b> che ti abbiamo comunicato </p><h4> Caricamento Web Service Pull</h4><p>Inserisci l\'url dei dati da caricare. Inserisci le informazioni seguendo la procedura guidata. Il caricamento del file parte in automatico a intervalli regolari. Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p><h4> Caricamento Web Service Push</h4><p className="text-justify">Carica un file di esempio minore di 1MB nella drop-area. Inserisci le informazioni seguendo la procedura guidata. Il file vero e proprio lo dovrai caricare successivamente chiamando l\'API comunicata o attraverso la drop-area nella scheda di dettaglio del dataset. Dimensione massima 100MB. </p>'
+  },
   'publicOptions': [
     { 'val': 'PRIVATO', 'name': 'Privato' },
     { 'val': 'PUBBLICO', 'name': 'Open Data' }
@@ -10,9 +15,9 @@ export const ingestionFormOptions =
     { 'val': 'derived_proc_spark', 'name': 'Dataset derivato con procedura Spark' }
   ],
   'modalitacaricamentoOptions': [
-    { 'val': '1', 'name': 'SFTP' },
-    { 'val': '2', 'name': 'Web Service' },
-    { 'val': '3', 'name': 'SFTP e Web Service' }
+    { 'val': '1', 'name': 'SFTP Push' },
+    { 'val': '2', 'name': 'Web Service Pull' },
+    { 'val': '3', 'name': 'Web Service Push' }
   ],
   'yesOrNoOptions': [
     { 'val': '1', 'name': 'Si' },
@@ -77,6 +82,41 @@ export const ingestionFormOptions =
       ]
     }
   ],
+  'template':[
+    { 'val': 'template1', 
+      'name': 'Template 1', 
+      'value':[
+        {'name':'tipodataset', 'value':'primitive'},
+        {'name':'modalitacaricamento','value':'1'},
+        {'name':'tempopolling', 'value':'0'},
+        {'name':'espressionecron', 'value':'5 18 * * 1-5'},
+        {'name':'timerquantita', 'value':''},
+        {'name':'timerunita', 'value':undefined}
+      ]
+    },
+    { 'val': 'template2', 
+      'name': 'Template 2', 
+      'value':[
+        {'name':'tipodataset', 'value':'primitive'},
+        {'name':'modalitacaricamento','value':'1'},
+        {'name':'tempopolling', 'value':'1'},
+        {'name':'timerquantita', 'value':'15'},
+        {'name':'timerunita', 'value':'0'},
+        {'name':'espressionecron', 'value':''}
+      ]
+    },
+    { 'val': 'template3', 
+    'name': 'Template 3', 
+    'value':[
+      {'name':'tipodataset', 'value':'primitive'},
+      {'name':'modalitacaricamento','value':'1'},
+      {'name':'tempopolling', 'value':'0'},
+      {'name':'espressionecron', 'value':'333333'},
+      {'name':'timerquantita', 'value':''},
+      {'name':'timerunita', 'value':undefined}
+    ]
+    }
+  ],
   'tipoinformazione': [
     { 'val': 'Opzione1', 'name': 'Opzione1' },
     { 'val': 'Opzione2', 'name': 'Opzione2' }
@@ -101,7 +141,7 @@ export const ingestionFormOptions =
       'val': 'prova', 
       'name': 'Prova',
       'campi': [{'label':'Input Prova', 'val':'inputprova'}]
-    }
+    } 
   ],
   'gerarchie': [
     { 
@@ -373,6 +413,10 @@ export const ingestionFormOptions =
   'permessiaccesso': [
     { 'val': 'read', 'name': 'Lettura' },
     { 'val': 'write', 'name': 'Scrittura' }
+  ],
+  'pipelines': [
+    { 'val': 'pipeline1', 'name': 'Pipeline 1' },
+    { 'val': 'pipeline2', 'name': 'Pipeline 2' }
   ],
   'datasetstd': [
     { 'val': 'Opzione1', 'name': 'Opzione1' },

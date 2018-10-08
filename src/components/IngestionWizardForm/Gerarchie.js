@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import { ingestionFormOptions } from './const';
 import {
     Modal,
@@ -106,9 +106,9 @@ class Gerarchie extends Component {
             <ModalBody>
             <div className="form-group">
                 <div className="form-group row">
-                    <label className="col-sm-2 col-form-label">Gerarchie</label>
+                    <label className="col-sm-2 col-form-label">Livello</label>
                     <div className="col-sm-10">
-                        <select className="form-control" ref={(gerarchia) => this.gerarchia = gerarchia} onChange= {(e) => this.onChangeGerarchia(e, e.target.value)} id="gerarchia" >
+                        <select className="form-control" ref={(gerarchia) => this.gerarchia = gerarchia} onChange= {(e) => this.onChangeGerarchia(e, e.target.value)} id="gerarchia" value={gerarchia} >
                             <option value="" defaultValue></option>
                                 {ingestionFormOptions.gerarchie.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
                         </select>
