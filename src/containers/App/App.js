@@ -103,6 +103,10 @@ class App extends Component {
             <Route path='/search' exact component={Public} />
             <Route path='/dataset/list' exact component={Public} />
             <Route path='/dataset/:id' exact component={Public} />
+            <Route path="/ontologies" name="Ontologies" exact component={Public} />
+            <Route path="/ontologies/:filter" name="Ontology" component={Public} />
+            <Route path="/vocabularies" name="Vocabularies" exact component={Public} />
+            <Route path="/vocabularies/:filter" name="Vocabulary" component={Public} />
             <Route path='/private' exact component={Home} />
             <Route path="/login" component={Home} />
             <Route path="/register" component={Home} />
