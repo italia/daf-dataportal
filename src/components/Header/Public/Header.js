@@ -13,7 +13,6 @@ import {
  import SearchBar from '../../SearchBar/SearchBar';
 import { isValidToken } from '../../../actions';
 
-
 class Header extends Component {
   constructor(props) {
     super(props)
@@ -26,6 +25,7 @@ class Header extends Component {
       search: false,
       showMenu: false,
       community: false,
+      isSemanticsOpen: false,
       js_scrolled: false,
       authed: false
     }
@@ -54,11 +54,11 @@ class Header extends Component {
     }
     window.addEventListener('scroll', this.handleScroll);
   };
-  
+
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   };
-  
+
   handleScroll(event) {
     if(window.scrollY > 80){
       this.setState({
@@ -102,7 +102,7 @@ class Header extends Component {
 
   showMenu(event) {
     event.preventDefault();
-    
+
     this.setState({ showMenu: !this.state.showMenu }, () => {
       document.addEventListener('click', this.closeMenu);
     });
@@ -110,14 +110,22 @@ class Header extends Component {
 
   community(event) {
     event.preventDefault();
-    
+
     this.setState({ community: !this.state.community }, () => {
       document.addEventListener('click', this.closeMenu);
     });
   }
 
+  showSemantics(event) {
+    event.preventDefault();
+
+    this.setState({ isSemanticsOpen: !this.state.isSemanticsOpen }, () => {
+      document.addEventListener('click', this.closeMenu);
+    });
+  }
+
   closeMenu() {
-    this.setState({ showMenu: false, community: false, open: false }, () => {
+    this.setState({ showMenu: false, community: false, isSemanticsOpen: false, open: false }, () => {
       document.removeEventListener('click', this.closeMenu);
     });
   }
@@ -176,9 +184,7 @@ class Header extends Component {
                                     <div className="col-12 pl-1"><p className="mb-0"><b>Area privata e strumenti</b></p></div>
                                     <div className="col-12 pl-1">Piattaforma di gestione<br/>e analisi dati del DAF</div>
                                 </div>
-                                
                             </div>
-                            
                         </button>
                       </div>
                     </div>
@@ -222,6 +228,17 @@ class Header extends Component {
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Application</Link>
               </NavItem>
+              <NavItem>
+              <div className={"dropdown " + (this.state.isSemanticsOpen ? "show":"")}>
+                <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.isSemanticsOpen ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.showSemantics.bind(this)}>Linked Data</a>
+                <div className={"dropdown-menu " + (this.state.isSemanticsOpen ? "show":"")} aria-labelledby="dropdownMenuButton">
+                  <Link to={'/ontologies'} className="dropdown-item text-primary font-lg">Ontologie</Link>
+                  <Link to={'/vocabularies'} className="dropdown-item text-primary font-lg">Vocabolari</Link>
+                  {/* <a disabled className="dropdown-item text-muted font-lg">SPARQL Endpoint</a> */}
+                  {/* <a disabled className="dropdown-item text-muted font-lg">Knowledge Graph</a> */}
+                </div>
+              </div>
+              </NavItem>
             </Nav>
           <Collapse isOpen={this.state.navbar} navbar>
             <Nav className="bg-primary ml-auto" navbar>
@@ -250,6 +267,17 @@ class Header extends Component {
               </NavItem>
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Application</Link>
+              </NavItem>
+              <NavItem>
+              <div className={"dropdown " + (this.state.isSemanticsOpen ? "show":"")}>
+                <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.isSemanticsOpen ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.showSemantics.bind(this)}>Linked Data</a>
+                <div className={"dropdown-menu " + (this.state.isSemanticsOpen ? "show":"")} aria-labelledby="dropdownMenuButton">
+                  <Link to={'/ontologies'} className="dropdown-item">Ontologie</Link>
+                  <Link to={'/vocabularies'} className="dropdown-item">Vocabolari</Link>
+                  {/* <a disabled className="dropdown-item text-muted">SPARQL Endpoint</a> */}
+                  {/* <a disabled className="dropdown-item text-muted">Knowledge Graph</a> */}
+                </div>
+              </div>
               </NavItem>
             </Nav>
           </Collapse>

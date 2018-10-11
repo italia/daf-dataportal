@@ -54,7 +54,11 @@ export default class ValidatorForm extends React.Component {
                   required
                 >
                   {validatorsList.data.map((validator, index) => (
-                    <option key={"validator" + index} value={validator.id}>
+                    <option
+                      key={"validator" + index}
+                      value={validator.id}
+                      disabled={index !== 0}
+                    >
                       {validator.name}
                     </option>
                   ))}

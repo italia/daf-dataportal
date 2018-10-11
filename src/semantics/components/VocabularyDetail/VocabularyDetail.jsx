@@ -5,13 +5,24 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardTitle,
-  CardText
+  CardText,
+  Button
 } from 'reactstrap'
 
 import Error from '../Error'
 import VocabularyHierarchy from './VocabularyHierarchy.jsx'
 import Loading from '../Loading'
+import { isEmpty } from '../../util/commonUtils'
+import {
+  maybePublicPadding
+} from '../../util/containerUtils'
+
+const mayBeURI = uri => uri && <a target="_blank" href={uri}>{`(${uri})`}</a>
+
+const lodviewURL = url => url.replace(
+  'https://w3id.org/italia/',
+  'https://ontopia.daf.teamdigitale.it/lodview/'
+)
 
 const vocabularyError = 'Errore durante il caricamento del vocabolario'
 
@@ -20,11 +31,18 @@ const createVocabulary = vocabulary => {
   return (
     <Row>
       <Col sm={1} />
-      <Col sm={10}>
+      <Col className={maybePublicPadding()} sm={10}>
         <Card className="border-0">
           <CardHeader>
             <h2 className="text-primary title-dataset mb-0">
               {voc.titles.map(title => title.value)}
+              <div className="float-right mt-1  ">
+                <a target="_blank" href={lodviewURL(voc.url)} className="mr-1">
+                  <Button outline color="primary">
+                    <b>LodView</b>
+                  </Button>
+                </a>
+              </div>
             </h2>
           </CardHeader>
           <CardBody style={{ font: "400 18px/23px Titillium Web" }}>
@@ -44,7 +62,11 @@ const createVocabulary = vocabulary => {
               <strong>Titolare:</strong>
               <br />
               {voc.owners.map(owner => (
-                <span>{`${owner.value} (${owner.uri})`}</span>
+                <div>
+                  {`${owner.value} `}
+                  <br />
+                  {mayBeURI(owner.uri)}
+                </div>
               ))}
             </CardText>
 
@@ -52,7 +74,11 @@ const createVocabulary = vocabulary => {
               <strong>Pubblicato da:</strong>
               <br />
               {voc.publishedBy.map(publisher => (
-                <span>{`${publisher.value} (${publisher.uri})`}</span>
+                <div>
+                  {`${publisher.value} `}
+                  <br />
+                  {mayBeURI(publisher.uri)}
+                </div>
               ))}
             </CardText>
 
@@ -60,7 +86,11 @@ const createVocabulary = vocabulary => {
               <strong>Creato da:</strong>
               <br />
               {voc.creators.map(creator => (
-                <span>{`${creator.value} (${creator.uri})`}</span>
+                <div>
+                  {`${creator.value} `}
+                  <br />
+                  {mayBeURI(creator.uri)}
+                </div>
               ))}
             </CardText>
 
@@ -76,11 +106,13 @@ const createVocabulary = vocabulary => {
               {voc.lastEditDate}
             </CardText>
 
+            {/*
             <CardText>
               <strong>Versioni:</strong>
               <br />
-              {/* {voc.versions.map(version => version.number).join(' - ')} */}
+              {voc.versions.map(version => version.number).join(' - ')}
             </CardText>
+            */}
 
             <CardText>
               <strong>Licenza:</strong>
@@ -100,14 +132,15 @@ const createVocabulary = vocabulary => {
               {voc.tags.map(tag => tag.value).join(' - ')}
             </CardText>
 
-            <hr />
-
-            {voc.hierarchy ? (
-              <CardText className="mb-0">
-                <strong>Gerarchia:</strong>
-                <br />
-              </CardText>
-            ) : null}
+            {!isEmpty(voc.hierarchy) &&
+              <div>
+                <hr />
+                <CardText className="mb-0">
+                  <strong>Esplora il vocabolario</strong>
+                  <br />
+                </CardText>
+              </div>
+            }
             {<Loading /> && <VocabularyHierarchy hierarchy={voc.hierarchy} />}
           </CardBody>
         </Card>
