@@ -12,6 +12,10 @@ import { Link } from 'react-router-dom'
 
 import Error from '../Error'
 import Loading from '../Loading'
+import {
+  privatePrefix,
+  maybePublicPadding
+} from '../../util/containerUtils'
 
 const ontologiesError = 'Errore durante il caricamento delle ontologie'
 
@@ -22,7 +26,7 @@ const mapOntologies = ontologies =>
         className="text-dark"
         style={{ font: "400 16px/23px Titillium Web" }}
       >
-        <Link to={`/private/ontologies/${ont.id}`}>
+        <Link to={`${privatePrefix()}/ontologies/${ont.id}`}>
           <CardTitle
             className="text-primary"
             style={{ font: "500 24.5px/29.4px Titillium Web" }}
@@ -57,7 +61,7 @@ const mapOntologies = ontologies =>
   ))
 
 const createOntologies = ontologies => (
-    <Row>
+    <Row className={maybePublicPadding()} >
       <Col sm={2} />
       <Col sm={8}>{mapOntologies(ontologies)}</Col>
       <Col sm={2}>

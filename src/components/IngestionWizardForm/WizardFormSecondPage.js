@@ -6,7 +6,10 @@ import { ingestionFormOptions } from './const';
 import AutocompleteSemantic from './AutocompleteSemantic'
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderTipi, renderFieldTags, renderContesti, renderFieldCheckbox} from './renderField';
 import Collapse from 'rc-collapse'
+import Convenzioni from './Convenzioni'
+import Gerarchie from './Gerarchie'
 import 'rc-collapse/assets/index.css'
+import GerarchiaCampi from './GerarchiaCampi';
 
 
 var Panel = Collapse.Panel;
@@ -16,7 +19,7 @@ const renderError = ({ meta: { touched, error } }) =>
 
   
 let WizardFormSecondPage = props => {
-  const { fields, handleSubmit, addTagsToForm, previousPage, tipi, aggiornaStato, addSemanticToForm, context } = props;
+  const { fields, handleSubmit, addTagsToForm, previousPage, tipi, openModalInfo, getFormValue, aggiornaStato, addSemanticToForm, addConvenzioneToForm, deleteConvenzioneToForm, addGerarchiaToForm, deleteGerarchiaToForm, context, listaConvenzioni, listaGerarchie } = props;
   return (
      <form onSubmit={handleSubmit} className="col-12 mt-5">
       {(fields && fields.length > 0) &&
@@ -27,25 +30,26 @@ let WizardFormSecondPage = props => {
               addTagsToForm={addTagsToForm}
               aggiornaStato={aggiornaStato}
               addSemanticToForm={addSemanticToForm}
+              addConvenzioneToForm={addConvenzioneToForm}
+              deleteConvenzioneToForm={deleteConvenzioneToForm}
+              addGerarchiaToForm={addGerarchiaToForm}
+              deleteGerarchiaToForm={deleteGerarchiaToForm}
               context={context}
               previousPage={previousPage}
+              listaConvenzioni={listaConvenzioni}
+              listaGerarchie={listaGerarchie}
+              openModalInfo={openModalInfo}
+              getFormValue={getFormValue}
         />
       }
     </form> 
   )}
 
-const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemanticToForm, context, previousPage, meta : {touched, error} }) =>
+const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, getFormValue, openModalInfo, addSemanticToForm, addConvenzioneToForm, deleteConvenzioneToForm, addGerarchiaToForm, deleteGerarchiaToForm, context, listaConvenzioni, listaGerarchie, previousPage, meta : {touched, error} }) =>
         <div>
+          <GerarchiaCampi fields={fields} getFormValue={getFormValue}/>
           {fields.map((field, index) => {
-            var convenzioniValue = fields.get(index).convenzioni
-            var campi = []
-            if(convenzioniValue && ingestionFormOptions.convenzioni){
-              for(var i=0;i<ingestionFormOptions.convenzioni.length;i++){
-                if(ingestionFormOptions.convenzioni[i].val==convenzioniValue){
-                  campi = ingestionFormOptions.convenzioni[i].campi
-                }
-              }
-            }
+            var vocabolariocontrollato = fields.get(index).vocabolariocontrollato
             return(
             <div className="card" key={index}>
               <div className="card-body">
@@ -59,6 +63,8 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                           label="ID Campo"
                           value={`${field}.nome`}
                           readonly="readonly"
+                          openModalInfo={openModalInfo}
+
                         />
                         <Field
                           name={`${field}.tipo`}
@@ -67,18 +73,24 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                           value={`${field}.tipo`}
                           tipi={tipi}
                           index={index}
+                          openModalInfo={openModalInfo}
+
                         />
                         <Field
                           name={`${field}.nomehr`}
                           component={renderFieldInput}
                           label="Nome"
                           value={`${field}.nomehr`}
+                          openModalInfo={openModalInfo}
+
                         />
                         <Field
                           name={`${field}.desc`}
                           component={renderFieldTextArea}
                           label="Descrizione"
                           value={`${field}.desc`}
+                          openModalInfo={openModalInfo}
+
                         /> 
                         <Field
                           name={`${field}.tag`}
@@ -86,6 +98,8 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                           label="Tags"
                           value={`${field}.tag`}
                           addTagsToForm={addTagsToForm}
+                          openModalInfo={openModalInfo}
+
                         />
                         <Field
                           name={`${field}.concetto`}
@@ -95,6 +109,8 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                           addSemanticToForm={addSemanticToForm}
                           index={index}
                           aggiornaStato={aggiornaStato}
+                          openModalInfo={openModalInfo}
+
                         />
                     </Panel>
                     <Panel header="Formato e Convenzioni">
@@ -104,6 +120,8 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                         component={renderFieldSelect}
                         label="Tipo Informazione"
                         value={`${field}.tipoinformazione`}
+                        openModalInfo={openModalInfo}
+
                       />
                       <Field
                         name={`${field}.standardformat`}
@@ -111,33 +129,36 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                         component={renderFieldSelect}
                         label="Standard Format"
                         value={`${field}.standardformat`}
+                        openModalInfo={openModalInfo}
+
                       />
-                      <Field
-                        name={`${field}.convenzioni`}
-                        options={ingestionFormOptions.convenzioni}
-                        component={renderFieldSelect}
-                        label="Convenzioni"
-                        value={`${field}.convenzioni`}
-                      />
-                      {campi && campi.map((campo, index) => {
-                        console.log('campo: ' + campo)
-                        return(
-                          <Field
-                            name={`${field}.campo.${campo.val}`}
-                            component={renderFieldInput}
-                            label={campo.label}
-                            value={`${field}.campo.${campo.val}`}
-                            key={index}
-                          />)
-                      })
-                      }
                        <Field
                         name={`${field}.vocabolariocontrollato`}
                         options={ingestionFormOptions.vocabolariocontrollato}
                         component={renderFieldSelect}
                         label="Vocabolario Controllato"
                         value={`${field}.vocabolariocontrollato`}
+                        openModalInfo={openModalInfo}
+
                       />
+                      {vocabolariocontrollato &&
+                         <Field
+                          name={`${field}.campovocabolariocontrollato`}
+                          component={renderFieldInput}
+                          label='Campo Vocabolario'
+                          value={`${field}.campovocabolariocontrollato`}
+                          openModalInfo={openModalInfo}
+
+                          />
+                      }
+                      <Convenzioni 
+                          addConvenzioneToForm={addConvenzioneToForm} 
+                          index={index} 
+                          listaConvenzioni={listaConvenzioni}
+                          deleteConvenzioneToForm={deleteConvenzioneToForm}
+                          openModalInfo={openModalInfo}
+
+                          />
                     </Panel>
                     <Panel header="Semantica e Ontologie">
                       <Field
@@ -147,37 +168,58 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                         value={`${field}.contesto`}
                         contesti={context[index]}
                         index={index}
+                        openModalInfo={openModalInfo}
+
                       /> 
                       <Field
                           name={`${field}.idgruppocampi`}
                           component={renderFieldInput}
                           label="ID Gruppo Campi"
                           value={`${field}.idgruppocampi`}
+                          openModalInfo={openModalInfo}
+
                         />
                       <Field
                           name={`${field}.rdfsoggetto`}
                           component={renderFieldInput}
                           label="RDF Soggetto"
                           value={`${field}.rdfsoggetto`}
+                          openModalInfo={openModalInfo}
+
                         />
                       <Field
                           name={`${field}.rdfpredicato`}
                           component={renderFieldInput}
                           label="RDF Predicato"
                           value={`${field}.rdfpredicato`}
+                          openModalInfo={openModalInfo}
+
                         />
                       <Field
                           name={`${field}.rdfcomplemento`}
                           component={renderFieldInput}
                           label="RDF Complemento"
                           value={`${field}.rdfcomplemento`}
+                          openModalInfo={openModalInfo}
+
                         />
                       <Field
-                          name={`${field}.gerarchiacampi`}
+                          name={`${field}.gerarchiacampinome`}
                           component={renderFieldInput}
-                          label="Gerarchia Campi"
-                          value={`${field}.gerarchiacampi`}
+                          label="Gerarchia Campo"
+                          readonly={true}
+                          value={`${field}.gerarchiacampinome`}
+                          openModalInfo={openModalInfo}
+
                         />
+                      <Gerarchie
+                          addGerarchiaToForm={addGerarchiaToForm} 
+                          index={index} 
+                          listaGerarchie={listaGerarchie}
+                          deleteGerarchiaToForm={deleteGerarchiaToForm}
+                          openModalInfo={openModalInfo}
+
+                          />
                     </Panel>
                     <Panel header="Informazioni Operazionali">
                       <Field
@@ -185,30 +227,40 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                           component={renderFieldCheckbox}
                           label="Campo Obbligatorio"
                           value={`${field}.obbligatorio`}
+                          openModalInfo={openModalInfo}
+
                         />
                         <Field
                           name={`${field}.datacreazione`}
                           component={renderFieldCheckbox}
                           label="Data di Creazione"
                           value={`${field}.datacreazione`}
+                          openModalInfo={openModalInfo}
+
                         />
                         <Field
                           name={`${field}.dataaggiornamento`}
                           component={renderFieldCheckbox}
                           label="Data di Aggiornamento"
                           value={`${field}.dataaggiornamento`}
+                          openModalInfo={openModalInfo}
+
                         />
                         <Field
                           name={`${field}.indicizzare`}
                           component={renderFieldCheckbox}
                           label="Indicizzare il Campo"
                           value={`${field}.indicizzare`}
+                          openModalInfo={openModalInfo}
+
                         />
                         <Field
                           name={`${field}.profiloindicizzazione`}
                           component={renderFieldCheckbox}
                           label="Creare Profilo per Indicizzazione"
                           value={`${field}.profiloindicizzazione`}
+                          openModalInfo={openModalInfo}
+
                         />
                     </Panel>
                     <Panel header="Dati Personali">
@@ -217,6 +269,8 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                           component={renderFieldCheckbox}
                           label="Contiene Dati Personali"
                           value={`${field}.datipersonali`}
+                          openModalInfo={openModalInfo}
+
                         />
                       <Field
                           name={`${field}.tipodatopersonale`}
@@ -224,6 +278,8 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                           component={renderFieldSelect}
                           label="Tipo Dato Personale"
                           value={`${field}.tipodatopersonale`}
+                          openModalInfo={openModalInfo}
+
                       />
                       <Field
                           name={`${field}.tipomascheramento`}
@@ -231,12 +287,16 @@ const renderFieldArray = ({fields, tipi, addTagsToForm, aggiornaStato, addSemant
                           component={renderFieldSelect}
                           label="Tipo di Mascheramento"
                           value={`${field}.tipomascheramento`}
+                          openModalInfo={openModalInfo}
+
                       />
                         <Field
                           name={`${field}.disponibileanalisi`}
                           component={renderFieldCheckbox}
                           label="Disponibile per Analisi"
                           value={`${field}.disponibileanalisi`}
+                          openModalInfo={openModalInfo}
+
                         />
                     </Panel>
                   </Collapse>
@@ -258,7 +318,6 @@ WizardFormSecondPage = reduxForm({
   validate,
 })(WizardFormSecondPage);
 
-const selector = formValueSelector('wizard') 
 WizardFormSecondPage = connect(state => {
   //var title = selector(state, 'title')  
   const fields = state.form.wizard.values.inferred

@@ -12,6 +12,10 @@ import { Link } from 'react-router-dom'
 
 import Error from '../Error'
 import Loading from '../Loading'
+import {
+  privatePrefix,
+  maybePublicPadding
+} from '../../util/containerUtils'
 
 const vocabulariesError = 'Errore durante il caricamento dei vocabolari'
 
@@ -22,7 +26,7 @@ const mapVocabularies = vocabularies =>
         className="text-dark"
         style={{ font: "400 16px/23px Titillium Web" }}
       >
-        <Link to={`/private/vocabularies/${voc.id}`}>
+        <Link to={`${privatePrefix()}/vocabularies/${voc.id}`}>
           <CardTitle
             className="text-primary"
             style={{ font: "500 24.5px/29.4px Titillium Web" }}
@@ -57,7 +61,7 @@ const mapVocabularies = vocabularies =>
   ))
 
 const createVocabularies = vocabularies => (
-  <Row>
+  <Row className={maybePublicPadding()}>
     <Col sm={2} />
     <Col sm={8}>{mapVocabularies(vocabularies)}</Col>
     <Col sm={2}>

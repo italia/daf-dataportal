@@ -19,6 +19,12 @@ import DatasetList from '../../views/DataseList/DatasetList'
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail'
 import Page404 from '../../views/404/Page404';
 
+// semantic's containers imports
+import Vocabularies from '../../semantics/containers/Vocabularies.js'
+import Vocabulary from '../../semantics/containers/Vocabulary.js'
+import Ontologies from '../../semantics/containers/Ontologies.js'
+import Ontology from '../../semantics/containers/Ontology.js'
+
 class Public extends Component {
 
   /* constructor(props){
@@ -66,6 +72,10 @@ class Public extends Component {
                 <Route path="/dataset/list" name="Lista Dataset" exact component={DatasetList}/>
                 <Route path="/dataset/:id" name="Dettaglio Dataset" exact component={DatasetDetail}/>
                 <Route path="/search" name="Search" exact component={DatasetList}/>
+                <Route path="/ontologies" name="Ontologies" exact component={Ontologies} />
+                <Route path="/ontologies/:filter" name="Ontology" component={Ontology} />
+                <Route path="/vocabularies" name="Vocabularies" exact component={Vocabularies} />
+                <Route path="/vocabularies/:filter" name="Vocabulary" component={Vocabulary} />
                 <Route path="*" name="404 Not Found" component={Page404} />
               </Switch>
           </main>
