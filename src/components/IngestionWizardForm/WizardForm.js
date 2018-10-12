@@ -4,15 +4,17 @@ import WizardFormSecondPage from './WizardFormSecondPage';
 import WizardFormThirdPage from './WizardFormThirdPage';
 import Steps, { Step } from 'rc-steps';
 import themes from '../../data/themes'
+import licenze from '../../data/licenze'
 import { connect  } from 'react-redux';
-import { getSchema, getSchemaWS, getSystemNameKylo } from '../../actions';
+import { getSchema, getSchemaWS, getSystemNameKylo, loadVocabulary } from '../../actions';
 import { change, reset } from 'redux-form'
 import { getEditorAdminOrganizations } from '../../utility'
 import 'rc-steps/assets/index.css'
 import 'rc-steps/assets/iconfont.css'
 import { reduxForm, formValueSelector } from 'redux-form';
 import validate from './validate';
-import { ingestionFormOptions } from './const';
+import { serviceurl } from '../../config/serviceurl'
+import { config } from './config'
 import {
   Modal,
   ModalHeader,
@@ -40,7 +42,9 @@ class WizardForm extends Component {
     this.addGruppiToForm = this.addGruppiToForm.bind(this)
     this.deleteGruppiToForm = this.deleteGruppiToForm.bind(this)
     this.addSorgenteToForm = this.addSorgenteToForm.bind(this)
+    this.addStorageToForm = this.addStorageToForm.bind(this)
     this.deleteSorgenteToForm = this.deleteSorgenteToForm.bind(this)
+    this.deleteStorageToForm = this.deleteStorageToForm.bind(this)
     this.addPipelineToForm = this.addPipelineToForm.bind(this)
     this.deletePipelineToForm = this.deletePipelineToForm.bind(this)
     this.aggiornaStato = this.aggiornaStato.bind(this)
@@ -50,7 +54,9 @@ class WizardForm extends Component {
     this.setQuery = this.setQuery.bind(this)
     this.executeQuery = this.executeQuery.bind(this)
     this.resetQueryValue = this.resetQueryValue.bind(this)
+    this.modificaDataDCATAPIT = this.modificaDataDCATAPIT.bind(this)
     this.state = {
+      //config: config,
       page: 0,
       uploading: false,
       errorUpload: undefined,
@@ -62,16 +68,81 @@ class WizardForm extends Component {
       listaGruppi: [],
       listaSorgenti: [],
       listaPipelines: [],
+      listaStorage:[],
       errorNext: undefined,
       query:undefined,
       resultQuery:undefined,
       isOpenInfo: false,
-      infoText: undefined
+      infoText: undefined,
+      filePullLoaded:false,
+      vocabolariControllati:[
+        {
+          "uid": "voc1",
+          "name": {
+            "ita": "voc1",
+            "eng": "voc1",
+            "default": "voc1"
+          }
+        },
+        {
+          "uid": "voc2",
+          "name": {
+            "ita": "voc2",
+            "eng": "voc2",
+            "default": "voc2"
+          }
+        }
+      ]
     };
+    this.loadConfiguration()
+    //this.loadVocabolariControllati()
+  }
+
+  loadConfiguration(){
+     const { dispatch } = this.props
+    dispatch(loadVocabulary(serviceurl.vocabularyName))
+    .then(response=>{
+      if(response.ok){
+        response.json()
+        .then(json=>{
+          this.setState({ config: JSON.parse(json.voc) })
+          console.log(json.message)
+        })
+     }else{
+      console.log('Errore nel reperimento del json di configurazione: ' + error) 
+      this.setState({ config: config })
+     }})
+    .catch((error)=>{ 
+      console.log('Errore nel reperimento del json di configurazione: ' + error) 
+      this.setState({ config: config })
+    }) 
+  }
+
+  loadVocabolariControllati(){
+    //TODO: servizio caricamento vocabolari controllati DAF
+    this.setState({
+      vocabolariControllati:[
+        {
+          "uid": "voc1",
+          "name": {
+            "ita": "voc1",
+            "eng": "voc1",
+            "default": "voc1"
+          }
+        },
+        {
+          "uid": "voc2",
+          "name": {
+            "ita": "voc2",
+            "eng": "voc2",
+            "default": "voc2"
+          }
+        }
+      ]
+    })
   }
 
   addSemanticToForm(semantics, id, context, subject, predicate, rdf_object, uri_voc, index){
-    console.log('addSemanticToForm')
     const { dispatch } = this.props
     this.aggiornaStato(context, uri_voc, index)
     dispatch(change('wizard', 'inferred['+index+'].id_concetto', id))
@@ -80,46 +151,45 @@ class WizardForm extends Component {
     dispatch(change('wizard', 'inferred['+index+'].rdfcomplemento', rdf_object))
     dispatch(change('wizard', 'inferred['+index+'].uri_voc', uri_voc))
     dispatch(change('wizard', 'inferred['+index+'].concetto', semantics))
-    //this.input.onChange(semantics)
   }
 
   addConvenzioneToForm(value, index){
-    console.log('addConvenzione: ' + value)
     const { dispatch } = this.props
     this.state.listaConvenzioni.push(value)
     dispatch(change('wizard', 'inferred['+index+'].convenzioni',  this.state.listaConvenzioni))
   }
 
   addGerarchiaToForm(value, index){
-    console.log('addGerarchia: ' + value)
     const { dispatch } = this.props
     this.state.listaGerarchie.push(value)
     dispatch(change('wizard', 'inferred['+index+'].gerarchie',  this.state.listaGerarchie))
   }
 
   addGruppiToForm(value){
-    console.log('addGruppiToForm: ' + value)
     const { dispatch } = this.props
     this.state.listaGruppi.push(value)
     dispatch(change('wizard', 'gruppiaccesso',  this.state.listaGruppi))
   }
 
   addSorgenteToForm(value){
-    console.log('addSorgenteToForm: ' + value)
     const { dispatch } = this.props
     this.state.listaSorgenti.push(value)
     dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
   }
 
+  addStorageToForm(value){
+    const { dispatch } = this.props
+    this.state.listaStorage.push(value)
+    dispatch(change('wizard', 'storage', this.state.listaStorage))
+  }
+
   addPipelineToForm(value){
-    console.log('addPipelinesToForm: ' + value)
     const { dispatch } = this.props
     this.state.listaPipelines.push(value)
     dispatch(change('wizard', 'pipelines', this.state.listaPipelines))
   }  
 
   deleteConvenzioneToForm(index, tipo, val){
-    console.log('deleteConvenzione')
     for(var i=0;i<this.state.listaConvenzioni.length;i++){    
       if(this.state.listaConvenzioni[i].index==index&&this.state.listaConvenzioni[i].tipo==tipo&&this.state.listaConvenzioni[i].val==val) {
         this.state.listaConvenzioni.splice(i, 1);
@@ -130,7 +200,6 @@ class WizardForm extends Component {
   }
 
   deleteGerarchiaToForm(index, tipo, val){
-    console.log('deleteGerarchie')
     for(var i=0;i<this.state.listaGerarchie.length;i++){    
       if(this.state.listaGerarchie[i].index==index&&this.state.listaGerarchie[i].tipo==tipo&&this.state.listaGerarchie[i].val==val) {
         this.state.listaGerarchie.splice(i, 1);
@@ -141,7 +210,6 @@ class WizardForm extends Component {
   }
 
   deleteGruppiToForm(nome, permesso){
-    console.log('deleteGruppiToForm')
     for(var i=0;i<this.state.listaGruppi.length;i++){    
       if(this.state.listaGruppi[i].nome==nome&&this.state.listaGruppi[i].permesso==permesso) {
         this.state.listaGruppi.splice(i, 1);
@@ -152,7 +220,6 @@ class WizardForm extends Component {
   }
 
   deletePipelineToForm(nome, parametro){
-    console.log('deletePipelinesToForm')
     for(var i=0;i<this.state.listaPipelines.length;i++){    
       if(this.state.listaPipelines[i].nome==nome&&this.state.listaPipelines[i].parametro==parametro) {
         this.state.listaPipelines.splice(i, 1);
@@ -162,15 +229,29 @@ class WizardForm extends Component {
     dispatch(change('wizard', 'pipelines',  this.state.listaPipelines)) 
   }
 
-  deleteSorgenteToForm(tipo, url, user, chron){
-    console.log('deleteSorgenteToForm')
+  deleteSorgenteToForm(tipo, val){
     for(var i=0;i<this.state.listaSorgenti.length;i++){    
-      if(this.state.listaSorgenti[i].tipo==tipo&&this.state.listaSorgenti[i].url==url&&this.state.listaSorgenti[i].user==user&&this.state.listaSorgenti[i].chron==chron) {
+      if(this.state.listaSorgenti[i].tipo==tipo&&this.state.listaSorgenti[i].val==val) {
         this.state.listaSorgenti.splice(i, 1);
       }
     }
     const { dispatch } = this.props
     dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+  }
+
+  deleteStorageToForm(tipo, val){
+    for(var i=0;i<this.state.listaStorage.length;i++){    
+      if(this.state.listaStorage[i].tipo==tipo&&this.state.listaStorage[i].val==val) {
+        this.state.listaStorage.splice(i, 1);
+      }
+    }
+    const { dispatch } = this.props
+    dispatch(change('wizard', 'storage', this.state.listaStorage))
+  }
+
+  modificaDataDCATAPIT(value){
+    const { dispatch } = this.props
+    dispatch(change('wizard', 'ultimamodifica', value)) 
   }
   
   openModalInfo = (infoText) => {
@@ -229,25 +310,59 @@ class WizardForm extends Component {
     this.setState({
       errorNext: undefined
     });
-    if(fields.nomefile && fields.nomefile!=''){
-      //add source type
+      //SORGENTI
       var sorgente = new Object
-      sorgente.tipo = "sftp"
-      sorgente.url = "".concat(fields.categoria).concat("/").concat(fields.sottocategoria).concat("/").concat(fields.nome)
-      sorgente.user = localStorage.getItem('user').toLowerCase()
-      console.log('tempopolling: ' + fields.tempopolling)
-      if(fields.tempopolling=='0')
-        sorgente.chron = '{cron:' + fields.espressionecron + '}'
+      var sched = ''
+      var url = ''
+      var user = localStorage.getItem('user').toLowerCase()
+      if(fields.modalitacaricamento=='sftp' && fields.nomefile && fields.nomefile!=''){
+        sorgente.tipo = "sftp"
+        url = "".concat(fields.categoria).concat("/").concat(fields.sottocategoria).concat("/").concat(fields.nome)
+        if(fields.tempopolling=='0')
+        sched='{cron:' + fields.espressionecron + '}'
       else if (fields.tempopolling=='1')
-        sorgente.chron = '{timer: quantita:' + fields.timerquantita + ', unita: '+ fields.timerunita+'}'
+        sched='{timer: quantita:' + fields.timerquantita + ', unita: '+ fields.timerunita+'}'
+
+      sorgente.val='Url='+url+' User='+user+' Schedule='+sched
       this.state.listaSorgenti.push(sorgente)
       dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+
+      // STORAGE
+      var stor = new Object()
+      stor.tipo='hdfs'
+      stor.val='hdfs://??????'
+      this.state.listaStorage.push(stor)
+      dispatch(change('wizard', 'storage', this.state.listaStorage))
       this.nextPage() 
-    }else{
-      this.setState({
-        errorNext: 'Caricare il file per la metadatazione'
-      });
-    }
+
+      }else if(fields.modalitacaricamento=='webservice_pull' && this.state.filePullLoaded){
+        sorgente.tipo = "webservice_pull"
+        url=fields.urlws
+
+      if(fields.tempopolling=='0')
+        sched='{cron:' + fields.espressionecron + '}'
+      else if (fields.tempopolling=='1')
+        sched='{timer: quantita:' + fields.timerquantita + ', unita: '+ fields.timerunita+'}'
+
+      sorgente.val='Url='+url+' User='+user+' Schedule='+sched
+      this.state.listaSorgenti.push(sorgente)
+      dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+
+      // STORAGE
+      var stor = new Object()
+      stor.tipo='hdfs'
+      stor.val='hdfs://??????'
+      this.state.listaStorage.push(stor)
+      dispatch(change('wizard', 'storage', this.state.listaStorage))
+      this.nextPage() 
+
+      }else{
+        this.setState({
+          errorNext: 'Caricare il file per la metadatazione'
+        });
+      }
+
+
   }
 
   previousPage() {
@@ -272,20 +387,28 @@ class WizardForm extends Component {
    return appo;
   }
 
-  getSchemaFromWS(fields, urlws){
-    console.log('getSchemaFromWS: ' + urlws) 
-    const { dispatch } = this.props;
-    this.setUploading(true, undefined);
-    dispatch(getSchemaWS( urlws, 'csv'))
-    .then(json => { 
-      if(json.status=='error'){
-        this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
-        console.log('error: ' + json.message);
-      }else{
-        this.calcDataFields(fields, json)
-        this.setUploading(false, undefined);
-      }
-    })
+  getSchemaFromWS(fields, urlws, tipofile){
+    console.log('getSchemaFromWS - url:' + urlws +' - tipofile:'+tipofile) 
+    if(urlws && tipofile){
+      const { dispatch } = this.props;
+      this.setUploading(true, undefined);
+      this.setState({filePullLoaded:false}) 
+      dispatch(getSchemaWS( urlws, tipofile))
+      .then(json => { 
+        if(json.status=='error'){
+          this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+          console.log('error: ' + json.message);
+        }else{
+          this.calcDataFields(fields, json)
+          this.setUploading(false, undefined);
+          this.setState({filePullLoaded:true}) 
+        }
+      })
+    }else{
+      this.setState({
+        errorNext: 'Inserire la url e selezionare il tipo di file per il caricamento.'
+      });
+    }
   }
 
   setName(e){
@@ -338,17 +461,33 @@ class WizardForm extends Component {
   setTemplate(e){
     console.log(e.target.value)
     const { dispatch } = this.props;
-    for(var i=0;i<ingestionFormOptions.template.length;i++){
-      var templateValue = ingestionFormOptions.template[i].value
-      if(templateValue && templateValue.length>0){
-        for(var j=0;j<templateValue.length;j++){
-          var objTemplate = templateValue[j]
-          if(e.target.value==ingestionFormOptions.template[i].val)
-            dispatch(change('wizard', objTemplate.name, objTemplate.value))
+    const { config } = this.state
+    const tempales = config['dafvoc-ingform-template']
+    if(tempales&&tempales.length>0){
+    for(var i=0;i<tempales.length;i++){
+      var templateValue = tempales[i]
+      if(templateValue.uid==e.target.value){
+          var actions = templateValue.actions
+          if(actions&&actions.length>0){
+            for(var j=0;j<actions.length;j++){
+              var action = actions[j]
+              if(action.action=='fill-variables'){
+                var variables = action.variables
+                if(variables && variables.length>0){
+                  for(var k=0;k<variables.length;k++){
+                    var variable = variables[k]
+                    if(variable)
+                      dispatch(change('wizard', variable.name, variable.value))
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
   }
+  
 
   getFormValue(nome){
     const selector = formValueSelector('wizard') 
@@ -383,9 +522,10 @@ class WizardForm extends Component {
 
   render() {
     const { onSubmit, loggedUser } = this.props;
-    const { page, tipi, context, infoText, listaConvenzioni, listaGerarchie, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery } = this.state;
+    const { page, tipi, context, infoText, listaConvenzioni, listaGerarchie, listaStorage, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery, config, vocabolariControllati, filePullLoaded } = this.state;
     return (
       <div>
+        {config?
         <div className="row mb-5">
           <div className="col-md-10">
             <Steps current={page}>
@@ -417,6 +557,8 @@ class WizardForm extends Component {
                 executeQuery={this.executeQuery}
                 resetQueryValue={this.resetQueryValue}
                 openModalInfo={this.openModalInfo}
+                config={config}
+                filePullLoaded={filePullLoaded}
               />}
             {page === 1 &&
               <WizardFormSecondPage
@@ -435,7 +577,8 @@ class WizardForm extends Component {
                 listaGerarchie={listaGerarchie}
                 openModalInfo={this.openModalInfo}
                 getFormValue={this.getFormValue}
-
+                config={config}
+                vocabolariControllati={vocabolariControllati}
               />}
             {page === 2 &&
               <WizardFormThirdPage
@@ -452,10 +595,18 @@ class WizardForm extends Component {
                 addPipelineToForm={this.addPipelineToForm}
                 deletePipelineToForm={this.deletePipelineToForm}
                 openModalInfo={this.openModalInfo}
-
+                modificaDataDCATAPIT={this.modificaDataDCATAPIT}
+                config={config}
+                licenze={licenze}
+                listaStorage={listaStorage} 
+                addStorageToForm={this.addStorageToForm} 
+                deleteStorageToForm={this.deleteStorageToForm}
               />}
           </div>
         </div>
+        :
+        <div><p>Ci sono stati problemi nel reperimento della configurazione.</p></div>
+        }
         <Modal
           contentLabel="Info"
           className="Modal__Bootstrap modal-dialog modal-80"
@@ -474,6 +625,7 @@ class WizardForm extends Component {
           </ModalFooter>
         </Modal>
       </div>
+            
     );
   }
 }

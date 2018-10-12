@@ -38,7 +38,6 @@ class Aside extends Component {
 
   render() {
     const { notifications } = this.state
-    console.log(notifications)
     return (
       <aside className="aside-menu">
         <div className="tab-content list-group list-group-accent">

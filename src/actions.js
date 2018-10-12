@@ -1575,3 +1575,25 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(response => response.json())
         }
       }
+
+      export function loadVocabulary(value){
+        var url = 'https://api.daf.teamdigitale.it/daf-configurator/v2/vocabulary/dafvoc-ingestionform-option'
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .then(response => response)
+        }
+      }

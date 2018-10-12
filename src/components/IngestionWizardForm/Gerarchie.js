@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { ingestionFormOptions } from './const';
 import {
     Modal,
     ModalHeader,
@@ -94,7 +93,7 @@ class Gerarchie extends Component {
 
   render() {
     const { gerarchia, erroMsg } = this.state;
-    const { listaGerarchie } = this.props;
+    const { listaGerarchie, config } = this.props;
     return (
       <div>
         <Modal isOpen={this.state.isOpenGerarchie} onRequestHide={this.hideModalGerarchie}>
@@ -110,7 +109,7 @@ class Gerarchie extends Component {
                     <div className="col-sm-10">
                         <select className="form-control" ref={(gerarchia) => this.gerarchia = gerarchia} onChange= {(e) => this.onChangeGerarchia(e, e.target.value)} id="gerarchia" value={gerarchia} >
                             <option value="" defaultValue></option>
-                                {ingestionFormOptions.gerarchie.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
+                                {config.gerarchie.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
                         </select>
                     </div>
                 </div>
