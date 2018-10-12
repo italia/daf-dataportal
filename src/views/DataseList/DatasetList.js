@@ -618,6 +618,7 @@ class DatasetList extends Component {
                                     onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
                                     isOutsideRange={() => false}
                                     minimumNights={ 0 }
+                                    noBorder
                                     />
                             }
                             {this.state.showDivCategoria && results && results.length>0 &&
