@@ -11,7 +11,7 @@ import {
 } from 'react-modal-bootstrap';
 import { setCookie, setSupersetCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
-import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications, search, getSupersetUrl, datasetDetail, getAllOrganizations } from './../../actions.js'
+import { prova, loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications, search, getSupersetUrl, datasetDetail, getAllOrganizations } from './../../actions.js'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -32,7 +32,7 @@ import Organizations from '../../views/Settings/Organizations';
 import Users from '../../views/Settings/Users';
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
-import Page404 from '../../views/404/Page404';
+import CreateWidget from '../../views/Widgets/CreateWidget'
 
 import { serviceurl } from '../../config/serviceurl'
 
@@ -194,6 +194,7 @@ class Full extends Component {
       datasets: [],
       allOrganizations: []
     }
+
 
     this.openSearch = this.openSearch.bind(this)
     this.openModalStory = this.openModalStory.bind(this)
@@ -1019,6 +1020,7 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />
                 <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
+                <PrivateRoute authed={this.state.authed} path="/private/charts" name="Test" component={CreateWidget} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/settings" name="Settings" component={Settings} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/users" name="Users" component={Users} />

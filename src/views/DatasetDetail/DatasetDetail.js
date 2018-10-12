@@ -94,7 +94,7 @@ class DatasetDetail extends Component {
             uploadFile: false,
             file: '',
             fileName: '',
-            uploading: false
+            uploading: false,
 
         }
 
@@ -142,8 +142,8 @@ class DatasetDetail extends Component {
             var dafIndex = 0
 
             dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-                .then(json => { dafIndex = dafIndex + 3; this.setState({ hasPreview: true, dafIndex: dafIndex }) })
-                .catch(error => { this.setState({ hasPreview: false }) })
+                .then(json => { dafIndex = dafIndex + 3; this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false }) })
+                .catch(error => { this.setState({ hasPreview: false, loading: false }) })
 
             dispatch(getSupersetUrl(nextProps.dataset.dcatapit.name, nextProps.dataset.dcatapit.owner_org, isExtOpendata))
                 .then(json => {
@@ -445,6 +445,7 @@ class DatasetDetail extends Component {
 
     render() {
         const { dataset, metadata, ope, feed, iframes, isFetching, dispatch } = this.props
+        const { loading } = this.state
         var metadataThemes = undefined
         if (metadata) {
             try {
@@ -454,7 +455,7 @@ class DatasetDetail extends Component {
             }
         }
 
-        return isFetching === true ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (<div>
+        return (loading && isFetching) ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (<div>
             {(ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') && (dataset) &&
                 <div>
                     <Modal isOpen={this.state.uploadFile} onRequestHide={this.toggleUploadFile}>
@@ -478,7 +479,6 @@ class DatasetDetail extends Component {
                                           this.setState({
                                               file: fileAsBinaryString
                                           })
-                                          // do whatever you want with the file content
                                       };
                                       this.setState({
                                         fileName: file.name
@@ -511,16 +511,15 @@ class DatasetDetail extends Component {
                     </Modal>
                     <div className='top-dataset-1'>
                         <div className="container pt-4">
-                            <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary" />
-                                <div className="row">
-                                    <div className="col-md-10">
-                                        <h2 className="title-dataset text-primary dashboardHeader" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title, 75)}</h2>
-                                    </div>
-                                    <div className="col-md-2">
-                                        {isPublic() && <ShareButton background="bg-white" className="mt-2" />}
-                                        {!isPublic() && <button className="btn btn-accento nav-link button-data-nav" disabled={!this.state.hasPreview} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>}
-                                    </div>
+                            <div className="row">
+                                <div className="col-md-10">
+                                  <h2 className="dashboardHeader title-dataset text-primary" title={dataset.dcatapit.title}><i className="fa fa-table fa-xs text-primary mr-3" />{this.truncate(dataset.dcatapit.title, 75)}</h2>
                                 </div>
+                                <div className="col-md-2">
+                                    {isPublic() && <ShareButton background="bg-white" className="mt-2" />}
+                                    {!isPublic() && <button className="btn btn-accento nav-link button-data-nav" disabled={!this.state.hasPreview} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>}
+                                </div>
+                            </div>
                             <ul className="nav b-b-0 nav-tabs w-100 pl-4" style={{ display: "inline-flex" }}>
                                 <li className="nav-item">
                                     <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showAdmin: false, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
@@ -922,8 +921,14 @@ class DatasetDetail extends Component {
                 <div>
                     <div className='top-dataset-1'>
                         <div className="container pt-4">
-                            <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary"></i>
-                            <h2 className="title-dataset px-4 text-primary dashboardHeader" title={metadata.title}>{this.truncate(metadata.title, 75)}</h2>
+                            <div className="row">
+                              <div className="col-md-10">
+                                <h2 className="title-dataset px-4 text-primary dashboardHeader" title={metadata.title}><i className="fa fa-table fa-xs mr-3 text-primary"/>{this.truncate(metadata.title, 75)}</h2>
+                              </div>
+                              <div className="col-md-2">
+                                {isPublic() && <ShareButton background="bg-white" className="mt-2" />}
+                              </div>
+                            </div>
                             <ul className="nav b-b-0 nav-tabs w-100 pl-4" style={{ display: "inline-flex" }}>
                                 <li className="nav-item">
                                     <a className={!this.state.showMeta ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showMeta: true, showRes: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
@@ -932,7 +937,6 @@ class DatasetDetail extends Component {
                                     <a className={!this.state.showRes ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleResources.bind(this, metadata.name)}><i className="text-icon fa fa-info-circle pr-2" />Risorse</a>
                                 </li>
                             </ul>
-                            {isPublic() && <ShareButton background="bg-white" className="mt-4" />}
                         </div>
                     </div>
                     <div className="container">

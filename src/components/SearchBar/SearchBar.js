@@ -25,12 +25,17 @@ class SearchBar extends Component{
         
         let newFilter = { }
         var org = []
+        var index = []
         if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
           org.push(properties.organization)
+
+        if(!isPublic()){
+          index = ['catalog_test', 'dashboards', 'stories'] 
+        }
         if(window.location.hash.indexOf('search')===-1){
             newFilter = {
                 'text': '',
-                'index': [],
+                'index': index,
                 'org': org,
                 'theme':[],
                 'date': "",
@@ -40,7 +45,7 @@ class SearchBar extends Component{
         }else{
             newFilter = filter?filter:{
                 'text': '',
-                'index': [],
+                'index': index,
                 'org': org,
                 'theme':[],
                 'date': "",
