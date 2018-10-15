@@ -169,10 +169,13 @@ class Login extends Component {
                                     setCookie(JSON.parse('[{"name":"dataportal","value":"'+ dataportalCookie +'","path":"/"}]'))
                                     dispatch(receiveLogin(json))
                                     if(window.location.href.indexOf('?')>-1){
-                                       let array = window.location.href.split('?')
-                                       //this.props.history.push(array[1])
-                                       window.location.replace(array[1]);
-
+                                      let array = window.location.href.split('?')
+                                      //this.props.history.push(array[1])
+                                      if(array[1].indexOf('login')>-1){
+                                        this.props.history.push('/private/home')  
+                                      }else{
+                                        window.location.replace(array[1]);
+                                      }
                                     }else{
                                       this.props.history.push('/private/home')
                                     }

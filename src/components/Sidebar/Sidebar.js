@@ -90,7 +90,7 @@ class Sidebar extends Component {
     const { dispatch } = this.props;
     let filter = {
       'text': '',
-      'index': ['catalog_test','ext_opendata'],
+      'index': ['catalog_test'],
       'org': [],
       'theme':[],
       'date': "",
@@ -315,7 +315,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                  <NavLink to={'/private/users'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fas fa-user-plus text-secondary"></i> Gestione Utenti</NavLink>
+                  <NavLink to={'/private/users'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fas fa-user-cog text-secondary"></i> Gestione Utenti</NavLink>
               </li>}
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
