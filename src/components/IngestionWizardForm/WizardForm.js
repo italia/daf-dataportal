@@ -56,7 +56,7 @@ class WizardForm extends Component {
     this.resetQueryValue = this.resetQueryValue.bind(this)
     this.modificaDataDCATAPIT = this.modificaDataDCATAPIT.bind(this)
     this.state = {
-      config: config,
+      //config: config,
       page: 0,
       uploading: false,
       errorUpload: undefined,
@@ -95,7 +95,7 @@ class WizardForm extends Component {
         }
       ]
     };
-    //this.loadConfiguration()
+    this.loadConfiguration()
     //this.loadVocabolariControllati()
   }
 
