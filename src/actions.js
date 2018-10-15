@@ -1461,6 +1461,8 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           token = localStorage.getItem('token')
         }
 
+        dcatapit.extras=[{"value":true,"key":"Open Data Daf"}]
+
         return dispatch => {
           return fetch(url, {
             method: 'POST',

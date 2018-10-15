@@ -65,7 +65,8 @@ class DatasetList extends Component {
             startDate: undefined,
             endDate: undefined,
             items: 20,
-            totalResults: totalResults
+            totalResults: totalResults,
+            ckanChecked: isPublic()
         }
 
         
@@ -89,6 +90,7 @@ class DatasetList extends Component {
         this.addOrganization = this.addOrganization.bind(this)
         this.toggleMiei = this.toggleMiei.bind(this)
         this.toggleShared = this.toggleShared.bind(this)
+        this.toggleCkan = this.toggleCkan.bind(this)
 
 /*         if(window.location.hash==='#/dataset'){
             this.searchAll('')
@@ -110,11 +112,22 @@ class DatasetList extends Component {
         const { dispatch, properties, loggedUser } = this.props
         var dataset = window.location.hash.indexOf('dataset')!==-1
         var org = []
+        var index = []
+        var indexDef = []
         if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
           org.push(properties.organization)
+
+        if(this.state.ckanChecked===true){
+          index = ['catalog_test','ext_opendata']
+          indexDef = ['catalog_test','ext_opendata', 'dashboards', 'stories']
+        }else{
+          index = ['catalog_test']
+          indexDef = ['catalog_test', 'dashboards', 'stories']
+        }
+
         let filter = {
             'text': query,
-            'index': dataset?['catalog_test','ext_opendata']:[],
+            'index': dataset?index:indexDef,
             'org': org,
             'theme':[],
             'date': "",
@@ -135,8 +148,8 @@ class DatasetList extends Component {
     }
 
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
-    search(order, owner, lastFilter, sharedWithMe){
-        const { dispatch, properties, loggedUser } = this.props
+    search(order, owner, lastFilter, sharedWithMe, ckanChecked){
+        const { dispatch, properties } = this.props
         
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search).q
@@ -190,17 +203,28 @@ class DatasetList extends Component {
           }
         }
 
+          
         if(dataset){
-            if(filter.index.length===0)
-              filter.index = ['catalog_test', 'ext_opendata']
+            if(filter.index.length===0){
+              if(ckanChecked===false){
+                filter.index = ['catalog_test']
+              }else if(ckanChecked===true){
+                filter.index = ['catalog_test', 'ext_opendata']
+              }
+            }
             dispatch(search('', filter, isPublic(), filterInt))
         }else{
-            dispatch(search(query, filter, isPublic(), filterInt))
-            .catch((error) => {
-                this.setState({
-                    isFetching: false
-                })
-            })
+          if(filter.index.indexOf('catalog_test')>-1 && ckanChecked===true){
+            filter.index.push('ext_opendata')
+          }else if(filter.index.length===0 && ckanChecked===false){
+            filter.index = ['catalog_test', 'dashboards', 'stories']
+          }
+          dispatch(search(query, filter, isPublic(), filterInt))
+          .catch((error) => {
+              this.setState({
+                  isFetching: false
+              })
+          })
         }
     }
 
@@ -342,7 +366,7 @@ class DatasetList extends Component {
             filter: newFilter
         });
         /* dispatch(search(query, newFilter)) */
-        this.search(e.target.value, (mieiContenutichecked?loggedUser.uid:''), false, sharedWithMeChecked);
+        this.search(e.target.value, (mieiContenutichecked?loggedUser.uid:''), false, sharedWithMeChecked, this.state.ckanChecked);
       }
 
       toggleMiei(){
@@ -352,7 +376,7 @@ class DatasetList extends Component {
           sharedWithMeChecked: false
         })
 
-        this.search(this.state.order_filter, loggedUser.uid, false, false)
+        this.search(this.state.order_filter, loggedUser.uid, false, false, this.state.ckanChecked)
       }
 
       toggleShared(){
@@ -361,9 +385,17 @@ class DatasetList extends Component {
           mieiContenutichecked: false
         })
 
-        this.search(this.state.order_filter, '', false, true)
+        this.search(this.state.order_filter, '', false, true, this.state.ckanChecked)
       }
       
+      toggleCkan(){
+        this.setState({
+          ckanChecked: !this.state.ckanChecked
+        })
+
+        this.search(this.state.order_filter, '', false, false, !this.state.ckanChecked)
+      }
+
       componentWillReceiveProps(nextProps){
         const queryString = require('query-string');
         const query = queryString.parse(nextProps.location.search).q 
@@ -469,7 +501,7 @@ class DatasetList extends Component {
             filter: newFilter
         })
         if(newFilter.elements.length===0 && newFilter.a==='' && newFilter.da===''){
-            this.search(this.state.order_filter, (mieiContenutichecked?loggedUser.uid:''), true, this.state.sharedWithMeChecked)
+            this.search(this.state.order_filter, (mieiContenutichecked?loggedUser.uid:''), true, this.state.sharedWithMeChecked, this.state.ckanChecked)
         }
       }
 
@@ -544,12 +576,12 @@ class DatasetList extends Component {
                                 <div className="row">
                                   {window.location.hash.indexOf('dataset')!==-1 && <div className="col"><i className="fa-pull-left fa fa-table fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>Dataset trovati <i>{this.state.totalResults}</i></h2></div>}
                                   {window.location.hash.indexOf('dataset')===-1 && <div className="col"><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>{search && 'Hai cercato ' }<i className="mr-1">{search?search:""}</i> trovati <i>{this.state.totalResults}</i> risultati</h2></div>}
-                                  {/* !isPublic() && <div className="py-2"><b className="h5 font-weight-bold mr-2">Condivisi con me</b>
+                                  {!isPublic() && <div className="pt-2"><b className="h5 font-weight-bold">Ckan data</b> <button className="btn btn-link mr-2 py-0 px-1" title="Abilita la ricerca a tutti i dataset open data del catalogo ckan nazionale"><i className="fas fa-info-circle fa-lg"/></button>
                                   <label className="switch switch-3d switch-primary mr-3">
-                                    <input type="checkbox" className="switch-input" checked={this.state.sharedWithMeChecked} onClick={this.toggleShared}/>
-                                    <span className="switch-label" title="Visualizza solo i dataset condivisi con me"></span>
-                                    <span className="switch-handle" title="Visualizza solo i dataset condivisi con me"></span>
-                                  </label></div> */}
+                                    <input type="checkbox" className="switch-input" checked={this.state.ckanChecked} onClick={this.toggleCkan}/>
+                                    <span className="switch-label" title="Abilita la ricerca a tutti i dataset open data del catalogo ckan nazionale"></span>
+                                    <span className="switch-handle" title="Abilita la ricerca a tutti i dataset open data del catalogo ckan nazionale"></span>
+                                  </label></div>}
                                   {/* !isPublic() && <div className="py-2"><b className="h5 font-weight-bold mr-2">I miei contenuti</b>
                                   <label className="switch switch-3d switch-primary mr-3">
                                     <input type="checkbox" className="switch-input" checked={this.state.mieiContenutichecked} onClick={this.toggleMiei}/>
@@ -558,7 +590,7 @@ class DatasetList extends Component {
                                   </label></div> */}
                                   {!isPublic() && <div id="tab" className="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label className={"btn btn-outline-filters "+((!this.state.mieiContenutichecked&&!this.state.sharedWithMeChecked)?"active":"")}>
-                                      <input type="radio" name="all" id="option1" onClick={()=>{this.setState({ sharedWithMeChecked: false, mieiContenutichecked: false}); this.search(this.state.order_filter, '', false, false)}}/> Tutti i contenuti 
+                                      <input type="radio" name="all" id="option1" onClick={()=>{this.setState({ sharedWithMeChecked: false, mieiContenutichecked: false}); this.search(this.state.order_filter, '', false, false, this.state.ckanChecked)}}/> Tutti i contenuti 
                                     </label>
                                     <label className={"btn btn-outline-filters "+((!this.state.mieiContenutichecked&&this.state.sharedWithMeChecked)?"active":"")}>
                                       <input type="radio" name="shared" id="option2" onClick={this.toggleShared}/> Condivisi con me
@@ -578,7 +610,7 @@ class DatasetList extends Component {
                                   <div className="row">
                                     <div className="mr-auto" >
                                         <ul className="nav">
-                                            <li className="nav-item"><button type="button" className={"b-t-0 b-b-0 btn p-3 "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button></li>
+                                            {window.location.hash.indexOf('dataset')<=-1 &&<li className="nav-item"><button type="button" className={"b-t-0 b-b-0 btn p-3 "+ (this.state.showDivTipo ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickTipo}>Tipo <i className={"fa " + (this.state.showDivTipo ? "fa-angle-up" : "fa-angle-down")}></i></button></li>}
                                             <li className="nav-item"><button type="button" className={"b-t-0 b-b-0 btn p-3 "+ (this.state.showDivData ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickData}>Data <i className={"fa " + (this.state.showDivData ? "fa-angle-up" : "fa-angle-down")}></i></button></li>
                                             <li className="nav-item"><button type="button" className={"b-t-0 b-b-0 btn p-3 "+ (this.state.showDivCategoria ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickCategoria}>Categoria <i className={"fa " + (this.state.showDivCategoria ? "fa-angle-up" : "fa-angle-down")}></i></button></li>
                                             {orgFilter && <li className="nav-item"><button type="button" className={"b-t-0 b-b-0 btn p-3 "+ (this.state.showDivOrganizzazione ? "btn-secondary":"btn-outline-filters")} onClick={this.handleToggleClickOrganizzazione}>Organizzazione <i className={"fa " + (this.state.showDivOrganizzazione ? "fa-angle-up" : "fa-angle-down")}></i></button></li>}
@@ -602,7 +634,13 @@ class DatasetList extends Component {
                             {this.state.showDivTipo && results &&
                                 Object.keys(JSON.parse(results[results.length-4].source)).map((tipo, index) =>{
                                     var tipi=JSON.parse(results[results.length-4].source)
-                                    return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 0, 'value': tipo})} onClick={this.addFilter.bind(this, 0, tipo)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': tipo})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTipo(tipo)}<span className="ml-2 badge badge-pill badge-secondary">{tipi[tipo]}</span></button>)
+                                    if(tipi.ext_opendata){
+                                      var countCatalog = parseInt(tipi['catalog_test'])
+                                      tipi['catalog_test'] = countCatalog +parseInt(tipi['ext_opendata'])
+                                    }
+
+                                    if(tipo!=='ext_opendata')
+                                      return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 0, 'value': tipo})} onClick={this.addFilter.bind(this, 0, tipo)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': tipo})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTipo(tipo)}<span className="ml-2 badge badge-pill badge-secondary">{tipi[tipo]}</span></button>)
                                 })
                             }
                             {this.state.showDivData && 
@@ -680,7 +718,7 @@ class DatasetList extends Component {
                                 })
                                 }
                                 {this.state.filter.da && this.state.filter.a && <span className="badge badge-pill badge-white my-2 mr-2 pl-3 py-2 filter-val" key='da'>{this.state.filter.da.locale('it').format("DD/MM/YYYY")} - {this.state.filter.a.locale('it').format("DD/MM/YYYY")}<button type="button" className="btn btn-link p-0 ml-2 text-gray-600" onClick={this.removeFilterDate.bind(this)}><i className="ml-2 fa fa-times-circle"></i></button></span>}
-                                {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this, this.state.order_filter, (this.state.mieiContenutichecked?loggedUser.uid:''), false, this.state.sharedWithMeChecked)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
+                                {(this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && <button type="button" onClick={this.search.bind(this, this.state.order_filter, (this.state.mieiContenutichecked?loggedUser.uid:''), false, this.state.sharedWithMeChecked, this.state.ckanChecked)} style={{height: '48px'}} className="ml-2 btn btn-accento px-4">Filtra</button>}
                                 </nav>
                               </div>
                             }

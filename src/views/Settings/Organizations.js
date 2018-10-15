@@ -836,7 +836,7 @@ class Organizations extends Component {
                                 if (user.indexOf("default_admin") === -1)
                                     return(
                                         <li className="list-group-item" key={user}>{user}
-                                            <button type="button" className="btn btn-link float-right" title="Rimuovi utente" onClick={this.removeUser.bind(this, user)}>{removingUser&&user===userToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-1" />}</button>
+                                            <button type="button" className="btn btn-link float-right" title="Rimuovi utente" onClick={this.removeUser.bind(this, user)}>{removingUser&&user===userToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-user-minus fa-1" />}</button>
                                         </li>)
                                 }
                             ):<label className="m-2 col-form-label">Non ci sono utenti</label>
