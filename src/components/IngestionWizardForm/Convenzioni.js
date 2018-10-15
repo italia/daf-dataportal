@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { ingestionFormOptions } from './const';
 import {
     Modal,
     ModalHeader,
@@ -15,7 +14,7 @@ class Convenzioni extends Component {
         this.state = {
             isOpenConvenzioni: false,
             convenzione: '',
-            campi: [],
+            fields: [],
             erroMsg: undefined
         }
         this.openModalConvenzioni = this.openModalConvenzioni.bind(this)
@@ -29,7 +28,7 @@ class Convenzioni extends Component {
         this.setState({
             isOpenConvenzioni: true,
             convenzione: '',
-            campi: [],
+            fields: [],
             erroMsg: undefined
         });
     }
@@ -43,13 +42,13 @@ class Convenzioni extends Component {
     handleSaveConvenzione = (e) => {
         e.preventDefault()
         console.log('handleSaveConvenzione')
-        const { campi } = this.state;
+        const { fields } = this.state;
         const { addConvenzioneToForm, index} = this.props
         var valoreConvenzione=''
-        if(campi && campi.length>0){
-            for(var i=0;i<campi.length;i++){
-                var valcampo = campi[i].val
-                var labelcampo = campi[i].label
+        if(fields && fields.length>0){
+            for(var i=0;i<fields.length;i++){
+                var valcampo = fields[i].val
+                var labelcampo = fields[i].label
                 console.log('value: ' + this.refs[valcampo].value)
                 valoreConvenzione = valoreConvenzione + ' ' + labelcampo + '=' + this.refs[valcampo].value
             }
@@ -78,23 +77,25 @@ class Convenzioni extends Component {
     }
 
     onChangeConvenzione(e, value){
-        var campi = []
-        if(value && ingestionFormOptions.convenzioni){
-          for(var i=0;i<ingestionFormOptions.convenzioni.length;i++){
-            if(ingestionFormOptions.convenzioni[i].val==value){
-              campi = ingestionFormOptions.convenzioni[i].campi
+        const { config } = this.props
+        var fields = []
+        var convenzioni = config['dafvoc-ingform-dataschema-metadata-format_std-conv']
+        if(value && convenzioni && convenzioni.length>0){
+          for(var i=0;i<convenzioni.length;i++){
+            if(convenzioni[i].uid==value){
+              fields = convenzioni[i].fields
             }
           }
         }
         this.setState({
             convenzione: value,
-            campi: campi
+            fields: fields
         });
     }
 
   render() {
-    const { campi, convenzione } = this.state;
-    const { listaConvenzioni } = this.props;
+    const { fields, convenzione } = this.state;
+    const { listaConvenzioni, config } = this.props;
     return (
       <div>
         <Modal isOpen={this.state.isOpenConvenzioni} onRequestHide={this.hideModalConvenzioni}>
@@ -110,16 +111,16 @@ class Convenzioni extends Component {
                     <div className="col-sm-10">
                         <select className="form-control" ref={(convenzione) => this.convenzione = convenzione} onChange= {(e) => this.onChangeConvenzione(e, e.target.value)} id="convenzione" value={convenzione} >
                             <option value="" defaultValue></option>
-                                {ingestionFormOptions.convenzioni.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
+                                {config['dafvoc-ingform-dataschema-metadata-format_std-conv'].map(value => <option value={value.uid} key={value.uid}>{value.name.ita?value.name.ita:value.name.default}</option>)}
                         </select>
                     </div>
                 </div>
-                {campi && campi.map((campo, index) => {
+                {fields && fields.map((field, index) => {
                     return(
                         <div className="form-group row" key={index}>
-                            <label className="col-sm-2 col-form-label">{campo.label}</label>
+                            <label className="col-sm-2 col-form-label">{field.label}</label>
                         <div className="col-sm-10">
-                            <input name={campo.val} type='text' ref={campo.val} className="form-control" />
+                            <input name={field.val} type='text' ref={field.val} className="form-control" />
                         </div>
                     </div>
                     )
@@ -140,42 +141,40 @@ class Convenzioni extends Component {
         </Modal>
         <div className="form-group row">
             <label className="col-sm-2 col-form-label">Convenzioni</label>
-            <div className="col-sm-10">
-            <table className="table table-sm">
-                <thead>
-                    <tr>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Valore</th>
-                    <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {listaConvenzioni.length>0?
-                     listaConvenzioni.map((convenzione, index) => {
-                         return(<tr key={index}>
-                                    <td>{convenzione.tipo}</td>
-                                    <td>{convenzione.val}</td>
-                                    <td> <button type="button" className="btn btn-link float-right" title="Rimuovi Convenzione"  onClick={this.handleRemoveConvenzione.bind(this, convenzione.tipo, convenzione.val)}>
-                                            <i className="fa fa-minus-circle fa-lg m-t-2"></i>
-                                        </button>
-                                    </td>
-                                </tr>)
-                    })
+            {listaConvenzioni.length>0?
+                <div className="col-sm-10">
+                <table className="table table-sm">
+                    <thead>
+                        <tr>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Valore</th>
+                        <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {listaConvenzioni.map((convenzione, index) => {
+                            return(<tr key={index}>
+                                        <td>{convenzione.tipo}</td>
+                                        <td>{convenzione.val}</td>
+                                        <td> <button type="button" className="btn btn-link float-right" title="Rimuovi Convenzione"  onClick={this.handleRemoveConvenzione.bind(this, convenzione.tipo, convenzione.val)}>
+                                                <i className="fa fa-minus-circle fa-lg m-t-2"></i>
+                                            </button>
+                                        </td>
+                                    </tr>)
+                        })
+                        }
+                    </tbody>
+                    </table>
+                    </div>
                     :
-                    <div>Nessuna convenzione inserita</div>
+                    <div className="col-sm-10">
+                    <p><label className="col-sm-10 col-form-label">Nessuna convenzione inserita</label>
+                        <button type="button" className="btn btn-link float-right" title="Aggiungi Convenzione" onClick={this.openModalConvenzioni.bind(this)}>
+                            <i className="fa fa-plus-circle fa-lg m-t-2"></i>
+                        </button>
+                        </p>
+                    </div>
                     }
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td> 
-                            <button type="button" className="btn btn-link float-right" title="Aggiungi Convenzione" onClick={this.openModalConvenzioni.bind(this)}>
-                                <i className="fa fa-plus-circle fa-lg m-t-2"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-                </table>
-            </div>
         </div>
       </div>
     );

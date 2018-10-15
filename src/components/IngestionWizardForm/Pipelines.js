@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { ingestionFormOptions } from './const';
 import { connect  } from 'react-redux';
 
 import {
@@ -86,8 +85,8 @@ class Pipelines extends Component {
     }
 
   render() {
-    const { pipeline, erroMsg, allOrganizations } = this.state;
-    const { listaPipelines } = this.props;
+    const { pipeline, erroMsg } = this.state;
+    const { listaPipelines, config } = this.props;
     return (
       <div>
          <Modal isOpen={this.state.isOpenPipelines} onRequestHide={this.hideModalPipelines}>
@@ -103,7 +102,7 @@ class Pipelines extends Component {
                     <div className="col-sm-10">
                         <select className="form-control" ref={(pipeline) => this.pipeline = pipeline} onChange= {(e) => this.onChangePipeline(e, e.target.value)} id="pipeline" value={pipeline}>
                             <option value="" defaultValue></option>
-                                {ingestionFormOptions.pipelines.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
+                            {config['pipelines'].map(value => <option value={value.uid} key={value.uid}>{value.name.ita?value.name.ita:value.name.default}</option>)}
                         </select>
                     </div>
                 </div>
@@ -133,41 +132,40 @@ class Pipelines extends Component {
         </Modal>
         <div className="form-group row">
             <label className="col-sm-2 col-form-label">Pipelines</label>
-            <div className="col-sm-10">
-            <table className="table table-sm">
-                <thead>
-                    <tr>
-                    <th scope="col">Pipeline</th>
-                    <th scope="col">Parametro</th>
-                    <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                     {listaPipelines.length>0?
-                     listaPipelines.map((pipeline, index) => {
-                         return(<tr key={index}>
-                                    <td>{pipeline.nome}</td>
-                                    <td>{pipeline.parametro}</td>
-                                    <td> <button type="button" className="btn btn-link float-right" title="Rimuovi Pipeline"  onClick={this.handleRemovePipeline.bind(this, pipeline.nome, pipeline.parametro)}>
-                                            <i className="fa fa-minus-circle fa-lg m-t-2"></i>
-                                        </button>
-                                    </td>
-                                </tr>)
-                    })
+            {listaPipelines.length>0?
+                <div className="col-sm-10">
+                <table className="table table-sm">
+                    <thead>
+                        <tr>
+                        <th scope="col">Pipeline</th>
+                        <th scope="col">Parametro</th>
+                        <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {listaPipelines.map((pipeline, index) => {
+                            return(<tr key={index}>
+                                        <td>{pipeline.nome}</td>
+                                        <td>{pipeline.parametro}</td>
+                                        <td> <button type="button" className="btn btn-link float-right" title="Rimuovi Pipeline"  onClick={this.handleRemovePipeline.bind(this, pipeline.nome, pipeline.parametro)}>
+                                                <i className="fa fa-minus-circle fa-lg m-t-2"></i>
+                                            </button>
+                                        </td>
+                                    </tr>)
+                        })
+                        }
+                    </tbody>
+                    </table>
+                    </div>
                     :
-                    <div>Nessuna pipeline inserita</div>
+                    <div className="col-sm-10">
+                    <p><label className="col-sm-10 col-form-label">Nessuna pipline inserita</label>
+                        <button type="button" className="btn btn-link float-right" title="Aggiungi Convenzione" onClick={this.openModalPipelines.bind(this)}>
+                            <i className="fa fa-plus-circle fa-lg m-t-2"></i>
+                        </button>
+                        </p>
+                    </div>
                     }
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" className="btn btn-link float-right" title="Aggiungi Pipeline" onClick={this.openModalPipelines.bind(this)}>
-                                <i className="fa fa-plus-circle fa-lg m-t-2"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-                </table>
-            </div>
         </div>
       </div>
     );

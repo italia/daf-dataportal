@@ -8,109 +8,108 @@ import {
     ModalFooter
   } from 'react-modal-bootstrap';
 
-class Sorgenti extends Component {
+class Storage extends Component {
     constructor(props){
         super(props)
         this.state = {
-            isOpenSorgenti: false,
-            sorgente: '',
+            isOpenStorage: false,
+            stor: '',
             fields: [],
             erroMsg: undefined
         }
-        this.openModalSorgenti = this.openModalSorgenti.bind(this)
-        this.hideModalSorgenti = this.hideModalSorgenti.bind(this)
-        this.handleSaveSorgente = this.handleSaveSorgente.bind(this)
-        this.onChangeSorgente = this.onChangeSorgente.bind(this)
-        this.handleRemoveSorgente = this.handleRemoveSorgente.bind(this)
+        this.openModalStorage = this.openModalStorage.bind(this)
+        this.hideModalStorage = this.hideModalStorage.bind(this)
+        this.handleSaveStorage = this.handleSaveStorage.bind(this)
+        this.onChangeStorage = this.onChangeStorage.bind(this)
+        this.handleRemoveStorage = this.handleRemoveStorage.bind(this)
     }
 
-    openModalSorgenti = () => {
+    openModalStorage = () => {
         this.setState({
-            isOpenSorgenti: true,
-            sorgente: '',
+            isOpenStorage: true,
+            stor: '',
             fields: [],
             erroMsg: undefined
         });
     }
 
-    hideModalSorgenti = () => {
+    hideModalStorage = () => {
         this.setState({
-            isOpenSorgenti: false
+            isOpenStorage: false
         });
     }
 
-    handleSaveSorgente = (e) => {
+    handleSaveStorage = (e) => {
         e.preventDefault()
-        console.log('handleSaveSorgente')
+        console.log('handleSaveStorage')
         const { fields } = this.state;
-        const { addSorgenteToForm, index} = this.props
-        var valoreSorgente=''
+        const { addStorageToForm} = this.props
+        var valoreStorage=''
         if(fields && fields.length>0){
             for(var i=0;i<fields.length;i++){
                 var valcampo = fields[i].val
                 var labelcampo = fields[i].label
                 console.log('value: ' + this.refs[valcampo].value)
-                valoreSorgente = valoreSorgente + ' ' + labelcampo + '=' + this.refs[valcampo].value
+                valoreStorage = valoreStorage + ' ' + labelcampo + '=' + this.refs[valcampo].value
             }
         }
-        var sorgente = new Object()
-        sorgente.index=index
-        sorgente.tipo=this.state.sorgente
-        sorgente.val=valoreSorgente
-        console.log('Sorgente: ' + JSON.stringify(sorgente))
-        addSorgenteToForm(sorgente, index)
+        var stor = new Object()
+        stor.tipo=this.state.stor
+        stor.val=valoreStorage
+        console.log('Stor: ' + JSON.stringify(stor))
+        addStorageToForm(stor)
         this.setState({
-            isOpenSorgenti: false
+            isOpenStorage: false
         });
     }
 
-    handleRemoveSorgente = (tipo, val, e) => {
+    handleRemoveStorage = (tipo, val, e) => {
         e.preventDefault()
-        console.log('handleRemoveSorgente')
+        console.log('handleRemoveStorage')
         console.log('tipo: ' + tipo)
         console.log('val: ' + val)
-        const { deleteSorgenteToForm} = this.props
-        deleteSorgenteToForm(tipo, val)
+        const { deleteStorageToForm} = this.props
+        deleteStorageToForm(tipo, val)
         this.setState({
             erroMsg:undefined
         });
     }
 
-    onChangeSorgente(e, uid){
+    onChangeStorage(e, uid){
         const { config } = this.props
         var fields = []
-        if(uid && config['sorgenti']){
-          for(var i=0;i<config['sorgenti'].length;i++){
-            if(config['sorgenti'][i].uid==uid){
-              fields = config['sorgenti'][i].fields
+        if(uid && config['storage']){
+          for(var i=0;i<config['storage'].length;i++){
+            if(config['storage'][i].uid==uid){
+              fields = config['storage'][i].fields
             }
           }
         }
         this.setState({
-            sorgente: uid,
+            stor: uid,
             fields: fields
         });
     }
 
   render() {
-    const { fields, sorgente } = this.state;
-    const { listaSorgenti, config } = this.props;
+    const { fields, stor } = this.state;
+    const { listaStorage, config } = this.props;
     return (
       <div>
-        <Modal isOpen={this.state.isOpenSorgenti} onRequestHide={this.hideModalSorgenti}>
+        <Modal isOpen={this.state.isOpenStorage} onRequestHide={this.hideModalStorage}>
           <form>
             <ModalHeader>
-              <ModalTitle>Aggiungi una sorgente</ModalTitle>
-              <ModalClose onClick={this.hideModalSorgenti}/>
+              <ModalTitle>Aggiungi uno Storage</ModalTitle>
+              <ModalClose onClick={this.hideModalStorage}/>
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
                 <div className="form-group row">
-                    <label className="col-sm-2 col-form-label">Sorgenti</label>
+                    <label className="col-sm-2 col-form-label">Storage</label>
                     <div className="col-sm-10">
-                        <select className="form-control" ref={(sorgente) => this.sorgente = sorgente} onChange= {(e) => this.onChangeSorgente(e, e.target.value)} id="sorgente" value={sorgente} >
+                        <select className="form-control" ref={(stor) => this.stor = stor} onChange= {(e) => this.onChangeStorage(e, e.target.value)} id="stor" value={stor} >
                             <option value="" defaultValue></option>
-                                {config['sorgenti'].map(value => <option value={value.uid} key={value.uid}>{value.name.ita?value.name.ita:value.name.default}</option>)}
+                                {config['storage'].map(value => <option value={value.uid} key={value.uid}>{value.name.ita?value.name.ita:value.name.default}</option>)}
                         </select>
                     </div>
                 </div>
@@ -128,10 +127,10 @@ class Sorgenti extends Component {
             </div>
             </ModalBody>
             <ModalFooter>
-              <button type="button" className='btn btn-gray-200' onClick={this.hideModalSorgenti}>
+              <button type="button" className='btn btn-gray-200' onClick={this.hideModalStorage}>
                   Chiudi
               </button>
-              <button type="button" className="btn btn-primary px-2" onClick={this.handleSaveSorgente.bind(this)}>
+              <button type="button" className="btn btn-primary px-2" onClick={this.handleSaveStorage.bind(this)}>
                 <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   Aggiungi
               </button>
@@ -139,7 +138,8 @@ class Sorgenti extends Component {
           </form>
         </Modal>
         <div className="form-group row">
-            <label className="col-sm-2 col-form-label">Sorgenti</label>
+            <label className="col-sm-2 col-form-label">Storage</label>
+            {listaStorage.length>0?
             <div className="col-sm-10">
             <table className="table table-sm">
                 <thead>
@@ -150,15 +150,13 @@ class Sorgenti extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {listaSorgenti.length>0?
-                     listaSorgenti.map((sorgente, index) => {
+                    {listaStorage.map((stor, index) => {
                          return(<tr key={index}>
-                                    <td>{sorgente.tipo}</td>
-                                    <td>{sorgente.val}</td>
-                                     
+                                    <td>{stor.tipo}</td>
+                                    <td>{stor.val}</td>
                                     {index>0?
                                     <td>
-                                        <button type="button" className="btn btn-link float-right" title="Rimuovi Sorgente"  onClick={this.handleRemoveSorgente.bind(this, sorgente.tipo, sorgente.val)}>
+                                        <button type="button" className="btn btn-link float-right" title="Rimuovi Stor"  onClick={this.handleRemoveStorage.bind(this, stor.tipo, stor.val)}>
                                             <i className="fa fa-minus-circle fa-lg m-t-2"></i>
                                         </button>
                                     </td>
@@ -167,14 +165,12 @@ class Sorgenti extends Component {
                                     }
                                 </tr>)
                     })
-                    :
-                    <div>Nessuna sorgente inserita</div>
                     }
                     <tr>
                         <td></td>
                         <td></td>
                         <td> 
-                            <button type="button" className="btn btn-link float-right" title="Aggiungi Sorgente" onClick={this.openModalSorgenti.bind(this)}>
+                            <button type="button" className="btn btn-link float-right" title="Aggiungi Stor" onClick={this.openModalStorage.bind(this)}>
                                 <i className="fa fa-plus-circle fa-lg m-t-2"></i>
                             </button>
                         </td>
@@ -182,9 +178,18 @@ class Sorgenti extends Component {
                 </tbody>
                 </table>
             </div>
+            :
+            <div className="col-sm-10">
+            <p><label className="col-sm-10 col-form-label">Nessuno storage inserito</label>
+                <button type="button" className="btn btn-link float-right" title="Aggiungi Convenzione" onClick={this.openModalStorage.bind(this)}>
+                    <i className="fa fa-plus-circle fa-lg m-t-2"></i>
+                </button>
+                </p>
+            </div>
+            }
         </div>
       </div>
     );
   }
 }
-export default Sorgenti
+export default Storage

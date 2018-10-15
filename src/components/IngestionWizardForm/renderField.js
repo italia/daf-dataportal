@@ -1,13 +1,11 @@
 import React from 'react';
 import TagsInput from './tags/TagsInput'
-import { ingestionFormOptions } from './const';
 
-
-export const renderFieldInput = ({ input, label, openModalInfo, readonly, meta: { touched, error } }) => (
+export const renderFieldInput = ({ input, label, openModalInfo, config, readonly, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
-    {ingestionFormOptions.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, ingestionFormOptions.info[input.name])}>
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
           <i className="fa fa-info-circle"></i>
       </button>
     }
@@ -19,11 +17,11 @@ export const renderFieldInput = ({ input, label, openModalInfo, readonly, meta: 
   </div>
 );
 
-export const renderFieldInputButton = ({ input, openModalInfo, buttonLabel, label, placeholder, onClick, readonly, iconClassName, meta: { touched, error } }) => (
+export const renderFieldInputButton = ({ input, openModalInfo, buttonLabel, label, config, placeholder, onClick, readonly, iconClassName, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
-    {ingestionFormOptions.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, ingestionFormOptions.info[input.name])}>
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
           <i className="fa fa-info-circle"></i>
       </button>
     }
@@ -38,11 +36,11 @@ export const renderFieldInputButton = ({ input, openModalInfo, buttonLabel, labe
   </div>
 );
 
-export const renderFieldTextArea = ({ input, openModalInfo, label, meta: { touched, error } }) => (
+export const renderFieldTextArea = ({ input, openModalInfo, label, config, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
-    {ingestionFormOptions.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, ingestionFormOptions.info[input.name])}>
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
           <i className="fa fa-info-circle"></i>
       </button>
     }
@@ -54,57 +52,68 @@ export const renderFieldTextArea = ({ input, openModalInfo, label, meta: { touch
   </div>
 );
 
-export const renderFieldSelect = ({ input, openModalInfo, label, options, meta: { touched, error } }) => (
+export const renderFieldSelect = ({ input, openModalInfo, label, config, options, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
-    {ingestionFormOptions.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, ingestionFormOptions.info[input.name])}>
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
           <i className="fa fa-info-circle"></i>
       </button>
-    }
+    } 
     </label>
       <div className="col-sm-10">
         <select className="form-control" type='text' {...input}>
+          <option value="" defaultValue></option>
+          {options.map(value => <option value={value.uid} key={value.uid}>{value.name.ita?value.name.ita:value.name.default}</option>)}
+        </select>
+      {touched && error && <span className="text-danger">{error}</span>}
+      </div>
+ </div>
+);
+
+export const renderFieldLicenze = ({ input, openModalInfo, label, config, options, meta: { touched, error } }) => (
+  <div className="form-group row">
+    <label className="col-sm-2 col-form-label">{label}
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
+          <i className="fa fa-info-circle"></i>
+      </button>
+    } 
+    </label>
+      <div className="col-sm-10">
+        <select className="form-control" type='text' {...input}>
+          <option value="" defaultValue></option>
+          {options.map(value => <option value={value.label} key={value.label}>{value.label}</option>)}
+        </select>
+      {touched && error && <span className="text-danger">{error}</span>}
+      </div>
+ </div>
+);
+
+export const renderFieldCategoria = ({ input, openModalInfo, label, readonly, config, options, meta: { touched, error } }) => (
+  <div className="form-group row">
+    <label className="col-sm-2 col-form-label">{label}
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
+          <i className="fa fa-info-circle"></i>
+      </button>
+    } 
+    </label>
+      <div className="col-sm-10">
+        <select className="form-control" readOnly={readonly} type='text' {...input}>
           <option value="" defaultValue></option>
           {options.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
         </select>
       {touched && error && <span className="text-danger">{error}</span>}
       </div>
-
  </div>
 );
 
-const tipiKylo = ['bigint','binary','boolean','date','decimal','double','float','int','string','timestamp','tinyint']
-
-export const renderTipi = ({ input, label, openModalInfo, tipi, index, meta: { touched, error } }) => (
+ export const renderFieldTags = ({input, openModalInfo ,label, config, addTagsToForm, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
-    {ingestionFormOptions.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, ingestionFormOptions.info[input.name])}>
-          <i className="fa fa-info-circle"></i>
-      </button>
-    }
-    </label>
-    <div className="col-sm-10">
-      <select className="form-control" {...input}>
-        {tipiKylo.map(value => {
-         return(<option value={value} key={value}>{value}</option>)
-        }
-       )}
-       {(tipiKylo.indexOf(tipi[index][0])==-1) &&
-           <option value={tipi[index]} key={tipi[index]}>{tipi[index]}</option>
-       }
-      </select>
-      {touched && error && <div className="text-danger">{error}</div>}
-    </div>
- </div>
- );
-
- export const renderFieldTags = ({input, openModalInfo ,label, addTagsToForm, meta: { touched, error } }) => (
-  <div className="form-group row">
-    <label className="col-sm-2 col-form-label">{label}
-    {ingestionFormOptions.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, ingestionFormOptions.info[input.name])}>
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
           <i className="fa fa-info-circle"></i>
       </button>
     }
@@ -115,11 +124,11 @@ export const renderTipi = ({ input, label, openModalInfo, tipi, index, meta: { t
   </div>
   )
 
-  export const renderContesti = ({ input, openModalInfo, label, contesti, index, meta: { touched, error } }) => (
+  export const renderContesti = ({ input, openModalInfo, label, config, contesti, index, meta: { touched, error } }) => (
     <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
-    {ingestionFormOptions.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, ingestionFormOptions.info[input.name])}>
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
           <i className="fa fa-info-circle"></i>
       </button>
     }
@@ -135,11 +144,11 @@ export const renderTipi = ({ input, label, openModalInfo, tipi, index, meta: { t
    </div>
    );
    
-   export const renderFieldCheckbox = ({ input, openModalInfo, label, meta: { touched, error } }) => (
+   export const renderFieldCheckbox = ({ input, openModalInfo, config, label, meta: { touched, error } }) => (
     <div className="form-group row">
     <label className="col-sm-5 col-form-label">{label}
-    {ingestionFormOptions.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, ingestionFormOptions.info[input.name])}>
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
           <i className="fa fa-info-circle"></i>
       </button>
     }
@@ -151,11 +160,11 @@ export const renderTipi = ({ input, label, openModalInfo, tipi, index, meta: { t
     </div>
   );
 
-  export const renderOrganization = ({ input, openModalInfo, label, organizations, meta: { touched, error } }) => (
+  export const renderOrganization = ({ input, openModalInfo, label, config, organizations, meta: { touched, error } }) => (
     <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
-    {ingestionFormOptions.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, ingestionFormOptions.info[input.name])}>
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
           <i className="fa fa-info-circle"></i>
       </button>
     }

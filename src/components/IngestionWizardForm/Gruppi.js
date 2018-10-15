@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { ingestionFormOptions } from './const';
 import { getAllOrganizations } from '../../actions' 
 import { connect  } from 'react-redux';
 
@@ -97,7 +96,7 @@ class Gruppi extends Component {
 
   render() {
     const { gruppo, erroMsg, allOrganizations } = this.state;
-    const { listaGruppi } = this.props;
+    const { listaGruppi, config } = this.props;
     return (
       <div>
          <Modal isOpen={this.state.isOpenGruppi} onRequestHide={this.hideModalGruppi}>
@@ -123,7 +122,7 @@ class Gruppi extends Component {
                      <div className="col-sm-10">
                         <select className="form-control" ref={(permesso) => this.permesso = permesso} onChange= {(e) => this.onChangePermesso(e, e.target.value)} id="permesso" >
                             <option value="" defaultValue></option>
-                                {ingestionFormOptions.permessiaccesso.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
+                                {config.permessiaccesso.map(value => <option value={value.val} key={value.val}>{value.name}</option>)}
                         </select>
                     </div>
                 </div>

@@ -27,6 +27,7 @@ export const serviceurl = {
     // apiURLSecurity : "https://api.daf.teamdigitale.test/security-manager/v1",
     // apiURLDataset : "https://api.daf.teamdigitale.test/dataset-manager/v1",
     // apiURLHdfs: "https://api.daf.teamdigitale.test/hdfs/proxy",
+    // apiURLConfigurator: "https://api.daf.teamdigitale.test/daf-configurator/v2",
     // apiCKAN: "https://api.daf.teamdigitale.test/dati-gov/ckan_proxy",
     // apiMedium: "https://api.daf.teamdigitale.test/dati-gov/medium", 
     // urlSemantic: "https://api.daf.teamdigitale.test/stanbol/ontonethub/ontologies/find",
@@ -36,7 +37,8 @@ export const serviceurl = {
     // urlCkan: "https://ckan-geo.daf.teamdigitale.test/dataset/", 
     // urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
     // urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
-    // domain: ".daf.teamdigitale.test"
+    // domain: ".daf.teamdigitale.test",
+    // vocabularyName: "dafvoc-ingestionform-option.json"
 
     // PROD   
     apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
@@ -46,6 +48,7 @@ export const serviceurl = {
     apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
     apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1",
     apiURLHdfs: "https://api.daf.teamdigitale.it/hdfs/proxy",
+    apiURLConfigurator: "https://api.daf.teamdigitale.it/daf-configurator/v2",
     apiCKAN: "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy",
     apiMedium: "https://api.daf.teamdigitale.it/dati-gov/medium", 
     urlSemantic: "https://api.daf.teamdigitale.it/stanbol/ontonethub/ontologies/find",
@@ -57,7 +60,8 @@ export const serviceurl = {
     urlKatalod: "https://api.daf.teamdigitale.it/daf-semantic-katalod/kb/api/v1",
     urlSemanticValidator: "https://api.daf.teamdigitale.it/daf-semantic-validator/validator",
     urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
-    domain: ".daf.teamdigitale.it"
+    domain: ".daf.teamdigitale.it",
+    vocabularyName: "dafvoc-ingestionform-option.json"
 
   }
 

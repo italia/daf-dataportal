@@ -763,6 +763,59 @@ class DatasetDetail extends Component {
                                   </div>
                               }
                               {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>}
+                              <div className="col-12">
+                                <div className="row text-muted">
+                                    <i className="text-icon fa fa-sticky-note fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Jupyter</b></h4>
+                                </div>
+                                {this.state.hasPreview &&
+                                <div>
+                                <div className="row text-muted">
+                                    <p className="desc-dataset text-dark">Leggi attentamente le <a href="https://daf-dataportal.readthedocs.io/it/latest/datascience/jupyter/index.html#creazione-e-configurazione-di-un-notebook" target='_blank'>istruzioni </a> per collegarti a Jupyter.  </p>
+                                    <p className="desc-dataset text-dark">Dopo aver attivato la sessione seguendo le istruzioni potrai analizzare il file al percorso:</p>
+                                    <p className="desc-dataset text-dark"><strong>{dataset.operational.physical_uri}</strong>.</p>
+                                    <p className="desc-dataset text-dark">Usa i seguenti comandi per caricare il file nel notebook:</p>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">
+                                        <strong> Pyspark </strong>
+                                    </div>
+                                    <div className="col-10">
+                                        <code>
+                                            path_dataset = "<strong>{dataset.operational.physical_uri}</strong>" <br />
+                                            df = (spark.read.format("parquet") <br />
+                                            .option("inferSchema", "true") <br />
+                                            .load(path_dataset) <br />
+                                            ) <br />
+                                            df.printSchema <br />
+                                        </code>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">
+                                        <strong> Spark Sql</strong>
+                                    </div>
+                                    <div className="col-10">
+                                        <code>
+                                            df.createOrReplaceTempView("{dataset.dcatapit.title}") <br />
+                                            %%spark -c sql <br />
+                                            select * from  {dataset.dcatapit.title} limit 10 <br />
+                                        </code>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">
+                                        <strong> Spark Sql </strong>
+                                    </div>
+                                    <div className="col-10">
+                                        <code>
+                                            spark.sql("SELECT * FROM opendata.<strong>{dataset.dcatapit.title}</strong>").show()
+                                        </code>
+                                    </div>
+                                </div>
+                                <br /><br />
+                                </div>}
+                              </div>
+                              {!this.state.hasPreview && <p>Non è possibile usare Jupyter per questo dataset</p>}
                           </div>
                             <div hidden={!this.state.showDett} className="col-md-5 px-0 pt-5">
                                 <div>

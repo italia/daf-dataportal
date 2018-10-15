@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { ingestionFormOptions } from './const';
 import AutosuggestQuery from './AutosuggestQuery'
 import {
     Modal,
