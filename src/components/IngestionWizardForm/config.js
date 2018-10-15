@@ -449,17 +449,57 @@ export const config =
   ],
   'dafvoc-ingform-operational-dataset_proc-read_type':[
     {
-      "uid": "timeseries",
+      "uid": "last_update",
       "name": {
-        "default": "Time series"
+        "ita": "Ultimo aggiornamento",
+        "eng": "Last Update",
+        "default": "eng"
+      },
+      "desc": {
+        "ita": "L'aggiornamento del dataset avviene attraverso l'invio di tutti i dati che corrispondono all'ultima versione dell'intero dataset",
+        "eng": "The dataset update works by sending the entire dataset corresponding to the last version.",
+        "default": "eng"
+      }
+    },
+    {
+      "uid": "time_series",
+      "name": {
+        "ita": "Time Series",
+        "eng": "Time Series",
+        "default": "eng"
+      },
+      "desc": {
+        "ita": "Il dataset è composto da tutti i dati inviati negli intervalli di tempo.",
+        "eng": "The dataset is made of all data sent through all updates.",
+        "default": "eng"
       }
     }
   ],
   'dafvoc-ingform-operational-dataset_proc-dataset_type':[
     {
-      "uid": "Batch",
+      "uid": "batch",
       "name": {
-        "default": "Batch"
+        "ita": "Batch",
+        "eng": "Batch",
+        "default": "eng"
+      },
+      "desc": {
+        "ita": "Una ingestion di tipo batch avviene in modalità discreta e periodica nel tempo.",
+        "eng": "A batch ingestion works in descrete and periodical time.",
+        "default": "eng"
+      }
+    },
+    {
+      "uid": "stream",
+      "name": {
+        "ita": "Stream",
+        "eng": "Stream",
+        "default": "eng"
+      },
+      "desc": {
+        "ita": "Ingestion di tipo 'streaming' o realtime (near realtime) accade nel continuo.",
+        "eng": "Streaming ingestion or realtime (near real time) happens in continuum.",
+        "default": "eng"
       }
     }
   ],
@@ -536,6 +576,21 @@ export const config =
     { 'uid': 'write', 
       'name': { 
         'ita':'Scrittura' 
+      }
+    }
+  ],
+  'dafvoc-ingform-operational-ingestion_pipeline-name':  [
+    {
+      "uid": "ing-std",
+      "name": {
+        "ita": "DAF Ingestion Pipeline default",
+        "eng": "DAF default Ingestion Pipeline",
+        "default": "eng"
+      },
+      "desc": {
+        "ita": "Pipeline di ingestion che applica normalizzazioni e standardizzazioni di default del DAF.",
+        "eng": "Default ingestion pipeline performing normalization and standardization procedure, applying DAF base conventions.",
+        "default": "eng"
       }
     }
   ],
@@ -634,17 +689,5 @@ export const config =
       {'label':'Param', 'val':'param'}
     ]
     }
-  ],
-  'pipelines': [
-    { 'uid': 'pipeline1', 
-    'name': { 
-      'ita':'Pipeline 1' 
-    }
-  },
-  { 'uid': 'pipeline2', 
-    'name': { 
-      'ita':'Pipeline 2' 
-    }
-  }
   ]
 }
