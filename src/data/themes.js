@@ -1,20 +1,16 @@
 const themes = [
   {
-    "theme_ita": "Agricoltura, pesca, silvicoltura e prodotti alimentari",
+    "theme_ita":"Agricoltura, pesca, silvicoltura e prodotti alimentari",
     "theme_code": "AGRI",
     "theme_daf_ita": "Agricoltura",
     "theme_daf_code": "agricoltura",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "policy",
         "subtheme_daf_ita": "Policy Agricola e Alimentare",
         "subthemes_ita": [
-          ["5606", "politiche agricole"]
+          ["5606", "politiche agricole"]  
         ]
-      },
-      {
-        "subtheme_daf_code": "organizzazioni",
-        "subtheme_daf_ita": "Organizzazioni",
-        "subthemes_ita": []
       },
       {
         "subtheme_daf_code": "produzione_agricola",
@@ -44,21 +40,17 @@ const themes = [
     ]
   },
   {
-    "theme_ita": "Energia",
+    "theme_ita":"Energia",
     "theme_code": "ENER",
     "theme_daf_ita": "Energia",
     "theme_daf_code": "energia",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "policy",
         "subtheme_daf_ita": "Policy",
         "subthemes_ita": [
           ["6606", "politica energetica"]
         ]
-      },
-      {
-        "subtheme_daf_code": "organizzazioni",
-        "subtheme_daf_ita": "Organizzazioni",
-        "subthemes_ita": []
       },
       {
         "subtheme_daf_code": "produzione_energia",
@@ -71,13 +63,15 @@ const themes = [
         ]
       }
     ]
+   
   },
   {
-    "theme_ita": "Regioni e Citta'",
+    "theme_ita":"Regioni e Citta'",
     "theme_code": "REGI",
     "theme_daf_ita": "Territori",
     "theme_daf_code": "territori",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "policy",
         "subtheme_daf_ita": "Policy",
         "subthemes_ita": [
@@ -102,24 +96,19 @@ const themes = [
           ["7226", "Asia-Oceania"]
         ]
       }
-    ]
+    ] 
   },
   {
-    "theme_ita": "Trasporti",
-    "theme_code": "TRAN",
+    "theme_ita":"Trasporti",
+    "theme_code":"TRAN",
     "theme_daf_ita": "Trasporti",
     "theme_daf_code": "trasporti",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "policy",
         "subtheme_daf_ita": "Policy",
         "subthemes_ita": [
-          ["4806", "poolitica dei trasporti"]
-        ]
-      },
-      {
-        "subtheme_daf_code": "organizzazioni",
-        "subtheme_daf_ita": "Organizzazioni",
-        "subthemes_ita": [
+          ["4806", "poolitica ei trasporti"],
           ["4811", "organizzazione dei trasporti"]
         ]
       },
@@ -144,14 +133,16 @@ const themes = [
           ["4821", "trasporti marittimi e fluviali"]
         ]
       }
-    ]
+    ] 
   },
+
   {
-    "theme_ita": "Economia e Finanza",
-    "theme_code": "ECON",
+    "theme_ita":"Economia e Finanza",
+    "theme_code":"ECON",
     "theme_daf_ita": "Economia e Finanza",
     "theme_daf_code": "economia",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "policy",
         "subtheme_daf_ita": "Policy",
         "subthemes_ita": [
@@ -228,7 +219,7 @@ const themes = [
       {
         "subtheme_daf_code": "immobiliare",
         "subtheme_daf_ita": "Immobiliare",
-        "subthemes_ita": []
+        "subthemes_ita":[]
       }
     ]
   },
@@ -238,7 +229,8 @@ const themes = [
     "theme_code": "INTR",
     "theme_daf_ita": "Internazionale",
     "theme_daf_code": "internazionale",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "policy",
         "subtheme_daf_ita": "Politiche Internazionali",
         "subthemes_ita": [
@@ -255,7 +247,7 @@ const themes = [
         ]
       },
       {
-        "subtheme_daf_code": "organizzazioni",
+        "subtheme_daf_code": "organizations",
         "subtheme_daf_ita": "Organizzazioni internazionali",
         "subthemes_ita": [
           ["7606", "Nazioni Unite"],
@@ -272,7 +264,8 @@ const themes = [
     "theme_code": "GOVE",
     "theme_daf_ita": "Pubblica Amministrazione",
     "theme_daf_code": "pa",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "politica",
         "subtheme_daf_ita": "Politica",
         "subthemes_ita": [
@@ -302,7 +295,8 @@ const themes = [
     "theme_code": "JUST",
     "theme_daf_ita": "Giustizia e sistema giuridico",
     "theme_daf_code": "giustizia",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "leggi",
         "subtheme_daf_ita": "Sistema giuridico",
         "subthemes_ita": [
@@ -324,7 +318,7 @@ const themes = [
       {
         "subtheme_daf_code": "sicurezza",
         "subtheme_daf_ita": "sicurezza",
-        "subthemes_ita": []
+        "subthemes_ita":[]
       }
     ]
   },
@@ -333,7 +327,8 @@ const themes = [
     "theme_code": "ENVI",
     "theme_daf_ita": "Ambiente",
     "theme_daf_code": "ambiente",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "policy",
         "subtheme_daf_ita": "Politiche ambientali",
         "subthemes_ita": [
@@ -356,7 +351,8 @@ const themes = [
     "theme_code": "EDUC",
     "theme_daf_ita": "Istruzione Cultura Sport",
     "theme_daf_code": "istruzionecs",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "istruzione",
         "subtheme_daf_ita": "Istruzione",
         "subthemes_ita": [
@@ -393,17 +389,13 @@ const themes = [
 
   {
     "theme_ita": "Salute",
-    "theme_code": "HEAL",
+    "theme_code":"HEAL",
     "theme_daf_ita": "Salute",
     "theme_daf_code": "salute",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "policy",
         "subtheme_daf_ita": "Politiche sulla salute",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "organizzazioni",
-        "subtheme_daf_ita": "Organizzazioni",
         "subthemes_ita": []
       },
       {
@@ -412,6 +404,12 @@ const themes = [
         "subthemes_ita": [
           ["2841", "salute"]
         ]
+      },
+
+      {
+        "subtheme_daf_code": "monitoraggio",
+        "subtheme_daf_ita": "Monitoraggio",
+        "subthemes_ita": []
       }
     ]
   },
@@ -421,7 +419,8 @@ const themes = [
     "theme_code": "SOCI",
     "theme_daf_ita": "Popolazione",
     "theme_daf_code": "popolazione",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "demografia",
         "subtheme_daf_ita": "Demografia",
         "subthemes_ita": [
@@ -447,12 +446,14 @@ const themes = [
       }
     ]
   },
+
   {
     "theme_ita": "Scienza e Tecnologia",
-    "theme_code": "TECH",
+    "theme_code":"TECH",
     "theme_daf_ita": "Scienza e Tecnologia",
     "theme_daf_code": "tecnologia",
-    "subthemes": [{
+    "subthemes": [
+      {
         "subtheme_daf_code": "scienza",
         "subtheme_daf_ita": "Scienza e Ricerca",
         "subthemes_ita": [
@@ -474,79 +475,8 @@ const themes = [
         "subthemes_ita": []
       }
     ]
-  },
-  {
-    "theme_ita": "",
-    "theme_code": "DAF_VOC",
-    "theme_daf_ita": "Vocabolari Controllati",
-    "theme_daf_code": "DAF_VOC",
-    "subthemes": [{
-        "subtheme_daf_code": "agricoltura",
-        "subtheme_daf_ita": "Agricoltura",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "energia",
-        "subtheme_daf_ita": "Energia",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "territori",
-        "subtheme_daf_ita": "Territori",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "trasporti",
-        "subtheme_daf_ita": "Trasporti",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "economia",
-        "subtheme_daf_ita": "Economia e Finanza",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "internazionale",
-        "subtheme_daf_ita": "Internazionale",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "pa",
-        "subtheme_daf_ita": "Pubblica Amministrazione",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "giustizia",
-        "subtheme_daf_ita": "Giustizia e sistema giuridico",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "ambiente",
-        "subtheme_daf_ita": "Ambiente",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "istruzionecs",
-        "subtheme_daf_ita": "Istruzione, Cultura e Sport",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "salute",
-        "subtheme_daf_ita": "Salute",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "popolazione",
-        "subtheme_daf_ita": "Popolazione",
-        "subthemes_ita": []
-      },
-      {
-        "subtheme_daf_code": "tecnologia",
-        "subtheme_daf_ita": "scienza e tecnologia",
-        "subthemes_ita": []
-      }
-    ]
   }
-    ]
+]
+
 
 export default themes;

@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
-import { Route, Link } from 'react-router-dom';
-import HomeService from '../../views/Home/services/HomeService';
+import { Link } from 'react-router-dom';
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock, faGlobe } from '@fortawesome/fontawesome-free-solid'
 import { truncateDatasetName, decodeTheme, isPublic } from '../../utility' 
-
-
-const homeService = new HomeService();
 
 class DatasetCard extends Component{
     constructor(props){
@@ -17,21 +12,6 @@ class DatasetCard extends Component{
             //detail: undefined
         }
     }
-
-    /* componentDidMount(){
-        let response = homeService.datasetDetail(this.props.dataset.name)
-        response.then(json => {
-            this.setState({
-                detail: json
-            })
-        }) 
-    }*/
-
-/*     componentWillUnmount(){
-        this.setState({
-            detail: undefined
-        })
-    } */
 
     mesi = ['',' Gennaio ',' Febbraio ',' Marzo ',' Aprile ',' Maggio ',' Giugno ',' Luglio ',' Agosto ',' Settembre ',' Ottobre ', ' Novembre ', ' Dicembre ']
 
@@ -46,6 +26,25 @@ class DatasetCard extends Component{
           if(!dataset.dcatapit.privatex)
             openData=true
 
+        var type = ''
+        var input_src = ''
+        if(!open){
+          if(dataset.operational.input_src){
+            for(var key in dataset.operational.input_src){
+              if (dataset.operational.input_src[key]!==null){
+                if(!dataset.operational.input_src[key][0].param && dataset.operational.input_src[key][0].param===''){
+                  input_src = ''
+                }
+                else if(key==="sftp"){
+                  input_src = dataset.operational.input_src[key][0].param.split('=')[1]
+                }
+                else{
+                  input_src = dataset.operational.input_src[key][0].param
+                }
+              }
+            }
+          }
+        }
 
         var url = (isPublic()?'/dataset/':'/private/dataset/')+(open?(dataset.name+'?type=open'):dataset.dcatapit.name)
 
@@ -83,9 +82,9 @@ class DatasetCard extends Component{
                         </div>
                     </div>
                     <div className="header-dataset row m-0 b-b-card">
-                        <div className="col-3 my-2 pl-3">
-                            <span className="badge badge-secondary my-1">JSON</span>
-                        </div>
+                        {input_src!=='' && <div className="col-3 my-2 pl-3">
+                            <span className="badge badge-secondary my-1">{input_src.toUpperCase()}</span>
+                        </div>}
                         <div className="col-2 my-2">
                             <span className="badge badge-accento my-1">{open?decodeTheme(dataset.theme):decodeTheme(dataset.dcatapit.theme)} </span>
                         </div>

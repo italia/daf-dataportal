@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { activateUser } from './../../actions.js'
-import PropTypes from 'prop-types'
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 import { toastr } from 'react-redux-toastr'
 
@@ -105,12 +104,6 @@ class ConfirmRegistration extends Component {
       </div>
     )
   }
-}
-
-ConfirmRegistration.propTypes = {
-  messaggio: PropTypes.string,
-  error: PropTypes.number,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

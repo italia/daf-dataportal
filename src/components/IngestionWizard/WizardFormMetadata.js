@@ -112,9 +112,9 @@ const renderModalitaSelector = ({ input, type, label, value, meta: { touched, er
    <div className="col-md-9">
     <select className="form-control" {...input}>
       <option value="0" defaultValue key="0"></option>
-      <option value="1" key='1'>Drag and Drop </option>
-      <option value="2" key='2'>Web Service</option>
-      <option value="3" key='3'>Web HDFS</option>
+      <option value="1" key='1'>SFTP Push </option>
+      <option value="2" key='2'>Web Service Pull</option>
+      <option value="3" key='3'>Web Service Push</option>
     </select>
     {touched && error && <div className="text-danger">{error}</div>}
   </div>
@@ -308,15 +308,21 @@ class WizardFormMetadata extends Component {
         <div className="form-group row">
           <div className="col-md-5">
             <p className="text-justify"><b>Benvenuto</b> ricordati che a grandi poteri derivano grandi responsabilità</p>
-            <h4> Caricamento SFTP </h4>
-            <p className="text-justify">Carica un file di esempio minore di 1MB scegliendo Drag and Drop. </p>
+            {(modalitacaricamento==0 || modalitacaricamento==null) &&<p className="text-justify">Scegli una modalità di caricamento per il tuo dataset</p>}
+            {modalitacaricamento==1 && <div><h4> Caricamento SFTP Push</h4>
+            <p className="text-justify">Carica un file di esempio minore di 1MB nella drop-area qui accanto. </p>
             <p className="text-justify">Inserisci le informazioni seguendo la procedura guidata</p> 
-            <p className="text-justify">Il file vero e proprio lo dovrai caricare all'indirizzo <b>SFTP</b> che ti abbiamo comunicato </p> 
-            <h4> Caricamento web service (alpha version)</h4>
+            <p className="text-justify">Il file vero e proprio lo dovrai caricare all'indirizzo <b>SFTP</b> che ti abbiamo comunicato </p></div>} 
+            {modalitacaricamento==2 &&<div><h4> Caricamento Web Service Pull</h4>
             <p className="text-justify">Inserisci l'url dei dati da caricare </p>
             <p className="text-justify">Inserisci le informazioni seguendo la procedura guidata</p> 
-            <p className="text-justify">Il caricamento del file parte in automatico a intervalli regolari</p> 
-            <p className="text-justify">Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p>
+            <p className="text-justify">Il caricamento del file parte in automatico a intervalli regolari</p>
+            <p className="text-justify">Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p></div> }
+            {modalitacaricamento==3 &&<div><h4> Caricamento Web Service Push</h4>
+            <p className="text-justify">Carica un file di esempio minore di 1MB nella drop-area qui accanto. </p>
+            <p className="text-justify">Inserisci le informazioni seguendo la procedura guidata</p> 
+            <p className="text-justify">Il file vero e proprio lo dovrai caricare successivamente chiamando l'API comunicata o attraverso la drop-area nella scheda di dettaglio del dataset. Dimensione massima 100MB.</p> 
+            </div>}
           </div>
           <div className="col-md-7">
           <Field
@@ -340,10 +346,8 @@ class WizardFormMetadata extends Component {
                 >
             {modalitacaricamento==2 &&
               <div className="form-group">
-                <div className="col-md-12">
                 <label htmlFor='tests'>Inserisci un link al tuo file:</label>
-                </div>
-                <div className="col-md-12">
+                <div className="col-md-12 p-0">
                   <input placeholder="http://" type="text" ref={(url) => this.url = url} id="url" className="form-control-90"/>
                   <button type="button"  className="btn btn-primary" data-toggle="button" aria-pressed="false" autoComplete="off" onClick={this.getSchemaFromWS.bind(this, this.props.dispatch, calcDataFields, fields, tipi, setTipi, filetype?filetype:'csv', setUploading)}><i className="fa fa-plus"></i></button>
                 </div>
@@ -351,7 +355,6 @@ class WizardFormMetadata extends Component {
             }
             {(modalitacaricamento==1 || modalitacaricamento==3) && 
               <div className="form-group">
-                <div className="col-md-12">
                 <label htmlFor='tests'>Carica il file (max 1MB):</label>
                   <Dropzone
                     name="input"
@@ -393,7 +396,6 @@ class WizardFormMetadata extends Component {
                         </div>
                       </div>
                 </Dropzone>
-              </div>
             </div>
           }
           {errorUpload && <div className="text-danger">{errorUpload}</div>}
@@ -419,7 +421,7 @@ class WizardFormMetadata extends Component {
             <button type="button" className="btn btn-primary" onClick={reset}>Elimina</button>
           </div>
         </div>
-        <div className="form-group row justify-content-center">
+        {/* <div className="form-group row justify-content-center" hidden>
           <div className="col-7">
             <Field
               name={'private'}
@@ -429,7 +431,7 @@ class WizardFormMetadata extends Component {
             />
           </div>
           <div className="col-3"></div>
-        </div>
+        </div> */}
       </div>
       } 
       {fields.map((test, index) => 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { datasetDetail } from '../../actions'
 import { convertNotificationTime } from '../../utility'
@@ -39,7 +38,6 @@ class Aside extends Component {
 
   render() {
     const { notifications } = this.state
-    console.log(notifications)
     return (
       <aside className="aside-menu">
         <div className="tab-content list-group list-group-accent">
@@ -64,7 +62,7 @@ class Aside extends Component {
                 )
                 case 'generic':
                 return(
-                  <a className={notification.status===1?"text-dark list-group-item b-new-notif pointer":"list-group-item pointer text-dark"} key={index} href={window.location.origin+'/#'+notification.info.link} target="_blank"/* onClick={this.pushTo.bind(this,'generic', notification.info.link)} */>
+                  <a className={notification.status===1?"text-dark list-group-item b-new-notif pointer":"list-group-item pointer text-dark"} key={index} href={window.location.origin+'/#'+notification.info.link} target="_blank">
                     {notification.info && <p><i className="fas fa-info-circle text-info mr-2"/>{notification.info.description}</p>}
                     <p>{convertNotificationTime(notification.timestamp)}</p>
                   </a>
@@ -81,10 +79,6 @@ class Aside extends Component {
       </aside>
     )
   }
-}
-
-Aside.propTypes = {
-  notifications: PropTypes.array
 }
 
 function mapStateToProps(state) {

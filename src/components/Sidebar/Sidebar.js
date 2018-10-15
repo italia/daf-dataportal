@@ -12,13 +12,8 @@ import {
 import { toastr } from 'react-redux-toastr'
 import {
   loadDatasets,
-  unloadDatasets,
-  datasetDetail,
-  logout,
   search
 } from '../../actions'
-import PropTypes from 'prop-types'
-import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 import { serviceurl } from '../../config/serviceurl.js'
 import { isEditor, isAdmin, isSysAdmin } from '../../utility'
 
@@ -56,7 +51,7 @@ class Sidebar extends Component {
     return this.props.location.pathname.indexOf(routeName) > -1 ? 'nav-item nav-dropdown open' : 'nav-item nav-dropdown';
   }
 
-  openModal(name, url){
+  openModal(name, url, description){
     if(name!=='Jupyter'){
       const toastrConfirmOptions = {
         okText: 'Vai',
@@ -64,7 +59,7 @@ class Sidebar extends Component {
         onOk: () => this.hideModalAndRedirect(url),
         onCancel: () => console.log('CANCEL: clicked')
       };
-      toastr.confirm('Stai per essere reindirizzato a ' + name, toastrConfirmOptions);
+      toastr.confirm('Stai per essere reindirizzato a ' + name + '. ' + description, toastrConfirmOptions);
     }else{
       const toastrConfirmOptions = {
         okText: 'Vai',
@@ -95,7 +90,7 @@ class Sidebar extends Component {
     const { dispatch } = this.props;
     let filter = {
       'text': '',
-      'index': ['catalog_test','ext_opendata'],
+      'index': ['catalog_test'],
       'org': [],
       'theme':[],
       'date': "",
@@ -112,6 +107,10 @@ class Sidebar extends Component {
 
   createStory(){
     this.props.openModalStory();
+  }
+
+  createWidget(){
+    this.props.openModalWidget();
   }
 
   render() {
@@ -179,6 +178,12 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
+                    <a href className="nav-link " onClick={this.createWidget.bind(this)}><i className="fas fa-columns fa-lg text-secondary" />  Nuovo Widget</a>
+                  </li>
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
                     <a href className="nav-link " onClick={this.createDash.bind(this)}><i className="fas fa-columns fa-lg text-secondary" />  Nuova Dashboard</a>
                   </li>
                   <li className="nav-item" onClick={(e) => {
@@ -202,7 +207,13 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSuperset)}><i className="fa fa-database fa-lg text-secondary" />  Superset</a>
+                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSuperset, 'Potrai creare i tuoi widget partendo dai dataset privati condivisi con le tue organizzazioni.')}><i className="fa fa-database fa-lg text-secondary" />  Superset <span className="badge badge-light">Privato</span></a>
+                  </li>
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSupersetOpen, 'Potrai creare i tuoi widget partendo dagli opendata presenti nel DAF.')}><i className="fa fa-database fa-lg text-secondary" />  Superset <span className="badge badge-light">Open</span></a>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
@@ -213,9 +224,6 @@ class Sidebar extends Component {
                 </ul>
               </li>
 
-              <li className="nav-title text-secondary">
-                INFO
-              </li>
               <li className="nav-item nav-dropdown b-r-1">
                 <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-sitemap fa-lg text-secondary"></i> Semantica</a>
                 <ul className="nav-dropdown-items bg-light">
@@ -231,14 +239,25 @@ class Sidebar extends Component {
                   }}>
                     <NavLink to={'/private/vocabularies'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-book fa-lg text-secondary" /> Vocabolari</NavLink>
                   </li>
+                  <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <NavLink to={'/private/validator'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-clipboard-check fa-lg text-secondary" /> Validatore</NavLink>
+                  </li>
                 </ul>
+              </li>
+
+              <li className="nav-title text-secondary">
+                INFO
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'#'} onClick={() => window.open('http://daf-docs.readthedocs.io')} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-info text-secondary"></i> Documentazione</NavLink>
+                <NavLink to={'#'} onClick={() => window.open('http://daf-dataportal.readthedocs.io/it/latest/')} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-info text-secondary"></i> Documentazione</NavLink>
               </li>
+
               {/* <li className={this.activeRoute("/icons")}>
                 <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Standards</a>
                 <ul className="nav-dropdown-items">
@@ -256,7 +275,7 @@ class Sidebar extends Component {
                   </li>
                 </ul>
               </li>
-          
+
               <li className="nav-title">
                 Strumenti
               </li>
@@ -279,13 +298,14 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/dashboard/list'} className="nav-link" activeClassName="active"><i className="icon-graph"></i> Crea Dashboard</NavLink>
               </li>
-                  
+
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
                 <NavLink to={'/userstory/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li> */}
+
               {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) && <div>
               <li className="nav-title text-secondary">
                 Amministrazione
@@ -295,7 +315,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                  <NavLink to={'/private/users'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fas fa-user-plus text-secondary"></i> Gestione Utenti</NavLink>
+                  <NavLink to={'/private/users'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fas fa-user-cog text-secondary"></i> Gestione Utenti</NavLink>
               </li>}
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
@@ -317,11 +337,6 @@ class Sidebar extends Component {
       </div>
     )
   }
-}
-
-Sidebar.propTypes = {
-  loggedUser: PropTypes.object,
-  value: PropTypes.string
 }
 
 function mapStateToProps(state) {

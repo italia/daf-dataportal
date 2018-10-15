@@ -5,9 +5,12 @@ import {
   setDatasetACL,
   deleteDatasetACL,
   groupsInfo,
-  datasetDetail
+  datasetDetail,
+  deleteOnCKAN,
+  publishOnCKAN,
+  sendNotification
 } from '../../actions.js'
-import { isPublic } from '../../utility'
+import { isPublic, isOrgAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
 import {
   Modal,
@@ -136,19 +139,20 @@ class DatasetAdmin extends Component{
   }
 
   updateValueOrg(newValue) {
+    const { dispatch } = this.props
     this.setState({
         selectedOrg: newValue,
         selectedWg: ""
     });
-    let response = organizationService.groupInfo(newValue)
     let allWg = []
     let tmp = {}
-    response.then((json) => {
-      if(json.member_group){
-        json.member_group.map(user => {
+    dispatch(groupsInfo([newValue]))
+    .then((json) => {
+      if(json[0].workgroups){
+        json[0].workgroups.map(wg => {
           tmp = {
-            'value': user,
-            'label': user
+            'value': wg,
+            'label': wg
           }
           allWg.push(tmp);
         })
@@ -200,6 +204,7 @@ class DatasetAdmin extends Component{
       if(json.fields && json.fields==="ok"){
         toastr.success("Completato", "Permesso aggiunto con successo")
         console.log(json.message)
+        dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" è stato appena condiviso con la tua organizzazione/workgroup "+(selectedWg!==''?selectedWg:selectedOrg), (selectedWg!==''?selectedWg:selectedOrg), "/private/dataset/"+dataset.dcatapit.name))
       }
       dispatch(getDatasetACL(dataset.dcatapit.name))
       .then(risp => {
@@ -248,52 +253,85 @@ class DatasetAdmin extends Component{
       if(json.fields && json.fields==="ok"){
         toastr.success("Completato", "Permesso rimosso con successo")
         console.log(json.message)
-      }
-      if(groupname==='open_data_group'){
-        dispatch(datasetDetail(dataset.dcatapit.name, '', isPublic()))
-      }else{
-        dispatch(getDatasetACL(dataset.dcatapit.name))
-        .then(risp => {
-          if(risp.code!==undefined){
-            this.setState({
-              message: risp.message,
-              isLoading: false
-            })
-          }else if(risp.code===undefined){
-            var acls = []
-            if(risp.length>0){
-              risp.map((permission)=>{
-                acls.push(permission.groupName)
-              })
-              dispatch(groupsInfo(acls))
+      
+        if(groupname==='open_data_group'){
+          dispatch(deleteOnCKAN(dataset.dcatapit))
+          .then(response=>{
+            if(response.ok){
+              response.json()
               .then(json=>{
+                toastr.success("Successo", "Il dataset è stato correttamente riportato allo stato privato")
+                console.log(json.message)
+                dispatch(datasetDetail(dataset.dcatapit.name, '', isPublic()))
+              })
+            }else{
+              response.json()
+              .then(json =>{
+                console.error(json.message)
+                dispatch(setDatasetACL(dataset.dcatapit.name, "open_data_group"))
+                .then(json=>{
+                  if(json.code!==undefined){
+                    toastr.error("Errore", json.message)
+                    console.error(json.message)
+                  }
+                  if(json.fields && json.fields==="ok"){
+                    toastr.error("Errore", "Non è stato possibile rendere privato il dataset")
+                    //console.log(json.message)
+                    dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
+                    .catch(error => { console.log('Errore durante il caricamento del dataset ' + dataset.dcatapit.name); console.error(error); this.setState({ hidden: false }) })
+                  }
+                })
+              })
+            }
+          })
+          .catch(error => console.error(error))
+        }else{
+          dispatch(getDatasetACL(dataset.dcatapit.name))
+          .then(risp => {
+            if(risp.code!==undefined){
+              this.setState({
+                message: risp.message,
+                isLoading: false
+              })
+            }else if(risp.code===undefined){
+              var acls = []
+              if(risp.length>0){
+                risp.map((permission)=>{
+                  acls.push(permission.groupName)
+                })
+                dispatch(groupsInfo(acls))
+                .then(json=>{
+                  this.setState({
+                    acl: json,
+                    aggiungi: false,
+                    isLoading: false,
+                    selectedOrg: '',
+                    selectedWg: '',
+                    message: ''
+                  })
+                })
+              }else{
                 this.setState({
-                  acl: json,
+                  message: "Nessun permesso disponibile",
+                  acl: risp,
                   aggiungi: false,
                   isLoading: false,
                   selectedOrg: '',
                   selectedWg: '',
-                  message: ''
                 })
-              })
-            }else{
-              this.setState({
-                message: "Nessun permesso disponibile",
-                acl: risp,
-                aggiungi: false,
-                isLoading: false,
-                selectedOrg: '',
-                selectedWg: '',
-              })
+              }
             }
-          }
-        })
+          })
+        }
       }
     })
   }
 
   pubblicaDataset(){
     const { dispatch, query, dataset } = this.props
+    this.setState({
+      isLoading: true
+    })
     dispatch(setDatasetACL(dataset.dcatapit.name,'open_data_group'))
     .then(json => {
       if(json.code!==undefined){
@@ -301,10 +339,43 @@ class DatasetAdmin extends Component{
         console.error(json.message)
       }
       if(json.fields && json.fields==="ok"){
-        toastr.success("Completato", "Il dataset è un Open data!")
+        console.log(json.message)
+        dataset.dcatapit.privatex = false
+        dispatch(publishOnCKAN(dataset.dcatapit))
+        .then(response=>{
+          if(response.ok){
+            response.json()
+            .then(json => {
+              dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" della tua organizzazione, è stato appena condiviso come Open Data", "open_data_group", "/private/dataset/"+dataset.dcatapit.name))
+              toastr.success("Completato", "Il dataset è un Open data!")
+              console.log(json.message)
+              dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
+              .catch(error => { console.log('Errore durante il caricamento del dataset ' + dataset.dcatapit.name); console.error(error); this.setState({ hidden: false }) })
+            })
+            .catch(error => console.error(error))
+          }else{
+            console.error("C'è stato un errore durante la creazione su ckan")
+            dispatch(deleteDatasetACL(dataset.dcatapit.name, 'open_data_group'))
+            .then(json =>{
+              if(json.code!==undefined){
+                toastr.error("Errore", json.message)
+                console.error(json.message)
+              }
+              if(json.fields && json.fields==="ok"){
+                toastr.error("Errore", "Non è stato possibile pubblicare il dataset")
+                console.log(json.message)
+              }
+              this.setState({
+                isLoading: false
+              })
+            })
+          }
+        })
+        .catch(error => console.error(error))
+        /* toastr.success("Completato", "Il dataset è un Open data!")
         console.log(json.message)
         dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))
-        .catch(error => { console.log('Errore durante il caricamento del dataset ' + dataset.dcatapit.name); console.error(error); this.setState({ hidden: false }) })
+        .catch(error => { console.log('Errore durante il caricamento del dataset ' + dataset.dcatapit.name); console.error(error); this.setState({ hidden: false }) }) */
       }
     })
   }
@@ -351,7 +422,7 @@ class DatasetAdmin extends Component{
                 <h5>Scegli un'organizzazione o un suo workgroup a cui condividere il dataset.</h5>
               </div>
               <div className="col-3">
-              Organizazione
+              Organizzazione
               <Select
                 id="state-select"
                 onBlurResetsInput={false}
@@ -395,7 +466,7 @@ class DatasetAdmin extends Component{
                     })
                   }
                   {
-                    workgroups.length === 0 && <p>Nessun Workgroup disponibile per l'organizazzione selezionata</p>
+                    workgroups.length === 0 && <p>Nessun Workgroup disponibile per l'organizzazione selezionata</p>
                   }
                 </ul>
                 </div>
@@ -421,7 +492,7 @@ class DatasetAdmin extends Component{
           <div className="col text-muted">
               <i className="text-icon fa-pull-left fas fa-users fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4><b>Condivisione</b></h4>
           </div>
-          {ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto">
+          {isOrgAdmin(loggedUser, dataset.dcatapit.owner_org) && ableToEdit( loggedUser, dataset) && !isOpenData(acl) && !this.state.isLoading && <div className="col ml-auto">
             <div className="btn-group float-right">
               <button className="btn btn-accento" onClick={this.publish} title="Pubblica come Open Data" disabled={isOpenData(acl)}>Pubblica come Open Data</button>
             </div>
@@ -470,7 +541,7 @@ class DatasetAdmin extends Component{
             </tbody>
           </table>
         </div>}
-        {!this.state.isLoading && <div className="row mt-4">
+        {!this.state.isLoading && ableToEdit(loggedUser, dataset) && <div className="row mt-4">
           <div className="col ml-auto">
             <button className="float-right btn btn-primary" onClick={this.toggle} title="Scegli con chi condividere" disabled={isOpenData(acl)}><i className="fa fa-plus fa-lg"/></button>
           </div>

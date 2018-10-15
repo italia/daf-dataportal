@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { fetchProperties } from '../../actions';
-import { serviceurl } from '../../config/serviceurl'
 import { roles, isSysAdmin, isAdmin } from '../../utility'
 import {
     Modal,
@@ -421,7 +418,7 @@ class Users extends Component {
                             
                             {loading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>:filter && filter.length > 0 && filter.map(user =>
                                 <li className={"list-group-item " + (userAct===user?"active":"")} key={user} >{user}
-                                    <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.editUser(user) }}><i className="fa fa-edit fa-lg" /></button>
+                                    <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.editUser(user) }}><i className="fa fa-user-edit fa-lg" /></button>
                                     <button type="button" className={"btn float-right " + ((userAct === user ? "btn-active" : "btn-link"))} onClick={() => { this.openUserModal(user) }}><i className="fa fa-trash fa-lg" /></button>
                                 </li>
                             )
@@ -556,11 +553,6 @@ class Users extends Component {
             </div>
         )
     }
-}
-
-Users.propTypes = {
-  loggedUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

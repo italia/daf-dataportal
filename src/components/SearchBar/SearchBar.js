@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
-import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
-import PropTypes from 'prop-types'
-import { Redirect } from 'react-router'
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import {
-    loadDatasets,
-    unloadDatasets,
-    datasetDetail,
-    logout,
     search
 } from '../../actions'
-import { createBrowserHistory } from 'history';
-import AutocompleteDataset from '../Autocomplete/AutocompleteDataset.js'
 import { isPublic } from '../../utility';
 
 class SearchBar extends Component{
@@ -35,12 +25,17 @@ class SearchBar extends Component{
         
         let newFilter = { }
         var org = []
+        var index = []
         if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
           org.push(properties.organization)
+
+        if(!isPublic()){
+          index = ['catalog_test', 'dashboards', 'stories'] 
+        }
         if(window.location.hash.indexOf('search')===-1){
             newFilter = {
                 'text': '',
-                'index': [],
+                'index': index,
                 'org': org,
                 'theme':[],
                 'date': "",
@@ -50,7 +45,7 @@ class SearchBar extends Component{
         }else{
             newFilter = filter?filter:{
                 'text': '',
-                'index': [],
+                'index': index,
                 'org': org,
                 'theme':[],
                 'date': "",
@@ -82,12 +77,6 @@ class SearchBar extends Component{
             </div>
         )
     }
-}
-
-SearchBar.propTypes = {
-    filter: PropTypes.object,
-    query: PropTypes.string,
-    results: PropTypes.array,
 }
 
 function mapStateToProps(state) {

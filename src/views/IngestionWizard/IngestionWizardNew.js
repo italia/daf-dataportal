@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Values } from "redux-form-website-template";
 import WizardForm from "../../components/IngestionWizardForm/WizardForm";
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -19,18 +18,11 @@ class IngestionForm extends Component {
     const { loggedUser } = this.props
     return (
       <div className="container">
-         <WizardForm onSubmit={showResults}/>
-{/*          <Values form="wizard" />
- */}      </div>
+         <WizardForm onSubmit={showResults} loggedUser={loggedUser}/>
+         <Values form="wizard" />
+       </div>
     )
   }
-}
-
-IngestionForm.propTypes = {
-  msg: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  resetForm: PropTypes.func,
-  loggedUser: PropTypes.object
 }
 
 function mapStateToProps(state) {

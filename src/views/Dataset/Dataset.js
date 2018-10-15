@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
   loadDatasets,
@@ -349,18 +348,6 @@ render() {
     </div>
   )
 }
-}
-
-Dataset.propTypes = {
-  selectDataset: PropTypes.string,
-  query: PropTypes.string,
-  datasets: PropTypes.array,
-  dataset: PropTypes.object,
-  isFetching: PropTypes.bool.isRequired,
-  lastUpdated: PropTypes.number,
-  dispatch: PropTypes.func.isRequired,
-  ope: PropTypes.string,
-  json: PropTypes.array
 }
 
 function mapStateToProps(state) {

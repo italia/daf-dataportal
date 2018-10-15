@@ -4,7 +4,6 @@ import { Route, HashRouter, Redirect, Switch } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
 import Full from '../Full/'
 import Home from '../Home/'
-import PropTypes from 'prop-types'
 import { fetchProperties } from './../../actions.js'
 import ReduxToastr from 'react-redux-toastr'
 import Public from '../Public/';
@@ -104,6 +103,10 @@ class App extends Component {
             <Route path='/search' exact component={Public} />
             <Route path='/dataset/list' exact component={Public} />
             <Route path='/dataset/:id' exact component={Public} />
+            <Route path="/ontologies" name="Ontologies" exact component={Public} />
+            <Route path="/ontologies/:filter" name="Ontology" component={Public} />
+            <Route path="/vocabularies" name="Vocabularies" exact component={Public} />
+            <Route path="/vocabularies/:filter" name="Vocabulary" component={Public} />
             <Route path='/private' exact component={Home} />
             <Route path="/login" component={Home} />
             <Route path="/register" component={Home} />
@@ -121,9 +124,10 @@ class App extends Component {
             <Route path="/private/ontologies/:filter" name="Ontology" component={Full} />
             <Route path="/private/vocabularies" name="Vocabularies" exact component={Full} />
             <Route path="/private/vocabularies/:filter" name="Vocabulary" component={Full} />
+            <Route path="/private/validator" name="Validator" exact component={Full} />
             <Route exact path="/private/dataset" name="Dataset" component={Full} />
             <Route exact path="/private/dataset_old" name="Dataset" component={Full} />
-            {<Route exact path="/private/search" name="Search" component={Full} />}
+            <Route exact path="/private/search" name="Search" component={Full} />
             <Route exact path="/private/dataset/:id" name="Dataset Detail" component={Full} />
             <Route path="/private/dashboard/manager" name="Dash" component={Full} />
             <Route path="/private/dashboard/list" name="Dash" component={Full} />
@@ -133,6 +137,10 @@ class App extends Component {
             <Route path="/private/settings" name="Settings" component={Full} />
             <Route path="/private/organizations" name="Organizations" component={Full} />
             <Route path="/private/users" name="Users" component={Full} />
+            <Route path="/private/charts" name="Test" component={Full} />
+
+            {/*404 NOT FOUND*/}
+            <Route path="*" name="404 Not Found" component={Public} />
           </Switch>
         </HashRouter>
         <ReduxToastr
@@ -147,11 +155,6 @@ class App extends Component {
 
     );
   }
-}
-
-App.propTypes = {
-  loggedUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

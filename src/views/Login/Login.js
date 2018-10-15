@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAuthToken, loginAction, isValidToken, logout, getApplicationCookie, receiveLogin } from './../../actions.js'
-import PropTypes from 'prop-types'
 import {
   Modal,
   ModalHeader,
@@ -10,7 +9,6 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
-import { serviceurl } from '../../config/serviceurl.js'
 import { setCookie, setSupersetCookie } from '../../utility'
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 
@@ -170,7 +168,17 @@ class Login extends Component {
                                     let dataportalCookie = json.givenname +'/'+token;
                                     setCookie(JSON.parse('[{"name":"dataportal","value":"'+ dataportalCookie +'","path":"/"}]'))
                                     dispatch(receiveLogin(json))
-                                    this.props.history.push('/private/home')
+                                    if(window.location.href.indexOf('?')>-1){
+                                      let array = window.location.href.split('?')
+                                      //this.props.history.push(array[1])
+                                      if(array[1].indexOf('login')>-1){
+                                        this.props.history.push('/private/home')  
+                                      }else{
+                                        window.location.replace(array[1]);
+                                      }
+                                    }else{
+                                      this.props.history.push('/private/home')
+                                    }
                                   })
                                 }else{
                                   console.log('Login Action Response: ' + response.statusText)
@@ -243,7 +251,7 @@ class Login extends Component {
                         {this.state.loginMessage}
                       </div>
                     }
-
+                    <form onSubmit={this.handleSubmit.bind(this)}>  
                       <div className="input-group mb-1" style={{position: 'initial'}}>
                         <span className="input-group-text">
                           <i className="icon-user"></i>
@@ -252,7 +260,7 @@ class Login extends Component {
                           style={{position: 'initial', zIndex: 'initial'}}/>
                       </div>
                     
-                      <form onSubmit={this.handleSubmit.bind(this)}>                      
+                                          
                       <div className="input-group mb-2" style={{ position: 'initial' }}>
                         <span className="input-group-text">
                           <i className="icon-lock"></i>
@@ -260,16 +268,17 @@ class Login extends Component {
                         <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw}
                           style={{ position: 'initial', zIndex: 'initial' }}/>
                       </div>
-                      </form>
+                      
                    
                       <div className="row">
                         <div className="col-6" style={{ position: 'initial' }}>
-                          <button type="button" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)}>Login</button>
+                          <input type="submit" className="btn btn-primary px-2" onClick={this.handleSubmit.bind(this)} value="Login"/>
                         </div>
                         <div className="col-6 text-right" style={{ position: 'initial' }}>
-                        <button type="button" className="btn btn-link px-0" onClick={() => this.props.history.push('/requestreset')}>Password dimenticata?</button>
+                        <button type="button" className="btn btn-link text-primary px-0" onClick={() => this.props.history.push('/requestreset')}>Password dimenticata?</button>
                         </div>
                       </div>
+                    </form>
                     
                   </OverlayLoader>
                     
@@ -289,11 +298,6 @@ class Login extends Component {
       </div>
     )
   }
-}
-
-Login.propTypes = {
-  user: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

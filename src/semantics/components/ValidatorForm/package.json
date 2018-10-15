@@ -1,0 +1,6 @@
+{
+  "name": "ValidatorForm",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./ValidatorForm.jsx"
+}

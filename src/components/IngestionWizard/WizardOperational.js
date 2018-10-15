@@ -38,9 +38,9 @@ const renderTipoLettura = ({ input, meta: { touched, error } }) => (
 const renderMergeStrategy = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
-      {/*<option value=""  key='' defaultValue></option>
-      <option value="SYNC" key='SYNC'>Sostituisci il contenuto della tabella</option>*/}
-      <option value="DEDUPE_AND_MERGE"  key='DEDUPE_AND_MERGE' defaultValue>Inserisci tutte le righe ignorando i duplicati</option>
+      <option value=""  key='' defaultValue></option>
+      {/*<option value="SYNC" key='SYNC'>Sostituisci il contenuto della tabella</option>*/}
+      <option value="DEDUPE_AND_MERGE"  key='DEDUPE_AND_MERGE'>Inserisci tutte le righe ignorando i duplicati</option>
       <option value="MERGE"  key='MERGE'>Inserisci tutte le righe</option>
     </select>
     {touched && error && <div className="text-danger">{error}</div>}
@@ -654,7 +654,7 @@ let WizardOperational = props => {
         </div>
         <div className="col-6">
           {/* <button type="submit" className="btn btn-primary float-right" disabled={pristine || submitting}>Invia</button> */}
-              <button type="submit" className="btn btn-primary float-right">{saving&&<i className="fa fa-spinner fa-spin fa-lg"/>}{!saving&&"Invia"}</button>
+              <button type="submit" className="btn btn-primary float-right" disabled={saving}>{saving&&<i className="fa fa-spinner fa-spin fa-lg"/>}{!saving&&"Invia"}</button>
         </div>
       </div>
 

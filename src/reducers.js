@@ -41,11 +41,15 @@ import {
 import {
   ontListReducer,
   ontDetailReducer
-} from "./semantics/reducers/ontologiesReducers";
+} from  './semantics/reducers/ontologiesReducers'
 import {
   vocListReducer,
   vocDetailReducer
-} from "./semantics/reducers/vocabulariesReducers";
+} from './semantics/reducers/vocabulariesReducers'
+import {
+  validatorsListReducer,
+  serverValidationReducer
+} from  './semantics/reducers/validatorReducers'
 
 //Object.assign({}, state, .. create a new copy of the state
 function datasets(state = { isFetching: false, didInvalidate: false, items: [], dataset: null, ope: '' }, action
@@ -233,7 +237,7 @@ function searchReducer(state = {}, action) {
     case REQUEST_SEARCH:
       return Object.assign({}, state, { 'search': { 'isFetching': true, 'results': undefined } })
     case RECEIVE_SEARCH:
-      return Object.assign({}, state, { 'search': { 'isFetching': action.isFetching, 'results': action.results, 'query': action.query, 'filter': action.filter } })
+      return Object.assign({}, state, { 'search': { 'isFetching': action.isFetching, 'results': action.results, 'query': action.query, 'filter': action.filter, 'filterInt': action.filterInt } })
     default:
       return state
   }
@@ -254,7 +258,9 @@ const rootReducer = combineReducers({
   ontologiesList: ontListReducer,
   ontologyDetail: ontDetailReducer,
   vocabulariesList: vocListReducer,
-  vocabularyDetail: vocDetailReducer
+  vocabularyDetail: vocDetailReducer,
+  validatorsList: validatorsListReducer,
+  serverValidation: serverValidationReducer
 })
 
 export default rootReducer

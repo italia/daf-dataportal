@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { faLock } from '@fortawesome/fontawesome-free-solid'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 
@@ -42,10 +38,6 @@ return (
       </div>
     )
   }
-}
-
-Header.propTypes = {
-  properties: PropTypes.object,
 }
 
 function mapStateToProps(state) {

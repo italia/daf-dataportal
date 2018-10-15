@@ -5,12 +5,22 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardTitle,
-  CardText
+  CardText,
+  Button
 } from 'reactstrap'
 
 import Error from '../Error'
 import Loading from '../Loading'
+import {
+  maybePublicPadding
+} from '../../util/containerUtils'
+
+
+const mayBeURI = uri => uri && <a target="_blank" href={uri}>{`(${uri})`}</a>
+
+const lodeURL = url => `http://ontopia.daf.teamdigitale.it/lode/extract?url=${url}&lang=it`
+
+const webvowlURL = url => `http://ontopia.daf.teamdigitale.it/webvowl/#iri=${url}`
 
 const ontologyError = `Errore durante il caricamento dell'ontologia`
 
@@ -19,11 +29,23 @@ const createOntology = ontology => {
   return (
     <Row>
       <Col sm={1} />
-      <Col sm={10}>
+      <Col className={maybePublicPadding()} sm={10}>
         <Card className="border-0">
           <CardHeader>
             <h2 className="text-primary title-dataset mb-0">
               {ont.titles.map(title => title.value)}
+              <div className="float-right mt-1">
+                <a target="_blank" href={lodeURL(ont.url)} className="mr-1">
+                  <Button outline color="primary">
+                    <b>LODE</b>
+                  </Button>
+                </a>
+                <a target="_blank" href={webvowlURL(ont.url)}>
+                  <Button outline color="primary">
+                    <b>WebVOWL</b>
+                  </Button>
+                </a>
+              </div>
             </h2>
           </CardHeader>
           <CardBody style={{ font: "400 18px/23px Titillium Web" }}>
@@ -43,7 +65,11 @@ const createOntology = ontology => {
               <strong>Titolare:</strong>
               <br />
               {ont.owners.map(owner => (
-                <span>{`${owner.value} (${owner.uri})`}</span>
+                <div>
+                  {`${owner.value} `}
+                  <br />
+                  {mayBeURI(owner.uri)}
+                </div>
                 ))}
             </CardText>
 
@@ -51,15 +77,23 @@ const createOntology = ontology => {
               <strong>Pubblicato da:</strong>
               <br />
               {ont.publishedBy.map(publisher => (
-                <span>{`${publisher.value} (${publisher.uri})`}</span>
-              ))}
+                <div>
+                  {`${publisher.value} `}
+                  <br />
+                  {mayBeURI(publisher.uri)}
+                </div>
+                ))}
             </CardText>
 
             <CardText>
               <strong>Creato da:</strong>
               <br />
               {ont.creators.map(creator => (
-                <span>{`${creator.value} (${creator.uri})`}</span>
+                <div>
+                  {`${creator.value} `}
+                  <br />
+                  {mayBeURI(creator.uri)}
+                </div>
               ))}
             </CardText>
 
@@ -69,11 +103,13 @@ const createOntology = ontology => {
               {ont.lastEditDate}
             </CardText>
 
+            {/*
             <CardText>
               <strong>Versioni:</strong>
               <br />
-              {/* {ont.versions.map(version => version.number).join(' - ')} */}
+              {ont.versions.map(version => version.number).join(' - ')}
             </CardText>
+            */}
 
             <CardText>
               <strong>Licenza:</strong>

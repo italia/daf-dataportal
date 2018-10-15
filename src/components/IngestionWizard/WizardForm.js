@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import WizardFormFirstPage from './WizardFormFirstPage'
 import WizardOperational from './WizardOperational'
 import WizardFormMetadata from './WizardFormMetadata'
@@ -22,7 +21,7 @@ import {
 import 'rc-steps/assets/index.css'
 import 'rc-steps/assets/iconfont.css'
 
-const steps = [{'title': 'Carica file e descrivi le colonne'},{'title': 'Aggiuungi i Metadati'},{'title': 'Modalità di invio'}]
+const steps = [{'title': 'Carica file e descrivi le colonne'},{'title': 'Aggiungi i Metadati'},{'title': 'Modalità di invio'}]
 
 class WizardForm extends Component {
   constructor(props) {
@@ -201,13 +200,6 @@ class WizardForm extends Component {
       </div>
     )
   }
-}
-
-WizardForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  loggedUser: PropTypes.object,
-  organizations: PropTypes.array,
-  saving: PropTypes.bool
 }
 
 function mapStateToProps(state) {

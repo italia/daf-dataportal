@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import App from '../InfinityScrollWidgets/App.js'
 
 class EditBar extends React.Component {
@@ -46,27 +46,10 @@ class EditBar extends React.Component {
           onWidgetSelect={this.addWidget}
           onRequestClose={this.onRequestClose}
         />
-{/*
-        <AddWidgetDialog
-          widgets={this.props.widgets}
-          isModalOpen={this.state.isModalOpen}
-          onWidgetSelect={this.addWidget}
-          onRequestClose={this.onRequestClose}
-        >
-        </AddWidgetDialog>
-        */}
       </div>
 
     );
   }
 };
-
-/* 
-EditBar.propTypes = {
-  onEdit: PropTypes.func,
-  setLayout: PropTypes.func,
-  layout: PropTypes.object,
-  widgets: PropTypes.object
-}; */
 
 export default EditBar;

@@ -17,18 +17,26 @@ class Widgets extends Component{
             items: 18,
             loading: props.loading?props.loading:true
         }
+        this.createWidget = this.createWidget.bind(this)
     }
     
     componentDidMount(){
         if(this.state.listWidgets.length===0 && !this.props.widgets){
-            let response = widgetService.iframes()
-            response.then(json => {
+          let response = widgetService.iframes()
+          response.then(json => {
+              var iframes = json
+
+              let responseOpen = widgetService.iframesOpen()
+              responseOpen.then(open=>{
+                iframes = iframes.concat(open)
                 this.setState({
-                    loading: false,
-                    listWidgets: json,
-                    searched: json
+                  loading: false,
+                  listWidgets: iframes,
+                  searched: iframes
                 })
-            })
+              })
+              
+          })
         }else{
             this.setState({
                 loading: false
@@ -65,6 +73,10 @@ class Widgets extends Component{
         });
     }
 
+    createWidget(){
+        this.props.openModalWidget();
+      }
+
     handleScrollToBottom = () => this.loadMore()
     handleLoadMoreClick = () => this.loadMore()
 
@@ -80,7 +92,7 @@ class Widgets extends Component{
                                 <i className="fas fa-chart-bar fa-lg m-2" style={{lineHeight:'1'}}/><h2> Widget</h2>
                             </nav>
                             {window.location.hash.indexOf('dataset')===-1 && <div className="row">
-                                <div className="col-12">
+                                <div className="col-10">
                                     <div className="input-prepend input-group mb-20">
                                         <div className="input-group-text transparent-frame">
                                             <i className="fa fa-search"/>
@@ -88,6 +100,12 @@ class Widgets extends Component{
                                         <input className="form-control transparent-frame" size="25" type="text" value={this.state.query} onChange={(e) => this.searchBy(e.target.value)} placeholder="Filtra la lista ..."/>
                                     </div>
                                 </div>
+                                <div className="col-md-2">
+                                    <button type="button" className="btn btn-link float-right" title="Aggiungi Widget" onClick={this.createWidget}>
+                                        <i className="fa fa-plus-circle fa-lg m-t-2"></i>
+                                    </button>
+                                    </div>
+                                    
                             </div>}
                             <div className="App bg-light">
 

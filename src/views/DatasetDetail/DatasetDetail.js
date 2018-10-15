@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
     loadDatasets,
@@ -10,9 +9,11 @@ import {
     datasetMetadata,
     getOpendataResources,
     checkFileOnHdfs,
-    setDatasetACL,
-    uploadHdfsFile
+    uploadHdfsFile,
+    groupsInfo
 } from '../../actions'
+import ReactTable from "react-table"
+import "react-table/react-table.css";
 import ReactJson from 'react-json-view'
 import download from 'downloadjs'
 import { serviceurl } from "../../config/serviceurl";
@@ -33,6 +34,7 @@ import Widgets from '../Widgets/Widgets'
 import { toastr } from 'react-redux-toastr'
 import ShareButton from '../../components/ShareButton/ShareButton';
 import DatasetAdmin from './DatasetAdmin';
+import { Table } from 'reactstrap';
 
 function checkIsLink(val) {
     if (val.indexOf('http') !== -1 && val.indexOf('{') === -1)
@@ -92,7 +94,7 @@ class DatasetDetail extends Component {
             uploadFile: false,
             file: '',
             fileName: '',
-            uploading: false
+            uploading: false,
 
         }
 
@@ -138,18 +140,10 @@ class DatasetDetail extends Component {
         if ((nextProps.dataset || nextProps.feed) && (this.props.dataset !== nextProps.dataset || this.props.feed !== nextProps.feed)) {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
             var dafIndex = 0
-            if (isExtOpendata) {
-                dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-                    .then(json => { dafIndex = dafIndex + 3; this.setState({ hasPreview: true, dafIndex: dafIndex }) })
-                    .catch(error => { this.setState({ hasPreview: false }) })
-            } else {
-                if (nextProps.feed && nextProps.feed.has_job && (nextProps.feed.job_status === 'COMPLETED' || nextProps.feed.job_status === 'STARTED')) {
-                    dafIndex = dafIndex + 3
-                    this.setState({ hasPreview: true, dafIndex: dafIndex })
-                } else {
-                    this.setState({ hasPreview: false })
-                }
-            }
+
+            dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
+                .then(json => { dafIndex = dafIndex + 3; this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false }) })
+                .catch(error => { this.setState({ hasPreview: false, loading: false }) })
 
             dispatch(getSupersetUrl(nextProps.dataset.dcatapit.name, nextProps.dataset.dcatapit.owner_org, isExtOpendata))
                 .then(json => {
@@ -246,9 +240,9 @@ class DatasetDetail extends Component {
             showDett: false,
             previewState: 3
         })
-        dispatch(getFileFromStorageManager(logical_uri))
+        dispatch(getFileFromStorageManager(logical_uri, 20))
             .then(json => { this.setState({ previewState: 1, jsonPreview: json }) })
-            .catch(error => { this.setState({ previewState: 2 }) })
+            .catch(error => { console.error(error); this.setState({ previewState: 2 }) })
     }
 
 
@@ -282,7 +276,27 @@ class DatasetDetail extends Component {
         const isExtOpendata = (dataset.operational.ext_opendata
             && dataset.operational.ext_opendata != {}) ? true : false
         dispatch(getSupersetUrl(nomeFile, org, isExtOpendata))
-            .then(json => { this.setState({ supersetLink: json, supersetState: 1 }) })
+            .then(json => {
+              var orgs = []
+              var supersetLinks = json
+              json.map(link=>{
+                if(link.appName==="superset"){
+                  let sp1 = link.name.split('_o_')
+                  let sp2 = sp1[0].split('.')
+                  var org = sp2[1]
+                  orgs.push(org)
+                }
+              }) 
+
+              dispatch(groupsInfo(orgs))
+              .then(json=>{
+                json.map((orgInfo,key)=>{
+                  supersetLinks[key].groupInfo = orgInfo
+                })
+                console.log(supersetLinks)
+                this.setState({ supersetLink: supersetLinks, supersetState: 1 }) 
+              })
+            })
             .catch(error => { this.setState({ supersetState: 2 }) })
     }
 
@@ -375,8 +389,63 @@ class DatasetDetail extends Component {
             })
     }
 
+    renderPreview(dataset, jsonPreview){
+      if(jsonPreview){
+        if(dataset.operational.file_type==="csv" || dataset.operational.input_src.sftp[0].param.indexOf('csv')>-1){
+          var columns=[{
+            Header: dataset.dcatapit.name,
+            columns: []
+          }]
+          Object.keys(jsonPreview[0]).map(elem=>{
+            columns[0].columns.push({
+              Header: elem,
+              accessor: elem
+            })
+          })
+          return(
+            <ReactTable 
+              data={jsonPreview}
+              columns={columns}
+              defaultPageSize={10}
+              className="-striped -highlight"
+              />
+          )
+          /* return (
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  {Object.keys(jsonPreview[0]).map((elem,index)=>{
+                    return <th scope="col" key={index}>{elem}</th>
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                {jsonPreview.map((elem,index)=>{
+                  var obj = []
+                  for (var p in elem)
+                    obj.push(elem[p])
+                  return(
+                    <tr key={index}>
+                    {obj.map((val, index)=>{
+                      return(<td key={index}>{val}</td>)
+                    })}
+                    </tr>)
+                  })
+                }
+              </tbody>
+            </table>
+          ) */
+        }else{
+          return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
+        }
+      }else{
+        return <p>Anteprima non disponibile.</p>
+      }
+    }
+
     render() {
-        const { dataset, metadata, ope, feed, iframes, isFetching, query } = this.props
+        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch } = this.props
+        const { loading } = this.state
         var metadataThemes = undefined
         if (metadata) {
             try {
@@ -386,7 +455,7 @@ class DatasetDetail extends Component {
             }
         }
 
-        return isFetching === true ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (<div>
+        return (loading && isFetching) ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (<div>
             {(ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') && (dataset) &&
                 <div>
                     <Modal isOpen={this.state.uploadFile} onRequestHide={this.toggleUploadFile}>
@@ -399,29 +468,31 @@ class DatasetDetail extends Component {
                                 name="hdfs_file"
                                 className="dropzone w-100 position-relative"
                                 multiple={false}
-                                maxSize={10485760}
+                                maxSize={102400000}
                                 onDrop={(filesToUpload, e) => {
                                     filesToUpload.forEach(file => {
-                                        console.log(file)
-                                        const reader = new FileReader();
-                                        reader.readAsText(file);
-                                        reader.onload = () => {
-                                            const fileAsBinaryString = reader.result;
-                                            this.setState({
-                                                file: fileAsBinaryString
-                                            })
-                                            // do whatever you want with the file content
-                                        };
-/*                         this.fileToBase64(filesToUpload[0])
-  */                      this.setState({
-                                            fileName: file.name
-                                        })
+                                      console.log(file)
+                                      const reader = new FileReader();
+                                      reader.readAsText(file);
+                                      reader.onload = () => {
+                                          const fileAsBinaryString = reader.result;
+                                          this.setState({
+                                              file: fileAsBinaryString
+                                          })
+                                      };
+                                      this.setState({
+                                        fileName: file.name
+                                      })
                                     })
-                                }}
-                            >
-                                <div style={{ position: 'absolute', top: '50%', bottom: '50%', left: '0', right: '0' }}>
+                                  }}
+                                  onDropRejected={()=>{
+                                    toastr.error("Errore", "Il file selezionato è troppo grande, seleziona un file di massimo 100MB")
+                                  }}
+                                >
+                                <div style={{ position: 'absolute', top: '35%', bottom: '35%', left: '0', right: '0' }}>
                                     <div className="text-center">
                                         <h5 className="font-weight-bold">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</h5>
+                                        <h5 className="font-weight-bold">Dimensione massima 100MB</h5>
                                     </div>
                                 </div>
                             </Dropzone>}
@@ -440,37 +511,44 @@ class DatasetDetail extends Component {
                     </Modal>
                     <div className='top-dataset-1'>
                         <div className="container pt-4">
-                            <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary" />
-                            <h2 className="title-dataset px-4 text-primary dashboardHeader" title={dataset.dcatapit.title}>{this.truncate(dataset.dcatapit.title, 75)}</h2>
+                            <div className="row">
+                                <div className="col-md-10">
+                                  <h2 className="dashboardHeader title-dataset text-primary" title={dataset.dcatapit.title}><i className="fa fa-table fa-xs text-primary mr-3" />{this.truncate(dataset.dcatapit.title, 75)}</h2>
+                                </div>
+                                <div className="col-md-2">
+                                    {isPublic() && <ShareButton background="bg-white" className="mt-2" />}
+                                    {!isPublic() && <button className="btn btn-accento nav-link button-data-nav" disabled={!this.state.hasPreview} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>}
+                                </div>
+                            </div>
                             <ul className="nav b-b-0 nav-tabs w-100 pl-4" style={{ display: "inline-flex" }}>
                                 <li className="nav-item">
                                     <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showAdmin: false, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
                                 </li>
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showPreview ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handlePreview.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="text-icon fa fa-eye pr-2" /> Anteprima</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showAdmin: false, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
+                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showAdmin ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAdmin: true, showWidget: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fas fa-cogs pr-2" />Amministrazione</a>
                                 </li>}
-                                {!isPublic() && <li className="nav-item h-100">
-                                    <a className="btn btn-accento nav-link button-data-nav" onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</a>
-                                </li>}
-
                             </ul>
-                            {isPublic() && <ShareButton background="bg-white" className="mt-4" />}
                         </div>
                     </div>
                     <div className="container">
                         <div className="row">
+                            <div hidden={!this.state.showPreview} className="col-12 pt-5">
+                              {this.state.previewState === 1 && <div>{this.renderPreview(dataset, this.state.jsonPreview)}</div>}
+                              {this.state.previewState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il caricamento della risorsa, contatta l'assistenza.</div>}
+                              {this.state.previewState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
+                            </div>
                             <div hidden={this.state.showWidget} className="col-md-7 pt-5">
                                 <div>
                                     <div className="row px-3">
@@ -488,7 +566,7 @@ class DatasetDetail extends Component {
                                         <div hidden={!this.state.showDett} className="col-12 card-text">
                                             <div className="row">
                                                 <div className="col-12 py-4">
-                                                    <table className="table table-responsive">
+                                                    <table className="table table-responsive-1">
                                                         <tbody className="w-100">
                                                             <tr>
                                                                 <th className="bg-white" style={{ width: "192px" }}><strong>Slug: </strong></th>
@@ -506,7 +584,7 @@ class DatasetDetail extends Component {
                                                 </div>}
                                                 <div className="col-12">
                                                     {!isPublic() && dataset.operational.input_src.sftp &&
-                                                        <table className="table table-responsive">
+                                                        <table className="table table-responsive-1">
                                                             <tbody className="w-100">
                                                                 <tr>
                                                                     <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th> <td className="bg-grigino">SFTP</td>
@@ -535,7 +613,7 @@ class DatasetDetail extends Component {
                                                         </table>
                                                     }
                                                     {!isPublic() && dataset.operational.input_src.srv_pull &&
-                                                        <table className="table table-striped table-responsive">
+                                                        <table className="table table-striped table-responsive-1">
                                                             <tbody className="w-100">
                                                                 <tr>
                                                                     <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th><td className="bg-grigino">Web Services</td>
@@ -559,14 +637,14 @@ class DatasetDetail extends Component {
                                                     }
                                                     {!isPublic() && dataset.operational.input_src.srv_push &&
                                                         <div>
-                                                            <table className="table table-striped table-responsive">
+                                                            <table className="table table-striped table-responsive-1">
                                                                 <tbody className="w-100">
                                                                     <tr>
                                                                         <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th><td className="bg-grigino">Web HDFS</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th className="bg-white" style={{ width: "192px" }}><strong>API di Upload: </strong></th>
-                                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_push[0].url}>{this.truncate(dataset.operational.input_src.srv_push[0].url, 30)}
+                                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_push[0].url}>{this.truncate(dataset.operational.input_src.srv_push[0].url, 60)}
                                                                             <CopyToClipboard text={dataset.operational.input_src.srv_push[0].url}>
                                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
                                                                             </CopyToClipboard>
@@ -583,6 +661,9 @@ class DatasetDetail extends Component {
                                                                 </div>}
                                                         </div>
                                                     }
+                                                    {!this.state.hasPreview && 
+                                                      <p className="desc-dataset text-dark font-weight-bold mt-5">Non hai ancora effettuato un caricamento per questo dataset. Carica i dati con il metodo sopra indicato per sbloccare tutte le funzionalità offerte.</p>
+                                                    }
                                                 </div>
                                             </div>
                                             <br /><br />
@@ -592,17 +673,10 @@ class DatasetDetail extends Component {
                                             {this.state.downloadState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il download del file, contatta l'assistenza.</div>}
                                             {this.state.downloadState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Download in corso..</div>}
                                         </div>
-
-
-                                        <div hidden={!this.state.showPreview} className="col-12 card-text">
-                                            {this.state.previewState === 1 && <div>{this.state.jsonPreview ? <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" /> : <p>Anteprima non disponibile.</p>}</div>}
-                                            {this.state.previewState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il caricamento della risorsa, contatta l'assistenza.</div>}
-                                            {this.state.previewState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
-                                        </div>
                                         <div hidden={!this.state.showAPI} className="col-12 card-text">
                                             <div className="row desc-dataset text-dark">
                                                 <div className="col-12">
-                                                    <label>API Endpoint</label><br />
+                                                    <p>E' possibile accedere ai dati di questo Dataset utilizzando il seguente API Endpoint</p><br />
                                                     <input className='w-75' value={this.state.value} onChange={({ target: { value } }) => this.setState({ value, copied: false })} disabled='true' />
                                                     <CopyToClipboard text={this.state.value}
                                                         onCopy={() => this.setState({ copied: true })}>
@@ -623,47 +697,126 @@ class DatasetDetail extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div hidden={!this.state.showTools} className="col-12 card-text">
-                                            <div className="col-12">
-                                                <div className="row text-muted">
-                                                    <i className="text-icon fa fa-database fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Superset</b></h4>
-                                                </div>
-                                            </div>
-                                            {this.state.supersetState === 1 &&
-                                                <div>
-                                                    {this.state.supersetLink.length > 0 ?
-                                                        <div>
-                                                            {this.state.supersetLink.map((link, index) => {
-                                                                return (
-                                                                    <div className="desc-dataset text-dark" key={index}>
-                                                                        <p>Accedi alla tabella <strong><a href={link.url} target='_blank'>{link.name}</a></strong> su Superset.</p>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                            }
-                                                        </div>
-                                                        :
-                                                        <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso.</p>
-                                                    }
-                                                </div>
-                                            }
-                                            {this.state.supersetState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante l'accesso a Superset, contatta l'assistenza.</div>}
-                                            {this.state.supersetState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
-                                            <div className="col-12">
-                                                <div className="row text-muted">
-                                                    <i className="text-icon fa fa-chart-pie fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Metabase</b></h4>
-                                                </div>
-                                            </div>
-                                            {this.state.hasMetabase &&
-                                                <div className="desc-dataset text-dark">
-                                                    <p>Collegati a <a href={serviceurl.urlMetabase + '/question/new'} target='_blank'>Metabase</a> e cerca il dataset per creare nuovi widget.</p>
-                                                </div>
-                                            }
-                                            {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div hidden={!this.state.showTools} className="col-12 card-text">
+                              <div className="col-12">
+                                  <div className="row text-muted">
+                                      <i className="text-icon fa fa-database fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Superset</b></h4>
+                                  </div>
+                              </div>
+                              {this.state.supersetState === 1 &&
+                                  <div>
+                                      {this.state.supersetLink.length > 0 ?
+                                          <div>
+                                            <div className="desc-dataset text-dark">
+                                              <p>Puoi creare un widget su questo dataset in Superset per le seguenti organizzazioni o gruppi: </p>
+                                            </div>
+                                            <Table>
+                                              <tbody>
+                                              {this.state.supersetLink.map((link, index) => {
+                                                switch(link.appName){
+                                                  case "superset":
+                                                  var groupType = ''
+                                                  if(link.groupInfo.dafGroupType==='Organization'){
+                                                    groupType = 'Organizzazione'
+                                                  }else{
+                                                    groupType = "Workgroup dell'organizzazione"+link.groupInfo.parentGroup
+                                                  }
+                                                  return (
+                                                    <tr key={index}>
+                                                      <td className="h5">{link.groupInfo.groupCn}</td>
+                                                      <td className="h5">{groupType}</td>
+                                                      <td><a className="text-primary float-right" title="Crea un widget privato su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
+                                                    </tr>
+                                                  )
+                                                  case "superset_open":
+                                                  return (
+                                                    <tr key={index}>
+                                                      <td className="h5">Gruppo Open Data</td>
+                                                      <td></td>
+                                                      <td><a className="text-primary float-right" title="Crea un widget pubblico su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
+                                                    </tr>
+                                                  )
+                                                }
+                                              })
+                                              }
+                                              </tbody>
+                                            </Table>
+                                          </div>
+                                          :
+                                          <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso. Verifica che il dataset sia stato condiviso almeno con una tua organizzazione o workgroup</p>
+                                      }
+                                  </div>
+                              }
+                              {this.state.supersetState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante l'accesso a Superset, contatta l'assistenza.</div>}
+                              {this.state.supersetState === 3 && <div className="desc-dataset"><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
+                              <div className="col-12">
+                                  <div className="row text-muted">
+                                      <i className="text-icon fa fa-chart-pie fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Metabase</b></h4>
+                                  </div>
+                              </div>
+                              {this.state.hasMetabase &&
+                                  <div className="desc-dataset text-dark">
+                                      <p>Collegati a <a href={serviceurl.urlMetabase + '/question/new'} target='_blank'>Metabase</a> e cerca il dataset per creare nuovi widget.</p>
+                                  </div>
+                              }
+                              {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>}
+                              <div className="col-12">
+                                <div className="row text-muted">
+                                    <i className="text-icon fa fa-sticky-note fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Jupyter</b></h4>
+                                </div>
+                                {this.state.hasPreview &&
+                                <div>
+                                <div className="row text-muted">
+                                    <p className="desc-dataset text-dark">Leggi attentamente le <a href="https://daf-dataportal.readthedocs.io/it/latest/datascience/jupyter/index.html#creazione-e-configurazione-di-un-notebook" target='_blank'>istruzioni </a> per collegarti a Jupyter.  </p>
+                                    <p className="desc-dataset text-dark">Dopo aver attivato la sessione seguendo le istruzioni potrai analizzare il file al percorso:</p>
+                                    <p className="desc-dataset text-dark"><strong>{dataset.operational.physical_uri}</strong>.</p>
+                                    <p className="desc-dataset text-dark">Usa i seguenti comandi per caricare il file nel notebook:</p>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">
+                                        <strong> Pyspark </strong>
+                                    </div>
+                                    <div className="col-10">
+                                        <code>
+                                            path_dataset = "<strong>{dataset.operational.physical_uri}</strong>" <br />
+                                            df = (spark.read.format("parquet") <br />
+                                            .option("inferSchema", "true") <br />
+                                            .load(path_dataset) <br />
+                                            ) <br />
+                                            df.printSchema <br />
+                                        </code>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">
+                                        <strong> Spark Sql</strong>
+                                    </div>
+                                    <div className="col-10">
+                                        <code>
+                                            df.createOrReplaceTempView("{dataset.dcatapit.title}") <br />
+                                            %%spark -c sql <br />
+                                            select * from  {dataset.dcatapit.title} limit 10 <br />
+                                        </code>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">
+                                        <strong> Spark Sql </strong>
+                                    </div>
+                                    <div className="col-10">
+                                        <code>
+                                            spark.sql("SELECT * FROM opendata.<strong>{dataset.dcatapit.title}</strong>").show()
+                                        </code>
+                                    </div>
+                                </div>
+                                <br /><br />
+                                </div>}
+                              </div>
+                              {!this.state.hasPreview && <p>Non è possibile usare Jupyter per questo dataset</p>}
+                          </div>
                             <div hidden={!this.state.showDett} className="col-md-5 px-0 pt-5">
                                 <div>
                                     <div className="border-left pl-3 row">
@@ -672,27 +825,27 @@ class DatasetDetail extends Component {
                                         </div>}
                                         {!isPublic() && (!dataset.operational.ext_opendata || dataset.operational.ext_opendata === {}) &&
                                             <div className="col-8 mb-3">
-                                                {feed.has_job && feed.job_status === 'COMPLETED' &&
+                                                {feed && feed.has_job && feed.job_status === 'COMPLETED' &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-success w-100 h-100 text-dark" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Attivo</div>
                                                     </div>
                                                 }
-                                                {feed.has_job && feed.job_status === 'STARTED' &&
+                                                {feed && feed.has_job && feed.job_status === 'STARTED' &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-warning w-75 h-100 text-dark" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">In attesa di verifica</div>
                                                     </div>
                                                 }
-                                                {feed.has_job && (feed.job_status === 'FAILED' || feed.job_status === 'ABANDONED') &&
+                                                {feed && feed.has_job && (feed.job_status === 'FAILED' || feed.job_status === 'ABANDONED') &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-danger w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Caricamento non riuscito</div>
                                                     </div>
                                                 }
-                                                {!feed.has_job && (feed.state === 'ENABLED') &&
+                                                {feed && !feed.has_job && (feed.state === 'ENABLED') &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Feed attivo in attesa di caricamento</div>
                                                     </div>
                                                 }
-                                                {!feed.has_job && (feed.state !== 'ENABLED') &&
+                                                {feed && !feed.has_job && (feed.state !== 'ENABLED') &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Feed in fase di creazione</div>
                                                     </div>
@@ -821,8 +974,14 @@ class DatasetDetail extends Component {
                 <div>
                     <div className='top-dataset-1'>
                         <div className="container pt-4">
-                            <i className="fa fa-table fa-lg icon-dataset pr-3 float-left text-primary"></i>
-                            <h2 className="title-dataset px-4 text-primary dashboardHeader" title={metadata.title}>{this.truncate(metadata.title, 75)}</h2>
+                            <div className="row">
+                              <div className="col-md-10">
+                                <h2 className="title-dataset px-4 text-primary dashboardHeader" title={metadata.title}><i className="fa fa-table fa-xs mr-3 text-primary"/>{this.truncate(metadata.title, 75)}</h2>
+                              </div>
+                              <div className="col-md-2">
+                                {isPublic() && <ShareButton background="bg-white" className="mt-2" />}
+                              </div>
+                            </div>
                             <ul className="nav b-b-0 nav-tabs w-100 pl-4" style={{ display: "inline-flex" }}>
                                 <li className="nav-item">
                                     <a className={!this.state.showMeta ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showMeta: true, showRes: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
@@ -831,7 +990,6 @@ class DatasetDetail extends Component {
                                     <a className={!this.state.showRes ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleResources.bind(this, metadata.name)}><i className="text-icon fa fa-info-circle pr-2" />Risorse</a>
                                 </li>
                             </ul>
-                            {isPublic() && <ShareButton background="bg-white" className="mt-4" />}
                         </div>
                     </div>
                     <div className="container">
@@ -853,7 +1011,7 @@ class DatasetDetail extends Component {
                                                     <p className="text-muted mb-4"><b>Metadati </b></p>
                                                 </div>
                                                 <div className="col-12">
-                                                    <table className="table table-responsive">
+                                                    <table className="table table-responsive-1">
                                                         <tbody className="w-100">
                                                             <tr>
                                                                 <th className="bg-white" style={{ width: "192px" }}><strong>Identificativo dataset</strong></th>
@@ -918,7 +1076,7 @@ class DatasetDetail extends Component {
                                                     <p className="text-muted mb-4"><b>Informazioni Addizionali </b></p>
                                                 </div>
                                                 <div className="col-12">
-                                                    <table className="table table-responsive">
+                                                    <table className="table table-responsive-1">
                                                         <tbody className="w-100">
                                                             {metadata.extras && metadata.extras.map((extra, index) => {
                                                                 return (
@@ -1030,19 +1188,6 @@ class DatasetDetail extends Component {
         </div>
         )
     }
-}
-
-DatasetDetail.propTypes = {
-    selectDataset: PropTypes.string,
-    query: PropTypes.string,
-    datasets: PropTypes.array,
-    dataset: PropTypes.object,
-    isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
-    dispatch: PropTypes.func.isRequired,
-    ope: PropTypes.string,
-    feed: PropTypes.object,
-    iframes: PropTypes.array
 }
 
 function mapStateToProps(state) {

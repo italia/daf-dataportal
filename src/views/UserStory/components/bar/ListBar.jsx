@@ -1,5 +1,4 @@
-import React, { PropTypes } from 'react';
-import { Route, Link } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux'
 import { isAdmin, isEditor, isPublic } from '../../../../utility.js'
 
@@ -176,7 +175,7 @@ class ViewBar extends React.Component {
             </ModalBody>
             <ModalFooter>
               <button className='btn btn-gray-200' onClick={this.hideModal}>
-                Close
+                Chiudi
               </button>
               <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
                 <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -213,21 +212,6 @@ class ViewBar extends React.Component {
     );
   }
 };
-
-/* 
-ViewBar.propTypes = {
-  onEdit: PropTypes.func,
-  setLayout: PropTypes.func,
-  layout: PropTypes.object,
-  widgets: PropTypes.object
-}; 
-
-export default ViewBar;*/
-
-ViewBar.propTypes = {
-  loggedUser: PropTypes.object,
-  organizations: PropTypes.array
-}
 
 function mapStateToProps(state) {
     const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }   

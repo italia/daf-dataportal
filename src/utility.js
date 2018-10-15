@@ -34,7 +34,7 @@ export const ckanTranslate = [
 
 ]
 
-export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}, {'val':'ext_opendata', 'name':'Ext. Opendata'}]
+export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}/* , {'val':'ext_opendata', 'name':'Ext. Opendata'} */]
 
 export const visibilita = [{ 'val': '2','name': 'Open data'},{ 'val': '0','name': 'Privato'},{ 'val': '1','name': 'Organizzazione'}]
 
@@ -102,6 +102,16 @@ export function transformName(name){
         isAdmin = true
       }
     )
+    return isAdmin
+  }
+
+  export function isOrgAdmin(loggedUser, organization){
+    var isAdmin = false;
+    
+    if(loggedUser && loggedUser.roles.indexOf('daf_adm_'+organization)>-1){
+      isAdmin = true
+    }  
+    
     return isAdmin
   }
 

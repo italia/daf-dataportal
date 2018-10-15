@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import {createMetacatalog} from '../../helpers/TrasformFormToDcat.js'
 import WizardForm from '../../components/IngestionWizard/WizardForm'
-import { addDataset, addDatasetKylo } from './../../actions.js'
+import { addDataset } from './../../actions.js'
 import {reset} from 'redux-form';
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import {
   Modal,
   ModalHeader,
   ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap'
@@ -56,13 +54,20 @@ hideModalAndRedirect = (e) => {
   this.props.history.push('/private/home')
 };
 
-  /*  showResults = values =>{
-    const transformed = transformer(values)
-    console.log(transformed)
-    toastr.success('Complimenti', 'Il caricamento dei metadati è avvenuto con successo')
+ /*   showResults = values =>{
+    this.setState({
+      saving: true
+    })
+    setTimeout(() => {
+      const transformed = transformer(values)
+      console.log(transformed)
+      toastr.success('Complimenti', 'Il caricamento dei metadati è avvenuto con successo')
+      this.setState({saving: false})
+      
+    }, 1000);
   }  */
 
-     showResults = values =>{
+      showResults = values =>{
       this.setState({
         saving: true
       })
@@ -116,7 +121,7 @@ hideModalAndRedirect = (e) => {
           console.log('token non presente');
           this.setState({saving: false})
         }
-      } 
+      }  
 
 
   render() {
@@ -164,13 +169,6 @@ hideModalAndRedirect = (e) => {
     </div>
     )
   }
-}
-
-IngestionForm.propTypes = {
-  msg: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  resetForm: PropTypes.func,
-  loggedUser: PropTypes.object
 }
 
 function mapStateToProps(state) {
