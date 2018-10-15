@@ -75,6 +75,7 @@ class WizardForm extends Component {
       isOpenInfo: false,
       infoText: undefined,
       filePullLoaded:false,
+      loadingConfiguration:false,
       vocabolariControllati:[
         {
           "uid": "voc1",
@@ -100,21 +101,23 @@ class WizardForm extends Component {
 
   loadConfiguration(){
      const { dispatch } = this.props
+     this.setState({ loadingConfiguration: true })
     dispatch(loadVocabulary(serviceurl.vocabularyName))
     .then(response=>{
       if(response.ok){
         response.json()
         .then(json=>{
-          this.setState({ config: JSON.parse(json.voc) })
+          this.setState({ config: JSON.parse(json.voc), 
+                          loadingConfiguration: false})
           console.log(json.message)
         })
      }else{
       console.log('Errore nel reperimento del json di configurazione: ' + error) 
-      this.setState({ config: config })
+      this.setState({ config: config, loadingConfiguration: false })
      }})
     .catch((error)=>{ 
       console.log('Errore nel reperimento del json di configurazione: ' + error) 
-      this.setState({ config: config })
+      this.setState({ config: config, loadingConfiguration: false })
     }) 
   }
 
@@ -523,7 +526,7 @@ class WizardForm extends Component {
   render() {
     const { onSubmit, loggedUser } = this.props;
     const { page, tipi, context, infoText, listaConvenzioni, listaGerarchie, listaStorage, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery, config, vocabolariControllati, filePullLoaded } = this.state;
-    return (
+    return this.state.loadingConfiguration === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
       <div>
         {config?
         <div className="row mb-5">

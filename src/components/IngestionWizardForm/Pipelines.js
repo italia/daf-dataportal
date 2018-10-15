@@ -102,7 +102,7 @@ class Pipelines extends Component {
                     <div className="col-sm-10">
                         <select className="form-control" ref={(pipeline) => this.pipeline = pipeline} onChange= {(e) => this.onChangePipeline(e, e.target.value)} id="pipeline" value={pipeline}>
                             <option value="" defaultValue></option>
-                            {config['pipelines'].map(value => <option value={value.uid} key={value.uid}>{value.name.ita?value.name.ita:value.name.default}</option>)}
+                            {config['dafvoc-ingform-operational-ingestion_pipeline-name'].map(value => <option value={value.uid} key={value.uid}>{value.name.ita?value.name.ita:value.name.default}</option>)}
                         </select>
                     </div>
                 </div>
