@@ -13,6 +13,7 @@ export const SELECT_DATASET = 'SELECT_DATASET'
 export const RECEIVE_METADATA = 'RECEIVE_METADATA'
 export const REQUEST_DATASET_DETAIL = 'REQUEST_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL = 'RECEIVE_DATASET_DETAIL'
+export const RECEIVE_DATASET_ADDITIONAL_DETAIL = 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
 export const RECEIVE_DATASET_DETAIL_ERROR = 'RECEIVE_DATASET_DETAIL_ERROR'
 export const REQUEST_LOGIN = 'REQUEST_LOGIN'
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN'
@@ -130,12 +131,10 @@ function receiveMetadataAndResources(jsonMetadata){
     }
   }
 
-function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter) {
+function receiveDatasetDetail(jsonDataset, query, category_filter, group_filter, organization_filter, order_filter) {
   return {
       type: RECEIVE_DATASET_DETAIL,
       dataset: jsonDataset,
-      feed: jsonFeed,
-      iframes: jsonIFrames,
       query: query,
       category_filter: category_filter,
       group_filter: group_filter,
@@ -143,6 +142,17 @@ function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, categor
       order_filter: order_filter,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_DETAIL'
+  }
+}
+
+function receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames) {
+  return {
+      type: RECEIVE_DATASET_ADDITIONAL_DETAIL,
+      dataset: jsonDataset,
+      feed: jsonFeed,
+      iframes: jsonIFrames,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
   }
 }
 
@@ -962,17 +972,19 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         .then(jsonDataset => {
               console.log(jsonDataset)
               if(!jsonDataset.operational.ext_opendata){
+                dispatch(receiveDatasetDetail(jsonDataset))
                 dispatch(getFeedDetail(jsonDataset.dcatapit.owner_org, jsonDataset.dcatapit.name))
                 .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
                 .then(jsonFeed => {
                   dispatch(getDatasetIframes(jsonDataset.dcatapit.name, jsonDataset.dcatapit.privatex))
                   .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                  .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query)))
+                  .then(jsonIFrames => dispatch(receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames)))
                 })
               }else{
+                dispatch(receiveDatasetDetail(jsonDataset))
                 dispatch(getDatasetIframes(jsonDataset.dcatapit.name, jsonDataset.dcatapit.privatex))
                   .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                  .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, undefined, jsonIFrames, query)))
+                  .then(jsonIFrames => dispatch(receiveDatasetAdditionalDetail(jsonDataset, undefined, jsonIFrames)))
               }
               })
         .catch(error => {
@@ -1069,18 +1081,26 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Authorization': 'Bearer ' + token
             }
           })
-          .then(response => response.json())
-          .then(json => json)
+          .then(response => response)
         }
       }
 
-      export function getFileFromStorageManager(logical_uri, limit) {
+      export function getFileFromStorageManager(logical_uri, limit, format, isPublic) {
         var token = ''
         var rows = ''
+        var formatType = ''
         if(limit!==null && limit!==undefined){
           rows = '?limit='+limit
         }
-        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) + rows;
+        if(format!==null && format!==undefined){
+          formatType = '?format='+format
+        }
+        var url = ''
+        if(isPublic!==true){
+          url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) + rows + formatType
+        }else if(isPublic===true){
+          url = serviceurl.apiURLDatiGov + '/public/storage-manager/'+ encodeURIComponent(logical_uri) + rows + formatType
+        }
         if(localStorage.getItem('username') && localStorage.getItem('token') &&
           localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
             token = localStorage.getItem('token')
@@ -1094,8 +1114,8 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
                 'Authorization': 'Bearer ' + token
               }
             })
-            .then(response => response.json())
-            .then(json => json)
+            .then(response => response)
+            .catch(error=> console.error(error))
           }
         }
 
