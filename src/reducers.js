@@ -79,6 +79,7 @@ function datasets(state = { isFetching: false, didInvalidate: false, items: [], 
     case RECEIVE_DATASET_DETAIL:
       return Object.assign({}, state, {
         isFetching: false,
+        isAdditionalFetching: true,
         didInvalidate: false,
         items: null,
         query: action.query,
@@ -92,6 +93,7 @@ function datasets(state = { isFetching: false, didInvalidate: false, items: [], 
       })
     case RECEIVE_DATASET_ADDITIONAL_DETAIL:
       return Object.assign({}, state, {
+        isAdditionalFetching: false,
         dataset: action.dataset,
         feed: action.feed,
         iframes: action.iframes,

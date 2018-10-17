@@ -12,6 +12,7 @@ import {
     checkFileOnHdfs,
     uploadHdfsFile,
     groupsInfo,
+    getTableId
 } from '../../actions'
 import ReactTable from "react-table"
 import "react-table/react-table.css";
@@ -311,37 +312,47 @@ class DatasetDetail extends Component {
         //dataset.operational.acl ARRAY
         //loggedUser.organizations - loggedUser.workgroups
         var acl = dataset.operational.acl
-        var orgs = []
+        var orgsI = []
+        var orgsT = []
 
-        // for(var i = 0; i<acl.length; i++){
-        //   if(loggedUser.organizations.indexOf(acl[i].groupName)>-1){
-        //     orgs.push(acl[i].groupName)
-        //   } else if(loggedUser.workgroups.indexOf(acl[i].groupName)>-1){
-        //     orgs.push(acl[i].groupName)
-        //   }
-        // }
+        for(var i = 0; i<acl.length; i++){
+          if(loggedUser.organizations.indexOf(acl[i].groupName)>-1){
+            orgsI.push(acl[i].groupName)
+            orgsT.push({"name":acl[i].groupName})
+          } else if(loggedUser.workgroups.indexOf(acl[i].groupName)>-1){
+            orgsI.push(acl[i].groupName)
+            orgsT.push({"name":acl[i].groupName})
+          }
+        }
 
         const isExtOpendata = (dataset.operational.ext_opendata
             && dataset.operational.ext_opendata != {}) ? true : false
         dispatch(getSupersetUrl(nomeFile, org, isExtOpendata))
             .then(json => {
               var supersetLinks = json
-              json.map(link=>{
-                if(link.appName==="superset"){
-                  let sp1 = link.name.split('_o_')
-                  let sp2 = sp1[0].split('.')
-                  var org = sp2[1]
-                  orgs.push(org)
-                }
-              })
-
-              dispatch(groupsInfo(orgs))
+              dispatch(groupsInfo(orgsI))
               .then(json=>{
-                json.map((orgInfo,key)=>{
-                  supersetLinks[key].groupInfo = orgInfo
+                var orgsInfo = json
+                dispatch(getTableId(dataset.dcatapit.owner_org+"_o_"+dataset.dcatapit.name, orgsT))
+                .then(json=>{
+                  console.log(json)
+                  for(var k in orgsInfo){
+                    for(var i in json){
+                      for(var j in supersetLinks){
+                        if(json[i].id===supersetLinks[j].id && json[i].org===orgsInfo[k].groupCn){
+                          supersetLinks[j].groupInfo = orgsInfo[k]
+                        }
+                      }
+                    }  
+                  }
+                  console.log(supersetLinks)
+                  this.setState({ supersetLink: supersetLinks, supersetState: 1 })
                 })
-                console.log(supersetLinks)
-                this.setState({ supersetLink: supersetLinks, supersetState: 1 }) 
+                // json.map((orgInfo,key)=>{
+                //   supersetLinks[key].groupInfo = orgInfo
+                // })
+                // console.log(supersetLinks)
+                 
               })
             })
             .catch(error => { this.setState({ supersetState: 2 }) })
@@ -491,7 +502,7 @@ class DatasetDetail extends Component {
     }
 
     render() {
-        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch } = this.props
+        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch, isAdditionalFetching } = this.props
         const { loading } = this.state
         var metadataThemes = undefined
         if (metadata) {
@@ -883,6 +894,11 @@ class DatasetDetail extends Component {
                                         </div>}
                                         {!isPublic() && (!dataset.operational.ext_opendata || dataset.operational.ext_opendata === {}) &&
                                             <div className="col-8 mb-3">
+                                                {!feed && isAdditionalFetching &&
+                                                    <div className="progress" style={{ height: '30px' }}>
+                                                        <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Recupero dell'informazione</div>
+                                                    </div>
+                                                }
                                                 {feed && feed.has_job && feed.job_status === 'COMPLETED' &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-success w-100 h-100 text-dark" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Attivo</div>
@@ -983,24 +999,19 @@ class DatasetDetail extends Component {
                             </div>
                         </div> */}
 
-                            {isPublic() &&
-                                <div className="py-5 text-center col-12">
-                                    Vuoi scoprire maggiori informazioni sul dataset? <button type="button" className="ml-3 p-3 btn btn-accento" onClick={() => this.props.history.push('/private/dataset/' + dataset.dcatapit.name)}>Accedi all'area Privata</button>
-                                </div>
-                            }
-
                             {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} owner={dataset.operational.group_own} />}
                         </div>
                     </div>
-                    {!isPublic() && <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
-                        <Widgets widgets={iframes} loading={false} />
-                    </div>}
+                    <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
+                        {isAdditionalFetching?<h1 className="text-center"><i className="fas fa-spin fa-circle-notch mr-2"/> Caricamento</h1>:<Widgets widgets={iframes} loading={false} />}
+                    </div>
                     {<div hidden={!this.state.showDett} className="bg-light">
                         <div>
                             <div className="container body w-100">
                                 <div className="row mx-auto text-muted">
                                     <i className="fa fa-chart-bar fa-lg m-4" style={{ lineHeight: '1' }} /><h2 className="mt-3 mb-4">Widget</h2>
                                 </div>
+                                {isAdditionalFetching?<h1 className="text-center"><i className="fas fa-spin fa-circle-notch mr-2"/>Caricamento</h1>:<div>
                                 {iframes && iframes.length > 0 ?
                                     <div className="row mx-auto m-0">
                                         {iframes.map((iframe, key) => {
@@ -1023,9 +1034,15 @@ class DatasetDetail extends Component {
                                         <i className="px-auto mx-auto py-4">Non sono stati creati Widget con questo dataset, se vuoi essere il primo a crearli clicca qui</i>
                                     </div>
                                 }
+                                </div>}
                             </div>
                         </div>
                     </div>}
+                    {isPublic() &&
+                                <div className="py-5 text-center col-12">
+                                    Vuoi scoprire maggiori informazioni sul dataset? <button type="button" className="ml-3 p-3 btn btn-accento" onClick={() => this.props.history.push('/private/dataset/' + dataset.dcatapit.name)}>Accedi all'area Privata</button>
+                                </div>
+                            }
                 </div>
             }
             {(ope === 'RECEIVE_METADATA' && metadata) &&
@@ -1249,10 +1266,10 @@ class DatasetDetail extends Component {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
+    const { isFetching, isAdditionalFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
     const { newNotifications } = state.notificationsReducer['notifications'] || {}
     const { loggedUser } = state.userReducer['obj'] || {}
-    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser }
+    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser, isAdditionalFetching }
 }
 
 export default connect(mapStateToProps)(DatasetDetail)

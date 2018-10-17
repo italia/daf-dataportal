@@ -1619,3 +1619,26 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(response => response)
         }
       }
+
+      export function getTableId(tableName, orgs){
+        var url = serviceurl.apiURLDatiGov + '/dashboard/superset/tables/'+tableName
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(orgs)
+          })
+          .then(response => response.json())
+        }
+      }
