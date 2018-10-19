@@ -204,7 +204,7 @@ class DatasetDetail extends Component {
           for(var key in dataset.operational.input_src){
             if (dataset.operational.input_src[key]!==null){
               if(!dataset.operational.input_src[key][0].param && dataset.operational.input_src[key][0].param===''){
-                input_src = json
+                input_src = "json"
               }
               else if(key==="sftp"){
                 input_src = dataset.operational.input_src[key][0].param.split('=')[1]
@@ -335,7 +335,6 @@ class DatasetDetail extends Component {
                 var orgsInfo = json
                 dispatch(getTableId(dataset.dcatapit.owner_org+"_o_"+dataset.dcatapit.name, orgsT))
                 .then(json=>{
-                  console.log(json)
                   for(var k in orgsInfo){
                     for(var i in json){
                       for(var j in supersetLinks){
@@ -345,14 +344,8 @@ class DatasetDetail extends Component {
                       }
                     }  
                   }
-                  console.log(supersetLinks)
                   this.setState({ supersetLink: supersetLinks, supersetState: 1 })
                 })
-                // json.map((orgInfo,key)=>{
-                //   supersetLinks[key].groupInfo = orgInfo
-                // })
-                // console.log(supersetLinks)
-                 
               })
             })
             .catch(error => { this.setState({ supersetState: 2 }) })

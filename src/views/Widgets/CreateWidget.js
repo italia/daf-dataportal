@@ -5,7 +5,7 @@ import FusionCharts from 'fusioncharts';
 import Charts from 'fusioncharts/fusioncharts.charts';
 import ReactFC from 'react-fusioncharts';
 import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
-import { getAllOrganizations, search, datasetDetail } from '../../actions'
+import { getAllOrganizations, search, datasetDetail, launchQueryOnStorage } from '../../actions'
 ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
 
 class CreateWidget extends Component {
@@ -13,12 +13,13 @@ class CreateWidget extends Component {
     super(props)
 
     this.state = {
+      selected: [],
       query: {
         "select": [],
-        "where": [],
+/*         "where": [],
         "groupBy": [],
-        "having": [],
-        "limit": null
+        "having": [], */
+        "limit": 25
       },
       isQuery: false,
       privateWdg: '',
@@ -28,6 +29,8 @@ class CreateWidget extends Component {
     }
     this.onChangeOrg = this.onChangeOrg.bind(this)
     this.getDatasetDetail = this.getDatasetDetail.bind(this)
+    this.select = this.select.bind(this)
+    this.launchQuery = this.launchQuery.bind(this)
   }
 
   componentDidMount(){
@@ -77,9 +80,33 @@ class CreateWidget extends Component {
     dispatch(datasetDetail(selectedDataset, '', false))
   }
 
+  select(field){
+    const { selected, query } = this.state
+    
+    var fields = selected
+
+    if(fields.indexOf(field)>-1){
+      fields.splice(fields.indexOf(field), 1)
+      query.select.splice(query.select.indexOf({'name': field}), 1)
+    }else{
+      fields.push(field)
+      query.select.push({'name': field})
+    }
+
+    this.setState({
+      selected: fields
+    })
+  }
+
+  launchQuery(){
+    const { dispatch, dataset } = this.props
+    const { query } = this.state
+    dispatch(launchQueryOnStorage(dataset.operational.logical_uri, query))
+  }
+
   render(){
     const { loggedUser, results, dataset, isFetching } = this.props
-    const { privateWdg, organizations, isQuery } = this.state
+    const { privateWdg, organizations, isQuery, selected } = this.state
     return(
       <Container className="py-3">
         <div className="card">
@@ -100,7 +127,7 @@ class CreateWidget extends Component {
                 :
                 <div className="col-md-8">
                   <input className="form-control" disabled={true} defaultValue={"No"}/>
-                  <span>Puoi creare soltanto storie pubbliche in quanto non hai nessuna organizzazione associata</span>
+                  <span>Puoi creare soltanto widget pubbliche in quanto non hai nessuna organizzazione associata</span>
                 </div>
               }
             </div>
@@ -151,13 +178,13 @@ class CreateWidget extends Component {
                 <ul className="col-md-4 list-group">
                 {dataset && dataset.dataschema && dataset.dataschema.flatSchema.length>0 &&
                   dataset.dataschema.flatSchema.map((field, index)=>{
-                    console.log(field)
-                    return (<li className="list-group-item" key={index}>{field.name}</li>)
+                    return (<li className={(selected.indexOf(field.name)>-1 ? "list-group-item active":"list-group-item")} key={index} onClick={this.select.bind(this, field.name)}>{field.name}</li>)
                   })  
                 }
                 </ul>
               </div>
               }
+              <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
             </div>
           </div>
         </div>

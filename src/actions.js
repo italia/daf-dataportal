@@ -1472,7 +1472,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
 
-      export function publishOnCKAN(dcatapit){
+      export function publishOnCKAN(dataset){
         var url = serviceurl.apiURLCatalog + '/ckan-geo/add'
         var token = ''
 
@@ -1481,7 +1481,47 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           token = localStorage.getItem('token')
         }
 
-        dcatapit.extras=[{"value":true,"key":"Open Data Daf"}]
+        var input_src = 'json'
+        if(dataset.operational.input_src){
+          for(var key in dataset.operational.input_src){
+            if (dataset.operational.input_src[key]!==null){
+              if(!dataset.operational.input_src[key][0].param && dataset.operational.input_src[key][0].param===''){
+                input_src = "json"
+              }
+              else if(key==="sftp"){
+                input_src = dataset.operational.input_src[key][0].param.split('=')[1]
+              }
+              else{
+                input_src = dataset.operational.input_src[key][0].param
+              }
+            }
+          }
+        }
+
+        var resUrl = serviceurl.apiURLDatiGov + '/public/storage-manager/'+ encodeURIComponent(dataset.operational.logical_uri) + '?format='+input_src
+
+        dataset.dcatapit.resources = [{
+          "mimetype" : input_src==="json"?"application/json":"text/csv",
+          "cache_url" : null,
+          "hash" : "",
+          "description" : dataset.dcatapit.notes,
+          "name" : dataset.dcatapit.title,
+          "format" : input_src.toUpperCase(),
+          "url" : resUrl,
+          "cache_last_updated" : null,
+          "uri" : resUrl,
+          "state" : "active",
+          "mimetype_inner" : null,
+          "last_modified" : null,
+          "id" : "",
+          "position" : 0,
+          "package_id" : "",
+          "url_type" : null,
+          "revision_id" : "",
+          "resource_type" : null,
+          "size" : null
+        }]
+        
 
         return dispatch => {
           return fetch(url, {
@@ -1491,7 +1531,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify(dcatapit)
+            body: JSON.stringify(dataset.dcatapit)
           })
           .then(response => response)
         }
@@ -1642,3 +1682,25 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(response => response.json())
         }
       }
+
+      export function launchQueryOnStorage(logical_uri, query) {
+        var token = ''
+        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) +'/search'
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+        return dispatch => {
+            return fetch(url, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              },
+              body: JSON.stringify(query)
+            })
+            .then(response => response)
+            .catch(error=> console.error(error))
+          }
+        }
