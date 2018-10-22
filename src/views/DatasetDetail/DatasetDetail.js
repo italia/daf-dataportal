@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
     loadDatasets,
     datasetDetail,
@@ -10,7 +11,8 @@ import {
     getOpendataResources,
     checkFileOnHdfs,
     uploadHdfsFile,
-    groupsInfo
+    groupsInfo,
+    getTableId
 } from '../../actions'
 import ReactTable from "react-table"
 import "react-table/react-table.css";
@@ -35,20 +37,15 @@ import { toastr } from 'react-redux-toastr'
 import ShareButton from '../../components/ShareButton/ShareButton';
 import DatasetAdmin from './DatasetAdmin';
 import { Table } from 'reactstrap';
+import DatasetService from './services/DatasetService'
+
+const datasetService = new DatasetService()
 
 function checkIsLink(val) {
     if (val.indexOf('http') !== -1 && val.indexOf('{') === -1)
         return <a className="text-primary" href={val} target='_blank'>{val}</a>
 
     return val
-}
-
-function ableToPublish(user, dataset) {
-    var able = false
-    if ((user.uid === dataset.operational.group_own) && ((user.roles.indexOf('daf_adm_' + dataset.dcatapit.owner_org) !== -1) || isSysAdmin(user))) {
-        able = true
-    }
-    return able
 }
 
 class DatasetDetail extends Component {
@@ -137,12 +134,17 @@ class DatasetDetail extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { dispatch } = this.props
-        if ((nextProps.dataset || nextProps.feed) && (this.props.dataset !== nextProps.dataset || this.props.feed !== nextProps.feed)) {
+        if ((nextProps.dataset) && (this.props.dataset !== nextProps.dataset)) {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
             var dafIndex = 0
 
             dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-                .then(json => { dafIndex = dafIndex + 3; this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false }) })
+                .then(json => { 
+                  if(json.ok) {
+                    dafIndex = dafIndex + 3; 
+                    this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
+                  } 
+                })
                 .catch(error => { this.setState({ hasPreview: false, loading: false }) })
 
             dispatch(getSupersetUrl(nextProps.dataset.dcatapit.name, nextProps.dataset.dcatapit.owner_org, isExtOpendata))
@@ -187,7 +189,7 @@ class DatasetDetail extends Component {
 
     handleDownloadFile(nomeFile, logical_uri, e) {
         e.preventDefault()
-        const { dispatch } = this.props
+        const { dispatch, dataset } = this.props
         this.setState({
             /* showDett:false,
             showPreview: false,
@@ -197,11 +199,40 @@ class DatasetDetail extends Component {
             downloadState: 4,
             /* showDownload: true */
         })
-        dispatch(getFileFromStorageManager(logical_uri))
-            .then(json => {
-                download(JSON.stringify(json), nomeFile + '.json', 'application/json')
-                this.setState({ downloadState: 1 })
-                toastr.success('Completato', 'Download effettuato con successo')
+        var input_src = 'json'
+        if(dataset.operational.input_src){
+          for(var key in dataset.operational.input_src){
+            if (dataset.operational.input_src[key]!==null){
+              if(!dataset.operational.input_src[key][0].param && dataset.operational.input_src[key][0].param===''){
+                input_src = "json"
+              }
+              else if(key==="sftp"){
+                input_src = dataset.operational.input_src[key][0].param.split('=')[1]
+              }
+              else{
+                input_src = dataset.operational.input_src[key][0].param
+              }
+            }
+          }
+        }
+        dispatch(getFileFromStorageManager(logical_uri, null, input_src, isPublic()))
+            .then(response => {
+                if(input_src==="csv"){
+                  const result = response.text()
+                  result.then(json =>{
+                    download(json, nomeFile + '.'+input_src, (input_src==='csv'?'text/csv':'application/json'))
+                    this.setState({ downloadState: 1 })
+                    toastr.success('Completato', 'Download effettuato con successo')
+                  })
+                }else{
+                  const result = response.json()
+                  result.then(json => {
+                    download(JSON.stringify(json), nomeFile + '.json', 'application/json')
+                    this.setState({ downloadState: 1 })
+                    toastr.success('Completato', 'Download effettuato con successo')
+                  })
+                }
+                
             })
             .catch(error => {
                 this.setState({ downloadState: 2 })
@@ -240,8 +271,13 @@ class DatasetDetail extends Component {
             showDett: false,
             previewState: 3
         })
-        dispatch(getFileFromStorageManager(logical_uri, 20))
-            .then(json => { this.setState({ previewState: 1, jsonPreview: json }) })
+        dispatch(getFileFromStorageManager(logical_uri, 20, 'json', isPublic()))
+            .then(response => { 
+              const result = response.json()
+              result.then(json => {
+                this.setState({ previewState: 1, jsonPreview: json }) 
+              })
+            })
             .catch(error => { console.error(error); this.setState({ previewState: 2 }) })
     }
 
@@ -261,7 +297,7 @@ class DatasetDetail extends Component {
 
     handleTools(nomeFile, org, e) {
         e.preventDefault()
-        const { dispatch, dataset } = this.props
+        const { dispatch, dataset, loggedUser } = this.props
         this.setState({
             showTools: true,
             showAPI: false,
@@ -273,28 +309,43 @@ class DatasetDetail extends Component {
             supersetState: 3,
             supersetLink: undefined
         })
+        //dataset.operational.acl ARRAY
+        //loggedUser.organizations - loggedUser.workgroups
+        var acl = dataset.operational.acl
+        var orgsI = []
+        var orgsT = []
+
+        for(var i = 0; i<acl.length; i++){
+          if(loggedUser.organizations.indexOf(acl[i].groupName)>-1){
+            orgsI.push(acl[i].groupName)
+            orgsT.push({"name":acl[i].groupName})
+          } else if(loggedUser.workgroups.indexOf(acl[i].groupName)>-1){
+            orgsI.push(acl[i].groupName)
+            orgsT.push({"name":acl[i].groupName})
+          }
+        }
+
         const isExtOpendata = (dataset.operational.ext_opendata
             && dataset.operational.ext_opendata != {}) ? true : false
         dispatch(getSupersetUrl(nomeFile, org, isExtOpendata))
             .then(json => {
-              var orgs = []
               var supersetLinks = json
-              json.map(link=>{
-                if(link.appName==="superset"){
-                  let sp1 = link.name.split('_o_')
-                  let sp2 = sp1[0].split('.')
-                  var org = sp2[1]
-                  orgs.push(org)
-                }
-              }) 
-
-              dispatch(groupsInfo(orgs))
+              dispatch(groupsInfo(orgsI))
               .then(json=>{
-                json.map((orgInfo,key)=>{
-                  supersetLinks[key].groupInfo = orgInfo
+                var orgsInfo = json
+                dispatch(getTableId(dataset.dcatapit.owner_org+"_o_"+dataset.dcatapit.name, orgsT))
+                .then(json=>{
+                  for(var k in orgsInfo){
+                    for(var i in json){
+                      for(var j in supersetLinks){
+                        if(json[i].id===supersetLinks[j].id && json[i].org===orgsInfo[k].groupCn){
+                          supersetLinks[j].groupInfo = orgsInfo[k]
+                        }
+                      }
+                    }  
+                  }
+                  this.setState({ supersetLink: supersetLinks, supersetState: 1 })
                 })
-                console.log(supersetLinks)
-                this.setState({ supersetLink: supersetLinks, supersetState: 1 }) 
               })
             })
             .catch(error => { this.setState({ supersetState: 2 }) })
@@ -444,7 +495,7 @@ class DatasetDetail extends Component {
     }
 
     render() {
-        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch } = this.props
+        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch, isAdditionalFetching } = this.props
         const { loading } = this.state
         var metadataThemes = undefined
         if (metadata) {
@@ -456,7 +507,7 @@ class DatasetDetail extends Component {
         }
 
         return (loading && isFetching) ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (<div>
-            {(ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') && (dataset) &&
+            {((ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') || ope === 'RECEIVE_DATASET_ADDITIONAL_DETAIL') && (dataset) &&
                 <div>
                     <Modal isOpen={this.state.uploadFile} onRequestHide={this.toggleUploadFile}>
                         <ModalHeader>
@@ -512,28 +563,30 @@ class DatasetDetail extends Component {
                     <div className='top-dataset-1'>
                         <div className="container pt-4">
                             <div className="row">
-                                <div className="col-md-10">
+                                <div className="col-md-8">
                                   <h2 className="dashboardHeader title-dataset text-primary" title={dataset.dcatapit.title}><i className="fa fa-table fa-xs text-primary mr-3" />{this.truncate(dataset.dcatapit.title, 75)}</h2>
                                 </div>
-                                <div className="col-md-2">
-                                    {isPublic() && <ShareButton background="bg-white" className="mt-2" />}
-                                    {!isPublic() && <button className="btn btn-accento nav-link button-data-nav" disabled={!this.state.hasPreview} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>}
+                                <div className="ml-auto col-md-2">
+                                  <button className="btn btn-accento nav-link button-data-nav" disabled={isPublic()?false:!this.state.hasPreview} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <i className="ml-4 fa fa-spinner fa-spin" /> : <i className="ml-4 fa fa-download" />}</button>
                                 </div>
+                                {isPublic() &&<div className="col-md-2">
+                                   <ShareButton background="bg-white" />
+                                </div>}
                             </div>
                             <ul className="nav b-b-0 nav-tabs w-100 pl-4" style={{ display: "inline-flex" }}>
                                 <li className="nav-item">
                                     <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showAdmin: false, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
                                 </li>
-                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
+                                {(this.state.hasPreview || isPublic()) && <li className="nav-item h-100">
                                     <a className={!this.state.showPreview ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handlePreview.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="text-icon fa fa-eye pr-2" /> Anteprima</a>
                                 </li>}
-                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
+                                {(this.state.hasPreview || isPublic()) && <li className="nav-item h-100">
                                     <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showAdmin: false, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
                                 </li>}
                                 {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
                                     <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
                                 </li>}
-                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
+                                {(this.state.hasPreview || isPublic()) && <li className="nav-item h-100">
                                     <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
                                 </li>}
                                 {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
@@ -559,6 +612,11 @@ class DatasetDetail extends Component {
                                             {(dataset.operational.ext_opendata &&
                                                 dataset.operational.ext_opendata.url) &&
                                                 <a className="btn btn-accento px-3 py-2 text-dark" href={serviceurl.urlCkan + dataset.operational.ext_opendata.name} target='_blank'>
+                                                    APRI CKAN
+                                            </a>
+                                            }
+                                            {!dataset.operational.ext_opendata && !dataset.dcatapit.privatex &&
+                                              <a className="btn btn-accento px-3 py-2 text-dark" href={serviceurl.urlCkan + dataset.dcatapit.name} target='_blank'>
                                                     APRI CKAN
                                             </a>
                                             }
@@ -661,7 +719,7 @@ class DatasetDetail extends Component {
                                                                 </div>}
                                                         </div>
                                                     }
-                                                    {!this.state.hasPreview && 
+                                                    {!this.state.hasPreview && !isPublic() &&
                                                       <p className="desc-dataset text-dark font-weight-bold mt-5">Non hai ancora effettuato un caricamento per questo dataset. Carica i dati con il metodo sopra indicato per sbloccare tutte le funzionalità offerte.</p>
                                                     }
                                                 </div>
@@ -687,14 +745,18 @@ class DatasetDetail extends Component {
                                             </div>
                                             <br /><br /><br />
                                             <div className="desc-dataset text-dark row">
-                                                <div className="col-12">
-                                                    <p>Ti ricordiamo che per poter effettuare la chiamata alla REST API occorre fornire i seguenti parametri di Basic Authentication:</p>
-                                                    <div>
-                                                        <p><strong>Utente: </strong>{localStorage.getItem('username')}</p>
-                                                        <p><strong>Password: </strong>XXXXXXXXXX</p>
-                                                    </div>
-                                                    <p>Per conoscere le modalità di utilizzo delle REST API puoi consultare la documentazione dettagliata <b><a className="text-primary" href="http://daf-dataportal.readthedocs.io/it/latest/dataportal-privato/api.html" title="Guida all'uso delle API">QUI</a></b></p>
-                                                </div>
+                                                {!isPublic()&&<div className="col-12">
+                                                  <p>Ti ricordiamo che per poter effettuare la chiamata alla REST API occorre fornire i seguenti parametri di Basic Authentication:</p>
+                                                  <div>
+                                                      <p><strong>Utente: </strong>{localStorage.getItem('username')}</p>
+                                                      <p><strong>Password: </strong>XXXXXXXXXX</p>
+                                                  </div>
+                                                  <p>Per conoscere le modalità di utilizzo delle REST API puoi consultare la documentazione dettagliata <b><a className="text-primary" href="http://daf-dataportal.readthedocs.io/it/latest/dataportal-privato/api.html" title="Guida all'uso delle API">QUI</a></b></p>
+                                                </div>}
+                                                {isPublic()&&<div className="col-12">
+                                                  <p>Ti ricordiamo che per poter effettuare la chiamata alla REST API è necessario essere registrati al portale DAF</p>
+                                                  <p><Link className="text-primary" to={'/register'}>Clicca Qui</Link> per registrarti</p>
+                                                </div>}
                                             </div>
                                         </div>
                                     </div>
@@ -825,6 +887,11 @@ class DatasetDetail extends Component {
                                         </div>}
                                         {!isPublic() && (!dataset.operational.ext_opendata || dataset.operational.ext_opendata === {}) &&
                                             <div className="col-8 mb-3">
+                                                {!feed && isAdditionalFetching &&
+                                                    <div className="progress" style={{ height: '30px' }}>
+                                                        <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Recupero dell'informazione</div>
+                                                    </div>
+                                                }
                                                 {feed && feed.has_job && feed.job_status === 'COMPLETED' &&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-success w-100 h-100 text-dark" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Attivo</div>
@@ -925,24 +992,19 @@ class DatasetDetail extends Component {
                             </div>
                         </div> */}
 
-                            {isPublic() &&
-                                <div className="py-5 text-center col-12">
-                                    Vuoi scoprire maggiori informazioni sul dataset? <button type="button" className="ml-3 p-3 btn btn-accento" onClick={() => this.props.history.push('/private/dataset/' + dataset.dcatapit.name)}>Accedi all'area Privata</button>
-                                </div>
-                            }
-
                             {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} owner={dataset.operational.group_own} />}
                         </div>
                     </div>
-                    {!isPublic() && <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
-                        <Widgets widgets={iframes} loading={false} />
-                    </div>}
-                    {!isPublic() && <div hidden={!this.state.showDett} className="bg-light">
+                    <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
+                        {isAdditionalFetching?<h1 className="text-center"><i className="fas fa-spin fa-circle-notch mr-2"/> Caricamento</h1>:<Widgets widgets={iframes} loading={false} />}
+                    </div>
+                    {<div hidden={!this.state.showDett} className="bg-light">
                         <div>
                             <div className="container body w-100">
                                 <div className="row mx-auto text-muted">
                                     <i className="fa fa-chart-bar fa-lg m-4" style={{ lineHeight: '1' }} /><h2 className="mt-3 mb-4">Widget</h2>
                                 </div>
+                                {isAdditionalFetching?<h1 className="text-center"><i className="fas fa-spin fa-circle-notch mr-2"/>Caricamento</h1>:<div>
                                 {iframes && iframes.length > 0 ?
                                     <div className="row mx-auto m-0">
                                         {iframes.map((iframe, key) => {
@@ -965,9 +1027,15 @@ class DatasetDetail extends Component {
                                         <i className="px-auto mx-auto py-4">Non sono stati creati Widget con questo dataset, se vuoi essere il primo a crearli clicca qui</i>
                                     </div>
                                 }
+                                </div>}
                             </div>
                         </div>
                     </div>}
+                    {isPublic() &&
+                                <div className="py-5 text-center col-12">
+                                    Vuoi scoprire maggiori informazioni sul dataset? <button type="button" className="ml-3 p-3 btn btn-accento" onClick={() => this.props.history.push('/private/dataset/' + dataset.dcatapit.name)}>Accedi all'area Privata</button>
+                                </div>
+                            }
                 </div>
             }
             {(ope === 'RECEIVE_METADATA' && metadata) &&
@@ -1191,10 +1259,10 @@ class DatasetDetail extends Component {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
+    const { isFetching, isAdditionalFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
     const { newNotifications } = state.notificationsReducer['notifications'] || {}
     const { loggedUser } = state.userReducer['obj'] || {}
-    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser }
+    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser, isAdditionalFetching }
 }
 
 export default connect(mapStateToProps)(DatasetDetail)
