@@ -453,6 +453,7 @@ class DatasetDetail extends Component {
               accessor: elem
             })
           })
+          console.log(columns)
           return(
             <ReactTable 
               data={jsonPreview}
@@ -461,31 +462,6 @@ class DatasetDetail extends Component {
               className="-striped -highlight"
               />
           )
-          /* return (
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  {Object.keys(jsonPreview[0]).map((elem,index)=>{
-                    return <th scope="col" key={index}>{elem}</th>
-                  })}
-                </tr>
-              </thead>
-              <tbody>
-                {jsonPreview.map((elem,index)=>{
-                  var obj = []
-                  for (var p in elem)
-                    obj.push(elem[p])
-                  return(
-                    <tr key={index}>
-                    {obj.map((val, index)=>{
-                      return(<td key={index}>{val}</td>)
-                    })}
-                    </tr>)
-                  })
-                }
-              </tbody>
-            </table>
-          ) */
         }else{
           return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
         }

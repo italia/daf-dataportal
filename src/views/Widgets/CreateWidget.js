@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Container } from 'reactstrap'
-import FusionCharts from 'fusioncharts';
-import Charts from 'fusioncharts/fusioncharts.charts';
-import ReactFC from 'react-fusioncharts';
-import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import { getAllOrganizations, search, datasetDetail, launchQueryOnStorage } from '../../actions'
-ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
+import ReactTable from "react-table"
+import Select from 'react-select'
 
 class CreateWidget extends Component {
   constructor(props){
@@ -14,23 +11,30 @@ class CreateWidget extends Component {
 
     this.state = {
       selected: [],
+      selectedField: '',
+      groupedBy: '',
       query: {
         "select": [],
-/*         "where": [],
+        // "where": [],
         "groupBy": [],
-        "having": [], */
-        "limit": 25
+        // "having": [],
+        /* "limit": 25 */
       },
       isQuery: false,
       privateWdg: '',
       selectedDataset: '',
       selectedOrg: '',
-      organizations: []
+      organizations: [],
+      queryResult: [], 
+      fields: []
     }
     this.onChangeOrg = this.onChangeOrg.bind(this)
     this.getDatasetDetail = this.getDatasetDetail.bind(this)
     this.select = this.select.bind(this)
     this.launchQuery = this.launchQuery.bind(this)
+    this.renderTable = this.renderTable.bind(this)
+    this.onChangeGroupBy = this.onChangeGroupBy.bind(this)
+    this.renderSelectFields = this.renderSelectFields.bind(this)
   }
 
   componentDidMount(){
@@ -73,6 +77,9 @@ class CreateWidget extends Component {
 
   getDatasetDetail(){
     const { dispatch } = this.props
+
+    var fields = []
+
     this.setState({
       isQuery: true
     })
@@ -87,13 +94,14 @@ class CreateWidget extends Component {
 
     if(fields.indexOf(field)>-1){
       fields.splice(fields.indexOf(field), 1)
-      query.select.splice(query.select.indexOf({'name': field}), 1)
+      query.select.splice(query.select.indexOf({'name': field.value}), 1)
     }else{
       fields.push(field)
-      query.select.push({'name': field})
+      query.select.push({'name': field.value})
     }
 
     this.setState({
+      selectedField: field,
       selected: fields
     })
   }
@@ -102,6 +110,70 @@ class CreateWidget extends Component {
     const { dispatch, dataset } = this.props
     const { query } = this.state
     dispatch(launchQueryOnStorage(dataset.operational.logical_uri, query))
+    .then(response => {
+      if(response.ok){
+        const result = response.json()
+        result.then(json => { 
+          this.setState({
+            queryResult: json
+          })
+        })
+      }
+    })
+  }
+
+  onChangeGroupBy(value){
+    console.log(value)
+
+    this.setState({
+      groupedBy: value
+    })
+
+    this.state.query.groupBy = [{"name":value}]
+  }
+
+  renderTable(){
+    const { queryResult } = this.state
+    const { dataset } = this.props
+
+    if(queryResult.length>0){
+      var columns=[{
+        Header: dataset.dcatapit.name,
+        columns: []
+      }]
+      Object.keys(queryResult[0]).map(elem=>{
+        columns[0].columns.push({
+          Header: elem,
+          accessor: elem
+        })
+      })
+
+      return <ReactTable 
+              data={queryResult}
+              columns={columns}
+              defaultPageSize={25}
+              className="-striped -highlight"
+              />
+    }
+  }
+
+  renderSelectFields(){
+    const { dataset } = this.props
+    
+    var fields = []
+
+    if(dataset){
+      dataset.dataschema.flatSchema.map(field => {
+        fields.push({"value": field.name, "label": field.name})
+      }) 
+    } 
+
+    return <Select
+      value={this.state.selectedField}
+      onChange={this.select}
+      options={fields}
+      isMulti={true}
+    />
   }
 
   render(){
@@ -175,13 +247,17 @@ class CreateWidget extends Component {
               {isFetching && <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>}
               {!isFetching && 
               <div className="row">
-                <ul className="col-md-4 list-group">
-                {dataset && dataset.dataschema && dataset.dataschema.flatSchema.length>0 &&
-                  dataset.dataschema.flatSchema.map((field, index)=>{
-                    return (<li className={(selected.indexOf(field.name)>-1 ? "list-group-item active":"list-group-item")} key={index} onClick={this.select.bind(this, field.name)}>{field.name}</li>)
-                  })  
-                }
-                </ul>
+                <div className="col-md-4">
+                  {this.renderSelectFields()}
+                  <select className="form-control" value={this.state.groupedBy} onChange={(e)=>{this.onChangeGroupBy(e.target.value)}}>
+                    {this.state.selected.map((select, index)=>{
+                      return(<option key={index} value={select.value}>{select.value}</option>)
+                    })}
+                  </select>
+                </div>
+                <div className="col-md-8">
+                  {this.renderTable()}
+                </div>
               </div>
               }
               <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>

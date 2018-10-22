@@ -1093,7 +1093,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           rows = '?limit='+limit
         }
         if(format!==null && format!==undefined){
-          formatType = '?format='+format
+          formatType = (rows.length>0?'&':'?') + 'format='+format
         }
         var url = ''
         if(isPublic!==true){
