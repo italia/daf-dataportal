@@ -13,6 +13,7 @@ export const SELECT_DATASET = 'SELECT_DATASET'
 export const RECEIVE_METADATA = 'RECEIVE_METADATA'
 export const REQUEST_DATASET_DETAIL = 'REQUEST_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL = 'RECEIVE_DATASET_DETAIL'
+export const RECEIVE_DATASET_ADDITIONAL_DETAIL = 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
 export const RECEIVE_DATASET_DETAIL_ERROR = 'RECEIVE_DATASET_DETAIL_ERROR'
 export const REQUEST_LOGIN = 'REQUEST_LOGIN'
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN'
@@ -130,12 +131,10 @@ function receiveMetadataAndResources(jsonMetadata){
     }
   }
 
-function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, category_filter, group_filter, organization_filter, order_filter) {
+function receiveDatasetDetail(jsonDataset, query, category_filter, group_filter, organization_filter, order_filter) {
   return {
       type: RECEIVE_DATASET_DETAIL,
       dataset: jsonDataset,
-      feed: jsonFeed,
-      iframes: jsonIFrames,
       query: query,
       category_filter: category_filter,
       group_filter: group_filter,
@@ -143,6 +142,17 @@ function receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query, categor
       order_filter: order_filter,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_DETAIL'
+  }
+}
+
+function receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames) {
+  return {
+      type: RECEIVE_DATASET_ADDITIONAL_DETAIL,
+      dataset: jsonDataset,
+      feed: jsonFeed,
+      iframes: jsonIFrames,
+      receivedAt: Date.now(),
+      ope: 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
   }
 }
 
@@ -962,17 +972,19 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         .then(jsonDataset => {
               console.log(jsonDataset)
               if(!jsonDataset.operational.ext_opendata){
+                dispatch(receiveDatasetDetail(jsonDataset))
                 dispatch(getFeedDetail(jsonDataset.dcatapit.owner_org, jsonDataset.dcatapit.name))
                 .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
                 .then(jsonFeed => {
                   dispatch(getDatasetIframes(jsonDataset.dcatapit.name, jsonDataset.dcatapit.privatex))
                   .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                  .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, jsonFeed, jsonIFrames, query)))
+                  .then(jsonIFrames => dispatch(receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames)))
                 })
               }else{
+                dispatch(receiveDatasetDetail(jsonDataset))
                 dispatch(getDatasetIframes(jsonDataset.dcatapit.name, jsonDataset.dcatapit.privatex))
                   .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                  .then(jsonIFrames => dispatch(receiveDatasetDetail(jsonDataset, undefined, jsonIFrames, query)))
+                  .then(jsonIFrames => dispatch(receiveDatasetAdditionalDetail(jsonDataset, undefined, jsonIFrames)))
               }
               })
         .catch(error => {
@@ -1069,18 +1081,26 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Authorization': 'Bearer ' + token
             }
           })
-          .then(response => response.json())
-          .then(json => json)
+          .then(response => response)
         }
       }
 
-      export function getFileFromStorageManager(logical_uri, limit) {
+      export function getFileFromStorageManager(logical_uri, limit, format, isPublic) {
         var token = ''
         var rows = ''
+        var formatType = ''
         if(limit!==null && limit!==undefined){
           rows = '?limit='+limit
         }
-        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) + rows;
+        if(format!==null && format!==undefined){
+          formatType = '?format='+format
+        }
+        var url = ''
+        if(isPublic!==true){
+          url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) + rows + formatType
+        }else if(isPublic===true){
+          url = serviceurl.apiURLDatiGov + '/public/storage-manager/'+ encodeURIComponent(logical_uri) + rows + formatType
+        }
         if(localStorage.getItem('username') && localStorage.getItem('token') &&
           localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
             token = localStorage.getItem('token')
@@ -1094,8 +1114,8 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
                 'Authorization': 'Bearer ' + token
               }
             })
-            .then(response => response.json())
-            .then(json => json)
+            .then(response => response)
+            .catch(error=> console.error(error))
           }
         }
 
@@ -1452,7 +1472,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
 
-      export function publishOnCKAN(dcatapit){
+      export function publishOnCKAN(dataset){
         var url = serviceurl.apiURLCatalog + '/ckan-geo/add'
         var token = ''
 
@@ -1461,7 +1481,47 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           token = localStorage.getItem('token')
         }
 
-        dcatapit.extras=[{"value":true,"key":"Open Data Daf"}]
+        var input_src = 'json'
+        if(dataset.operational.input_src){
+          for(var key in dataset.operational.input_src){
+            if (dataset.operational.input_src[key]!==null){
+              if(!dataset.operational.input_src[key][0].param && dataset.operational.input_src[key][0].param===''){
+                input_src = "json"
+              }
+              else if(key==="sftp"){
+                input_src = dataset.operational.input_src[key][0].param.split('=')[1]
+              }
+              else{
+                input_src = dataset.operational.input_src[key][0].param
+              }
+            }
+          }
+        }
+
+        var resUrl = serviceurl.apiURLDatiGov + '/public/storage-manager/'+ encodeURIComponent(dataset.operational.logical_uri) + '?format='+input_src
+
+        dataset.dcatapit.resources = [{
+          "mimetype" : input_src==="json"?"application/json":"text/csv",
+          "cache_url" : null,
+          "hash" : "",
+          "description" : dataset.dcatapit.notes,
+          "name" : dataset.dcatapit.title,
+          "format" : input_src.toUpperCase(),
+          "url" : resUrl,
+          "cache_last_updated" : null,
+          "uri" : resUrl,
+          "state" : "active",
+          "mimetype_inner" : null,
+          "last_modified" : null,
+          "id" : "",
+          "position" : 0,
+          "package_id" : "",
+          "url_type" : null,
+          "revision_id" : "",
+          "resource_type" : null,
+          "size" : null
+        }]
+        
 
         return dispatch => {
           return fetch(url, {
@@ -1471,7 +1531,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify(dcatapit)
+            body: JSON.stringify(dataset.dcatapit)
           })
           .then(response => response)
         }
@@ -1599,3 +1659,48 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .then(response => response)
         }
       }
+
+      export function getTableId(tableName, orgs){
+        var url = serviceurl.apiURLDatiGov + '/dashboard/superset/tables/'+tableName
+        var token = ''
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') &&
+        localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(orgs)
+          })
+          .then(response => response.json())
+        }
+      }
+
+      export function launchQueryOnStorage(logical_uri, query) {
+        var token = ''
+        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) +'/search'
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+        return dispatch => {
+            return fetch(url, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              },
+              body: JSON.stringify(query)
+            })
+            .then(response => response)
+            .catch(error=> console.error(error))
+          }
+        }

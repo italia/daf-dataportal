@@ -341,12 +341,12 @@ class DatasetAdmin extends Component{
       if(json.fields && json.fields==="ok"){
         console.log(json.message)
         dataset.dcatapit.privatex = false
-        dispatch(publishOnCKAN(dataset.dcatapit))
+        dispatch(publishOnCKAN(dataset))
         .then(response=>{
           if(response.ok){
             response.json()
             .then(json => {
-              dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" della tua organizzazione, è stato appena condiviso come Open Data", "open_data_group", "/private/dataset/"+dataset.dcatapit.name))
+              dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" dell'organizzazione "+dataset.dcatapit.owner_org +" è stato appena condiviso come Open Data", "open_data_group", "/private/dataset/"+dataset.dcatapit.name))
               toastr.success("Completato", "Il dataset è un Open data!")
               console.log(json.message)
               dispatch(datasetDetail(dataset.dcatapit.name, query, isPublic()))

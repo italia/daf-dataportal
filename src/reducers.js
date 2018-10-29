@@ -6,6 +6,7 @@ import {
   DELETE_DATASETS,
   REQUEST_DATASET_DETAIL,
   RECEIVE_DATASET_DETAIL,
+  RECEIVE_DATASET_ADDITIONAL_DETAIL,
   RECEIVE_DATASET_DETAIL_ERROR,
   REQUEST_LOGIN,
   RECEIVE_LOGIN,
@@ -78,17 +79,24 @@ function datasets(state = { isFetching: false, didInvalidate: false, items: [], 
     case RECEIVE_DATASET_DETAIL:
       return Object.assign({}, state, {
         isFetching: false,
+        isAdditionalFetching: true,
         didInvalidate: false,
         items: null,
         query: action.query,
         dataset: action.dataset,
-        feed: action.feed,
-        iframes: action.iframes,
         category_filter: action.category_filter,
         group_filter: action.group_filter,
         organization_filter: action.organization_filter,
         order_filter: action.order_filter,
         lastUpdated: action.receivedAt,
+        ope: action.ope
+      })
+    case RECEIVE_DATASET_ADDITIONAL_DETAIL:
+      return Object.assign({}, state, {
+        isAdditionalFetching: false,
+        dataset: action.dataset,
+        feed: action.feed,
+        iframes: action.iframes,
         ope: action.ope
       })
     case RECEIVE_DATASET_DETAIL_ERROR:
@@ -190,6 +198,7 @@ function datasetReducer(state = {}, action) {
   switch (action.type) {
     case REQUEST_DATASET_DETAIL:
     case RECEIVE_DATASET_DETAIL:
+    case RECEIVE_DATASET_ADDITIONAL_DETAIL:
     case RECEIVE_DATASET_DETAIL_ERROR:
     case DELETE_DATASETS:
     case RECEIVE_DATASETS:
