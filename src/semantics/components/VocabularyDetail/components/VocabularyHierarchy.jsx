@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardText, ListGroup, ListGroupItem, Collapse } from 'reactstrap'
 
-import { isEmpty } from '../../util/commonUtils'
+import { isEmpty } from '../../../util/commonUtils'
 
 const replaceVocabularyURL = (URL) => URL.replace(
   'https://w3id.org/italia/',
