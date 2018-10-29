@@ -125,11 +125,11 @@ class Register extends Component {
                       <Tooltip className="ml-3" placement="top" isOpen={this.state.tooltipPassword} autohide={true} target="Password" toggle={this.togglePassword}>
                         {'La password inserita deve avere almeno 8 caratteri, una maiuscola ed un numero. I caratteri speciali consentiti sono: "%@#,;:_\'/<([{ ^=$!|}.>-"'}
                       </Tooltip></label>
-                    <input type="text" className="form-control" id="password" value={password} onChange={(e) => {this.setState({password: e.target.value.trim()})}} placeholder="Password"/>
+                    <input type="password" className="form-control" id="password" value={password} onChange={(e) => {this.setState({password: e.target.value.trim()})}} placeholder="Password"/>
                   </div>
                   <div className="form-group col-md-6 col-12 ml-auto">
                     <label>Ripeti password</label>
-                    <input type="text" className="form-control" id="password2" value={password2} onChange={(e) => {this.setState({password2: e.target.value.trim()})}} placeholder="Ripeti password"/>
+                    <input type="password" className="form-control" id="password2" value={password2} onChange={(e) => {this.setState({password2: e.target.value.trim()})}} placeholder="Ripeti password"/>
                   </div>   
                 </div>
                 {/* <div className="input-group mb-1">
