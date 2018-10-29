@@ -16,14 +16,14 @@ const renderError = ({ meta: { touched, error } }) =>
 
   
 let WizardFormSecondPage = props => {
-  const { fields, handleSubmit, addTagsToForm, previousPage, tipi, openModalInfo, getFormValue, aggiornaStato, config, addSemanticToForm, addConvenzioneToForm, deleteConvenzioneToForm, addGerarchiaToForm, deleteGerarchiaToForm, context, listaConvenzioni, listaGerarchie, vocabolariControllati } = props;
+  const { fields, handleSubmit, addTagsFieldToForm, previousPage, changeTreeData, openModalInfo, getFormValue, aggiornaStato, config, addSemanticToForm, addConvenzioneToForm, deleteConvenzioneToForm, addGerarchiaToForm, deleteGerarchiaToForm, context, listaConvenzioni, listaGerarchie, vocabolariControllati } = props;
   return (
-     <form onSubmit={handleSubmit} className="col-12 mt-5">
+     <form className="col-12 mt-5">
       {(fields && fields.length > 0) &&
         <FieldArray
               name="inferred"
               component={renderFieldArray}
-              addTagsToForm={addTagsToForm}
+              addTagsFieldToForm={addTagsFieldToForm}
               aggiornaStato={aggiornaStato}
               addSemanticToForm={addSemanticToForm}
               addConvenzioneToForm={addConvenzioneToForm}
@@ -38,17 +38,20 @@ let WizardFormSecondPage = props => {
               getFormValue={getFormValue}
               config={config}
               vocabolariControllati={vocabolariControllati}
+              changeTreeData={changeTreeData}
+              handleSubmit={handleSubmit}
         />
       }
     </form> 
   )}
 
-const renderFieldArray = ({fields, addTagsToForm, aggiornaStato, getFormValue, openModalInfo, addSemanticToForm, addConvenzioneToForm, deleteConvenzioneToForm, config, context, listaConvenzioni, previousPage, vocabolariControllati, meta : {touched, error} }) =>
+const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaStato, getFormValue, changeTreeData, openModalInfo, addSemanticToForm, addConvenzioneToForm, deleteConvenzioneToForm, config, context, listaConvenzioni, previousPage, vocabolariControllati, meta : {touched, error} }) =>
         <div>
           <GerarchiaCampi 
             fields={fields} 
             getFormValue={getFormValue}
             config={config}
+            changeTreeData={changeTreeData}
           />
           {fields.map((field, index) => {
             var vocabolariocontrollato = fields.get(index).vocabolariocontrollato
@@ -101,7 +104,7 @@ const renderFieldArray = ({fields, addTagsToForm, aggiornaStato, getFormValue, o
                           component={renderFieldTags}
                           label="Tags"
                           value={`${field}.tag`}
-                          addTagsToForm={addTagsToForm}
+                          addTagsToForm={addTagsFieldToForm}
                           openModalInfo={openModalInfo}
                           config={config}
 
@@ -325,7 +328,7 @@ const renderFieldArray = ({fields, addTagsToForm, aggiornaStato, getFormValue, o
             )}
         <div>
           <button type="button" className="btn btn-primary float-left" onClick={previousPage}>Indietro</button>
-          <button type="submit" className="btn btn-primary float-right">Avanti</button>
+          <button type="button" className="btn btn-primary float-right" onClick={handleSubmit}>Avanti</button>
         </div>
       </div>
 

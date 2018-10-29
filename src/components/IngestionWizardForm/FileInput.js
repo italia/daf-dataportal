@@ -10,7 +10,7 @@ class FileInput extends Component {
   };
 
   render() {
-    const { fields, onDropFunction, className, meta: { error, touched }, label, classNameLabel } = this.props;
+    const { fields, onDropFunction, tipofile, className, meta: { error, touched }, label, classNameLabel } = this.props;
 
     return (
       <div className={`${className}` + (error && touched ? ' has-error ' : '')}>
@@ -21,7 +21,7 @@ class FileInput extends Component {
                 multiple={false}
                 maxSize={10485760}
                 onDrop={( filesToUpload, e ) => {
-                    onDropFunction(fields, filesToUpload, e)
+                    onDropFunction(fields, filesToUpload, tipofile, e)
                 }
                 }> 
                 <div className="container">

@@ -7,7 +7,7 @@ import FileInput from './FileInput'
 import Query from './Query'
 
 
-const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCategoria, filePullLoaded, sottocategoria, tipodataset, modalitacaricamento, tipofile, addTagsToForm, tempopolling, nomefile, urlws, reset, errorNext, getSchemaFromWS, query, setQuery, resultQuery, executeQuery, resetQueryValue, openModalInfo, config, meta : {touched, error} }) => <div>
+const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTemplate, getCategoria, filePullLoaded, sottocategoria, tipodataset, modalitacaricamento, tipofile, addTagsFiletagsToForm, tempopolling, nomefile, urlws, reset, errorNext, getSchemaFromWS, query, setQuery, resultQuery, executeQuery, resetQueryValue, openModalInfo, config, meta : {touched, error} }) => <div>
             <Field
               name="titolo"
               component={renderFieldInput}
@@ -61,7 +61,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
               name="filetags"
               component={renderFieldTags}
               label="Tags"
-              addTagsToForm={addTagsToForm}
+              addTagsToForm={addTagsFiletagsToForm}
               openModalInfo={openModalInfo}
               config={config}
             />
@@ -181,6 +181,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
                             }}
                             onDropFunction={onDropFunction}
                             fields={fields}
+                            tipofile={tipofile}
                           >
                           <span>Add more</span>
                           </FileInput>
@@ -299,19 +300,19 @@ const renderFieldArray = ({fields, setName, onDropFunction, setTemplate, getCate
             }
             {errorNext && <div className="text-danger">{errorNext}</div>}
             <div>
-                <button type="submit" className="btn btn-primary float-right">Avanti</button>
+                <button type="button" onClick={handleSubmit} className="btn btn-primary float-right">Avanti</button>
             </div>
 </div>
 
 
 
 let WizardFormFirstPage = props => {
-  const { onDropFunction, handleSubmit, reset, categoria, filePullLoaded, tipodataset, setTemplate, addTagsToForm, modalitacaricamento, tempopolling, getCategoria, setName, nomefile, urlws, previousPage, getSchemaFromWS, query, setQuery, resultQuery, executeQuery, resetQueryValue, openModalInfo, errorNext, config, tipofile } = props;
+  const { onDropFunction, handleSubmit, reset, categoria, filePullLoaded, tipodataset, tipofile, setTemplate, addTagsFiletagsToForm, modalitacaricamento, tempopolling, getCategoria, setName, nomefile, urlws, previousPage, getSchemaFromWS, query, setQuery, resultQuery, executeQuery, resetQueryValue, openModalInfo, errorNext, config } = props;
   var sottocategoria = getCategoria(2,categoria)
   return (
       <div className="mt-5">
         <p className="text-justify"><b>Benvenuto</b> ricordati che a grandi poteri derivano grandi responsabilità</p>     
-        <form onSubmit={handleSubmit} className="mt-5">
+        <form className="mt-5">
             <FieldArray
                   name="inferred"
                   component={renderFieldArray}
@@ -335,11 +336,12 @@ let WizardFormFirstPage = props => {
                   resultQuery={resultQuery}
                   executeQuery={executeQuery}
                   resetQueryValue={resetQueryValue}
-                  addTagsToForm={addTagsToForm}
+                  addTagsFiletagsToForm={addTagsFiletagsToForm}
                   openModalInfo={openModalInfo}
                   config={config}
                   tipofile={tipofile}
                   filePullLoaded={filePullLoaded}
+                  handleSubmit={handleSubmit}
             />
         </form>
       </div>

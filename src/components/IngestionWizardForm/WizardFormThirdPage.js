@@ -6,6 +6,7 @@ import DatePicker from './DatePicker'
 import Sorgenti from './Sorgenti'
 import Storage from './Storage'
 import Pipelines from './Pipelines'
+import MappingStandards from './MappingStandards'
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderOrganization, renderFieldCheckbox, renderFieldLicenze} from './renderField';
 import Collapse from 'rc-collapse'
 import 'rc-collapse/assets/index.css'
@@ -13,7 +14,7 @@ import 'rc-collapse/assets/index.css'
 var Panel = Collapse.Panel;
 
 let WizardFormThirdPage = props => {
-  const { handleSubmit, previousPage, organizations, config, licenze, listaStorage, addStorageToForm, deleteStorageToForm, addGruppiToForm, modificaDataDCATAPIT, openModalInfo, deleteGruppiToForm, listaGruppi, listaSorgenti, listaPipelines, addSorgenteToForm, deleteSorgenteToForm, addPipelineToForm, deletePipelineToForm } = props;
+  const { fields, handleSubmit, previousPage, organizations, datasetStdList, datasetstd, seguestd, config, licenze, listaStorage, addStorageToForm, deleteStorageToForm, addGruppiToForm, modificaDataDCATAPIT, openModalInfo, deleteGruppiToForm, listaGruppi, listaSorgenti, listaPipelines, addSorgenteToForm, deleteSorgenteToForm, addPipelineToForm, deletePipelineToForm } = props;
   return (
     <form onSubmit={handleSubmit} className="col-12 mt-5">
           <FieldArray
@@ -37,6 +38,10 @@ let WizardFormThirdPage = props => {
               listaStorage={listaStorage} 
               addStorageToForm={addStorageToForm} 
               deleteStorageToForm={deleteStorageToForm}
+              seguestd={seguestd}
+              datasetStdList={datasetStdList}
+              datasetstd={datasetstd}
+              fields={fields}
         />
     </form> 
   );
@@ -44,7 +49,7 @@ let WizardFormThirdPage = props => {
 
 
 
-const renderFieldArray = ({previousPage, organizations, listaStorage, addStorageToForm, deleteStorageToForm, licenze, modificaDataDCATAPIT, config, openModalInfo, addGruppiToForm, deleteGruppiToForm, listaGruppi, listaSorgenti, listaPipelines, addSorgenteToForm, deleteSorgenteToForm, addPipelineToForm, deletePipelineToForm, meta : {touched, error} }) => 
+const renderFieldArray = ({fields, previousPage, organizations, datasetstd, listaStorage, datasetStdList, seguestd, addStorageToForm, deleteStorageToForm, licenze, modificaDataDCATAPIT, config, openModalInfo, addGruppiToForm, deleteGruppiToForm, listaGruppi, listaSorgenti, listaPipelines, addSorgenteToForm, deleteSorgenteToForm, addPipelineToForm, deletePipelineToForm, meta : {touched, error} }) => 
       <div>
         <div className="card">
           <div className="card-body">
@@ -117,8 +122,7 @@ const renderFieldArray = ({previousPage, organizations, listaStorage, addStorage
 
               />
               <Field
-                name="datasetstd"
-                options={config.datasetstd}
+                name="isdatasetstd"
                 component={renderFieldCheckbox}                
                 label="Dataset standard"
                 openModalInfo={openModalInfo}
@@ -133,6 +137,20 @@ const renderFieldArray = ({previousPage, organizations, listaStorage, addStorage
                 config={config}
 
               />
+              {seguestd &&
+                      <Field
+                        name="datasetstd"
+                        options={datasetStdList}
+                        component={renderFieldSelect}
+                        label="Dataset Standard"
+                        openModalInfo={openModalInfo}
+                        config={config}
+                      />
+              }
+              {seguestd && datasetstd &&
+                <MappingStandards fields={fields}/>
+              
+              }
               <Collapse accordion={true}>
                 <Panel header="Informazioni Ingestion" headerClass="my-header-class">
                   <Sorgenti 
@@ -204,7 +222,10 @@ WizardFormThirdPage = reduxForm({
 const selector = formValueSelector('wizard') 
 WizardFormThirdPage = connect(state => {
   const tema = selector(state, 'tema')
-  return { tema }
+  const seguestd = selector(state, 'seguestd')
+  const datasetstd = selector(state, 'datasetstd')
+  const fields = selector(state, 'inferred')
+  return { tema, seguestd, datasetstd, fields }
 })(WizardFormThirdPage)
 
 export default WizardFormThirdPage

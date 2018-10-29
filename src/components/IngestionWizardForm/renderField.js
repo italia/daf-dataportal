@@ -1,5 +1,7 @@
 import React from 'react';
 import TagsInput from './tags/TagsInput'
+import TagsInputAutocomplete from './tags/TagsInputAutocomplete'
+
 
 export const renderFieldInput = ({ input, label, openModalInfo, config, readonly, meta: { touched, error } }) => (
   <div className="form-group row">
@@ -109,7 +111,7 @@ export const renderFieldCategoria = ({ input, openModalInfo, label, readonly, co
  </div>
 );
 
- export const renderFieldTags = ({input, openModalInfo ,label, config, addTagsToForm, meta: { touched, error } }) => (
+/*  export const renderFieldTags = ({input, openModalInfo ,label, config, addTagsToForm, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
     {config.info[input.name] &&
@@ -117,12 +119,29 @@ export const renderFieldCategoria = ({ input, openModalInfo, label, readonly, co
           <i className="fa fa-info-circle"></i>
       </button>
     }
-    </label>    <div className="col-sm-10">
+    </label>    
+    <div className="col-sm-10">
           <TagsInput {...input} name={input.name} addTagsToForm={addTagsToForm}/>
           {touched && error && <div className="text-danger">{error}</div>}
       </div>
   </div>
-  )
+  ) */
+
+  export const renderFieldTags = ({input, openModalInfo ,label, config, addTagsToForm, meta: { touched, error } }) => (
+    <div className="form-group row">
+      <label className="col-sm-2 col-form-label">{label}
+      {config.info[input.name] &&
+        <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
+            <i className="fa fa-info-circle"></i>
+        </button>
+      }
+      </label>    
+      <div className="col-sm-10">
+            <TagsInputAutocomplete {...input} name={input.name} addTagsToForm={addTagsToForm}/>
+            {touched && error && <div className="text-danger">{error}</div>}
+        </div>
+    </div>
+    )
 
   export const renderContesti = ({ input, openModalInfo, label, config, contesti, index, meta: { touched, error } }) => (
     <div className="form-group row">

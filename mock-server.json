@@ -2,7 +2,7 @@
     "/catalog-manager/v1/token": {
         "get": "eyJhbGciOiJIUzI1NiJ9.eyIkaW50X3Blcm1zIjpbXSwic3ViIjoib3JnLnBhYzRqLmxkYXAucHJvZmlsZS5MZGFwUHJvZmlsZSNwcm92YWFsbWEiLCIkaW50X3JvbGVzIjpbXX0.Oq93mHzGbCGKczWQ1OqGQk0FbohPyDNw_jeeFgqv7Pw"
     },
-    "/catalog-manager/v1/ipa/userbymail/test": {
+    "/security-manager/v1/ipa/userbymail/test": {
         "get": {
             "sn": "test_sn",
             "givenname": "test_gn",
@@ -11,10 +11,14 @@
             "userpassword": null
         }
     },
-    "/sso-manager/v1/secured/test": {
+    "/sso-manager/secured/test": {
         "get": {
             "ok": "true"
         }
+    },
+    "/security-manager/v1/token" : {
+        "get": "eyJhbGciOiJIUzI1NiJ9.eyIkaW50X3Blcm1zIjpbXSwic3ViIjoib3JnLnBhYzRqLmxkYXAucHJvZmlsZS5MZGFwUHJvZmlsZSNwcm92YWFsbWEiLCIkaW50X3JvbGVzIjpbXX0.Oq93mHzGbCGKczWQ1OqGQk0FbohPyDNw_jeeFgqv7Pw"
+        
     },
     "/sso-manager/v1/secured/retriveCookie/superset": {
         "get": {

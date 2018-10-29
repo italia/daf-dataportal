@@ -55,8 +55,8 @@ class WizardForm extends Component {
     this.executeQuery = this.executeQuery.bind(this)
     this.resetQueryValue = this.resetQueryValue.bind(this)
     this.modificaDataDCATAPIT = this.modificaDataDCATAPIT.bind(this)
+    this.changeTreeData = this.changeTreeData.bind(this)
     this.state = {
-      //config: config,
       page: 0,
       uploading: false,
       errorUpload: undefined,
@@ -93,9 +93,24 @@ class WizardForm extends Component {
             "default": "voc2"
           }
         }
-      ]
+      ],
+      datasetStdList:[
+        {
+          "uid": "dataset1",
+          "name": {
+            "ita": "Dataset 1",
+          }
+        },
+        {
+          "uid": "dataset2",
+          "name": {
+            "ita": "Dataset 2",
+          }
+        }
+      ],
+      config: config
     };
-    this.loadConfiguration()
+    //this.loadConfiguration()
     //this.loadVocabolariControllati()
   }
 
@@ -256,6 +271,11 @@ class WizardForm extends Component {
     const { dispatch } = this.props
     dispatch(change('wizard', 'ultimamodifica', value)) 
   }
+
+  changeTreeData(value){
+    const { dispatch } = this.props
+    dispatch(change('wizard', 'treedata', value)) 
+  }
   
   openModalInfo = (infoText) => {
     console.log('infoText: ' + infoText)
@@ -283,12 +303,12 @@ class WizardForm extends Component {
                   })
   }
 
-  addTagsToForm(fieldName, tags){
-    var tagString=""
-    tags.map((tag) => {
-      tagString=tagString==''?tagString.concat(tag.text):tagString.concat("," + tag.text)
-    })
-    this.onChange(tagString)
+  addTagsFiletagsToForm(tags){
+    this.onChange(tags)
+  }
+
+  addTagsFieldToForm(tags){
+    this.onChange(tags)
   }
 
   setTipi = (value) => {
@@ -421,26 +441,31 @@ class WizardForm extends Component {
     .then(json => dispatch(change('wizard', 'nome', json.system_name)))
   }
 
-  onDropFunction(fields, filesToUpload, e){
+  onDropFunction(fields, filesToUpload, tipofile, e){
     console.log('props: ' + this.props)
     const { dispatch } = this.props
     this.setUploading(true, undefined);
-    if(filesToUpload.length>0){
-    this.setState({errorDrop:''})
-    dispatch(getSchema(filesToUpload, 'csv'))//defaul value is csv
-        .then(json => { this.calcDataFields(fields, JSON.parse(json))
-        //.then(json => { this.calcDataFields(fields, json)
-                        this.setUploading(false, undefined);
-                        dispatch(change('wizard', 'separator', json.separator))
-                        dispatch(change('wizard', 'filesToUpload', filesToUpload))
-                        dispatch(change('wizard', 'nomefile', filesToUpload[0].name))
-                    })
-        .catch(exception => {
-                        console.log('Eccezione !!! ' + exception)
-                        this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+    console.log('tipofile: ' + tipofile)
+    if(tipofile){
+      if(filesToUpload.length>0){
+      this.setState({errorDrop:''})
+        dispatch(getSchema(filesToUpload, tipofile))//defaul value is csv
+            .then(json => { this.calcDataFields(fields, JSON.parse(json))
+            //.then(json => { this.calcDataFields(fields, json)
+                            this.setUploading(false, undefined);
+                            dispatch(change('wizard', 'separator', json.separator))
+                            dispatch(change('wizard', 'filesToUpload', filesToUpload))
+                            dispatch(change('wizard', 'nomefile', filesToUpload[0].name))
                         })
+            .catch(exception => {
+                            console.log('Eccezione !!! ' + exception)
+                            this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+                            })
+      }else{
+          this.setUploading(false, 'Dimensioni file non consentite. Il file non può superare 10MB');
+      }
     }else{
-        setUploading(false, 'Dimensioni file non consentite. Il file non può superare 10MB');
+      this.setUploading(false, 'Selezionare il tipo di file da caricare.');
     }
   }
 
@@ -525,7 +550,7 @@ class WizardForm extends Component {
 
   render() {
     const { onSubmit, loggedUser } = this.props;
-    const { page, tipi, context, infoText, listaConvenzioni, listaGerarchie, listaStorage, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery, config, vocabolariControllati, filePullLoaded } = this.state;
+    const { page, tipi, context, infoText, datasetStdList, listaConvenzioni, listaGerarchie, listaStorage, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery, config, vocabolariControllati, filePullLoaded } = this.state;
     return this.state.loadingConfiguration === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
       <div>
         {config?
@@ -549,7 +574,7 @@ class WizardForm extends Component {
                 setUploading={this.setUploading}
                 onDropFunction={this.onDropFunction}
                 reset={reset}
-                addTagsToForm={this.addTagsToForm}
+                addTagsFiletagsToForm={this.addTagsFiletagsToForm}
                 setName={this.setName}
                 getSchemaFromWS={this.getSchemaFromWS}
                 errorNext={errorNext}
@@ -568,7 +593,7 @@ class WizardForm extends Component {
                 previousPage={this.previousPage}
                 onSubmit={this.nextPage}
                 tipi={tipi}
-                addTagsToForm={this.addTagsToForm}
+                addTagsFieldToForm={this.addTagsFieldToForm}
                 aggiornaStato={this.aggiornaStato}
                 addSemanticToForm={this.addSemanticToForm}
                 addConvenzioneToForm={this.addConvenzioneToForm}
@@ -582,6 +607,7 @@ class WizardForm extends Component {
                 getFormValue={this.getFormValue}
                 config={config}
                 vocabolariControllati={vocabolariControllati}
+                changeTreeData={this.changeTreeData}
               />}
             {page === 2 &&
               <WizardFormThirdPage
@@ -604,6 +630,7 @@ class WizardForm extends Component {
                 listaStorage={listaStorage} 
                 addStorageToForm={this.addStorageToForm} 
                 deleteStorageToForm={this.deleteStorageToForm}
+                datasetStdList={datasetStdList}
               />}
           </div>
         </div>
@@ -648,7 +675,7 @@ WizardForm = connect(state => {
   const tempopolling = selector(state, 'tempopolling')
   const espressionecron = selector(state, 'espressionecron')
   const timerquantita = selector(state, 'timerquantita')
-  const timerunita = selector(state, 'timerunita') 
+  const timerunita = selector(state, 'timerunita')
   return { categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita  }
 })(WizardForm)
 
