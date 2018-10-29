@@ -12,6 +12,7 @@ import './style/css/infinityscroll.css'
 import './style/css/react-redux-toastr.min.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
+import 'flag-icon-css/css/flag-icon.min.css'
 
 function registerServiceWorker(){
   if ('serviceWorker' in navigator) {

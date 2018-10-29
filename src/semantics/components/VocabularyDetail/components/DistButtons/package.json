@@ -1,0 +1,6 @@
+{
+  "name": "dist-buttons",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./DistButtons.js"
+}
