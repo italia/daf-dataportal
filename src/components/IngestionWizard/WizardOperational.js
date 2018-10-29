@@ -39,7 +39,7 @@ const renderMergeStrategy = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
       <option value=""  key='' defaultValue></option>
-      {/*<option value="SYNC" key='SYNC'>Sostituisci il contenuto della tabella</option>*/}
+      <option value="SYNC" key='SYNC'>Sostituisci il contenuto della tabella</option>
       <option value="DEDUPE_AND_MERGE"  key='DEDUPE_AND_MERGE'>Inserisci tutte le righe ignorando i duplicati</option>
       <option value="MERGE"  key='MERGE'>Inserisci tutte le righe</option>
     </select>
