@@ -1056,3 +1056,13 @@ li.bg-footer:last-child.social-links {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+
+.rule,
+.ruleGroup .ruleGroup {
+  margin-top: 0.5rem;
+  margin-left: 0.5rem; }
+
+.ruleGroup {
+  padding: 0.5rem;
+  border: 1px solid #CCC;
+}

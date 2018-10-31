@@ -1561,7 +1561,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
 
       export function deleteDataset(nomeDataset, org){
-        var url = serviceurl.apiURLCatalog + 'catalog-ds/delete/'+nomeDataset+'/'+org
+        var url = serviceurl.apiURLCatalog + '/catalog-ds/delete/'+nomeDataset+'/'+org
 
         var token = ''
 
@@ -1579,7 +1579,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Authorization': 'Bearer ' + token
             }
           })
-          .then(response => response.json())
+          .then(response => response)
         }
       }
 

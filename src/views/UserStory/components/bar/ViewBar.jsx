@@ -45,16 +45,16 @@ class ViewBar extends React.Component {
 
     story.published = status
 
-    this.save(story)
+    this.save(story, true)
     
   }
 
-  save(story) {
+  save(story, shared) {
     this.setState({
       saving: true
     });
     
-    userStoryService.save(story).then((data)=> {
+    userStoryService.save(story, shared).then((data)=> {
       this.setState({
         saving: false,
       })

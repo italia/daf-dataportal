@@ -24,7 +24,7 @@ class UserstoryCard extends Component {
     saveStory(status){
         const { story } = this.props
         story.published = status
-        let response = userStoryService.save(story)
+        let response = userStoryService.save(story, true)
         this.setState({
             saving: true,
             open: !this.state.open

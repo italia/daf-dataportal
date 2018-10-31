@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Container } from 'reactstrap'
 import { getAllOrganizations, search, datasetDetail, launchQueryOnStorage } from '../../actions'
+import { rulesConverter } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
 import QueryBuilder from 'react-querybuilder';
@@ -20,7 +21,7 @@ class CreateWidget extends Component {
         // "where": [],
         "groupBy": [],
         // "having": [],
-        "limit": 25
+        // "limit": 25
       },
       isQuery: false,
       privateWdg: '',
@@ -105,7 +106,7 @@ class CreateWidget extends Component {
 
   launchQuery(){
     const { dispatch, dataset } = this.props
-    const { query } = this.state
+    const { query, conditions } = this.state
     
     for(var k in query){
       if(query[k] === null || query[k].length===0){
@@ -113,6 +114,12 @@ class CreateWidget extends Component {
       }
     }
 
+    var where = rulesConverter(conditions.combinator, conditions.rules)
+    if(where!=={}){
+      query.where = where
+    }
+
+    
     dispatch(launchQueryOnStorage(dataset.operational.logical_uri, query))
     .then(response => {
       if(response.ok){
@@ -218,29 +225,29 @@ class CreateWidget extends Component {
     var controlClassnames = {
       //queryBuilder:"form-group", // Root <div> element
   
-      //ruleGroup:"form-group row", // <div> containing the RuleGroup
-      // combinators:"form-control", // <select> control for combinators
+      ruleGroup:"form-group row col-md-12", // <div> containing the RuleGroup
+      combinators:"form-control col-md-2", // <select> control for combinators
       addRule:"btn btn-primary", // <button> to add a Rule
       addGroup:"btn btn-primary", // <button> to add a RuleGroup
       removeGroup:"btn btn-primary", // <button> to remove a RuleGroup
   
-      rule:"form-group row", // <div> containing the Rule
-      // fields:"form-control", // <select> control for fields
-      // operators:"form-control", // <select> control for operators
-      // value:"form-control", // <input> for the field value
+      rule:"form-group row col-md-12", // <div> containing the Rule
+      fields:"form-control col-md-2", // <select> control for fields
+      operators:"form-control col-md-1", // <select> control for operators
+      value:"form-control col-md-5", // <input> for the field value
       removeRule:"btn btn-primary" // <button> to remove a Rule
     }
 
     return(
-      <QueryBuilder controlClassnames={controlClassnames} fields={fields} onQueryChange={(query)=>console.log(query)}/>
+      <QueryBuilder 
+        controlClassnames={controlClassnames} 
+        fields={fields} 
+        onQueryChange={(query)=>{ 
+                        console.log(query);
+                        this.setState({conditions:query})
+                      }}
+      />
     )
-  }
-
-  addRuleCondition(){
-    const { conditions } = this.state
-
-    
-
   }
 
   render(){
@@ -311,7 +318,7 @@ class CreateWidget extends Component {
           <div className="card-body">
             <div className="card-title">
               <h3>Costruisci la query per i tuoi dati</h3>
-              {isFetching && <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2 float-right" onClick={this.addCondition.bind(this)}/>Caricamento</h1>}
+              {isFetching && <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>}
               {!isFetching && 
               <div className="row">
                 <div className="col-md-12">
@@ -320,13 +327,14 @@ class CreateWidget extends Component {
                     {this.renderSelectFields()}
                   </div>
                   <div className="form-group">
-                    <label className="form-control-label">Aggiungi condizioni <i className="fas fa-plus-circle fa-lg pointer text-primary"/></label>
+                    <label className="form-control-label">Aggiungi condizioni</label>
                     {this.renderConditions()}
                   </div>
                 </div>
-                <div className="col-md-12">
+                {this.state.queryResult.length>0 && <div className="col-md-12">
+                  <label className="form-control-label">Risultato</label>
                   {this.renderTable()}
-                </div>
+                </div>}
               </div>
               }
               <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
