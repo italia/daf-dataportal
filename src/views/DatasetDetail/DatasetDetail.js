@@ -683,9 +683,12 @@ class DatasetDetail extends Component {
                                                                         <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th><td className="bg-grigino">Web HDFS</td>
                                                                     </tr>
                                                                     <tr>
+                                                                        <th className="bg-white" style={{ width: "192px" }}><strong>Metodo: </strong></th><td className="bg-grigino">PUT</td>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <th className="bg-white" style={{ width: "192px" }}><strong>API di Upload: </strong></th>
-                                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_push[0].url}>{this.truncate(dataset.operational.input_src.srv_push[0].url, 60)}
-                                                                            <CopyToClipboard text={dataset.operational.input_src.srv_push[0].url}>
+                                                                        <td className="bg-grigino" title={dataset.operational.input_src.srv_push[0].url+'<NOME_FILE>.'+dataset.operational.file_type +'?op=CREATE'}>{this.truncate(dataset.operational.input_src.srv_push[0].url, 60)}
+                                                                            <CopyToClipboard text={dataset.operational.input_src.srv_push[0].url+'<NOME_FILE>.'+dataset.operational.file_type +'?op=CREATE'}>
                                                                                 <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
                                                                             </CopyToClipboard>
                                                                         </td>
