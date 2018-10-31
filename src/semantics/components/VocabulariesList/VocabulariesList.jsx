@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 
 import Error from '../Error'
 import Loading from '../Loading'
+import { isEmpty } from '../../util/commonUtils'
 import {
   privatePrefix,
   maybePublicPadding
@@ -31,31 +32,31 @@ const mapVocabularies = vocabularies =>
             className="text-primary"
             style={{ font: "500 24.5px/29.4px Titillium Web" }}
           >
-            {voc.titles.map(title => title.value)}
+            {isEmpty(voc.titles) ? 'Titolo non disponibile' : voc.titles.map(title => title.value)}
           </CardTitle>
         </Link>
 
-        <CardText className="text-muted">{voc.url}</CardText>
+        {!isEmpty(voc.url) && <CardText className="text-muted">{voc.url}</CardText>}
 
-        <CardText>
+        {!isEmpty(voc.descriptions) && <CardText>
           <strong>Descrizione:</strong>
           <br />
           {voc.descriptions.map(desc => desc.value)}
-        </CardText>
+        </CardText>}
 
-        <CardText>
+        {!isEmpty(voc.lastEditDate) && <CardText>
           <strong>Data ultima modifica:</strong>
           <br />
           {voc.lastEditDate}
-        </CardText>
+        </CardText>}
 
-        <CardText>
-          <Badge color="primary" className="px-3 py-2">
+        {!isEmpty(voc.tags) && <CardText>
+          {/* <Badge color="primary" className="px-3 py-2">
             Vocabolario
-          </Badge>
+          </Badge> */}
           <strong> TAG: </strong>
           {voc.tags.map(tag => tag.value).join(' - ')}
-        </CardText>
+        </CardText>}
       </CardBody>
     </Card>
   ))
@@ -66,8 +67,8 @@ const createVocabularies = vocabularies => (
     <Col sm={8}>{mapVocabularies(vocabularies)}</Col>
     <Col sm={2}>
       <div className="callout callout-primary">
-        <small className="text-muted">Risultato della ricerca</small>
-        <br />
+        {/* <small className="text-muted">Risultato della ricerca</small>
+        <br /> */}
 
         <strong className="h4">{vocabularies.length}</strong>
         <strong>
@@ -89,7 +90,7 @@ export default class VocabulariesList extends React.Component {
     ) : this.props.error ? (
       <Error msg={vocabulariesError} />
     ) : (
-      <Loading />
-    )
+          <Loading />
+        )
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Row,
   Col,
@@ -7,25 +7,30 @@ import {
   CardBody,
   CardText,
   Button
-} from 'reactstrap'
+} from "reactstrap";
 
-import Error from '../Error'
-import Loading from '../Loading'
-import {
-  maybePublicPadding
-} from '../../util/containerUtils'
+import Error from "../Error";
+import Loading from "../Loading";
+import { isEmpty } from '../../util/commonUtils'
+import { maybePublicPadding } from "../../util/containerUtils";
 
+const mayBeURI = uri => uri && <a target="_blank" href={uri}>{`(${uri})`}</a>;
 
-const mayBeURI = uri => uri && <a target="_blank" href={uri}>{`(${uri})`}</a>
+const lodviewURL = url => url.replace(
+  'https://w3id.org/italia/',
+  'https://ontopia.daf.teamdigitale.it/lodview/'
+)
 
-const lodeURL = url => `http://ontopia.daf.teamdigitale.it/lode/extract?url=${url}&lang=it`
+const lodeURL = url =>
+  `http://ontopia.daf.teamdigitale.it/lode/extract?url=${url}&lang=it`;
 
-const webvowlURL = url => `http://ontopia.daf.teamdigitale.it/webvowl/#iri=${url}`
+const webvowlURL = url =>
+  `http://ontopia.daf.teamdigitale.it/webvowl/#iri=${url}`;
 
-const ontologyError = `Errore durante il caricamento dell'ontologia`
+const ontologyError = `Errore durante il caricamento dell'ontologia`;
 
 const createOntology = ontology => {
-  const ont = ontology
+  const ont = ontology;
   return (
     <Row>
       <Col sm={1} />
@@ -33,35 +38,43 @@ const createOntology = ontology => {
         <Card className="border-0">
           <CardHeader>
             <h2 className="text-primary title-dataset mb-0">
-              {ont.titles.map(title => title.value)}
+              {isEmpty(ont.titles) ? 'Titolo non disponibile' : ont.titles.map(title => title.value)}
               <div className="float-right mt-1">
+                <a target="_blank" href={lodviewURL(ont.url)} className="mr-1">
+                  <Button outline color="primary">
+                    <b>LodView </b>
+                    <i className="fas fa-link" />
+                  </Button>
+                </a>
                 <a target="_blank" href={lodeURL(ont.url)} className="mr-1">
                   <Button outline color="primary">
-                    <b>LODE</b>
+                    <b>LODE </b>
+                    <i className="fas fa-link" />
                   </Button>
                 </a>
                 <a target="_blank" href={webvowlURL(ont.url)}>
                   <Button outline color="primary">
-                    <b>WebVOWL</b>
+                    <b>WebVOWL </b>
+                    <i className="fas fa-link" />
                   </Button>
                 </a>
               </div>
             </h2>
           </CardHeader>
           <CardBody style={{ font: "400 18px/23px Titillium Web" }}>
-            <CardText>
+            {!isEmpty(ont.descriptions) && <CardText>
               <strong>Descrizione:</strong>
               <br />
               {ont.descriptions.map(desc => desc.value)}
-            </CardText>
+            </CardText>}
 
-            <CardText>
+            {ont.url && <CardText>
               <strong>URL:</strong>
               <br />
-              {ont.url}
-            </CardText>
+              <a target="_blank" href={ont.url}>{ont.url}</a>
+            </CardText>}
 
-            <CardText>
+            {!isEmpty(ont.owners) && <CardText>
               <strong>Titolare:</strong>
               <br />
               {ont.owners.map(owner => (
@@ -70,10 +83,10 @@ const createOntology = ontology => {
                   <br />
                   {mayBeURI(owner.uri)}
                 </div>
-                ))}
-            </CardText>
+              ))}
+            </CardText>}
 
-            <CardText>
+            {!isEmpty(ont.publishedBy) && <CardText>
               <strong>Pubblicato da:</strong>
               <br />
               {ont.publishedBy.map(publisher => (
@@ -82,10 +95,10 @@ const createOntology = ontology => {
                   <br />
                   {mayBeURI(publisher.uri)}
                 </div>
-                ))}
-            </CardText>
+              ))}
+            </CardText>}
 
-            <CardText>
+            {!isEmpty(ont.creators) && <CardText>
               <strong>Creato da:</strong>
               <br />
               {ont.creators.map(creator => (
@@ -95,59 +108,51 @@ const createOntology = ontology => {
                   {mayBeURI(creator.uri)}
                 </div>
               ))}
-            </CardText>
+            </CardText>}
 
-            <CardText>
+            {ont.lastEditDate && <CardText>
               <strong>Data ultima modifica:</strong>
               <br />
               {ont.lastEditDate}
-            </CardText>
+            </CardText>}
 
-            {/*
-            <CardText>
-              <strong>Versioni:</strong>
-              <br />
-              {ont.versions.map(version => version.number).join(' - ')}
-            </CardText>
-            */}
-
-            <CardText>
+            {!isEmpty(ont.licenses) && <CardText>
               <strong>Licenza:</strong>
               <br />
-              {ont.licenses.map(license => license.value).join(' ')}
-            </CardText>
+              {ont.licenses.map(license => license.value).join(" ")}
+            </CardText>}
 
-            <CardText>
+            {!isEmpty(ont.langs) && <CardText>
               <strong>Lingue:</strong>
               <br />
-              {ont.langs.join(' - ')}
-            </CardText>
+              {ont.langs.map(lang => <i className={`mr-3 flag-icon flag-icon-${lang === 'en' ? 'us' : lang}`} />)}
+            </CardText>}
 
-            <CardText>
+            {!isEmpty(ont.tags) && <CardText>
               <strong>TAG:</strong>
               <br />
-              {ont.tags.map(tag => tag.value).join(' - ')}
-            </CardText>
+              {ont.tags.map(tag => tag.value).join(" - ")}
+            </CardText>}
           </CardBody>
         </Card>
       </Col>
       <Col sm={1} />
     </Row>
-  )
-}
+  );
+};
 
 export default class OntologyDetail extends React.Component {
   componentWillMount() {
-    this.props.fetchOntDetail(this.props.match.params.filter)
+    this.props.fetchOntDetail(this.props.match.params.filter);
   }
 
   render() {
-    return this.props.hasFetched ? (
+    return this.props.isFetching ? (
+      <Loading />
+    ) : this.props.hasFetched ? (
       createOntology(this.props.data)
     ) : this.props.error ? (
       <Error msg={ontologyError} />
-    ) : (
-      <Loading />
-    )
+    ) : null;
   }
 }
