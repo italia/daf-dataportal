@@ -276,7 +276,7 @@ class Full extends Component {
       askPermission(this.props.loggedUser.uid)
       dispatch(fetchNewNotifications(localStorage.getItem('user')))
       dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
-      document.forms['supset_open'].submit()
+      // document.forms['supset_open'].submit()
     } else {
       if (localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null') {
@@ -319,7 +319,6 @@ class Full extends Component {
                         askPermission(this.props.loggedUser.uid)
                         dispatch(fetchNewNotifications(localStorage.getItem('user')))
                         dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
-                        document.forms['supset_open'].submit()
                   })
                 }else{
                   console.log('Login Action Response: ' + response.statusText)
@@ -1033,10 +1032,6 @@ class Full extends Component {
         <Footer />
       </div>
       }
-    <form id="supset_open" target="open_supset" action={serviceurl.urlApiOpen +'/managed/bi-open-login'} method="POST">
-      <input name="Authorization" type="text" value={"Bearer "+localStorage.getItem('token')} readOnly hidden/>
-    </form>
-    <iframe name="open_supset" hidden/>
     </div>
     )
   }

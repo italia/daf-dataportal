@@ -36,9 +36,7 @@ class CreateWidget extends Component {
     this.select = this.select.bind(this)
     this.launchQuery = this.launchQuery.bind(this)
     this.renderTable = this.renderTable.bind(this)
-    this.onChangeGroupBy = this.onChangeGroupBy.bind(this)
     this.renderSelectFields = this.renderSelectFields.bind(this)
-    this.onMaxSelect = this.onMaxSelect.bind(this)
     this.renderConditions = this.renderConditions.bind(this)
   }
 
@@ -115,7 +113,7 @@ class CreateWidget extends Component {
     }
 
     var where = rulesConverter(conditions.combinator, conditions.rules)
-    if(where!=={}){
+    if(Object.keys(where).length>0){
       query.where = where
     }
 
@@ -131,39 +129,6 @@ class CreateWidget extends Component {
         })
       }
     })
-  }
-
-  onChangeGroupBy(value){
-    console.log(value)
-
-    this.setState({
-      groupedBy: value
-    })
-
-    this.state.query.groupBy = [{"name":value}]
-  }
-
-  onMaxSelect(value){
-    const { query } = this.state
-
-    console.log(value)
-    var selected = []
-
-    this.setState({
-      maxSelect: value
-    })
-
-    selected = query.select.map((json) => 
-      json.name === value ? {"max": { "name": value, "alias": "max_"+value } } : json  
-    )
-
-    selected.push({
-      "count": { "name": "*" }
-    })
-    
-    // selected[selected.indexOf(tmp)] = {"max": { "name": value, "alias": "max_"+value } }
-
-    query.select = selected
   }
 
   renderTable(){

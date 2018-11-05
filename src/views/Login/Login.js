@@ -11,6 +11,8 @@ import {
 } from 'react-modal-bootstrap';
 import { setCookie, setSupersetCookie } from '../../utility'
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
+import { serviceurl } from '../../config/serviceurl'
+
 
 function setErrorMsg(error) {
   return {
@@ -142,9 +144,11 @@ class Login extends Component {
         response.json().then(json => {
             localStorage.setItem('token', json);
             token = json;
+            this.setState({token: json})
             dispatch(getApplicationCookie('superset'))
             .then(json => {
               if (json) {
+                document.forms['supset_open'].submit()
                 setSupersetCookie(json)
                 dispatch(getApplicationCookie('metabase'))
                 .then(json => {
@@ -295,6 +299,10 @@ class Login extends Component {
               </div>
           </div>
         </div>
+        <form id="supset_open" target="open_supset" action={serviceurl.urlApiOpen +'/managed/bi-open-login'} method="POST">
+          <input name="Authorization" type="text" value={"Bearer "+this.state.token} readOnly hidden/>
+        </form>
+        <iframe name="open_supset" hidden/>
       </div>
     )
   }
