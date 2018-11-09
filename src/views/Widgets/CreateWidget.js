@@ -78,7 +78,7 @@ class CreateWidget extends Component {
 
   }
 
-  getDatasetDetail(){
+  getDatasetDetail(selectedDataset){
     const { dispatch } = this.props
 
     var fields = []
@@ -86,7 +86,7 @@ class CreateWidget extends Component {
     this.setState({
       isQuery: true
     })
-    const { selectedDataset } = this.state
+
     dispatch(datasetDetail(selectedDataset, '', false))
   }
 
@@ -173,6 +173,7 @@ class CreateWidget extends Component {
       options={fields}
       multi={true}
       className="form-control"
+      disabled={!this.state.isQuery}
     />
   }
 
@@ -190,8 +191,8 @@ class CreateWidget extends Component {
     var controlClassnames = {
       //queryBuilder:"form-group", // Root <div> element
   
-      ruleGroup:"form-group row col-md-12", // <div> containing the RuleGroup
-      combinators:"form-control col-md-2", // <select> control for combinators
+      ruleGroup:"form-group col-md-12", // <div> containing the RuleGroup
+      combinators:"form-control col-md-1", // <select> control for combinators
       addRule:"btn btn-primary", // <button> to add a Rule
       addGroup:"btn btn-primary", // <button> to add a RuleGroup
       removeGroup:"btn btn-primary", // <button> to remove a RuleGroup
@@ -223,7 +224,21 @@ class CreateWidget extends Component {
         <div className="card">
           <div className="card-body">
             <div className="card-title mb-3">
-              <h3>Seleziona il Dataset da cui partire</h3>
+              <h3>Select</h3>
+            </div>
+            <div className="row">
+              <div className="col-md-12">
+                <div className="form-group">
+                  {this.renderSelectFields()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-body">
+            <div className="card-title mb-3">
+              <h3>From</h3>
             </div>
             <div className="form-group row">
               <label className="col-md-4 form-control-label">Privato</label>
@@ -261,7 +276,7 @@ class CreateWidget extends Component {
             <div className="form-group row">
               <label className="col-md-4 form-control-label">Nome Dataset</label>
               <div className="col-md-8">
-                <select className="form-control" disabled={this.state.selectedOrg===''} onChange={(e)=>{this.setState({selectedDataset: e.target.value})}}>
+                <select className="form-control" disabled={(this.state.selectedOrg==='') && results.length<4 } onChange={(e)=>{this.setState({selectedDataset: e.target.value}); this.getDatasetDetail(e.target.value)}}>
                   <option value=""  key='widgetDataset' defaultValue></option>
                   {results && results.length>4 && results.map(result => {
                     if(result.type=='catalog_test'){
@@ -276,37 +291,27 @@ class CreateWidget extends Component {
                 </select>
               </div>
             </div>
-            <button className="btn btn-primary float-right" onClick={this.getDatasetDetail} title="Passa al query builder">Avanti</button>
           </div>
         </div>
-        {isQuery && <div className="card">
+        {isQuery && !isFetching && <div className="card">
           <div className="card-body">
             <div className="card-title">
-              <h3>Costruisci la query per i tuoi dati</h3>
-              {isFetching && <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>}
-              {!isFetching && 
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="form-group">
-                    <label className="form-control-label">Seleziona i campi</label>
-                    {this.renderSelectFields()}
-                  </div>
-                  <div className="form-group">
-                    <label className="form-control-label">Aggiungi condizioni</label>
-                    {this.renderConditions()}
-                  </div>
-                </div>
-                {this.state.queryResult.length>0 && <div className="col-md-12">
-                  <label className="form-control-label">Risultato</label>
-                  {this.renderTable()}
-                </div>}
-              </div>
-              }
-              <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
+              <h3>Where</h3>
             </div>
+            <div className="row">
+              <div className="col-md-12">
+                <div className="form-group">
+                  {this.renderConditions()}
+                </div>
+              </div>
+              <div className="col-md-12">
+                <label className="form-control-label">Risultato</label>
+                {this.state.queryResult.length>0 && this.renderTable()}
+              </div>
+            </div>
+            <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
           </div>
-        </div>
-        }
+        </div>}
       </Container>
     )
   }
