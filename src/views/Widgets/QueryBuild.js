@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Container } from 'reactstrap'
-import { getAllOrganizations, search, datasetDetail, launchQueryOnStorage } from '../../actions'
+import { getAllOrganizations, search, datasetDetail, getQueryResult } from '../../actions'
 import { rulesConverter } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
 import QueryBuilder from 'react-querybuilder';
 
 
-class CreateWidget extends Component {
+class QueryBuild extends Component {
   constructor(props){
     super(props)
 
@@ -28,7 +28,6 @@ class CreateWidget extends Component {
       selectedDataset: '',
       selectedOrg: '',
       organizations: [],
-      queryResult: [], 
       fields: []
     }
     this.onChangeOrg = this.onChangeOrg.bind(this)
@@ -118,22 +117,22 @@ class CreateWidget extends Component {
     }
 
     
-    dispatch(launchQueryOnStorage(dataset.operational.logical_uri, query))
-    .then(response => {
-      if(response.ok){
-        const result = response.json()
-        result.then(json => { 
-          this.setState({
-            queryResult: json
-          })
-        })
-      }
-    })
+    dispatch(getQueryResult(dataset.operational.logical_uri, query))
+    // .then(response => {
+    //   if(response.ok){
+    //     const result = response.json()
+    //     result.then(json => { 
+    //       console.log(json)
+    //       this.setState({
+    //         queryResult: json
+    //       })
+    //     })
+    //   }
+    // })
   }
 
   renderTable(){
-    const { queryResult } = this.state
-    const { dataset } = this.props
+    const { dataset, queryResult } = this.props
 
     if(queryResult.length>0){
       var columns=[{
@@ -217,7 +216,7 @@ class CreateWidget extends Component {
   }
 
   render(){
-    const { loggedUser, results, dataset, isFetching } = this.props
+    const { loggedUser, results, dataset, isFetching, queryLoading, queryResult } = this.props
     const { privateWdg, organizations, isQuery, selected } = this.state
     return(
       <Container className="py-3">
@@ -304,12 +303,23 @@ class CreateWidget extends Component {
                   {this.renderConditions()}
                 </div>
               </div>
-              <div className="col-md-12">
-                <label className="form-control-label">Risultato</label>
-                {this.state.queryResult.length>0 && this.renderTable()}
-              </div>
             </div>
             <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
+          </div>
+        </div>}
+        {isQuery && !isFetching&& <div className="card">
+          <div className="card-body">
+            <div className="card-title">
+              <h3>Risultato</h3>
+            </div>
+            <div className="row">
+              <div className="col-md-12">
+              {
+                queryLoading? <h1 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
+                queryResult.length <= 0 ? <p>Nessun dato disponibile</p> : this.renderTable())
+              }
+              </div>
+            </div>
           </div>
         </div>}
       </Container>
@@ -321,7 +331,8 @@ function mapStateToProps(state) {
   const { isFetching, dataset } = state.datasetReducer['obj'] || { isFetching: true }
   const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }
   const { results } = state.searchReducer['search'] || { isFetching: false, results: [] }
-  return { isFetching, dataset, loggedUser, results }
+  const { queryLoading, queryResult } = state.queryReducer['query'] || { queryLoading: false, queryResult: [] }
+  return { isFetching, dataset, loggedUser, results, queryLoading, queryResult }
 }
 
-export default connect(mapStateToProps)(CreateWidget)
+export default connect(mapStateToProps)(QueryBuild)
