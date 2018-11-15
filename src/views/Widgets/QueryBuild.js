@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Container } from 'reactstrap'
-import { getAllOrganizations, search, datasetDetail, getQueryResult } from '../../actions'
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
+import { getAllOrganizations, search, datasetDetail, getQueryResult, getDatasetCatalog } from '../../actions'
 import { rulesConverter } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
@@ -15,6 +23,7 @@ class QueryBuild extends Component {
     this.state = {
       selected: [],
       groupedBy: '',
+      modalOpen: false,
       conditions: {},
       query: {
         "select": [],
@@ -23,12 +32,18 @@ class QueryBuild extends Component {
         // "having": [],
         // "limit": 25
       },
+      joinOnFrom: '',
+      joinOnTo: '',
       isQuery: false,
       privateWdg: '',
       selectedDataset: '',
       selectedOrg: '',
       organizations: [],
-      fields: []
+      fields: [],
+      join: [],
+      modalType: '',
+      datasetFrom: undefined,
+      datasetJoin: undefined
     }
     this.onChangeOrg = this.onChangeOrg.bind(this)
     this.getDatasetDetail = this.getDatasetDetail.bind(this)
@@ -37,6 +52,7 @@ class QueryBuild extends Component {
     this.renderTable = this.renderTable.bind(this)
     this.renderSelectFields = this.renderSelectFields.bind(this)
     this.renderConditions = this.renderConditions.bind(this)
+    this.renderONCondition = this.renderONCondition.bind(this)
   }
 
   componentDidMount(){
@@ -79,14 +95,26 @@ class QueryBuild extends Component {
 
   getDatasetDetail(selectedDataset){
     const { dispatch } = this.props
-
-    var fields = []
+    const { modalType } = this.state
 
     this.setState({
-      isQuery: true
+      isQuery: false
     })
 
-    dispatch(datasetDetail(selectedDataset, '', false))
+    dispatch(getDatasetCatalog(selectedDataset, false))
+    .then(json=> {
+      if(modalType==='JOIN'){
+        this.setState({
+          datasetJoin: json,
+          isQuery: true
+        })
+      }else if(modalType==='FROM'){
+        this.setState({
+          datasetFrom: json,
+          isQuery: true
+        })
+      }
+    })
   }
 
   select(field){
@@ -102,8 +130,8 @@ class QueryBuild extends Component {
   }
 
   launchQuery(){
-    const { dispatch, dataset } = this.props
-    const { query, conditions } = this.state
+    const { dispatch } = this.props
+    const { query, conditions, datasetFrom, datasetJoin, joinOnFrom, joinOnTo } = this.state
     
     for(var k in query){
       if(query[k] === null || query[k].length===0){
@@ -116,27 +144,28 @@ class QueryBuild extends Component {
       query.where = where
     }
 
+    var join = []
+    var tmpjoin = { "inner": {}}
+    if(datasetJoin){
+      tmpjoin.inner.uri = datasetJoin.operational.logical_uri
+      tmpjoin.inner.on = { "eq":{ "left": joinOnTo.value, "right": joinOnFrom.value}}
+
+      join.push(tmpjoin)
+
+      query.join = join
+    }
     
-    dispatch(getQueryResult(dataset.operational.logical_uri, query))
-    // .then(response => {
-    //   if(response.ok){
-    //     const result = response.json()
-    //     result.then(json => { 
-    //       console.log(json)
-    //       this.setState({
-    //         queryResult: json
-    //       })
-    //     })
-    //   }
-    // })
+    console.log(query)
+
+    dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
   }
 
   renderTable(){
-    const { dataset, queryResult } = this.props
+    const { queryResult } = this.props
 
     if(queryResult.length>0){
       var columns=[{
-        Header: dataset.dcatapit.name,
+        Header: "Tabella risultante",
         columns: []
       }]
       Object.keys(queryResult[0]).map(elem=>{
@@ -156,12 +185,19 @@ class QueryBuild extends Component {
   }
 
   renderSelectFields(){
-    const { dataset } = this.props
+    const { datasetFrom, datasetJoin } = this.state
     
     var fields = []
 
-    if(dataset){
-      dataset.dataschema.flatSchema.map(field => {
+    if(datasetJoin){
+      datasetFrom && datasetFrom.dataschema.flatSchema.map(field => {
+        fields.push({"value": "T1."+field.name, "label": datasetFrom.dcatapit.title+" - "+field.name})
+      }) 
+      datasetJoin.dataschema.flatSchema.map(field => {
+        fields.push({"value": "JT1."+field.name, "label": datasetJoin.dcatapit.title+" - "+field.name})
+      })
+    }else{
+      datasetFrom && datasetFrom.dataschema.flatSchema.map(field => {
         fields.push({"value": field.name, "label": field.name})
       }) 
     } 
@@ -176,13 +212,23 @@ class QueryBuild extends Component {
     />
   }
 
+
+
   renderConditions(){
-    const { dataset } = this.props
+    const { datasetFrom, datasetJoin } = this.state
         
     var fields = []
 
-    if(dataset){
-      dataset.dataschema.flatSchema.map(field => {
+    if(datasetJoin){
+      fields = []
+      datasetFrom && datasetFrom.dataschema.flatSchema.map(field => {
+        fields.push({"name": "T1."+field.name, "label": datasetFrom.dcatapit.title+" - "+field.name})
+      }) 
+      datasetJoin.dataschema.flatSchema.map(field => {
+        fields.push({"name": "JT1."+field.name, "label": datasetJoin.dcatapit.title+" - "+field.name})
+      }) 
+    }else{
+      datasetFrom && datasetFrom.dataschema.flatSchema.map(field => {
         fields.push({"name": field.name, "label": field.name})
       }) 
     } 
@@ -215,11 +261,118 @@ class QueryBuild extends Component {
     )
   }
 
+  renderONCondition(){
+    const { datasetFrom, datasetJoin } = this.state
+    
+    var fromFields = []
+    var toFields = []
+
+    datasetFrom.dataschema.flatSchema.map(field => {
+      fromFields.push({"value": "T1."+field.name, "label": datasetFrom.dcatapit.title+" - "+field.name})
+    })
+
+    datasetJoin.dataschema.flatSchema.map(field => {
+      toFields.push({"value": "JT1."+field.name, "label": datasetJoin.dcatapit.title+" - "+field.name})
+    })
+    
+
+    return(
+      <div className="col-12 mt-2">
+        <div className="form-group row">
+          <Select
+            value={this.state.joinOnFrom}
+            onChange={(newValue) => this.setState({joinOnFrom:newValue})}
+            options={fromFields}
+            className="col-5 mx-auto"
+          />
+          <div className="align-self-center">
+            =
+          </div>
+          <Select
+            value={this.state.joinOnTo}
+            onChange={(newValue) => this.setState({joinOnTo:newValue})}
+            options={toFields}
+            className="col-5 mx-auto"
+          />
+        </div>
+      </div>)
+  }
+
   render(){
-    const { loggedUser, results, dataset, isFetching, queryLoading, queryResult } = this.props
-    const { privateWdg, organizations, isQuery, selected } = this.state
+    const { loggedUser, isFetching, results, queryLoading, queryResult } = this.props
+    const { privateWdg, organizations, isQuery, modalOpen } = this.state
     return(
       <Container className="py-3">
+        <Modal isOpen={modalOpen}>
+          <ModalHeader>
+            <ModalTitle>
+              {this.state.modalType==='JOIN' && "Seleziona un dataset da mettere in JOIN"}
+              {this.state.modalType==='FROM' && "Seleziona il dataset da cui iniziare la query"}
+            </ModalTitle>
+            <ModalClose onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:''})}/>
+          </ModalHeader>
+          <ModalBody>
+          <div className="form-group row">
+            <label className="col-md-4 form-control-label">Privato</label>
+            {loggedUser.organizations && loggedUser.organizations.length > 0 ?
+              <div className="col-md-8">
+                <select className="form-control" value={this.state.privateWdg} onChange={(e)=>this.setState({privateWdg: e.target.value})}>
+                  <option value={''}></option>
+                  <option value={'1'}>Sì</option>
+                  <option value={'0'}>No</option>
+                </select>
+              </div>
+              :
+              <div className="col-md-8">
+                <input className="form-control" disabled={true} defaultValue={"No"}/>
+                <span>Puoi creare soltanto widget pubbliche in quanto non hai nessuna organizzazione associata</span>
+              </div>
+            }
+          </div>
+          <div className="form-group row">
+            <label className="col-md-4 form-control-label">Organizzazione</label>
+            <div className="col-md-8">
+              <select className="form-control" value={this.state.selectedOrg} onChange={(e)=>{this.onChangeOrg(e.target.value)}} disabled={privateWdg===''}>
+                <option value={''}></option>                  
+                {privateWdg==='1' && loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
+                  return (<option value={organization} key={organization}>{organization}</option>)
+                })
+                }
+                {privateWdg==='0' && organizations && organizations.length > 0 && organizations.map(organization => {
+                  return (<option value={organization} key={organization}>{organization}</option>)
+                })
+                }
+              </select>
+            </div>
+          </div>
+          <div className="form-group row">
+            <label className="col-md-4 form-control-label">Nome Dataset</label>
+            <div className="col-md-8">
+              <select className="form-control" value={this.state.selectedDataset} disabled={(this.state.selectedOrg==='') || isFetching } onChange={(e)=>{this.setState({selectedDataset: e.target.value}); this.getDatasetDetail(e.target.value)}}>
+                <option value=""  key='widgetDataset' defaultValue></option>
+                {results && results.length>4 && results.map(result => {
+                  if(result.type=='catalog_test'){
+                    var source = JSON.parse(result.source)
+                    return (<option value={source.dcatapit.name} key={source.dcatapit.name}>{source.dcatapit.name}</option>)
+                  }else if(result.type=='ext_opendata'){
+                    var source = JSON.parse(result.source)
+                    return (<option value={source.name} key={source.name}>{source.name}</option>)
+                  }
+                })
+                }
+              </select>
+            </div>
+          </div>
+          </ModalBody>
+          <ModalFooter>
+              <button type="button" className='btn btn-gray-200' onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
+                Chiudi
+              </button>
+              <button type="button" className="btn btn-primary px-2">
+                Crea
+              </button>
+            </ModalFooter>
+        </Modal>
         <div className="card">
           <div className="card-body">
             <div className="card-title mb-3">
@@ -239,60 +392,47 @@ class QueryBuild extends Component {
             <div className="card-title mb-3">
               <h3>From</h3>
             </div>
-            <div className="form-group row">
-              <label className="col-md-4 form-control-label">Privato</label>
-              {loggedUser.organizations && loggedUser.organizations.length > 0 ?
-                <div className="col-md-8">
-                  <select className="form-control" value={this.state.privateWdg} onChange={(e)=>this.setState({privateWdg: e.target.value})}>
-                    <option value={''}></option>
-                    <option value={'1'}>Sì</option>
-                    <option value={'0'}>No</option>
-                  </select>
-                </div>
-                :
-                <div className="col-md-8">
-                  <input className="form-control" disabled={true} defaultValue={"No"}/>
-                  <span>Puoi creare soltanto widget pubbliche in quanto non hai nessuna organizzazione associata</span>
-                </div>
-              }
-            </div>
-            <div className="form-group row">
-              <label className="col-md-4 form-control-label">Organizzazione</label>
-              <div className="col-md-8">
-                <select className="form-control" value={this.state.selectedOrg} onChange={(e)=>{this.onChangeOrg(e.target.value)}} disabled={privateWdg===''}>
-                  <option value={''}></option>                  
-                  {privateWdg==='1' && loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
-                    return (<option value={organization} key={organization}>{organization}</option>)
-                  })
-                  }
-                  {privateWdg==='0' && organizations && organizations.length > 0 && organizations.map(organization => {
-                    return (<option value={organization} key={organization}>{organization}</option>)
-                  })
-                  }
-                </select>
+            <div className="row">
+              {this.state.datasetFrom && 
+              <div className="col-12">
+                {this.state.datasetFrom.dcatapit.title}
               </div>
-            </div>
-            <div className="form-group row">
-              <label className="col-md-4 form-control-label">Nome Dataset</label>
-              <div className="col-md-8">
-                <select className="form-control" disabled={(this.state.selectedOrg==='') && results.length<4 } onChange={(e)=>{this.setState({selectedDataset: e.target.value}); this.getDatasetDetail(e.target.value)}}>
-                  <option value=""  key='widgetDataset' defaultValue></option>
-                  {results && results.length>4 && results.map(result => {
-                    if(result.type=='catalog_test'){
-                      var source = JSON.parse(result.source)
-                      return (<option value={source.dcatapit.name} key={source.dcatapit.name}>{source.dcatapit.name}</option>)
-                    }else if(result.type=='ext_opendata'){
-                      var source = JSON.parse(result.source)
-                      return (<option value={source.name} key={source.name}>{source.name}</option>)
-                    }
-                  })
-                  }
-                </select>
+              }
+              <div className="col-1 ml-auto">
+                <button className="btn btn-link text-primary float-right" title="Aggiungi un dataset da cui selezionare" 
+                  onClick={()=>this.setState({modalOpen:true,modalType:'FROM',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
+                  <i className="fas fa-plus-circle fa-lg"/>
+                </button>
               </div>
             </div>
           </div>
         </div>
-        {isQuery && !isFetching && <div className="card">
+        <div className="card">
+          <div className="card-body">
+            <div className="card-title">
+              <h3>Join</h3>
+            </div>
+            <div className="row">
+              {this.state.datasetJoin && 
+              <div className="col-12">
+                {this.state.datasetJoin.dcatapit.title}
+              </div>
+              }
+              {this.state.datasetJoin && <div className="col-12 text-center mt-2">
+                ON
+              </div>}
+              {this.state.datasetJoin && this.renderONCondition()
+              }
+              <div className="col-1 ml-auto">
+                <button className="btn btn-link text-primary float-right" title="Aggiungi un dataset da cui selezionare" 
+                  onClick={()=>this.setState({modalOpen:true,modalType:'JOIN',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
+                  <i className="fas fa-plus-circle fa-lg"/>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {isQuery && <div className="card">
           <div className="card-body">
             <div className="card-title">
               <h3>Where</h3>
@@ -307,7 +447,7 @@ class QueryBuild extends Component {
             <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
           </div>
         </div>}
-        {isQuery && !isFetching&& <div className="card">
+        {isQuery && <div className="card">
           <div className="card-body">
             <div className="card-title">
               <h3>Risultato</h3>
@@ -328,11 +468,10 @@ class QueryBuild extends Component {
 }
 
 function mapStateToProps(state) {
-  const { isFetching, dataset } = state.datasetReducer['obj'] || { isFetching: true }
   const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }
-  const { results } = state.searchReducer['search'] || { isFetching: false, results: [] }
+  const { isFetching, results } = state.searchReducer['search'] || { isFetching: false, results: [] }
   const { queryLoading, queryResult } = state.queryReducer['query'] || { queryLoading: false, queryResult: [] }
-  return { isFetching, dataset, loggedUser, results, queryLoading, queryResult }
+  return { isFetching, loggedUser, results, queryLoading, queryResult }
 }
 
 export default connect(mapStateToProps)(QueryBuild)

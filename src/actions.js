@@ -953,7 +953,7 @@ export function addDatasetKylo(json, token, fileType) {
   }
 }
 
-export function getDatasetCatalog(datasetname){
+export function getDatasetCatalog(datasetname, isPublic){
   var token = ''
   var token = '';
   var url = serviceurl.apiURLCatalog + (isPublic?'/public/catalog-ds/getbyname/'  + datasetname:'/catalog-ds/getbyname/'  + datasetname)
