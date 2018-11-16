@@ -9,7 +9,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
-import { getAllOrganizations, search, datasetDetail, getQueryResult, getDatasetCatalog } from '../../actions'
+import { getAllOrganizations, search, getQueryResult, getDatasetCatalog } from '../../actions'
 import { rulesConverter } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
@@ -238,21 +238,69 @@ class QueryBuild extends Component {
   
       ruleGroup:"form-group col-md-12", // <div> containing the RuleGroup
       combinators:"form-control col-md-1", // <select> control for combinators
-      addRule:"btn btn-primary", // <button> to add a Rule
+      addRule:"btn btn-primary mr-1", // <button> to add a Rule
       addGroup:"btn btn-primary", // <button> to add a RuleGroup
-      removeGroup:"btn btn-primary", // <button> to remove a RuleGroup
+      removeGroup:"btn btn-primary mx-1", // <button> to remove a RuleGroup
   
       rule:"form-group row col-md-12", // <div> containing the Rule
       fields:"form-control col-md-2", // <select> control for fields
       operators:"form-control col-md-1", // <select> control for operators
       value:"form-control col-md-5", // <input> for the field value
-      removeRule:"btn btn-primary" // <button> to remove a Rule
+      removeRule:"btn btn-primary mx-1" // <button> to remove a Rule
     }
+    var operators = [    
+        {name: '=', label: '='},
+        {name: '!=', label: '!='},
+        {name: '<', label: '<'},
+        {name: '>', label: '>'},
+        {name: '<=', label: '<='},
+        {name: '>=', label: '>='},
+    ]
+
+    var combinators = [
+      {name: 'and', label: 'AND'},
+      {name: 'or', label: 'OR'},
+      {name: 'not', label: 'NOT'},
+  ]
+
+    var translations = {
+        fields: {
+            title: "Campi",
+        },
+        operators: {
+            title: "Operatori",
+        },
+        value: {
+            title: "Valore",
+        },
+        removeRule: {
+            label: "x",
+            title: "Rimuovi condizione",
+        },
+        removeGroup: {
+            label: "x",
+            title: "Rimuovi gruppo di condizioni",
+        },
+        addRule: {
+            label: "Nuova condizione",
+            title: "Aggiungi condizione",
+        },
+        addGroup: {
+            label: "Nuovo gruppo di condizioni",
+            title: "Aggiungi gruppo di condizioni",
+        },
+        combinators: {
+            title: "Operatore Logico",
+        }
+      }
 
     return(
       <QueryBuilder 
         controlClassnames={controlClassnames} 
         fields={fields} 
+        operators={operators}
+        translations={translations}
+        combinators={combinators}
         onQueryChange={(query)=>{ 
                         console.log(query);
                         this.setState({conditions:query})
