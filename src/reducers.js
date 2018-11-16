@@ -30,7 +30,9 @@ import {
   RECEIVE_RESET_ERROR,
   REQUEST_SEARCH,
   RECEIVE_SEARCH,
-  RECEIVE_METADATA
+  RECEIVE_METADATA,
+  REQUEST_QUERY_RESULT,
+  RECEIVE_QUERY_RESULT
 } from './actions'
 import { reducer as toastrReducer } from 'react-redux-toastr'
 
@@ -241,6 +243,17 @@ function userReducer(state = {}, action) {
   }
 }
 
+function queryReducer(state = {}, action){
+  switch(action.type) {
+    case REQUEST_QUERY_RESULT:
+      return Object.assign({}, state, {'query': { 'queryLoading': action.queryLoading, 'queryResult': action.result }})
+    case RECEIVE_QUERY_RESULT:
+      return Object.assign({}, state, {'query': { 'queryLoading': action.queryLoading, 'queryResult': action.result }})
+    default:
+      return state
+  }
+}
+
 function searchReducer(state = {}, action) {
   switch (action.type) {
     case REQUEST_SEARCH:
@@ -259,6 +272,7 @@ const rootReducer = combineReducers({
   datasetReducer,
   userReducer,
   searchReducer,
+  queryReducer,
   propertiesReducer,
   notificationsReducer,
   toastr: toastrReducer, // <- Mounted at toastr.

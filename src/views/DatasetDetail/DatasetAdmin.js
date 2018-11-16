@@ -254,8 +254,7 @@ class DatasetAdmin extends Component{
         console.error(json.message)
       }
       if(json.fields && json.fields==="ok"){
-        toastr.success("Completato", "Permesso rimosso con successo")
-        console.log(json.message)
+
       
         if(groupname==='open_data_group'){
           dispatch(deleteOnCKAN(dataset.dcatapit))
@@ -289,6 +288,8 @@ class DatasetAdmin extends Component{
           })
           .catch(error => console.error(error))
         }else{
+          toastr.success("Completato", "Permesso rimosso con successo")
+          console.log(json.message)
           dispatch(getDatasetACL(dataset.dcatapit.name))
           .then(risp => {
             if(risp.code!==undefined){
@@ -587,12 +588,12 @@ class DatasetAdmin extends Component{
             <button className="float-right btn btn-primary" onClick={this.toggle} title="Scegli con chi condividere" disabled={isOpenData(acl)}><i className="fa fa-plus fa-lg"/></button>
           </div>
         </div>}
-        {ableToEdit(loggedUser, dataset) && this.state.acl.length===0 && <div className="row mb-4">
+        {ableToEdit(loggedUser, dataset) && <div className="row mb-4">
           <div className="col-12 text-muted mb-4">
               <i className="text-icon fa-pull-left fas fa-trash fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4><b>Elimina</b></h4>
           </div>
           <div className="col-5">
-            <button className="btn btn-danger" disabled={this.state.cancella} onClick={this.delete.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org, dataset.dcatapit.title)}>{this.state.cancella?<i className="fa fa-spinner fa-spin fa-lg"/>:'Elimina Dataset'}</button>
+            <button className="btn btn-danger" disabled={this.state.cancella || this.state.acl.length>0 } onClick={this.delete.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org, dataset.dcatapit.title)}>{this.state.cancella?<i className="fa fa-spinner fa-spin fa-lg"/>:'Elimina Dataset'}</button>
           </div>
         </div>}
       </div>
