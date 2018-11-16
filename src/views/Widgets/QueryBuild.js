@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
+import { toastr } from 'react-redux-toastr'
 import { getAllOrganizations, search, getQueryResult, getDatasetCatalog } from '../../actions'
 import { rulesConverter } from '../../utility'
 import ReactTable from "react-table"
@@ -53,6 +54,7 @@ class QueryBuild extends Component {
     this.renderSelectFields = this.renderSelectFields.bind(this)
     this.renderConditions = this.renderConditions.bind(this)
     this.renderONCondition = this.renderONCondition.bind(this)
+    this.removeDatasetJoin = this.removeDatasetJoin.bind(this)
   }
 
   componentDidMount(){
@@ -148,16 +150,21 @@ class QueryBuild extends Component {
     var tmpjoin = { "inner": {}}
     if(datasetJoin){
       tmpjoin.inner.uri = datasetJoin.operational.logical_uri
-      tmpjoin.inner.on = { "eq":{ "left": joinOnTo.value, "right": joinOnFrom.value}}
+      if(joinOnFrom === '' || joinOnTo === '' ){
+        toastr.error('Impossibile eseguire la query', 'Specificare le condizioni di Join prima di riprovare')
+      }else{
+        tmpjoin.inner.on = { "eq":{ "left": joinOnTo.value, "right": joinOnFrom.value}}
+        join.push(tmpjoin)
+        query.join = join
 
-      join.push(tmpjoin)
+        console.log(query)
+        dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
+      }
+    }else{
+      console.log(query)
 
-      query.join = join
+      dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
     }
-    
-    console.log(query)
-
-    dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
   }
 
   renderTable(){
@@ -346,6 +353,18 @@ class QueryBuild extends Component {
       </div>)
   }
 
+  removeDatasetJoin(){
+    this.setState({
+      modalType:'',
+      isQuery: false,
+      datasetJoin: undefined
+    })
+
+    this.setState({
+      isQuery:true
+    })
+  }
+
   render(){
     const { loggedUser, isFetching, results, queryLoading, queryResult } = this.props
     const { privateWdg, organizations, isQuery, modalOpen } = this.state
@@ -413,11 +432,8 @@ class QueryBuild extends Component {
           </div>
           </ModalBody>
           <ModalFooter>
-              <button type="button" className='btn btn-gray-200' onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
-                Chiudi
-              </button>
-              <button type="button" className="btn btn-primary px-2">
-                Crea
+              <button type="button" className="btn btn-primary px-2" onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
+                Continua
               </button>
             </ModalFooter>
         </Modal>
@@ -446,10 +462,10 @@ class QueryBuild extends Component {
                 {this.state.datasetFrom.dcatapit.title}
               </div>
               }
-              <div className="col-1 ml-auto">
-                <button className="btn btn-link text-primary float-right" title="Aggiungi un dataset da cui selezionare" 
+              <div className="ml-auto">
+                <button className="btn btn-link text-primary float-right" title={this.state.datasetFrom?"Modifica il dataset da cui selezionare":"Aggiungi un dataset da cui selezionare"} 
                   onClick={()=>this.setState({modalOpen:true,modalType:'FROM',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
-                  <i className="fas fa-plus-circle fa-lg"/>
+                  {this.state.datasetFrom?<i className="far fa-edit fa-lg"/>:<i className="fas fa-plus-circle fa-lg"/>}
                 </button>
               </div>
             </div>
@@ -469,12 +485,15 @@ class QueryBuild extends Component {
               {this.state.datasetJoin && <div className="col-12 text-center mt-2">
                 ON
               </div>}
-              {this.state.datasetJoin && this.renderONCondition()
-              }
-              <div className="col-1 ml-auto">
-                <button className="btn btn-link text-primary float-right" title="Aggiungi un dataset da cui selezionare" 
+              {this.state.datasetJoin && this.renderONCondition()}
+              <div className="ml-auto">
+                {this.state.datasetJoin && <button className="btn btn-link text-danger" title="Rimuovi il dataset da cui fare la join"
+                  onClick={this.removeDatasetJoin}>
+                  <i className="fas fa-times-circle fa-lg"/>
+                </button>}
+                <button className="btn btn-link text-primary float-right" title={this.state.datasetJoin?"Modifica il dataset da cui fare la join":"Aggiungi un dataset con cui fare la join" }
                   onClick={()=>this.setState({modalOpen:true,modalType:'JOIN',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
-                  <i className="fas fa-plus-circle fa-lg"/>
+                  {this.state.datasetJoin?<i className="far fa-edit fa-lg"/>:<i className="fas fa-plus-circle fa-lg"/>}
                 </button>
               </div>
             </div>
