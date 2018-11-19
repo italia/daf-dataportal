@@ -246,9 +246,9 @@ function userReducer(state = {}, action) {
 function queryReducer(state = {}, action){
   switch(action.type) {
     case REQUEST_QUERY_RESULT:
-      return Object.assign({}, state, {'query': { 'queryLoading': action.queryLoading, 'queryResult': action.result }})
+      return Object.assign({}, state, {'query': { 'queryLoading': action.queryLoading, 'queryResult': action.result, 'query': action.query }})
     case RECEIVE_QUERY_RESULT:
-      return Object.assign({}, state, {'query': { 'queryLoading': action.queryLoading, 'queryResult': action.result }})
+      return Object.assign({}, state, {'query': { 'queryLoading': action.queryLoading, 'queryResult': action.result, 'query': action.query }})
     default:
       return state
   }
