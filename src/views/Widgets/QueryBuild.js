@@ -152,6 +152,8 @@ class QueryBuild extends Component {
       tmpjoin.inner.uri = datasetJoin.operational.logical_uri
       if(joinOnFrom === '' || joinOnTo === '' ){
         toastr.error('Impossibile eseguire la query', 'Specificare le condizioni di Join prima di riprovare')
+      }else if(!query.select){
+        toastr.error('Impossibile eseguire la query', 'Specificare i campi da selezionare prima di riprovare')
       }else{
         tmpjoin.inner.on = { "eq":{ "left": joinOnTo.value, "right": joinOnFrom.value}}
         join.push(tmpjoin)
@@ -245,8 +247,8 @@ class QueryBuild extends Component {
   
       ruleGroup:"form-group col-md-12", // <div> containing the RuleGroup
       combinators:"form-control col-md-1", // <select> control for combinators
-      addRule:"btn btn-primary mr-1", // <button> to add a Rule
-      addGroup:"btn btn-primary", // <button> to add a RuleGroup
+      addRule:"btn btn-primary mr-1 mt-1", // <button> to add a Rule
+      addGroup:"btn btn-primary ml-1 mt-1", // <button> to add a RuleGroup
       removeGroup:"btn btn-primary mx-1", // <button> to remove a RuleGroup
   
       rule:"form-group row col-md-12", // <div> containing the Rule

@@ -1709,11 +1709,12 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
 
       /* Actions for Query Reducer */
-      function receiveQueryResult(json){
+      function receiveQueryResult(json, query){
         console.log('receiveQueryResult');
         return {
           type: RECEIVE_QUERY_RESULT,
           result: json,
+          query: query,
           queryLoading: false,
           receivedAt: Date.now(),
           ope: 'RECEIVE_QUERY_RESULT'
@@ -1725,6 +1726,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         return {
           type: REQUEST_QUERY_RESULT,
           result: [],
+          query: undefined,
           queryLoading: true,
           receivedAt: Date.now(),
           ope: 'REQUEST_QUERY_RESULT'
@@ -1757,7 +1759,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               body: JSON.stringify(query)
             })
             .then(response => response.json())
-            .then(json => dispatch(receiveQueryResult(json)))
+            .then(json => dispatch(receiveQueryResult(json, query)))
             .catch(error=> console.error(error))
           }
         }
