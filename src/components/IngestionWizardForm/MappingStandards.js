@@ -55,7 +55,7 @@ class MappingStandards extends Component {
 
   render() {
     const { mapping } = this.state;
-    const { fields } = this.props;
+    const { fields, datasetStdList, datasetstd } = this.props;
     return (
       <div>
         <Modal isOpen={this.state.isOpenMappingStandards} onRequestHide={this.hideModalMappingStandards}>
@@ -65,7 +65,7 @@ class MappingStandards extends Component {
               <ModalClose onClick={this.hideModalMappingStandards}/>
             </ModalHeader>
             <ModalBody>
-                <MappingFileds fields={fields}/>
+                <MappingFileds fields={fields} datasetStdList={datasetStdList} datasetstd={datasetstd}/>
             </ModalBody>
             <ModalFooter>
               <button type="button" className='btn btn-gray-200' onClick={this.hideModalMappingStandards}>

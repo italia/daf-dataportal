@@ -40,6 +40,32 @@
             "result": "session=sessiongrafana"
         }
     },
+    "/catalog-manager/v1/catalog-ds/standard/fields": {
+        "get": [
+            {
+                "name": "carsharing_entity_vehicle",
+                "fields": [
+                    "emission_class",
+                    "fuel",
+                    "vehicle_model",
+                    "status",
+                    "id_license_plate",
+                    "vehicle_type"
+                ]
+            },
+            {
+                "name": "carsharing_entity_vehicle 2",
+                "fields": [
+                    "emission_class2",
+                    "fuel2",
+                    "vehicle_model2",
+                    "status2",
+                    "id_license_plate2",
+                    "vehicle_type2"
+                ]
+            }
+        ]
+    },
     "/dati-gov/v1/settings": {
         "get": {
             "theme": "1",

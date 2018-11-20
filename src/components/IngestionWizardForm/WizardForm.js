@@ -6,7 +6,7 @@ import Steps, { Step } from 'rc-steps';
 import themes from '../../data/themes'
 import licenze from '../../data/licenze'
 import { connect  } from 'react-redux';
-import { getSchema, getSchemaWS, getSystemNameKylo, loadVocabulary } from '../../actions';
+import { getSchema, getSchemaWS, getSystemNameKylo, loadVocabulary, loadDatasetStandard } from '../../actions';
 import { change, reset } from 'redux-form'
 import { getEditorAdminOrganizations } from '../../utility'
 import 'rc-steps/assets/index.css'
@@ -94,25 +94,30 @@ class WizardForm extends Component {
           }
         }
       ],
-      datasetStdList:[
-        {
-          "uid": "dataset1",
-          "name": {
-            "ita": "Dataset 1",
-          }
-        },
-        {
-          "uid": "dataset2",
-          "name": {
-            "ita": "Dataset 2",
-          }
-        }
-      ],
+      datasetStdList:[],
       config: config
     };
     //this.loadConfiguration()
     //this.loadVocabolariControllati()
+    this.loadDatasetStandard()
   }
+
+  loadDatasetStandard(){
+    const { dispatch } = this.props
+    this.setState({ datasetStdList: true })
+    dispatch(loadDatasetStandard(serviceurl.vocabularyName))
+   .then(response=>{
+     if(response.ok){
+       response.json().then(json=>{
+          this.setState({ datasetStdList: json })
+       })
+    }else{
+     console.log('Errore nel reperimento del json [loaddatasetStandard]: ' + error) 
+    }})
+   .catch((error)=>{ 
+     console.log('Errore nel reperimento del json [loaddatasetStandard]: ' + error) 
+   }) 
+ }
 
   loadConfiguration(){
      const { dispatch } = this.props
@@ -328,64 +333,11 @@ class WizardForm extends Component {
     this.setState({ page: this.state.page + 1 });
   }
 
-  goToSecondPage(fields){
-    const { dispatch } = this.props
+  goToSecondPage(){
     this.setState({
       errorNext: undefined
     });
-      //SORGENTI
-      var sorgente = new Object
-      var sched = ''
-      var url = ''
-      var user = localStorage.getItem('user').toLowerCase()
-      if(fields.modalitacaricamento=='sftp' && fields.nomefile && fields.nomefile!=''){
-        sorgente.tipo = "sftp"
-        url = "".concat(fields.categoria).concat("/").concat(fields.sottocategoria).concat("/").concat(fields.nome)
-        if(fields.tempopolling=='0')
-        sched='{cron:' + fields.espressionecron + '}'
-      else if (fields.tempopolling=='1')
-        sched='{timer: quantita:' + fields.timerquantita + ', unita: '+ fields.timerunita+'}'
-
-      sorgente.val='Url='+url+' User='+user+' Schedule='+sched
-      this.state.listaSorgenti.push(sorgente)
-      dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
-
-      // STORAGE
-      var stor = new Object()
-      stor.tipo='hdfs'
-      stor.val='hdfs://??????'
-      this.state.listaStorage.push(stor)
-      dispatch(change('wizard', 'storage', this.state.listaStorage))
-      this.nextPage() 
-
-      }else if(fields.modalitacaricamento=='webservice_pull' && this.state.filePullLoaded){
-        sorgente.tipo = "webservice_pull"
-        url=fields.urlws
-
-      if(fields.tempopolling=='0')
-        sched='{cron:' + fields.espressionecron + '}'
-      else if (fields.tempopolling=='1')
-        sched='{timer: quantita:' + fields.timerquantita + ', unita: '+ fields.timerunita+'}'
-
-      sorgente.val='Url='+url+' User='+user+' Schedule='+sched
-      this.state.listaSorgenti.push(sorgente)
-      dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
-
-      // STORAGE
-      var stor = new Object()
-      stor.tipo='hdfs'
-      stor.val='hdfs://??????'
-      this.state.listaStorage.push(stor)
-      dispatch(change('wizard', 'storage', this.state.listaStorage))
-      this.nextPage() 
-
-      }else{
-        this.setState({
-          errorNext: 'Caricare il file per la metadatazione'
-        });
-      }
-
-
+    this.nextPage() 
   }
 
   previousPage() {
@@ -425,6 +377,7 @@ class WizardForm extends Component {
           this.calcDataFields(fields, json)
           this.setUploading(false, undefined);
           this.setState({filePullLoaded:true}) 
+          this.setDefaultValue()
         }
       })
     }else{
@@ -439,6 +392,67 @@ class WizardForm extends Component {
     const { dispatch } = this.props;
     dispatch(getSystemNameKylo(e.target.value))
     .then(json => dispatch(change('wizard', 'nome', json.system_name)))
+  }
+
+  setDefaultValue(){
+      const { dispatch, modalitacaricamento, categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws } = this.props
+      
+      //PIPELINE
+      var pipeline = new Object()
+      pipeline.nome = 'DAF Ingestion Pipeline default'
+      pipeline.parametro = ''
+      this.state.listaPipelines.push(pipeline)
+      dispatch(change('wizard', 'pipelines',  this.state.listaPipelines)) 
+
+      //SORGENTI
+      var sorgente = new Object
+      var sched = ''
+      var url = ''
+      var user = localStorage.getItem('user').toLowerCase()
+
+      if(modalitacaricamento=='sftp'){
+        sorgente.tipo = "sftp"
+        url = "".concat(categoria).concat("/").concat(sottocategoria).concat("/").concat(nome)
+        if(tempopolling=='0')
+        sched='{cron:' + espressionecron + '}'
+      else if (tempopolling=='1')
+        sched='{timer: quantita:' + timerquantita + ', unita: '+ timerunita+'}'
+
+      sorgente.val='Url='+url+' User='+user+' Schedule='+sched
+      this.state.listaSorgenti.push(sorgente)
+      dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+
+      // STORAGE
+      var stor = new Object()
+      stor.tipo='hdfs'
+      stor.val='DAF default path'
+      this.state.listaStorage.push(stor)
+      dispatch(change('wizard', 'storage', this.state.listaStorage))
+
+
+      }else if(modalitacaricamento=='webservice_pull' && this.state.filePullLoaded){
+        sorgente.tipo = "webservice_pull"
+        if(tempopolling=='0')
+          sched='{cron:' + espressionecron + '}'
+        else if (tempopolling=='1')
+          sched='{timer: quantita:' + timerquantita + ', unita: '+ timerunita+'}'
+
+        sorgente.val='Url='+urlws+' User='+user+' Schedule='+sched
+        this.state.listaSorgenti.push(sorgente)
+        dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+
+        // STORAGE
+        var stor = new Object()
+        stor.tipo='hdfs'
+        stor.val='DAF default path'
+        this.state.listaStorage.push(stor)
+        dispatch(change('wizard', 'storage', this.state.listaStorage))
+
+        }else{
+          this.setState({
+            errorNext: 'Caricare il file per la metadatazione'
+          });
+        }
   }
 
   onDropFunction(fields, filesToUpload, tipofile, e){
@@ -456,6 +470,7 @@ class WizardForm extends Component {
                             dispatch(change('wizard', 'separator', json.separator))
                             dispatch(change('wizard', 'filesToUpload', filesToUpload))
                             dispatch(change('wizard', 'nomefile', filesToUpload[0].name))
+                            this.setDefaultValue()
                         })
             .catch(exception => {
                             console.log('Eccezione !!! ' + exception)
@@ -550,7 +565,7 @@ class WizardForm extends Component {
 
   render() {
     const { onSubmit, loggedUser } = this.props;
-    const { page, tipi, context, infoText, datasetStdList, listaConvenzioni, listaGerarchie, listaStorage, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery, config, vocabolariControllati, filePullLoaded } = this.state;
+    const { page, tipi, context, infoText, datasetStdList, listaConvenzioni, listaGerarchie, listaStorage, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery, config, vocabolariControllati, filePullLoaded, uploading } = this.state;
     return this.state.loadingConfiguration === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
       <div>
         {config?
@@ -587,6 +602,7 @@ class WizardForm extends Component {
                 openModalInfo={this.openModalInfo}
                 config={config}
                 filePullLoaded={filePullLoaded}
+                uploading={uploading}
               />}
             {page === 1 &&
               <WizardFormSecondPage
@@ -670,13 +686,16 @@ WizardForm = reduxForm({
 const selector = formValueSelector('wizard') 
 WizardForm = connect(state => {
   const categoria = selector(state, 'categoria')
+  const modalitacaricamento = selector(state, 'modalitacaricamento')
   const sottocategoria = selector(state, 'sottocategoria')
   const nome = selector(state, 'nome')
   const tempopolling = selector(state, 'tempopolling')
   const espressionecron = selector(state, 'espressionecron')
   const timerquantita = selector(state, 'timerquantita')
   const timerunita = selector(state, 'timerunita')
-  return { categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita  }
+  const urlws = selector(state, 'urlws')
+  
+  return { categoria, modalitacaricamento, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws  }
 })(WizardForm)
 
 export default WizardForm

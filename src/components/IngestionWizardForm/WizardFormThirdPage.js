@@ -7,7 +7,7 @@ import Sorgenti from './Sorgenti'
 import Storage from './Storage'
 import Pipelines from './Pipelines'
 import MappingStandards from './MappingStandards'
-import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderOrganization, renderFieldCheckbox, renderFieldLicenze} from './renderField';
+import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderOrganization, renderStd, renderFieldLicenze} from './renderField';
 import Collapse from 'rc-collapse'
 import 'rc-collapse/assets/index.css'
 
@@ -122,33 +122,25 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
 
               />
               <Field
-                name="isdatasetstd"
-                component={renderFieldCheckbox}                
-                label="Dataset standard"
-                openModalInfo={openModalInfo}
-                config={config}
-
-              />
-              <Field
                 name="seguestd"
-                component={renderFieldCheckbox}
-                label="Segue uno Standard"
+                options={config['standard']}
+                component={renderFieldSelect}
+                label="Standard"
                 openModalInfo={openModalInfo}
                 config={config}
-
               />
-              {seguestd &&
+              {seguestd=='seguestandard' &&
                       <Field
                         name="datasetstd"
                         options={datasetStdList}
-                        component={renderFieldSelect}
+                        component={renderStd}
                         label="Dataset Standard"
                         openModalInfo={openModalInfo}
                         config={config}
                       />
               }
-              {seguestd && datasetstd &&
-                <MappingStandards fields={fields}/>
+              {seguestd=='seguestandard' && datasetstd &&
+                <MappingStandards fields={fields} datasetStdList={datasetStdList} datasetstd={datasetstd}/>
               
               }
               <Collapse accordion={true}>
@@ -197,7 +189,7 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
                     name="strategiamerge"
                     options={config.strategiamerge}
                     component={renderFieldSelect}
-                    label="Strategia di Merge"
+                    label="Strategia di Caricamento"
                     openModalInfo={openModalInfo}
                     config={config}
                   />

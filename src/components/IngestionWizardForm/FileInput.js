@@ -14,7 +14,6 @@ class FileInput extends Component {
 
     return (
       <div className={`${className}` + (error && touched ? ' has-error ' : '')}>
-        {label && <p className={classNameLabel || ''}>{label}</p>}
             <Dropzone
                 name="input"
                 className="dropzone w-100"

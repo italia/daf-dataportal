@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Values } from "redux-form-website-template";
 import WizardForm from "../../components/IngestionWizardForm/WizardForm";
+import MappingStandards from '../../components/IngestionWizardForm/MappingStandards'
 import { connect } from 'react-redux'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -18,10 +19,10 @@ class IngestionForm extends Component {
     const { loggedUser } = this.props
     return (
       <div className="container">
-           <WizardForm onSubmit={showResults} loggedUser={loggedUser}/>
-          <Values form="wizard" />
-
-       </div>
+            <WizardForm onSubmit={showResults} loggedUser={loggedUser}/>
+          <Values form="wizard" /> 
+{/*                 <MappingStandards fields={new Object([{'nome':'nome1'},{'nome':'nome2'},{'nome':'nome3'},{'nome':'nome4'}])}/>
+ */}       </div>
     )
   }
 }

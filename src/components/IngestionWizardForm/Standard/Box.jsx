@@ -54,7 +54,7 @@ export default class Box extends React.Component {
                 targetKey="boxItem"
                 dropData={{name: this.props.name}}
               >
-                <div className="box">
+                <div className="box" style={{display: 'flex', flexDirection: 'row'}}>
                   {this.state.items.map((item, index) => {
                     return (
                       <BoxItem key={item.uid} uid={item.uid} kill={this.kill} index={index} swap={this.swap}>

@@ -19,6 +19,22 @@ export const renderFieldInput = ({ input, label, openModalInfo, config, readonly
   </div>
 );
 
+export const renderFieldRadio = ({ input, label, openModalInfo, val, config, readonly, meta: { touched, error } }) => (
+  <div className="form-group row">
+    <label className="col-sm-5 col-form-label">{label}
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
+          <i className="fa fa-info-circle"></i>
+      </button>
+    }
+    </label>
+    <div className="col-sm-2">
+      <input {...input} type='radio' readOnly={readonly} className="form-control" value={val} />
+      {touched && error && <span className="text-danger">{error}</span>}
+    </div>
+  </div>
+);
+
 export const renderFieldInputButton = ({ input, openModalInfo, buttonLabel, label, config, placeholder, onClick, readonly, iconClassName, meta: { touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
@@ -72,6 +88,26 @@ export const renderFieldSelect = ({ input, openModalInfo, label, config, options
       </div>
  </div>
 );
+
+export const renderStd = ({ input, openModalInfo, label, config, options, meta: { touched, error } }) => (
+  <div className="form-group row">
+    <label className="col-sm-2 col-form-label">{label}
+    {config.info[input.name] &&
+      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
+          <i className="fa fa-info-circle"></i>
+      </button>
+    } 
+    </label>
+      <div className="col-sm-10">
+        <select className="form-control" type='text' {...input}>
+          <option value="" defaultValue></option>
+          {options.map(value => <option value={value.name} key={value.name}>{value.name}</option>)}
+        </select>
+      {touched && error && <span className="text-danger">{error}</span>}
+      </div>
+ </div>
+);
+
 
 export const renderFieldLicenze = ({ input, openModalInfo, label, config, options, meta: { touched, error } }) => (
   <div className="form-group row">
@@ -190,9 +226,10 @@ export const renderFieldCategoria = ({ input, openModalInfo, label, readonly, co
     </label>    
     <div className="col-sm-10">
         <select className="form-control" type='text' {...input}>
-          {organizations && organizations.length>0 && organizations.map(organization => {
-           return(<option value={organization} key={organization}>{organization}</option>)
-          }
+            <option value="" defaultValue></option>
+            {organizations && organizations.length>0 && organizations.map(organization => {
+            return(<option value={organization} key={organization}>{organization}</option>)
+            }
          )}
         </select>
       {touched && error && <div className="text-danger">{error}</div>}

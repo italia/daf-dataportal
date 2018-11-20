@@ -9,7 +9,7 @@ import { DragDropContainer} from 'react-drag-drop-container';
 export default class Boxable extends React.Component {
     render() {
       return (
-        <div className="boxable_component" style={{display: 'inline-block'}}>
+        <div className="boxable_component">
           <DragDropContainer
             targetKey={this.props.targetKey}
             dragData={{label: this.props.label}}

@@ -224,6 +224,15 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                     </Panel>
                     <Panel header="Informazioni Operazionali">
                       <Field
+                          name={`${field}.chiave`}
+                          component={renderFieldCheckbox}
+                          label="Campo chiave"
+                          value={`${field}.chiave`}
+                          openModalInfo={openModalInfo}
+                          config={config}
+
+                        />
+                      <Field
                           name={`${field}.obbligatorio`}
                           component={renderFieldCheckbox}
                           label="Campo Obbligatorio"
@@ -268,7 +277,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                           config={config}
 
                         />
-                         <Field
+{/*                          <Field
                           name={`${field}.entityextraction`}
                           options={config['dafvoc-ingform-dataschema-metadata-field_profile-entity_extr']}
                           component={renderFieldSelect}
@@ -276,7 +285,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                           value={`${field}.entityextraction`}
                           openModalInfo={openModalInfo}
                           config={config}
-                        />
+                        /> */}
                     </Panel>
                     <Panel header="Dati Personali">
                       <Field

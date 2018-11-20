@@ -162,12 +162,6 @@ class Pipelines extends Component {
                     <p><label className="col-sm-10 col-form-label">Nessuna pipline inserita</label></p>
                 </div>
             }
-            <label className="col-sm-2 col-form-label"></label>
-            <div className="col-sm-10">
-                <button type="button" className="btn btn-link float-right" title="Aggiungi Convenzione" onClick={this.openModalPipelines.bind(this)}>
-                    <i className="fa fa-plus-circle fa-lg m-t-2"></i>
-                </button>
-            </div>
         </div>
       </div>
     );
