@@ -132,7 +132,7 @@ class QueryBuild extends Component {
   }
 
   launchQuery(){
-    const { dispatch } = this.props
+    const { dispatch, onSubmit } = this.props
     const { query, conditions, datasetFrom, datasetJoin, joinOnFrom, joinOnTo } = this.state
     
     for(var k in query){
@@ -161,11 +161,15 @@ class QueryBuild extends Component {
 
         console.log(query)
         dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
+        if(onSubmit)
+          onSubmit(query)
       }
     }else{
       console.log(query)
 
       dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
+      if(onSubmit)
+          onSubmit(query)
     }
   }
 
@@ -368,10 +372,13 @@ class QueryBuild extends Component {
   }
 
   render(){
-    const { loggedUser, isFetching, results, queryLoading, queryResult } = this.props
+    const { loggedUser, isFetching, results, queryLoading, queryResult, className } = this.props
     const { privateWdg, organizations, isQuery, modalOpen } = this.state
+
+    var classes = className?className:"container"
+
     return(
-      <Container className="py-3">
+      <div className={classes}>
         <Modal isOpen={modalOpen}>
           <ModalHeader>
             <ModalTitle>
@@ -531,7 +538,7 @@ class QueryBuild extends Component {
             </div>
           </div>
         </div>}
-      </Container>
+      </div>
     )
   }
 }
