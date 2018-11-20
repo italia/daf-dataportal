@@ -33,12 +33,15 @@ export default class DashboardService {
         return response.json();
     }
 
-    async save(dashboard) {
-
+    async save(dashboard, shared) {
+        var condividi = ''
+        if(shared!==undefined){
+          condividi = '?shared='+shared
+        }
         let id = dashboard.id || "save"
         dashboard['timestamp'] = new Date(); 
         console.log('Salvataggio dashboard: ' + dashboard);
-        const response = await fetch( this.baseUrlSave, {
+        const response = await fetch( this.baseUrlSave+condividi, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

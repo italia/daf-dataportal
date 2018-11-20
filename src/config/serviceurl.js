@@ -20,7 +20,7 @@ export const serviceurl = {
     domain: process.env.DOMAIN */
 
     // TEST   
-/*      apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
+     apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
      urlApiOpen: 'https://api.open.daf.teamdigitale.test/sso-manager',
      apiURLDatiGov: "https://api.daf.teamdigitale.test/dati-gov/v1", 
      apiURLCatalog: "https://api.daf.teamdigitale.test/catalog-manager/v1",
@@ -38,10 +38,10 @@ export const serviceurl = {
      urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
      urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
      domain: ".daf.teamdigitale.test",
-     vocabularyName: "dafvoc-ingestionform-option" */
+     vocabularyName: "dafvoc-ingestionform-option"
 
     // PROD   
-    apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
+    /* apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
     urlApiOpen: 'https://api.open.daf.teamdigitale.it/sso-manager',
     apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
     apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
@@ -61,6 +61,6 @@ export const serviceurl = {
     urlSemanticValidator: "https://api.daf.teamdigitale.it/daf-semantic-validator/validator",
     urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
     domain: ".daf.teamdigitale.it",
-    vocabularyName: "dafvoc-ingestionform-option" 
+    vocabularyName: "dafvoc-ingestionform-option"  */
   }
 
