@@ -41,7 +41,7 @@ export const serviceurl = {
      vocabularyName: "dafvoc-ingestionform-option"
 
     // PROD   
-/*     apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
+    /* apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
     urlApiOpen: 'https://api.open.daf.teamdigitale.it/sso-manager',
     apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1", 
     apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",

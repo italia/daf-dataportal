@@ -334,10 +334,26 @@ class WizardForm extends Component {
   }
 
   goToSecondPage(){
-    this.setState({
-      errorNext: undefined
-    });
-    this.nextPage() 
+    const { tipodataset } = this.props
+    const { query } = this.state
+    
+    if(tipodataset==="derived_sql"){
+      if(query){
+        this.setState({
+          errorNext: undefined
+        });
+        this.nextPage()
+      }else{
+        this.setState({
+          errorNext: "Specifica e testa una query prima di poter continuare"
+        });
+      }
+    }else{  
+      this.setState({
+        errorNext: undefined
+      });
+      this.nextPage() 
+    }
   }
 
   previousPage() {
@@ -687,6 +703,7 @@ const selector = formValueSelector('wizard')
 WizardForm = connect(state => {
   const categoria = selector(state, 'categoria')
   const modalitacaricamento = selector(state, 'modalitacaricamento')
+  const tipodataset = selector(state, 'tipodataset')
   const sottocategoria = selector(state, 'sottocategoria')
   const nome = selector(state, 'nome')
   const tempopolling = selector(state, 'tempopolling')
@@ -694,8 +711,9 @@ WizardForm = connect(state => {
   const timerquantita = selector(state, 'timerquantita')
   const timerunita = selector(state, 'timerunita')
   const urlws = selector(state, 'urlws')
+  const query = selector(state, 'query')
   
-  return { categoria, modalitacaricamento, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws  }
+  return { categoria, modalitacaricamento, tipodataset, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws, query }
 })(WizardForm)
 
 export default WizardForm

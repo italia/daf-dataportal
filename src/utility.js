@@ -324,3 +324,50 @@ export function transformName(name){
   export default themes
 
   export default tipi */
+
+  const operators = [
+    {"key": ">", "value": "gt"},
+    {"key": ">=", "value": "gte"},
+    {"key": "<", "value": "lt"},
+    {"key": "<=", "value": "gte"},
+    {"key": "=", "value": "eq"},
+    {"key": "!=", "value": "neq"}
+  ]
+
+  function decodeOperator(value){
+    var found=value
+    for(var i = 0; i < operators.length; i++) {
+      if (operators[i].key == value) {
+          found = operators[i].value
+          break
+      }
+    }
+    return found
+  }
+
+  function translateRule(rule){
+    var res = {}
+    var operator = decodeOperator(rule.operator)
+    res[operator] = {'left': rule.field, 'right': rule.value}
+
+    return res
+  }
+
+  export function rulesConverter(combinator, rules){
+    var result = {}
+    if(rules.length===1){
+      result = translateRule(rules[0])
+    }
+    else if(rules.length>1){
+      result[combinator] = []
+      for(var i in rules){
+        if(!rules[i].rules){
+          result[combinator].push(translateRule(rules[i]))
+        }else{
+          result[combinator].push(rulesConverter(rules[i].combinator, rules[i].rules))
+        }
+      }
+    }
+
+    return(result)
+  }

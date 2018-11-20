@@ -88,7 +88,7 @@ class DashboardCard extends Component {
         let id = dashboard.id || "save"
         dashboard['timestamp'] = new Date(); 
         console.log('Salvataggio dashboard: ' + dashboard);
-        const response = await fetch( serviceurl.apiURLDatiGov + "/save/dashboards", {
+        const response = await fetch( serviceurl.apiURLDatiGov + "/save/dashboards?shared=true", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

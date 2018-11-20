@@ -38,6 +38,8 @@ export const REQUEST_NOTIFICATIONS = 'REQUEST_NOTIFICATIONS'
 export const RECEIVE_NOTIFICATIONS = 'RECEIVE_NOTIFICATIONS'
 export const REQUEST_NEW_NOTIFICATIONS = 'REQUEST_NEW_NOTIFICATIONS'
 export const RECEIVE_NEW_NOTIFICATIONS = 'RECEIVE_NEW_NOTIFICATIONS'
+export const REQUEST_QUERY_RESULT = 'REQUEST_QUERY_RESULT'
+export const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
 
 
 /*********************************** REDUX ************************************************ */
@@ -951,6 +953,28 @@ export function addDatasetKylo(json, token, fileType) {
   }
 }
 
+export function getDatasetCatalog(datasetname, isPublic){
+  var token = ''
+  var token = '';
+  var url = serviceurl.apiURLCatalog + (isPublic?'/public/catalog-ds/getbyname/'  + datasetname:'/catalog-ds/getbyname/'  + datasetname)
+  if(localStorage.getItem('username') && localStorage.getItem('token') && 
+     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+  return dispatch => {
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    })
+    .then(response => response.json())
+    .catch(error=> console.error(error))
+  }
+}
+
 function fetchDatasetDetail(datasetname, query, isPublic) {
   var token = '';
   var url = serviceurl.apiURLCatalog + (isPublic?'/public/catalog-ds/getbyname/'  + datasetname:'/catalog-ds/getbyname/'  + datasetname)
@@ -1561,7 +1585,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
 
       export function deleteDataset(nomeDataset, org){
-        var url = serviceurl.apiURLCatalog + 'catalog-ds/delete/'+nomeDataset+'/'+org
+        var url = serviceurl.apiURLCatalog + '/catalog-ds/delete/'+nomeDataset+'/'+org
 
         var token = ''
 
@@ -1579,7 +1603,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Authorization': 'Bearer ' + token
             }
           })
-          .then(response => response.json())
+          .then(response => response)
         }
       }
 
@@ -1705,7 +1729,40 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
 
-      export function launchQueryOnStorage(logical_uri, query) {
+
+      /* Actions for Query Reducer */
+      function receiveQueryResult(json, query){
+        console.log('receiveQueryResult');
+        return {
+          type: RECEIVE_QUERY_RESULT,
+          result: json,
+          query: query,
+          queryLoading: false,
+          receivedAt: Date.now(),
+          ope: 'RECEIVE_QUERY_RESULT'
+        }
+      }
+
+      function requestQueryResult(){
+        console.log('requestQueryResult');
+        return {
+          type: REQUEST_QUERY_RESULT,
+          result: [],
+          query: undefined,
+          queryLoading: true,
+          receivedAt: Date.now(),
+          ope: 'REQUEST_QUERY_RESULT'
+        }
+      }
+
+      export function getQueryResult(logical_uri, query){
+        console.log('Launch Query on storage action');
+        return (dispatch) => {
+          return dispatch(launchQueryOnStorage(logical_uri, query))
+        }      
+      }
+
+      function launchQueryOnStorage(logical_uri, query) {
         var token = ''
         var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) +'/search'
 
@@ -1713,6 +1770,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           token = localStorage.getItem('token')
         }
         return dispatch => {
+            dispatch(requestQueryResult())
             return fetch(url, {
               method: 'POST',
               headers: {
@@ -1722,7 +1780,8 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               },
               body: JSON.stringify(query)
             })
-            .then(response => response)
+            .then(response => response.json())
+            .then(json => dispatch(receiveQueryResult(json, query)))
             .catch(error=> console.error(error))
           }
         }

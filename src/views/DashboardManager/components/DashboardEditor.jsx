@@ -385,7 +385,7 @@ class DashboardEditor extends Component {
   /**
   * Save Layout and widgets
   */
-  save = () => {
+  save = (shared) => {
     //clean layout from control button
     let layoutOld = JSON.parse(JSON.stringify(this.state.layout));
     
@@ -435,7 +435,7 @@ class DashboardEditor extends Component {
     if(request.widgets==='{}'){
       toastr.error('Errore', 'Per salvare una Dashboard inserisci almeno un Widget')
     }else{
-      const response = dashboardService.save(request);
+      const response = dashboardService.save(request, shared);
       this.setState({saving: true});
       response.then((data)=> {
         request.id = data.message
@@ -514,7 +514,7 @@ class DashboardEditor extends Component {
    */
   onPublish(published){
     this.state.dashboard.status = published;
-    this.save();
+    this.save(true);
   }
 
   /**
