@@ -134,38 +134,34 @@ class Pipelines extends Component {
             <label className="col-sm-2 col-form-label">Pipelines</label>
             {listaPipelines.length>0?
                 <div className="col-sm-10">
-                <table className="table table-sm">
-                    <thead>
-                        <tr>
-                        <th scope="col">Pipeline</th>
-                        <th scope="col">Parametro</th>
-                        <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {listaPipelines.map((pipeline, index) => {
-                            return(<tr key={index}>
-                                        <td>{pipeline.nome}</td>
-                                        <td>{pipeline.parametro}</td>
-                                        <td> <button type="button" className="btn btn-link float-right" title="Rimuovi Pipeline"  onClick={this.handleRemovePipeline.bind(this, pipeline.nome, pipeline.parametro)}>
-                                                <i className="fa fa-minus-circle fa-lg m-t-2"></i>
-                                            </button>
-                                        </td>
-                                    </tr>)
-                        })
-                        }
-                    </tbody>
+                    <table className="table table-sm">
+                        <thead>
+                            <tr>
+                            <th scope="col">Pipeline</th>
+                            <th scope="col">Parametro</th>
+                            <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listaPipelines.map((pipeline, index) => {
+                                return(<tr key={index}>
+                                            <td>{pipeline.nome}</td>
+                                            <td>{pipeline.parametro}</td>
+                                            <td> <button type="button" className="btn btn-link float-right" title="Rimuovi Pipeline"  onClick={this.handleRemovePipeline.bind(this, pipeline.nome, pipeline.parametro)}>
+                                                    <i className="fa fa-minus-circle fa-lg m-t-2"></i>
+                                                </button>
+                                            </td>
+                                        </tr>)
+                            })
+                            }
+                        </tbody>
                     </table>
-                    </div>
-                    :
-                    <div className="col-sm-10">
-                    <p><label className="col-sm-10 col-form-label">Nessuna pipline inserita</label>
-                        <button type="button" className="btn btn-link float-right" title="Aggiungi Convenzione" onClick={this.openModalPipelines.bind(this)}>
-                            <i className="fa fa-plus-circle fa-lg m-t-2"></i>
-                        </button>
-                        </p>
-                    </div>
-                    }
+                </div>
+            :
+                <div className="col-sm-10">
+                    <p><label className="col-sm-10 col-form-label">Nessuna pipline inserita</label></p>
+                </div>
+            }
         </div>
       </div>
     );

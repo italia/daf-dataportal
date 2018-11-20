@@ -1,8 +1,9 @@
 import React from 'react';
 import './style.css';
-import { WithContext as ReactTags } from 'react-tag-input';
- 
+import { WithOutContext as ReactTags } from 'react-tag-input';
+
 class TagsInput extends React.Component {
+    
     constructor(props) {
         super(props);
  
@@ -19,7 +20,7 @@ class TagsInput extends React.Component {
         let tags = this.state.tags;
         tags.splice(i, 1);
         this.setState({tags: tags});
-        this.props.addTagsToForm(this.props.name, tags);
+        this.props.addTagsToForm(tags);
     }
  
     handleAddition(tag) {
@@ -29,10 +30,10 @@ class TagsInput extends React.Component {
             text: tag
         });
         this.setState({tags: tags});
-        this.props.addTagsToForm(this.props.name, tags);
+        this.props.addTagsToForm(tags);
     }
  
-    handleDrag(tag, currPos, newPos) {
+     handleDrag(tag, currPos, newPos) {
         let tags = this.state.tags;
  
         // mutate array 
@@ -41,8 +42,8 @@ class TagsInput extends React.Component {
  
         // re-render 
         this.setState({ tags: tags });
-        this.props.addTagsToForm(this.props.name, tags);
-    }
+        this.props.addTagsToForm(tags);
+    } 
  
     render() {
         const { tags, suggestions } = this.state;

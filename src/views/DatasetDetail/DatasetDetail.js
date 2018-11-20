@@ -314,14 +314,16 @@ class DatasetDetail extends Component {
         var acl = dataset.operational.acl
         var orgsI = []
         var orgsT = []
-
-        for(var i = 0; i<acl.length; i++){
-          if(loggedUser.organizations.indexOf(acl[i].groupName)>-1){
-            orgsI.push(acl[i].groupName)
-            orgsT.push({"name":acl[i].groupName})
-          } else if(loggedUser.workgroups.indexOf(acl[i].groupName)>-1){
-            orgsI.push(acl[i].groupName)
-            orgsT.push({"name":acl[i].groupName})
+        
+        if(acl && acl!==undefined && acl!=null){
+          for(var i = 0; i<acl.length; i++){
+            if(loggedUser.organizations.indexOf(acl[i].groupName)>-1){
+              orgsI.push(acl[i].groupName)
+              orgsT.push({"name":acl[i].groupName})
+            } else if(loggedUser.workgroups.indexOf(acl[i].groupName)>-1){
+              orgsI.push(acl[i].groupName)
+              orgsT.push({"name":acl[i].groupName})
+            }
           }
         }
 
@@ -330,23 +332,27 @@ class DatasetDetail extends Component {
         dispatch(getSupersetUrl(nomeFile, org, isExtOpendata))
             .then(json => {
               var supersetLinks = json
-              dispatch(groupsInfo(orgsI))
-              .then(json=>{
-                var orgsInfo = json
-                dispatch(getTableId(dataset.dcatapit.owner_org+"_o_"+dataset.dcatapit.name, orgsT))
+              if(orgsI.length>0){
+                dispatch(groupsInfo(orgsI))
                 .then(json=>{
-                  for(var k in orgsInfo){
-                    for(var i in json){
-                      for(var j in supersetLinks){
-                        if(json[i].id===supersetLinks[j].id && json[i].org===orgsInfo[k].groupCn){
-                          supersetLinks[j].groupInfo = orgsInfo[k]
+                  var orgsInfo = json
+                  dispatch(getTableId(dataset.dcatapit.owner_org+"_o_"+dataset.dcatapit.name, orgsT))
+                  .then(json=>{
+                    for(var k in orgsInfo){
+                      for(var i in json){
+                        for(var j in supersetLinks){
+                          if(json[i].id===supersetLinks[j].id && json[i].org===orgsInfo[k].groupCn){
+                            supersetLinks[j].groupInfo = orgsInfo[k]
+                          }
                         }
-                      }
-                    }  
-                  }
-                  this.setState({ supersetLink: supersetLinks, supersetState: 1 })
+                      }  
+                    }
+                    this.setState({ supersetLink: supersetLinks, supersetState: 1 })
+                  })
                 })
-              })
+              }else{
+                this.setState({ supersetLink: supersetLinks, supersetState: 1 })
+              }
             })
             .catch(error => { this.setState({ supersetState: 2 }) })
     }
@@ -453,6 +459,7 @@ class DatasetDetail extends Component {
               accessor: elem
             })
           })
+          // console.log(columns)
           return(
             <ReactTable 
               data={jsonPreview}
@@ -461,31 +468,6 @@ class DatasetDetail extends Component {
               className="-striped -highlight"
               />
           )
-          /* return (
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  {Object.keys(jsonPreview[0]).map((elem,index)=>{
-                    return <th scope="col" key={index}>{elem}</th>
-                  })}
-                </tr>
-              </thead>
-              <tbody>
-                {jsonPreview.map((elem,index)=>{
-                  var obj = []
-                  for (var p in elem)
-                    obj.push(elem[p])
-                  return(
-                    <tr key={index}>
-                    {obj.map((val, index)=>{
-                      return(<td key={index}>{val}</td>)
-                    })}
-                    </tr>)
-                  })
-                }
-              </tbody>
-            </table>
-          ) */
         }else{
           return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
         }

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Components from 'react';
-//import TextareaAutosize from 'react-autosize-textarea';
 import $ from 'jquery';
 
 //medium text editor

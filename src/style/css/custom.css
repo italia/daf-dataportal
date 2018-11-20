@@ -1056,3 +1056,14 @@ li.bg-footer:last-child.social-links {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+
+.autocomplete-tag-class { 
+  display: block;
+  width: 100%;
+  line-height: 1.5;
+  color: #3e515b;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #c2cfd6!important;
+  border-radius: 0;  
+}

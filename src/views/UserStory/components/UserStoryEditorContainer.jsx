@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Components from 'react';
-import Helmet from 'react-helmet'
 import Dashboard, { addWidget } from 'react-dazzle';
 import { toastr } from 'react-redux-toastr'
 import SectionTitle from './SectionTitle';

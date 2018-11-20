@@ -34,9 +34,10 @@ const fixLanguageProperty = ([languagePropKey, languagePropValue]) =>
 
 const languagePropertyMap = ([languagePropKey, languagePropValue], lang) => {
   const filteredProp = languagePropValue.filter(value => value.lang === lang)
-  return isEmpty(filteredProp)
-    ? [languagePropKey, defaultLanguage(lang)]
-    : [languagePropKey, filteredProp]
+  // return isEmpty(filteredProp)
+  //   ? [languagePropKey, defaultLanguage(lang)]
+  //   : [languagePropKey, filteredProp]
+  return [languagePropKey, filteredProp]
 }
 
 export const dataParser = (data, lang) =>

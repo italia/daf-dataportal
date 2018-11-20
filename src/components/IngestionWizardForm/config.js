@@ -4,7 +4,7 @@ export const config =
     'titolo': '<p>Il titolo deve essere univoco nel DAF.</p><p>Il valore di default sarà il nome del file.</p><p>Un servizio controllerà l\'univocita del titolo.</p>',
     'nome' : '<p>Il campo nome verrà calcolato automaticamente dal sistema.</p>',
     'modalitacaricamento': '<h4> Caricamento SFTP Push</h4><p className="text-justify">Carica un file di esempio minore di 1MB nella drop-area. Inserisci le informazioni seguendo la procedura guidata. Il file vero e proprio lo dovrai caricare all\'indirizzo <b>SFTP</b> che ti abbiamo comunicato </p><h4> Caricamento Web Service Pull</h4><p>Inserisci l\'url dei dati da caricare. Inserisci le informazioni seguendo la procedura guidata. Il caricamento del file parte in automatico a intervalli regolari. Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p><h4> Caricamento Web Service Push</h4><p className="text-justify">Carica un file di esempio minore di 1MB nella drop-area. Inserisci le informazioni seguendo la procedura guidata. Il file vero e proprio lo dovrai caricare successivamente chiamando l\'API comunicata o attraverso la drop-area nella scheda di dettaglio del dataset. Dimensione massima 100MB. </p>',
-    'strategiamerge':'<h4> Merge </h4><p className="text-justify">Fornitura continua di dati in serie (e.g. eventi)</p><h4> Merge By PK </h4><p className="text-justify">Fornitura continua di dati come la precedente con la possibilità che ci siano duplicati (o per i quali prevedo ricaricamenti)</p><h4> Dedup&Merge </h4><p className="text-justify">Fornitura di dati per cui prevedo insert/update ma mai cancellazioni</p><h4> Sync </h4><p className="text-justify">Fornitura completa del dataset ad ogni invio (eg. anagrafiche)</p>',
+    'strategiamerge':'<h4> Concatena </h4><p className="text-justify">Concatena i nuovi dati a quelli già presenti (ad esempio per eventi in serie)</p><h4> Deduplica e concatena </h4><p className="text-justify">Concatena i nuovi dati se non sono già presenti (il controllo viene effettuato su tutto il record)</p><h4> Aggiorna per chiave primaria</h4><p className="text-justify">Concatena i nuovi dati se la chiave non è presente. Altrimenti li aggiorna. </p><h4> Sincronizza </h4><p className="text-justify">Sostituisce i dati precedenti con i nuovi</p>',
     'gruppoproprietario':'<p>Potrai aggiungere i permessi per gli altri gruppi in seguito nella scheda del dataset</p>'
   },
   'dafvoc-ingform-dataset_visibility': [
@@ -115,8 +115,8 @@ export const config =
             "elements":["sql_input"]
           }
         ]
-      },
-      {
+      }
+/*       {
         "uid": "derived_procspark",
         "name": {"ita": "Dataset derivato con procedura Spark", "eng": "Derived Dataset - Spark Procedure", "default": "Derived Dataset - Spark Procedure"},
         "desc": {
@@ -131,12 +131,12 @@ export const config =
             "elements":["select_sparkproc"]
           }
         ]
-      }
+      } */
   ],
   'dafvoc-ingform-ingest_type' : [
     {
       "uid": "sftp",
-      "name": {"default": "SFTP / Drag & Drop"},
+      "name": {"default": "SFTP / API PUT"},
       "desc": {
         "ita": "Ingestion via SFTP. Path e altre informazioni saranno disponibili alla fine della procedura.",
         "eng": "SFTP ingestion. Path and other info will be profided at the end of the procedure.",
@@ -152,7 +152,7 @@ export const config =
     },
     {
       "uid": "webservice_pull",
-      "name": {"default": "Webservice pull"},
+      "name": {"default": "Webservice PULL"},
       "desc": {
         "ita": "Ingestion via Webservice. Inserisci le info necessarie e il DAF caricherà i dati dal servizio indicato.",
         "eng": "Ingestion via Webservice. Fill info below and we'll get data directly from there.",
@@ -224,7 +224,15 @@ export const config =
       "ctx_mapping": {
         "parquet": "int"
       }
-    }
+    },
+    {"uid":'bigint', "name": {"default": "bigint"}},
+    {"uid":'binary', "name": {"default": "binary"}},
+    {"uid":'boolean', "name": {"default": "boolean"}},
+    {"uid":'decimal', "name": {"default": "decimal"}},
+    {"uid":'double', "name": {"default": "double"}},
+    {"uid":'float', "name": {"default": "float"}},
+    {"uid":'timestamp', "name": {"default": "timestamp"}},
+    {"uid":'tinyint', "name": {"default": "tinyint"}}
   ],
   'dafvoc-ingform-dataschema-metadata-field_type': [
     {
@@ -423,7 +431,7 @@ export const config =
     {
       "uid": "dummymask-lengh",
       "name": {
-        "ita": "Mascheramento dummy che a lunghezza",
+        "ita": "Mascheramento dummy preservando lunghezza campo",
         "eng": "Dummy masking, length preserving",
         "default": "eng"
       },
@@ -545,25 +553,25 @@ export const config =
     { 
       'uid': 'merge', 
       'name': { 
-      'ita':'Merge' 
-      }
-    },
-    { 
-      'uid': 'mergebypk', 
-      'name': { 
-        'ita':'Merge By PK' 
+      'ita':'Concatena' 
       }
     },
     { 
       'uid': 'dedupmerge', 
       'name': { 
-        'ita':'Dedup&Merge' 
+        'ita':'Deduplica e concatena' 
+      }
+    },
+    { 
+      'uid': 'mergebypk', 
+      'name': { 
+        'ita':'Aggiorna per chiave primaria' 
       }
     },
     { 
       'uid': 'sync', 
       'name': { 
-        'ita':'Sync' 
+        'ita':'Sincronizza' 
       }
     }
   ],
@@ -689,5 +697,17 @@ export const config =
       {'label':'Param', 'val':'param'}
     ]
     }
+  ],
+  'standard':[
+    { 'uid': 'isstandard', 
+      'name': { 
+        'ita':'E\' un dataset Standard' 
+      }
+    },
+    { 'uid': 'seguestandard', 
+      'name': { 
+        'ita':'Segue uno Standard' 
+      }
+    },
   ]
 }

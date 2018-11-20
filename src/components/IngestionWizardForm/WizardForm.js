@@ -6,7 +6,7 @@ import Steps, { Step } from 'rc-steps';
 import themes from '../../data/themes'
 import licenze from '../../data/licenze'
 import { connect  } from 'react-redux';
-import { getSchema, getSchemaWS, getSystemNameKylo, loadVocabulary } from '../../actions';
+import { getSchema, getSchemaWS, getSystemNameKylo, loadVocabulary, loadDatasetStandard } from '../../actions';
 import { change, reset } from 'redux-form'
 import { getEditorAdminOrganizations } from '../../utility'
 import 'rc-steps/assets/index.css'
@@ -55,8 +55,8 @@ class WizardForm extends Component {
     this.executeQuery = this.executeQuery.bind(this)
     this.resetQueryValue = this.resetQueryValue.bind(this)
     this.modificaDataDCATAPIT = this.modificaDataDCATAPIT.bind(this)
+    this.changeTreeData = this.changeTreeData.bind(this)
     this.state = {
-      //config: config,
       page: 0,
       uploading: false,
       errorUpload: undefined,
@@ -93,11 +93,31 @@ class WizardForm extends Component {
             "default": "voc2"
           }
         }
-      ]
+      ],
+      datasetStdList:[],
+      config: config
     };
-    this.loadConfiguration()
+    //this.loadConfiguration()
     //this.loadVocabolariControllati()
+    this.loadDatasetStandard()
   }
+
+  loadDatasetStandard(){
+    const { dispatch } = this.props
+    this.setState({ datasetStdList: true })
+    dispatch(loadDatasetStandard(serviceurl.vocabularyName))
+   .then(response=>{
+     if(response.ok){
+       response.json().then(json=>{
+          this.setState({ datasetStdList: json })
+       })
+    }else{
+     console.log('Errore nel reperimento del json [loaddatasetStandard]: ' + error) 
+    }})
+   .catch((error)=>{ 
+     console.log('Errore nel reperimento del json [loaddatasetStandard]: ' + error) 
+   }) 
+ }
 
   loadConfiguration(){
      const { dispatch } = this.props
@@ -256,6 +276,11 @@ class WizardForm extends Component {
     const { dispatch } = this.props
     dispatch(change('wizard', 'ultimamodifica', value)) 
   }
+
+  changeTreeData(value){
+    const { dispatch } = this.props
+    dispatch(change('wizard', 'treedata', value)) 
+  }
   
   openModalInfo = (infoText) => {
     console.log('infoText: ' + infoText)
@@ -283,12 +308,12 @@ class WizardForm extends Component {
                   })
   }
 
-  addTagsToForm(fieldName, tags){
-    var tagString=""
-    tags.map((tag) => {
-      tagString=tagString==''?tagString.concat(tag.text):tagString.concat("," + tag.text)
-    })
-    this.onChange(tagString)
+  addTagsFiletagsToForm(tags){
+    this.onChange(tags)
+  }
+
+  addTagsFieldToForm(tags){
+    this.onChange(tags)
   }
 
   setTipi = (value) => {
@@ -308,64 +333,11 @@ class WizardForm extends Component {
     this.setState({ page: this.state.page + 1 });
   }
 
-  goToSecondPage(fields){
-    const { dispatch } = this.props
+  goToSecondPage(){
     this.setState({
       errorNext: undefined
     });
-      //SORGENTI
-      var sorgente = new Object
-      var sched = ''
-      var url = ''
-      var user = localStorage.getItem('user').toLowerCase()
-      if(fields.modalitacaricamento=='sftp' && fields.nomefile && fields.nomefile!=''){
-        sorgente.tipo = "sftp"
-        url = "".concat(fields.categoria).concat("/").concat(fields.sottocategoria).concat("/").concat(fields.nome)
-        if(fields.tempopolling=='0')
-        sched='{cron:' + fields.espressionecron + '}'
-      else if (fields.tempopolling=='1')
-        sched='{timer: quantita:' + fields.timerquantita + ', unita: '+ fields.timerunita+'}'
-
-      sorgente.val='Url='+url+' User='+user+' Schedule='+sched
-      this.state.listaSorgenti.push(sorgente)
-      dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
-
-      // STORAGE
-      var stor = new Object()
-      stor.tipo='hdfs'
-      stor.val='hdfs://??????'
-      this.state.listaStorage.push(stor)
-      dispatch(change('wizard', 'storage', this.state.listaStorage))
-      this.nextPage() 
-
-      }else if(fields.modalitacaricamento=='webservice_pull' && this.state.filePullLoaded){
-        sorgente.tipo = "webservice_pull"
-        url=fields.urlws
-
-      if(fields.tempopolling=='0')
-        sched='{cron:' + fields.espressionecron + '}'
-      else if (fields.tempopolling=='1')
-        sched='{timer: quantita:' + fields.timerquantita + ', unita: '+ fields.timerunita+'}'
-
-      sorgente.val='Url='+url+' User='+user+' Schedule='+sched
-      this.state.listaSorgenti.push(sorgente)
-      dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
-
-      // STORAGE
-      var stor = new Object()
-      stor.tipo='hdfs'
-      stor.val='hdfs://??????'
-      this.state.listaStorage.push(stor)
-      dispatch(change('wizard', 'storage', this.state.listaStorage))
-      this.nextPage() 
-
-      }else{
-        this.setState({
-          errorNext: 'Caricare il file per la metadatazione'
-        });
-      }
-
-
+    this.nextPage() 
   }
 
   previousPage() {
@@ -405,6 +377,7 @@ class WizardForm extends Component {
           this.calcDataFields(fields, json)
           this.setUploading(false, undefined);
           this.setState({filePullLoaded:true}) 
+          this.setDefaultValue()
         }
       })
     }else{
@@ -421,26 +394,93 @@ class WizardForm extends Component {
     .then(json => dispatch(change('wizard', 'nome', json.system_name)))
   }
 
-  onDropFunction(fields, filesToUpload, e){
+  setDefaultValue(){
+      const { dispatch, modalitacaricamento, categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws } = this.props
+      
+      //PIPELINE
+      var pipeline = new Object()
+      pipeline.nome = 'DAF Ingestion Pipeline default'
+      pipeline.parametro = ''
+      this.state.listaPipelines.push(pipeline)
+      dispatch(change('wizard', 'pipelines',  this.state.listaPipelines)) 
+
+      //SORGENTI
+      var sorgente = new Object
+      var sched = ''
+      var url = ''
+      var user = localStorage.getItem('user').toLowerCase()
+
+      if(modalitacaricamento=='sftp'){
+        sorgente.tipo = "sftp"
+        url = "".concat(categoria).concat("/").concat(sottocategoria).concat("/").concat(nome)
+        if(tempopolling=='0')
+        sched='{cron:' + espressionecron + '}'
+      else if (tempopolling=='1')
+        sched='{timer: quantita:' + timerquantita + ', unita: '+ timerunita+'}'
+
+      sorgente.val='Url='+url+' User='+user+' Schedule='+sched
+      this.state.listaSorgenti.push(sorgente)
+      dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+
+      // STORAGE
+      var stor = new Object()
+      stor.tipo='hdfs'
+      stor.val='DAF default path'
+      this.state.listaStorage.push(stor)
+      dispatch(change('wizard', 'storage', this.state.listaStorage))
+
+
+      }else if(modalitacaricamento=='webservice_pull' && this.state.filePullLoaded){
+        sorgente.tipo = "webservice_pull"
+        if(tempopolling=='0')
+          sched='{cron:' + espressionecron + '}'
+        else if (tempopolling=='1')
+          sched='{timer: quantita:' + timerquantita + ', unita: '+ timerunita+'}'
+
+        sorgente.val='Url='+urlws+' User='+user+' Schedule='+sched
+        this.state.listaSorgenti.push(sorgente)
+        dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+
+        // STORAGE
+        var stor = new Object()
+        stor.tipo='hdfs'
+        stor.val='DAF default path'
+        this.state.listaStorage.push(stor)
+        dispatch(change('wizard', 'storage', this.state.listaStorage))
+
+        }else{
+          this.setState({
+            errorNext: 'Caricare il file per la metadatazione'
+          });
+        }
+  }
+
+  onDropFunction(fields, filesToUpload, tipofile, e){
     console.log('props: ' + this.props)
     const { dispatch } = this.props
     this.setUploading(true, undefined);
-    if(filesToUpload.length>0){
-    this.setState({errorDrop:''})
-    dispatch(getSchema(filesToUpload, 'csv'))//defaul value is csv
-        .then(json => { this.calcDataFields(fields, JSON.parse(json))
-        //.then(json => { this.calcDataFields(fields, json)
-                        this.setUploading(false, undefined);
-                        dispatch(change('wizard', 'separator', json.separator))
-                        dispatch(change('wizard', 'filesToUpload', filesToUpload))
-                        dispatch(change('wizard', 'nomefile', filesToUpload[0].name))
-                    })
-        .catch(exception => {
-                        console.log('Eccezione !!! ' + exception)
-                        this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+    console.log('tipofile: ' + tipofile)
+    if(tipofile){
+      if(filesToUpload.length>0){
+      this.setState({errorDrop:''})
+        dispatch(getSchema(filesToUpload, tipofile))//defaul value is csv
+            .then(json => { this.calcDataFields(fields, JSON.parse(json))
+            //.then(json => { this.calcDataFields(fields, json)
+                            this.setUploading(false, undefined);
+                            dispatch(change('wizard', 'separator', json.separator))
+                            dispatch(change('wizard', 'filesToUpload', filesToUpload))
+                            dispatch(change('wizard', 'nomefile', filesToUpload[0].name))
+                            this.setDefaultValue()
                         })
+            .catch(exception => {
+                            console.log('Eccezione !!! ' + exception)
+                            this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
+                            })
+      }else{
+          this.setUploading(false, 'Dimensioni file non consentite. Il file non può superare 10MB');
+      }
     }else{
-        setUploading(false, 'Dimensioni file non consentite. Il file non può superare 10MB');
+      this.setUploading(false, 'Selezionare il tipo di file da caricare.');
     }
   }
 
@@ -525,7 +565,7 @@ class WizardForm extends Component {
 
   render() {
     const { onSubmit, loggedUser } = this.props;
-    const { page, tipi, context, infoText, listaConvenzioni, listaGerarchie, listaStorage, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery, config, vocabolariControllati, filePullLoaded } = this.state;
+    const { page, tipi, context, infoText, datasetStdList, listaConvenzioni, listaGerarchie, listaStorage, listaGruppi, listaSorgenti, listaPipelines, errorNext, query, resultQuery, config, vocabolariControllati, filePullLoaded, uploading } = this.state;
     return this.state.loadingConfiguration === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
       <div>
         {config?
@@ -549,7 +589,7 @@ class WizardForm extends Component {
                 setUploading={this.setUploading}
                 onDropFunction={this.onDropFunction}
                 reset={reset}
-                addTagsToForm={this.addTagsToForm}
+                addTagsFiletagsToForm={this.addTagsFiletagsToForm}
                 setName={this.setName}
                 getSchemaFromWS={this.getSchemaFromWS}
                 errorNext={errorNext}
@@ -562,13 +602,14 @@ class WizardForm extends Component {
                 openModalInfo={this.openModalInfo}
                 config={config}
                 filePullLoaded={filePullLoaded}
+                uploading={uploading}
               />}
             {page === 1 &&
               <WizardFormSecondPage
                 previousPage={this.previousPage}
                 onSubmit={this.nextPage}
                 tipi={tipi}
-                addTagsToForm={this.addTagsToForm}
+                addTagsFieldToForm={this.addTagsFieldToForm}
                 aggiornaStato={this.aggiornaStato}
                 addSemanticToForm={this.addSemanticToForm}
                 addConvenzioneToForm={this.addConvenzioneToForm}
@@ -582,6 +623,7 @@ class WizardForm extends Component {
                 getFormValue={this.getFormValue}
                 config={config}
                 vocabolariControllati={vocabolariControllati}
+                changeTreeData={this.changeTreeData}
               />}
             {page === 2 &&
               <WizardFormThirdPage
@@ -604,6 +646,7 @@ class WizardForm extends Component {
                 listaStorage={listaStorage} 
                 addStorageToForm={this.addStorageToForm} 
                 deleteStorageToForm={this.deleteStorageToForm}
+                datasetStdList={datasetStdList}
               />}
           </div>
         </div>
@@ -643,13 +686,16 @@ WizardForm = reduxForm({
 const selector = formValueSelector('wizard') 
 WizardForm = connect(state => {
   const categoria = selector(state, 'categoria')
+  const modalitacaricamento = selector(state, 'modalitacaricamento')
   const sottocategoria = selector(state, 'sottocategoria')
   const nome = selector(state, 'nome')
   const tempopolling = selector(state, 'tempopolling')
   const espressionecron = selector(state, 'espressionecron')
   const timerquantita = selector(state, 'timerquantita')
-  const timerunita = selector(state, 'timerunita') 
-  return { categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita  }
+  const timerunita = selector(state, 'timerunita')
+  const urlws = selector(state, 'urlws')
+  
+  return { categoria, modalitacaricamento, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws  }
 })(WizardForm)
 
 export default WizardForm
