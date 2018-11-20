@@ -49,16 +49,16 @@ class ViewBar extends React.Component {
     dash.layout = JSON.stringify(this.props.dashboard.layout)
     dash.widgets = JSON.stringify(this.props.dashboard.widgets)
 
-    this.save(dash)
+    this.save(dash, true)
     
   }
 
-  save(dash) {
+  save(dash, shared) {
     this.setState({
       saving: true
     });
     
-    dashboardService.save(dash).then((data)=> {
+    dashboardService.save(dash, shared).then((data)=> {
       this.setState({
         saving: false,
       })

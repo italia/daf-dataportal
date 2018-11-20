@@ -91,7 +91,7 @@ class UserStoryEditor extends Component {
     this.save();
   }
 
-  save() {
+  save(shared) {
       const { dataStory } = this.state
       console.log(dataStory)
       this.setState({
@@ -102,7 +102,7 @@ class UserStoryEditor extends Component {
         toastr.error('Errore', 'Per salvare una Storia inserisci almeno un Widget')
       }else{
 
-        userStoryService.save(dataStory).then((data)=> {
+        userStoryService.save(dataStory, shared).then((data)=> {
           this.setState({
             saving: false,
             modified: false
@@ -129,7 +129,7 @@ class UserStoryEditor extends Component {
    */
   onPublish(published){
     this.state.dataStory.published = published;
-    this.save(this.state.dataStory);
+    this.save(true);
   }
 
   /**

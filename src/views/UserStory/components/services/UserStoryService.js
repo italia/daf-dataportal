@@ -63,10 +63,14 @@ export default class UserStoryService {
       return response.json();
     }
 
-    async save(story) {
+    async save(story, shared) {
+        var condividi = ''
+        if(shared!==undefined){
+          condividi='?shared='+shared
+        }
         story['timestamp'] = new Date(); 
         console.log('Salvataggio story: ' + story);
-        const response = await fetch( this.baseUrlSave, {
+        const response = await fetch( this.baseUrlSave+condividi, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
