@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Container } from 'reactstrap'
 import {
   Modal,
   ModalHeader,
@@ -15,6 +14,7 @@ import { rulesConverter } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
 import QueryBuilder from 'react-querybuilder';
+
 
 
 class QueryBuild extends Component {
