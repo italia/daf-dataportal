@@ -1,12 +1,180 @@
 import React, { Component } from 'react';
-import { ResponsiveContainer, AreaChart, XAxis, YAxis, CartesianGrid, Area, Tooltip, ReferenceLine } from 'recharts'
+import { 
+  ResponsiveContainer,
+  AreaChart, 
+  XAxis, 
+  YAxis, 
+  ZAxis,
+  CartesianGrid, 
+  Area, 
+  Tooltip, 
+  ReferenceLine, 
+  Bar, 
+  BarChart, 
+  Legend, 
+  LineChart, 
+  Line,
+  ComposedChart,
+  Pie,
+  PieChart,
+  Cell,
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  RadialBarChart,
+  RadialBar,
+  Label,
+  LabelList,
+  Scatter,
+  ScatterChart,
+  Treemap
+} from 'recharts'
+
+const colors = ['#4a8523','#68f5c8','#acadc1','#dd4c63','#b415ab','#c4aa30','#223373','#3523d1']
 
 class Chart extends Component{
   constructor(props){
     super(props)
+
+    this.conditionalChartRender = this.conditionalChartRender.bind(this)
+  }
+
+  conditionalChartRender(type, data){
+    switch (type) {
+      case 'areachart':
+        return(
+          <AreaChart width={730} height={250} data={data}
+                margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+            <CartesianGrid strokeDasharray="3 3"/>
+            <XAxis dataKey="name"/>
+            <YAxis/>
+            <Tooltip/>
+            <Area type='monotone' dataKey='pv' stroke='#8884d8' fill='#8884d8' />
+            <Area type='monotone' dataKey='uv' stroke='#8884d8' fill='#8884d8' />
+          </AreaChart>
+        )
+        break;
+      case 'barchart':
+        return(
+          <BarChart width={730} height={250} data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="pv" fill="#8884d8" />
+            <Bar dataKey="uv" fill="#82ca9d" />
+          </BarChart>
+        )
+        break;
+      case 'linechart':
+          return(
+            <LineChart width={730} height={250} data={data}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="pv" stroke="#8884d8" />
+              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            </LineChart>
+          )
+          break;
+      case 'composedchart':
+          return(
+            <ComposedChart width={730} height={250} data={data}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <CartesianGrid stroke="#f5f5f5" />
+              <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
+              <Bar dataKey="pv" barSize={20} fill="#413ea0" />
+              <Line type="monotone" dataKey="uv" stroke="#ff7300" />
+            </ComposedChart>
+          )
+          break;
+      case 'piechart':
+          return(
+            <PieChart width={730} height={250}>
+              <Pie data={data} dataKey="pv" nameKey="name" cx="50%" cy="50%" outerRadius={100}>
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={colors[index]}/>
+                ))
+                }
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          )
+          break;
+      case 'radarchart':
+          return(
+            <RadarChart outerRadius={90} width={730} height={250} data={data}>
+              <PolarGrid />
+              <PolarAngleAxis dataKey="name" />
+              <PolarRadiusAxis angle={30} domain={[0, 150]} />
+              <Radar name="uv" dataKey="uv" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+              <Radar name="pv" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+              <Legend />
+            </RadarChart>
+          )
+          break;
+      case 'radialbarchart':
+          return(
+            <RadialBarChart width={730} height={250} innerRadius="20%" outerRadius="90%" data={data} startAngle={180} endAngle={0}>
+              <RadialBar minAngle={15} label={{ fill: '#666', position: 'insideStart' }} background clockWise={true} dataKey='uv' >
+              {
+                data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={colors[index]}/>
+                  ))
+              }
+              </RadialBar>
+              <Legend iconSize={10} width={120} height={140} layout='horizontal' verticalAlign='middle' align="right" />
+              <Tooltip />
+            </RadialBarChart>
+          )
+          break;
+      case 'scatterchart':
+          return(
+            <ScatterChart width={730} height={250}
+              margin={{ top: 20, right: 20, bottom: 10, left: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis dataKey="uv" />
+              <ZAxis dataKey="amt" range={[64, 144]} name="amount" unit="MB" />
+              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+              <Legend />
+              <Scatter name="Pages weight" data={data} fill="#8884d8" />
+            </ScatterChart>
+          )
+          break;
+      case 'treemap':
+          return(
+            <Treemap
+              width={730}
+              height={250}
+              data={data}
+              dataKey="amt"
+              ratio={4 / 3}
+              stroke="#fff"
+              fill="#8884d8"
+            >
+            <Tooltip/>
+            </Treemap>
+          )
+          break;
+      default:
+        break;
+    }
   }
 
   render(){
+    var type = 'areachart'
+
     const data = [
       {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
       {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
@@ -18,20 +186,18 @@ class Chart extends Component{
     ]
 
     return(
-      <ResponsiveContainer width={700} height={300}>
-      <AreaChart data={data}
-            margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-        <CartesianGrid strokeDasharray="3 3"/>
-        <XAxis dataKey="name"/>
-        <YAxis/>
-        <Tooltip/>
-        <ReferenceLine x="Page C" stroke="green" label="Min PAGE" />
-        <ReferenceLine y={4000} label="Max" stroke="red" strokeDasharray="3 3" />
-        <Area type='monotone' dataKey='uv' stroke='#8884d8' fill='#8884d8' />
-      </AreaChart>
+      <ResponsiveContainer width={730} height={250}>
+        {this.conditionalChartRender(type, data,)}
       </ResponsiveContainer>
     )
   }
 }
 
 export default Chart
+
+/* chartOptions :{
+  xAxis: type.String
+  dataVisualization : [{datakey: type.String, color:type.String},...]
+  scatterchart && scatterVisualization: {yAxis: type.String, zAxis: type.String}
+  showCartesian: type.boolean
+} */
