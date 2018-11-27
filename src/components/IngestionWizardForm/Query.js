@@ -8,7 +8,7 @@ import {
     ModalBody,
     ModalFooter
   } from 'react-modal-bootstrap';
-import QueryBuild from '../../views/Widgets/QueryBuild'
+import QueryBuild from '../../components/Widgets/QueryBuild'
 
 class Query extends Component {
     constructor(props){
