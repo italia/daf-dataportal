@@ -38,7 +38,7 @@ export const serviceurl = {
     // urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
     // urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
     // domain: ".daf.teamdigitale.test",
-    // vocabularyName: "dafvoc-ingestionform-option.json"
+    // vocabularyName: "dafvoc-ingestionform-option"
 
     // PROD   
     apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
@@ -61,7 +61,6 @@ export const serviceurl = {
     urlSemanticValidator: "https://api.daf.teamdigitale.it/daf-semantic-validator/validator",
     urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
     domain: ".daf.teamdigitale.it",
-    vocabularyName: "dafvoc-ingestionform-option.json"
-
+    vocabularyName: "dafvoc-ingestionform-option" 
   }
 

@@ -32,6 +32,7 @@ class Organizations extends Component {
             query: '',
             filter: [],
             nome:'',
+            ipaCode:'',
             nomeWG:'',
             mail:'',
             psw:'',
@@ -475,11 +476,12 @@ class Organizations extends Component {
     }
 
     createOrg(){
-        const { nome, mail, psw } = this.state
+        const { nome, mail, psw, ipaCode } = this.state
         let organization = {
             groupCn: nome,
+            ipaCode: ipaCode,
             predefinedUserPwd: psw,
-            predefinedUserMail: mail,
+            organizationMail: mail,
             supSetConnectedDbName: "default"
         }
         let response = organizationService.create(organization);
@@ -786,12 +788,18 @@ class Organizations extends Component {
                                     <input className="form-control" type="search" value={this.state.nome} onChange={(e)=>{this.setState({nome:e.target.value})}}/>
                                 </div>
                             </div>
-{/*                             <div className="form-group row">
-                                <label className="col-3 col-form-label">Email amministratore</label>
+                            <div className="form-group row">
+                                <label className="col-3 col-form-label">Codice IPA</label>
+                                <div className="col-6">
+                                    <input className="form-control" type="search" value={this.state.ipaCode} onChange={(e)=>{this.setState({ipaCode:e.target.value})}}/>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-3 col-form-label">Email organizzazione</label>
                                 <div className="col-6">
                                     <input className="form-control" type="mail" value={this.state.mail} onChange={(e) => { this.setState({ mail: e.target.value }) }}/>
                                 </div>
-                            </div> */}
+                            </div>
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Password amministratore <button className="btn btn-link p-0" data-toggle="tooltip" data-placement="top" title="La password deve essere lunga almeno 8 caratteri e contenere almeno un lettera maiuscola e un numero"><i className="fa fa-info-circle" /></button></label>
                                 <div className="col-6">

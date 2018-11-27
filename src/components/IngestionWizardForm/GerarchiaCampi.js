@@ -8,6 +8,7 @@ class GerarchiaCampi extends Component {
         this.state = {
             treeData:[]
         };
+        this.handleChangeTreeData = this.handleChangeTreeData.bind(this)
 
         const {fields}= this.props
         for(var i=0;i<fields.length;i++){
@@ -16,6 +17,13 @@ class GerarchiaCampi extends Component {
             parent.title=field.nome
             this.state.treeData.push(parent)
         }
+    }
+
+    handleChangeTreeData = (treeData) => {
+        console.log(treeData)
+        const { changeTreeData} = this.props
+        this.setState({ treeData })
+        changeTreeData(treeData)
     }
     
     render() {
@@ -26,7 +34,7 @@ class GerarchiaCampi extends Component {
                     <div style={{ height: 400 }}>
                         <SortableTree
                         treeData={this.state.treeData}
-                        onChange={treeData => this.setState({ treeData })}
+                        onChange={treeData => this.handleChangeTreeData(treeData)}
                         />
                     </div>
                 </div>

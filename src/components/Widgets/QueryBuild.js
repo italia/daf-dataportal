@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Container } from 'reactstrap'
 import {
   Modal,
   ModalHeader,
@@ -15,6 +14,7 @@ import { rulesConverter } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
 import QueryBuilder from 'react-querybuilder';
+
 
 
 class QueryBuild extends Component {
@@ -132,7 +132,7 @@ class QueryBuild extends Component {
   }
 
   launchQuery(){
-    const { dispatch } = this.props
+    const { dispatch, onSubmit } = this.props
     const { query, conditions, datasetFrom, datasetJoin, joinOnFrom, joinOnTo } = this.state
     
     for(var k in query){
@@ -161,11 +161,15 @@ class QueryBuild extends Component {
 
         console.log(query)
         dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
+        if(onSubmit)
+          onSubmit(query)
       }
     }else{
       console.log(query)
 
       dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
+      if(onSubmit)
+          onSubmit(query)
     }
   }
 
@@ -368,10 +372,13 @@ class QueryBuild extends Component {
   }
 
   render(){
-    const { loggedUser, isFetching, results, queryLoading, queryResult } = this.props
+    const { loggedUser, isFetching, results, queryLoading, queryResult, className } = this.props
     const { privateWdg, organizations, isQuery, modalOpen } = this.state
+
+    var classes = className?className:"container"
+
     return(
-      <Container className="py-3">
+      <div className={classes}>
         <Modal isOpen={modalOpen}>
           <ModalHeader>
             <ModalTitle>
@@ -439,7 +446,7 @@ class QueryBuild extends Component {
               </button>
             </ModalFooter>
         </Modal>
-        <div className="card">
+        {isQuery&&<div className="card">
           <div className="card-body">
             <div className="card-title mb-3">
               <h3>Select</h3>
@@ -452,7 +459,7 @@ class QueryBuild extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div>}
         <div className="card">
           <div className="card-body">
             <div className="card-title mb-3">
@@ -466,14 +473,14 @@ class QueryBuild extends Component {
               }
               <div className="ml-auto">
                 <button className="btn btn-link text-primary float-right" title={this.state.datasetFrom?"Modifica il dataset da cui selezionare":"Aggiungi un dataset da cui selezionare"} 
-                  onClick={()=>this.setState({modalOpen:true,modalType:'FROM',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
+                  onClick={(e)=>{e.preventDefault(); this.setState({modalOpen:true,modalType:'FROM',privateWdg:'',selectedDataset:'',selectedOrg:''})}}>
                   {this.state.datasetFrom?<i className="far fa-edit fa-lg"/>:<i className="fas fa-plus-circle fa-lg"/>}
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <div className="card">
+        {isQuery&&<div className="card">
           <div className="card-body">
             <div className="card-title">
               <h3>Join</h3>
@@ -494,13 +501,13 @@ class QueryBuild extends Component {
                   <i className="fas fa-times-circle fa-lg"/>
                 </button>}
                 <button className="btn btn-link text-primary float-right" title={this.state.datasetJoin?"Modifica il dataset da cui fare la join":"Aggiungi un dataset con cui fare la join" }
-                  onClick={()=>this.setState({modalOpen:true,modalType:'JOIN',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
+                  onClick={(e)=>{e.preventDefault();this.setState({modalOpen:true,modalType:'JOIN',privateWdg:'',selectedDataset:'',selectedOrg:''})}}>
                   {this.state.datasetJoin?<i className="far fa-edit fa-lg"/>:<i className="fas fa-plus-circle fa-lg"/>}
                 </button>
               </div>
             </div>
           </div>
-        </div>
+        </div>}
         {isQuery && <div className="card">
           <div className="card-body">
             <div className="card-title">
@@ -531,7 +538,7 @@ class QueryBuild extends Component {
             </div>
           </div>
         </div>}
-      </Container>
+      </div>
     )
   }
 }

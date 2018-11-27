@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Components from 'react';
 import InfiniteScroll from '../../components/InfinityScroll'
 import WidgetService from './service/WidgetService';
 import WidgetCard from '../../components/Cards/WidgetCard'

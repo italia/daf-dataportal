@@ -19,6 +19,10 @@ const validate = values => {
     }
     if (!values.titolo) {
       errors.titolo = 'Campo Obbligatorio';
+    } else {
+      if(values.titolo.length>50){
+        errors.titolo = 'Il Titolo non può superare i 50 caratteri';
+      }
     }
     if (!values.categoria) {
       errors.categoria = 'Campo Obbligatorio';
