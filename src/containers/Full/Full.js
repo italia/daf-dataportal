@@ -33,7 +33,7 @@ import Users from '../../views/Settings/Users';
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import QueryBuild from '../../components/Widgets/QueryBuild'
-import Chart from '../../components/Widgets/Chart'
+import CreateWidget from '../../views/Widgets/CreateWidget'
 
 
 import { serviceurl } from '../../config/serviceurl'
@@ -1021,7 +1021,7 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} exact path="/private/search" name="Search" component={DatasetList} />
                 <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
-                <PrivateRoute authed={this.state.authed} path="/private/charts" name="Test" component={Chart} />
+                <PrivateRoute authed={this.state.authed} path="/private/charts" name="Test" component={CreateWidget} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/settings" name="Settings" component={Settings} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/users" name="Users" component={Users} />

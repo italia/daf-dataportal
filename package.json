@@ -39,6 +39,7 @@
     "react-autocomplete": "^1.7.2",
     "react-autosuggest": "^9.4.2",
     "react-chartjs": "^0.8.0",
+    "react-color": "^2.14.1",
     "react-copy-to-clipboard": "^5.0.1",
     "react-datepicker": "^1.2.2",
     "react-dates": "^16.3.6",

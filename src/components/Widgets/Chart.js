@@ -41,14 +41,14 @@ class Chart extends Component{
     this.conditionalChartRender = this.conditionalChartRender.bind(this)
   }
 
-  conditionalChartRender(type, data){
+  conditionalChartRender(type, data, dataVisualization, xAxis){
     switch (type) {
       case 'areachart':
         return(
-          <AreaChart width={730} height={250} data={data}
+          <AreaChart width={800} height={274} data={data}
                 margin={{top: 10, right: 30, left: 0, bottom: 0}}>
             <CartesianGrid strokeDasharray="3 3"/>
-            <XAxis dataKey="name"/>
+            <XAxis dataKey={xAxis}/>
             <YAxis/>
             <Tooltip/>
             <Area type='monotone' dataKey='pv' stroke='#8884d8' fill='#8884d8' />
@@ -58,9 +58,9 @@ class Chart extends Component{
         break;
       case 'barchart':
         return(
-          <BarChart width={730} height={250} data={data}>
+          <BarChart width={800} height={274} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey={xAxis} />
             <YAxis />
             <Tooltip />
             <Legend />
@@ -71,10 +71,10 @@ class Chart extends Component{
         break;
       case 'linechart':
           return(
-            <LineChart width={730} height={250} data={data}
+            <LineChart width={800} height={274} data={data}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey={xAxis} />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -85,8 +85,8 @@ class Chart extends Component{
           break;
       case 'composedchart':
           return(
-            <ComposedChart width={730} height={250} data={data}>
-              <XAxis dataKey="name" />
+            <ComposedChart width={800} height={274} data={data}>
+              <XAxis dataKey={xAxis} />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -99,7 +99,7 @@ class Chart extends Component{
           break;
       case 'piechart':
           return(
-            <PieChart width={730} height={250}>
+            <PieChart width={800} height={274}>
               <Pie data={data} dataKey="pv" nameKey="name" cx="50%" cy="50%" outerRadius={100}>
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={colors[index]}/>
@@ -113,7 +113,7 @@ class Chart extends Component{
           break;
       case 'radarchart':
           return(
-            <RadarChart outerRadius={90} width={730} height={250} data={data}>
+            <RadarChart outerRadius={90} width={800} height={274} data={data}>
               <PolarGrid />
               <PolarAngleAxis dataKey="name" />
               <PolarRadiusAxis angle={30} domain={[0, 150]} />
@@ -125,11 +125,11 @@ class Chart extends Component{
           break;
       case 'radialbarchart':
           return(
-            <RadialBarChart width={730} height={250} innerRadius="20%" outerRadius="90%" data={data} startAngle={180} endAngle={0}>
+            <RadialBarChart width={800} height={274} innerRadius="20%" outerRadius="90%" data={data} startAngle={180} endAngle={0}>
               <RadialBar minAngle={15} label={{ fill: '#666', position: 'insideStart' }} background clockWise={true} dataKey='uv' >
               {
                 data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={colors[index]}/>
+                  <Cell  key={`cell-${index}`} fill={colors[index]}/>
                   ))
               }
               </RadialBar>
@@ -140,7 +140,7 @@ class Chart extends Component{
           break;
       case 'scatterchart':
           return(
-            <ScatterChart width={730} height={250}
+            <ScatterChart width={800} height={274}
               margin={{ top: 20, right: 20, bottom: 10, left: 10 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
@@ -155,8 +155,8 @@ class Chart extends Component{
       case 'treemap':
           return(
             <Treemap
-              width={730}
-              height={250}
+              width={800} 
+              height={274}
               data={data}
               dataKey="amt"
               ratio={4 / 3}
@@ -173,9 +173,11 @@ class Chart extends Component{
   }
 
   render(){
-    var type = 'areachart'
+    const { data, xAxis, dataVisualization, type } = this.props
 
-    const data = [
+    // var type = 'barchart'
+
+    /* const data = [
       {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
       {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
       {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
@@ -183,11 +185,11 @@ class Chart extends Component{
       {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
       {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
       {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-    ]
+    ] */
 
     return(
-      <ResponsiveContainer width={730} height={250}>
-        {this.conditionalChartRender(type, data,)}
+      <ResponsiveContainer width={800} height={274}>
+        {this.conditionalChartRender(type, data, dataVisualization, xAxis)}
       </ResponsiveContainer>
     )
   }
