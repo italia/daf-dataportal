@@ -165,6 +165,22 @@ export const config =
           "elements": ["dragdrop"]
         }
       ]
+    },
+    {
+      "uid": "webservice_push",
+      "name": {"default": "Webservice PUSH"},
+      "desc": {
+        "ita": "Ingestion via Webservice. Inserisci le info necessarie e il DAF caricherà i dati dal servizio indicato.",
+        "eng": "Ingestion via Webservice. Fill info below and we'll get data directly from there.",
+        "default": "Ingestion via Webservice. Fill info below and we'll get data directly from there."
+      },
+      "actions": [
+        {
+          "ctx": "ingform",
+          "action": "add-form-elements",
+          "elements": ["dragdrop"]
+        }
+      ]
     }
   ],
   'tempoDiPollingOptions': [
@@ -179,15 +195,19 @@ export const config =
   ],
   'timerUnita': [
     { 
-      'uid': '0', 
+      'uid': 'sec', 
+      "name": {"ita": "Secondi", "default":"Seconds"}
+    },
+    { 
+      'uid': 'min', 
       "name": {"ita": "Minuti", "default":"Minutes"}
     },
     { 
-      'uid': '1', 
+      'uid': 'hrs', 
       "name": {"ita": "Ore", "default":"Hours"}
     },
     { 
-      'uid': '2', 
+      'uid': 'days', 
       "name": {"ita": "Giorni", "default":"Days"}
     }
   ],
@@ -707,6 +727,18 @@ export const config =
     { 'uid': 'seguestandard', 
       'name': { 
         'ita':'Segue uno Standard' 
+      }
+    },
+  ],
+  'vocabulary':[
+    { 'uid': 'yes', 
+      'name': { 
+        'ita':'Si' 
+      }
+    },
+    { 'uid': 'no', 
+      'name': { 
+        'ita':'No' 
       }
     },
   ]
