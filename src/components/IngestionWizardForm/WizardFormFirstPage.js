@@ -102,7 +102,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                   config={config}
 
                 />
-                {modalitacaricamento=='sftp' && 
+                {(modalitacaricamento=='sftp' || modalitacaricamento=='webservice_push')&& 
                 <div className="card">
                 <div className="card-body">
                 <h5 className="card-title">Caricamento tramite SFTP / API PUT</h5>

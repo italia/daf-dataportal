@@ -11,6 +11,18 @@ const validate = values => {
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
       errors.email = 'Indirizzo email non valido';
     }
+    if(!values.tempopolling){
+      errors.tempopolling = 'Campo Obbligatorio'
+    }
+    if(values.tempopolling==0 && !values.espressionecron){
+      errors.espressionecron = 'Campo Obbligatorio'
+    }
+    if(values.tempopolling==1 && !values.timerunita){
+      errors.timerunita = 'Campo Obbligatorio'
+    }   
+    if(values.tempopolling==1 && !values.timerquantita){
+      errors.timerquantita = 'Campo Obbligatorio'
+    }   
     if (!values.sex) {
       errors.sex = 'Campo Obbligatorio';
     }
@@ -36,6 +48,13 @@ const validate = values => {
     if (!values.modalitacaricamento) {
       errors.modalitacaricamento = 'Campo Obbligatorio';
     }
+    if (!values.gruppoproprietario) {
+      errors.gruppoproprietario = 'Campo Obbligatorio';
+    }
+    if (!values.strategiamerge) {
+      errors.strategiamerge = 'Campo Obbligatorio';
+    }
+    
     
     return errors;
     

@@ -185,7 +185,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                         config={config}
 
                       /> 
-                      <Field
+{/*                       <Field
                           name={`${field}.idgruppocampi`}
                           component={renderFieldInput}
                           label="ID Gruppo Campi"
@@ -193,7 +193,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                           openModalInfo={openModalInfo}
                           config={config}
 
-                        />
+                        /> */}
                       <Field
                           name={`${field}.rdfsoggetto`}
                           component={renderFieldInput}

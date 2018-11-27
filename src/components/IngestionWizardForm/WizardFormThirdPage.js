@@ -122,6 +122,14 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
 
               />
               <Field
+                name="isvocabulary"
+                options={config['vocabulary']}
+                component={renderFieldSelect}
+                label="Vocabolario Controllato"
+                openModalInfo={openModalInfo}
+                config={config}
+              />
+              <Field
                 name="seguestd"
                 options={config['standard']}
                 component={renderFieldSelect}

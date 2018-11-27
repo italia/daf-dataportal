@@ -869,6 +869,8 @@ export function getOpendataResources(datasetname) {
 
 export function addDataset(inputJson, token, fileType) {
   console.log("Called action addDataset");
+  var inputBody = new Object();
+  inputBody['catalog'] = JSON.stringify(inputJson)
   var url = serviceurl.apiURLCatalog + "/catalog-ds/add-queue";
   return dispatch => {
       return fetch(url, {
@@ -878,7 +880,7 @@ export function addDataset(inputJson, token, fileType) {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
           },
-          body: JSON.stringify(inputJson)
+          body: JSON.stringify(inputBody)
         }).then(response => response)
       .catch(error => console.log('Eccezione durante il caricamento dei metafati '))
   }
@@ -1685,8 +1687,8 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
 
       export function loadDatasetStandard(){
-        //var url = serviceurl.apiURLCatalog + '/catalog-ds/standard/fields'
-        var url = 'http://localhost:3001/catalog-manager/v1/catalog-ds/standard/fields'
+        var url = serviceurl.apiURLCatalog + '/catalog-ds/standard/fields'
+        //var url = 'http://localhost:3001/catalog-manager/v1/catalog-ds/standard/fields'
         var token = ''
 
         if(localStorage.getItem('username') && localStorage.getItem('token') &&

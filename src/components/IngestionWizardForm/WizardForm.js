@@ -426,8 +426,8 @@ class WizardForm extends Component {
       var url = ''
       var user = localStorage.getItem('user').toLowerCase()
 
-      if(modalitacaricamento=='sftp'){
-        sorgente.tipo = "sftp"
+      if(modalitacaricamento=='sftp' || modalitacaricamento=='webservice_push'){
+        sorgente.tipo = modalitacaricamento
         url = "".concat(categoria).concat("/").concat(sottocategoria).concat("/").concat(nome)
         if(tempopolling=='0')
         sched='{cron:' + espressionecron + '}'

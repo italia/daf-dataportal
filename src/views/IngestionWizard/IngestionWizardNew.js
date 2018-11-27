@@ -23,6 +23,12 @@ class IngestionForm extends Component {
     this.showResults = this.showResults.bind(this);
   }
 
+  setSending = (valueSending, valueError) => {
+    this.setState({
+      sending: valueSending
+    });
+  }
+
 /*   showResults = values =>{
     this.setState({
       saving: true
@@ -75,8 +81,8 @@ class IngestionForm extends Component {
     return (
       <div className="container">
             <WizardForm onSubmit={this.showResults} loggedUser={loggedUser}/>
-          <Values form="wizard" /> 
-       </div>
+{/*           <Values form="wizard" /> 
+ */}       </div>
     )
   }
 }
