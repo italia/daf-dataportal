@@ -85,7 +85,7 @@ class CreateWidget extends Component{
             <QueryBuild className=" "/>
           </Panel>
           <Panel header="Chart builder">
-          {/* (queryResult===undefined || queryResult.length === 0)?<h3 className="text-center">Query non elaborata o risultato non disponibile, costruisci una query valida per creare il grafico</h3>: */
+          {(queryResult===undefined || queryResult.length === 0)?<h3 className="text-center">Query non elaborata o risultato non disponibile, costruisci una query valida per creare il grafico</h3>:
           <div>
             <div className="form-group row">
               <label className="col-md-4 form-control-label">Nome del grafico</label>
@@ -154,10 +154,7 @@ class CreateWidget extends Component{
         </Collapse>
         </div>
         <div className="col-md-7 col-12">
-          {this.state.chart && <Chart data={queryResult} dataVisualization={this.state.dataVisualization} xAxis={this.state.xAxis} type={this.state.chartType}/>}
-        </div>
-        <div className="col-12">
-          <button className="btn btn-primary float-right" onClick={this.createWidget}>Crea grafico</button>
+          <Chart data={queryResult} dataVisualization={this.state.dataVisualization} xAxis={this.state.xAxis} type={this.state.chartType}/>
         </div>
       </div>
     )
