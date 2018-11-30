@@ -113,14 +113,6 @@ class DashboardList extends Component {
               }
 
               const dashWidgets = JSON.parse(dash.widgets)
-              var imageA = undefined;
-              var imageB = undefined;
-              
-              if(preview.length!==0){
-                imageA = dashWidgets[preview[0]].image
-                if(preview[1])
-                  imageB = dashWidgets[preview[1]].image
-              }
 
               if(firstLayout!= ''){
                 const firstWidget = dashWidgets[firstLayout];
@@ -131,8 +123,6 @@ class DashboardList extends Component {
               <DashboardCard
                 widgetA={preview&&preview[0] ? preview[0] : undefined}
                 widgetB={preview&&preview[1] ? preview[1] : undefined} 
-                imageA = {imageA}
-                imageB = {imageB}
                 dash = {dash}
                 key = {index}
                 />

@@ -31,6 +31,8 @@ import {
   ScatterChart,
   Treemap
 } from 'recharts'
+import ReactTable from "react-table"
+
 
 const colors = ['#4a8523','#68f5c8','#acadc1','#dd4c63','#b415ab','#c4aa30','#223373','#3523d1']
 
@@ -51,8 +53,12 @@ class Chart extends Component{
             <XAxis dataKey={xAxis}/>
             <YAxis/>
             <Tooltip/>
-            <Area type='monotone' dataKey='pv' stroke='#8884d8' fill='#8884d8' />
-            <Area type='monotone' dataKey='uv' stroke='#8884d8' fill='#8884d8' />
+            {dataVisualization.map((elem, index)=> {
+              return(
+                <Area type='monotone' dataKey={elem.dataKey} stroke={elem.color} fill={elem.color} key={index}/>
+                )
+              })
+            }
           </AreaChart>
         )
         break;
@@ -64,8 +70,12 @@ class Chart extends Component{
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="pv" fill="#8884d8" />
-            <Bar dataKey="uv" fill="#82ca9d" />
+            {dataVisualization.map((elem, index)=> {
+              return(
+                <Bar dataKey={elem.dataKey} fill={elem.color} key={index}/>
+                )
+              })
+            }
           </BarChart>
         )
         break;
@@ -78,8 +88,12 @@ class Chart extends Component{
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+              {dataVisualization.map((elem, index)=> {
+                return(
+                  <Line type='monotone' dataKey={elem.dataKey} stroke={elem.color} key={index}/>
+                  )
+                })
+              }
             </LineChart>
           )
           break;
@@ -100,7 +114,7 @@ class Chart extends Component{
       case 'piechart':
           return(
             <PieChart width={800} height={274}>
-              <Pie data={data} dataKey="pv" nameKey="name" cx="50%" cy="50%" outerRadius={100}>
+              <Pie data={data} dataKey={dataVisualization[0].dataKey} nameKey={xAxis} cx="50%" cy="50%" outerRadius={100}>
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={colors[index]}/>
                 ))
@@ -115,10 +129,14 @@ class Chart extends Component{
           return(
             <RadarChart outerRadius={90} width={800} height={274} data={data}>
               <PolarGrid />
-              <PolarAngleAxis dataKey="name" />
+              <PolarAngleAxis dataKey={xAxis} />
               <PolarRadiusAxis angle={30} domain={[0, 150]} />
-              <Radar name="uv" dataKey="uv" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-              <Radar name="pv" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+              {dataVisualization.map((elem, index)=> {
+                return(
+                  <Radar name={elem.dataKey} dataKey={elem.dataKey} stroke={elem.color} fill={elem.color} fillOpacity={0.6} key={index}/>
+                  )
+                })
+              }              
               <Legend />
             </RadarChart>
           )
@@ -126,7 +144,7 @@ class Chart extends Component{
       case 'radialbarchart':
           return(
             <RadialBarChart width={800} height={274} innerRadius="20%" outerRadius="90%" data={data} startAngle={180} endAngle={0}>
-              <RadialBar minAngle={15} label={{ fill: '#666', position: 'insideStart' }} background clockWise={true} dataKey='uv' >
+              <RadialBar minAngle={15} label={{ fill: '#666', position: 'insideStart' }} background clockWise={true} dataKey={dataVisualization[0].dataKey} >
               {
                 data.map((entry, index) => (
                   <Cell  key={`cell-${index}`} fill={colors[index]}/>
@@ -168,30 +186,55 @@ class Chart extends Component{
           )
           break;
       default:
-        break;
+          return(
+            <LineChart width={800} height={274} data={data}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+            </LineChart>
+          )
+          break;
     }
   }
 
   render(){
     const { data, xAxis, dataVisualization, type } = this.props
 
-    // var type = 'barchart'
+    var widType = type===''?'table':type
 
-    /* const data = [
-      {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-      {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-    ] */
-
-    return(
-      <ResponsiveContainer width={800} height={274}>
-        {this.conditionalChartRender(type, data, dataVisualization, xAxis)}
-      </ResponsiveContainer>
-    )
+    if(type === '' || type === 'table'){
+      if(data.length>0){
+        var columns=[{
+          Header: "Tabella risultante",
+          columns: []
+        }]
+        Object.keys(data[0]).map(elem=>{
+          columns[0].columns.push({
+            Header: elem,
+            accessor: elem
+          })
+        })
+        return(
+          <ReactTable 
+            data={data}
+            columns={columns}
+            defaultPageSize={10}
+            className="-striped -highlight mb-4"
+            />
+        )
+      }else{
+        return(<p>Nessun dato disponibile</p>)
+      }
+    }else{
+      return(
+        <ResponsiveContainer width={'100%'} height={400}>
+          {this.conditionalChartRender(widType, data, dataVisualization, xAxis)}
+        </ResponsiveContainer>
+      )
+    }
   }
 }
 

@@ -929,7 +929,7 @@ class DatasetDetail extends Component {
                                         </div>
 
                                         <div className="col-12 my-3">
-                                            <p className="text-muted pb-1 mb-2"><b className="pr-2">Autore </b> <b className="text-primary">{dataset.operational.group_own}</b></p>
+                                            <p className="text-muted pb-1 mb-2"><b className="pr-2">Autore </b> <b className="text-primary">{dataset.dcatapit.author}</b></p>
                                             <p className="text-muted pb-1 mb-2"><b className="pr-2">Organizzazione </b>  <b className="text-primary">{dataset.dcatapit.owner_org}</b></p>
                                         </div>
 
@@ -977,7 +977,7 @@ class DatasetDetail extends Component {
                             </div>
                         </div> */}
 
-                            {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} owner={dataset.operational.group_own} />}
+                            {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} owner={dataset.dcatapit.author} />}
                         </div>
                     </div>
                     <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">

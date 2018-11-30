@@ -123,16 +123,7 @@ class DashboardCard extends Component {
         const iframeStyle = {
             width: '100%',
             height: '160px',
-        }
-
-/*         let prima = imageA
-        let seconda = imageB */
-
-/*         if(imageA==='noimage' || !imageA)
-            prima = image1
-        if(imageB==='noimage' || !imageB && image2!=='noimage')
-            seconda = image2 */
-        
+        }        
 
         var active = open? ' active' : ''
         var show = open? ' show': ''
