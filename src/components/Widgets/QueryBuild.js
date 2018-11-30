@@ -372,7 +372,7 @@ class QueryBuild extends Component {
   }
 
   render(){
-    const { loggedUser, isFetching, results, queryLoading, queryResult, className } = this.props
+    const { loggedUser, isFetching, results, queryLoading, queryResult, className, hideTable } = this.props
     const { privateWdg, organizations, isQuery, modalOpen } = this.state
 
     var classes = className?className:"container"
@@ -523,7 +523,7 @@ class QueryBuild extends Component {
             <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
           </div>
         </div>}
-        {isQuery && <div className="card">
+        {(isQuery && !hideTable) && <div className="card">
           <div className="card-body">
             <div className="card-title">
               <h3>Risultato</h3>

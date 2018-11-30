@@ -4,8 +4,9 @@ import QueryBuild from '../../components/Widgets/QueryBuild'
 import Chart from '../../components/Widgets/Chart'
 import Collapse from 'rc-collapse'
 import 'rc-collapse/assets/index.css'
-import { GithubPicker } from 'react-color'
 import { chartType } from '../../utility'
+import ReactTable from "react-table"
+
 
 var Panel = Collapse.Panel;
 
@@ -79,10 +80,10 @@ class CreateWidget extends Component{
 
     return(
       <div className="row my-5">
-        <div className="col-md-5 col-12">
+        <div className="col-md-4 col-12">
         <Collapse accordion={true} defaultActiveKey="0">
           <Panel header="Query Builder">
-            <QueryBuild className=" "/>
+            <QueryBuild className=" " hideTable={true}/>
           </Panel>
           <Panel header="Chart builder">
           {(queryResult===undefined || queryResult.length === 0)?<h3 className="text-center">Query non elaborata o risultato non disponibile, costruisci una query valida per creare il grafico</h3>:
@@ -153,8 +154,8 @@ class CreateWidget extends Component{
           </Panel>
         </Collapse>
         </div>
-        <div className="col-md-7 col-12">
-          <Chart data={queryResult} dataVisualization={this.state.dataVisualization} xAxis={this.state.xAxis} type={this.state.chartType}/>
+        <div className="col-md-8 col-12">
+          {queryResult && <Chart data={queryResult} dataVisualization={this.state.dataVisualization} xAxis={this.state.xAxis} type={this.state.chartType}/>}
         </div>
       </div>
     )
