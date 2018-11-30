@@ -51,8 +51,12 @@ class Chart extends Component{
             <XAxis dataKey={xAxis}/>
             <YAxis/>
             <Tooltip/>
-            <Area type='monotone' dataKey='pv' stroke='#8884d8' fill='#8884d8' />
-            <Area type='monotone' dataKey='uv' stroke='#8884d8' fill='#8884d8' />
+            {dataVisualization.map((elem, index)=> {
+              return(
+                <Area type='monotone' dataKey={elem.dataKey} stroke={elem.color} fill={elem.color} key={index}/>
+                )
+              })
+            }
           </AreaChart>
         )
         break;
@@ -64,8 +68,12 @@ class Chart extends Component{
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="pv" fill="#8884d8" />
-            <Bar dataKey="uv" fill="#82ca9d" />
+            {dataVisualization.map((elem, index)=> {
+              return(
+                <Bar dataKey={elem.dataKey} fill={elem.color} key={index}/>
+                )
+              })
+            }
           </BarChart>
         )
         break;
@@ -78,8 +86,12 @@ class Chart extends Component{
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+              {dataVisualization.map((elem, index)=> {
+                return(
+                  <Line type='monotone' dataKey={elem.dataKey} stroke={elem.color} key={index}/>
+                  )
+                })
+              }
             </LineChart>
           )
           break;
@@ -100,7 +112,7 @@ class Chart extends Component{
       case 'piechart':
           return(
             <PieChart width={800} height={274}>
-              <Pie data={data} dataKey="pv" nameKey="name" cx="50%" cy="50%" outerRadius={100}>
+              <Pie data={data} dataKey={dataVisualization[0].dataKey} nameKey={xAxis} cx="50%" cy="50%" outerRadius={100}>
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={colors[index]}/>
                 ))
@@ -115,10 +127,14 @@ class Chart extends Component{
           return(
             <RadarChart outerRadius={90} width={800} height={274} data={data}>
               <PolarGrid />
-              <PolarAngleAxis dataKey="name" />
+              <PolarAngleAxis dataKey={xAxis} />
               <PolarRadiusAxis angle={30} domain={[0, 150]} />
-              <Radar name="uv" dataKey="uv" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-              <Radar name="pv" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+              {dataVisualization.map((elem, index)=> {
+                return(
+                  <Radar name={elem.dataKey} dataKey={elem.dataKey} stroke={elem.color} fill={elem.color} fillOpacity={0.6} key={index}/>
+                  )
+                })
+              }              
               <Legend />
             </RadarChart>
           )
@@ -126,7 +142,7 @@ class Chart extends Component{
       case 'radialbarchart':
           return(
             <RadialBarChart width={800} height={274} innerRadius="20%" outerRadius="90%" data={data} startAngle={180} endAngle={0}>
-              <RadialBar minAngle={15} label={{ fill: '#666', position: 'insideStart' }} background clockWise={true} dataKey='uv' >
+              <RadialBar minAngle={15} label={{ fill: '#666', position: 'insideStart' }} background clockWise={true} dataKey={dataVisualization[0].dataKey} >
               {
                 data.map((entry, index) => (
                   <Cell  key={`cell-${index}`} fill={colors[index]}/>
@@ -168,6 +184,16 @@ class Chart extends Component{
           )
           break;
       default:
+      return(
+        <LineChart width={800} height={274} data={data}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+        </LineChart>
+      )
         break;
     }
   }

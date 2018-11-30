@@ -278,14 +278,6 @@ class Home extends Component {
                                     }
 
                                     const dashWidgets = JSON.parse(dash.widgets)
-                                    var imageA = undefined;
-                                    var imageB = undefined;
-
-                                    if (preview.length !== 0) {
-                                        imageA = dashWidgets[preview[0]].image
-                                        if (preview[1])
-                                            imageB = dashWidgets[preview[1]].image
-                                    }
 
                                     if (firstLayout != '') {
                                         const firstWidget = dashWidgets[firstLayout];
@@ -296,8 +288,6 @@ class Home extends Component {
                                     <DashboardCard
                                         widgetA={preview&&preview[0]?preview[0]:undefined}
                                         widgetB={preview&&preview[1]?preview[1]:undefined}
-                                        imageA={imageA}
-                                        imageB={imageB}
                                         dash={dash}
                                         id={index}
                                         key={index}
@@ -343,11 +333,6 @@ class Home extends Component {
                                             break
                                     }
                                     const dashWidgets = JSON.parse(story.widgets)
-/*                                     var imageA = undefined
-                                    if (firstLayout != '') {
-                                        const firstWidget = dashWidgets[firstLayout];
-                                        imageA = firstWidget.image
-                                    } */
                                     var time = 0
                                     let widgets = Object.keys(dashWidgets)
                                     for (let k = 0; k < widgets.length; k++) {
@@ -365,7 +350,6 @@ class Home extends Component {
                                     <UserstoryCard
                                         story={story}
                                         widgetA={firstLayout}
-                                        /* imageA={imageA} */
                                         time={time}
                                         id={index}
                                         key={index}
