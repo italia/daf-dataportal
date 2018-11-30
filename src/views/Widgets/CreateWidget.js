@@ -10,7 +10,7 @@ import ReactTable from "react-table"
 
 var Panel = Collapse.Panel;
 
-const colors = ['#B80000','#DB3E00','#FCCB00','#008B02','#006B76','#1273DE','#004DCF','#5300EB',/* '#EB9694','#FAD0C3','#FEF3BD','#C1E1C5','#BEDADC','#C4DEF6','#BED3F3','#D4C4FB' */]
+const colors = ['#B80000','#DB3E00','#FCCB00','#008B02','#006B76','#1273DE','#004DCF','#5300EB','#EB9694','#FAD0C3','#FEF3BD','#C1E1C5','#BEDADC','#C4DEF6','#BED3F3','#D4C4FB']
 
 class CreateWidget extends Component{
   constructor(props){
@@ -79,7 +79,17 @@ class CreateWidget extends Component{
       var fields = Object.keys(queryResult[0])
 
     return(
-      <div className="row my-5">
+      <div className="row mb-5">
+        <div className="col-12 mb-3">
+          <h2>Nuovo Widget</h2>
+        </div>
+        <div className="col-md-8 mb-3">
+
+        </div>
+        <div className="col-md-1 btn-group ml-auto mb-3">
+          <button className="btn btn-link text-danger"><i className="fas fa-trash fa-lg"/></button>
+          <button className="btn btn-link text-primary"><i className="fas fa-save fa-lg"/></button>
+        </div>
         <div className="col-md-4 col-12">
         <Collapse accordion={true} defaultActiveKey="0">
           <Panel header="Query Builder">
@@ -155,7 +165,8 @@ class CreateWidget extends Component{
         </Collapse>
         </div>
         <div className="col-md-8 col-12">
-          {queryResult && <Chart data={queryResult} dataVisualization={this.state.dataVisualization} xAxis={this.state.xAxis} type={this.state.chartType}/>}
+          {queryLoading && <h1 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>}
+          {!queryLoading && queryResult && <Chart title={this.state.nomeGrafico} data={queryResult} dataVisualization={this.state.dataVisualization} xAxis={this.state.xAxis} type={this.state.chartType}/>}
         </div>
       </div>
     )
