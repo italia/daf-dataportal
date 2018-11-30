@@ -30,7 +30,7 @@ const organizationService = new OrganizationService()
 
 function ableToEdit(user, dataset){
   var able = false
-  if(user.uid === dataset.operational.group_own){
+  if(user.uid === dataset.dcatapit.author){
     able = true
   }/* else if((user.roles.indexOf('daf_adm_'+dataset.dcatapit.owner_org)!==-1) || (user.roles.indexOf('daf_edt_'+dataset.dcatapit.owner_org)!==-1)){
     able = true
