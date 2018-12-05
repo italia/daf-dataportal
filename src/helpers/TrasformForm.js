@@ -17,6 +17,11 @@ export function createOperational (values, data) {
      "dataset_type" : "batch",  
      "read_type" : (values.tiposalvataggio) ? values.tiposalvataggio : 'update'
     }
+  data[operational]['type_info'] = {
+    'dataset_type' : values.tipodataset,
+    'query': values.query?JSON.stringify(values.query):undefined,
+    'sources' : values.sources
+  }
   if (!values.tiposalvataggio){
       data[operational]['read_type'] = 'update'
   } else {
