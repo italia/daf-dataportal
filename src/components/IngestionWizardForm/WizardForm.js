@@ -573,13 +573,19 @@ class WizardForm extends Component {
     })
   }
 
-  setQuery(value){
+  setQuery(value, nameFrom, nameJoin){
     console.log(value)
     const { dispatch } = this.props;
+
+    var sources = []
+    sources.push(nameFrom)
+    nameJoin && sources.push(nameJoin)
+
     this.setState({
       query: value
     })
     dispatch(change('wizard', 'query', value))
+    dispatch(change('wizard', 'sources', sources))
   }
   
   executeQuery(value){
