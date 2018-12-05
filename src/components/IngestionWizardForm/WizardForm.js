@@ -411,7 +411,7 @@ class WizardForm extends Component {
   }
 
   setDefaultValue(){
-      const { dispatch, modalitacaricamento, categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws } = this.props
+      const { dispatch, modalitacaricamento, categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws, tipodataset } = this.props
       
       //PIPELINE
       var pipeline = new Object()
@@ -425,35 +425,16 @@ class WizardForm extends Component {
       var sched = ''
       var url = ''
       var user = localStorage.getItem('user').toLowerCase()
-
-      if(modalitacaricamento=='sftp' || modalitacaricamento=='webservice_push'){
-        sorgente.tipo = modalitacaricamento
-        url = "".concat(categoria).concat("/").concat(sottocategoria).concat("/").concat(nome)
-        if(tempopolling=='0')
-        sched='{cron:' + espressionecron + '}'
-      else if (tempopolling=='1')
-        sched='{timer: quantita:' + timerquantita + ', unita: '+ timerunita+'}'
-
-      sorgente.val='Url='+url+' User='+user+' Schedule='+sched
-      this.state.listaSorgenti.push(sorgente)
-      dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
-
-      // STORAGE
-      var stor = new Object()
-      stor.tipo='hdfs'
-      stor.val='DAF default path'
-      this.state.listaStorage.push(stor)
-      dispatch(change('wizard', 'storage', this.state.listaStorage))
-
-
-      }else if(modalitacaricamento=='webservice_pull' && this.state.filePullLoaded){
-        sorgente.tipo = "webservice_pull"
-        if(tempopolling=='0')
+      if(tipodataset==='primitive'){
+        if(modalitacaricamento=='sftp' || modalitacaricamento=='webservice_push'){
+          sorgente.tipo = modalitacaricamento
+          url = "".concat(categoria).concat("/").concat(sottocategoria).concat("/").concat(nome)
+          if(tempopolling=='0')
           sched='{cron:' + espressionecron + '}'
         else if (tempopolling=='1')
           sched='{timer: quantita:' + timerquantita + ', unita: '+ timerunita+'}'
 
-        sorgente.val='Url='+urlws+' User='+user+' Schedule='+sched
+        sorgente.val='Url='+url+' User='+user+' Schedule='+sched
         this.state.listaSorgenti.push(sorgente)
         dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
 
@@ -464,10 +445,39 @@ class WizardForm extends Component {
         this.state.listaStorage.push(stor)
         dispatch(change('wizard', 'storage', this.state.listaStorage))
 
-        }else{
-          this.setState({
-            errorNext: 'Caricare il file per la metadatazione'
-          });
+
+        }else if(modalitacaricamento=='webservice_pull' && this.state.filePullLoaded){
+          sorgente.tipo = "webservice_pull"
+          if(tempopolling=='0')
+            sched='{cron:' + espressionecron + '}'
+          else if (tempopolling=='1')
+            sched='{timer: quantita:' + timerquantita + ', unita: '+ timerunita+'}'
+
+          sorgente.val='Url='+urlws+' User='+user+' Schedule='+sched
+          this.state.listaSorgenti.push(sorgente)
+          dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
+
+          // STORAGE
+          var stor = new Object()
+          stor.tipo='hdfs'
+          stor.val='DAF default path'
+          this.state.listaStorage.push(stor)
+          dispatch(change('wizard', 'storage', this.state.listaStorage))
+
+          }else{
+            this.setState({
+              errorNext: 'Caricare il file per la metadatazione'
+            });
+          }
+        }else if(tipodataset==='devided_sql'){
+
+          // STORAGE
+          var stor = new Object()
+          stor.tipo='hdfs'
+          stor.val='DAF default path'
+          this.state.listaStorage.push(stor)
+          dispatch(change('wizard', 'storage', this.state.listaStorage))
+          
         }
   }
 
@@ -476,6 +486,8 @@ class WizardForm extends Component {
     const { dispatch } = this.props
     this.setUploading(true, undefined);
     console.log('tipofile: ' + tipofile)
+    console.log(filesToUpload)
+    console.log(filesToUpload.length)
     if(tipofile){
       if(filesToUpload.length>0){
       this.setState({errorDrop:''})

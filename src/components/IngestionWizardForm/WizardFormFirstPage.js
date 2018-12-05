@@ -271,13 +271,10 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
             }
             {tipodataset=='derived_sql' &&
               <Query 
-                query={query}  
-                config={config}
-                setQuery={setQuery} 
-                resultQuery={resultQuery} 
-                executeQuery={executeQuery} 
-                resetQueryValue={resetQueryValue} 
-                setQuery={setQuery}/>
+                setQuery={setQuery}
+                fields={fields}
+                onDropFunction={onDropFunction} 
+                />
             }
             {tipodataset=='derived_procspark' &&
               <div>

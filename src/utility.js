@@ -384,3 +384,24 @@ export function transformName(name){
 
     return(result)
   }
+
+  export function jsonToCSV(array){
+    var csv = ''
+    var h = Object.keys(array[0])
+
+    csv = h.join(',') + '\n'
+
+    array.map((obj)=>{
+      var i = 0
+      for (var k in obj){
+        if(i===h.length-1){
+          csv += obj[k] + '\n'
+        }else{
+          csv += obj[k] + ','
+        }
+        i++
+      }
+    })
+
+    return csv
+  }
