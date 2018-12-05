@@ -9,8 +9,8 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import { toastr } from 'react-redux-toastr'
-import { getAllOrganizations, search, getQueryResult, getDatasetCatalog } from '../../actions'
-import { rulesConverter } from '../../utility'
+import { getAllOrganizations, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult } from '../../actions'
+import { rulesConverter, jsonToCSV } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
 import QueryBuilder from 'react-querybuilder';
@@ -132,14 +132,17 @@ class QueryBuild extends Component {
   }
 
   launchQuery(){
-    const { dispatch, onSubmit } = this.props
+    const { dispatch, onSubmit, limit, onDropFunction, fields } = this.props
     const { query, conditions, datasetFrom, datasetJoin, joinOnFrom, joinOnTo } = this.state
-    
+
     for(var k in query){
       if(query[k] === null || query[k].length===0){
         delete query[k]
       }
     }
+    
+    if(limit)
+      query.limit = limit
 
     var where = rulesConverter(conditions.combinator, conditions.rules)
     if(Object.keys(where).length>0){
@@ -160,21 +163,33 @@ class QueryBuild extends Component {
         query.join = join
 
         console.log(query)
-        dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
-        if(onSubmit)
-          onSubmit(query)
+        dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
+        .then(json=>{
+          dispatch(receiveQueryResult(json, query))
+          var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+          if(onSubmit)
+            onSubmit(query)
+          if(onDropFunction)
+            onDropFunction(fields, [file],'json')
+        })
       }
     }else{
       console.log(query)
 
-      dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
-      if(onSubmit)
+      dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
+      .then(json => {
+        dispatch(receiveQueryResult(json, query))
+        var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+        if(onSubmit)
           onSubmit(query)
+        if(onDropFunction)
+          onDropFunction(fields, [file],'json')
+      })
     }
   }
 
   renderTable(){
-    const { queryResult } = this.props
+    const { queryResult, limit } = this.props
 
     if(queryResult.length>0){
       var columns=[{
@@ -191,7 +206,7 @@ class QueryBuild extends Component {
       return <ReactTable 
               data={queryResult}
               columns={columns}
-              defaultPageSize={25}
+              defaultPageSize={limit?limit:25}
               className="-striped -highlight"
               />
     }
@@ -520,7 +535,7 @@ class QueryBuild extends Component {
                 </div>
               </div>
             </div>
-            <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
+            <button className="btn btn-primary float-right" title="Lancia la Query" onClick={(e)=>{e.preventDefault(); this.launchQuery()}}>Lancia Query</button>
           </div>
         </div>}
         {(isQuery && !hideTable) && <div className="card">

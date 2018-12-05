@@ -1199,6 +1199,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
     export function getSchema(filesToUpload, typeFile) {
       console.log('getSchema'); 
+      /* console.log(filesToUpload) */
       var url = serviceurl.apiURLDatiGov + "/infer/kylo/" + typeFile
       //var url = 'http://localhost:3001/dati-gov/v1/infer/kylo/csv'
       var token = '';
@@ -1209,7 +1210,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
         const formData = new FormData()
         formData.append('upfile', new Blob(filesToUpload), 'test')
-      
+
       return dispatch => {
           return fetch(url, {
             method: 'POST',
@@ -1733,7 +1734,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
 
       /* Actions for Query Reducer */
-      function receiveQueryResult(json, query){
+      export function receiveQueryResult(json, query){
         console.log('receiveQueryResult');
         return {
           type: RECEIVE_QUERY_RESULT,
@@ -1757,14 +1758,15 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
 
-      export function getQueryResult(logical_uri, query){
+/*       export function getQueryResult(logical_uri, query){
         console.log('Launch Query on storage action');
         return (dispatch) => {
           return dispatch(launchQueryOnStorage(logical_uri, query))
         }      
-      }
+      } */
 
-      function launchQueryOnStorage(logical_uri, query) {
+      export function launchQueryOnStorage(logical_uri, query) {
+        console.log('Launch Query on storage action');
         var token = ''
         var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) +'/search'
 
@@ -1783,7 +1785,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               body: JSON.stringify(query)
             })
             .then(response => response.json())
-            .then(json => dispatch(receiveQueryResult(json, query)))
-            .catch(error=> console.error(error))
+            /* .then(json => dispatch(receiveQueryResult(json, query))) */
+            .catch(error=> {dispatch(receiveQueryResult([], query));console.error(error)})
           }
         }

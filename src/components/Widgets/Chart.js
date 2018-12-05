@@ -34,7 +34,8 @@ import {
 import ReactTable from "react-table"
 
 
-const colors = ['#4a8523','#68f5c8','#acadc1','#dd4c63','#b415ab','#c4aa30','#223373','#3523d1']
+const colors = ['#B80000','#DB3E00','#FCCB00','#008B02','#006B76','#1273DE','#004DCF','#5300EB','#EB9694','#FAD0C3','#FEF3BD','#C1E1C5','#BEDADC','#C4DEF6','#BED3F3','#D4C4FB']
+
 
 class Chart extends Component{
   constructor(props){
@@ -201,14 +202,14 @@ class Chart extends Component{
   }
 
   render(){
-    const { data, xAxis, dataVisualization, type } = this.props
+    const { data, xAxis, dataVisualization, type, title } = this.props
 
     var widType = type===''?'table':type
 
     if(type === '' || type === 'table'){
       if(data.length>0){
         var columns=[{
-          Header: "Tabella risultante",
+          Header: title===''?"Tabella Risultante":title,
           columns: []
         }]
         Object.keys(data[0]).map(elem=>{
@@ -226,13 +227,16 @@ class Chart extends Component{
             />
         )
       }else{
-        return(<p>Nessun dato disponibile</p>)
+        return(<h3 className="text-center">Query non elaborata o risultato non disponibile, costruisci una query valida per visualizzare i dati</h3>)
       }
     }else{
       return(
-        <ResponsiveContainer width={'100%'} height={400}>
-          {this.conditionalChartRender(widType, data, dataVisualization, xAxis)}
-        </ResponsiveContainer>
+        <div>
+          <h4 className="text-center mb-2">{title}</h4>
+          <ResponsiveContainer width={'100%'} height={400}>
+            {this.conditionalChartRender(widType, data, dataVisualization, xAxis)}
+          </ResponsiveContainer>
+        </div>
       )
     }
   }
