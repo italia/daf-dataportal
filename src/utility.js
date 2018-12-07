@@ -358,24 +358,53 @@ export function transformName(name){
     return found
   }
 
-  function translateRule(rule){
+  function translateRule(rule, fromDataschema, joinDataschema){
     var res = {}
     var operator = decodeOperator(rule.operator)
-    res[operator] = {'left': rule.field, 'right': rule.value}
+    if(rule.field.indexOf('T1')>-1 && rule.field.indexOf('JT1')===-1){
+      var name = rule.field.replace('T1.', '')
+      var fields = fromDataschema.filter(field =>{
+        return field.name === name
+      })
+      if(fields[0].type==="string"){
+        res[operator] = {"left": rule.field, "right": "'"+rule.value+"'"}
+      }else{
+        res[operator] = {"left": rule.field, "right": rule.value}
+      }
+    }else if(rule.field.indexOf('JT1')>-1){
+      var name = rule.field.replace('JT1.', '')
+      var fields = joinDataschema.filter(field =>{
+        return field.name === name
+      })
+      if(fields[0].type==="string"){
+        res[operator] = {"left": rule.field, "right": "'"+rule.value+"'"}
+      }else{
+        res[operator] = {"left": rule.field, "right": rule.value}
+      }
+    }else{
+      var fields = fromDataschema.filter(field =>{
+        return field.name === rule.field
+      })
+      if(fields[0].type==="string"){
+        res[operator] = {"left": rule.field, "right": "'"+rule.value+"'"}
+      }else{
+        res[operator] = {"left": rule.field, "right": rule.value}
+      }
+    }
 
     return res
   }
 
-  export function rulesConverter(combinator, rules){
+  export function rulesConverter(combinator, rules, from, join){
     var result = {}
     if(rules.length===1){
-      result = translateRule(rules[0])
+      result = translateRule(rules[0], from.dataschema.flatSchema, join?join.dataschema.flatSchema:undefined)
     }
     else if(rules.length>1){
       result[combinator] = []
       for(var i in rules){
         if(!rules[i].rules){
-          result[combinator].push(translateRule(rules[i]))
+          result[combinator].push(translateRule(rules[i], from.dataschema.flatSchema, join?join.dataschema.flatSchema:undefined))
         }else{
           result[combinator].push(rulesConverter(rules[i].combinator, rules[i].rules))
         }
