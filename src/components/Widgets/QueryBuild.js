@@ -132,7 +132,7 @@ class QueryBuild extends Component {
   }
 
   launchQuery(){
-    const { dispatch, onSubmit, limit, onDropFunction, fields } = this.props
+    const { dispatch, onSubmit, limit, onDropFunction, fields, blockEmpty } = this.props
     const { query, conditions, datasetFrom, datasetJoin, joinOnFrom, joinOnTo } = this.state
 
     for(var k in query){
@@ -144,7 +144,7 @@ class QueryBuild extends Component {
     if(limit)
       query.limit = limit
 
-    var where = rulesConverter(conditions.combinator, conditions.rules)
+    var where = rulesConverter(conditions.combinator, conditions.rules, datasetFrom, datasetJoin)
     if(Object.keys(where).length>0){
       query.where = where
     }
@@ -167,24 +167,45 @@ class QueryBuild extends Component {
         .then(json=>{
           dispatch(receiveQueryResult(json, query))
           var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
-          if(onSubmit)
+          if(onSubmit){
+            query.limit && delete query['limit']
             onSubmit(query, datasetFrom.dcatapit.name, datasetJoin.dcatapit.name)
+          }
           if(onDropFunction)
             onDropFunction(fields, [file],'json')
         })
       }
     }else{
       console.log(query)
-
-      dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
-      .then(json => {
-        dispatch(receiveQueryResult(json, query))
-        var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
-        if(onSubmit)
-          onSubmit(query, datasetFrom.dcatapit.name, undefined)
-        if(onDropFunction)
-          onDropFunction(fields, [file],'json')
-      })
+      if(blockEmpty){
+        if(JSON.stringify(query)==="{}"||JSON.stringify(query)==="{\"limit\":"+limit+"}"){
+          toastr.error('Impossibile eseguire la query', 'Impossibile creare un derivato con una query vuota, costruisci la tua query e riprova')
+        }else{
+          dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
+          .then(json => {
+            dispatch(receiveQueryResult(json, query))
+            var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+            if(onSubmit){
+              query.limit && delete query['limit']
+              onSubmit(query, datasetFrom.dcatapit.name, undefined)
+            }
+            if(onDropFunction)
+              onDropFunction(fields, [file],'json')
+          })
+        }
+      }else{
+        dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
+        .then(json => {
+          dispatch(receiveQueryResult(json, query))
+          var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+          if(onSubmit){
+            query.limit && delete query['limit']
+            onSubmit(query, datasetFrom.dcatapit.name, undefined)
+          }
+          if(onDropFunction)
+            onDropFunction(fields, [file],'json')
+        })
+      }
     }
   }
 

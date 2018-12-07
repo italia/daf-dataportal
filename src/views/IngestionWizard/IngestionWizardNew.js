@@ -47,10 +47,10 @@ class IngestionForm extends Component {
       saving: true
     })
     const transformed = transformer(values)
-    console.log("transformed: " + transformed)
+    console.log(transformed)
     this.setState({transformed:transformed})
     const { dispatch } = this.props;
-    if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
+    /* if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
       console.log("tipofile: " + values.tipofile)
       const fileType = values.tipofile?values.tipofile:'csv'
       dispatch(addDataset(transformed, localStorage.getItem('token'), fileType))
@@ -73,7 +73,7 @@ class IngestionForm extends Component {
         this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
         console.log('token non presente');
         this.setState({saving: false})
-      }
+      } */
     }  
 
   render() {

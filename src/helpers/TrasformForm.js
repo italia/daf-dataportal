@@ -37,8 +37,7 @@ export function createOperational (values, data) {
         "param": param
       }]
     }
-  }
-  if(values.modalitacaricamento=='webservice_pull'){
+  }else if(values.modalitacaricamento=='webservice_pull'){
       data[operational]['input_src'] = {"srv_pull": [{
         "name": "ws_remote",
         "url": values.urlws,
@@ -47,8 +46,7 @@ export function createOperational (values, data) {
         "param": values.tipofile?values.tipofile:'csv'
       }]
     }
-  }
-  if(values.modalitacaricamento=='webservice_push'){
+  }else if(values.modalitacaricamento=='webservice_push'){
     var url = serviceurl.apiURLHdfs+"/uploads/".concat(user.concat("/").concat(values.categoria).concat("/").concat(values.sottocategoria).concat("/").concat(values.nome).concat("/"))
     data[operational]['input_src'] = {"srv_push": [{
       "name": "ws_hdfs",
@@ -59,6 +57,8 @@ export function createOperational (values, data) {
       "password": "xxxxxxx"
     }]
   }
+}else{
+  data[operational]['input_src'] = { }
 }
   data[operational]['storage_info'] = 
     {
@@ -154,7 +154,7 @@ export function createDataschema (values, data) {
   var theme = values.categoria
   data[dataschema] = {}
   data[dataschema][avro] = {}
-  data[dataschema][avro]['namespace'] = 'daf://'+ values.gruppoproprietario  + '/' + theme +'/' + values.title
+  data[dataschema][avro]['namespace'] = 'daf://'+ values.gruppoproprietario  + '/' + theme +'/' + values.titolo
   data[dataschema][avro]['separator'] = values.separator
   data[dataschema][avro]['name'] = values.titolo
   data[dataschema][avro]['aliases'] = [values.titolo]
