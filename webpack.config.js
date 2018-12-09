@@ -28,7 +28,7 @@ const commonConfig = {
     filename: '[name].bundle.min.js'
   },
   plugins: [
-    new CleanWebpackPlugin(buildDirectory),
+    // new CleanWebpackPlugin(buildDirectory),
     new HTMLWebpackPlugin({
       template: './public/index.html',
       filename: 'index.html',
