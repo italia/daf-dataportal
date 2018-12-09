@@ -34,6 +34,17 @@ export const ckanTranslate = [
 
 ]
 
+export const chartType = [
+  {'val':'areachart','name':'Grafico ad Area'},
+  {'val':'barchart','name':'Grafico a barre'},
+  {'val':'linechart', 'name':'Grafico a linea'},
+  {'val':'composedchart', 'name':'Grafico composito (Barre, Area, Linea)'},
+  {'val':'piechart', 'name':'Grafico a torta'},
+  {'val':'radarchart', 'name':'Grafico a radar'},
+  {'val':'radialbarchart', 'name':'Grafico a barre circolari'},
+  {'val':'scatterchart', 'name':'Grafico a dispersione'},
+  {'val':'treemap', 'name':'Grafico Treemap'}]
+
 export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}/* , {'val':'ext_opendata', 'name':'Ext. Opendata'} */]
 
 export const visibilita = [{ 'val': '2','name': 'Open data'},{ 'val': '0','name': 'Privato'},{ 'val': '1','name': 'Organizzazione'}]
@@ -146,6 +157,7 @@ export function transformName(name){
 
   export function getKyloSchema(kyloSchema, value){
     kyloSchema.fields.map((field) => {
+      //value['inferred'].map((value) =>{
       value.tests.map((value) =>{
         if(value.nome==field.name){
           field.dataTypeWithPrecisionAndScale=value.tipo

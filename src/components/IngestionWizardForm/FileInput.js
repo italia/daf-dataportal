@@ -10,18 +10,17 @@ class FileInput extends Component {
   };
 
   render() {
-    const { fields, onDropFunction, className, meta: { error, touched }, label, classNameLabel } = this.props;
+    const { fields, onDropFunction, tipofile, className, meta: { error, touched }, label, classNameLabel } = this.props;
 
     return (
       <div className={`${className}` + (error && touched ? ' has-error ' : '')}>
-        {label && <p className={classNameLabel || ''}>{label}</p>}
             <Dropzone
                 name="input"
                 className="dropzone w-100"
                 multiple={false}
                 maxSize={10485760}
                 onDrop={( filesToUpload, e ) => {
-                    onDropFunction(fields, filesToUpload, e)
+                    onDropFunction(fields, filesToUpload, tipofile, e)
                 }
                 }> 
                 <div className="container">

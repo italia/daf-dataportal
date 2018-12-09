@@ -13,7 +13,6 @@ class UserstoryCard extends Component {
     constructor(props){
         super(props);
         this.state = {
-            //image: props.imageA,
             open: false,
             dropdownStyle: {width: '261px', left: 'auto', right: '0'},
             published: props.story.published,
@@ -56,8 +55,8 @@ class UserstoryCard extends Component {
     }
 
     render(){
-        const { story, imageA, widgetA, time, id, loggedUser } = this.props
-        const { image, open, dropdownStyle, published } = this.state
+        const { story, widgetA, time, id, loggedUser } = this.props
+        const { open, dropdownStyle, published } = this.state
 
         const iframeStyle = {
             width: '100%',

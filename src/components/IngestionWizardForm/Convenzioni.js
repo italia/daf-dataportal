@@ -143,38 +143,40 @@ class Convenzioni extends Component {
             <label className="col-sm-2 col-form-label">Convenzioni</label>
             {listaConvenzioni.length>0?
                 <div className="col-sm-10">
-                <table className="table table-sm">
-                    <thead>
-                        <tr>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Valore</th>
-                        <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {listaConvenzioni.map((convenzione, index) => {
-                            return(<tr key={index}>
-                                        <td>{convenzione.tipo}</td>
-                                        <td>{convenzione.val}</td>
-                                        <td> <button type="button" className="btn btn-link float-right" title="Rimuovi Convenzione"  onClick={this.handleRemoveConvenzione.bind(this, convenzione.tipo, convenzione.val)}>
-                                                <i className="fa fa-minus-circle fa-lg m-t-2"></i>
-                                            </button>
-                                        </td>
-                                    </tr>)
-                        })
-                        }
-                    </tbody>
+                    <table className="table table-sm">
+                        <thead>
+                            <tr>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Valore</th>
+                            <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listaConvenzioni.map((convenzione, index) => {
+                                return(<tr key={index}>
+                                            <td>{convenzione.tipo}</td>
+                                            <td>{convenzione.val}</td>
+                                            <td> <button type="button" className="btn btn-link float-right" title="Rimuovi Convenzione"  onClick={this.handleRemoveConvenzione.bind(this, convenzione.tipo, convenzione.val)}>
+                                                    <i className="fa fa-minus-circle fa-lg m-t-2"></i>
+                                                </button>
+                                            </td>
+                                        </tr>)
+                            })
+                            }
+                        </tbody>
                     </table>
-                    </div>
-                    :
-                    <div className="col-sm-10">
-                    <p><label className="col-sm-10 col-form-label">Nessuna convenzione inserita</label>
-                        <button type="button" className="btn btn-link float-right" title="Aggiungi Convenzione" onClick={this.openModalConvenzioni.bind(this)}>
-                            <i className="fa fa-plus-circle fa-lg m-t-2"></i>
-                        </button>
-                        </p>
-                    </div>
-                    }
+                </div>
+            :
+                <div className="col-sm-10">
+                    <p><label className="col-sm-10 col-form-label">Nessuna convenzione inserita</label></p>
+                </div>
+            }
+            <label className="col-sm-2 col-form-label"></label>
+            <div className="col-sm-10">
+                <button type="button" className="btn btn-link float-right" title="Aggiungi Convenzione" onClick={this.openModalConvenzioni.bind(this)}>
+                    <i className="fa fa-plus-circle fa-lg m-t-2"></i>
+                </button>
+            </div>
         </div>
       </div>
     );

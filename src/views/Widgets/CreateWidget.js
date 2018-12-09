@@ -1,357 +1,177 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Container } from 'reactstrap'
-import { getAllOrganizations, search, datasetDetail, launchQueryOnStorage } from '../../actions'
-import { rulesConverter } from '../../utility'
-import ReactTable from "react-table"
-import Select from 'react-select'
-import QueryBuilder from 'react-querybuilder';
+import QueryBuild from '../../components/Widgets/QueryBuild'
+import Chart from '../../components/Widgets/Chart'
+import Collapse from 'rc-collapse'
+import 'rc-collapse/assets/index.css'
+import { GithubPicker } from 'react-color'
+import { chartType } from '../../utility'
 
+var Panel = Collapse.Panel;
 
-class CreateWidget extends Component {
+const colors = ['#B80000','#DB3E00','#FCCB00','#008B02','#006B76','#1273DE','#004DCF','#5300EB',/* '#EB9694','#FAD0C3','#FEF3BD','#C1E1C5','#BEDADC','#C4DEF6','#BED3F3','#D4C4FB' */]
+
+class CreateWidget extends Component{
   constructor(props){
     super(props)
-
     this.state = {
-      selected: [],
-      groupedBy: '',
-      conditions: {},
-      query: {
-        "select": [],
-        // "where": [],
-        "groupBy": [],
-        // "having": [],
-        // "limit": 25
-      },
-      isQuery: false,
-      privateWdg: '',
-      selectedDataset: '',
-      selectedOrg: '',
-      organizations: [],
-      queryResult: [], 
-      fields: []
-    }
-    this.onChangeOrg = this.onChangeOrg.bind(this)
-    this.getDatasetDetail = this.getDatasetDetail.bind(this)
-    this.select = this.select.bind(this)
-    this.launchQuery = this.launchQuery.bind(this)
-    this.renderTable = this.renderTable.bind(this)
-    this.onChangeGroupBy = this.onChangeGroupBy.bind(this)
-    this.renderSelectFields = this.renderSelectFields.bind(this)
-    this.onMaxSelect = this.onMaxSelect.bind(this)
-    this.renderConditions = this.renderConditions.bind(this)
-  }
-
-  componentDidMount(){
-    const { dispatch } = this.props
-    dispatch(getAllOrganizations())
-    .then(json => {
-      this.setState({
-        organizations: json.elem
-      })
-    })
-  }
-
-  onChangeOrg(org){
-    const { dispatch } = this.props
-    const { privateWdg } = this.state
-
-    this.setState({
-      selectedOrg: org
-    })
-
-    var status = []
-    if(privateWdg==='1')
-      status = ['0','1']
-    else
-      status = ['2']
-
-    let filter = {
-      'text': "",
-      'index': ['catalog_test'],
-      'org': [org],
-      'theme':[],
-      'date': "",
-      'status': status,
-      'order': "desc"
+      nomeGrafico: '',
+      chartType: '',
+      xAxis: '',
+      dataVisualization: [],
+      chart: false
     }
 
-    dispatch(search('', filter, false, filter))
-
+    this.addNewDatakey = this.addNewDatakey.bind(this)
+    this.changeDataVisualization = this.changeDataVisualization.bind(this)
+    this.removeElement = this.removeElement.bind(this)
+    this.createWidget = this.createWidget.bind(this)
   }
 
-  getDatasetDetail(){
-    const { dispatch } = this.props
+  addNewDatakey(){
+    const { dataVisualization } = this.state
+    
+    var tmpArray = dataVisualization
 
-    var fields = []
+    tmpArray.push({'dataKey':'', 'color':''})
 
     this.setState({
-      isQuery: true
-    })
-    const { selectedDataset } = this.state
-    dispatch(datasetDetail(selectedDataset, '', false))
-  }
-
-  select(field){
-    const { query } = this.state
-    query.select = []
-    field.map(campo => {
-      query.select.push({"name": campo.value})
-    })
-    
-    this.setState({
-      selected: field
+      dataVisualization: tmpArray
     })
   }
-
-  launchQuery(){
-    const { dispatch, dataset } = this.props
-    const { query, conditions } = this.state
-    
-    for(var k in query){
-      if(query[k] === null || query[k].length===0){
-        delete query[k]
-      }
-    }
-
-    var where = rulesConverter(conditions.combinator, conditions.rules)
-    if(where!=={}){
-      query.where = where
-    }
-
-    
-    dispatch(launchQueryOnStorage(dataset.operational.logical_uri, query))
-    .then(response => {
-      if(response.ok){
-        const result = response.json()
-        result.then(json => { 
-          this.setState({
-            queryResult: json
-          })
-        })
-      }
-    })
-  }
-
-  onChangeGroupBy(value){
-    console.log(value)
-
-    this.setState({
-      groupedBy: value
-    })
-
-    this.state.query.groupBy = [{"name":value}]
-  }
-
-  onMaxSelect(value){
-    const { query } = this.state
-
-    console.log(value)
-    var selected = []
-
-    this.setState({
-      maxSelect: value
-    })
-
-    selected = query.select.map((json) => 
-      json.name === value ? {"max": { "name": value, "alias": "max_"+value } } : json  
-    )
-
-    selected.push({
-      "count": { "name": "*" }
-    })
-    
-    // selected[selected.indexOf(tmp)] = {"max": { "name": value, "alias": "max_"+value } }
-
-    query.select = selected
-  }
-
-  renderTable(){
-    const { queryResult } = this.state
-    const { dataset } = this.props
-
-    if(queryResult.length>0){
-      var columns=[{
-        Header: dataset.dcatapit.name,
-        columns: []
-      }]
-      Object.keys(queryResult[0]).map(elem=>{
-        columns[0].columns.push({
-          Header: elem,
-          accessor: elem
-        })
-      })
-
-      return <ReactTable 
-              data={queryResult}
-              columns={columns}
-              defaultPageSize={25}
-              className="-striped -highlight"
-              />
-    }
-  }
-
-  renderSelectFields(){
-    const { dataset } = this.props
-    
-    var fields = []
-
-    if(dataset){
-      dataset.dataschema.flatSchema.map(field => {
-        fields.push({"value": field.name, "label": field.name})
-      }) 
-    } 
-
-    return <Select
-      value={this.state.selected}
-      onChange={this.select}
-      options={fields}
-      multi={true}
-      className="form-control"
-    />
-  }
-
-  renderConditions(){
-    const { dataset } = this.props
-        
-    var fields = []
-
-    if(dataset){
-      dataset.dataschema.flatSchema.map(field => {
-        fields.push({"name": field.name, "label": field.name})
-      }) 
-    } 
-
-    var controlClassnames = {
-      //queryBuilder:"form-group", // Root <div> element
   
-      ruleGroup:"form-group row col-md-12", // <div> containing the RuleGroup
-      combinators:"form-control col-md-2", // <select> control for combinators
-      addRule:"btn btn-primary", // <button> to add a Rule
-      addGroup:"btn btn-primary", // <button> to add a RuleGroup
-      removeGroup:"btn btn-primary", // <button> to remove a RuleGroup
-  
-      rule:"form-group row col-md-12", // <div> containing the Rule
-      fields:"form-control col-md-2", // <select> control for fields
-      operators:"form-control col-md-1", // <select> control for operators
-      value:"form-control col-md-5", // <input> for the field value
-      removeRule:"btn btn-primary" // <button> to remove a Rule
-    }
+  removeElement(index){
+    const { dataVisualization } = this.state
 
-    return(
-      <QueryBuilder 
-        controlClassnames={controlClassnames} 
-        fields={fields} 
-        onQueryChange={(query)=>{ 
-                        console.log(query);
-                        this.setState({conditions:query})
-                      }}
-      />
-    )
+    var tmpArray = dataVisualization
+
+    tmpArray.splice(index, 1)
+
+    this.setState({
+      dataVisualization: tmpArray
+    })
+  }
+
+  changeDataVisualization(fieldKey, index, value){
+    const { dataVisualization } = this.state
+    var tmpArray = dataVisualization
+
+    tmpArray[index][fieldKey] = value
+
+    this.setState({
+      dataVisualization: tmpArray
+    })
+  }
+
+  createWidget(){
+    this.setState({chart: false})
+
+    setTimeout(()=>{
+      this.setState({chart: true})
+    }, 3000)
   }
 
   render(){
-    const { loggedUser, results, dataset, isFetching } = this.props
-    const { privateWdg, organizations, isQuery, selected } = this.state
+    const {queryLoading, queryResult, query } = this.props
+
+    if(queryResult && queryResult.length > 0)
+      var fields = Object.keys(queryResult[0])
+
     return(
-      <Container className="py-3">
-        <div className="card">
-          <div className="card-body">
-            <div className="card-title mb-3">
-              <h3>Seleziona il Dataset da cui partire</h3>
-            </div>
+      <div className="row my-5">
+        <div className="col-md-5 col-12">
+        <Collapse accordion={true} defaultActiveKey="0">
+          <Panel header="Query Builder">
+            <QueryBuild className=" "/>
+          </Panel>
+          <Panel header="Chart builder">
+          {(queryResult===undefined || queryResult.length === 0)?<h3 className="text-center">Query non elaborata o risultato non disponibile, costruisci una query valida per creare il grafico</h3>:
+          <div>
             <div className="form-group row">
-              <label className="col-md-4 form-control-label">Privato</label>
-              {loggedUser.organizations && loggedUser.organizations.length > 0 ?
-                <div className="col-md-8">
-                  <select className="form-control" value={this.state.privateWdg} onChange={(e)=>this.setState({privateWdg: e.target.value})}>
-                    <option value={''}></option>
-                    <option value={'1'}>Sì</option>
-                    <option value={'0'}>No</option>
-                  </select>
-                </div>
-                :
-                <div className="col-md-8">
-                  <input className="form-control" disabled={true} defaultValue={"No"}/>
-                  <span>Puoi creare soltanto widget pubbliche in quanto non hai nessuna organizzazione associata</span>
-                </div>
-              }
-            </div>
-            <div className="form-group row">
-              <label className="col-md-4 form-control-label">Organizzazione</label>
+              <label className="col-md-4 form-control-label">Nome del grafico</label>
               <div className="col-md-8">
-                <select className="form-control" value={this.state.selectedOrg} onChange={(e)=>{this.onChangeOrg(e.target.value)}} disabled={privateWdg===''}>
-                  <option value={''}></option>                  
-                  {privateWdg==='1' && loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
-                    return (<option value={organization} key={organization}>{organization}</option>)
-                  })
-                  }
-                  {privateWdg==='0' && organizations && organizations.length > 0 && organizations.map(organization => {
-                    return (<option value={organization} key={organization}>{organization}</option>)
-                  })
-                  }
+                <input className="form-control" placeholder="Definisci il nome del grafico" value={this.state.nomeGrafico} onChange={(e) => this.setState({nomeGrafico: e.target.value})}/>
+              </div>
+            </div>
+            <div className="form-group row">
+              <label className="col-md-4 form-control-label">Scegli il tipo di grafico</label>
+              <div className="col-md-8">
+                <select className="form-control" placeholder="Definisci il nome del grafico" value={this.state.chartType} onChange={(e) => this.setState({chartType: e.target.value})}>
+                  <option value=""></option>
+                  {chartType.map((chart, index) => {
+                    return(<option value={chart.val} key={index}>{chart.name}</option>)
+                  })}
                 </select>
               </div>
             </div>
             <div className="form-group row">
-              <label className="col-md-4 form-control-label">Nome Dataset</label>
+              <label className="col-md-4 form-control-label">Valore di confronto</label>
               <div className="col-md-8">
-                <select className="form-control" disabled={this.state.selectedOrg===''} onChange={(e)=>{this.setState({selectedDataset: e.target.value})}}>
-                  <option value=""  key='widgetDataset' defaultValue></option>
-                  {results && results.length>4 && results.map(result => {
-                    if(result.type=='catalog_test'){
-                      var source = JSON.parse(result.source)
-                      return (<option value={source.dcatapit.name} key={source.dcatapit.name}>{source.dcatapit.name}</option>)
-                    }else if(result.type=='ext_opendata'){
-                      var source = JSON.parse(result.source)
-                      return (<option value={source.name} key={source.name}>{source.name}</option>)
-                    }
-                  })
-                  }
+                <select className="form-control" placeholder="Definisci il valore di confronto" value={this.state.xAxis} onChange={(e) => this.setState({xAxis: e.target.value})}>
+                  <option value=""></option>
+                  {fields&&fields.map((field, index) => {
+                    return(<option value={field} key={index}>{field}</option>)
+                  })}
                 </select>
               </div>
             </div>
-            <button className="btn btn-primary float-right" onClick={this.getDatasetDetail} title="Passa al query builder">Avanti</button>
-          </div>
-        </div>
-        {isQuery && <div className="card">
-          <div className="card-body">
-            <div className="card-title">
-              <h3>Costruisci la query per i tuoi dati</h3>
-              {isFetching && <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>}
-              {!isFetching && 
+            <div className="form-group">
               <div className="row">
-                <div className="col-md-12">
-                  <div className="form-group">
-                    <label className="form-control-label">Seleziona i campi</label>
-                    {this.renderSelectFields()}
-                  </div>
-                  <div className="form-group">
-                    <label className="form-control-label">Aggiungi condizioni</label>
-                    {this.renderConditions()}
-                  </div>
+                <label className="col-md-10 form-control-label">Dati da visualizzare</label>
+                <div className="col-md-2">
+                  <button className="btn btn-link text-primary float-right" title="Aggiungi un nuovo valore da visualizzare" onClick={this.addNewDatakey}>
+                    <i className="fas fa-plus-circle fa-lg"/>
+                  </button>
                 </div>
-                {this.state.queryResult.length>0 && <div className="col-md-12">
-                  <label className="form-control-label">Risultato</label>
-                  {this.renderTable()}
-                </div>}
               </div>
-              }
-              <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
+              {this.state.dataVisualization.map((data,index)=>{
+                return(
+                  <div className="row mb-3" key={index}>
+                    <label className="col-md-5 mx-auto form-control-label">Valore {index+1}</label>
+                    <label className="col-md-4 mx-auto form-control-label">Colore {index+1}</label>
+                    <div className="col-md-1 mx-auto"></div>
+                    <select className="col-md-5 mx-auto form-control"  value={data.dataKey} placeholder={"Valore nr. "+index} onChange={(e)=>{this.changeDataVisualization('dataKey', index, e.target.value)}}>
+                      <option value=""></option>
+                      {fields&&fields.map((field, index) => {
+                        return(<option value={field}  key={index}>{field}</option>)
+                      })}
+                    </select>
+                    <select className="col-md-4 mx-auto form-control"  value={data.color} onChange={(e)=>{this.changeDataVisualization('color', index, e.target.value)}}>
+                      <option value=""></option>
+                      {colors.map((color, index) => {
+                        return(<option style={{backgroundColor: color, color:'#fff'}} value={color}  key={index}>{color}</option>)
+                      })}
+                    </select>
+                    <div className="col-md-1 mx-auto">
+                      <button className="btn btn-link text-primary" onClick={this.removeElement.bind(this, index)}><i className="fas fa-times fa-lg"/></button>
+                    </div>
+                  </div>
+                  )
+              })}
             </div>
-          </div>
+          </div>}
+          </Panel>
+        </Collapse>
         </div>
-        }
-      </Container>
+        <div className="col-md-7 col-12">
+          <Chart data={queryResult} dataVisualization={this.state.dataVisualization} xAxis={this.state.xAxis} type={this.state.chartType}/>
+        </div>
+      </div>
     )
   }
 }
 
 function mapStateToProps(state) {
-  const { isFetching, dataset } = state.datasetReducer['obj'] || { isFetching: true }
   const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }
-  const { results } = state.searchReducer['search'] || { isFetching: false, results: [] }
-  return { isFetching, dataset, loggedUser, results }
+  const { query, queryLoading, queryResult } = state.queryReducer['query'] || { queryLoading: false, queryResult: [] }
+  return { loggedUser, query, queryLoading, queryResult }
 }
 
 export default connect(mapStateToProps)(CreateWidget)
+
+/* chartOptions :{
+  xAxis: type.String
+  dataVisualization : [{datakey: type.String, color:type.String},...]
+  scatterchart && scatterVisualization: {yAxis: type.String, zAxis: type.String}
+  showCartesian: type.boolean
+} */

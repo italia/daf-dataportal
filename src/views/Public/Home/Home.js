@@ -180,11 +180,7 @@ class Home extends Component{
                                     break
                             }
                             const dashWidgets = JSON.parse(story.widgets)
-                            //var imageA = undefined
-                            if (firstLayout != '') {
-                                const firstWidget = dashWidgets[firstLayout];
-                                //imageA = firstWidget.image
-                            }
+                            
                             var time = 0
                             let widgets = Object.keys(dashWidgets)
                             for (let k = 0; k < widgets.length; k++) {
