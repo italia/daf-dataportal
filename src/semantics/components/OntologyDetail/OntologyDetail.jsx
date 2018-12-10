@@ -125,7 +125,7 @@ const createOntology = ontology => {
             {!isEmpty(ont.langs) && <CardText>
               <strong>Lingue:</strong>
               <br />
-              {ont.langs.map(lang => <i className={`mr-3 flag-icon flag-icon-${lang === 'en' ? 'us' : lang}`} />)}
+              {ont.langs.map(lang => <i className={`mr-3 flag-icon flag-icon-${lang === 'en' ? 'gb' : lang}`} aria-hidden />)}
             </CardText>}
 
             {!isEmpty(ont.tags) && <CardText>
