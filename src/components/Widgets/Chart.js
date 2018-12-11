@@ -106,9 +106,22 @@ class Chart extends Component{
               <Tooltip />
               <Legend />
               <CartesianGrid stroke="#f5f5f5" />
-              <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-              <Bar dataKey="pv" barSize={20} fill="#413ea0" />
-              <Line type="monotone" dataKey="uv" stroke="#ff7300" />
+              {dataVisualization.map((elem, index)=>{
+                switch (elem.typeViz) {
+                  case "line":
+                    return(<Line type='monotone' dataKey={elem.dataKey} stroke={elem.color} key={index}/>)
+                    break;
+                  case "area":
+                    return(<Area type='monotone' dataKey={elem.dataKey} stroke={elem.color} fill={elem.color} key={index}/>)
+                    break;
+                  case "bar":
+                    return(<Bar dataKey={elem.dataKey} fill={elem.color} key={index}/>)
+                    break;
+                  default:
+                    break;
+                }
+                })
+              }
             </ComposedChart>
           )
           break;

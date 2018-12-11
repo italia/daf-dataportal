@@ -573,13 +573,13 @@ class WizardForm extends Component {
     })
   }
 
-  setQuery(value, nameFrom, nameJoin){
+  setQuery(value, datasetFrom, datasetJoin){
     console.log(value)
     const { dispatch } = this.props;
 
     var sources = []
-    sources.push(nameFrom)
-    nameJoin && sources.push(nameJoin)
+    sources.push(JSON.stringify({"name":datasetFrom.name, "owner_org":datasetFrom.owner_org}))
+    datasetJoin && sources.push(JSON.stringify({"name":datasetJoin.name, "owner_org":datasetJoin.owner_org}))
 
     this.setState({
       query: value
