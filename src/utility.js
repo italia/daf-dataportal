@@ -159,8 +159,8 @@ export function transformName(name){
 
   export function getKyloSchema(kyloSchema, value){
     kyloSchema.fields.map((field) => {
-      value['inferred'].map((value) =>{
-      //value.tests.map((value) =>{
+      //value['inferred'].map((value) =>{
+      value.tests.map((value) =>{
         if(value.nome==field.name){
           field.dataTypeWithPrecisionAndScale=value.tipo
           field.derivedDataType=value.tipo

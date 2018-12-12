@@ -30,11 +30,10 @@ const organizationService = new OrganizationService()
 
 function ableToEdit(user, dataset){
   var able = false
-  if(user.uid === dataset.dcatapit.author){
+  if(user.uid === dataset.operational.group_own || user.uid === dataset.dcatapit.author){
     able = true
-  }/* else if((user.roles.indexOf('daf_adm_'+dataset.dcatapit.owner_org)!==-1) || (user.roles.indexOf('daf_edt_'+dataset.dcatapit.owner_org)!==-1)){
-    able = true
-  } */
+  }
+  
   return able
 }
 
@@ -439,7 +438,7 @@ class DatasetAdmin extends Component{
   
   render(){
     const { acl, aggiungi, orgs, workgroups } = this.state
-    const {dataset, loggedUser } = this.props
+    const {dataset, loggedUser, hasPeview } = this.props
     var result = ""
     if(this.state.selectedOrg!=="" && this.state.selectedOrg!==null){
       if(this.state.selectedWg!=="" && this.state.selectedWg!==null){
@@ -526,11 +525,7 @@ class DatasetAdmin extends Component{
               </button>
           </ModalFooter>
         </Modal>
-        {/* <div className="col-12 text-muted text-justify mb-4">
-          {ableToEdit( loggedUser, dataset) && <h5>Questa è la pagina di amministrazione del tuo dataset, puoi scegliere con chi condividerlo o rendelo un Open data aperto a tutti</h5>}
-          {!ableToEdit( loggedUser, dataset) && <h5>In questa pagina puoi vedere chi ha accesso al dataset, per condividerlo con altri utenti chiedi l'assistenza al suo proprietario</h5>}
-        </div> */}
-        <div className="row mb-4">
+        {hasPeview && <div className="row mb-4">
           <div className="col text-muted">
               <i className="text-icon fa-pull-left fas fa-users fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4><b>Condivisione</b></h4>
           </div>
@@ -539,9 +534,9 @@ class DatasetAdmin extends Component{
               <button className="btn btn-accento" onClick={this.publish} title="Pubblica come Open Data" disabled={isOpenData(acl)}>Pubblica come Open Data</button>
             </div>
           </div>}
-        </div>
-        {this.state.isLoading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :<div className="col-12">
-          <table className="table table-striped">
+        </div>}
+        {hasPeview&&(this.state.isLoading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :<div className="col-12">
+          {<table className="table table-striped">
             <thead>
                 <tr>
                   <th scope="col">Gruppo</th>
@@ -581,9 +576,9 @@ class DatasetAdmin extends Component{
                 </tr>
               }
             </tbody>
-          </table>
-        </div>}
-        {!this.state.isLoading && ableToEdit(loggedUser, dataset) && <div className="row mt-4">
+          </table>}
+        </div>)}
+        {!this.state.isLoading && hasPeview && ableToEdit(loggedUser, dataset) && <div className="row mt-4">
           <div className="col ml-auto">
             <button className="float-right btn btn-primary" onClick={this.toggle} title="Scegli con chi condividere" disabled={isOpenData(acl)}><i className="fa fa-plus fa-lg"/></button>
           </div>

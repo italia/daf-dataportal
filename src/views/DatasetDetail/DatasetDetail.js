@@ -48,6 +48,15 @@ function checkIsLink(val) {
     return val
 }
 
+function ableToEdit(user, dataset){
+  var able = false
+  if(user.uid === dataset.operational.group_own || user.uid === dataset.dcatapit.author){
+    able = true
+  }
+  
+  return able
+}
+
 class DatasetDetail extends Component {
     constructor(props) {
         super(props)
@@ -477,7 +486,7 @@ class DatasetDetail extends Component {
     }
 
     render() {
-        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch, isAdditionalFetching } = this.props
+        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch, isAdditionalFetching, loggedUser } = this.props
         const { loading } = this.state
         var metadataThemes = undefined
         if (metadata) {
@@ -571,7 +580,7 @@ class DatasetDetail extends Component {
                                 {(this.state.hasPreview || isPublic()) && <li className="nav-item h-100">
                                     <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
                                 </li>}
-                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
+                                {!isPublic() && (this.state.hasPreview || ableToEdit(loggedUser, dataset)) && <li className="nav-item h-100">
                                     <a className={!this.state.showAdmin ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAdmin: true, showWidget: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fas fa-cogs pr-2" />Amministrazione</a>
                                 </li>}
                             </ul>
@@ -977,7 +986,7 @@ class DatasetDetail extends Component {
                             </div>
                         </div> */}
 
-                            {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} owner={dataset.dcatapit.author} />}
+                            {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} hasPreview={this.state.hasPreview} owner={dataset.operational.author} />}
                         </div>
                     </div>
                     <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
