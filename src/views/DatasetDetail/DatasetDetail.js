@@ -457,26 +457,30 @@ class DatasetDetail extends Component {
 
     renderPreview(dataset, jsonPreview){
       if(jsonPreview){
-        if(dataset.operational.file_type==="csv" || dataset.operational.input_src.sftp[0].param.indexOf('csv')>-1){
-          var columns=[{
-            Header: dataset.dcatapit.name,
-            columns: []
-          }]
-          Object.keys(jsonPreview[0]).map(elem=>{
-            columns[0].columns.push({
-              Header: elem,
-              accessor: elem
+        if(dataset.operational.input_src.sftp && dataset.operational.file_type){
+          if(dataset.operational.file_type==="csv" || dataset.operational.input_src.sftp[0].param.indexOf('csv')>-1){
+            var columns=[{
+              Header: dataset.dcatapit.name,
+              columns: []
+            }]
+            Object.keys(jsonPreview[0]).map(elem=>{
+              columns[0].columns.push({
+                Header: elem,
+                accessor: elem
+              })
             })
-          })
-          // console.log(columns)
-          return(
-            <ReactTable 
-              data={jsonPreview}
-              columns={columns}
-              defaultPageSize={10}
-              className="-striped -highlight"
-              />
-          )
+            // console.log(columns)
+            return(
+              <ReactTable 
+                data={jsonPreview}
+                columns={columns}
+                defaultPageSize={10}
+                className="-striped -highlight"
+                />
+            )
+          }else{
+            return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
+          }
         }else{
           return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
         }
