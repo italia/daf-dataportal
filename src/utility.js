@@ -43,7 +43,9 @@ export const chartType = [
   {'val':'radarchart', 'name':'Grafico a radar'},
   {'val':'radialbarchart', 'name':'Grafico a barre circolari'},
   {'val':'scatterchart', 'name':'Grafico a dispersione'},
-  {'val':'treemap', 'name':'Grafico Treemap'}]
+  {'val':'treemap', 'name':'Grafico Treemap'},
+  {'val':'table', 'name':'Tabella'}]
+  
 
 export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}/* , {'val':'ext_opendata', 'name':'Ext. Opendata'} */]
 

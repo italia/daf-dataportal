@@ -31,8 +31,11 @@ import {
   ScatterChart,
   Treemap
 } from 'recharts'
+import ReactTable from "react-table"
 
-const colors = ['#4a8523','#68f5c8','#acadc1','#dd4c63','#b415ab','#c4aa30','#223373','#3523d1']
+
+const colors = ['#B80000','#DB3E00','#FCCB00','#008B02','#006B76','#1273DE','#004DCF','#5300EB','#EB9694','#FAD0C3','#FEF3BD','#C1E1C5','#BEDADC','#C4DEF6','#BED3F3','#D4C4FB']
+
 
 class Chart extends Component{
   constructor(props){
@@ -184,40 +187,58 @@ class Chart extends Component{
           )
           break;
       default:
-      return(
-        <LineChart width={800} height={274} data={data}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-        </LineChart>
-      )
-        break;
+          return(
+            <LineChart width={800} height={274} data={data}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+            </LineChart>
+          )
+          break;
     }
   }
 
   render(){
-    const { data, xAxis, dataVisualization, type } = this.props
+    const { data, xAxis, dataVisualization, type, title } = this.props
 
-    // var type = 'barchart'
+    var widType = type===''?'table':type
 
-    /* const data = [
-      {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-      {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-    ] */
-
-    return(
-      <ResponsiveContainer width={800} height={274}>
-        {this.conditionalChartRender(type, data, dataVisualization, xAxis)}
-      </ResponsiveContainer>
-    )
+    if(type === '' || type === 'table'){
+      if(data.length>0){
+        var columns=[{
+          Header: title===''?"Tabella Risultante":title,
+          columns: []
+        }]
+        Object.keys(data[0]).map(elem=>{
+          columns[0].columns.push({
+            Header: elem,
+            accessor: elem
+          })
+        })
+        return(
+          <ReactTable 
+            data={data}
+            columns={columns}
+            defaultPageSize={10}
+            className="-striped -highlight mb-4"
+            />
+        )
+      }else{
+        return(<h3 className="text-center">Query non elaborata o risultato non disponibile, costruisci una query valida per visualizzare i dati</h3>)
+      }
+    }else{
+      return(
+        <div>
+          <h4 className="text-center mb-2">{title}</h4>
+          <ResponsiveContainer width={'100%'} height={400}>
+            {this.conditionalChartRender(widType, data, dataVisualization, xAxis)}
+          </ResponsiveContainer>
+        </div>
+      )
+    }
   }
 }
 

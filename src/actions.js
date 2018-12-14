@@ -1018,6 +1018,22 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
   }
 
+  export function querySearch(filter){
+    var url = serviceurl.apiURLDatiGov+'/elasticsearch/search'
+    return dispatch => {
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(filter)
+      })
+      .then(response => response.json())
+    }
+  }
+
   export function search(query, filter, isPublic, filterInt) {
     var url = serviceurl.apiURLDatiGov + (isPublic?'/public':'')+'/elasticsearch/search'
     return dispatch => {

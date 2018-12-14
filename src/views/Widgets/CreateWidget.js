@@ -4,12 +4,13 @@ import QueryBuild from '../../components/Widgets/QueryBuild'
 import Chart from '../../components/Widgets/Chart'
 import Collapse from 'rc-collapse'
 import 'rc-collapse/assets/index.css'
-import { GithubPicker } from 'react-color'
 import { chartType } from '../../utility'
+import ReactTable from "react-table"
+
 
 var Panel = Collapse.Panel;
 
-const colors = ['#B80000','#DB3E00','#FCCB00','#008B02','#006B76','#1273DE','#004DCF','#5300EB',/* '#EB9694','#FAD0C3','#FEF3BD','#C1E1C5','#BEDADC','#C4DEF6','#BED3F3','#D4C4FB' */]
+const colors = ['#B80000','#DB3E00','#FCCB00','#008B02','#006B76','#1273DE','#004DCF','#5300EB','#EB9694','#FAD0C3','#FEF3BD','#C1E1C5','#BEDADC','#C4DEF6','#BED3F3','#D4C4FB']
 
 class CreateWidget extends Component{
   constructor(props){
@@ -78,11 +79,21 @@ class CreateWidget extends Component{
       var fields = Object.keys(queryResult[0])
 
     return(
-      <div className="row my-5">
-        <div className="col-md-5 col-12">
+      <div className="row mb-5">
+        <div className="col-12 mb-3">
+          <h2>Nuovo Widget</h2>
+        </div>
+        <div className="col-md-8 mb-3">
+
+        </div>
+        <div className="col-md-1 btn-group ml-auto mb-3">
+          <button className="btn btn-link text-danger"><i className="fas fa-trash fa-lg"/></button>
+          <button className="btn btn-link text-primary"><i className="fas fa-save fa-lg"/></button>
+        </div>
+        <div className="col-md-4 col-12">
         <Collapse accordion={true} defaultActiveKey="0">
           <Panel header="Query Builder">
-            <QueryBuild className=" "/>
+            <QueryBuild className=" " hideTable={true}/>
           </Panel>
           <Panel header="Chart builder">
           {(queryResult===undefined || queryResult.length === 0)?<h3 className="text-center">Query non elaborata o risultato non disponibile, costruisci una query valida per creare il grafico</h3>:
@@ -153,8 +164,9 @@ class CreateWidget extends Component{
           </Panel>
         </Collapse>
         </div>
-        <div className="col-md-7 col-12">
-          <Chart data={queryResult} dataVisualization={this.state.dataVisualization} xAxis={this.state.xAxis} type={this.state.chartType}/>
+        <div className="col-md-8 col-12">
+          {queryLoading && <h1 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>}
+          {!queryLoading && queryResult && <Chart title={this.state.nomeGrafico} data={queryResult} dataVisualization={this.state.dataVisualization} xAxis={this.state.xAxis} type={this.state.chartType}/>}
         </div>
       </div>
     )

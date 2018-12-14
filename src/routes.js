@@ -13,6 +13,7 @@ const routes = {
   '/private/validator': 'Validatore',
   '/private/dataset':'Dataset',
   '/private/widget' : 'Widget',
+  '/private/charts' : 'Crea Widget',
   '/private/search': 'Ricerca',
 };
 export default routes;

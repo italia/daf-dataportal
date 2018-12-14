@@ -9,7 +9,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import { toastr } from 'react-redux-toastr'
-import { getAllOrganizations, search, getQueryResult, getDatasetCatalog } from '../../actions'
+import { search, querySearch, getQueryResult, getDatasetCatalog } from '../../actions'
 import { rulesConverter } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
@@ -47,9 +47,11 @@ class QueryBuild extends Component {
       datasetJoin: undefined
     }
     this.onChangeOrg = this.onChangeOrg.bind(this)
+    this.onChangePvt = this.onChangePvt.bind(this)
     this.getDatasetDetail = this.getDatasetDetail.bind(this)
     this.select = this.select.bind(this)
     this.launchQuery = this.launchQuery.bind(this)
+    this.renderOrgsSelect = this.renderOrgsSelect.bind(this)
     this.renderTable = this.renderTable.bind(this)
     this.renderSelectFields = this.renderSelectFields.bind(this)
     this.renderConditions = this.renderConditions.bind(this)
@@ -57,14 +59,36 @@ class QueryBuild extends Component {
     this.removeDatasetJoin = this.removeDatasetJoin.bind(this)
   }
 
-  componentDidMount(){
+  onChangePvt(pvt){
     const { dispatch } = this.props
-    dispatch(getAllOrganizations())
-    .then(json => {
-      this.setState({
-        organizations: json.elem
+    if(pvt==='0'){
+      var status = ['2']
+      let filter = {
+        'text': "",
+        'index': ['catalog_test'],
+        'org': [],
+        'theme':[],
+        'date': "",
+        'status': status,
+        'order': "desc"
+      }
+
+      dispatch(querySearch(filter))
+      .then(json => {
+        var orgs = json.filter(res =>{
+          return(res.type==='organization')
+        })
+
+        this.setState({
+          privateWdg: pvt,
+          organizations: Object.keys(JSON.parse(orgs[0].source))
+        })
       })
-    })
+    }else{
+      this.setState({
+        privateWdg: pvt
+      })
+    }
   }
 
   onChangeOrg(org){
@@ -371,8 +395,18 @@ class QueryBuild extends Component {
     })
   }
 
+  renderOrgsSelect(){
+    return(
+      <select className="form-control" value={this.state.selectedOrg} onChange={(e)=>{this.onChangeOrg(e.target.value)}} disabled={this.state.privateWdg==='' || this.state.organizations.length===0}>
+        <option value=""></option>
+        { this.state.organizations.length > 0 && this.state.organizations.map(org=>
+          <option value={org} key={org}>{org}</option>
+        )}
+      </select>)
+  }
+
   render(){
-    const { loggedUser, isFetching, results, queryLoading, queryResult, className } = this.props
+    const { loggedUser, isFetching, results, queryLoading, queryResult, className, hideTable } = this.props
     const { privateWdg, organizations, isQuery, modalOpen } = this.state
 
     var classes = className?className:"container"
@@ -392,7 +426,7 @@ class QueryBuild extends Component {
             <label className="col-md-4 form-control-label">Privato</label>
             {loggedUser.organizations && loggedUser.organizations.length > 0 ?
               <div className="col-md-8">
-                <select className="form-control" value={this.state.privateWdg} onChange={(e)=>this.setState({privateWdg: e.target.value})}>
+                <select className="form-control" value={this.state.privateWdg} onChange={(e)=>{this.onChangePvt(e.target.value)}}>
                   <option value={''}></option>
                   <option value={'1'}>Sì</option>
                   <option value={'0'}>No</option>
@@ -408,17 +442,15 @@ class QueryBuild extends Component {
           <div className="form-group row">
             <label className="col-md-4 form-control-label">Organizzazione</label>
             <div className="col-md-8">
-              <select className="form-control" value={this.state.selectedOrg} onChange={(e)=>{this.onChangeOrg(e.target.value)}} disabled={privateWdg===''}>
+            {(privateWdg==='1'||privateWdg==='')  && <select className="form-control" value={this.state.selectedOrg} onChange={(e)=>{this.onChangeOrg(e.target.value)}} disabled={privateWdg===''}>
                 <option value={''}></option>                  
-                {privateWdg==='1' && loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
+                {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
                   return (<option value={organization} key={organization}>{organization}</option>)
-                })
+                  })
                 }
-                {privateWdg==='0' && organizations && organizations.length > 0 && organizations.map(organization => {
-                  return (<option value={organization} key={organization}>{organization}</option>)
-                })
+              </select>}
+              {privateWdg==='0' && this.renderOrgsSelect(results,isFetching)
                 }
-              </select>
             </div>
           </div>
           <div className="form-group row">
@@ -426,7 +458,7 @@ class QueryBuild extends Component {
             <div className="col-md-8">
               <select className="form-control" value={this.state.selectedDataset} disabled={(this.state.selectedOrg==='') || isFetching } onChange={(e)=>{this.setState({selectedDataset: e.target.value}); this.getDatasetDetail(e.target.value)}}>
                 <option value=""  key='widgetDataset' defaultValue></option>
-                {results && results.length>4 && results.map(result => {
+                {this.state.selectedOrg!=='' && results && results.length>4 && results.map(result => {
                   if(result.type=='catalog_test'){
                     var source = JSON.parse(result.source)
                     return (<option value={source.dcatapit.name} key={source.dcatapit.name}>{source.dcatapit.name}</option>)
@@ -523,7 +555,7 @@ class QueryBuild extends Component {
             <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
           </div>
         </div>}
-        {isQuery && <div className="card">
+        {(isQuery && !hideTable) && <div className="card">
           <div className="card-body">
             <div className="card-title">
               <h3>Risultato</h3>
