@@ -109,9 +109,9 @@ class Sidebar extends Component {
     this.props.openModalStory();
   }
 
-  createWidget(){
-    this.props.openModalWidget();
-  }
+  // createWidget(){
+  //   this.props.openModalWidget();
+  // }
 
   render() {
     const { loggedUser } = this.props
@@ -174,12 +174,12 @@ class Sidebar extends Component {
                   }}>
                     <Link to={'/private/ingestionwizzard'} className="nav-link"><i className="fas fa-table fa-lg text-secondary"/>  Nuovo Dataset</Link>
                   </li>}
-                  <li className="nav-item" onClick={(e) => {
+                  {/* <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
                     <a href className="nav-link " onClick={this.createWidget.bind(this)}><i className="fas fa-columns fa-lg text-secondary" />  Nuovo Widget</a>
-                  </li>
+                  </li> */}
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
