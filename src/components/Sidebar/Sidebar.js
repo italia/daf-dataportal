@@ -110,7 +110,7 @@ class Sidebar extends Component {
   }
 
   createWidget(){
-    this.props.openModalWidget();
+    this.props.history.push('/private/charts')
   }
 
   render() {

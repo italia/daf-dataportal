@@ -906,7 +906,7 @@ class Full extends Component {
 
         {/* Modal per creazione nuovo Widget */}
 
-        {loggedUser && <Modal isOpen={this.state.isOpenWidget} onRequestHide={this.hideModalWidget}>
+        {/* {loggedUser && <Modal isOpen={this.state.isOpenWidget} onRequestHide={this.hideModalWidget}>
           <form>
             <ModalHeader>
               <ModalTitle>Crea un Widget</ModalTitle>
@@ -1009,7 +1009,7 @@ class Full extends Component {
               </button>
             </ModalFooter>
           </form>
-        </Modal>}
+        </Modal>} */}
 
         <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash} openModalWidget={this.openModalWidget} />
         <div className="app-body">

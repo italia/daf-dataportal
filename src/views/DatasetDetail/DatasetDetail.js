@@ -457,7 +457,7 @@ class DatasetDetail extends Component {
 
     renderPreview(dataset, jsonPreview){
       if(jsonPreview){
-        if(dataset.operational.input_src.sftp && dataset.operational.file_type){
+        if(dataset.operational.input_src.sftp || dataset.operational.file_type){
           if(dataset.operational.file_type==="csv" || dataset.operational.input_src.sftp[0].param.indexOf('csv')>-1){
             var columns=[{
               Header: dataset.dcatapit.name,
