@@ -573,8 +573,9 @@ class WizardForm extends Component {
     })
   }
 
-  setQuery(value, datasetFrom, datasetJoin){
-    console.log(value)
+  setQuery(json, sql, datasetFrom, datasetJoin){
+    console.log(json)
+    console.log(sql)
     const { dispatch } = this.props;
 
     var sources = []
@@ -582,9 +583,10 @@ class WizardForm extends Component {
     datasetJoin && sources.push(JSON.stringify({"name":datasetJoin.name, "owner_org":datasetJoin.owner_org}))
 
     this.setState({
-      query: value
+      query: json
     })
-    dispatch(change('wizard', 'query', value))
+    dispatch(change('wizard', 'query_json', json))
+    dispatch(change('wizard', 'query_sql', sql))
     dispatch(change('wizard', 'sources', sources))
   }
   

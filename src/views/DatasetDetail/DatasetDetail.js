@@ -48,6 +48,15 @@ function checkIsLink(val) {
     return val
 }
 
+function ableToEdit(user, dataset){
+  var able = false
+  if(user.uid === dataset.operational.group_own || user.uid === dataset.dcatapit.author){
+    able = true
+  }
+  
+  return able
+}
+
 class DatasetDetail extends Component {
     constructor(props) {
         super(props)
@@ -139,13 +148,13 @@ class DatasetDetail extends Component {
             var dafIndex = 0
 
             dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-                .then(json => { 
-                  if(json.ok) {
-                    dafIndex = dafIndex + 3; 
-                    this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
-                  } 
-                })
-                .catch(error => { this.setState({ hasPreview: false, loading: false }) })
+              .then(json => { 
+                if(json.ok) {
+                  dafIndex = dafIndex + 3; 
+                  this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
+                } 
+              })
+              .catch(error => { this.setState({ hasPreview: false, loading: false }) })
 
             dispatch(getSupersetUrl(nextProps.dataset.dcatapit.name, nextProps.dataset.dcatapit.owner_org, isExtOpendata))
                 .then(json => {
@@ -448,26 +457,30 @@ class DatasetDetail extends Component {
 
     renderPreview(dataset, jsonPreview){
       if(jsonPreview){
-        if(dataset.operational.file_type==="csv" || dataset.operational.input_src.sftp[0].param.indexOf('csv')>-1){
-          var columns=[{
-            Header: dataset.dcatapit.name,
-            columns: []
-          }]
-          Object.keys(jsonPreview[0]).map(elem=>{
-            columns[0].columns.push({
-              Header: elem,
-              accessor: elem
+        if(dataset.operational.input_src.sftp || dataset.operational.file_type){
+          if(dataset.operational.file_type==="csv" || dataset.operational.input_src.sftp[0].param.indexOf('csv')>-1){
+            var columns=[{
+              Header: dataset.dcatapit.name,
+              columns: []
+            }]
+            Object.keys(jsonPreview[0]).map(elem=>{
+              columns[0].columns.push({
+                Header: elem,
+                accessor: elem
+              })
             })
-          })
-          // console.log(columns)
-          return(
-            <ReactTable 
-              data={jsonPreview}
-              columns={columns}
-              defaultPageSize={10}
-              className="-striped -highlight"
-              />
-          )
+            // console.log(columns)
+            return(
+              <ReactTable 
+                data={jsonPreview}
+                columns={columns}
+                defaultPageSize={10}
+                className="-striped -highlight"
+                />
+            )
+          }else{
+            return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
+          }
         }else{
           return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
         }
@@ -477,7 +490,7 @@ class DatasetDetail extends Component {
     }
 
     render() {
-        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch, isAdditionalFetching } = this.props
+        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch, isAdditionalFetching, loggedUser } = this.props
         const { loading } = this.state
         var metadataThemes = undefined
         if (metadata) {
@@ -571,7 +584,7 @@ class DatasetDetail extends Component {
                                 {(this.state.hasPreview || isPublic()) && <li className="nav-item h-100">
                                     <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
                                 </li>}
-                                {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
+                                {!isPublic() && (this.state.hasPreview || ableToEdit(loggedUser, dataset)) && <li className="nav-item h-100">
                                     <a className={!this.state.showAdmin ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAdmin: true, showWidget: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fas fa-cogs pr-2" />Amministrazione</a>
                                 </li>}
                             </ul>
@@ -703,6 +716,26 @@ class DatasetDetail extends Component {
                                                                     <p className="desc-dataset">Vuoi caricare direttamente il file?</p> <button className="btn btn-primary" onClick={this.toggleUploadFile.bind(this)}>Carica</button>
                                                                 </div>}
                                                         </div>
+                                                    }
+                                                    {
+                                                      dataset.operational.type_info && dataset.operational.type_info.dataset_type==="derived_sql" &&
+                                                      <div>
+                                                        <table className="table table-striped table-responsive-1">
+                                                            <tbody className="w-100">
+                                                                <tr>
+                                                                  <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th><td className="bg-grigino">Derivato SQL</td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <th className="bg-white" style={{ width: "192px" }}><strong>Query: </strong></th>
+                                                                  <td className="bg-grigino" title={dataset.operational.type_info.query_sql}>{dataset.operational.type_info.query_sql}
+                                                                    <CopyToClipboard text={dataset.operational.type_info.query_sql}>
+                                                                      <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
+                                                                    </CopyToClipboard>
+                                                                  </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                      </div>
                                                     }
                                                     {!this.state.hasPreview && !isPublic() &&
                                                       <p className="desc-dataset text-dark font-weight-bold mt-5">Non hai ancora effettuato un caricamento per questo dataset. Carica i dati con il metodo sopra indicato per sbloccare tutte le funzionalità offerte.</p>
@@ -977,7 +1010,7 @@ class DatasetDetail extends Component {
                             </div>
                         </div> */}
 
-                            {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} owner={dataset.dcatapit.author} />}
+                            {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} hasPreview={this.state.hasPreview} owner={dataset.operational.author} />}
                         </div>
                     </div>
                     <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">

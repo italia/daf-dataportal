@@ -128,8 +128,9 @@ const createVocabulary = vocabulary => {
                     <i
                       title={lang}
                       className={`mr-2 flag-icon flag-icon-${
-                        lang === "en" ? "us" : lang
+                        lang === "en" ? "gb" : lang
                       }`}
+                      aria-hidden
                     />
                   ))}
                 </CardText>
