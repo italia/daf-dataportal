@@ -1805,3 +1805,25 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
             .catch(error=> {dispatch(receiveQueryResult([], query));console.error(error)})
           }
         }
+
+      export function translateQueryToSQL(query, logical_uri){
+        var token = ''
+        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) +'/sql'
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(query)
+          })
+          .then(response => response.text())
+          .catch(error=> console.error(error))
+        }
+      }

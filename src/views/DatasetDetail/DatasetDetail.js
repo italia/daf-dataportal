@@ -148,13 +148,13 @@ class DatasetDetail extends Component {
             var dafIndex = 0
 
             dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-                .then(json => { 
-                  if(json.ok) {
-                    dafIndex = dafIndex + 3; 
-                    this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
-                  } 
-                })
-                .catch(error => { this.setState({ hasPreview: false, loading: false }) })
+              .then(json => { 
+                if(json.ok) {
+                  dafIndex = dafIndex + 3; 
+                  this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
+                } 
+              })
+              .catch(error => { this.setState({ hasPreview: false, loading: false }) })
 
             dispatch(getSupersetUrl(nextProps.dataset.dcatapit.name, nextProps.dataset.dcatapit.owner_org, isExtOpendata))
                 .then(json => {
@@ -716,6 +716,26 @@ class DatasetDetail extends Component {
                                                                     <p className="desc-dataset">Vuoi caricare direttamente il file?</p> <button className="btn btn-primary" onClick={this.toggleUploadFile.bind(this)}>Carica</button>
                                                                 </div>}
                                                         </div>
+                                                    }
+                                                    {
+                                                      dataset.operational.type_info && dataset.operational.type_info.dataset_type==="derived_sql" &&
+                                                      <div>
+                                                        <table className="table table-striped table-responsive-1">
+                                                            <tbody className="w-100">
+                                                                <tr>
+                                                                  <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th><td className="bg-grigino">Derivato SQL</td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <th className="bg-white" style={{ width: "192px" }}><strong>Query: </strong></th>
+                                                                  <td className="bg-grigino" title={dataset.operational.type_info.query_sql}>{dataset.operational.type_info.query_sql}
+                                                                    <CopyToClipboard text={dataset.operational.type_info.query_sql}>
+                                                                      <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
+                                                                    </CopyToClipboard>
+                                                                  </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                      </div>
                                                     }
                                                     {!this.state.hasPreview && !isPublic() &&
                                                       <p className="desc-dataset text-dark font-weight-bold mt-5">Non hai ancora effettuato un caricamento per questo dataset. Carica i dati con il metodo sopra indicato per sbloccare tutte le funzionalità offerte.</p>

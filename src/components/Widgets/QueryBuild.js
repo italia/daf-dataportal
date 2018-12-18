@@ -9,7 +9,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import { toastr } from 'react-redux-toastr'
-import { querySearch, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult } from '../../actions'
+import { querySearch, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult, translateQueryToSQL } from '../../actions'
 import { rulesConverter } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
@@ -212,7 +212,10 @@ class QueryBuild extends Component {
           var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
           if(onSubmit){
             query.limit && delete query['limit']
-            onSubmit(query, datasetFrom.dcatapit, datasetJoin.dcatapit)
+            dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
+            .then(sql=> {
+              onSubmit(query, sql, datasetFrom.dcatapit, datasetJoin.dcatapit)
+            })
           }
           if(onDropFunction)
             onDropFunction(fields, [file],'json')
@@ -230,7 +233,10 @@ class QueryBuild extends Component {
             var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
             if(onSubmit){
               query.limit && delete query['limit']
-              onSubmit(query, datasetFrom.dcatapit, undefined)
+              dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
+              .then(sql=> {
+                onSubmit(query, sql, datasetFrom.dcatapit, undefined)
+              })
             }
             if(onDropFunction)
               onDropFunction(fields, [file],'json')
@@ -243,7 +249,10 @@ class QueryBuild extends Component {
           var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
           if(onSubmit){
             query.limit && delete query['limit']
-            onSubmit(query, datasetFrom.dcatapit.name, undefined)
+            dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
+            .then(sql=> {
+              onSubmit(query, sql, datasetFrom.dcatapit, undefined)
+            })
           }
           if(onDropFunction)
             onDropFunction(fields, [file],'json')

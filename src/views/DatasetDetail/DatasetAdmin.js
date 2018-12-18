@@ -438,7 +438,7 @@ class DatasetAdmin extends Component{
   
   render(){
     const { acl, aggiungi, orgs, workgroups } = this.state
-    const {dataset, loggedUser, hasPeview } = this.props
+    const {dataset, loggedUser, hasPreview } = this.props
     var result = ""
     if(this.state.selectedOrg!=="" && this.state.selectedOrg!==null){
       if(this.state.selectedWg!=="" && this.state.selectedWg!==null){
@@ -447,6 +447,7 @@ class DatasetAdmin extends Component{
         result = <h5>Stai condividendo il dataset con gli utenti dell'organizzazione <b>{this.state.selectedOrg}</b></h5>
       }
     }
+    console.log(hasPreview)
     return(
       <div hidden={!this.props.showAdmin} className="col-12 card-text">
         <Modal
@@ -525,7 +526,7 @@ class DatasetAdmin extends Component{
               </button>
           </ModalFooter>
         </Modal>
-        {hasPeview && <div className="row mb-4">
+        {hasPreview && <div className="row mb-4">
           <div className="col text-muted">
               <i className="text-icon fa-pull-left fas fa-users fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4><b>Condivisione</b></h4>
           </div>
@@ -535,7 +536,7 @@ class DatasetAdmin extends Component{
             </div>
           </div>}
         </div>}
-        {hasPeview&&(this.state.isLoading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :<div className="col-12">
+        {hasPreview&&(this.state.isLoading?<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :<div className="col-12">
           {<table className="table table-striped">
             <thead>
                 <tr>
@@ -578,7 +579,7 @@ class DatasetAdmin extends Component{
             </tbody>
           </table>}
         </div>)}
-        {!this.state.isLoading && hasPeview && ableToEdit(loggedUser, dataset) && <div className="row mt-4">
+        {!this.state.isLoading && hasPreview && ableToEdit(loggedUser, dataset) && <div className="row mt-4">
           <div className="col ml-auto">
             <button className="float-right btn btn-primary" onClick={this.toggle} title="Scegli con chi condividere" disabled={isOpenData(acl)}><i className="fa fa-plus fa-lg"/></button>
           </div>

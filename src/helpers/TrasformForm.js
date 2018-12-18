@@ -19,7 +19,8 @@ export function createOperational (values, data) {
     }
   data[operational]['type_info'] = {
     'dataset_type' : values.tipodataset,
-    'query': values.query?JSON.stringify(values.query):undefined,
+    'query_json': values.query_json?JSON.stringify(values.query_json):undefined,
+    'query_sql': values.query_sql?JSON.stringify(values.query_sql):undefined,
     'sources' : values.sources
   }
   if (!values.tiposalvataggio){
