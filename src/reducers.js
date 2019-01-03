@@ -99,6 +99,7 @@ function datasets(state = { isFetching: false, didInvalidate: false, items: [], 
         dataset: action.dataset,
         feed: action.feed,
         iframes: action.iframes,
+        linkedDs: action.linkedDs,
         ope: action.ope
       })
     case RECEIVE_DATASET_DETAIL_ERROR:

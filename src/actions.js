@@ -147,12 +147,13 @@ function receiveDatasetDetail(jsonDataset, query, category_filter, group_filter,
   }
 }
 
-function receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames) {
+function receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames, jsonLinked) {
   return {
       type: RECEIVE_DATASET_ADDITIONAL_DETAIL,
       dataset: jsonDataset,
       feed: jsonFeed,
       iframes: jsonIFrames,
+      linkedDs: jsonLinked,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
   }
@@ -1004,15 +1005,33 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
                 .then(jsonFeed => {
                   dispatch(getDatasetIframes(jsonDataset.dcatapit.name, jsonDataset.dcatapit.privatex))
                   .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                  .then(jsonIFrames => dispatch(receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames)))
+                  .then(jsonIFrames => {
+                    var sources = []
+                    jsonDataset.operational.type_info && jsonDataset.operational.type_info.dataset_type==="derived_sql" && jsonDataset.operational.type_info.sources.map(source => {
+                      var tmp = JSON.parse(source)
+                      sources.push(tmp.name)
+                    })
+                    dispatch(getLinkedDs(jsonDataset.dcatapit.name, sources))
+                    .catch(error => console.log('Errore durante il caricamento dei derivati'))
+                    .then(jsonLinked => dispatch(receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames, jsonLinked)))
+                  })
                 })
               }else{
                 dispatch(receiveDatasetDetail(jsonDataset))
                 dispatch(getDatasetIframes(jsonDataset.dcatapit.name, jsonDataset.dcatapit.privatex))
                   .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                  .then(jsonIFrames => dispatch(receiveDatasetAdditionalDetail(jsonDataset, undefined, jsonIFrames)))
+                  .then(jsonIFrames => {
+                    var sources = []
+                    jsonDataset.operational.type_info && jsonDataset.operational.type_info.dataset_type==="derived_sql" && jsonDataset.operational.type_info.sources.map(source => {
+                      var tmp = JSON.parse(source)
+                      sources.push(tmp.name)
+                    })
+                    dispatch(getLinkedDs(jsonDataset.dcatapit.name, sources))
+                    .catch(error => console.log('Errore durante il caricamento dei derivati'))
+                    .then(jsonLinked => dispatch(receiveDatasetAdditionalDetail(jsonDataset, undefined, jsonIFrames, jsonLinked)))
+                  })
               }
-              })
+        })
         .catch(error => {
           console.log('Nessun Dataset con questo nome');
           dispatch(receiveDatasetDetailError(query))
@@ -1824,6 +1843,29 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
             body: JSON.stringify(query)
           })
           .then(response => response.text())
+          .catch(error=> console.error(error))
+        }
+      }
+
+      export function getLinkedDs(datasetName, sources){
+        var url = serviceurl.apiURLCatalog + '/catalog-ds/linked/' + datasetName
+        var token = ''
+        
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({"sourcesName":sources})
+          })
+          .then(response => response.json())
           .catch(error=> console.error(error))
         }
       }
