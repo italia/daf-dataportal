@@ -13,7 +13,6 @@ import {
     uploadHdfsFile,
     groupsInfo,
     getTableId,
-    getLinkedDs
 } from '../../actions'
 import ReactTable from "react-table"
 import "react-table/react-table.css";
@@ -103,8 +102,7 @@ class DatasetDetail extends Component {
             file: '',
             fileName: '',
             uploading: false,
-            linkedDs:[]
-
+            numberDataset: 3
         }
 
         this.handlePreview = this.handlePreview.bind(this)
@@ -174,17 +172,17 @@ class DatasetDetail extends Component {
                 })
                 .catch(error => { this.setState({ hasMetabase: false }) })
             
-            var sources = []
-            nextProps.dataset.operational.type_info&& nextProps.dataset.operational.type_info.dataset_type==="derived_sql" && nextProps.dataset.operational.type_info.sources.map(source => {
-              var tmp = JSON.parse(source)
-              sources.push(tmp.name)
-            })
-            dispatch(getLinkedDs(nextProps.dataset.dcatapit.name, {"sourcesName": sources} ))
-            .then(json => {
-              this.setState({
-                linkedDs: json
-              })
-            })
+            // var sources = []
+            // nextProps.dataset.operational.type_info&& nextProps.dataset.operational.type_info.dataset_type==="derived_sql" && nextProps.dataset.operational.type_info.sources.map(source => {
+            //   var tmp = JSON.parse(source)
+            //   sources.push(tmp.name)
+            // })
+            // dispatch(getLinkedDs(nextProps.dataset.dcatapit.name, {"sourcesName": sources} ))
+            // .then(json => {
+            //   this.setState({
+            //     linkedDs: json
+            //   })
+            // })
         }
     }
 
@@ -513,8 +511,8 @@ class DatasetDetail extends Component {
     }
 
     render() {
-        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch, isAdditionalFetching, loggedUser } = this.props
-        const { loading } = this.state
+        const { dataset, metadata, ope, feed, iframes, linkedDs, isFetching, dispatch, isAdditionalFetching, loggedUser } = this.props
+        const { loading, numberDataset } = this.state
         var metadataThemes = undefined
         if (metadata) {
             try {
@@ -763,7 +761,7 @@ class DatasetDetail extends Component {
                                                           <div className="col-12">
                                                             <p className="text-muted mb-4"><b>Sorgenti </b></p>
                                                           </div>
-                                                          {this.state.linkedDs.map((dataset, index)=>{
+                                                          {linkedDs && linkedDs.map((dataset, index)=>{
                                                             if(dataset.catalog_type==="source")
                                                               return(
                                                                 <DatasetCard
@@ -1056,14 +1054,14 @@ class DatasetDetail extends Component {
                     <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
                         {isAdditionalFetching?<h1 className="text-center"><i className="fas fa-spin fa-circle-notch mr-2"/> Caricamento</h1>:<Widgets widgets={iframes} loading={false} />}
                     </div>
-                    {this.state.linkedDs.filter(dataset=>{return dataset.catalog_type==="derived"}).length>0 && 
+                    {linkedDs && linkedDs.filter(dataset=>{return dataset.catalog_type==="derived"}).length>0 && 
                     <div hidden={!this.state.showDett}>
                         <div className="container body w-100">
                             <div className="row mx-auto text-muted">
                                 <i className="fa fa-table fa-lg m-3" style={{ lineHeight: '1' }} /><h2 className="mt-2 mb-4">Dataset Derivati</h2>
                             </div>
                             <div className="row mx-auto m-0">
-                              {this.state.linkedDs.slice(random,3).map((dataset, index) => {
+                              {linkedDs.slice(0, numberDataset).map((dataset, index) => {
                                   if(dataset.catalog_type==="derived"){
                                     return(
                                       <DatasetCard
@@ -1076,6 +1074,13 @@ class DatasetDetail extends Component {
                                   }
                                 })
                               }
+                              <div className="w-100 text-center">
+                              {numberDataset === linkedDs.length ? <button className="btn btn-link" onClick={() => { this.setState({ numberDataset: 3 }) }}>
+                                    <h4 className="text-primary"><u>Vedi meno</u></h4>
+                                </button>:<button className="btn btn-link" onClick={() => { this.setState({ numberDataset: linkedDs.length }) }}>
+                                    <h4 className="text-primary"><u>Vedi tutti</u></h4>
+                                </button>}
+                              </div>
                             </div>
                         </div>
                     </div>}
@@ -1340,10 +1345,10 @@ class DatasetDetail extends Component {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, isAdditionalFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
+    const { isFetching, isAdditionalFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes, linkedDs } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
     const { newNotifications } = state.notificationsReducer['notifications'] || {}
     const { loggedUser } = state.userReducer['obj'] || {}
-    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser, isAdditionalFetching }
+    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser, isAdditionalFetching, linkedDs }
 }
 
 export default connect(mapStateToProps)(DatasetDetail)
