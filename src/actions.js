@@ -1827,3 +1827,26 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .catch(error=> console.error(error))
         }
       }
+
+      export function getLinkedDs(datasetName, sources){
+        var url = serviceurl.apiURLCatalog + '/catalog-ds/linked/' + datasetName
+        var token = ''
+        
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(sources)
+          })
+          .then(response => response.json())
+          .catch(error=> console.error(error))
+        }
+      }

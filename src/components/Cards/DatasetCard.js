@@ -16,7 +16,7 @@ class DatasetCard extends Component{
     mesi = ['',' Gennaio ',' Febbraio ',' Marzo ',' Aprile ',' Maggio ',' Giugno ',' Luglio ',' Agosto ',' Settembre ',' Ottobre ', ' Novembre ', ' Dicembre ']
 
     render(){
-        const { dataset, open } = this.props
+        const { dataset, open, linkFunction } = this.props
         //const { detail } = this.state
         var openData = false
 
@@ -72,9 +72,14 @@ class DatasetCard extends Component{
                     </div>
                     <div className="dataset-body b-b-card">
                         <div className="title-dash pl-3 ml-0">
+                            {linkFunction?
+                            <button className="btn btn-link text-primary p-0" onClick={linkFunction}>
+                              <h3 className="card-title">{open?truncateDatasetName(dataset.title, 60):truncateDatasetName(dataset.dcatapit.title, 60)}</h3>
+                            </button>
+                            :
                             <Link to={url}>
                                 <h3 className="card-title text-primary">{open?truncateDatasetName(dataset.title, 60):truncateDatasetName(dataset.dcatapit.title, 60)}</h3>
-                            </Link>
+                            </Link>}
                             {/* <h6 className="card-subtitle mb-2 text-muted">{dash.subtitle}</h6> */}
                         </div>
                         <div className="card-text row m-0 mt-3 ml-3">
