@@ -43,36 +43,43 @@ class IngestionForm extends Component {
   } */
 
   showResults = values =>{
+    const { dispatch } = this.props;
+
     this.setState({
       saving: true
     })
+
     const transformed = transformer(values)
     console.log(transformed)
     this.setState({transformed:transformed})
-    const { dispatch } = this.props;
-    if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
-      console.log("tipofile: " + values.tipofile)
-      const fileType = values.tipofile?values.tipofile:'csv'
-      dispatch(addDataset(transformed, localStorage.getItem('token'), fileType))
-      .then(response => {
-        if(response.ok){
-          console.log('La richiesta di creazione è avvenuta con successo. Riceverai una notifica a creazione completata')
-          this.setSending(false, undefined);
-          localStorage.removeItem('kyloSchema')
-          this.setState({saving: false})
-          toastr.success('Complimenti', "La richiesta di creazione è avvenuta con successo. Riceverai una notifica a creazione completata", {timeOut: 20000})
-          this.props.history.push('/private/home')
-        }else{
+
+    if(transformed.operational.dataset_type===undefined || transformed.operational.dataset_proc.merge_strategy===undefined || transformed.operational.dataset_proc.read_type===undefined){
+      toastr.error("Form incompleto", 'Ci sono dei valori mancanti nella finestra "Informazioni Procedurali"')
+    }else{
+      if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
+        console.log("tipofile: " + values.tipofile)
+        const fileType = values.tipofile?values.tipofile:'csv'
+        dispatch(addDataset(transformed, localStorage.getItem('token'), fileType))
+        .then(response => {
+          if(response.ok){
+            console.log('La richiesta di creazione è avvenuta con successo. Riceverai una notifica a creazione completata')
+            this.setSending(false, undefined);
+            localStorage.removeItem('kyloSchema')
+            this.setState({saving: false})
+            toastr.success('Complimenti', "La richiesta di creazione è avvenuta con successo. Riceverai una notifica a creazione completata", {timeOut: 20000})
+            this.props.history.push('/private/home')
+          }else{
+            this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
+            console.log('Errore durante il caricamento dei metadati')
+            this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
+            this.setState({saving: false})
+          }
+        })
+        } else {
           this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
-          console.log('Errore durante il caricamento dei metadati')
-          this.setState({msg: '', msgErr:'Errore durante il caricamento de dataset'})
+          console.log('token non presente');
           this.setState({saving: false})
         }
-      })
-      } else {
-        this.setSending(false, 'Errore durante il caricamento del dataset. riprovare più tardi.');
-        console.log('token non presente');
-        this.setState({saving: false})
       }
     }  
 

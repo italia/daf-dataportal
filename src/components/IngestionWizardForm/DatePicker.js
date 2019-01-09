@@ -28,7 +28,7 @@ class DatePicker extends Component {
     
   render() {
     const { focused, date } = this.state;
-    const { label, name, config } = this.props;
+    const { label, name, config, meta: { touched, error }} = this.props;
     return (
         <div className="form-group row">
             <label className="col-sm-2 col-form-label">{label}
@@ -48,6 +48,7 @@ class DatePicker extends Component {
                     placeholder=''
                     noBorder
                 />
+                {touched && error && <div className="text-danger">{error}</div>}
             </div>
        </div>   
     );
