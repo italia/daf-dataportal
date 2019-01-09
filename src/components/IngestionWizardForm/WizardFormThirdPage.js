@@ -81,12 +81,13 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
                 config={config}
 
               />
-              <DatePicker 
+              <Field
+                component={DatePicker} 
                 label="Ultima Modifica" 
                 name="ultimamodifica" 
                 modificaDataDCATAPIT={modificaDataDCATAPIT}
                 config={config}
-                />
+              />
               <Field
                 name="frequenzaaggiornamento"
                 options={config.frequenzaaggiornamento}
@@ -151,7 +152,7 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
                 <MappingStandards fields={fields} datasetStdList={datasetStdList} datasetstd={datasetstd}/>
               
               }
-              <Collapse accordion={true}>
+              <Collapse accordion={true} defaultActiveKey="2">
                 <Panel header="Informazioni Ingestion" headerClass="my-header-class">
                   <Sorgenti 
                     listaSorgenti={listaSorgenti} 

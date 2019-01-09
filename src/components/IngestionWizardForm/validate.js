@@ -42,6 +42,30 @@ const validate = values => {
     if (!values.sottocategoria) {
       errors.sottocategoria = 'Campo Obbligatorio';
     }
+    if (!values.licenza) {
+      errors.licenza = 'Campo Obbligatorio';
+    }
+    if(!values.ultimamodifica){
+      errors.ultimamodifica = 'Campo Obbligatorio';
+    }
+    if (!values.ownership) {
+      errors.ownership = 'Campo Obbligatorio';
+    }
+    if (!values.frequenzaaggiornamento) {
+      errors.frequenzaaggiornamento = 'Campo Obbligatorio';
+    }
+    if (!values.seguestd) {
+      errors.seguestd = 'Campo Obbligatorio';
+    }
+    if (!values.tipoingestiondati) {
+      errors.tipoingestiondati = 'Campo Obbligatorio';
+    }
+    if (!values.tiposalvataggio) {
+      errors.tiposalvataggio = 'Campo Obbligatorio';
+    }
+    if (!values.strategiamerge) {
+      errors.strategiamerge = 'Campo Obbligatorio';
+    }
     if (!values.tipodataset) {
       errors.tipodataset = 'Campo Obbligatorio';
     }
@@ -51,10 +75,6 @@ const validate = values => {
     if (!values.gruppoproprietario) {
       errors.gruppoproprietario = 'Campo Obbligatorio';
     }
-    if (!values.strategiamerge) {
-      errors.strategiamerge = 'Campo Obbligatorio';
-    }
-    
     
     return errors;
     
