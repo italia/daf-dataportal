@@ -54,9 +54,9 @@ const validate = values => {
     if (!values.frequenzaaggiornamento) {
       errors.frequenzaaggiornamento = 'Campo Obbligatorio';
     }
-    if (!values.seguestd) {
-      errors.seguestd = 'Campo Obbligatorio';
-    }
+    // if (!values.seguestd) {
+    //   errors.seguestd = 'Campo Obbligatorio';
+    // }
     if (!values.tipoingestiondati) {
       errors.tipoingestiondati = 'Campo Obbligatorio';
     }
