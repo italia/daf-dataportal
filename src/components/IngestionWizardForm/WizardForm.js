@@ -331,6 +331,7 @@ class WizardForm extends Component {
 
   nextPage() {
     this.setState({ page: this.state.page + 1 });
+    window.scrollTo(0, 0);
   }
 
   goToSecondPage(){
