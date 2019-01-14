@@ -3,7 +3,7 @@ import TagsInput from './tags/TagsInput'
 import TagsInputAutocomplete from './tags/TagsInputAutocomplete'
 
 
-export const renderFieldInput = ({ input, label, openModalInfo, config, readonly, meta: { touched, error } }) => (
+export const renderFieldInput = ({ input, label, openModalInfo, config, readonly, meta: { asyncValidating,touched, error } }) => (
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
     {config.info[input.name] &&
@@ -12,7 +12,7 @@ export const renderFieldInput = ({ input, label, openModalInfo, config, readonly
       </button>
     }
     </label>
-    <div className="col-sm-10">
+    <div className={asyncValidating ? 'async-validating col-sm-10' : 'col-sm-10'}>
       <input {...input} type='text' readOnly={readonly} className="form-control" />
       {touched && error && <span className="text-danger">{error}</span>}
     </div>

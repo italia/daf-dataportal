@@ -262,7 +262,7 @@ class QueryBuild extends Component {
   }
 
   renderTable(){
-    const { queryResult, limit } = this.props
+    const { queryResult } = this.props
 
     if(queryResult.length>0){
       var columns=[{
@@ -279,7 +279,7 @@ class QueryBuild extends Component {
       return <ReactTable 
               data={queryResult}
               columns={columns}
-              defaultPageSize={limit?limit:25}
+              defaultPageSize={25}
               className="-striped -highlight"
               />
     }
@@ -732,7 +732,7 @@ class QueryBuild extends Component {
               <div className="col-md-12">
               {
                 queryLoading? <h1 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
-                queryResult.length <= 0 ? <p>Nessun dato disponibile</p> : this.renderTable())
+                (!queryResult || queryResult.length <= 0) ? <p>Nessun dato disponibile</p> : this.renderTable())
               }
               </div>
             </div>

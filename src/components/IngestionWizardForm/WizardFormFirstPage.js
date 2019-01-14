@@ -2,6 +2,7 @@ import React from 'react'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { connect  } from 'react-redux';
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderFieldTags, renderFieldInputButton, renderFieldCheckbox, renderFieldCategoria} from './renderField';
+import asyncValidate from './asyncValidate';
 import validate from './validate';
 import FileInput from './FileInput'
 import Query from './Query'
@@ -348,6 +349,8 @@ WizardFormFirstPage = reduxForm({
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   validate,
+  asyncValidate,
+  asyncBlurFields: ['titolo']
 })(WizardFormFirstPage);
 
 const selector = formValueSelector('wizard') 

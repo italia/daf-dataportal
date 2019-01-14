@@ -717,7 +717,7 @@ WizardForm = reduxForm({
   form: 'wizard',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
-  validate
+  validate,
 })(WizardForm);
 
 const selector = formValueSelector('wizard') 

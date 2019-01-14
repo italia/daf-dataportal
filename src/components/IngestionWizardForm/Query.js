@@ -15,7 +15,7 @@ class Query extends Component {
         <div className="form-group row">
           <label className="col-sm-2 col-form-label">Query</label>
           <div className="col-sm-10 col-form-label">
-            <QueryBuild onDropFunction={onDropFunction} fields={fields} onSubmit={setQuery} className=" " limit={25} blockEmpty={true}/>
+            <QueryBuild onDropFunction={onDropFunction} fields={fields} onSubmit={setQuery} className=" " limit={400} blockEmpty={true}/>
           </div>
         </div>
       </div>
