@@ -29,7 +29,7 @@ class FileInput extends Component {
                 </div>
                 </div>
             </Dropzone>
-        {error && touched ? error : ''}
+        {error && touched ? <span className="text-danger">{error}</span> : ''}
       </div>
     );
   }

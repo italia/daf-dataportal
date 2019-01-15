@@ -170,9 +170,10 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                               />
                           </div>
                           :
-                          <FileInput
+                          <Field
                             name="filesftp"
                             label="Caricamento:"
+                            component={FileInput}
                             classNameLabel="file-input-label"
                             className="file-input"
                             dropzone_options={{
@@ -182,9 +183,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                             onDropFunction={onDropFunction}
                             fields={fields}
                             tipofile={tipofile}
-                          >
-                          <span>Add more</span>
-                          </FileInput>
+                          />
                            }
                         </div>
                     </div>

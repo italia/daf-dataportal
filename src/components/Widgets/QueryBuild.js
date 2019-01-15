@@ -10,7 +10,7 @@ import {
 } from 'react-modal-bootstrap';
 import { toastr } from 'react-redux-toastr'
 import { querySearch, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult, translateQueryToSQL } from '../../actions'
-import { rulesConverter } from '../../utility'
+import { rulesConverter, jsonToCSV } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
 import QueryBuilder from 'react-querybuilder';
@@ -209,7 +209,7 @@ class QueryBuild extends Component {
         dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
         .then(json=>{
           dispatch(receiveQueryResult(json, query))
-          var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+          var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
           if(onSubmit){
             query.limit && delete query['limit']
             dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
@@ -218,7 +218,7 @@ class QueryBuild extends Component {
             })
           }
           if(onDropFunction)
-            onDropFunction(fields, [file],'json')
+            onDropFunction(fields, [file],'csv')
         })
       }
     }else{
@@ -230,7 +230,7 @@ class QueryBuild extends Component {
           dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
           .then(json => {
             dispatch(receiveQueryResult(json, query))
-            var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+            var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
             if(onSubmit){
               query.limit && delete query['limit']
               dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
@@ -239,14 +239,14 @@ class QueryBuild extends Component {
               })
             }
             if(onDropFunction)
-              onDropFunction(fields, [file],'json')
+              onDropFunction(fields, [file],'csv')
           })
         }
       }else{
         dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
         .then(json => {
           dispatch(receiveQueryResult(json, query))
-          var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+          var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
           if(onSubmit){
             query.limit && delete query['limit']
             dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
@@ -255,7 +255,7 @@ class QueryBuild extends Component {
             })
           }
           if(onDropFunction)
-            onDropFunction(fields, [file],'json')
+            onDropFunction(fields, [file],'csv')
         })
       }
     }

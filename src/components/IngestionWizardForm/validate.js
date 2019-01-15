@@ -22,7 +22,10 @@ const validate = values => {
     }   
     if(values.tempopolling==1 && !values.timerquantita){
       errors.timerquantita = 'Campo Obbligatorio'
-    }   
+    }  
+    if(values.tempopolling==1 && isNaN(values.timerquantita)){
+      errors.timerquantita = 'Il campo deve essere un numero'
+    } 
     if (!values.sex) {
       errors.sex = 'Campo Obbligatorio';
     }
@@ -35,6 +38,12 @@ const validate = values => {
       if(values.titolo.length>50){
         errors.titolo = 'Il Titolo non può superare i 50 caratteri';
       }
+    }
+    if(!values.urlws){
+      errors.urlws = 'Campo Obbligatorio'
+    }
+    if(!values.filesftp){
+      errors.filesftp = 'Campo Obbligatorio'
     }
     if (!values.categoria) {
       errors.categoria = 'Campo Obbligatorio';

@@ -336,7 +336,7 @@ class WizardForm extends Component {
 
   goToSecondPage(){
     const { tipodataset } = this.props
-    const { query } = this.state
+    const { query, filePullLoaded } = this.state
     
     if(tipodataset==="derived_sql"){
       if(query){
@@ -470,7 +470,7 @@ class WizardForm extends Component {
               errorNext: 'Caricare il file per la metadatazione'
             });
           }
-        }else if(tipodataset==='devided_sql'){
+        }else if(tipodataset==='derived_sql'){
 
           // STORAGE
           var stor = new Object()
