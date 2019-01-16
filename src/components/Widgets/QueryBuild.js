@@ -25,7 +25,7 @@ class QueryBuild extends Component {
       selected: [],
       groupedBy: [],
       modalOpen: false,
-      conditions: {},
+      conditions: {"id":"g-2a5f6a49-0af3-415a-99b8-eec4f6758caa","rules":[{"id":"r-22ccfb26-2535-4263-8b2c-7d2e187c903a","field":"id_comune","value":"10","operator":"="}],"combinator":"and"},
       aggregators: [],
       aggrFunction: '',
       fieldAggr: '',

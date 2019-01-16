@@ -39,6 +39,9 @@ const validate = values => {
         errors.titolo = 'Il Titolo non può superare i 50 caratteri';
       }
     }
+    if(!values.descrizione){
+      errors.descrizione = 'Campo Obbligatorio'
+    }
     if(!values.urlws){
       errors.urlws = 'Campo Obbligatorio'
     }

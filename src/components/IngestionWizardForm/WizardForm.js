@@ -439,13 +439,6 @@ class WizardForm extends Component {
         this.state.listaSorgenti.push(sorgente)
         dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
 
-        // STORAGE
-        var stor = new Object()
-        stor.tipo='hdfs'
-        stor.val='DAF default path'
-        this.state.listaStorage.push(stor)
-        dispatch(change('wizard', 'storage', this.state.listaStorage))
-
 
         }else if(modalitacaricamento=='webservice_pull' && this.state.filePullLoaded){
           sorgente.tipo = "webservice_pull"
@@ -458,27 +451,11 @@ class WizardForm extends Component {
           this.state.listaSorgenti.push(sorgente)
           dispatch(change('wizard', 'sorgenti', this.state.listaSorgenti))
 
-          // STORAGE
-          var stor = new Object()
-          stor.tipo='hdfs'
-          stor.val='DAF default path'
-          this.state.listaStorage.push(stor)
-          dispatch(change('wizard', 'storage', this.state.listaStorage))
-
           }else{
             this.setState({
               errorNext: 'Caricare il file per la metadatazione'
             });
           }
-        }else if(tipodataset==='derived_sql'){
-
-          // STORAGE
-          var stor = new Object()
-          stor.tipo='hdfs'
-          stor.val='DAF default path'
-          this.state.listaStorage.push(stor)
-          dispatch(change('wizard', 'storage', this.state.listaStorage))
-          
         }
   }
 
