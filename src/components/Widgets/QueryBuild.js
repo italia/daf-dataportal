@@ -210,6 +210,7 @@ class QueryBuild extends Component {
         .then(json=>{
           dispatch(receiveQueryResult(json, query))
           var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
+          // var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
           if(onSubmit){
             query.limit && delete query['limit']
             dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
@@ -219,6 +220,7 @@ class QueryBuild extends Component {
           }
           if(onDropFunction)
             onDropFunction(fields, [file],'csv')
+            // onDropFunction(fields, [file],'json')
         })
       }
     }else{
@@ -231,6 +233,7 @@ class QueryBuild extends Component {
           .then(json => {
             dispatch(receiveQueryResult(json, query))
             var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
+            // var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
             if(onSubmit){
               query.limit && delete query['limit']
               dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
@@ -240,6 +243,7 @@ class QueryBuild extends Component {
             }
             if(onDropFunction)
               onDropFunction(fields, [file],'csv')
+              // onDropFunction(fields, [file],'json')
           })
         }
       }else{
@@ -247,6 +251,7 @@ class QueryBuild extends Component {
         .then(json => {
           dispatch(receiveQueryResult(json, query))
           var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
+          // var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
           if(onSubmit){
             query.limit && delete query['limit']
             dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
@@ -256,6 +261,7 @@ class QueryBuild extends Component {
           }
           if(onDropFunction)
             onDropFunction(fields, [file],'csv')
+            // onDropFunction(fields, [file],'json')
         })
       }
     }
@@ -469,7 +475,7 @@ class QueryBuild extends Component {
     var a = { }
 
     a[aggrFunction] = {"name": fieldAggr}
-    a.alias = aggrFunction+"_"+fieldAggr
+    a.alias = aggrFunction+"_"+(fieldAggr==='*'?'all':fieldAggr.replace(".","_"))
 
     if(query.select.indexOf(a)===-1){
       tmpArray.push(a)
