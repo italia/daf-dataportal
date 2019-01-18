@@ -9,8 +9,8 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import { toastr } from 'react-redux-toastr'
-import { search, querySearch, getQueryResult, getDatasetCatalog } from '../../actions'
-import { rulesConverter } from '../../utility'
+import { querySearch, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult, translateQueryToSQL } from '../../actions'
+import { rulesConverter, jsonToCSV } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
 import QueryBuilder from 'react-querybuilder';
@@ -23,9 +23,12 @@ class QueryBuild extends Component {
 
     this.state = {
       selected: [],
-      groupedBy: '',
+      groupedBy: [],
       modalOpen: false,
-      conditions: {},
+      conditions: {"id":"g-2a5f6a49-0af3-415a-99b8-eec4f6758caa","rules":[{"id":"r-22ccfb26-2535-4263-8b2c-7d2e187c903a","field":"id_comune","value":"10","operator":"="}],"combinator":"and"},
+      aggregators: [],
+      aggrFunction: '',
+      fieldAggr: '',
       query: {
         "select": [],
         // "where": [],
@@ -50,6 +53,9 @@ class QueryBuild extends Component {
     this.onChangePvt = this.onChangePvt.bind(this)
     this.getDatasetDetail = this.getDatasetDetail.bind(this)
     this.select = this.select.bind(this)
+    this.addAggregation = this.addAggregation.bind(this)
+    this.removeAggr = this.removeAggr.bind(this)
+    this.groupBy = this.groupBy.bind(this)
     this.launchQuery = this.launchQuery.bind(this)
     this.renderOrgsSelect = this.renderOrgsSelect.bind(this)
     this.renderTable = this.renderTable.bind(this)
@@ -151,21 +157,37 @@ class QueryBuild extends Component {
     })
     
     this.setState({
-      selected: field
+      selected: field,
+      aggregators: [],
+    })
+  }
+
+  groupBy(field){
+    const { query } = this.state
+    query.groupBy = []
+    field.map(campo => {
+      query.groupBy.push({"name": campo.value})
+    })
+    
+    this.setState({
+      groupedBy: field
     })
   }
 
   launchQuery(){
-    const { dispatch, onSubmit } = this.props
+    const { dispatch, onSubmit, limit, onDropFunction, fields, blockEmpty } = this.props
     const { query, conditions, datasetFrom, datasetJoin, joinOnFrom, joinOnTo } = this.state
-    
+
     for(var k in query){
       if(query[k] === null || query[k].length===0){
         delete query[k]
       }
     }
+    
+    if(limit)
+      query.limit = limit
 
-    var where = rulesConverter(conditions.combinator, conditions.rules)
+    var where = rulesConverter(conditions.combinator, conditions.rules, datasetFrom, datasetJoin)
     if(Object.keys(where).length>0){
       query.where = where
     }
@@ -184,16 +206,64 @@ class QueryBuild extends Component {
         query.join = join
 
         console.log(query)
-        dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
-        if(onSubmit)
-          onSubmit(query)
+        dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
+        .then(json=>{
+          dispatch(receiveQueryResult(json, query))
+          var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
+          // var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+          if(onSubmit){
+            query.limit && delete query['limit']
+            dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
+            .then(sql=> {
+              onSubmit(query, sql, datasetFrom.dcatapit, datasetJoin.dcatapit)
+            })
+          }
+          if(onDropFunction)
+            onDropFunction(fields, [file],'csv')
+            // onDropFunction(fields, [file],'json')
+        })
       }
     }else{
       console.log(query)
-
-      dispatch(getQueryResult(datasetFrom.operational.logical_uri, query))
-      if(onSubmit)
-          onSubmit(query)
+      if(blockEmpty){
+        if(JSON.stringify(query)==="{}"||JSON.stringify(query)==="{\"limit\":"+limit+"}"){
+          toastr.error('Impossibile eseguire la query', 'Impossibile creare un derivato con una query vuota, costruisci la tua query e riprova')
+        }else{
+          dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
+          .then(json => {
+            dispatch(receiveQueryResult(json, query))
+            var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
+            // var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+            if(onSubmit){
+              query.limit && delete query['limit']
+              dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
+              .then(sql=> {
+                onSubmit(query, sql, datasetFrom.dcatapit, undefined)
+              })
+            }
+            if(onDropFunction)
+              onDropFunction(fields, [file],'csv')
+              // onDropFunction(fields, [file],'json')
+          })
+        }
+      }else{
+        dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
+        .then(json => {
+          dispatch(receiveQueryResult(json, query))
+          var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
+          // var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+          if(onSubmit){
+            query.limit && delete query['limit']
+            dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
+            .then(sql=> {
+              onSubmit(query, sql, datasetFrom.dcatapit, undefined)
+            })
+          }
+          if(onDropFunction)
+            onDropFunction(fields, [file],'csv')
+            // onDropFunction(fields, [file],'json')
+        })
+      }
     }
   }
 
@@ -221,7 +291,7 @@ class QueryBuild extends Component {
     }
   }
 
-  renderSelectFields(){
+  renderSelectFields(groupBy){
     const { datasetFrom, datasetJoin } = this.state
     
     var fields = []
@@ -240,8 +310,8 @@ class QueryBuild extends Component {
     } 
 
     return <Select
-      value={this.state.selected}
-      onChange={this.select}
+      value={groupBy?this.state.groupedBy:this.state.selected}
+      onChange={groupBy?this.groupBy:this.select}
       options={fields}
       multi={true}
       className="form-control"
@@ -395,6 +465,43 @@ class QueryBuild extends Component {
     })
   }
 
+  addAggregation(){
+    const {aggrFunction, fieldAggr, aggregators, query} = this.state
+
+    var tmpArray = query.select.filter((selected)=>{
+      return selected.name!==fieldAggr
+    })
+
+    var a = { }
+
+    a[aggrFunction] = {"name": fieldAggr}
+    a.alias = aggrFunction+"_"+(fieldAggr==='*'?'all':fieldAggr.replace(".","_"))
+
+    if(query.select.indexOf(a)===-1){
+      tmpArray.push(a)
+      aggregators.push(a)
+      query.select = tmpArray
+      this.setState({modalOpen:false,modalType:'',aggrFunction:'',fieldAggr:''})
+    }else{
+      toastr.error("Aggregazione già inserita","Inserire un'aggregazione diversa oppure annulla l'inserimento")
+    }
+  }
+
+  removeAggr(index, name){
+    const { aggregators, query } = this.state
+    var tmpArray = aggregators
+    let tmp = aggregators[index]
+    
+    tmpArray.splice(index, 1)
+    
+    this.setState({aggregators: tmpArray})
+    var k = query.select.indexOf(tmp)
+
+    query.select.splice(k, 1)
+
+    query.select.push({"name": name})
+  }
+  
   renderOrgsSelect(){
     return(
       <select className="form-control" value={this.state.selectedOrg} onChange={(e)=>{this.onChangeOrg(e.target.value)}} disabled={this.state.privateWdg==='' || this.state.organizations.length===0}>
@@ -418,10 +525,11 @@ class QueryBuild extends Component {
             <ModalTitle>
               {this.state.modalType==='JOIN' && "Seleziona un dataset da mettere in JOIN"}
               {this.state.modalType==='FROM' && "Seleziona il dataset da cui iniziare la query"}
+              {this.state.modalType==='AGGR' && "Seleziona il tipo di aggregazione e il campo da aggregare"}
             </ModalTitle>
-            <ModalClose onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:''})}/>
+            <ModalClose onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:'',aggrFunction:'',fieldAggr:''})}/>
           </ModalHeader>
-          <ModalBody>
+          {this.state.modalType!=='AGGR' && <ModalBody>
           <div className="form-group row">
             <label className="col-md-4 form-control-label">Privato</label>
             {loggedUser.organizations && loggedUser.organizations.length > 0 ?
@@ -471,12 +579,50 @@ class QueryBuild extends Component {
               </select>
             </div>
           </div>
-          </ModalBody>
+          </ModalBody>}
+          {this.state.modalType==='AGGR' && <ModalBody>
+            <div className="form-group row">
+              <label className="col-md-4 form-control-label">Aggregatore</label>
+              <div className="col-md-8">
+                <select className="form-control" value={this.state.aggrFunction} onChange={(e)=>this.setState({aggrFunction: e.target.value})}>
+                  <option value=""></option>
+                  <option value="avg">AVG</option>
+                  <option value="sum">SUM</option>
+                  <option value="count">COUNT</option>
+                  <option value="max">MAX</option>
+                  <option value="min">MIN</option>
+                </select>
+              </div>
+            </div>
+            <div className="form-group row">
+              <label className="col-md-4 form-control-label">Campo</label>
+              <div className="col-md-8">
+                <select className="form-control" value={this.state.fieldAggr} onChange={(e)=>this.setState({fieldAggr: e.target.value})}>
+                  <option value=""></option>
+                  <option value="*">*</option>
+                  {this.state.selected.map((field, index)=>{
+                    return(
+                      <option key={index} value={field.value}>{field.value}</option>
+                    )
+                  })}
+                </select>
+              </div>
+            </div>
+          </ModalBody>}
           <ModalFooter>
-              <button type="button" className="btn btn-primary px-2" onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
-                Continua
+            {this.state.modalType!=='AGGR' && <button type="button" className="btn btn-primary px-2" onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:''})}>
+              Continua
+            </button>}
+            {this.state.modalType==='AGGR' && <div>
+              <button type="button" className="btn btn-primary px-2" onClick={this.addAggregation}>Aggiungi</button>
+            </div>}
+            {this.state.modalType==='AGGR' && <div>
+              <button type="button" className="btn btn-secondary px-2" 
+                onClick={(e)=>{e.preventDefault(); this.setState({modalOpen:false,modalType:'',aggrFunction:'',fieldAggr:''})}}>
+                Annulla
               </button>
-            </ModalFooter>
+            </div>}
+          </ModalFooter>
         </Modal>
         {isQuery&&<div className="card">
           <div className="card-body">
@@ -486,8 +632,22 @@ class QueryBuild extends Component {
             <div className="row">
               <div className="col-md-12">
                 <div className="form-group">
-                  {this.renderSelectFields()}
+                  {this.renderSelectFields(false)}
                 </div>
+                <button className="btn btn-primary float-right" title="Aggiungi Aggregazione" 
+                  onClick={(e)=>{e.preventDefault(); this.setState({modalOpen:true,modalType:'AGGR',aggrFunction:'',fieldAggr:''})}}>
+                  Aggiungi Aggregazione
+                </button>
+              </div>
+              <div className="col-md-12 mt-4">
+                <ul className="list-group">
+                  {this.state.aggregators.map((aggr, index)=>{
+                    for(var k in aggr){
+                      if(k!=="alias")
+                        return(<li className="list-group-item" key={index}>{k.toUpperCase() + "(" + aggr[k].name+")"}<i className="fas fa-times text-danger fa-pull-right pointer fa-lg py-1" onClick={this.removeAggr.bind(this,index, aggr[k].name)}/></li>)
+                    }
+                  })}
+                </ul>
               </div>
             </div>
           </div>
@@ -543,6 +703,20 @@ class QueryBuild extends Component {
         {isQuery && <div className="card">
           <div className="card-body">
             <div className="card-title">
+              <h3>Group By</h3>
+            </div>
+            <div className="row">
+              <div className="col-md-12">
+                <div className="form-group">
+                  {this.renderSelectFields(true)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>}
+        {isQuery && <div className="card">
+          <div className="card-body">
+            <div className="card-title">
               <h3>Where</h3>
             </div>
             <div className="row">
@@ -552,7 +726,7 @@ class QueryBuild extends Component {
                 </div>
               </div>
             </div>
-            <button className="btn btn-primary float-right" title="Lancia la Query" onClick={this.launchQuery}>Lancia Query</button>
+            <button className="btn btn-primary float-right" title="Lancia la Query" onClick={(e)=>{e.preventDefault(); this.launchQuery()}}>Lancia Query</button>
           </div>
         </div>}
         {(isQuery && !hideTable) && <div className="card">
@@ -564,7 +738,7 @@ class QueryBuild extends Component {
               <div className="col-md-12">
               {
                 queryLoading? <h1 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
-                queryResult.length <= 0 ? <p>Nessun dato disponibile</p> : this.renderTable())
+                (!queryResult || queryResult.length <= 0) ? <p>Nessun dato disponibile</p> : this.renderTable())
               }
               </div>
             </div>

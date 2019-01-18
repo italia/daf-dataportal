@@ -12,16 +12,23 @@ export function createOperational (values, data) {
   data[operational]['file_type'] = values.tipofile
   data[operational]['dataset_proc'] = { 
      "merge_strategy" : values.strategiamerge,
-     "cron" : values.cron,
+     "scheduling_strategy" :  values.tempopolling==0?"CRON_DRIVEN":"TIMER_DRIVEN",
+     "cron" : values.tempopolling==0?values.espressionecron:(values.timerquantita + ' ' + values.timerunita),
      "dataset_type" : "batch",  
      "read_type" : (values.tiposalvataggio) ? values.tiposalvataggio : 'update'
     }
+  data[operational]['type_info'] = {
+    'dataset_type' : values.tipodataset,
+    'query_json': values.query_json?JSON.stringify(values.query_json):undefined,
+    'query_sql': values.query_sql?values.query_sql:undefined,
+    'sources' : values.sources
+  }
   if (!values.tiposalvataggio){
       data[operational]['read_type'] = 'update'
   } else {
       data[operational]['read_type'] = values.tiposalvataggio
   }
-  if(values.modalitacaricamento==1){
+  if(values.modalitacaricamento=='sftp'){
     var param = "format=".concat(values.tipofile?values.tipofile:'csv')
     var url = "".concat(values.categoria).concat("/").concat(values.sottocategoria).concat("/").concat(values.nome)
     data[operational]['input_src'] = {"sftp": [{
@@ -31,8 +38,7 @@ export function createOperational (values, data) {
         "param": param
       }]
     }
-  }
-  if(values.modalitacaricamento==2){
+  }else if(values.modalitacaricamento=='webservice_pull'){
       data[operational]['input_src'] = {"srv_pull": [{
         "name": "ws_remote",
         "url": values.urlws,
@@ -41,8 +47,7 @@ export function createOperational (values, data) {
         "param": values.tipofile?values.tipofile:'csv'
       }]
     }
-  }
-  if(values.modalitacaricamento==3){
+  }else if(values.modalitacaricamento=='webservice_push'){
     var url = serviceurl.apiURLHdfs+"/uploads/".concat(user.concat("/").concat(values.categoria).concat("/").concat(values.sottocategoria).concat("/").concat(values.nome).concat("/"))
     data[operational]['input_src'] = {"srv_push": [{
       "name": "ws_hdfs",
@@ -53,14 +58,20 @@ export function createOperational (values, data) {
       "password": "xxxxxxx"
     }]
   }
+}else{
+  data[operational]['input_src'] = { }
 }
   data[operational]['storage_info'] = 
     {
 			"hdfs": {
-				"name": "hdfs_daf"
+        "name": "hdfs_daf",
+        "path" : null,
+        "param" : null
 			}
     }
   data[operational]['dataset_type'] = (values.tipoingestiondati) ? values.tipoingestiondati  : 'batch'
+  data[operational]['is_vocabulary'] = (values.isvocabulary === 'yes')?true:false
+  
   data[operational]['is_std'] = (values.seguestd === 'isstandard')?true:false
   if(values.seguestd === 'seguestandard'){
     data[operational]['std_schema'] = {}
@@ -85,17 +96,9 @@ export function createOperational (values, data) {
 
   if(values.pipelines && values.pipelines.length>0){
     for(var i=0;i<values.pipelines.length;i++){
-      let pipeline = values.pipelines
+      let pipeline = values.pipelines[i]
       data[operational]['ingestion_pipeline'] = []
       data[operational]['ingestion_pipeline'].push(pipeline)
-    }
-  }
-
-  if(values.storage && values.storage.length>0){
-    for(var i=0;i<values.storage.length;i++){
-      let storage = values.storage
-      data[operational]['storage_info'] = []
-      data[operational]['storage_info'].push(storage)
     }
   }
 
@@ -115,21 +118,21 @@ export function createDcat (values, data) {
   data[dcatapit]['author'] = user
   data[dcatapit]['identifier'] = values.nome 
   data[dcatapit]['alternate_identifier'] = values.nome
-  data[dcatapit]['description'] = values.descrizione
+  data[dcatapit]['notes'] = values.descrizione
   data[dcatapit]['theme'] =  values.categoria
-  data[dcatapit]['subtheme'] =  values.sottocategoria
+  //data[dcatapit]['subtheme'] =  values.sottocategoria
   data[dcatapit]['publisher_name'] = values.gruppoproprietario
-  data[dcatapit]['publisher_editor'] = values.gruppoproprietario
+  //data[dcatapit]['publisher_editor'] = values.gruppoproprietario
   data[dcatapit]['publisher_identifier'] = values.gruppoproprietario
   data[dcatapit]['modified'] = currentDate
   data[dcatapit]['holder_name'] =values.gruppoproprietario
   data[dcatapit]['holder_identifier'] = values.gruppoproprietario
-  data[dcatapit]['license_title'] = values.licenza 
+  //data[dcatapit]['license_title'] = values.licenza 
   data[dcatapit]['license_id'] = values.licenza
-  data[dcatapit]['organization'] = values.gruppoproprietario
+  data[dcatapit]['organization'] = {'name': values.gruppoproprietario }
   data[dcatapit]['owner_org'] = values.gruppoproprietario
-  data[dcatapit]['accrual_period'] = values.frequenzaaggiornamento
-  data[dcatapit]['creation_date'] = currentDate
+  data[dcatapit]['frequency'] = values.frequenzaaggiornamento
+  //data[dcatapit]['creation_date'] = currentDate
   data[dcatapit]["groups"] = []
   data[dcatapit]["resources"] = []
   data[dcatapit]["relationships_as_object"] = []
@@ -146,7 +149,7 @@ export function createDataschema (values, data) {
   var theme = values.categoria
   data[dataschema] = {}
   data[dataschema][avro] = {}
-  data[dataschema][avro]['namespace'] = 'daf://'+ values.gruppoproprietario  + '/' + theme +'/' + values.title
+  data[dataschema][avro]['namespace'] = 'daf://'+ values.gruppoproprietario  + '/' + theme +'/' + values.titolo
   data[dataschema][avro]['separator'] = values.separator
   data[dataschema][avro]['name'] = values.titolo
   data[dataschema][avro]['aliases'] = [values.titolo]
@@ -181,8 +184,6 @@ export function createDataschema (values, data) {
                         "name": item.standardformat,
                         "param":undefined
                     },
-                    "uri_voc": item.vocabolariocontrollato,
-                    "uri_property": item.campovocabolariocontrollato,
 
                     //SEMANTICA E ONTOLOGIE
                     "semantics": {
@@ -191,13 +192,15 @@ export function createDataschema (values, data) {
                         "field_group": item.idgruppocampi,
                         "subject": item.rdfsoggetto,
                         "predicate": item.rdfpredicato,
-                        "rdf_object": item.rdfcomplemento
+                        "rdf_object": item.rdfcomplemento,
+                        "uri_voc": item.vocabolariocontrollato,
+                        "uri_property": item.campovocabolariocontrollato
                     },
                     //INFORMAZIONI OPERAZIONALI
                     "key": item.chiave,
                     "required": item.obbligatorio,
                     "is_createdate": item.datacreazione,
-                    "is_updatedate": item.dataaggiornamento,
+                    "is_updatedate": item.dataaggiornamento,                    
                     "field_profile": {
                         "is_index": item.indicizzare,
                         "is_profile": item.profiloindicizzazione

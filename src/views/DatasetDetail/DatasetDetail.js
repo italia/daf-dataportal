@@ -12,7 +12,7 @@ import {
     checkFileOnHdfs,
     uploadHdfsFile,
     groupsInfo,
-    getTableId
+    getTableId,
 } from '../../actions'
 import ReactTable from "react-table"
 import "react-table/react-table.css";
@@ -38,6 +38,7 @@ import ShareButton from '../../components/ShareButton/ShareButton';
 import DatasetAdmin from './DatasetAdmin';
 import { Table } from 'reactstrap';
 import DatasetService from './services/DatasetService'
+import DatasetCard from '../../components/Cards/DatasetCard';
 
 const datasetService = new DatasetService()
 
@@ -101,7 +102,7 @@ class DatasetDetail extends Component {
             file: '',
             fileName: '',
             uploading: false,
-
+            numberDataset: 3
         }
 
         this.handlePreview = this.handlePreview.bind(this)
@@ -111,6 +112,7 @@ class DatasetDetail extends Component {
         this.searchDataset = this.searchDataset.bind(this)
         this.toggleUploadFile = this.toggleUploadFile.bind(this)
         this.fileToBase64 = this.fileToBase64.bind(this)
+        this.linkFunction = this.linkFunction.bind(this)
     }
 
     componentDidMount() {
@@ -148,13 +150,13 @@ class DatasetDetail extends Component {
             var dafIndex = 0
 
             dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-                .then(json => { 
-                  if(json.ok) {
-                    dafIndex = dafIndex + 3; 
-                    this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
-                  } 
-                })
-                .catch(error => { this.setState({ hasPreview: false, loading: false }) })
+              .then(json => { 
+                if(json.ok) {
+                  dafIndex = dafIndex + 3; 
+                  this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
+                } 
+              })
+              .catch(error => { this.setState({ hasPreview: false, loading: false }) })
 
             dispatch(getSupersetUrl(nextProps.dataset.dcatapit.name, nextProps.dataset.dcatapit.owner_org, isExtOpendata))
                 .then(json => {
@@ -169,6 +171,18 @@ class DatasetDetail extends Component {
                     this.setState({ hasMetabase: json.is_on_metabase, dafIndex: dafIndex })
                 })
                 .catch(error => { this.setState({ hasMetabase: false }) })
+            
+            // var sources = []
+            // nextProps.dataset.operational.type_info&& nextProps.dataset.operational.type_info.dataset_type==="derived_sql" && nextProps.dataset.operational.type_info.sources.map(source => {
+            //   var tmp = JSON.parse(source)
+            //   sources.push(tmp.name)
+            // })
+            // dispatch(getLinkedDs(nextProps.dataset.dcatapit.name, {"sourcesName": sources} ))
+            // .then(json => {
+            //   this.setState({
+            //     linkedDs: json
+            //   })
+            // })
         }
     }
 
@@ -457,26 +471,30 @@ class DatasetDetail extends Component {
 
     renderPreview(dataset, jsonPreview){
       if(jsonPreview){
-        if(dataset.operational.file_type==="csv" || dataset.operational.input_src.sftp[0].param.indexOf('csv')>-1){
-          var columns=[{
-            Header: dataset.dcatapit.name,
-            columns: []
-          }]
-          Object.keys(jsonPreview[0]).map(elem=>{
-            columns[0].columns.push({
-              Header: elem,
-              accessor: elem
+        if(dataset.operational.input_src.sftp || dataset.operational.file_type){
+          if(dataset.operational.file_type==="csv" || dataset.operational.input_src.sftp[0].param.indexOf('csv')>-1){
+            var columns=[{
+              Header: dataset.dcatapit.name,
+              columns: []
+            }]
+            Object.keys(jsonPreview[0]).map(elem=>{
+              columns[0].columns.push({
+                Header: elem,
+                accessor: elem
+              })
             })
-          })
-          // console.log(columns)
-          return(
-            <ReactTable 
-              data={jsonPreview}
-              columns={columns}
-              defaultPageSize={10}
-              className="-striped -highlight"
-              />
-          )
+            // console.log(columns)
+            return(
+              <ReactTable 
+                data={jsonPreview}
+                columns={columns}
+                defaultPageSize={10}
+                className="-striped -highlight"
+                />
+            )
+          }else{
+            return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
+          }
         }else{
           return <ReactJson src={this.state.jsonPreview} theme="bright:inverted" collapsed="true" enableClipboard="false" displayDataTypes="false" />
         }
@@ -485,9 +503,16 @@ class DatasetDetail extends Component {
       }
     }
 
+    linkFunction(nomeDataset){
+      const { dispatch } = this.props
+
+      dispatch(datasetDetail(nomeDataset, '', isPublic()))
+      this.props.history.push(isPublic()?'/dataset/'+nomeDataset:'/private/dataset/'+nomeDataset)
+    }
+
     render() {
-        const { dataset, metadata, ope, feed, iframes, isFetching, dispatch, isAdditionalFetching, loggedUser } = this.props
-        const { loading } = this.state
+        const { dataset, metadata, ope, feed, iframes, linkedDs, isFetching, dispatch, isAdditionalFetching, loggedUser } = this.props
+        const { loading, numberDataset } = this.state
         var metadataThemes = undefined
         if (metadata) {
             try {
@@ -496,6 +521,7 @@ class DatasetDetail extends Component {
 
             }
         }
+        var random = 0
 
         return (loading && isFetching) ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (<div>
             {((ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') || ope === 'RECEIVE_DATASET_ADDITIONAL_DETAIL') && (dataset) &&
@@ -587,7 +613,7 @@ class DatasetDetail extends Component {
                         </div>
                     </div>
                     <div className="container">
-                        <div className="row">
+                        <div className="row mb-3">
                             <div hidden={!this.state.showPreview} className="col-12 pt-5">
                               {this.state.previewState === 1 && <div>{this.renderPreview(dataset, this.state.jsonPreview)}</div>}
                               {this.state.previewState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il caricamento della risorsa, contatta l'assistenza.</div>}
@@ -712,6 +738,42 @@ class DatasetDetail extends Component {
                                                                     <p className="desc-dataset">Vuoi caricare direttamente il file?</p> <button className="btn btn-primary" onClick={this.toggleUploadFile.bind(this)}>Carica</button>
                                                                 </div>}
                                                         </div>
+                                                    }
+                                                    {
+                                                      dataset.operational.type_info && dataset.operational.type_info.dataset_type==="derived_sql" &&
+                                                      <div>
+                                                        <table className="table table-striped table-responsive-1">
+                                                            <tbody className="w-100">
+                                                                <tr>
+                                                                  <th className="bg-white" style={{ width: "192px" }}><strong>Tipo: </strong></th><td className="bg-grigino">Derivato SQL</td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <th className="bg-white" style={{ width: "192px" }}><strong>Query: </strong></th>
+                                                                  <td className="bg-grigino" title={dataset.operational.type_info.query_sql}>{dataset.operational.type_info.query_sql}
+                                                                    <CopyToClipboard text={dataset.operational.type_info.query_sql}>
+                                                                      <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
+                                                                    </CopyToClipboard>
+                                                                  </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div className="row mt-4">
+                                                          <div className="col-12">
+                                                            <p className="text-muted mb-4"><b>Sorgenti </b></p>
+                                                          </div>
+                                                          {linkedDs && linkedDs.map((dataset, index)=>{
+                                                            if(dataset.catalog_type==="source")
+                                                              return(
+                                                                <DatasetCard
+                                                                  linkFunction={this.linkFunction.bind(this, dataset.catalog.dcatapit.name)} 
+                                                                  open={false} 
+                                                                  dataset={dataset.catalog} 
+                                                                  key={index}
+                                                                />
+                                                              )
+                                                          })}
+                                                        </div>
+                                                      </div>
                                                     }
                                                     {!this.state.hasPreview && !isPublic() &&
                                                       <p className="desc-dataset text-dark font-weight-bold mt-5">Non hai ancora effettuato un caricamento per questo dataset. Carica i dati con il metodo sopra indicato per sbloccare tutte le funzionalità offerte.</p>
@@ -938,7 +1000,7 @@ class DatasetDetail extends Component {
                                         </div>
 
                                         <div className="col-12 my-3">
-                                            <p className="text-muted pb-1 mb-2"><b className="pr-2">Autore </b> <b className="text-primary">{dataset.operational.group_own}</b></p>
+                                            <p className="text-muted pb-1 mb-2"><b className="pr-2">Autore </b> <b className="text-primary">{dataset.dcatapit.author}</b></p>
                                             <p className="text-muted pb-1 mb-2"><b className="pr-2">Organizzazione </b>  <b className="text-primary">{dataset.dcatapit.owner_org}</b></p>
                                         </div>
 
@@ -986,12 +1048,42 @@ class DatasetDetail extends Component {
                             </div>
                         </div> */}
 
-                            {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} hasPreview={this.state.hasPreview} owner={dataset.operational.group_own} />}
+                            {!isPublic() && this.state.showAdmin && <DatasetAdmin showAdmin={this.state.showAdmin} hasPreview={this.state.hasPreview} owner={dataset.operational.author} />}
                         </div>
                     </div>
                     <div hidden={!this.state.showWidget} className="col-12 card-text pt-4 bg-light">
                         {isAdditionalFetching?<h1 className="text-center"><i className="fas fa-spin fa-circle-notch mr-2"/> Caricamento</h1>:<Widgets widgets={iframes} loading={false} />}
                     </div>
+                    {linkedDs && linkedDs.filter(dataset=>{return dataset.catalog_type==="derived"}).length>0 && 
+                    <div hidden={!this.state.showDett}>
+                        <div className="container body w-100">
+                            <div className="row mx-auto text-muted">
+                                <i className="fa fa-table fa-lg m-3" style={{ lineHeight: '1' }} /><h2 className="mt-2 mb-4">Dataset Derivati</h2>
+                            </div>
+                            <div className="row mx-auto m-0">
+                              {linkedDs.slice(0, numberDataset).map((dataset, index) => {
+                                  if(dataset.catalog_type==="derived"){
+                                    return(
+                                      <DatasetCard
+                                        open={false}
+                                        dataset={dataset.catalog}
+                                        linkFunction={this.linkFunction.bind(this, dataset.catalog.dcatapit.name)}
+                                        key={index}
+                                        />
+                                    )
+                                  }
+                                })
+                              }
+                              <div className="w-100 text-center">
+                              {numberDataset === linkedDs.length ? <button className="btn btn-link" onClick={() => { this.setState({ numberDataset: 3 }) }}>
+                                    <h4 className="text-primary"><u>Vedi meno</u></h4>
+                                </button>:<button className="btn btn-link" onClick={() => { this.setState({ numberDataset: linkedDs.length }) }}>
+                                    <h4 className="text-primary"><u>Vedi tutti</u></h4>
+                                </button>}
+                              </div>
+                            </div>
+                        </div>
+                    </div>}
                     {<div hidden={!this.state.showDett} className="bg-light">
                         <div>
                             <div className="container body w-100">
@@ -1253,10 +1345,10 @@ class DatasetDetail extends Component {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, isAdditionalFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
+    const { isFetching, isAdditionalFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes, linkedDs } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
     const { newNotifications } = state.notificationsReducer['notifications'] || {}
     const { loggedUser } = state.userReducer['obj'] || {}
-    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser, isAdditionalFetching }
+    return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser, isAdditionalFetching, linkedDs }
 }
 
 export default connect(mapStateToProps)(DatasetDetail)

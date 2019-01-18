@@ -34,7 +34,7 @@ class CreateWidget extends Component{
     
     var tmpArray = dataVisualization
 
-    tmpArray.push({'dataKey':'', 'color':''})
+    tmpArray.push({'dataKey':'', 'color':'', 'typeViz':''})
 
     this.setState({
       dataVisualization: tmpArray
@@ -54,10 +54,24 @@ class CreateWidget extends Component{
   }
 
   changeDataVisualization(fieldKey, index, value){
-    const { dataVisualization } = this.state
+    const { dataVisualization, chartType } = this.state
     var tmpArray = dataVisualization
 
     tmpArray[index][fieldKey] = value
+
+    switch (chartType) {
+      case "linechart":
+        tmpArray[index].typeViz = "line"
+        break;
+      case "areachart":
+        tmpArray[index].typeViz = "area"
+        break;
+      case "barchart":
+        tmpArray[index].typeViz = "bar"
+        break;
+      default:
+        break;
+    }
 
     this.setState({
       dataVisualization: tmpArray
@@ -118,7 +132,7 @@ class CreateWidget extends Component{
             <div className="form-group row">
               <label className="col-md-4 form-control-label">Valore di confronto</label>
               <div className="col-md-8">
-                <select className="form-control" placeholder="Definisci il valore di confronto" value={this.state.xAxis} onChange={(e) => this.setState({xAxis: e.target.value})}>
+                <select className="form-control" placeholder="Definisci il valore di confronto" disabled={this.state.chartType===''||this.state.chartType==='table'} value={this.state.xAxis} onChange={(e) => this.setState({xAxis: e.target.value})}>
                   <option value=""></option>
                   {fields&&fields.map((field, index) => {
                     return(<option value={field} key={index}>{field}</option>)
@@ -130,7 +144,7 @@ class CreateWidget extends Component{
               <div className="row">
                 <label className="col-md-10 form-control-label">Dati da visualizzare</label>
                 <div className="col-md-2">
-                  <button className="btn btn-link text-primary float-right" title="Aggiungi un nuovo valore da visualizzare" onClick={this.addNewDatakey}>
+                  <button className="btn btn-link text-primary float-right" title="Aggiungi un nuovo valore da visualizzare" disabled={this.state.chartType===''||this.state.chartType==='table'} onClick={this.addNewDatakey}>
                     <i className="fas fa-plus-circle fa-lg"/>
                   </button>
                 </div>
@@ -138,22 +152,38 @@ class CreateWidget extends Component{
               {this.state.dataVisualization.map((data,index)=>{
                 return(
                   <div className="row mb-3" key={index}>
-                    <label className="col-md-5 mx-auto form-control-label">Valore {index+1}</label>
-                    <label className="col-md-4 mx-auto form-control-label">Colore {index+1}</label>
-                    <div className="col-md-1 mx-auto"></div>
-                    <select className="col-md-5 mx-auto form-control"  value={data.dataKey} placeholder={"Valore nr. "+index} onChange={(e)=>{this.changeDataVisualization('dataKey', index, e.target.value)}}>
+                    <label className="col-md-2 mx-auto form-control-label p-0">Tipo {index+1}</label>
+                    <label className="col-md-4 mx-auto form-control-label p-0">Valore {index+1}</label>
+                    <label className="col-md-3 mx-auto form-control-label p-0">Colore {index+1}</label>
+                    <div className="col-md-2 mx-auto"></div>
+                    {this.state.chartType==="composedchart"&&<select className="col-md-2 mx-auto form-control" value={data.typeViz} placeholder={"Tipologia nr. "+index} onChange={(e)=>{this.changeDataVisualization('typeViz', index, e.target.value)}}>
+                      <option value=""></option>
+                      <option value="line">Linea</option>
+                      <option value="area">Area</option>
+                      <option value="bar">Barra</option>
+                    </select>}
+                    {
+                      this.state.chartType==="linechart" && <input className="col-md-2 mx-auto form-control" value="Linea" readOnly={true}/>
+                    }
+                    {
+                      this.state.chartType==="barchart" && <input className="col-md-2 mx-auto form-control" value="Barra" readOnly={true}/>
+                    }
+                    {
+                      this.state.chartType==="areachart" && <input className="col-md-2 mx-auto form-control" value="Area" readOnly={true}/>
+                    }
+                    <select className="col-md-4 mx-auto form-control"  value={data.dataKey} placeholder={"Valore nr. "+index} onChange={(e)=>{this.changeDataVisualization('dataKey', index, e.target.value)}}>
                       <option value=""></option>
                       {fields&&fields.map((field, index) => {
                         return(<option value={field}  key={index}>{field}</option>)
                       })}
                     </select>
-                    <select className="col-md-4 mx-auto form-control"  value={data.color} onChange={(e)=>{this.changeDataVisualization('color', index, e.target.value)}}>
+                    <select className="col-md-3 mx-auto form-control"  value={data.color} onChange={(e)=>{this.changeDataVisualization('color', index, e.target.value)}}>
                       <option value=""></option>
                       {colors.map((color, index) => {
                         return(<option style={{backgroundColor: color, color:'#fff'}} value={color}  key={index}>{color}</option>)
                       })}
                     </select>
-                    <div className="col-md-1 mx-auto">
+                    <div className="col-md-2 mx-auto">
                       <button className="btn btn-link text-primary" onClick={this.removeElement.bind(this, index)}><i className="fas fa-times fa-lg"/></button>
                     </div>
                   </div>

@@ -147,12 +147,13 @@ function receiveDatasetDetail(jsonDataset, query, category_filter, group_filter,
   }
 }
 
-function receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames) {
+function receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames, jsonLinked) {
   return {
       type: RECEIVE_DATASET_ADDITIONAL_DETAIL,
       dataset: jsonDataset,
       feed: jsonFeed,
       iframes: jsonIFrames,
+      linkedDs: jsonLinked,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
   }
@@ -869,6 +870,8 @@ export function getOpendataResources(datasetname) {
 
 export function addDataset(inputJson, token, fileType) {
   console.log("Called action addDataset");
+  var inputBody = new Object();
+  inputBody['catalog'] = JSON.stringify(inputJson)
   var url = serviceurl.apiURLCatalog + "/catalog-ds/add-queue";
   return dispatch => {
       return fetch(url, {
@@ -878,7 +881,7 @@ export function addDataset(inputJson, token, fileType) {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
           },
-          body: JSON.stringify(inputJson)
+          body: JSON.stringify(inputBody)
         }).then(response => response)
       .catch(error => console.log('Eccezione durante il caricamento dei metafati '))
   }
@@ -1002,15 +1005,33 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
                 .then(jsonFeed => {
                   dispatch(getDatasetIframes(jsonDataset.dcatapit.name, jsonDataset.dcatapit.privatex))
                   .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                  .then(jsonIFrames => dispatch(receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames)))
+                  .then(jsonIFrames => {
+                    var sources = []
+                    jsonDataset.operational.type_info && jsonDataset.operational.type_info.dataset_type==="derived_sql" && jsonDataset.operational.type_info.sources.map(source => {
+                      var tmp = JSON.parse(source)
+                      sources.push(tmp.name)
+                    })
+                    dispatch(getLinkedDs(jsonDataset.dcatapit.name, sources))
+                    .catch(error => console.log('Errore durante il caricamento dei derivati'))
+                    .then(jsonLinked => dispatch(receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames, jsonLinked)))
+                  })
                 })
               }else{
                 dispatch(receiveDatasetDetail(jsonDataset))
                 dispatch(getDatasetIframes(jsonDataset.dcatapit.name, jsonDataset.dcatapit.privatex))
                   .catch(error => console.log('Errore durante il caricamento degli iframes associati al dataset'))
-                  .then(jsonIFrames => dispatch(receiveDatasetAdditionalDetail(jsonDataset, undefined, jsonIFrames)))
+                  .then(jsonIFrames => {
+                    var sources = []
+                    jsonDataset.operational.type_info && jsonDataset.operational.type_info.dataset_type==="derived_sql" && jsonDataset.operational.type_info.sources.map(source => {
+                      var tmp = JSON.parse(source)
+                      sources.push(tmp.name)
+                    })
+                    dispatch(getLinkedDs(jsonDataset.dcatapit.name, sources))
+                    .catch(error => console.log('Errore durante il caricamento dei derivati'))
+                    .then(jsonLinked => dispatch(receiveDatasetAdditionalDetail(jsonDataset, undefined, jsonIFrames, jsonLinked)))
+                  })
               }
-              })
+        })
         .catch(error => {
           console.log('Nessun Dataset con questo nome');
           dispatch(receiveDatasetDetailError(query))
@@ -1213,6 +1234,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
     export function getSchema(filesToUpload, typeFile) {
       console.log('getSchema'); 
+      /* console.log(filesToUpload) */
       var url = serviceurl.apiURLDatiGov + "/infer/kylo/" + typeFile
       //var url = 'http://localhost:3001/dati-gov/v1/infer/kylo/csv'
       var token = '';
@@ -1223,7 +1245,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
         const formData = new FormData()
         formData.append('upfile', new Blob(filesToUpload), 'test')
-      
+
       return dispatch => {
           return fetch(url, {
             method: 'POST',
@@ -1701,8 +1723,8 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
 
       export function loadDatasetStandard(){
-        //var url = serviceurl.apiURLCatalog + '/catalog-ds/standard/fields'
-        var url = 'http://localhost:3001/catalog-manager/v1/catalog-ds/standard/fields'
+        var url = serviceurl.apiURLCatalog + '/catalog-ds/standard/fields'
+        //var url = 'http://localhost:3001/catalog-manager/v1/catalog-ds/standard/fields'
         var token = ''
 
         if(localStorage.getItem('username') && localStorage.getItem('token') &&
@@ -1747,7 +1769,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
 
       /* Actions for Query Reducer */
-      function receiveQueryResult(json, query){
+      export function receiveQueryResult(json, query){
         console.log('receiveQueryResult');
         return {
           type: RECEIVE_QUERY_RESULT,
@@ -1771,14 +1793,15 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
 
-      export function getQueryResult(logical_uri, query){
+/*       export function getQueryResult(logical_uri, query){
         console.log('Launch Query on storage action');
         return (dispatch) => {
           return dispatch(launchQueryOnStorage(logical_uri, query))
         }      
-      }
+      } */
 
-      function launchQueryOnStorage(logical_uri, query) {
+      export function launchQueryOnStorage(logical_uri, query) {
+        console.log('Launch Query on storage action');
         var token = ''
         var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) +'/search'
 
@@ -1797,7 +1820,52 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               body: JSON.stringify(query)
             })
             .then(response => response.json())
-            .then(json => dispatch(receiveQueryResult(json, query)))
-            .catch(error=> console.error(error))
+            /* .then(json => dispatch(receiveQueryResult(json, query))) */
+            .catch(error=> {dispatch(receiveQueryResult([], query));console.error(error)})
           }
         }
+
+      export function translateQueryToSQL(query, logical_uri){
+        var token = ''
+        var url = serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(logical_uri) +'/sql'
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(query)
+          })
+          .then(response => response.text())
+          .catch(error=> console.error(error))
+        }
+      }
+
+      export function getLinkedDs(datasetName, sources){
+        var url = serviceurl.apiURLCatalog + '/catalog-ds/linked/' + datasetName
+        var token = ''
+        
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({"sourcesName":sources})
+          })
+          .then(response => response.json())
+          .catch(error=> console.error(error))
+        }
+      }

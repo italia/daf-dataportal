@@ -110,7 +110,6 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                     <div className="form-group">
                       <div className="col-md-12">
                           <p>Definisci lo schema del tuo Dataset caricando un sample (max 1MB), il file completo lo potrai caricare in seguito:</p>
-                          <h5>Tempo di polling</h5>
                           {/* <Field
                             name="caricafile"
                             component={renderFieldCheckbox}                
@@ -118,7 +117,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                             openModalInfo={openModalInfo}
                             config={config}
                           /> */}
-                          {/* <Field
+                          <Field
                             name="tempopolling"
                             options={config['tempoDiPollingOptions']}
                             component={renderFieldSelect}
@@ -126,8 +125,8 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                             openModalInfo={openModalInfo}
                             config={config}
 
-                          /> */}
-                          {/* tempopolling==0 &&
+                          />
+                          {tempopolling==0 &&
                               <Field
                                 name="espressionecron"
                                 component={renderFieldInput}
@@ -136,8 +135,8 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                                 config={config}
 
                             />
-                           */}
-                          {/* tempopolling==1 && */
+                          }
+                          {tempopolling==1 &&
                               <div>
                                   <Field
                                     name="timerunita"

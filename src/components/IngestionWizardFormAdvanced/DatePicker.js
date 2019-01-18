@@ -46,7 +46,6 @@ class DatePicker extends Component {
                     onDateChange={this.onDateChange}
                     onFocusChange={this.onFocusChange}
                     placeholder=''
-                    isOutsideRange={()=>false}
                     noBorder
                 />
                 {touched && error && <div className="text-danger">{error}</div>}
