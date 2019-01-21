@@ -190,6 +190,9 @@ class QueryBuild extends Component {
     var where = rulesConverter(conditions.combinator, conditions.rules, datasetFrom, datasetJoin)
     if(Object.keys(where).length>0){
       query.where = where
+    }else{
+      if(query.where)
+        delete query['where']
     }
 
     var join = []
