@@ -194,18 +194,18 @@ export const config =
     }
   ],
   'timerUnita': [
-    /* { 
+    { 
       'uid': 'sec', 
       "name": {"ita": "Secondi", "default":"Seconds"}
-    }, */
+    },
     { 
       'uid': 'min', 
       "name": {"ita": "Minuti", "default":"Minutes"}
     },
-/*     { 
+    { 
       'uid': 'hrs', 
       "name": {"ita": "Ore", "default":"Hours"}
-    }, */
+    },
     { 
       'uid': 'days', 
       "name": {"ita": "Giorni", "default":"Days"}
@@ -221,18 +221,18 @@ export const config =
         "default": "Textual type of data."
       }
     },
-    // {
-    //   "uid": "date",
-    //   "name": {"default": "date"},
-    //   "desc": {
-    //     "ita": "Dati di tipo data.",
-    //     "eng": "Textual type of date.",
-    //     "default": "Textual type of date."
-    //   },
-    //   "ctx_mapping": {
-    //     "parquet": "string"
-    //   }
-    // },
+    {
+      "uid": "date",
+      "name": {"default": "date"},
+      "desc": {
+        "ita": "Dati di tipo data.",
+        "eng": "Textual type of date.",
+        "default": "Textual type of date."
+      },
+      "ctx_mapping": {
+        "parquet": "string"
+      }
+    },
     {
       "uid": "int",
       "name": {"default": "int"},
@@ -246,13 +246,13 @@ export const config =
       }
     },
     {"uid":'bigint', "name": {"default": "bigint"}},
-    // {"uid":'binary', "name": {"default": "binary"}},
-    // {"uid":'boolean', "name": {"default": "boolean"}},
-    // {"uid":'decimal', "name": {"default": "decimal"}},
+    {"uid":'binary', "name": {"default": "binary"}},
+    {"uid":'boolean', "name": {"default": "boolean"}},
+    {"uid":'decimal', "name": {"default": "decimal"}},
     {"uid":'double', "name": {"default": "double"}},
-    // {"uid":'float', "name": {"default": "float"}},
-    // {"uid":'timestamp', "name": {"default": "timestamp"}},
-    // {"uid":'tinyint', "name": {"default": "tinyint"}}
+    {"uid":'float', "name": {"default": "float"}},
+    {"uid":'timestamp', "name": {"default": "timestamp"}},
+    {"uid":'tinyint', "name": {"default": "tinyint"}}
   ],
   'dafvoc-ingform-dataschema-metadata-field_type': [
     {
@@ -566,18 +566,6 @@ export const config =
       'uid': '0 0 0 * * ?', 
       'name': { 
         'ita': 'giorno' 
-      } 
-    },
-    { 
-      'uid': '0 0 0 0 * ?', 
-      'name': { 
-        'ita': 'mese' 
-      } 
-    },
-    { 
-      'uid': '0 0 0 0 0 ?', 
-      'name': { 
-        'ita': 'anno' 
       } 
     }
   ],

@@ -64,7 +64,9 @@ export function createOperational (values, data) {
   data[operational]['storage_info'] = 
     {
 			"hdfs": {
-				"name": "hdfs_daf"
+        "name": "hdfs_daf",
+        "path" : null,
+        "param" : null
 			}
     }
   data[operational]['dataset_type'] = (values.tipoingestiondati) ? values.tipoingestiondati  : 'batch'
@@ -97,14 +99,6 @@ export function createOperational (values, data) {
       let pipeline = values.pipelines[i]
       data[operational]['ingestion_pipeline'] = []
       data[operational]['ingestion_pipeline'].push(pipeline)
-    }
-  }
-
-  if(values.storage && values.storage.length>0){
-    for(var i=0;i<values.storage.length;i++){
-      let storage = values.storage[i]
-      data[operational]['storage_info'] = []
-      data[operational]['storage_info'].push(storage)
     }
   }
 

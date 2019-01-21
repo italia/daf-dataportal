@@ -44,6 +44,7 @@ import Vocabulary from '../../semantics/containers/Vocabulary.js'
 import Ontologies from '../../semantics/containers/Ontologies.js'
 import Ontology from '../../semantics/containers/Ontology.js'
 import Validator from '../../semantics/containers/Validator.js'
+import IngestionWizardNewAdvanced from '../../views/IngestionWizard/IngestionWizardNewAdvanced';
 
 const publicVapidKey = 'BI28-LsMRvryKklb9uk84wCwzfyiCYtb8cTrIgkXtP3EYlnwq7jPzOyhda1OdyCd1jqvrJZU06xHSWSxV1eZ_0o';
 
@@ -1022,6 +1023,7 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} path="/private/home" name="Home" exact component={Home}/>
                 <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/ingestionwizzardnew" name="Forms" component={IngestionWizard} history={history} />
                 <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/ingestionwizzard" name="Forms" component={IngestionWizardNew} history={history} />
+                <PrivateRouteEditor authed={this.state.authed} loggedUser={loggedUser} path="/private/advancedingestionwizzard" name="Forms" component={IngestionWizardNewAdvanced} history={history} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies/" name="Ontologies" exact component={Ontologies} />
                 <PrivateRoute authed={this.state.authed} path="/private/ontologies/:filter" name="Ontology" component={Ontology} />
                 <PrivateRoute authed={this.state.authed} path="/private/vocabularies" name="Vocabularies" exact component={Vocabularies} />

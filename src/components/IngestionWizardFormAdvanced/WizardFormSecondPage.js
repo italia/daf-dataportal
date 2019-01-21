@@ -109,6 +109,18 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                           config={config}
 
                         />
+                        <Field
+                          name={`${field}.concetto`}
+                          component={AutocompleteSemantic}
+                          label="Concetto"
+                          value={`${field}.concetto`}
+                          addSemanticToForm={addSemanticToForm}
+                          index={index}
+                          aggiornaStato={aggiornaStato}
+                          openModalInfo={openModalInfo}
+                          config={config}
+
+                        />
                     </Panel>
                     <Panel header="Formato e Convenzioni">
                       <Field
@@ -130,7 +142,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                         openModalInfo={openModalInfo}
                         config={config}
                       />
-                       {/* <Field
+                       <Field
                         name={`${field}.vocabolariocontrollato`}
                         options={vocabolariControllati}
                         component={renderFieldSelect}
@@ -139,7 +151,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                         openModalInfo={openModalInfo}
                         config={config}
 
-                      /> */}
+                      />
                       {vocabolariocontrollato &&
                          <Field
                           name={`${field}.campovocabolariocontrollato`}
@@ -163,17 +175,6 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                     </Panel>
                     <Panel header="Semantica e Ontologie">
                       <Field
-                        name={`${field}.concetto`}
-                        component={AutocompleteSemantic}
-                        label="Concetto"
-                        value={`${field}.concetto`}
-                        addSemanticToForm={addSemanticToForm}
-                        index={index}
-                        aggiornaStato={aggiornaStato}
-                        openModalInfo={openModalInfo}
-                        config={config}
-                        />
-                      <Field
                         name={`${field}.contesto`}
                         component={renderContesti}
                         label="Contesto"
@@ -182,6 +183,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                         index={index}
                         openModalInfo={openModalInfo}
                         config={config}
+
                       /> 
 {/*                       <Field
                           name={`${field}.idgruppocampi`}

@@ -53,7 +53,7 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
       <div>
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title">Informazioni DCAT-AP_IT</h5>
+            <h5 className="card-title">Informazioni DCATAP</h5>
             <div>
               <Field
                 name="categoria"
@@ -72,10 +72,10 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
                 config={config}
               />
               <Field
-                name="gruppoproprietario"
+                name="ownership"
                 type="text"
                 component={renderOrganization}
-                label="Gruppo Proprietario"
+                label="Organizzazione"
                 organizations={organizations}
                 openModalInfo={openModalInfo}
                 config={config}
@@ -98,7 +98,7 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
 
               />
               <Field
-                name="descrizione"
+                name="note"
                 component={renderFieldTextArea}
                 label="Note"
                 openModalInfo={openModalInfo}
@@ -112,7 +112,7 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
           <div className="card-body">
             <h5 className="card-title">Informazioni Operative</h5>
             <div>
-              {/* <Field
+              <Field
                 name="gruppoproprietario"
                 type="text"
                 component={renderOrganization}
@@ -121,7 +121,7 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
                 openModalInfo={openModalInfo}
                 config={config}
 
-              /> */}
+              />
               <Field
                 name="isvocabulary"
                 options={config['vocabulary']}
@@ -130,7 +130,7 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
                 openModalInfo={openModalInfo}
                 config={config}
               />
-              {/* <Field
+              <Field
                 name="seguestd"
                 options={config['standard']}
                 component={renderFieldSelect}
@@ -151,8 +151,8 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
               {seguestd=='seguestandard' && datasetstd &&
                 <MappingStandards fields={fields} datasetStdList={datasetStdList} datasetstd={datasetstd}/>
               
-              } */}
-              {/* <Collapse accordion={true} defaultActiveKey="2">
+              }
+              <Collapse accordion={true} defaultActiveKey="2">
                 <Panel header="Informazioni Ingestion" headerClass="my-header-class">
                   <Sorgenti 
                     listaSorgenti={listaSorgenti} 
@@ -175,7 +175,7 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
                     config={config}
                     />
                 </Panel>
-                <Panel header="Informazioni Procedurali"> */}
+                <Panel header="Informazioni Procedurali">
                   <Field
                     name="tiposalvataggio"
                     options={config['dafvoc-ingform-operational-dataset_proc-read_type']}
@@ -202,8 +202,8 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
                     openModalInfo={openModalInfo}
                     config={config}
                   />
-                {/* </Panel>
-              </Collapse> */}
+                </Panel>
+              </Collapse>
             </div>
           </div>
         </div>

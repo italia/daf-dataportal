@@ -10,7 +10,7 @@ import {
 } from 'react-modal-bootstrap';
 import { toastr } from 'react-redux-toastr'
 import { querySearch, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult, translateQueryToSQL } from '../../actions'
-import { rulesConverter } from '../../utility'
+import { rulesConverter, jsonToCSV } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
 import QueryBuilder from 'react-querybuilder';
@@ -25,7 +25,7 @@ class QueryBuild extends Component {
       selected: [],
       groupedBy: [],
       modalOpen: false,
-      conditions: {},
+      conditions: {"id":"g-2a5f6a49-0af3-415a-99b8-eec4f6758caa","rules":[{"id":"r-22ccfb26-2535-4263-8b2c-7d2e187c903a","field":"id_comune","value":"10","operator":"="}],"combinator":"and"},
       aggregators: [],
       aggrFunction: '',
       fieldAggr: '',
@@ -190,6 +190,9 @@ class QueryBuild extends Component {
     var where = rulesConverter(conditions.combinator, conditions.rules, datasetFrom, datasetJoin)
     if(Object.keys(where).length>0){
       query.where = where
+    }else{
+      if(query.where)
+        delete query['where']
     }
 
     var join = []
@@ -209,7 +212,8 @@ class QueryBuild extends Component {
         dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
         .then(json=>{
           dispatch(receiveQueryResult(json, query))
-          var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+          var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
+          // var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
           if(onSubmit){
             query.limit && delete query['limit']
             dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
@@ -218,7 +222,8 @@ class QueryBuild extends Component {
             })
           }
           if(onDropFunction)
-            onDropFunction(fields, [file],'json')
+            onDropFunction(fields, [file],'csv')
+            // onDropFunction(fields, [file],'json')
         })
       }
     }else{
@@ -230,7 +235,8 @@ class QueryBuild extends Component {
           dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
           .then(json => {
             dispatch(receiveQueryResult(json, query))
-            var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+            var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
+            // var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
             if(onSubmit){
               query.limit && delete query['limit']
               dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
@@ -239,14 +245,16 @@ class QueryBuild extends Component {
               })
             }
             if(onDropFunction)
-              onDropFunction(fields, [file],'json')
+              onDropFunction(fields, [file],'csv')
+              // onDropFunction(fields, [file],'json')
           })
         }
       }else{
         dispatch(launchQueryOnStorage(datasetFrom.operational.logical_uri, query))
         .then(json => {
           dispatch(receiveQueryResult(json, query))
-          var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
+          var file = new File([jsonToCSV(json)], 'derivato.csv', {type: "text/csv"})
+          // var file = new File([JSON.stringify(json)], 'derivato.json', {type: "application/json"})
           if(onSubmit){
             query.limit && delete query['limit']
             dispatch(translateQueryToSQL(query,datasetFrom.operational.logical_uri))
@@ -255,14 +263,15 @@ class QueryBuild extends Component {
             })
           }
           if(onDropFunction)
-            onDropFunction(fields, [file],'json')
+            onDropFunction(fields, [file],'csv')
+            // onDropFunction(fields, [file],'json')
         })
       }
     }
   }
 
   renderTable(){
-    const { queryResult, limit } = this.props
+    const { queryResult } = this.props
 
     if(queryResult.length>0){
       var columns=[{
@@ -279,7 +288,7 @@ class QueryBuild extends Component {
       return <ReactTable 
               data={queryResult}
               columns={columns}
-              defaultPageSize={limit?limit:25}
+              defaultPageSize={25}
               className="-striped -highlight"
               />
     }
@@ -469,7 +478,7 @@ class QueryBuild extends Component {
     var a = { }
 
     a[aggrFunction] = {"name": fieldAggr}
-    a.alias = aggrFunction+"_"+fieldAggr
+    a.alias = aggrFunction+"_"+(fieldAggr==='*'?'all':fieldAggr.replace(".","_"))
 
     if(query.select.indexOf(a)===-1){
       tmpArray.push(a)
@@ -732,7 +741,7 @@ class QueryBuild extends Component {
               <div className="col-md-12">
               {
                 queryLoading? <h1 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1> :(
-                queryResult.length <= 0 ? <p>Nessun dato disponibile</p> : this.renderTable())
+                (!queryResult || queryResult.length <= 0) ? <p>Nessun dato disponibile</p> : this.renderTable())
               }
               </div>
             </div>
