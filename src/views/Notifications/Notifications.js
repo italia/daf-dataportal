@@ -148,6 +148,19 @@ class Notifications extends Component{
                     </a>
                   )
                 break
+              case 'delete_error':
+                if(checkedErr)
+                  return(
+                    <a href="#" className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
+                      <div className="d-flex w-100 justify-content-between">
+                        <h5 className="mb-1"><i className="fas fa-exclamation-circle text-danger mr-2"/>{notification.info.title}</h5>
+                        <small>{checkDate(notification.timestamp)}</small>
+                      </div>
+                      <p className="mb-1">{notification.info.description} </p>
+                      <small>{convertNotificationTime(notification.timestamp)}</small>
+                    </a>
+                  )
+                break
               case 'generic':
                 if(checkedGeneric)
                   return (

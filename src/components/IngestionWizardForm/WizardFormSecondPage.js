@@ -99,7 +99,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                           config={config}
 
                         /> 
-                        <Field
+{/*                         <Field
                           name={`${field}.tag`}
                           component={renderFieldTags}
                           label="Tags"
@@ -108,7 +108,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                           openModalInfo={openModalInfo}
                           config={config}
 
-                        />
+                        /> */}
                     </Panel>
                     <Panel header="Formato e Convenzioni">
                       <Field

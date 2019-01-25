@@ -58,14 +58,14 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                   config={config}
                 />
             }
-            <Field
+            {/* <Field
               name="filetags"
               component={renderFieldTags}
               label="Tags"
               addTagsToForm={addTagsFiletagsToForm}
               openModalInfo={openModalInfo}
               config={config}
-            />
+            /> */}
 {/*             <Field
               name="template"
               options={config['dafvoc-ingform-template']}
@@ -106,7 +106,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                 {(modalitacaricamento=='sftp' || modalitacaricamento=='webservice_push')&& 
                 <div className="card">
                 <div className="card-body">
-                <h5 className="card-title">Caricamento tramite SFTP / API PUT</h5>
+                <h5 className="card-title">Caricamento tramite SFTP</h5>
                     <div className="form-group">
                       <div className="col-md-12">
                           <p>Definisci lo schema del tuo Dataset caricando un sample (max 1MB), il file completo lo potrai caricare in seguito:</p>
@@ -198,7 +198,8 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                  <h5 className="card-title">Caricamento tramite Web Service</h5>
                     <div className="form-group">
                     <div className="col-md-12">
-                        <Field
+                    <h5>Tempo di polling</h5>
+                        {/* <Field
                             name="tempopolling"
                             options={config['tempoDiPollingOptions']}
                             component={renderFieldSelect}
@@ -217,7 +218,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
 
                             />
                           }
-                          {tempopolling==1 &&
+                          {tempopolling==1 && */}
                               <div>
                                 <Field
                                   name="timerunita"
@@ -235,7 +236,7 @@ const renderFieldArray = ({fields, setName, onDropFunction, handleSubmit, setTem
                                   config={config}
                                 />
                               </div>
-                          }
+                          {/* } */}
                       {filePullLoaded? 
                           <div>
                               <Field
