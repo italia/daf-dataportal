@@ -97,14 +97,14 @@ const renderFieldArray = ({fields, previousPage, organizations, datasetstd, list
                 config={config}
 
               />
-              <Field
+              {/* <Field
                 name="descrizione"
                 component={renderFieldTextArea}
                 label="Note"
                 openModalInfo={openModalInfo}
                 config={config}
 
-              />
+              /> */}
             </div>
           </div>
         </div>
