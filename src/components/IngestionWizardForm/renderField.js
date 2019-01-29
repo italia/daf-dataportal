@@ -199,7 +199,9 @@ export const renderFieldCategoria = ({ input, openModalInfo, label, readonly, co
    </div>
    );
    
-   export const renderFieldCheckbox = ({ input, openModalInfo, config, label, meta: { touched, error } }) => (
+   export const renderFieldCheckbox = ({ input, openModalInfo, config, label, meta: { touched, error } }) => {
+    console.log(input) 
+    return(
     <div className="form-group row">
     <label className="col-sm-5 col-form-label">{label}
     {config.info[input.name] &&
@@ -213,7 +215,7 @@ export const renderFieldCategoria = ({ input, openModalInfo, label, readonly, co
         {touched && error && <span className="text-danger">{error}</span>}
       </div>
     </div>
-  );
+  )};
 
   export const renderOrganization = ({ input, openModalInfo, label, config, organizations, meta: { touched, error } }) => (
     <div className="form-group row">
