@@ -13,6 +13,8 @@ import './style/css/react-redux-toastr.min.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 import 'flag-icon-css/css/flag-icon.min.css'
+import 'react-grid-layout/css/styles.css'
+import 'react-resizable/css/styles.css'
 
 function registerServiceWorker(){
   if ('serviceWorker' in navigator) {

@@ -25,7 +25,9 @@ function ontologiesFilter(semantics, regex){
               var domain = entry.universe.domain.label[0].value
               var property = entry.universe.property.label[0].value
               var range = entry.universe.range.label[0].value
+              var comment = entry.universe.property.comment[0].value
               entry.name = '[' + domain +'] '+ property +'; ('+ range +')' 
+              entry.comment = comment
               res.push(entry);
         });
       }
@@ -72,7 +74,7 @@ class AutocompleteSemantic extends React.Component {
       .then(json => {
         var test = getSuggestions(input, json)
         .map((entry, index) => ( 
-          {'id': entry.universe.value, 'name' : entry.name, 'context': entry.contexts, 'subject': entry.universe.domain.id, 'predicate': entry.universe.property.id, 'rdf_object': entry.universe.range.id, 'uri_voc': entry.universe.range.controlledVocabularies&&entry.universe.range.controlledVocabularies.length>0?entry.universe.range.controlledVocabularies[0]:''}
+          {'id': entry.universe.value, 'name' : entry.name, 'comment':entry.comment, 'context': entry.contexts, 'subject': entry.universe.domain.id, 'predicate': entry.universe.property.id, 'rdf_object': entry.universe.range.id, 'uri_voc': entry.universe.range.controlledVocabularies&&entry.universe.range.controlledVocabularies.length>0?entry.universe.range.controlledVocabularies[0]:''}
           )
         )
         this.setSuggestion(test)
@@ -115,7 +117,7 @@ class AutocompleteSemantic extends React.Component {
           )}
           
           renderItem={(item, isHighlighted) => (
-            <div className={`item ${isHighlighted ? 'item-highlighted' : ''}`}
+            <div title={item.comment} className={`item ${isHighlighted ? 'item-highlighted' : ''}`}
               key={item.name}>
               {(item.name)}
             </div>

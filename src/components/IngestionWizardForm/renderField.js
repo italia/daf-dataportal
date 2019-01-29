@@ -7,14 +7,14 @@ export const renderFieldInput = ({ input, label, openModalInfo, config, readonly
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
     {config.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
+      <button type="button" className="btn btn-link py-0" title={config.info[input.name]}>
           <i className="fa fa-info-circle"></i>
       </button>
     }
     </label>
     <div className={asyncValidating ? 'async-validating col-sm-10' : 'col-sm-10'}>
       <input {...input} type='text' readOnly={readonly} className="form-control" />
-      {touched && error && <span className="text-danger">{error}</span>}
+      {(readonly || touched) && error && <span className="text-danger">{error}</span>}
     </div>
   </div>
 );
@@ -74,7 +74,7 @@ export const renderFieldSelect = ({ input, openModalInfo, label, config, options
   <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
     {config.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
+      <button type="button" className="btn btn-link py-0" title={config.info[input.name]}>
           <i className="fa fa-info-circle"></i>
       </button>
     } 
@@ -199,7 +199,9 @@ export const renderFieldCategoria = ({ input, openModalInfo, label, readonly, co
    </div>
    );
    
-   export const renderFieldCheckbox = ({ input, openModalInfo, config, label, meta: { touched, error } }) => (
+   export const renderFieldCheckbox = ({ input, openModalInfo, config, label, meta: { touched, error } }) => {
+    console.log(input) 
+    return(
     <div className="form-group row">
     <label className="col-sm-5 col-form-label">{label}
     {config.info[input.name] &&
@@ -213,13 +215,13 @@ export const renderFieldCategoria = ({ input, openModalInfo, label, readonly, co
         {touched && error && <span className="text-danger">{error}</span>}
       </div>
     </div>
-  );
+  )};
 
   export const renderOrganization = ({ input, openModalInfo, label, config, organizations, meta: { touched, error } }) => (
     <div className="form-group row">
     <label className="col-sm-2 col-form-label">{label}
     {config.info[input.name] &&
-      <button type="button" className="btn btn-link" title="Info" onClick={openModalInfo.bind(this, config.info[input.name])}>
+      <button type="button" className="btn btn-link py-0" title={config.info[input.name]}>
           <i className="fa fa-info-circle"></i>
       </button>
     }
