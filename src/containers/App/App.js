@@ -91,6 +91,8 @@ class App extends Component {
             <Route path='/missione' exact component={Public} />
             <Route path='/lineeguida' exact component={Public} />
             <Route path='/partecipa' exact component={Public} />
+            <Route path='/policy' exact component={Public} />
+            <Route path='/termini' exact component={Public} />
             <Route path='/data-applications' exact component={Public} />
             <Route path='/faqs' exact component={Public} />
             <Route path='/userstory/list' exact component={Public} />
