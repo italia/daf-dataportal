@@ -17,14 +17,17 @@ const validate = values => {
     if(values.tempopolling==0 && !values.espressionecron){
       errors.espressionecron = 'Campo Obbligatorio'
     }
-    if(values.tempopolling==1 && !values.timerunita){
+    if(!values.timerunita){
       errors.timerunita = 'Campo Obbligatorio'
     }   
-    if(values.tempopolling==1 && !values.timerquantita){
+    if(!values.timerquantita){
       errors.timerquantita = 'Campo Obbligatorio'
     }  
-    if(values.tempopolling==1 && isNaN(values.timerquantita)){
+    if(isNaN(values.timerquantita)){
       errors.timerquantita = 'Il campo deve essere un numero'
+    }
+    if(values.timerquantita < 0){
+      errors.timerquantita = 'Il campo deve essere un numero positivo'
     } 
     if (!values.sex) {
       errors.sex = 'Campo Obbligatorio';
@@ -38,6 +41,12 @@ const validate = values => {
       if(values.titolo.length>50){
         errors.titolo = 'Il Titolo non può superare i 50 caratteri';
       }
+      if(values.titolo.trim().length===0){
+        errors.titolo = 'Campo Obbligatorio';
+      }
+    }
+    if(!values.nome && values.titolo && values.titolo.length>0){
+      errors.nome = 'Non è stato possibile costruire il nome dal titolo. Il titolo non può contenere solo caratteri speciali'
     }
     if(!values.descrizione){
       errors.descrizione = 'Campo Obbligatorio'

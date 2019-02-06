@@ -3,7 +3,7 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { connect  } from 'react-redux';
 import validate from './validate';
 import AutocompleteSemantic from './AutocompleteSemantic'
-import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderTipi, renderFieldTags, renderContesti, renderFieldCheckbox} from './renderField';
+import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderTipi, renderFieldTags, renderContesti} from './renderField';
 import Collapse from 'rc-collapse'
 import Convenzioni from './Convenzioni'
 import 'rc-collapse/assets/index.css'
@@ -99,7 +99,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                           config={config}
 
                         /> 
-                        <Field
+{/*                         <Field
                           name={`${field}.tag`}
                           component={renderFieldTags}
                           label="Tags"
@@ -108,7 +108,7 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                           openModalInfo={openModalInfo}
                           config={config}
 
-                        />
+                        /> */}
                     </Panel>
                     <Panel header="Formato e Convenzioni">
                       <Field
@@ -221,60 +221,79 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                         />
                     </Panel>
                     <Panel header="Informazioni Operazionali">
-                      <Field
-                          name={`${field}.chiave`}
-                          component={renderFieldCheckbox}
-                          label="Campo chiave"
-                          value={`${field}.chiave`}
-                          openModalInfo={openModalInfo}
-                          config={config}
+                      <div className="form-group row">
+                        <label className="col-sm-5 col-form-label">Campo chiave</label>
+                        <div className="col-sm-2 pt-2">
+                          <Field
+                              name={`${field}.chiave`}
+                              component="input"
+                              type="checkbox"
+                              value={`${field}.chiave`}
+                              className="form-control"
+                            />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label className="col-sm-5 col-form-label">Campo Obbligatorio</label>
+                        <div className="col-sm-2 pt-2">
+                          <Field
+                              name={`${field}.obbligatorio`}
+                              component="input"
+                              type="checkbox"
+                              value={`${field}.obbligatorio`}
+                              className="form-control"
+                            />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label className="col-sm-5 col-form-label">Data di Creazione</label>
+                        <div className="col-sm-2 pt-2">
+                          <Field
+                              name={`${field}.datacreazione`}
+                              component="input"
+                              type="checkbox"
+                              value={`${field}.datacreazione`}
+                              className="form-control"
+                            />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label className="col-sm-5 col-form-label">Data di Aggiornamento</label>
+                        <div className="col-sm-2 pt-2">
+                          <Field
+                              name={`${field}.dataaggiornamento`}
+                              component="input"
+                              type="checkbox"
+                              value={`${field}.dataaggiornamento`}
+                              className="form-control"
+                            />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label className="col-sm-5 col-form-label">Indicizzare il Campo</label>
+                        <div className="col-sm-2 pt-2">
+                          <Field
+                              name={`${field}.indicizzare`}
+                              component="input"
+                              type="checkbox"
+                              value={`${field}.indicizzare`}
+                              className="form-control"
+                            />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label className="col-sm-5 col-form-label">Creare Profilo per Indicizzazione</label>
+                        <div className="col-sm-2 pt-2">
+                          <Field
+                              name={`${field}.profiloindicizzazione`}
+                              component="input"
+                              type="checkbox"
+                              value={`${field}.profiloindicizzazione`}
+                              className="form-control"
+                            />
+                        </div>
+                      </div>
 
-                        />
-                      <Field
-                          name={`${field}.obbligatorio`}
-                          component={renderFieldCheckbox}
-                          label="Campo Obbligatorio"
-                          value={`${field}.obbligatorio`}
-                          openModalInfo={openModalInfo}
-                          config={config}
-
-                        />
-                        <Field
-                          name={`${field}.datacreazione`}
-                          component={renderFieldCheckbox}
-                          label="Data di Creazione"
-                          value={`${field}.datacreazione`}
-                          openModalInfo={openModalInfo}
-                          config={config}
-
-                        />
-                        <Field
-                          name={`${field}.dataaggiornamento`}
-                          component={renderFieldCheckbox}
-                          label="Data di Aggiornamento"
-                          value={`${field}.dataaggiornamento`}
-                          openModalInfo={openModalInfo}
-                          config={config}
-
-                        />
-                        <Field
-                          name={`${field}.indicizzare`}
-                          component={renderFieldCheckbox}
-                          label="Indicizzare il Campo"
-                          value={`${field}.indicizzare`}
-                          openModalInfo={openModalInfo}
-                          config={config}
-
-                        />
-                        <Field
-                          name={`${field}.profiloindicizzazione`}
-                          component={renderFieldCheckbox}
-                          label="Creare Profilo per Indicizzazione"
-                          value={`${field}.profiloindicizzazione`}
-                          openModalInfo={openModalInfo}
-                          config={config}
-
-                        />
 {/*                          <Field
                           name={`${field}.entityextraction`}
                           options={config['dafvoc-ingform-dataschema-metadata-field_profile-entity_extr']}
@@ -286,15 +305,18 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                         /> */}
                     </Panel>
                     <Panel header="Dati Personali">
-                      <Field
-                          name={`${field}.datipersonali`}
-                          component={renderFieldCheckbox}
-                          label="Contiene Dati Personali"
-                          value={`${field}.datipersonali`}
-                          openModalInfo={openModalInfo}
-                          config={config}
-
-                        />
+                      <div className="form-group row">
+                        <label className="col-sm-5 col-form-label">Contiene Dati Personali</label>
+                        <div className="col-sm-2 pt-2">
+                          <Field
+                              name={`${field}.datipersonali`}
+                              component="input"
+                              type="checkbox"
+                              value={`${field}.datipersonali`}
+                              className="form-control"
+                            />
+                        </div>
+                      </div>
                       {datipersonali &&
                       <Field
                           name={`${field}.tipodatopersonale`}
@@ -317,15 +339,18 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                           config={config}
 
                       />
-                        <Field
-                          name={`${field}.disponibileanalisi`}
-                          component={renderFieldCheckbox}
-                          label="Disponibile per Analisi"
-                          value={`${field}.disponibileanalisi`}
-                          openModalInfo={openModalInfo}
-                          config={config}
-
-                        />
+                      <div className="form-group row">
+                        <label className="col-sm-5 col-form-label">Disponibile per Analisi</label>
+                        <div className="col-sm-2 pt-2">
+                          <Field
+                              name={`${field}.disponibileanalisi`}
+                              component="input"
+                              type="checkbox"
+                              value={`${field}.disponibileanalisi`}
+                              className="form-control"
+                            />
+                        </div>
+                      </div>
                     </Panel>
                   </Collapse>
                 </div>
