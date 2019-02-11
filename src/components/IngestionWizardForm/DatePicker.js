@@ -3,6 +3,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
+import moment from 'moment'
 
 class DatePicker extends Component {
     constructor(props){
@@ -46,7 +47,8 @@ class DatePicker extends Component {
                     onDateChange={this.onDateChange}
                     onFocusChange={this.onFocusChange}
                     placeholder=''
-                    isOutsideRange={()=>false}
+                    isOutsideRange={day => (moment().diff(day) < 0)}
+                    numberOfMonths={1}
                     noBorder
                 />
                 {touched && error && <div className="text-danger">{error}</div>}

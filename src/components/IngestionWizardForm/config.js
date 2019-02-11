@@ -1,11 +1,11 @@
 export const config = 
 {
   'info':{
-    'titolo': '<p>Il titolo deve essere univoco nel DAF.</p><p>Il valore di default sarà il nome del file.</p><p>Un servizio controllerà l\'univocita del titolo.</p>',
-    'nome' : '<p>Il campo nome verrà calcolato automaticamente dal sistema.</p>',
-    'modalitacaricamento': '<h4> Caricamento SFTP Push</h4><p className="text-justify">Carica un file di esempio minore di 1MB nella drop-area. Inserisci le informazioni seguendo la procedura guidata. Il file vero e proprio lo dovrai caricare all\'indirizzo <b>SFTP</b> che ti abbiamo comunicato </p><h4> Caricamento Web Service Pull</h4><p>Inserisci l\'url dei dati da caricare. Inserisci le informazioni seguendo la procedura guidata. Il caricamento del file parte in automatico a intervalli regolari. Per ulteriori informazioni clicca <a href="http://daf-docs.readthedocs.io/en/latest/datamgmt/index.html" target="_blank">qui</a></p><h4> Caricamento Web Service Push</h4><p className="text-justify">Carica un file di esempio minore di 1MB nella drop-area. Inserisci le informazioni seguendo la procedura guidata. Il file vero e proprio lo dovrai caricare successivamente chiamando l\'API comunicata o attraverso la drop-area nella scheda di dettaglio del dataset. Dimensione massima 100MB. </p>',
+    'titolo': "Il titolo è l'identificativo univoco all'interno del DAF del dataset",
+    'nome' : 'Il campo nome verrà calcolato automaticamente dal sistema a partire dal titolo',
+    'modalitacaricamento': 'Definisci la modalità di upload del file',
     'strategiamerge':'<h4> Concatena </h4><p className="text-justify">Concatena i nuovi dati a quelli già presenti (ad esempio per eventi in serie)</p><h4> Deduplica e concatena </h4><p className="text-justify">Concatena i nuovi dati se non sono già presenti (il controllo viene effettuato su tutto il record)</p><h4> Aggiorna per chiave primaria</h4><p className="text-justify">Concatena i nuovi dati se la chiave non è presente. Altrimenti li aggiorna. </p><h4> Sincronizza </h4><p className="text-justify">Sostituisce i dati precedenti con i nuovi</p>',
-    'gruppoproprietario':'<p>Potrai aggiungere i permessi per gli altri gruppi in seguito nella scheda del dataset</p>'
+    'gruppoproprietario':'Potrai aggiungere i permessi per gli altri gruppi in seguito nella scheda del dataset'
   },
   'dafvoc-ingform-dataset_visibility': [
       {
@@ -136,7 +136,7 @@ export const config =
   'dafvoc-ingform-ingest_type' : [
     {
       "uid": "sftp",
-      "name": {"default": "SFTP / API PUT"},
+      "name": {"default": "SFTP"},
       "desc": {
         "ita": "Ingestion via SFTP. Path e altre informazioni saranno disponibili alla fine della procedura.",
         "eng": "SFTP ingestion. Path and other info will be profided at the end of the procedure.",

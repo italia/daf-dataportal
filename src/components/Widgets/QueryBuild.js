@@ -190,6 +190,9 @@ class QueryBuild extends Component {
     var where = rulesConverter(conditions.combinator, conditions.rules, datasetFrom, datasetJoin)
     if(Object.keys(where).length>0){
       query.where = where
+    }else{
+      if(query.where)
+        delete query['where']
     }
 
     var join = []
@@ -298,14 +301,14 @@ class QueryBuild extends Component {
 
     if(datasetJoin){
       datasetFrom && datasetFrom.dataschema.flatSchema.map(field => {
-        fields.push({"value": "T1."+field.name, "label": datasetFrom.dcatapit.title+" - "+field.name})
+        fields.push({"value": "T1."+field.name, "label": datasetFrom.dcatapit.title+" - "+field.name + " ["+field.type+"]"})
       }) 
       datasetJoin.dataschema.flatSchema.map(field => {
-        fields.push({"value": "JT1."+field.name, "label": datasetJoin.dcatapit.title+" - "+field.name})
+        fields.push({"value": "JT1."+field.name, "label": datasetJoin.dcatapit.title+" - "+field.name + " ["+field.type+"]"})
       })
     }else{
       datasetFrom && datasetFrom.dataschema.flatSchema.map(field => {
-        fields.push({"value": field.name, "label": field.name})
+        fields.push({"value": field.name, "label": field.name + " ["+field.type+"]"})
       }) 
     } 
 
@@ -329,14 +332,14 @@ class QueryBuild extends Component {
     if(datasetJoin){
       fields = []
       datasetFrom && datasetFrom.dataschema.flatSchema.map(field => {
-        fields.push({"name": "T1."+field.name, "label": datasetFrom.dcatapit.title+" - "+field.name})
+        fields.push({"name": "T1."+field.name, "label": datasetFrom.dcatapit.title+" - "+field.name + " ["+field.type+"]"})
       }) 
       datasetJoin.dataschema.flatSchema.map(field => {
-        fields.push({"name": "JT1."+field.name, "label": datasetJoin.dcatapit.title+" - "+field.name})
+        fields.push({"name": "JT1."+field.name, "label": datasetJoin.dcatapit.title+" - "+field.name + " ["+field.type+"]"})
       }) 
     }else{
       datasetFrom && datasetFrom.dataschema.flatSchema.map(field => {
-        fields.push({"name": field.name, "label": field.name})
+        fields.push({"name": field.name, "label": field.name + " ["+field.type+"]"})
       }) 
     } 
 
@@ -423,11 +426,11 @@ class QueryBuild extends Component {
     var toFields = []
 
     datasetFrom.dataschema.flatSchema.map(field => {
-      fromFields.push({"value": "T1."+field.name, "label": datasetFrom.dcatapit.title+" - "+field.name})
+      fromFields.push({"value": "T1."+field.name, "label": datasetFrom.dcatapit.title+" - "+field.name + " ["+field.type+"]"})
     })
 
     datasetJoin.dataschema.flatSchema.map(field => {
-      toFields.push({"value": "JT1."+field.name, "label": datasetJoin.dcatapit.title+" - "+field.name})
+      toFields.push({"value": "JT1."+field.name, "label": datasetJoin.dcatapit.title+" - "+field.name + " ["+field.type+"]"})
     })
     
 
@@ -602,7 +605,7 @@ class QueryBuild extends Component {
                   <option value="*">*</option>
                   {this.state.selected.map((field, index)=>{
                     return(
-                      <option key={index} value={field.value}>{field.value}</option>
+                      <option key={index} value={field.value}>{field.value + " ["+field.type+"]"}</option>
                     )
                   })}
                 </select>
