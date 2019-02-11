@@ -145,10 +145,10 @@ class Login extends Component {
             localStorage.setItem('token', json);
             token = json;
             this.setState({token: json})
+            document.forms['supset_open'].submit()
             dispatch(getApplicationCookie('superset'))
             .then(json => {
               if (json) {
-                document.forms['supset_open'].submit()
                 setSupersetCookie(json)
                 dispatch(getApplicationCookie('metabase'))
                 .then(json => {

@@ -45,7 +45,7 @@ class IframeWidget extends Component {
   render () {
     const iframeStyle = {
       width: '100%',
-      height: '500px',
+      height: this.props.height,
       border: '0'
     }
     if(localStorage.getItem('token')){

@@ -47,12 +47,12 @@ let WizardFormSecondPage = props => {
 
 const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaStato, getFormValue, changeTreeData, openModalInfo, addSemanticToForm, addConvenzioneToForm, deleteConvenzioneToForm, config, context, listaConvenzioni, previousPage, vocabolariControllati, meta : {touched, error} }) =>
         <div>
-          <GerarchiaCampi 
+          {/* <GerarchiaCampi 
             fields={fields} 
             getFormValue={getFormValue}
             config={config}
             changeTreeData={changeTreeData}
-          />
+          /> */}
           {fields.map((field, index) => {
             var vocabolariocontrollato = fields.get(index).vocabolariocontrollato
             var datipersonali = fields.get(index).datipersonali
