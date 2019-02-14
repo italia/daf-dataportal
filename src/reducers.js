@@ -31,6 +31,7 @@ import {
   REQUEST_SEARCH,
   RECEIVE_SEARCH,
   RECEIVE_METADATA,
+  RESET_QUERY_RESULT,
   REQUEST_QUERY_RESULT,
   RECEIVE_QUERY_RESULT
 } from './actions'
@@ -246,6 +247,8 @@ function userReducer(state = {}, action) {
 
 function queryReducer(state = {}, action){
   switch(action.type) {
+    case RESET_QUERY_RESULT: 
+      return Object.assign({}, state, {'query':{ 'queryLoading': false, 'queryResult': action.result, 'query': undefined }})
     case REQUEST_QUERY_RESULT:
       return Object.assign({}, state, {'query': { 'queryLoading': action.queryLoading, 'queryResult': action.result, 'query': action.query }})
     case RECEIVE_QUERY_RESULT:

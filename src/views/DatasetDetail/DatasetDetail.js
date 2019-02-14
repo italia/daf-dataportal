@@ -298,7 +298,10 @@ class DatasetDetail extends Component {
             .then(response => { 
               const result = response.json()
               result.then(json => {
-                this.setState({ previewState: 1, jsonPreview: json }) 
+                if(json.length > 0)
+                  this.setState({ previewState: 1, jsonPreview: json }) 
+                else
+                  this.setState({previewState: 2, jsonPreview: json })
               })
             })
             .catch(error => { console.error(error); this.setState({ previewState: 2 }) })

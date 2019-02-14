@@ -36,7 +36,7 @@ class TextEditor extends Component {
    */
   render() {
     return (
-    <div className={"text-left mx-auto text-editor " + this.props.className}>
+    <div className={"text-center mx-auto text-editor " + this.props.className}>
       {
         this.props.readonly!=true &&
 

@@ -5,6 +5,8 @@ import { toastr } from 'react-redux-toastr'
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import IframeWidget from '../DashboardManager/components/widgets/IframeWidget'
 import TextWidget from '../DashboardManager/components/widgets/TextWidget'
+import TextEditor from '../UserStory/components/editor/TextEditor'
+import SectionTitle from '../UserStory/components/SectionTitle'
 import App from './InfinityScrollWidgets/App'
 import { loadIframes } from '../../actions'
 
@@ -81,13 +83,13 @@ class Dashboard extends Component{
 
         tmparr.push(tmpwidget)
         for ( var i in tmpjson){
-          tmpjson[i].push({"w":5,"h":5,"x":0,"y":Infinity,"i":tmpwidget.identifier,"minW":4, "minH":2,"moved":false,"static":false})
+          tmpjson[i].push({"w":1,"h":1,"x":0,"y":Infinity,"i":tmpwidget.identifier,"moved":false,"static":false})
         }
         widget.identifier="textwidget"
       }else{
         tmparr.push(widget)
         for ( var i in tmpjson){
-          tmpjson[i].push({"w":5,"h":5,"x":0,"y":Infinity,"i":widget.identifier,"minW":4, "minH":2,"moved":false,"static":false})
+          tmpjson[i].push({"w":1,"h":1,"x":0,"y":Infinity,"i":widget.identifier,"moved":false,"static":false})
         }
       }
 
@@ -142,6 +144,17 @@ class Dashboard extends Component{
           onWidgetSelect={this.newBox}
         />
         <div className="container">
+          <SectionTitle readonly={false} title="Titolo"/>
+          <TextEditor
+            readonly={false}
+            keyValue="title"
+            text={""} 
+            className="text-editor-title"
+            onChange={()=>console.log("Change")}
+            placeholder="Title"
+            disableHtml={true}>
+          </TextEditor>
+          <SectionTitle readonly={false} title="Contenuto"/>
           <ResponsiveGridLayout 
             className="layout" 
             layouts={layouts}
