@@ -75,7 +75,7 @@ class TextWidget extends Component {
         {this.state.edit && 
           <div>
             
-            <Editor
+            <Editor  
               data-placeholder="Inserisci il testo"
               text={this.state.text}
               onChange={this.onEditorStateChange}

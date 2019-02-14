@@ -35,7 +35,8 @@ export const serviceurl = {
     urlSuperset: 'https://bi.dataportal.daf.teamdigitale.test',
     urlJupiter: 'https://datascience.daf.teamdigitale.test',
     urlCkan: "https://ckan-geo.daf.teamdigitale.test/dataset/", 
-    urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
+    urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod/kb/api/v1",
+    urlSemanticValidator: "https://api.daf.teamdigitale.test/daf-semantic-validator/validator",
     urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
     domain: ".daf.teamdigitale.test",
     vocabularyName: "dafvoc-ingestionform-option"
