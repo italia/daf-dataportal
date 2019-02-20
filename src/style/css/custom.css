@@ -521,7 +521,9 @@
 }
 
 .app-header .upper-header {
-    background-color: #30373D !important;
+    background-color: var(--primary) !important;
+    padding: 18px;
+    border-bottom: 1px solid white;
 }
 
 .upper-header {
@@ -529,40 +531,36 @@
     width: 100%;
     position: relative;
     z-index: 2; }
-    .upper-header h6 {
-      color: #FFFFFF;
-      height: 48px;
-      line-height: 48px;
-      font-weight: 700;
-      font-size: 1.145em;
-      letter-spacing: 0.01em;
+      .js-scrolled .upper-header{
+        padding: 0px;
+        border: none;
       }
-      .js-scrolled .upper-header h6 {
+      .js-scrolled .upper-header .row {
         height: 32px;
         height: 4px;
         overflow: hidden;
-        line-height: 32px;
-        font-size: 0.85em; }
+        font-size: 0.85em;
+      }
         @media (min-width: 768px) and (max-width: 991px) {
-          .js-scrolled .upper-header h6 {
+          .js-scrolled .upper-header .row {
             font-size: 0.785em; } }
         @media (max-width: 767px) {
-          .js-scrolled .upper-header h6 {
+          .js-scrolled .upper-header .row {
             text-align: center;
-            margin-left: 0;
-            padding-left: 0;
+            /* margin-left: 0;
+            padding-left: 0; */
             font-size: 0.785em; } }
       @media (min-width: 768px) and (max-width: 991px) {
-        .upper-header h6 {
-          padding-left: 72px;
+        .upper-header .row {
+          /* padding-left: 72px; */
           font-size: 1em; } }
       @media (max-width: 767px) {
-        .upper-header h6 {
+        .upper-header .row {
           text-align: center;
-          padding-left: 0;
+          /* padding-left: 0; */
           font-size: 0.785em; } }
       @media (min-width: 1441px) {
-        .upper-header h6 {
+        .upper-header .row {
           /*margin-left:22px;*/ } }
 
 .upper-header a{
@@ -1076,4 +1074,9 @@ li.bg-footer:last-child.social-links {
 .ruleGroup {
   padding: 0.5rem;
   border: 1px solid #CCC;
+}
+
+.ProvaSpazio {
+  border-right: 1px solid whitesmoke;
+  padding-right: 8px;
 }

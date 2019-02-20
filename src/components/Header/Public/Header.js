@@ -143,10 +143,55 @@ class Header extends Component {
     return(
       <div className={"app-header " + jsscrolled}>
         <div className="upper-header">
-          <div className="container">
-            <h6 className="mx-5 px-1 mb-0"><a className="text-white" href="https://www.agid.gov.it/">Agid</a> + <a href="https://teamdigitale.governo.it/" className="text-white">Team Digitale</a></h6>
-          </div>
+          <div className="container-fluid ">
+          <div className="row">
+    <div className="col-xs-2 mr-auto font-weight-bold text-white">
+              <a className="font-weight-bold text-white" style={{ textDecoration: 'none' }} href="https://www.agid.gov.it/">Agid</a> + <a href="https://teamdigitale.governo.it/" style={{ textDecoration: 'none' }} className="font-weight-bold text-white">Team Digitale</a>
+
         </div>
+
+       <div className="col-xs-8 ml-auto">
+
+
+            <ul className="list-inline m-0">
+              <li className="list-inline-item">
+                
+                  <a className="font-weight-bold text-white ProvaSpazio" style={{ textDecoration: 'none' }} href="https://pianotriennale-ict.italia.it">Piano Triennale</a>
+                
+              </li>
+              <li className="list-inline-item">
+               
+                  <a className="font-weight-bold text-white ProvaSpazio" style={{ textDecoration: 'none' }} href="https://developers.italia.it">Developers</a>
+               
+              </li>
+              <li className="list-inline-item">
+               
+                  <a className="text-white font-weight-bold ProvaSpazio" style={{ textDecoration: 'none' }}  href="https://designers.italia.it">Designers</a>
+                
+              </li>
+              <li className="list-inline-item">
+               
+                  <a className="text-white font-weight-bold" style={{ textDecoration: 'none' }} href="https://forum.italia.it">Forum</a>
+               
+              </li>
+              <li className="list-inline-item">
+                
+                  <a className="text-white font-weight-bold" style={{ textDecoration: 'none' }} href="https://docs.italia.it">Docs</a>
+                
+              </li>
+              <li className="list-inline-item">
+              
+                  <a className="text-white font-weight-bold a" style={{ textDecoration: 'none' }} href="https://github.com/italia">GitHub</a>
+              
+              </li>
+            </ul>
+
+          </div>
+          </div>
+          </div>
+      
+        </div>
+        <div className="row"></div>
         <div className="main-header container">
           <div className="h-100 bg-primary row">
             <div className='float-left'>

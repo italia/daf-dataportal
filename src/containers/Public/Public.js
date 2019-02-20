@@ -24,6 +24,8 @@ import Vocabularies from '../../semantics/containers/Vocabularies.js'
 import Vocabulary from '../../semantics/containers/Vocabulary.js'
 import Ontologies from '../../semantics/containers/Ontologies.js'
 import Ontology from '../../semantics/containers/Ontology.js'
+import Policy from '../../views/Public/Policy/Policy';
+import Termini from '../../views/Public/Policy/Termini';
 
 class Public extends Component {
 
@@ -67,6 +69,8 @@ class Public extends Component {
                 <Route path="/partecipa" name="Partecipa" exact component={Partecipa}/>
                 <Route path="/data-applications" name="Data Applications" exact component={DataApplication}/>
                 <Route path="/faqs" name="Faqs" exact component={Faqs}/>
+                <Route path="/policy" name="Policy" exact component={Policy}/>
+                <Route path="/termini" name="Termini e condizioni" exact component={Termini}/>
                 <Route path="/notizie" name="Notizie" exact component={Notizie}/>
                 <Route path="/notizie/:id" name="Dettaglio Notizie" exact component={NotizieDett}/>
                 <Route path="/dataset/list" name="Lista Dataset" exact component={DatasetList}/>
@@ -85,6 +89,8 @@ class Public extends Component {
       );
   }
 }
+
+
 
 function mapStateToProps(state) {
   const { loggedUser, authed } = state.userReducer['obj'] || {}

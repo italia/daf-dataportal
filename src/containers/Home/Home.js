@@ -8,6 +8,7 @@ import ResetPassword from '../../views/ResetPassword/ResetPassword'
 import ConfirmReset from '../../views/ResetPassword/ConfirmReset'
 import HomeHeader from '../../components/Header/Home/Header'
 
+
 const mapStateToProps = state => ({
   appName: state.appName
 });
@@ -31,5 +32,6 @@ class Home extends React.Component {
       );
   }
 }
+
 
 export default connect(mapStateToProps, () => ({}))(Home);
