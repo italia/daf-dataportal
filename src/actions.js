@@ -536,7 +536,7 @@ export function logout() {
 
 function deleteDataportalCookies() {
     document.cookie = "dataportal=;path=/;domain=" + serviceurl.domain
-    document.cookie = "session=;path=/;domain=" + serviceurl.domain
+    document.cookie = "session=;path=/;domain=.dataportal" + serviceurl.domain
     document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
     document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
 }
@@ -1920,5 +1920,33 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           })
           .then(response => response.json())
           .catch(error=> console.error(error))
+        }
+      }
+
+      export function loadIframes(org, pvt){
+        var token = ''
+        var url = serviceurl.apiURLDatiGov
+
+        if(pvt==="0"){
+          url = url + '/dashboard/open-iframes'
+        }else if(pvt==="1"){
+          url = url + '/dashboard/iframesbyorg/'+org
+        }
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .then(response => response.json())
+          .catch(error => console.error(error))
         }
       }
