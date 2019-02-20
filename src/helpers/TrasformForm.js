@@ -198,7 +198,7 @@ export function createDataschema (values, data) {
                     },
                     //INFORMAZIONI OPERAZIONALI
                     "key": item.chiave,
-                    "required": item.obbligatorio,
+                    "required": item.obbligatorio?1:0,
                     "is_createdate": item.datacreazione,
                     "is_updatedate": item.dataaggiornamento,                    
                     "field_profile": {

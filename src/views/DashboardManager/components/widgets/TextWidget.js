@@ -20,10 +20,16 @@ class TextWidget extends Component {
     this.state = {
       text: props.text
     };
-    
+    this.save = this.save.bind(this)
+    this.close = this.close.bind(this)
+    this.onEditorStateChange = this.onEditorStateChange.bind(this)
   }
 
   onEditorStateChange = (text) => {
+    const { identifier, onChange } = this.props
+    
+    onChange(identifier)
+
     this.setState({
       text: text
     });
@@ -39,7 +45,7 @@ class TextWidget extends Component {
       text: this.state.text
     })
     
-    this.props.onSave(this.props.wid_key, this.state.text);
+    this.props.onSave(this.props.identifier, this.state.text);
   }
 
   edit() {
@@ -59,7 +65,7 @@ class TextWidget extends Component {
   render() {
     const { editorState } = this.state;
     return (
-    <div>
+    <div id={this.props.identifier}>
         {!this.state.edit && 
           <div>
             <div dangerouslySetInnerHTML={{__html: this.state.text}}></div>
