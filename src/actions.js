@@ -14,6 +14,8 @@ export const RECEIVE_METADATA = 'RECEIVE_METADATA'
 export const REQUEST_DATASET_DETAIL = 'REQUEST_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL = 'RECEIVE_DATASET_DETAIL'
 export const RECEIVE_DATASET_ADDITIONAL_DETAIL = 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
+export const REQUEST_UPDATE_DATASET_FEED_INFO = 'REQUEST_UPDATE_DATASET_FEED_INFO'
+export const UPDATE_DATASET_FEED_INFO = 'UPDATE_DATASET_FEED_INFO'
 export const RECEIVE_DATASET_DETAIL_ERROR = 'RECEIVE_DATASET_DETAIL_ERROR'
 export const REQUEST_LOGIN = 'REQUEST_LOGIN'
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN'
@@ -156,6 +158,23 @@ function receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames, json
       linkedDs: jsonLinked,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
+  }
+}
+
+function requestFeedStart(){
+  return {
+    type: REQUEST_UPDATE_DATASET_FEED_INFO,
+    receivedAt: Date.now(),
+    ope: 'REQUEST_UPDATE_DATASET_FEED_INFO'
+  }
+}
+
+function updateDatasetFeedInfo(jsonFeed) {
+  return {
+      type: UPDATE_DATASET_FEED_INFO,
+      feed: jsonFeed,
+      receivedAt: Date.now(),
+      ope: 'UPDATE_DATASET_FEED_INFO'
   }
 }
 
@@ -1038,6 +1057,40 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }) 
       }
   }
+
+  function startFeed(datasetname, org) {
+    var token = '';
+    var url = serviceurl.apiURLCatalog + '/kylo/startfeed/'  + org + '_o_' + datasetname
+    if(localStorage.getItem('username') && localStorage.getItem('token') &&
+      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+        token = localStorage.getItem('token')
+      }
+    return dispatch => {
+        dispatch(requestFeedStart())
+        return fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+          .then(response => response.json())
+          .then(json => {
+            console.log(json)
+            dispatch(getFeedDetail(org, datasetname))
+            .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
+            .then(jsonFeed => {
+              dispatch(updateDatasetFeedInfo(jsonFeed))
+            })
+          })
+          .catch(error => {
+            console.log('Nessun Dataset con questo nome');
+            dispatch(receiveDatasetDetailError(query))
+          }) 
+        }
+    }
+
 
   export function querySearch(filter){
     var url = serviceurl.apiURLDatiGov+'/elasticsearch/search'

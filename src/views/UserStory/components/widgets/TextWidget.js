@@ -1,13 +1,15 @@
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
-import React, { Component } from 'react';
-//import { Editor } from 'react-draft-wysiwyg';
-import htmlToDraft from 'html-to-draftjs';
-import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+// import React, { Component } from 'react';
+// import reactDraftWysiwyg from 'react-draft-wysiwyg';
+// // import htmlToDraft from 'html-to-draftjs';
+// // import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
+// // import draftToHtml from 'draftjs-to-html';
 
 //medium text editor
-import Editor from 'react-medium-editor';
+// import Editor from 'react-medium-editor';
+
+import React, { Component } from 'react';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 require('medium-editor/dist/css/medium-editor.css');
 require('medium-editor/dist/css/themes/default.css');
@@ -75,12 +77,21 @@ class TextWidget extends Component {
         {this.state.edit && 
           <div>
 
-            <Editor
+          <Editor
+            data-placeholder="Inserisci il testo"
+            text={this.state.text}
+            toolbarClassName="rdw-storybook-toolbar"
+            wrapperClassName="rdw-storybook-wrapper"
+            editorClassName="rdw-storybook-editor"
+            onEditorStateChange={this.onEditorStateChange}
+          />
+
+            {/* <Editor
               data-placeholder="Inserisci il testo"
               text={this.state.text}
               onChange={this.onEditorStateChange}
               options={{toolbar: {buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],}}}
-            />
+            />  */}
 
             {/*  OLD EDITOR
             <Editor

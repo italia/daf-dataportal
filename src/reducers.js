@@ -82,6 +82,7 @@ function datasets(state = { isFetching: false, didInvalidate: false, items: [], 
       return Object.assign({}, state, {
         isFetching: false,
         isAdditionalFetching: true,
+        isFeedLoading: true,
         didInvalidate: false,
         items: null,
         query: action.query,
@@ -96,12 +97,25 @@ function datasets(state = { isFetching: false, didInvalidate: false, items: [], 
     case RECEIVE_DATASET_ADDITIONAL_DETAIL:
       return Object.assign({}, state, {
         isAdditionalFetching: false,
+        isFeedLoading: false,
         dataset: action.dataset,
         feed: action.feed,
         iframes: action.iframes,
         linkedDs: action.linkedDs,
         ope: action.ope
       })
+    case REQUEST_UPDATE_DATASET_FEED_INFO:
+      return Object.assign({}, state, {
+        isFeedLoading: true,
+        feed: undefined,
+        ope: action.ope
+      })
+    case UPDATE_DATASET_FEED_INFO:
+      return Object.assign({}, state, {
+        isFeedLoading: false,
+        feed: action.feed,
+        ope: action.ope
+      })      
     case RECEIVE_DATASET_DETAIL_ERROR:
       return Object.assign({}, state, {
         isFetching: false,

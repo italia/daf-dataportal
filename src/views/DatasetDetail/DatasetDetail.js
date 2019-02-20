@@ -13,6 +13,7 @@ import {
     uploadHdfsFile,
     groupsInfo,
     getTableId,
+    startFeed
 } from '../../actions'
 import ReactTable from "react-table"
 import "react-table/react-table.css";
@@ -113,6 +114,7 @@ class DatasetDetail extends Component {
         this.toggleUploadFile = this.toggleUploadFile.bind(this)
         this.fileToBase64 = this.fileToBase64.bind(this)
         this.linkFunction = this.linkFunction.bind(this)
+        this.handleStartFeed = this.handleStartFeed.bind(this)
     }
 
     componentDidMount() {
@@ -510,8 +512,13 @@ class DatasetDetail extends Component {
         this.props.history.push(isPublic() ? '/dataset/' + nomeDataset : '/private/dataset/' + nomeDataset)
     }
 
+    handleStartFeed(){
+        const { dispatch, dataset } = this.props
+        dispatch(startFeed(dataset.dcatapit.name, dataset.dcatapit.owner_org))
+    }
+
     render() {
-        const { dataset, metadata, ope, feed, iframes, linkedDs, isFetching, dispatch, isAdditionalFetching, loggedUser } = this.props
+        const { dataset, metadata, ope, feed, iframes, linkedDs, isFetching, dispatch, isAdditionalFetching, loggedUser, isFeedLoading } = this.props
         const { loading, numberDataset } = this.state
         var metadataThemes = undefined
         if (metadata) {
@@ -943,7 +950,7 @@ class DatasetDetail extends Component {
                                         </div>}
                                         {!isPublic() && (!dataset.operational.ext_opendata || dataset.operational.ext_opendata === {}) &&
                                             <div className="col-8 mb-3">
-                                                {!feed && isAdditionalFetching &&
+                                                {!feed && ( isAdditionalFetching || isFeedLoading )&&
                                                     <div className="progress" style={{ height: '30px' }}>
                                                         <div className="progress-bar bg-gray-600 w-50 h-100" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Recupero dell'informazione</div>
                                                     </div>
@@ -992,8 +999,8 @@ class DatasetDetail extends Component {
                                             </div>
                                         }
 
-                                        {loggedUser.uid === dataset.dcatapit.author && <div className="col-8">
-                                            <button className="btn btn-accento"> Prova </button>
+                                        {!isPublic() && loggedUser.uid === dataset.dcatapit.author && <div className="col-8">
+                                            <button className="btn btn-accento" onClick={this.handleStartFeed}> Prova </button>
                                         </div>
                                     }
 
@@ -1352,7 +1359,7 @@ class DatasetDetail extends Component {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, isAdditionalFetching, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes, linkedDs } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
+    const { isFetching, isAdditionalFetching, isFeedLoading, lastUpdated, dataset, items: datasets, metadata, query, ope, feed, iframes, linkedDs } = state.datasetReducer['obj'] || { isFetching: true, items: [], ope: '' }
     const { newNotifications } = state.notificationsReducer['notifications'] || {}
     const { loggedUser } = state.userReducer['obj'] || {}
     return { datasets, dataset, metadata, isFetching, lastUpdated, query, ope, feed, iframes, newNotifications, loggedUser, isAdditionalFetching, linkedDs }
