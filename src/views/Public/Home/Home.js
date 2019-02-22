@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
+import CookieConsent from "react-cookie-consent";
+
+
 
 import UserstoryCard from '../../../components/Cards/UserstoryCard';
 import DatasetCard from '../../../components/Cards/DatasetCard';
@@ -247,7 +250,7 @@ class Home extends Component{
                   <img src="./img/dataportaltools.png" alt="dataportal-tools" className="toolkit-img position-absolute" />
                 </div>
                 <div className="col-lg-5 text-white px-5 pt-3 mt-3">
-                  <h1 className="font-weight-bold">Partecipa</h1>
+                  <h1 className="font-weight-bold"></h1>
                   <h5><b>Sei un esperto di dati?</b> Scopri come sfruttare tutte le potenzialità: accedi e usa strumenti di analisi e storytelling integrati ed a portata di click</h5>
                 </div>
                 <div className="col-lg-3 align-self-center mx-auto">
@@ -265,7 +268,20 @@ class Home extends Component{
                 <div className="col-lg-5 text-white px-5 py-3 my-3">
                   <h1 className="font-weight-bold">DAF è per la PA</h1>
                   <h5><b>Sei una PA?</b> Scopri come accedere ai dataset e alle analisi delle pubbliche amministrazioni e come dare valore ai tuoi dati.</h5>
+          
                 </div>
+
+                {/* <CookieConsent 
+                  buttonClasses={"btn btn-accento"}
+                  buttonStyle={{background:"#fffff",padding:"auto", border:"1px solid transparent"}}
+                  buttonText={"Accetto"}
+                >
+    Questo sito fa uso di cookie per migliorare l’esperienza di navigazione degli utenti e per raccogliere informazioni sull’utilizzo del sito stesso. <a><Link to={'/policy'}>Privacy policy</Link> <Link to={'/termini'}>Termini e condizioni</Link></a>
+</CookieConsent> */}
+                
+            
+
+
                 <div className="col-lg-3 align-self-center mx-auto">
                   
                 </div>
@@ -285,10 +301,14 @@ class Home extends Component{
   }
 }
 
+
 function mapStateToProps(state) {
   const { properties } = state.propertiesReducer['prop'] || {}
 
   return { properties }
 }
+
+
+
 
 export default connect(mapStateToProps)(Home);
