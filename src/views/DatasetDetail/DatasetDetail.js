@@ -297,11 +297,14 @@ class DatasetDetail extends Component {
             previewState: 3
         })
         dispatch(getFileFromStorageManager(logical_uri, 20, 'json', isPublic()))
-            .then(response => {
-                const result = response.json()
-                result.then(json => {
-                    this.setState({ previewState: 1, jsonPreview: json })
-                })
+            .then(response => { 
+              const result = response.json()
+              result.then(json => {
+                if(json.length > 0)
+                  this.setState({ previewState: 1, jsonPreview: json }) 
+                else
+                  this.setState({previewState: 2, jsonPreview: json })
+              })
             })
             .catch(error => { console.error(error); this.setState({ previewState: 2 }) })
     }
@@ -999,10 +1002,10 @@ class DatasetDetail extends Component {
                                             </div>
                                         }
 
-                                        {!isPublic() && loggedUser.uid === dataset.dcatapit.author && <div className="col-8">
+                                        {/* !isPublic() && loggedUser.uid === dataset.dcatapit.author && <div className="col-8">
                                             <button className="btn btn-accento" onClick={this.handleStartFeed}> Prova </button>
                                         </div>
-                                    }
+                                     */}
 
                                         <div className="col-8 my-3">
                                             <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + dataset.dcatapit.modified}</p>
