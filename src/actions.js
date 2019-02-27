@@ -6,6 +6,8 @@ import { serviceurl } from './config/serviceurl.js'
 //import det from './data/datasetdetail'
 import settings from './data/settings'
 
+export const REQUEST_DATASTORY = 'REQUEST_DATASTORY'
+export const RECEIVE_DATASTORY = 'RECEIVE_DATASTORY'
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
 export const DELETE_DATASETS = 'DELETE_DATASETS'
@@ -74,6 +76,24 @@ function receiveNewNotifications(json){
     newNotifications: json,
     receivedAt: Date.now(),
     ope: 'RECEIVE_NEW_NOTIFICATIONS'
+  }
+}
+
+/*********************************** DATA STORY *************************************************/
+function requestDatastory(){
+  console.log('Requesting Datastory detail')
+  return {
+    type: REQUEST_DATASTORY,
+  }
+}
+
+function receiveDatastory(json){
+  console.log('Received Datastory detail')
+  return {
+    type: RECEIVE_DATASTORY,
+    datastory: json,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_DATASTORY'
   }
 }
 
@@ -1961,3 +1981,9 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .catch(error => console.error(error))
         }
       }
+
+
+/*********************************** DATA STORY FETCHES *************************************************/
+export function getDataStory(id){
+
+}

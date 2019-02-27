@@ -6,6 +6,7 @@ import IframeWidget from '../DashboardManager/components/widgets/IframeWidget'
 import TextWidget from '../DashboardManager/components/widgets/TextWidget'
 import TextEditor from '../UserStory/components/editor/TextEditor'
 import SectionTitle from '../UserStory/components/SectionTitle'
+import Header from './components/Header'
 import App from './InfinityScrollWidgets/App'
 import { loadIframes } from '../../actions'
 
@@ -21,10 +22,11 @@ class Dashboard extends Component{
 
     this.state = {
       title: '',
+      subtitle: '',
       readOnly: false,
       widgets: [],
       isOpen: false,
-      keys: [], 
+      keys: {}, 
       layouts: []
     }
     this.onLayoutChange = this.onLayoutChange.bind(this)
@@ -78,43 +80,31 @@ class Dashboard extends Component{
 
   newBox(widget){
     const { keys, layouts } = this.state
-    var tmparr = keys
+    var tmparr = Object.keys(keys)
+    var tmpk = keys
     var tmpjson = layouts
 
     var check = tmparr.filter(wid=>{
-      return widget.identifier === wid.identifier
+      return widget.identifier === wid
     }).length > 0
+
+    console.log(JSON.stringify(widget))
 
     if(!check){
       if(widget.identifier==="textwidget"){
         var idNo = tmparr.filter(wid=>{
-          return wid.identifier.indexOf("textwidget")>-1
+          return wid.indexOf("textwidget")>-1
         }).length
+        tmpk[widget.identifier+"_"+ idNo.toString()] = widget
+        tmpjson.push({"w":4,"h":4,"x":0,"y":Infinity,"i":widget.identifier+"_"+ idNo.toString(),"moved":false,"static":false})
 
-        let tmpwidget = {
-          identifier: widget.identifier+"_"+ idNo.toString(),
-          iframe_url: widget.iframe_url,
-          origin: widget.origin,
-          table: widget.table,
-          title: widget.title,
-          viz_type: widget.viz_type,
-          text: widget.text
-        }
-
-        tmparr.push(tmpwidget)
-        // for ( var i in tmpjson){
-          tmpjson.push({"w":1,"h":1,"x":0,"y":Infinity,"i":tmpwidget.identifier,"moved":false,"static":false})
-        // }
-        widget.identifier="textwidget"
       }else{
-        tmparr.push(widget)
-        // for ( var i in tmpjson){
-          tmpjson.push({"w":1,"h":1,"x":0,"y":Infinity,"i":widget.identifier,"moved":false,"static":false})
-        // }
+        tmpk[widget.identifier] = widget
+        tmpjson.push({"w":3,"h":3,"x":0,"y":Infinity,"i":widget.identifier,"moved":false,"static":false})
       }
 
       this.setState({
-        keys: tmparr,
+        keys: tmpk,
         layouts: tmpjson,
         isOpen: false
       })
@@ -126,6 +116,12 @@ class Dashboard extends Component{
   handleChangeTitle(text){
     this.setState({
       title: text
+    })
+  }
+  
+  handleChangeSubTitle(text){
+    this.setState({
+      subtitle: text
     })
   }
   
@@ -170,21 +166,20 @@ class Dashboard extends Component{
 
   removeBox(id){
     const { keys, layouts } = this.state
-    var tmparr = keys
+    var tmpk = keys
     var tmpjson = layouts
 
-    var resArr = tmparr.filter(widget => {
-      return widget.identifier !== id
-    })
-
     
-      tmpjson = tmpjson.filter(elem => {
-        return elem.i!==id
-      })
+    delete(tmpk[id])
+    
+    tmpjson = tmpjson.filter(elem => {
+      return elem.i!==id
+    })
       
+    console.log(tmpk)
 
     this.setState({
-      keys: resArr,
+      keys: tmpk,
       layouts: tmpjson
     })
   }
@@ -196,7 +191,7 @@ class Dashboard extends Component{
   }
 
   render(){
-    const { layouts, widgets, isOpen } = this.state
+    const { layouts, keys, widgets, isOpen } = this.state
 
     return (
       <div>
@@ -207,7 +202,11 @@ class Dashboard extends Component{
           onWidgetSelect={this.newBox}
         />
         <div className="container">
-          <button className="btn btn-link text-primary" onClick={()=>this.setState({readOnly:!this.state.readOnly})}><i className="fa fa-edit"/></button>
+          <Header
+            status='0'
+            readOnly={this.state.readOnly}
+            editToggle={()=>this.setState({readOnly:!this.state.readOnly})}
+          />
           <SectionTitle readonly={this.state.readOnly} title="Titolo"/>
           <TextEditor
             readonly={this.state.readOnly}
@@ -218,6 +217,15 @@ class Dashboard extends Component{
             placeholder="Title"
             disableHtml={true}>
           </TextEditor>
+          <SectionTitle readonly={this.state.readOnly} title="Sottotitolo"/>
+          <TextEditor
+            readonly={this.state.readOnly}
+            keyValue="subtitle"
+            text={this.state.subtitle} 
+            className="text-editor-title"
+            onChange={this.handleChangeSubTitle}
+            placeholder="Sottotitolo"
+            disableHtml={true}/>
           <SectionTitle readonly={this.state.readOnly} title="Contenuto"/>
           <ResponsiveGridLayout 
             className="layout"
@@ -225,7 +233,7 @@ class Dashboard extends Component{
             isResizable={!this.state.readOnly}
             // layouts={layouts}
             rowHeight={100}
-            cols={{ lg: 12, md: 10 }}
+            cols={{ lg: 12, md: 12}}
             breakpoints={{lg: 1200, md: 960}}
             // cols={this.state.cols}
             // breakpoints={this.state.breakpoints}
@@ -237,10 +245,10 @@ class Dashboard extends Component{
               return(
                 <div className={this.state.readOnly?"":"p-3 b-a-1"} key={widget.i} data-grid={widget}>
                   {!this.state.readOnly && <div className="row dragMe">
-                    <button className="btn btn-link text-primary ml-auto" onClick={this.removeBox.bind(this, widget.identifier)}><i className="fa fa-times"/></button>
+                    <button className="btn btn-link text-primary ml-auto" onClick={this.removeBox.bind(this, widget.i)}><i className="fa fa-times"/></button>
                   </div>}
-                  {/* widget.viz_type!=="textwidget"&&<IframeWidget identifier={widget.identifier} height="95%" url={widget.iframe_url}/>}
-                  {widget.viz_type==="textwidget"&&<TextWidget text={widget.text} readOnly={false} identifier={widget.identifier} onSave={this.handleChangeText} onChange={this.handleChangeHeight} readOnly={this.state.readOnly}/>} */}
+                  { keys[widget.i].viz_type!=="textwidget"&&<IframeWidget identifier={widget.i} height="95%" url={keys[widget.i].iframe_url}/>}
+                  { keys[widget.i].viz_type==="textwidget"&&<TextWidget text={keys[widget.i].text} readOnly={false} identifier={widget.i} onSave={this.handleChangeText} onChange={this.handleChangeHeight} readOnly={this.state.readOnly}/>}
                 </div>
               )
             })}
