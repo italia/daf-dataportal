@@ -6,7 +6,7 @@ import {
     datasetDetail,
     getFileFromStorageManager,
     getSupersetUrl,
-    checkMetabase,
+    // checkMetabase,
     datasetMetadata,
     getOpendataResources,
     checkFileOnHdfs,
@@ -39,6 +39,7 @@ import DatasetAdmin from './DatasetAdmin';
 import { Table } from 'reactstrap';
 import DatasetService from './services/DatasetService'
 import DatasetCard from '../../components/Cards/DatasetCard';
+import CodeSyntax from '../../components/CodeSyntax/CodeSyntax'
 
 const datasetService = new DatasetService()
 
@@ -152,7 +153,7 @@ class DatasetDetail extends Component {
             dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
               .then(json => { 
                 if(json.ok) {
-                  dafIndex = dafIndex + 3; 
+                  dafIndex = dafIndex + 2; 
                   this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
                 } 
               })
@@ -165,12 +166,12 @@ class DatasetDetail extends Component {
                 })
                 .catch(error => { this.setState({ hasSuperset: false }) })
 
-            dispatch(checkMetabase(nextProps.dataset.dcatapit.name))
-                .then(json => {
-                    dafIndex = json.is_on_metabase ? dafIndex + 1 : dafIndex
-                    this.setState({ hasMetabase: json.is_on_metabase, dafIndex: dafIndex })
-                })
-                .catch(error => { this.setState({ hasMetabase: false }) })
+            // dispatch(checkMetabase(nextProps.dataset.dcatapit.name))
+            //     .then(json => {
+            //         dafIndex = json.is_on_metabase ? dafIndex + 1 : dafIndex
+            //         this.setState({ hasMetabase: json.is_on_metabase, dafIndex: dafIndex })
+            //     })
+            //     .catch(error => { this.setState({ hasMetabase: false }) })
             
             // var sources = []
             // nextProps.dataset.operational.type_info&& nextProps.dataset.operational.type_info.dataset_type==="derived_sql" && nextProps.dataset.operational.type_info.sources.map(source => {
@@ -870,7 +871,7 @@ class DatasetDetail extends Component {
                               }
                               {this.state.supersetState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante l'accesso a Superset, contatta l'assistenza.</div>}
                               {this.state.supersetState === 3 && <div className="desc-dataset"><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
-                              <div className="col-12">
+                              {/* <div className="col-12">
                                   <div className="row text-muted">
                                       <i className="text-icon fa fa-chart-pie fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Metabase</b></h4>
                                   </div>
@@ -880,7 +881,7 @@ class DatasetDetail extends Component {
                                       <p>Collegati a <a href={serviceurl.urlMetabase + '/question/new'} target='_blank'>Metabase</a> e cerca il dataset per creare nuovi widget.</p>
                                   </div>
                               }
-                              {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>}
+                              {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>} */}
                               <div className="col-12">
                                 <div className="row text-muted">
                                     <i className="text-icon fa fa-sticky-note fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Jupyter</b></h4>
@@ -894,21 +895,37 @@ class DatasetDetail extends Component {
                                     <p className="desc-dataset text-dark">Usa i seguenti comandi per caricare il file nel notebook:</p>
                                 </div>
                                 <div className="row">
-                                    <div className="col-2">
+                                    {/* <div className="col-2">
                                         <strong> Pyspark </strong>
-                                    </div>
-                                    <div className="col-10">
-                                        <code>
+                                    </div> */}
+                                    <div className="col-12">
+                                        {/* <code>
                                             path_dataset = "<strong>{dataset.operational.physical_uri}</strong>" <br />
                                             df = (spark.read.format("parquet") <br />
                                             .option("inferSchema", "true") <br />
                                             .load(path_dataset) <br />
                                             ) <br />
                                             df.printSchema <br />
-                                        </code>
+                                        </code> */
+                                        }
+
+                                        <CodeSyntax language='python' code={
+`import pandas as pd
+pd.options.display.html.table_schema = True
+import requests
+from io import StringIO
+pd.set_option('display.max_rows', 5000)
+
+url = "https://api.daf.teamdigitale.it/dataset-manager/v1/dataset/${encodeURIComponent(dataset.operational.logical_uri)}?format=json"
+payload = ""
+
+headers = {'authorization': 'Bearer ${localStorage.getItem('token')}'}
+response = requests.request("GET", url, data=payload, headers=headers)
+data = pd.read_json(StringIO(response.text))
+data`} ></CodeSyntax>
                                     </div>
                                 </div>
-                                <div className="row">
+                                {/* <div className="row">
                                     <div className="col-2">
                                         <strong> Spark Sql</strong>
                                     </div>
@@ -929,7 +946,7 @@ class DatasetDetail extends Component {
                                             spark.sql("SELECT * FROM opendata.<strong>{dataset.dcatapit.title}</strong>").show()
                                         </code>
                                     </div>
-                                </div>
+                                </div> */}
                                 <br /><br />
                                 </div>}
                               </div>
@@ -1012,7 +1029,7 @@ class DatasetDetail extends Component {
                                             <p className='status'>DAF Index</p>
                                         </div>}
                                         {!isPublic() && <div className="col-3 mt-3">
-                                            <span className="badge badge-pill badge-success text-dark">{this.state.dafIndex}</span> <span className="ml-1 text-muted"> su 5</span>
+                                            <span className="badge badge-pill badge-success text-dark">{this.state.dafIndex}</span> <span className="ml-1 text-muted"> su 3</span>
                                         </div>}
 
                                         {!isPublic() && <div className="col-8">
@@ -1024,15 +1041,15 @@ class DatasetDetail extends Component {
                                                     <tr>
                                                         <td className="bg-white"><i className="fa fa-plug text-icon ml-1 mr-3" />API</td> <td className={this.state.hasPreview ? "bg-success text-center text-dark" : "bg-warning text-center text-dark"}><i className={"fa " + (this.state.hasPreview ? "fa-check" : "fa-times") + " fa-lg"} /></td>
                                                     </tr>
-                                                    <tr>
+                                                    {/* <tr>
                                                         <td className="bg-white"><i className="fa fa-sticky-note text-icon ml-1 mr-3" />Jupyter</td> <td className={this.state.hasPreview ? "bg-success text-center text-dark" : "bg-warning text-center text-dark"}><i className={"fa " + (this.state.hasPreview ? "fa-check" : "fa-times") + " fa-lg"} /></td>
-                                                    </tr>
+                                                    </tr> */}
                                                     <tr>
                                                         <td className="bg-white"><i className="fa fa-database text-icon ml-1 mr-3" />Superset</td> <td className={this.state.hasSuperset ? "bg-success text-center text-dark" : "bg-warning text-center text-dark"}><i className={"fa " + (this.state.hasSuperset ? "fa-check" : "fa-times") + " fa-lg"} /></td>
                                                     </tr>
-                                                    <tr>
+                                                    {/* <tr>
                                                         <td className="bg-white"><i className="fa fa-chart-pie text-icon ml-1 mr-3" />Metabase</td> <td className={this.state.hasMetabase ? "bg-success text-center text-dark" : "bg-warning text-center text-dark"}><i className={"fa " + (this.state.hasMetabase ? "fa-check" : "fa-times") + " fa-lg"} /></td>
-                                                    </tr>
+                                                    </tr> */}
                                                 </tbody>
                                             </table>
                                         </div>}
