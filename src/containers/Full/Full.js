@@ -44,7 +44,7 @@ import Ontologies from '../../semantics/containers/Ontologies.js'
 import Ontology from '../../semantics/containers/Ontology.js'
 import Validator from '../../semantics/containers/Validator.js'
 import IngestionWizardNewAdvanced from '../../views/IngestionWizard/IngestionWizardNewAdvanced';
-import Dashboard from '../../views/Dashboards/Dashboard';
+import DatastoryManager from '../../views/Dashboards/DatastoryManager';
 
 const publicVapidKey = 'BI28-LsMRvryKklb9uk84wCwzfyiCYtb8cTrIgkXtP3EYlnwq7jPzOyhda1OdyCd1jqvrJZU06xHSWSxV1eZ_0o';
 
@@ -1039,7 +1039,7 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
                 <PrivateRoute authed={this.state.authed} path="/private/charts" name="Test" component={CreateWidget} />
-                <PrivateRoute authed={this.state.authed} path="/private/newdashboards" name="Test" component={Dashboard} />
+                <PrivateRoute authed={this.state.authed} path="/private/datastory" name="Data story" component={DatastoryManager} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/settings" name="Settings" component={Settings} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/users" name="Users" component={Users} />

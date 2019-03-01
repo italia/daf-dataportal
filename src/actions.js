@@ -8,6 +8,8 @@ import settings from './data/settings'
 
 export const REQUEST_DATASTORY = 'REQUEST_DATASTORY'
 export const RECEIVE_DATASTORY = 'RECEIVE_DATASTORY'
+export const REQUEST_ALL_DATASTORY = 'REQUEST_ALL_DATASTORY'
+export const RECEIVE_ALL_DATASTORY = 'RECEIVE_ALL_DATASTORY'
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
 export const DELETE_DATASETS = 'DELETE_DATASETS'
@@ -97,6 +99,25 @@ function receiveDatastory(json){
   }
 }
 
+function requestAllStories(){
+  console.log('Requesting Datastories list')
+  return {
+    type: REQUEST_ALL_DATASTORY,
+    datastoriesList: undefined
+  }
+}
+
+function receiveAllStories(json){
+  console.log('Received Datastories list')
+  return {
+    type: RECEIVE_ALL_DATASTORY,
+    datastoriesList: json,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_ALL_DATASTORY'
+  }
+}
+
+/*********************************** DATASET *************************************************/
 function receiveDataset(json, value) {
   console.log('receiveDataset');
   //This function creates an action that a reducer can handle 

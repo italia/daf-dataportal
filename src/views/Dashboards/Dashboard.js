@@ -29,6 +29,7 @@ class Dashboard extends Component{
       keys: {}, 
       layouts: []
     }
+
     this.onLayoutChange = this.onLayoutChange.bind(this)
     this.onBreakpointChange = this.onBreakpointChange.bind(this)
     this.newBox = this.newBox.bind(this)
@@ -58,7 +59,7 @@ class Dashboard extends Component{
   componentDidMount(){
     const { dispatch } = this.props
 
-    dispatch(loadIframes('daf_data', '1'))
+    dispatch(loadIframes('new_org2', '1'))
     .then(json => {
       var widgets = json
       let textWid = {
