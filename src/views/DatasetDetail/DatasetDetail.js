@@ -299,7 +299,10 @@ class DatasetDetail extends Component {
             .then(response => { 
               const result = response.json()
               result.then(json => {
-                this.setState({ previewState: 1, jsonPreview: json }) 
+                if(json.length > 0)
+                  this.setState({ previewState: 1, jsonPreview: json }) 
+                else
+                  this.setState({previewState: 2, jsonPreview: json })
               })
             })
             .catch(error => { console.error(error); this.setState({ previewState: 2 }) })
@@ -890,9 +893,7 @@ class DatasetDetail extends Component {
                                 <div>
                                 <div className="row text-muted">
                                     <p className="desc-dataset text-dark">Leggi attentamente le <a href="https://daf-dataportal.readthedocs.io/it/latest/datascience/jupyter/index.html#creazione-e-configurazione-di-un-notebook" target='_blank'>istruzioni </a> per collegarti a Jupyter.  </p>
-                                    <p className="desc-dataset text-dark">Dopo aver attivato la sessione seguendo le istruzioni potrai analizzare il file al percorso:</p>
-                                    <p className="desc-dataset text-dark"><strong>{dataset.operational.physical_uri}</strong>.</p>
-                                    <p className="desc-dataset text-dark">Usa i seguenti comandi per caricare il file nel notebook:</p>
+                                    <p className="desc-dataset text-dark">Per utilizzare il dataset all'interno di un notebook eseguire il seguente script:</p>
                                 </div>
                                 <div className="row">
                                     {/* <div className="col-2">

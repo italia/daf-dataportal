@@ -9,7 +9,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import { toastr } from 'react-redux-toastr'
-import { querySearch, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult, translateQueryToSQL } from '../../actions'
+import { querySearch, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult, translateQueryToSQL, resetQueryResult } from '../../actions'
 import { rulesConverter, jsonToCSV } from '../../utility'
 import ReactTable from "react-table"
 import Select from 'react-select'
@@ -49,6 +49,9 @@ class QueryBuild extends Component {
       datasetFrom: undefined,
       datasetJoin: undefined
     }
+
+    props.dispatch(resetQueryResult())
+
     this.onChangeOrg = this.onChangeOrg.bind(this)
     this.onChangePvt = this.onChangePvt.bind(this)
     this.getDatasetDetail = this.getDatasetDetail.bind(this)
