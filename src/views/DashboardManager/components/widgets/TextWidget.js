@@ -36,7 +36,7 @@ class TextWidget extends Component {
     if (contentBlock) {
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
       const editorState = EditorState.createWithContent(contentState);
-      this.setState({editorState})
+      this.state.editorState = editorState
     }
     this.save = this.save.bind(this)
     this.close = this.close.bind(this)
@@ -54,16 +54,15 @@ class TextWidget extends Component {
   };
 
   save() {
-    //let html = "";
-    //if (this.state.editorState)
-    //  html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
+    let html = "";
+    if (this.state.editorState)
+     html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
     
     this.setState({
       edit: false,
-      text: this.state.text
     })
     
-    this.props.onSave(this.props.identifier, this.state.text);
+    this.props.onSave(this.props.identifier, html);
   }
 
   edit() {

@@ -129,12 +129,10 @@ class Dashboard extends Component{
   handleChangeText(key, value){
     const { keys } = this.state
 
-    var tmpW = keys.map(elem => {
-      if(elem.identifier===key)
-        elem.text=value
-      
-      return elem
-    })
+    console.log(value)
+    var tmpW = keys
+
+    tmpW[key].text = value
 
     this.setState({
       keys: tmpW
@@ -249,7 +247,7 @@ class Dashboard extends Component{
                     <button className="btn btn-link text-primary ml-auto" onClick={this.removeBox.bind(this, widget.i)}><i className="fa fa-times"/></button>
                   </div>}
                   { keys[widget.i].viz_type!=="textwidget"&&<IframeWidget identifier={widget.i} height="95%" url={keys[widget.i].iframe_url}/>}
-                  { keys[widget.i].viz_type==="textwidget"&&<TextWidget text={keys[widget.i].text} readOnly={false} identifier={widget.i} onSave={this.handleChangeText} onChange={this.handleChangeHeight} readOnly={this.state.readOnly}/>}
+                  { keys[widget.i].viz_type==="textwidget"&&<TextWidget text={keys[widget.i].text} identifier={widget.i} onSave={this.handleChangeText} onChange={this.handleChangeHeight} readOnly={this.state.readOnly}/>}
                 </div>
               )
             })}
