@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
+import { Prompt } from 'react-router-dom'
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import IframeWidget from '../DashboardManager/components/widgets/IframeWidget'
 import TextWidget from '../DashboardManager/components/widgets/TextWidget'
@@ -21,8 +22,9 @@ class Dashboard extends Component{
     super(props)
 
     this.state = {
-      title: '',
-      subtitle: '',
+      modified: this.props.history.location.modified?this.props.history.location.modified:false,
+      id: this.props.match.params.id?this.props.match.params.id:undefined,
+      datastory: this.props.history.location.story?this.props.history.location.story:undefined,
       readOnly: false,
       widgets: [],
       isOpen: false,
@@ -115,14 +117,22 @@ class Dashboard extends Component{
   }
 
   handleChangeTitle(text){
+    let tmp = this.state.datastory
+
+    tmp.title = text
+
     this.setState({
-      title: text
+      datastory: tmp
     })
   }
   
   handleChangeSubTitle(text){
+    let tmp = this.state.datastory
+
+    tmp.subtitle = text
+    
     this.setState({
-      subtitle: text
+      datastory: tmp
     })
   }
   
@@ -190,7 +200,7 @@ class Dashboard extends Component{
   }
 
   render(){
-    const { layouts, keys, widgets, isOpen } = this.state
+    const { datastory, keys, widgets, isOpen } = this.state
 
     return (
       <div>
@@ -200,17 +210,18 @@ class Dashboard extends Component{
           onRequestClose={this.onRequestClose}
           onWidgetSelect={this.newBox}
         />
-        <div className="container">
+        {datastory && <div className="container">
           <Header
             status='0'
             readOnly={this.state.readOnly}
+            org={datastory.org}
             editToggle={()=>this.setState({readOnly:!this.state.readOnly})}
           />
           <SectionTitle readonly={this.state.readOnly} title="Titolo"/>
           <TextEditor
             readonly={this.state.readOnly}
             keyValue="title"
-            text={this.state.title} 
+            text={datastory.title} 
             className="text-editor-title"
             onChange={this.handleChangeTitle}
             placeholder="Title"
@@ -220,7 +231,7 @@ class Dashboard extends Component{
           <TextEditor
             readonly={this.state.readOnly}
             keyValue="subtitle"
-            text={this.state.subtitle} 
+            text={datastory.subtitle} 
             className="text-editor-title"
             onChange={this.handleChangeSubTitle}
             placeholder="Sottotitolo"
@@ -253,7 +264,11 @@ class Dashboard extends Component{
             })}
           </ResponsiveGridLayout>
           {!this.state.readOnly && <button className="btn btn-link text-primary float-right" onClick={()=>this.setState({isOpen:true})}><i className="fa fa-plus-circle fa-lg"/></button>}
-        </div>
+        </div>}
+        <Prompt
+            when={this.state.modified}
+            message={'Ci sono delle modifiche non salvate, sei sicuro di voler lasciare la pagina?'}
+          />
       </div>
     )
   }

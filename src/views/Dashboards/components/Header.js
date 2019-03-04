@@ -42,7 +42,7 @@ class Header extends Component{
 
     return(
       <div className="row">
-       <div className={"mr-auto fa-pull-right dropdown" + show }>
+       <div className={"fa-pull-right dropdown" + show }>
           {
               <button className={"h-100 btn btn-light text-primary text-center"+active} id='dropdown_story' data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.openVisibility.bind(this)}>
 
@@ -106,6 +106,9 @@ class Header extends Component{
                       </div>
                   </button>}
               </div>
+          </div>
+          <div className="align-self-center ml-3">
+              {this.props.org}
           </div>
         {!readOnly && <button className="ml-auto btn btn-link text-primary" /* onClick={()=>this.setState({readOnly:!this.state.readOnly})} */><i className="fa fa-save fa-lg"/></button>}
         <button className={readOnly?"ml-auto btn btn-link text-primary":"btn btn-link text-primary"} onClick={editToggle}><i className="fa fa-edit fa-lg"/></button>
