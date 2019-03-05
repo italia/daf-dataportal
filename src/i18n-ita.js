@@ -24,7 +24,9 @@ export const messages = {
                 gestioneUtenti  :   "Gestione Utenti",
                 organizzazioni  :   "Organizzazioni",
                 interfaccia     :   "Interfaccia",
-                messaggi        :   "Messaggi"
+                messaggi        :   "Messaggi",
+                gestioneMessaggi:   "Gestione Messaggi",
+                gestioneTTL     :   "Gestione TTL"
             },
             label   :   {
 

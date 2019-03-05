@@ -333,11 +333,22 @@ class Sidebar extends Component {
               }}>
                   <NavLink to={'/private/settings'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fas fa-image text-secondary"></i>  { messages.menu.interfaccia }</NavLink>
               </li>
-			  <li className="nav-item" onClick={(e) => {
+              <li className="nav-item nav-dropdown b-r-1">
+                <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-comments fa-lg text-secondary"></i> { messages.menu.messaggi }</a>
+                <ul className="nav-dropdown-items bg-light">
+			        <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                  <NavLink to={'/private/messages'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fas fa-comments text-secondary"></i> { messages.menu.messaggi }</NavLink>
+                  <NavLink to={'/private/messages'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fas fa-tasks text-secondary"></i> { messages.menu.gestioneMessaggi }</NavLink>
+              </li>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                  <NavLink to={'/private/editTTL'} className="nav-link nav-link-light" activeClassName="nav-link-light"><i className="fas fa-stopwatch text-secondary"></i> { messages.menu.gestioneTTL }</NavLink>
+              </li>
+              </ul>
               </li>
               </div>}
             </ul>
