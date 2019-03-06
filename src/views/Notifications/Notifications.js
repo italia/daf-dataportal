@@ -42,11 +42,13 @@ class Notifications extends Component{
       checkedOk: true,
       checkedErr: true,
       checkedGeneric: true,
+      checkedSystem : true
     }
 
     this.toggleOk = this.toggleOk.bind(this)
     this.toggleErr = this.toggleErr.bind(this)
     this.toggleGeneric = this.toggleGeneric.bind(this)
+    this.toggleSystem = this.toggleSystem.bind(this)
     
   }
 
@@ -88,8 +90,14 @@ class Notifications extends Component{
     })
   }
 
+  toggleSystem(){
+    this.setState({
+      checkedSystem: !this.state.checkedSystem
+    })
+  }
+
   render(){
-    const { notifications, checkedErr, checkedOk, checkedGeneric } = this.state
+    const { notifications, checkedErr, checkedOk, checkedGeneric, checkedSystem } = this.state
     return(
       <div className="container body">
         <div className="main_container">
@@ -119,6 +127,13 @@ class Notifications extends Component{
           <span className="switch-label"></span>
           <span className="switch-handle"></span>
         </label>
+        <i className="fas fa-info-circle text-warning mr-2 fa-lg"/>
+        <label className="switch switch-3d switch-warning mr-3 mb-4">
+          <input type="checkbox" className="switch-input" checked={checkedSystem} onClick={this.checkedSystem}/>
+          <span className="switch-label"></span>
+          <span className="switch-handle"></span>
+        </label>
+        
         <div className="list-group mb-5">
           { notifications && notifications.length > 0 &&
           notifications.map(function(notification, index){
@@ -173,6 +188,18 @@ class Notifications extends Component{
                     <small>{convertNotificationTime(notification.timestamp)}</small>
                   </Link>)
                 break
+              case 'system':
+                if(checkedSystem)
+                  return (
+                  <Link to={(notification.info.link!==null?notification.info.link:"/")} className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
+                    <div className="d-flex w-100 justify-content-between">
+                      <h5 className="mb-1"><i className="fas fa-info-circle text-warning mr-2"/>{notification.info.title}</h5>
+                      <small>{checkDate(notification.timestamp)}</small>
+                    </div>
+                    <p className="mb-1">{notification.info.description}</p>
+                    <small>{convertNotificationTime(notification.timestamp)}</small>
+                  </Link>)
+                break 
             }
           })
           }
