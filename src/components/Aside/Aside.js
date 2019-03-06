@@ -74,6 +74,13 @@ class Aside extends Component {
                     <p>{convertNotificationTime(notification.timestamp)}</p>
                   </div>
                 )
+                case 'system':
+                return(
+                  <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index}>
+                    {notification.info && <p><i className="fas fa-exclamation-circle text-warning mr-2"/>{notification.info.description}</p>}
+                    <p>{convertNotificationTime(notification.timestamp)}</p>
+                  </div>
+                )
               }
             }) : <div className="list-group-item border-0 m-0 text-center font-weight-bold text-muted">Non hai nessuna notifica</div>
             }

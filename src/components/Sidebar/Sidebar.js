@@ -313,11 +313,11 @@ class Sidebar extends Component {
               {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) && 
                 // <div>
                 [
-                  <li className="nav-title text-secondary">
+                  <li key="1" className="nav-title text-secondary">
                     { messages.menu.amministrazione }
                   </li>,
                   // {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) &&
-                  <li className="nav-item" onClick={(e) => {
+                  <li key="2" className="nav-item" onClick={(e) => {
                                                 e.preventDefault();
                                                 document.body.classList.toggle('sidebar-mobile-show');
                                             }}>
@@ -326,7 +326,7 @@ class Sidebar extends Component {
                       </NavLink>
                   </li>,
                   // }
-                  <li className="nav-item" onClick={(e) => {
+                  <li key="3" className="nav-item" onClick={(e) => {
                                                   e.preventDefault();
                                                   document.body.classList.toggle('sidebar-mobile-show');
                                             }}>
@@ -334,7 +334,7 @@ class Sidebar extends Component {
                           <i className="fas fa-users text-secondary"></i> { messages.menu.organizzazioni }
                         </NavLink>
                   </li>,
-                  <li className="nav-item" onClick={(e) => {
+                  <li key="4" className="nav-item" onClick={(e) => {
                                                   e.preventDefault();
                                                   document.body.classList.toggle('sidebar-mobile-show');
                                               }}>
@@ -342,7 +342,7 @@ class Sidebar extends Component {
                           <i className="fas fa-image text-secondary"></i>  { messages.menu.interfaccia }
                         </NavLink>
                   </li>,
-                  <li className="nav-item nav-dropdown b-r-1">
+                  <li key="5" className="nav-item nav-dropdown b-r-1">
                         <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}>
                           <i className="fa fa-comments fa-lg text-secondary"></i> { messages.menu.messaggi }
                         </a>

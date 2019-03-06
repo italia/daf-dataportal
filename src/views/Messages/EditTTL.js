@@ -5,7 +5,7 @@ class EditTTL extends Component {
   render() {
     return (
         <div>
-            Ciao
+           test
         </div>
     )
   }

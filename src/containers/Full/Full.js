@@ -1046,7 +1046,7 @@ class Full extends Component {
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/users" name="Users" component={Users} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/messages" name="Messaggi" component={Messages} />
-                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/editTTL" name="Gestione TTL" component={EditTTL} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/editTTL" name="editTTL" component={EditTTL} />
                 <Redirect from="/private" to="/private/home"/>
               </Switch>
             </div>

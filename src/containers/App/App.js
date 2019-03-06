@@ -141,7 +141,7 @@ class App extends Component {
             <Route path="/private/charts" name="Test" component={Full} />
             <Route path="/private/newdashboards" name="Test" component={Full} />
             <Route path="/private/messages" name="Messaggi" component={Full} />
-            <Route path="/private/editTTL" name="Gestione TTL" component={Full} />
+            <Route path="/private/editTTL" name="editTTL" component={Full} />
 
             {/*404 NOT FOUND*/}
             <Route path="*" name="404 Not Found" component={Public} />
