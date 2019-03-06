@@ -25,14 +25,6 @@ export default class ListMessages extends Component {
                     accessor: "message"
                 },
                 {
-                    Header: "Inizio",
-                    accessor: "startDate"
-                },
-                {
-                    Header: "Fine",
-                    accessor: "endDate"
-                },
-                {
                     Header: "Modifica",
                     accessor: "edit"
                 }
