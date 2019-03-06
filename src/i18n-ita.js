@@ -29,6 +29,9 @@ export const messages = {
                 gestioneTTL     :   "Gestione TTL"
             },
             label   :   {
-
+                Success         :   "Success",
+                Error           :   "Error",
+                Info            :   "Info",
+                System          :   "System",
             }
 }; 
