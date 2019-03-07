@@ -8,69 +8,71 @@ class EditTTL extends Component {
       super(props);
       this.props = props;
 
+      this.handleInputChange = this.handleInputChange.bind(this);
+
+      this.fields = ['Info', 'Success', 'Error', 'System'];
+
       this.state = {
         validationMSgTTLInfo: null,
         validationMSgTTLSuccess: null,
         validationMSgTTLError: null,
         validationMSgTTLSystem: null
       }
-  }
+    }
 
-  validateTTLSystem = (e) => {
-    e.preventDefault()
-    if(!this.ttlSystem.value){
+    handleInputChange(event) {
+      const target = event.target;
+      const value = target.type === 'checkbox' ? target.checked : target.value;
+      const name = target.name;
+  
       this.setState({
-        validationMSgTTLSystem: 'Campo obbligatorio'
+        [name]: value
       });
-    }else{
-      this.setState({
-        validationMSgTTLSystem: null
+
+      if(!value){
+        this.setState({
+          ['validationMSgTTL'+name]: 'Campo obbligatorio'
+        });
+      }else {
+        this.setState({
+          ['validationMSgTTL'+name]: null
+        });
+      }
+
+    }
+
+    componentWillMount(){
+      console.log('Init Form');
+
+      this.fields.map( field => {
+        if(!this.state[field]){
+          this.setState({
+            ['validationMSgTTL'+field]: 'Campo obbligatorio'
+          });
+        }else {
+          this.setState({
+            ['validationMSgTTL'+field]: null
+          });
+        }
       });
     }
-  }
-
-  validateTTLInfo = (e) => {
-    e.preventDefault()
-    if(!this.ttlInfo.value){
-      this.setState({
-        validationMSgTTLInfo: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSgTTLInfo: null
-      });
-    }
-  }
-
-  validateTTLSuccess = (e) => {
-    e.preventDefault()
-    if(!this.ttlSuccess.value){
-      this.setState({
-        validationMSgTTLSuccess: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSgTTLSuccess: null
-      });
-    }
-  }
-
-  validateTTLError = (e) => {
-    e.preventDefault()
-    if(!this.ttlError.value){
-      this.setState({
-        validationMSgTTLError: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSgTTLError: null
-      });
-    }
-  }
 
   handleSave = (e) => {
-    e.preventDefault()
-    console.log('Salva');
+    
+    e.preventDefault();
+
+    if( !this.state.validationMSgTTLInfo       &&
+        !this.state.validationMSgTTLSuccess    &&
+        !this.state.validationMSgTTLError      &&
+        !this.state.validationMSgTTLSystem  ){
+          console.log('Salva');
+    }else{
+          console.log('NO Salva');
+    }
+
+
+
+
 //     if(this.title.value){
 //       if(!this.org || this.org.value == ''){
 //         this.setState({
@@ -112,50 +114,41 @@ class EditTTL extends Component {
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">{messages.label.Info}</label>
                   <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(ttlInfo) => this.ttlInfo = ttlInfo} onChange={this.validateTTLInfo.bind(this)} id="title" placeholder={messages.label.Info} />
+                    <input type="text" className="form-control" name="Info" onChange={this.handleInputChange} placeholder={messages.label.Info} />
                     {this.state.validationMSgTTLInfo && <span>{this.state.validationMSgTTLInfo}</span>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">{messages.label.Success}</label>
                   <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(ttlSuccess) => this.ttlSuccess = ttlSuccess} onChange={this.validateTTLSuccess.bind(this)} id="title" placeholder={messages.label.Success} />
+                    <input type="text" className="form-control" name="Success" onChange={this.handleInputChange} placeholder={messages.label.Success} />
                     {this.state.validationMSgTTLSuccess && <span>{this.state.validationMSgTTLSuccess}</span>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">{messages.label.Error}</label>
                   <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(ttlError) => this.ttlError = ttlError} onChange={this.validateTTLError.bind(this)} id="title" placeholder={messages.label.Error} />
+                    <input type="text" className="form-control" name="Error" onChange={this.handleInputChange}  placeholder={messages.label.Error} />
                     {this.state.validationMSgTTLError && <span>{this.state.validationMSgTTLError}</span>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">{messages.label.System}</label>
                   <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(ttlSystem) => this.ttlSystem = ttlSystem} onChange={this.validateTTLSystem.bind(this)} id="title" placeholder={messages.label.System}/>
+                    <input type="text" className="form-control" name="System" onChange={this.handleInputChange}  placeholder={messages.label.System}/>
                     {this.state.validationMSgTTLSystem && <span>{this.state.validationMSgTTLSystem}</span>}
                   </div>
                 </div>
                 <div className="form-group row">
-                  {/* <div className="col-md-1 form-control"> */}
-                      {/* <button className='btn btn-gray-200' onClick={this.hideModal}>
-                        Chiudi
-                      </button> */}
-                      <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
-                        <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                          Modifica
-                      </button>
-                  {/* </div> */}
+                  <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
+                      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        Modifica
+                    </button>
                 </div>
              </div>   
         </div>
     )
   }
-
-
-              
-
 }
 
 function mapStateToProps(state) {
