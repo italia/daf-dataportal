@@ -10,9 +10,8 @@ export default class ListMessages extends Component {
                {
                     title: 'prova titolo',
                     message: 'Prova Messaggio',
-                    startDate: '25/02/2019',
-                    endDate: '30/03/2019',
-                    edit: <button>Edit</button>
+                    date: '25/02/2019',
+                    actions: <div><button>Modifica</button><button>Cancella</button></div>
                }
             ],
            columns: [
@@ -25,8 +24,11 @@ export default class ListMessages extends Component {
                     accessor: "message"
                 },
                 {
-                    Header: "Modifica",
-                    accessor: "edit"
+                    Header: "Data",
+                    accessor: "date"
+                },
+                {
+                    accessor: "actions"
                 }
             ]
         }

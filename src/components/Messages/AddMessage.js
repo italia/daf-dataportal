@@ -14,8 +14,12 @@ export default class AddMessage extends Component {
 
     this.state = {
       isOpen: false,
+      title: '',
+      message: '',
+      date: ''
    }
 
+   this.handleInputChange = this.handleInputChange.bind(this);
   }
   openModal = () => {
     this.setState({
@@ -30,26 +34,32 @@ export default class AddMessage extends Component {
   }; 
 
   handleSubmit(e) {
-    alert('A name was submitted: ' + this.title.value);
+    alert('A name was submitted: ' + this.state.title);
+
+    
   }
 
-  onTitleChange(e, value){
-    this.setState({
-      title: value
-    });
-  }
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
 
-  onMessageChange(e, value){
     this.setState({
-      message: value
+      [name]: value
     });
   }
 
   render() {
     return (
       <div>
-        <button onClick={this.openModal}>Aggiungi</button>
-
+        <div className="form-group row">
+        <label className="col-sm-2 col-form-label"></label>
+            <div className="col-sm-10">
+                <button type="button" className="btn btn-link float-right" title="Aggiungi Messaggio" onClick={this.openModal}>
+                    <i className="fa fa-plus-circle fa-lg m-t-2"></i>
+                </button>
+            </div>
+        </div>
         <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
         <form>
                 <ModalHeader>
@@ -61,19 +71,25 @@ export default class AddMessage extends Component {
                     <div className="form-group row">
                       <label className="col-md-2 form-control-label">Titolo</label>
                       <div className="col-md-8">
-                        <input type="text" className="form-control" ref={(title) => this.title = title} onChange={(e) => this.onTitleChange(e, e.target.value)} id="title" placeholder="Titolo"/>
+                        <input type="text" className="form-control" name="title" value={this.state.title} onChange={this.handleInputChange} id="title" placeholder="Titolo"/>
                       </div>
                     </div>
                     <div className="form-group row">
                       <label className="col-md-2 form-control-label">Messaggio</label>
                       <div className="col-md-8">
-                        <input type="text" className="form-control" ref={(message) => this.message = message} onChange={(e) => this.onMessageChange(e, e.target.value)} id="message" placeholder="Messaggio"/>
+                        <input type="text" className="form-control"  name="message" value={this.state.message} onChange={this.handleInputChange} id="message" placeholder="Messaggio"/>
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label className="col-md-2 form-control-label">Data</label>
+                      <div className="col-md-2">
+                        <input type="text" className="form-control"  name="date" value={this.state.date} onChange={this.handleInputChange} id="date" placeholder="Data"/>
                       </div>
                     </div>
                 </div>
                 </ModalBody>
                 <ModalFooter>
-                    <button className='btn btn-default' onClick={this.hideModal}>
+                    <button className='btn btn-default' type="button" onClick={this.hideModal}>
                       Chiudi
                     </button>
                     <button className='btn btn-primary' type="button" onClick={this.handleSubmit.bind(this)} >
