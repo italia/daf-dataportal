@@ -29,9 +29,13 @@ export const messages = {
                 gestioneTTL     :   "Gestione TTL"
             },
             label   :   {
+                modifica        :   "Modifica",    
                 Success         :   "Success",
                 Error           :   "Error",
                 Info            :   "Info",
                 System          :   "System",
+            },
+            validazione : {
+                campoObbligatorio       :   "Campo obbligatorio"
             }
 }; 
