@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+
+import { toastr } from 'react-redux-toastr'
+
 import { messages } from '../../i18n-ita'
+import MessageService from "./services/MessageService";
+
+const mssageService = new MessageService()
 
 class EditTTL extends Component {
 
@@ -9,31 +15,15 @@ class EditTTL extends Component {
       this.props = props;
 
       this.handleInputChange = this.handleInputChange.bind(this);
-      this.storeTTL = [
-              {
-                type : 'Info',
-                value: 10,
-                descrizione: 'Msg Info'
-              },
-              {
-                type : 'Success',
-                value: 11,
-                descrizione: 'Msg Success'
-              },
-              {
-                type : 'Error',
-                value: 12,
-                descrizione: 'Msg Error'
-              },
-              {
-                type : 'System',
-                value: 13,
-                descrizione: 'Msg System'
-              }
-      ];
 
       this.labelError = 'validationMSgTTL';
-      this.state = {  }
+      this.state = { 
+                      storeTTL: [ ],
+                      Info:0,
+                      Success:0,
+                      Error:0,
+                      System:0
+       }
     }
 
     handleInputChange(event) {
@@ -49,6 +39,10 @@ class EditTTL extends Component {
         this.setState({
           [this.labelError+name]: messages.validazione.campoObbligatorio
         });
+      }else if (!/^[0-9]+$/.test(value)) {
+        this.setState({
+          [this.labelError+name]: messages.validazione.soloNumeri
+        });
       }else {
         this.setState({
           [this.labelError+name]: null
@@ -59,40 +53,55 @@ class EditTTL extends Component {
 
   componentDidMount(){
       console.log('Init Form');
+      this.load ();
+  }
 
-      this.storeTTL.map( field => {
+  load = () => {
+    console.log('Load Data');
+    let response = mssageService.messageTTL();
+        response.then((json)=> {
+            console.log('data response:', json);
+            
+            this.setState({
+              storeTTL: json
+            });
+
+            this.state.storeTTL.map( field => {
         
-        this.setState({
-          [field.type]: field.value
+              this.setState({
+                [field.type]: field.value
+              });
+             
+              if(field.value == 0 || field.value == undefined){
+                this.setState({
+                  [this.labelError+field.type]: messages.validazione.campoObbligatorio
+                });
+              }else {
+                this.setState({
+                  [this.labelError+field.type]: null
+                });
+              }
+            });
         });
-       
-        if(field.value == 0 || field.value == undefined){
-          this.setState({
-            [this.labelError+field.type]: messages.validazione.campoObbligatorio
-          });
-        }else {
-          this.setState({
-            [this.labelError+field.type]: null
-          });
-        }
-      });
   }
 
   handleSave = (e) => {
-    
+     
       e.preventDefault();
 
-      let countError =  this.storeTTL.length;
-      this.storeTTL.map( field => {
+      let countError =  this.state.storeTTL.length;
+      this.state.storeTTL.map( field => {
         if(!this.state[this.labelError+field.type] || this.state[this.labelError+field.type] == null ){
           countError--;
         }
       });
 
       if( countError === 0 ){
-            console.log('Salva');
+            console.log('Salvataggio');
+            toastr.success('Salvataggio', 'Salvataggio effettuato con successo')
       }else{
             console.log('NO Salva');
+            toastr.error('Errore', 'Impossibile effettuare il salvataggio')
       }
   }
 
@@ -100,13 +109,14 @@ class EditTTL extends Component {
     return (
         <div>
            <div className="form-group">
+                {console.log(this.state)}
                 {
-                  this.storeTTL.map( (field, index ) => {
+                  this.state.storeTTL.map( (field, index ) => {
                       return (
                         <div key={index} className="form-group row">
                             <label className="col-md-2 form-control-label">{messages.label[field.type]}</label>
                             <div className="col-md-8">
-                              <input type="text" className="form-control" name="Info" onChange={this.handleInputChange} placeholder={messages.label[field.type]} value={this.state[field.type]} />
+                              <input type="text" className="form-control" name={messages.label[field.type]} onChange={this.handleInputChange} placeholder={messages.label[field.type]} value={this.state[field.type]} />
                               {this.state[this.labelError+field.type] && <span>{this.state[this.labelError+field.type]}</span>}
                             </div>
                         </div>    

@@ -36,6 +36,7 @@ export const messages = {
                 System          :   "System",
             },
             validazione : {
-                campoObbligatorio       :   "Campo obbligatorio"
+                campoObbligatorio       :   "Campo obbligatorio",
+                soloNumeri              :   "Solo Numeri"
             }
 }; 
