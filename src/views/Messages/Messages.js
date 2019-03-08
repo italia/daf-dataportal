@@ -4,8 +4,8 @@ import ListMessages from '../../components/Messages/ListMessages';
 import AddMessage from '../../components/Messages/AddMessage';
 
 class Messages extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
   }
 
   render() {

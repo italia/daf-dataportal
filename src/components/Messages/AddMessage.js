@@ -9,9 +9,8 @@ import {
 } from 'react-modal-bootstrap';
 
 export default class AddMessage extends Component {
-  constructor(props) {
-    super(props)
-
+  constructor() {
+    super()
     this.state = {
       isOpen: false,
       title: '',
@@ -35,8 +34,6 @@ export default class AddMessage extends Component {
 
   handleSubmit(e) {
     alert('A name was submitted: ' + this.state.title);
-
-    
   }
 
   handleInputChange(event) {
