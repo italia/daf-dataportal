@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+
+import { toastr } from 'react-redux-toastr'
+
 import { messages } from '../../i18n-ita'
+import MessageService from "./services/MessageService";
+
+const mssageService = new MessageService()
 
 class EditTTL extends Component {
 
@@ -8,154 +14,124 @@ class EditTTL extends Component {
       super(props);
       this.props = props;
 
-      this.state = {
-        validationMSgTTLInfo: null,
-        validationMSgTTLSuccess: null,
-        validationMSgTTLError: null,
-        validationMSgTTLSystem: null
+      this.handleInputChange = this.handleInputChange.bind(this);
+
+      this.labelError = 'validationMSgTTL';
+      this.state = { 
+                      storeTTL: [ ],
+                      Info:0,
+                      Success:0,
+                      Error:0,
+                      System:0
+       }
+    }
+
+    handleInputChange(event) {
+      const target = event.target;
+      const value = target.type === 'checkbox' ? target.checked : target.value;
+      const name = target.name;
+  
+      this.setState({
+        [name]: value
+      });
+
+      if(!value){
+        this.setState({
+          [this.labelError+name]: messages.validazione.campoObbligatorio
+        });
+      }else if (!/^[0-9]+$/.test(value)) {
+        this.setState({
+          [this.labelError+name]: messages.validazione.soloNumeri
+        });
+      }else {
+        this.setState({
+          [this.labelError+name]: null
+        });
       }
+    }
+
+  componentDidMount(){
+      console.log('Init Form');
+      this.load ();
   }
 
-  validateTTLSystem = (e) => {
-    e.preventDefault()
-    if(!this.ttlSystem.value){
-      this.setState({
-        validationMSgTTLSystem: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSgTTLSystem: null
-      });
-    }
-  }
+  load = () => {
+    console.log('Load Data');
+    let response = mssageService.messageTTL();
+        response.then((json)=> {
+            console.log('data response:', json);
+            
+            this.setState({
+              storeTTL: json
+            });
 
-  validateTTLInfo = (e) => {
-    e.preventDefault()
-    if(!this.ttlInfo.value){
-      this.setState({
-        validationMSgTTLInfo: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSgTTLInfo: null
-      });
-    }
-  }
-
-  validateTTLSuccess = (e) => {
-    e.preventDefault()
-    if(!this.ttlSuccess.value){
-      this.setState({
-        validationMSgTTLSuccess: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSgTTLSuccess: null
-      });
-    }
-  }
-
-  validateTTLError = (e) => {
-    e.preventDefault()
-    if(!this.ttlError.value){
-      this.setState({
-        validationMSgTTLError: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSgTTLError: null
-      });
-    }
+            this.state.storeTTL.map( field => {
+        
+              this.setState({
+                [field.type]: field.value
+              });
+             
+              if(field.value == 0 || field.value == undefined){
+                this.setState({
+                  [this.labelError+field.type]: messages.validazione.campoObbligatorio
+                });
+              }else {
+                this.setState({
+                  [this.labelError+field.type]: null
+                });
+              }
+            });
+        });
   }
 
   handleSave = (e) => {
-    e.preventDefault()
-    console.log('Salva');
-//     if(this.title.value){
-//       if(!this.org || this.org.value == ''){
-//         this.setState({
-//           validationMSgOrg: 'Campo obbligatorio'
-//         });
-//       }else{
-//         let layout = { rows: [] };
-//         let widgets = {};
-//         //save data
-//         let request = {
-//           title: this.title.value,
-//           pvt: this.state.pvt,
-//           org: this.state.org,
-//           layout: JSON.stringify(layout),
-//           widgets: JSON.stringify(widgets),
-//           published: 0
-//         };
-// /*         userStoryService.save(request).then((data)=> {
-//             this.props.history.push('/userstory/list/'+ data.message + '/edit');
-//         }); */
-//         this.props.history.push({
-//           'pathname':'/private/userstory/create',
-//           'story': request,
-//           'modified':true
-//         })
-//       }
-//     }else{
-//       this.setState({
-//           validationMSg: 'Campo obbligatorio'
-//         });
-//     }
+     
+      e.preventDefault();
 
+      let countError =  this.state.storeTTL.length;
+      this.state.storeTTL.map( field => {
+        if(!this.state[this.labelError+field.type] || this.state[this.labelError+field.type] == null ){
+          countError--;
+        }
+      });
+
+      if( countError === 0 ){
+            console.log('Salvataggio');
+            toastr.success('Salvataggio', 'Salvataggio effettuato con successo')
+      }else{
+            console.log('NO Salva');
+            toastr.error('Errore', 'Impossibile effettuare il salvataggio')
+      }
   }
 
   render() {
     return (
         <div>
            <div className="form-group">
+                {
+                  this.state.storeTTL.map( (field, index ) => {
+                      return (
+                        <div key={index} className="form-group row">
+                            <label className="col-md-2 form-control-label">{messages.label[field.type]}</label>
+                            <div className="col-md-8">
+                              <input type="text" className="form-control" name={messages.label[field.type]} onChange={this.handleInputChange} placeholder={messages.label[field.type]} value={this.state[field.type]} />
+                              {this.state[this.labelError+field.type] && <span>{this.state[this.labelError+field.type]}</span>}
+                            </div>
+                        </div>    
+                      )
+                  })
+                } 
+               
                 <div className="form-group row">
-                  <label className="col-md-2 form-control-label">{messages.label.Info}</label>
-                  <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(ttlInfo) => this.ttlInfo = ttlInfo} onChange={this.validateTTLInfo.bind(this)} id="title" placeholder={messages.label.Info} />
-                    {this.state.validationMSgTTLInfo && <span>{this.state.validationMSgTTLInfo}</span>}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">{messages.label.Success}</label>
-                  <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(ttlSuccess) => this.ttlSuccess = ttlSuccess} onChange={this.validateTTLSuccess.bind(this)} id="title" placeholder={messages.label.Success} />
-                    {this.state.validationMSgTTLSuccess && <span>{this.state.validationMSgTTLSuccess}</span>}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">{messages.label.Error}</label>
-                  <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(ttlError) => this.ttlError = ttlError} onChange={this.validateTTLError.bind(this)} id="title" placeholder={messages.label.Error} />
-                    {this.state.validationMSgTTLError && <span>{this.state.validationMSgTTLError}</span>}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">{messages.label.System}</label>
-                  <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(ttlSystem) => this.ttlSystem = ttlSystem} onChange={this.validateTTLSystem.bind(this)} id="title" placeholder={messages.label.System}/>
-                    {this.state.validationMSgTTLSystem && <span>{this.state.validationMSgTTLSystem}</span>}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  {/* <div className="col-md-1 form-control"> */}
-                      {/* <button className='btn btn-gray-200' onClick={this.hideModal}>
-                        Chiudi
-                      </button> */}
-                      <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
-                        <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                          Modifica
-                      </button>
-                  {/* </div> */}
+                  <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
+                      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        {messages.label.modifica}
+                    </button>
                 </div>
              </div>   
         </div>
     )
   }
-
-
-              
-
 }
 
 function mapStateToProps(state) {
