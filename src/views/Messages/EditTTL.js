@@ -48,7 +48,6 @@ class EditTTL extends Component {
           [this.labelError+name]: null
         });
       }
-
     }
 
   componentDidMount(){
@@ -109,7 +108,6 @@ class EditTTL extends Component {
     return (
         <div>
            <div className="form-group">
-                {console.log(this.state)}
                 {
                   this.state.storeTTL.map( (field, index ) => {
                       return (
