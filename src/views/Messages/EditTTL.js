@@ -6,7 +6,7 @@ import { toastr } from 'react-redux-toastr'
 import { messages } from '../../i18n-ita'
 import MessageService from "./services/MessageService";
 
-const mssageService = new MessageService()
+const messageService = new MessageService()
 
 class EditTTL extends Component {
 
@@ -27,9 +27,9 @@ class EditTTL extends Component {
     }
 
     handleInputChange(event) {
-      const target = event.target;
-      const value = target.type === 'checkbox' ? target.checked : target.value;
-      const name = target.name;
+      const target  = event.target;
+      const value   = target.type === 'checkbox' ? target.checked : target.value;
+      const name    = target.name;
   
       this.setState({
         [name]: value
@@ -57,7 +57,7 @@ class EditTTL extends Component {
 
   load = () => {
     console.log('Load Data');
-    let response = mssageService.messageTTL();
+    let response = messageService.messageTTL();
         response.then((json)=> {
             console.log('data response:', json);
             
@@ -97,10 +97,17 @@ class EditTTL extends Component {
 
       if( countError === 0 ){
             console.log('Salvataggio');
-            toastr.success('Salvataggio', 'Salvataggio effettuato con successo')
+            //Aggiorno obj per gestire il salvataggio
+            this.state.storeTTL.map( field => {
+                  field.value = this.state[field.type];
+            });
+
+            messageService.updateMessageTTL( this.state.storeTTL );
+
+            toastr.success(messages.label.salvataggio, messages.label.salvataggioOK)
       }else{
             console.log('NO Salva');
-            toastr.error('Errore', 'Impossibile effettuare il salvataggio')
+            toastr.error(messages.label.errore, messages.label.salvataggioKO)
       }
   }
 
@@ -141,3 +148,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(EditTTL)
+
