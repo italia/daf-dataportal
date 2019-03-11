@@ -89,7 +89,7 @@ function requestDatastory(){
   }
 }
 
-function receiveDatastory(json){
+export function receiveDatastory(json){
   console.log('Received Datastory detail')
   return {
     type: RECEIVE_DATASTORY,
@@ -2002,10 +2002,31 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
       }
 
+      export function loadWidgets(org){
+        var token = ''
+        var url = serviceurl.apiURLDatiGov + '/widgets?org='+org
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .then(response => response.json())
+          .catch(error => console.error(error))
+        }
+      }
 
 /*********************************** DATA STORY FETCHES *************************************************/
 export function getDatastory(isPublic, id){
-  var url = serviceurl.apiURLDatiGov + (isPublic?'/public/datastory/get-by-id':'/datastory/get-by-id') + id
+  var url = serviceurl.apiURLDatiGov + (isPublic?'/public/datastory/get-by-id/':'/datastory/get-by-id/') + id
   var token = ''
   
   if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
@@ -2059,6 +2080,7 @@ export function saveDatastory(datastory){
   }
 
   return dispatch => {
+    dispatch(receiveDatastory(datastory))
     return fetch(url, {
       method: 'POST',
       headers: {

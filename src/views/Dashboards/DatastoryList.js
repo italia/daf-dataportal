@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
-import { getAllDatastories } from '../../actions'
+import { getAllDatastories, receiveDatastory } from '../../actions'
 import UserstoryCard from '../../components/Cards/UserstoryCard'
 
 class DatastoryList extends Component{
@@ -30,57 +30,62 @@ class DatastoryList extends Component{
   
   onSubmit(){
     const { title, subtitle, org } = this.state
+    const { dispatch } = this.props
 
-    //save data
-    let request = {
-      title: title,
-      subtitle: subtitle,
-      org: org,
-      layout: [],
-      widgets: {},
-      status: 0
-    };
+    if(title.length>0 && org.length>0){
+      //save data
+      let request = {
+        title: title,
+        subtitle: subtitle,
+        org: org,
+        layout: [],
+        widgets: [],
+        status: 0
+      };
+      dispatch(receiveDatastory(request))
+      this.setState({
+        modalOpen: false,
+        title: '',
+        subtitle: '',
+        org: ''
+      })
 
-    this.setState({
-      modalOpen: false,
-    })
-
-    this.props.history.push({
-      'pathname':'/private/datastory/create',
-      'story': request,
-      'modified':true
-    })
+      this.props.history.push({
+        'pathname':'/private/datastory/create',
+        'modified':true
+      })
+    }
   }
  
   render(){
     const { isLoading, list, loggedUser } = this.props
     return(
       <div>
-        <Modal isOpen={this.state.modalOpen} onRequestHide={()=>{this.setState({modalOpen: false})}}>
+        <Modal isOpen={this.state.modalOpen} onRequestHide={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
           <form>
             <ModalHeader>
               <ModalTitle>Crea una Data Story</ModalTitle>
-              <ModalClose onClick={()=>{this.setState({modalOpen: false})}}/>
+              <ModalClose onClick={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}/>
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Titolo</label>
-                  <div className="col-md-8">
-                    <input type="text" className={"form-control "+this.state.title.length===0?'is-invalid':''} onChange={(e)=> this.setState({title: e.target.value})} value={this.state.title} placeholder="Titolo"/>
+                  <div className="col-md-9">
+                    <input type="text" className={"form-control "+(this.state.title.length===0?'is-invalid':'')} onChange={(e)=> this.setState({title: e.target.value})} value={this.state.title} placeholder="Titolo"/>
                     {this.state.title.length===0&&<span className="text-danger">Campo Obbligatorio</span>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Sottotitolo</label>
-                  <div className="col-md-8">
+                  <div className="col-md-9">
                     <input type="text" className="form-control" onChange={(e)=> this.setState({subtitle: e.target.value})} value={this.state.subtitle} placeholder="Sottotitolo"/>
                   </div>
                 </div>
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Organizzazione</label>
-                  <div className="col-md-8">
-                    <select className={"form-control "+this.state.org.length===0?'is-invalid':''} placeholder="Seleziona l'organizzazione" onChange= {(e) => this.setState({org: e.target.value})} value={this.state.org} >
+                  <div className="col-md-9">
+                    <select className={"form-control "+(this.state.org.length===0?'is-invalid':'')} placeholder="Seleziona l'organizzazione" onChange= {(e) => this.setState({org: e.target.value})} value={this.state.org} >
                         <option value=""  key='organization' defaultValue></option>
                         {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
                               return(
@@ -94,7 +99,7 @@ class DatastoryList extends Component{
             </div>
             </ModalBody>
             <ModalFooter>
-              <button type="button" className='btn btn-gray-200' onClick={()=>{this.setState({modalOpen: false})}}>
+              <button type="button" className='btn btn-gray-200' onClick={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
                 Chiudi
               </button>
               <button type="button" className="btn btn-primary px-2" onClick={this.onSubmit.bind(this)}>
@@ -116,15 +121,15 @@ class DatastoryList extends Component{
             {
               list && list.map((story, index) => {
                 if ((story.widgets) && (story.layout && story.layout !== '{}')) {
-                  const dashwidgets = Object.keys(story.widgets).filter(wid=>{
-                    return wid.toLowerCase().indexOf('textwidget')<0
+                  const dashwidgets = story.widgets.filter(wid=>{
+                    return wid.identifier.toLowerCase().indexOf('textwidget')<0
                   })
 
                   var firstLayout = dashwidgets.length>0?dashwidgets[0]:''
 
                   var time = 0
-                  for (let k in story.widgets){
-                    if(k.toLowerCase.indexOf('textwidget')!==-1){
+                  for (let k = 0; k < story.widgets.length; k++){
+                    if(story.widgets[k].identifier.toLowerCase().indexOf('textwidget')!==-1){
                       var text = story.widgets[k].text
                       var array = text?text.split(' '):[]
                       
@@ -137,7 +142,7 @@ class DatastoryList extends Component{
                 return(
                   <UserstoryCard 
                     story = {story}
-                    widgetA={firstLayout}
+                    widgetA={firstLayout.identifier}
                     time = {time}
                     key = {index}
                     id = {index}

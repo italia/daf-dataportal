@@ -14,6 +14,7 @@ class Header extends Component{
     }
 
     this.openVisibility = this.openVisibility.bind(this)
+    
   }
 
   openVisibility(){
@@ -33,8 +34,14 @@ class Header extends Component{
         })
   }
 
+  handleSave(){
+      const { onSave } = this.props
+
+      onSave();
+  }
+
   render(){
-    const { status, readOnly, editToggle, loggedUser } = this.props
+    const { status, readOnly, editToggle, loggedUser, onSave, onDelete, onStatusChange, author } = this.props
     const { dropdownStyle } = this.state
     
     var show = this.state.open? ' show': ''
@@ -70,7 +77,7 @@ class Header extends Component{
               </button>}
               <div className={"dropdown-menu m-0" + show} style={dropdownStyle} aria-labelledby="dropdownMenuButton">
                   <h6 className="dropdown-header bg-white"><b>CHI PUÒ VISUALIZZARE?</b></h6>
-                  <button className="dropdown-item bg-light b-l-pvt">
+                  <button className="dropdown-item bg-light b-l-pvt" onClick={onStatusChange.bind(this, 0)}>
                       
                       
                       <div className="row">
@@ -84,7 +91,7 @@ class Header extends Component{
                       </div>
                       
                   </button>
-                  <button className="dropdown-item bg-light b-l-org">
+                  <button className="dropdown-item bg-light b-l-org" onClick={onStatusChange.bind(this, 1)}>
                       <div className="row">
                           <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faUsers} className="mx-2"/></h5>
                           <div className="row col-11 ml-1">
@@ -94,7 +101,7 @@ class Header extends Component{
                           </div>
                       </div>
                   </button>
-                  {(isEditor(loggedUser) || isAdmin(loggedUser)) && <button className="dropdown-item bg-light b-l-open">
+                  {(isEditor(loggedUser) || isAdmin(loggedUser)) && <button className="dropdown-item bg-light b-l-open" onClick={onStatusChange.bind(this, 2)}>
                   
                       <div className="row">
                           <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faGlobe} className="mx-2"/></h5>
@@ -110,8 +117,9 @@ class Header extends Component{
           <div className="align-self-center ml-3">
               {this.props.org}
           </div>
-        {!readOnly && <button className="ml-auto btn btn-link text-primary" /* onClick={()=>this.setState({readOnly:!this.state.readOnly})} */><i className="fa fa-save fa-lg"/></button>}
-        <button className={readOnly?"ml-auto btn btn-link text-primary":"btn btn-link text-primary"} onClick={editToggle}><i className="fa fa-edit fa-lg"/></button>
+        {!readOnly && <button className="ml-auto btn btn-link text-primary" onClick={onSave.bind(this)}><i className="fa fa-save fa-lg"/></button>}
+        {author === loggedUser.uid && <button className={readOnly?"ml-auto btn btn-link text-primary":"btn btn-link text-primary"} onClick={onDelete.bind(this)}><i className="fa fa-trash fa-lg"/></button>}
+        {author === loggedUser.uid && window.location.hash.indexOf('create')===-1 && <button className="btn btn-link text-primary" onClick={editToggle}><i className="fa fa-edit fa-lg"/></button>}
       </div>
     )
   }

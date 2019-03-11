@@ -15,8 +15,8 @@ class DatastoryManager extends Component {
         <Switch>
           <Route path='/private/datastory/create' exact component={Dashboard} />
           <Route path="/private/datastory/list" exact component={DatastoryList} />
-          <Route path="/private/datastory/:id" exact component={Dashboard} />
-          <Route path="/private/datastory/:id/edit" exact component={Dashboard} />
+          <Route path="/private/datastory/list/:id" exact component={Dashboard} />
+          <Route path="/private/datastory/list/:id/edit" exact component={Dashboard} />
         </Switch>
       </div>
     )

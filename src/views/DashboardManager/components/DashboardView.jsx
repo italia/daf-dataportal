@@ -23,7 +23,7 @@ import DashboardService from './services/DashboardService';
 import 'react-dazzle/lib/style/style.css';
 
 // Our styles
-import '../styles/custom.css';
+// import '../styles/custom.css';
 
 
 const widgetService = new WidgetService();
