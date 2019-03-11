@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { toastr } from 'react-redux-toastr'
 import {
   Modal,
   ModalHeader,
@@ -7,6 +8,9 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
+import MessageService from '../../views/Messages/services/MessageService';
+
+const messageService = new MessageService()
 
 export default class AddMessage extends Component {
   constructor() {
@@ -33,7 +37,17 @@ export default class AddMessage extends Component {
   }; 
 
   handleSubmit(e) {
-    alert('A name was submitted: ' + this.state.title);
+    let dataToPost = {
+      title: this.state.title,
+      message: this.state.message,
+      date: this.state.date
+    }
+
+    const response = messageService.saveMessage(dataToPost);
+
+    this.hideModal();
+
+    toastr.success("OK", "OK")
   }
 
   handleInputChange(event) {
