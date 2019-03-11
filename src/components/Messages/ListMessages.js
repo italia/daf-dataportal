@@ -8,7 +8,14 @@ import {
     ModalBody,
     ModalFooter
   } from 'react-modal-bootstrap';
+import MessageService from '../../views/Messages/services/MessageService';
+
   
+const messageService = new MessageService()
+
+const buttonStyle = {
+    margin: '1px'
+}
 
 export default class ListMessages extends Component {
     constructor(props) {
@@ -33,8 +40,8 @@ export default class ListMessages extends Component {
                     accessor: "actions",
                     Cell: row => (
                         <div>
-                            <button onClick={() => this.editMethod(row.row)}>Modifica</button>
-                            <button onClick={() => this.deleteMethod(row.row)}>Cancella</button>
+                            <button style={buttonStyle} className="btn btn-primary px-2" onClick={() => this.editMethod(row.row)}>Modifica</button>
+                            <button style={buttonStyle} className="btn btn-primary px-2" onClick={() => this.deleteMethod(row.row)}>Cancella</button>
                         </div>
                     )
                 }
@@ -78,9 +85,9 @@ export default class ListMessages extends Component {
     }
 
     componentDidMount(){
-        fetch('http://www.mocky.io/v2/5c824ed9310000941f1d1d18?mocky-delay=2000ms')
-        .then(response => response.json())
-        .then(data => this.setState({ jsonPreview : data, isLoading : false }))
+        messageService
+        .listMessages()
+        .then(data => this.setState({ jsonPreview : data, isLoading : false }));
     }
 
     render() {

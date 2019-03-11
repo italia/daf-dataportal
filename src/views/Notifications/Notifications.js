@@ -129,7 +129,7 @@ class Notifications extends Component{
         </label>
         <i className="fas fa-info-circle text-warning mr-2 fa-lg"/>
         <label className="switch switch-3d switch-warning mr-3 mb-4">
-          <input type="checkbox" className="switch-input" checked={checkedSystem} onClick={this.checkedSystem}/>
+          <input type="checkbox" className="switch-input" checked={checkedSystem} onClick={this.toggleSystem}/>
           <span className="switch-label"></span>
           <span className="switch-handle"></span>
         </label>

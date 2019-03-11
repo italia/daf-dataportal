@@ -18,4 +18,19 @@ export default class MessageService {
 
         return response.json();
     }
+
+    async listMessages() {
+        var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18?mocky-delay=2000ms'
+        // var url = serviceurl.apiURLSecurity + '/daf/organizations'
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+
+        return response.json();
+    }
 }
