@@ -18,4 +18,20 @@ export default class MessageService {
 
         return response.json();
     }
+
+    async updateMessageTTL ( messageTTL ) {
+        let token = localStorage.getItem('token')
+        const response = await fetch('', {
+        // const response = await fetch(serviceurl.apiURLSecurity + '/daf/organization', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(messageTTL)
+        })
+        return response;
+    }
+
 }

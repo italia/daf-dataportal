@@ -34,6 +34,10 @@ export const messages = {
                 Error           :   "Error",
                 Info            :   "Info",
                 System          :   "System",
+                salvataggio     :   "Salvataggio",
+                salvataggioOK   :   "Salvataggio effettuato con successo",
+                errore          :   "Errore",
+                salvataggioKO   :   "Impossibile effettuare il salvataggio"
             },
             validazione : {
                 campoObbligatorio       :   "Campo obbligatorio",
