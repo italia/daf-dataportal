@@ -5,10 +5,37 @@ export default class MessageService {
     constructor(){}
 
     //############# TTL #############
-
+    /*
+    [GET TTL]
+        GET  /notifications/get/ttl
+        risposte:
+        200: <-- array con i ttl
+        [
+            {
+                "name": "a",
+                "value": 1
+            },
+            {
+                "name": "b",
+                "value": 3
+            }
+        ]
+        401: <- l'utente che fa la chiamata non è system admin
+        {
+            "code": 401,
+            "message": "xxxx",
+            "fields": null
+        }
+        500: <- errore generico
+        {
+            "code": 500,
+            "message": "xxx",
+            "fields": null
+        }
+    */
     async messageTTL() {
-        var url = 'http://www.mocky.io/v2/5c823849310000f42f1d1c77'
-        // var url = serviceurl.apiURLDatiGov + '/notifications/get/ttl'
+        // var url = 'http://www.mocky.io/v2/5c823849310000f42f1d1c77'
+        var url = serviceurl.apiURLDatiGov + '/notifications/get/ttl'
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -18,13 +45,40 @@ export default class MessageService {
             }
         })
 
-        return response.json();
+        return response;
     }
 
+    /*
+    [UPDATE TTL NOTIFICHE - NO SYSTEM]
+        PUT  /notifications/update/ttl
+        body
+        {
+            "infoType": 20,
+            "successType": 20,
+            "errorType": 20
+        }
+        risposte:
+        200: <- ttl aggiornato
+        {
+            "message": "xxxxx",
+            "fields": null
+        }
+        401: <- l'utente che fa la chiamata non è system admin
+        {
+            "code": 401,
+            "message": "xxxx",
+            "fields": null
+        }
+        500: <- errore generico
+        {
+            "code": 500,
+            "message": "xxx",
+            "fields": null
+        }
+    */
     async updateMessageTTL ( messageTTL ) {
         let token = localStorage.getItem('token')
-        const response = await fetch('', {
-        // const response = await fetch(serviceurl.apiURLDatiGov + '/notifications/update/ttl', {
+        const response = await fetch(serviceurl.apiURLDatiGov + '/notifications/update/ttl', {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',

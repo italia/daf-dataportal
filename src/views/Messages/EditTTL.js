@@ -58,7 +58,8 @@ class EditTTL extends Component {
   load = () => {
     console.log('Load Data');
     let response = messageService.messageTTL();
-        response.then((json)=> {
+        response.then(response => response.json())
+         .then((json)=> {
             console.log('data response:', json);
             
             this.setState({
@@ -68,19 +69,23 @@ class EditTTL extends Component {
             this.state.storeTTL.map( field => {
         
               this.setState({
-                [field.type]: field.value
+                [field.name]: field.value
               });
              
               if(field.value == 0 || field.value == undefined){
                 this.setState({
-                  [this.labelError+field.type]: messages.validazione.campoObbligatorio
+                  [this.labelError+field.name]: messages.validazione.campoObbligatorio
                 });
               }else {
                 this.setState({
-                  [this.labelError+field.type]: null
+                  [this.labelError+field.name]: null
                 });
               }
             });
+        })
+        .catch(error => { 
+            console.log('Errore nel caricamento della lista');  
+            toastr.error(messages.label.errore, error.message);
         });
   }
 
@@ -90,7 +95,7 @@ class EditTTL extends Component {
 
       let countError =  this.state.storeTTL.length;
       this.state.storeTTL.map( field => {
-        if(!this.state[this.labelError+field.type] || this.state[this.labelError+field.type] == null ){
+        if(!this.state[this.labelError+field.name] || this.state[this.labelError+field.name] == null ){
           countError--;
         }
       });
@@ -98,13 +103,21 @@ class EditTTL extends Component {
       if( countError === 0 ){
             console.log('Salvataggio');
             //Aggiorno obj per gestire il salvataggio
-            this.state.storeTTL.map( field => {
-                  field.value = this.state[field.type];
-            });
-
-            messageService.updateMessageTTL( this.state.storeTTL );
-
-            toastr.success(messages.label.salvataggio, messages.label.salvataggioOK)
+            const objUpdate ={
+              "infoType": this.state["infoType"],
+              "successType": this.state["successType"],
+              "errorType": this.state["errorType"]
+            };
+            
+            const response = messageService.updateMessageTTL( objUpdate );
+                  response.then(response => response.json())
+                          .then((json)=> {
+                              toastr.success(messages.label.salvataggio, messages.label.salvataggioOK)
+                          })
+                          .catch(error => { 
+                              console.log('Errore nel salvataggio');  
+                              toastr.error(messages.label.errore, error.message);
+                          });
       }else{
             console.log('NO Salva');
             toastr.error(messages.label.errore, messages.label.salvataggioKO)
@@ -119,10 +132,10 @@ class EditTTL extends Component {
                   this.state.storeTTL.map( (field, index ) => {
                       return (
                         <div key={index} className="form-group row">
-                            <label className="col-md-2 form-control-label">{messages.label[field.type]}</label>
+                            <label className="col-md-2 form-control-label">{messages.label[field.name]}</label>
                             <div className="col-md-8">
-                              <input type="text" className="form-control" name={messages.label[field.type]} onChange={this.handleInputChange} placeholder={messages.label[field.type]} value={this.state[field.type]} />
-                              {this.state[this.labelError+field.type] && <span>{this.state[this.labelError+field.type]}</span>}
+                              <input type="text" className="form-control" name={messages.label[field.name]} onChange={this.handleInputChange} placeholder={messages.label[field.name]} value={this.state[field.name]} />
+                              {this.state[this.labelError+field.name] && <span>{this.state[this.labelError+field.name]}</span>}
                             </div>
                         </div>    
                       )
