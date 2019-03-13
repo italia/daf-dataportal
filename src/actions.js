@@ -538,8 +538,8 @@ export function logout() {
 function deleteDataportalCookies() {
     document.cookie = "dataportal=;path=/;domain=" + serviceurl.domain
     document.cookie = "session=;path=/;domain=.dataportal" + serviceurl.domain
-    document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
-    document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
+    // document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
+    // document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
 }
 
 export function addUserOrganization(uid) {

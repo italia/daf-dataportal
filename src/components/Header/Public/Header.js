@@ -12,6 +12,7 @@ import {
  } from 'reactstrap';
  import SearchBar from '../../SearchBar/SearchBar';
 import { isValidToken } from '../../../actions';
+import { serviceurl } from '../../../config/serviceurl'
 
 class Header extends Component {
   constructor(props) {
@@ -45,6 +46,8 @@ class Header extends Component {
           this.setState({
             authed: true
           })
+          //è stato aggiunto per gestire il caso di chiusura browser e utente gia loggato
+          document.forms['supset_open'].submit()
         }else{
           this.setState({
             authed: false
@@ -328,6 +331,10 @@ class Header extends Component {
           </Collapse>
         </Navbar>
         </div>
+        <form id="supset_open" target="open_supset" action={serviceurl.urlApiOpen +'/managed/bi-open-login'} method="POST">
+          <input name="Authorization" type="text" value={"Bearer "+localStorage.getItem('token')} readOnly hidden/>
+        </form>
+        <iframe name="open_supset" hidden/>
       </div>
     )
   }

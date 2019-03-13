@@ -64,12 +64,12 @@ class Login extends Component {
                       setSupersetCookie(json)
                     }
                   })
-                  dispatch(getApplicationCookie('metabase'))
-                  .then(json => {
-                    if (json) {
-                      setCookie(json)
-                    }
-                  })
+                  // dispatch(getApplicationCookie('metabase'))
+                  // .then(json => {
+                  //   if (json) {
+                  //     setCookie(json)
+                  //   }
+                  // })
                   /* dispatch(getApplicationCookie('jupyter'))
                   .then(json => {
                     if (json) {
@@ -150,10 +150,10 @@ class Login extends Component {
             .then(json => {
               if (json) {
                 setSupersetCookie(json)
-                dispatch(getApplicationCookie('metabase'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
+                // dispatch(getApplicationCookie('metabase'))
+                // .then(json => {
+                //   if (json) {
+                //     setCookie(json)
                     //dispatch(getApplicationCookie('jupyter'))
                     //  .then(json => {
                     //    if (json) {
@@ -196,8 +196,8 @@ class Login extends Component {
                             //})
                        // }
                       //})
-                  }
-                })
+                //   }  fine metabase
+                // })   fine metabase
               }
             })
           })
