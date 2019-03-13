@@ -40,6 +40,7 @@ export const REQUEST_NOTIFICATIONS = 'REQUEST_NOTIFICATIONS'
 export const RECEIVE_NOTIFICATIONS = 'RECEIVE_NOTIFICATIONS'
 export const REQUEST_NEW_NOTIFICATIONS = 'REQUEST_NEW_NOTIFICATIONS'
 export const RECEIVE_NEW_NOTIFICATIONS = 'RECEIVE_NEW_NOTIFICATIONS'
+export const RESET_QUERY_RESULT = 'RESET_QUERY_RESULT'
 export const REQUEST_QUERY_RESULT = 'REQUEST_QUERY_RESULT'
 export const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
 
@@ -537,8 +538,8 @@ export function logout() {
 function deleteDataportalCookies() {
     document.cookie = "dataportal=;path=/;domain=" + serviceurl.domain
     document.cookie = "session=;path=/;domain=.dataportal" + serviceurl.domain
-    document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
-    document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
+    // document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
+    // document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
 }
 
 export function addUserOrganization(uid) {
@@ -1822,6 +1823,16 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
 
       /* Actions for Query Reducer */
+      export function resetQueryResult(){
+        return{
+          type: RESET_QUERY_RESULT,
+          result: [],
+          receivedAt: Date.now(),
+          ope: 'REQUEST_QUERY_RESULT'
+
+        }
+      }
+
       export function receiveQueryResult(json, query){
         console.log('receiveQueryResult');
         return {

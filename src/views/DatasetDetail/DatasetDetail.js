@@ -6,7 +6,7 @@ import {
     datasetDetail,
     getFileFromStorageManager,
     getSupersetUrl,
-    checkMetabase,
+    // checkMetabase,
     datasetMetadata,
     getOpendataResources,
     checkFileOnHdfs,
@@ -40,6 +40,7 @@ import DatasetAdmin from './DatasetAdmin';
 import { Table } from 'reactstrap';
 import DatasetService from './services/DatasetService'
 import DatasetCard from '../../components/Cards/DatasetCard';
+import CodeSyntax from '../../components/CodeSyntax/CodeSyntax'
 
 const datasetService = new DatasetService()
 
@@ -152,13 +153,13 @@ class DatasetDetail extends Component {
             var dafIndex = 0
 
             dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-                .then(json => {
-                    if (json.ok) {
-                        dafIndex = dafIndex + 3;
-                        this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
-                    }
-                })
-                .catch(error => { this.setState({ hasPreview: false, loading: false }) })
+              .then(json => { 
+                if(json.ok) {
+                  dafIndex = dafIndex + 2; 
+                  this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
+                } 
+              })
+              .catch(error => { this.setState({ hasPreview: false, loading: false }) })
 
             dispatch(getSupersetUrl(nextProps.dataset.dcatapit.name, nextProps.dataset.dcatapit.owner_org, isExtOpendata))
                 .then(json => {
@@ -167,13 +168,13 @@ class DatasetDetail extends Component {
                 })
                 .catch(error => { this.setState({ hasSuperset: false }) })
 
-            dispatch(checkMetabase(nextProps.dataset.dcatapit.name))
-                .then(json => {
-                    dafIndex = json.is_on_metabase ? dafIndex + 1 : dafIndex
-                    this.setState({ hasMetabase: json.is_on_metabase, dafIndex: dafIndex })
-                })
-                .catch(error => { this.setState({ hasMetabase: false }) })
-
+            // dispatch(checkMetabase(nextProps.dataset.dcatapit.name))
+            //     .then(json => {
+            //         dafIndex = json.is_on_metabase ? dafIndex + 1 : dafIndex
+            //         this.setState({ hasMetabase: json.is_on_metabase, dafIndex: dafIndex })
+            //     })
+            //     .catch(error => { this.setState({ hasMetabase: false }) })
+            
             // var sources = []
             // nextProps.dataset.operational.type_info&& nextProps.dataset.operational.type_info.dataset_type==="derived_sql" && nextProps.dataset.operational.type_info.sources.map(source => {
             //   var tmp = JSON.parse(source)
@@ -297,11 +298,14 @@ class DatasetDetail extends Component {
             previewState: 3
         })
         dispatch(getFileFromStorageManager(logical_uri, 20, 'json', isPublic()))
-            .then(response => {
-                const result = response.json()
-                result.then(json => {
-                    this.setState({ previewState: 1, jsonPreview: json })
-                })
+            .then(response => { 
+              const result = response.json()
+              result.then(json => {
+                if(json.length > 0)
+                  this.setState({ previewState: 1, jsonPreview: json }) 
+                else
+                  this.setState({previewState: 2, jsonPreview: json })
+              })
             })
             .catch(error => { console.error(error); this.setState({ previewState: 2 }) })
     }
@@ -826,53 +830,112 @@ class DatasetDetail extends Component {
                                 </div>
                             </div>
                             <div hidden={!this.state.showTools} className="col-12 card-text">
-                                <div className="col-12">
-                                    <div className="row text-muted">
-                                        <i className="text-icon fa fa-database fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Superset</b></h4>
+                              <div className="col-12">
+                                  <div className="row text-muted">
+                                      <i className="text-icon fa fa-database fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Superset</b></h4>
+                                  </div>
+                              </div>
+                              {this.state.supersetState === 1 &&
+                                  <div>
+                                      {this.state.supersetLink.length > 0 ?
+                                          <div>
+                                            <div className="desc-dataset text-dark">
+                                              <p>Puoi creare un widget su questo dataset in Superset per le seguenti organizzazioni o gruppi: </p>
+                                            </div>
+                                            <Table>
+                                              <tbody>
+                                              {this.state.supersetLink.map((link, index) => {
+                                                switch(link.appName){
+                                                  case "superset":
+                                                  var groupType = ''
+                                                  if(link.groupInfo.dafGroupType==='Organization'){
+                                                    groupType = 'Organizzazione'
+                                                  }else{
+                                                    groupType = "Workgroup dell'organizzazione"+link.groupInfo.parentGroup
+                                                  }
+                                                  return (
+                                                    <tr key={index}>
+                                                      <td className="h5">{link.groupInfo.groupCn}</td>
+                                                      <td className="h5">{groupType}</td>
+                                                      <td><a className="text-primary float-right" title="Crea un widget privato su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
+                                                    </tr>
+                                                  )
+                                                  case "superset_open":
+                                                  return (
+                                                    <tr key={index}>
+                                                      <td className="h5">Gruppo Open Data</td>
+                                                      <td></td>
+                                                      <td><a className="text-primary float-right" title="Crea un widget pubblico su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg"/></a></td>
+                                                    </tr>
+                                                  )
+                                                }
+                                              })
+                                              }
+                                              </tbody>
+                                            </Table>
+                                          </div>
+                                          :
+                                          <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso. Verifica che il dataset sia stato condiviso almeno con una tua organizzazione o workgroup</p>
+                                      }
+                                  </div>
+                              }
+                              {this.state.supersetState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante l'accesso a Superset, contatta l'assistenza.</div>}
+                              {this.state.supersetState === 3 && <div className="desc-dataset"><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
+                              {/* <div className="col-12">
+                                  <div className="row text-muted">
+                                      <i className="text-icon fa fa-chart-pie fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Metabase</b></h4>
+                                  </div>
+                              </div>
+                              {this.state.hasMetabase &&
+                                  <div className="desc-dataset text-dark">
+                                      <p>Collegati a <a href={serviceurl.urlMetabase + '/question/new'} target='_blank'>Metabase</a> e cerca il dataset per creare nuovi widget.</p>
+                                  </div>
+                              }
+                              {!this.state.hasMetabase && <p className="desc-dataset text-dark">Il dataset non è ancora stato associato a Metabase</p>} */}
+                              <div className="col-12">
+                                <div className="row text-muted">
+                                    <i className="text-icon fa fa-sticky-note fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Jupyter</b></h4>
+                                </div>
+                                {this.state.hasPreview &&
+                                <div>
+                                <div className="row text-muted">
+                                    <p className="desc-dataset text-dark">Leggi attentamente le <a href="https://daf-dataportal.readthedocs.io/it/latest/datascience/jupyter/index.html#creazione-e-configurazione-di-un-notebook" target='_blank'>istruzioni </a> per collegarti a Jupyter.  </p>
+                                    <p className="desc-dataset text-dark">Per utilizzare il dataset all'interno di un notebook eseguire il seguente script:</p>
+                                </div>
+                                <div className="row">
+                                    {/* <div className="col-2">
+                                        <strong> Pyspark </strong>
+                                    </div> */}
+                                    <div className="col-12">
+                                        {/* <code>
+                                            path_dataset = "<strong>{dataset.operational.physical_uri}</strong>" <br />
+                                            df = (spark.read.format("parquet") <br />
+                                            .option("inferSchema", "true") <br />
+                                            .load(path_dataset) <br />
+                                            ) <br />
+                                            df.printSchema <br />
+                                        </code> */
+                                        }
+
+                                        <CodeSyntax language='python' code={
+`import pandas as pd
+pd.options.display.html.table_schema = True
+import requests
+from io import StringIO
+pd.set_option('display.max_rows', 5000)
+
+url = "https://api.daf.teamdigitale.it/dataset-manager/v1/dataset/${encodeURIComponent(dataset.operational.logical_uri)}?format=json"
+payload = ""
+
+headers = {'authorization': 'Bearer ${localStorage.getItem('token')}'}
+response = requests.request("GET", url, data=payload, headers=headers)
+data = pd.read_json(StringIO(response.text))
+data`} ></CodeSyntax>
                                     </div>
                                 </div>
-                                {this.state.supersetState === 1 &&
-                                    <div>
-                                        {this.state.supersetLink.length > 0 ?
-                                            <div>
-                                                <div className="desc-dataset text-dark">
-                                                    <p>Puoi creare un widget su questo dataset in Superset per le seguenti organizzazioni o gruppi: </p>
-                                                </div>
-                                                <Table>
-                                                    <tbody>
-                                                        {this.state.supersetLink.map((link, index) => {
-                                                            switch (link.appName) {
-                                                                case "superset":
-                                                                    var groupType = ''
-                                                                    if (link.groupInfo.dafGroupType === 'Organization') {
-                                                                        groupType = 'Organizzazione'
-                                                                    } else {
-                                                                        groupType = "Workgroup dell'organizzazione" + link.groupInfo.parentGroup
-                                                                    }
-                                                                    return (
-                                                                        <tr key={index}>
-                                                                            <td className="h5">{link.groupInfo.groupCn}</td>
-                                                                            <td className="h5">{groupType}</td>
-                                                                            <td><a className="text-primary float-right" title="Crea un widget privato su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg" /></a></td>
-                                                                        </tr>
-                                                                    )
-                                                                case "superset_open":
-                                                                    return (
-                                                                        <tr key={index}>
-                                                                            <td className="h5">Gruppo Open Data</td>
-                                                                            <td></td>
-                                                                            <td><a className="text-primary float-right" title="Crea un widget pubblico su superset" href={link.url} target='_blank'><i className="fas fa-external-link-alt fa-lg" /></a></td>
-                                                                        </tr>
-                                                                    )
-                                                            }
-                                                        })
-                                                        }
-                                                    </tbody>
-                                                </Table>
-                                            </div>
-                                            :
-                                            <p className="desc-dataset text-dark">La tabella associata non è presente su Superset oppure non si hanno i permessi di accesso. Verifica che il dataset sia stato condiviso almeno con una tua organizzazione o workgroup</p>
-                                        }
+                                {/* <div className="row">
+                                    <div className="col-2">
+                                        <strong> Spark Sql</strong>
                                     </div>
                                 }
                                 {this.state.supersetState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante l'accesso a Superset, contatta l'assistenza.</div>}
@@ -892,56 +955,12 @@ class DatasetDetail extends Component {
                                     <div className="row text-muted">
                                         <i className="text-icon fa fa-sticky-note fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4 className="mb-3"><b>Jupyter</b></h4>
                                     </div>
-                                    {this.state.hasPreview &&
-                                        <div>
-                                            <div className="row text-muted">
-                                                <p className="desc-dataset text-dark">Leggi attentamente le <a href="https://daf-dataportal.readthedocs.io/it/latest/datascience/jupyter/index.html#creazione-e-configurazione-di-un-notebook" target='_blank'>istruzioni </a> per collegarti a Jupyter.  </p>
-                                                <p className="desc-dataset text-dark">Dopo aver attivato la sessione seguendo le istruzioni potrai analizzare il file al percorso:</p>
-                                                <p className="desc-dataset text-dark"><strong>{dataset.operational.physical_uri}</strong>.</p>
-                                                <p className="desc-dataset text-dark">Usa i seguenti comandi per caricare il file nel notebook:</p>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-2">
-                                                    <strong> Pyspark </strong>
-                                                </div>
-                                                <div className="col-10">
-                                                    <code>
-                                                        path_dataset = "<strong>{dataset.operational.physical_uri}</strong>" <br />
-                                                        df = (spark.read.format("parquet") <br />
-                                                        .option("inferSchema", "true") <br />
-                                                        .load(path_dataset) <br />
-                                                        ) <br />
-                                                        df.printSchema <br />
-                                                    </code>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-2">
-                                                    <strong> Spark Sql</strong>
-                                                </div>
-                                                <div className="col-10">
-                                                    <code>
-                                                        df.createOrReplaceTempView("{dataset.dcatapit.title}") <br />
-                                                        %%spark -c sql <br />
-                                                        select * from  {dataset.dcatapit.title} limit 10 <br />
-                                                    </code>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-2">
-                                                    <strong> Spark Sql </strong>
-                                                </div>
-                                                <div className="col-10">
-                                                    <code>
-                                                        spark.sql("SELECT * FROM opendata.<strong>{dataset.dcatapit.title}</strong>").show()
-                                        </code>
-                                                </div>
-                                            </div>
-                                            <br /><br />
-                                        </div>}
-                                </div>
-                                {!this.state.hasPreview && <p>Non è possibile usare Jupyter per questo dataset</p>}
-                            </div>
+                                </div> */}
+                                <br /><br />
+                                </div>}
+                              </div>
+                              {!this.state.hasPreview && <p>Non è possibile usare Jupyter per questo dataset</p>}
+                          </div>
                             <div hidden={!this.state.showDett} className="col-md-5 px-0 pt-5">
                                 <div>
                                     <div className="border-left pl-3 row">
@@ -1026,7 +1045,7 @@ class DatasetDetail extends Component {
                                             <p className='status'>DAF Index</p>
                                         </div>}
                                         {!isPublic() && <div className="col-3 mt-3">
-                                            <span className="badge badge-pill badge-success text-dark">{this.state.dafIndex}</span> <span className="ml-1 text-muted"> su 5</span>
+                                            <span className="badge badge-pill badge-success text-dark">{this.state.dafIndex}</span> <span className="ml-1 text-muted"> su 3</span>
                                         </div>}
 
                                         {!isPublic() && <div className="col-8">
@@ -1038,15 +1057,15 @@ class DatasetDetail extends Component {
                                                     <tr>
                                                         <td className="bg-white"><i className="fa fa-plug text-icon ml-1 mr-3" />API</td> <td className={this.state.hasPreview ? "bg-success text-center text-dark" : "bg-warning text-center text-dark"}><i className={"fa " + (this.state.hasPreview ? "fa-check" : "fa-times") + " fa-lg"} /></td>
                                                     </tr>
-                                                    <tr>
+                                                    {/* <tr>
                                                         <td className="bg-white"><i className="fa fa-sticky-note text-icon ml-1 mr-3" />Jupyter</td> <td className={this.state.hasPreview ? "bg-success text-center text-dark" : "bg-warning text-center text-dark"}><i className={"fa " + (this.state.hasPreview ? "fa-check" : "fa-times") + " fa-lg"} /></td>
-                                                    </tr>
+                                                    </tr> */}
                                                     <tr>
                                                         <td className="bg-white"><i className="fa fa-database text-icon ml-1 mr-3" />Superset</td> <td className={this.state.hasSuperset ? "bg-success text-center text-dark" : "bg-warning text-center text-dark"}><i className={"fa " + (this.state.hasSuperset ? "fa-check" : "fa-times") + " fa-lg"} /></td>
                                                     </tr>
-                                                    <tr>
+                                                    {/* <tr>
                                                         <td className="bg-white"><i className="fa fa-chart-pie text-icon ml-1 mr-3" />Metabase</td> <td className={this.state.hasMetabase ? "bg-success text-center text-dark" : "bg-warning text-center text-dark"}><i className={"fa " + (this.state.hasMetabase ? "fa-check" : "fa-times") + " fa-lg"} /></td>
-                                                    </tr>
+                                                    </tr> */}
                                                 </tbody>
                                             </table>
                                         </div>}
