@@ -12,7 +12,7 @@ import Container from './Container.jsx';
 import UserStoryService from './services/UserStoryService';
 
 // Our styles
-import '../styles/custom.css';
+// import '../styles/custom.css';
 
 
 const userStoryService = new UserStoryService();
@@ -81,7 +81,6 @@ class UserStoryList extends Component {
       <div className="row pl-3">
         {
           this.state.userStories.map((story, index) => {
-            let chartUrl = undefined
               if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
                 const dashLayout = JSON.parse(story.layout)
                 var firstLayout = ''
@@ -104,9 +103,6 @@ class UserStoryList extends Component {
                     break
                 }
                 const dashWidgets = JSON.parse(story.widgets)
-                if (firstLayout != '') {
-                  const firstWidget = dashWidgets[firstLayout];
-                }
                 var time = 0
                 let widgets = Object.keys(dashWidgets)
                 for (let k = 0; k < widgets.length; k++){

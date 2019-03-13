@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux'
 import { reducer as reduxFormReducer } from 'redux-form';
 import {
+  REQUEST_ALL_DATASTORY,
+  RECEIVE_ALL_DATASTORY,
+  REQUEST_DATASTORY,
+  RECEIVE_DATASTORY,
   REQUEST_DATASETS,
   RECEIVE_DATASETS,
   DELETE_DATASETS,
@@ -259,6 +263,21 @@ function userReducer(state = {}, action) {
   }
 }
 
+function datastoryReducer(state = {}, action){
+  switch (action.type){
+    case REQUEST_ALL_DATASTORY:
+      return Object.assign({}, state, {'datastories': { 'list': [], 'isLoading': true }, 'datastory': { 'datastory': undefined}})
+    case RECEIVE_ALL_DATASTORY:
+      return Object.assign({}, state, {'datastories': { 'list': action.datastoriesList, 'isLoading': false }})
+    case REQUEST_DATASTORY:
+      return Object.assign({}, state, {'datastory': { 'datastory': undefined, 'isFetching': true }})
+    case RECEIVE_DATASTORY:
+      return Object.assign({}, state, {'datastory': { 'datastory': action.datastory, 'isFetching': false }})
+    default:
+      return state
+  }
+}
+
 function queryReducer(state = {}, action){
   switch(action.type) {
     case RESET_QUERY_RESULT: 
@@ -287,6 +306,7 @@ function searchReducer(state = {}, action) {
 //but you can change it by naming the key differently (form: reduxFormReducer)
 const rootReducer = combineReducers({
   form: reduxFormReducer,
+  datastoryReducer,
   datasetReducer,
   userReducer,
   searchReducer,

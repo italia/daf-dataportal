@@ -157,6 +157,12 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/private/userstory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Storie</NavLink>
               </li>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/private/datastory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Datastory <span className="badge badge-light">Nuovo</span></NavLink>
+              </li>
               <li className="nav-title text-secondary">
                 TOOLKIT
               </li>

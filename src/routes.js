@@ -6,6 +6,7 @@ const routes = {
   '/private/profile': 'Il mio profilo',
   '/private/dashboard/list': 'Dashboard',
   '/private/userstory/list': 'Storie',
+  '/private/datastory/list': 'Datastory',
   '/private/userstory/create': 'Nuova storia',
   '/private/ingestionwizzard': 'Nuovo dataset',
   '/private/ontologies': 'Ontologie',

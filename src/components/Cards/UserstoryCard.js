@@ -76,7 +76,7 @@ class UserstoryCard extends Component {
                     </div>
                     <div className="card-body p-0">
                         <div className="title-dash">
-                            <Link to={!isPublic()?"/private/userstory/list/" + story.id:"/userstory/list/" + story.id}>
+                            <Link to={!isPublic()?"/private/datastory/list/" + story.id:"/datastory/list/" + story.id}>
                                 <h3 className="card-title text-primary">{story.title}</h3>
                             </Link>
                         </div>
