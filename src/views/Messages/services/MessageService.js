@@ -92,11 +92,11 @@ export default class MessageService {
 
     //############# MESSAGGI (system) #############
 
-    saveMessage(message){
+    async saveMessage(message){
         var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18';
         // var url = serviceurl.apiURLDatiGov + '/notifications/system/save'
 
-        const response = fetch(url, {
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -108,11 +108,11 @@ export default class MessageService {
         return response;
     }
 
-    updateMessage(message){
+    async updateMessage(message){
         var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18';
         // var url = serviceurl.apiURLDatiGov + '/notifications/system/update'
 
-        const response = fetch(url, {
+        const response = await fetch(url, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -125,7 +125,7 @@ export default class MessageService {
     }
 
     async listMessages() {
-        var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18?mocky-delay=2000ms'
+        var url = 'http://www.mocky.io/v2/5c877d0c32000024103bd24a?mocky-delay=2000ms'
         // var url = serviceurl.apiURLDatiGov + '/notifications/get-all'
         const response = await fetch(url, {
             method: 'GET',
@@ -136,13 +136,13 @@ export default class MessageService {
             }
         })
 
-        return response.json();
+        return response;
     }
 
-    detailMessage(message) {
-        var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18?mocky-delay=2000ms'
-        // var url = serviceurl.apiURLDatiGov + '/notifications/get/{offset}'
-        const response = fetch(url, {
+    async detailMessage(message) {
+        var url = 'http://www.mocky.io/v2/5c87874b320000ca0e3bd2a2'
+        // var url = serviceurl.apiURLDatiGov + '/notifications/system/{message.offset}'
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -151,13 +151,13 @@ export default class MessageService {
             }
         })
 
-        return response.json();
+        return response;
     }
 
-    deleteMessage(message) {
+    async deleteMessage(message) {
         var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18?mocky-delay=2000ms'
-        // var url = serviceurl.apiURLDatiGov + '/notifications/system/delete/{offset}'
-        const response = fetch(url, {
+        // var url = serviceurl.apiURLDatiGov + '/notifications/system/{message.offset}'
+        const response = await fetch(url, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -166,7 +166,7 @@ export default class MessageService {
             }
         })
 
-        return response.json();
+        return response;
     }
 
 }
