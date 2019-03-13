@@ -754,10 +754,16 @@ class Full extends Component {
     let home = ''
     let paddingTop = 'pt-3'
 
-    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1 || window.location.hash.indexOf('private/vocabularies')!==-1 || window.location.hash.indexOf('private/ontologies')!==-1 || window.location.hash.indexOf('private/notifications')!==-1)
+    if (window.location.hash.indexOf('/private/datastory/list')!==-1 || 
+        window.location.hash.indexOf('/private/userstory/list')!==-1 || 
+        window.location.hash.indexOf('private/widget')!==-1 || 
+        window.location.hash.indexOf('private/vocabularies')!==-1 || 
+        window.location.hash.indexOf('private/ontologies')!==-1 || 
+        window.location.hash.indexOf('private/notifications')!==-1)
       mainDiv='bg-light'
     
-    if (window.location.hash.indexOf('/private/userstory/list/')!==-1)
+    if (window.location.hash.indexOf('/private/datastory/list/')!==-1 ||
+        window.location.hash.indexOf('/private/userstory/list/')!==-1)
       mainDiv='bg-white'
       
     if (window.location.hash.indexOf('/private/home')!==-1 || window.location.hash.indexOf('/private/search')!==-1 || window.location.hash.indexOf('/private/dataset')!==-1)

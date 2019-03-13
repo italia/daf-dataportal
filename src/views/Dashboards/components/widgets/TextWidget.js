@@ -1,17 +1,3 @@
-// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
-// import React, { Component } from 'react';
-// //import { Editor } from 'react-draft-wysiwyg';
-// import htmlToDraft from 'html-to-draftjs';
-// import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
-// import draftToHtml from 'draftjs-to-html';
-
-// //medium text editor
-// import Editor from 'react-medium-editor';
-
-// require('medium-editor/dist/css/medium-editor.css');
-// require('medium-editor/dist/css/themes/default.css');
-
 import React, { Component } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
@@ -29,7 +15,8 @@ class TextWidget extends Component {
     super(props);
 
     this.state= {
-      editorState: undefined
+      editorState: undefined,
+      oldeditorState: undefined
     }
     
     const contentBlock = props.text?htmlToDraft(props.text):undefined;
@@ -50,7 +37,7 @@ class TextWidget extends Component {
   }
 
   componentDidMount(){
-    this.handleChangeHeight()
+
     window.addEventListener("resize", this.handleChangeHeight.bind(this));
   }
 
@@ -61,7 +48,7 @@ class TextWidget extends Component {
   onEditorStateChange = (editorState) => {
     const { identifier, handleHeight } = this.props
     
-    handleHeight(identifier)
+    // handleHeight(identifier)
 
     this.setState({
       editorState
@@ -81,16 +68,16 @@ class TextWidget extends Component {
   }
 
   edit() {
-
     this.setState({
       edit: true,
-      oldText: this.state.text
+      oldeditorState: this.state.editorState
     })
   }
 
   close() {
+    
     this.setState({
-      text: this.state.oldText,
+      editorState: this.state.oldeditorState,
       edit: false
     })
   }
@@ -102,12 +89,17 @@ class TextWidget extends Component {
       inline: {
         options: ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript'],
       },
+      blockType: {
+        inDropdown: true,
+        options: ['Normal', 'H3', 'Blockquote', 'Code'],
+      }
     }
+    var text = editorState?draftToHtml(convertToRaw(editorState.getCurrentContent())).replaceAll('<p></p>','<br></br>'):''
     return (
     <div id={this.props.identifier+"element"} className="x_content">
         {!this.state.edit && 
           <div>
-            <div dangerouslySetInnerHTML={{__html: editorState?draftToHtml(convertToRaw(editorState.getCurrentContent())):''}}></div>
+            <div dangerouslySetInnerHTML={{__html: text}}></div>
             {
               !this.props.readOnly &&
               <div className="mt-20">

@@ -64,7 +64,7 @@ class DatastoryList extends Component{
         <Modal isOpen={this.state.modalOpen} onRequestHide={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
           <form>
             <ModalHeader>
-              <ModalTitle>Crea una Data Story</ModalTitle>
+              <ModalTitle>Crea una Datastory</ModalTitle>
               <ModalClose onClick={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}/>
             </ModalHeader>
             <ModalBody>
@@ -111,7 +111,7 @@ class DatastoryList extends Component{
         </Modal>
         <div className="container">
           <div className="row">
-            <i className="fas fa-font fa-lg m-2" style={{lineHeight:'1'}}/><h2>Data Story</h2>
+            <i className="fas fa-font fa-lg m-2" style={{lineHeight:'1'}}/><h2>Datastory</h2>
             <div className="col-md-12">
               <button className="btn btn-link text-primary float-right" onClick={()=>this.setState({modalOpen: true})}><i className="fas fa-plus-circle fa-lg"/></button>
             </div>

@@ -145,17 +145,23 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/private/widget'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-chart-bar fa-lg text-secondary"></i> Widget</NavLink>
               </li>
-              {/* <li className="nav-item" onClick={(e) => {
-                e.preventDefault();
-                document.body.classList.toggle('sidebar-mobile-show');
-              }}>
-                <NavLink to={'/private/dashboard/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-columns fa-lg text-secondary"></i> Dashboard</NavLink>
-              </li> */}
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/private/datastory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Datastory</NavLink>
+                <NavLink to={'/private/dashboard/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-columns fa-lg text-secondary"></i> Dashboard</NavLink>
+              </li>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/private/userstory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Storie</NavLink>
+              </li>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/private/datastory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Datastory <span className="badge badge-light">Nuovo</span></NavLink>
               </li>
               <li className="nav-title text-secondary">
                 TOOLKIT

@@ -30,11 +30,13 @@ class Dashboard extends Component{
     super(props)
 
     this.state = {
-      modified: this.props.history.location.modified?this.props.history.location.modified:false,
+      modified: this.props.history.location.modified?this.props.history.location.modified:checkEditMode(window.location.hash),
       id: this.props.match.params.id?this.props.match.params.id:undefined,
       readOnly: !checkEditMode(window.location.hash),
       widgets: [],
       isOpen: false,
+      loading: true,
+      gridLayout: {},
       keys: this.props.datastory && this.props.datastory.widgets?this.props.datastory.widgets:[], 
       layout: this.props.datastory && this.props.datastory.layout?this.props.datastory.layout:[],
       title: this.props.datastory && this.props.datastory.title?this.props.datastory.title:'',
@@ -58,14 +60,16 @@ class Dashboard extends Component{
 
   onLayoutChange(layouts){
     
-    // layouts.forEach(element => {
-    //   if(element.i.indexOf('textwidget')>-1){
-    //     var elemH = document.getElementById(element.i+'element')?document.getElementById(element.i+'element').offsetHeight:0
-    //     element.h = getLayoutHeight(elemH)
-    //   }
-    // });
+    layouts.forEach(element => {
+      if(element.i.indexOf('textwidget')>-1){
+        var elemH = document.getElementById(element.i+'element')?document.getElementById(element.i+'element').offsetHeight:0
+        element.h = getLayoutHeight(elemH)
+      }
+    });
+    
+    var gridLayout = { "lg": layouts, "md": layouts}
 
-    this.setState({ layout: layouts })
+    this.setState({ layout: layouts, modified: checkEditMode(window.location.hash), gridLayout: gridLayout, modified: checkEditMode(window.location.hash) })
   }
 
   onBreakpointChange(breakpoint, cols) {
@@ -76,9 +80,29 @@ class Dashboard extends Component{
       cols: cols
     });
   }
+  
+  componentWillUnmount(){
+    this.setState({
+      layout: [],
+      keys:[],
+      widgets: []
+    })
+  }
 
   componentWillReceiveProps(nextProps){
     const { dispatch, datastory } = this.props
+
+    if(nextProps.history.location.pathname!==this.props.history.location.pathname){
+      if(nextProps.history.location.pathname.indexOf('edit')>-1){
+        this.setState({
+          readOnly: false
+        })
+      }else if(nextProps.history.location.pathname.indexOf('edit')===-1){
+        this.setState({
+          readOnly: true
+        })
+      }
+    }
 
     if(nextProps.datastory!==datastory){
       dispatch(loadWidgets(nextProps.datastory.org))
@@ -97,6 +121,7 @@ class Dashboard extends Component{
         widgets.unshift(textWid)
   
         this.setState({
+          loading: false,
           widgets: widgets,
           keys: nextProps.datastory.widgets,
           layout: nextProps.datastory.layout,
@@ -104,6 +129,8 @@ class Dashboard extends Component{
           subtitle: nextProps.datastory.subtitle,
           status: nextProps.datastory.status
         })
+
+        this.forceUpdate()
       })
     }
   }
@@ -128,6 +155,7 @@ class Dashboard extends Component{
   
         this.setState({
           widgets: widgets,
+          loading: false
         })
       })
     }
@@ -180,7 +208,7 @@ class Dashboard extends Component{
           "i":widget.identifier,
           "isDraggable": true,
           "isResizable": true,
-          "maxH": 10000000,
+          "maxH": 1000000,
           "maxW": 12,
           "minH": 1,
           "minW": 1,
@@ -260,16 +288,32 @@ class Dashboard extends Component{
     
     console.log('RESIZING')
 
-    var newLayout = layout.map(element => {
+    var newLayout = layout
+    
+    let pos = layout.map(elem => { return elem.i}).indexOf(identifier)
+    var newH = 0
+
+    newLayout.map(element => {
       if(element.i === identifier){
         var elemH = document.getElementById(identifier+'element')?document.getElementById(identifier+'element').offsetHeight:0
         element.h = getLayoutHeight(elemH)
+        newH = getLayoutHeight(elemH)
       }
       return element
     })
 
+    newLayout.map(element => {
+      if(element.x === newLayout[pos].x && (element.y < (newLayout[pos].y + newH) && element.y > newLayout[pos].y)){
+        element.y = newLayout[pos].y + newH
+      }
+      return element
+    })
+
+    var newGridLayout = {"lg": newLayout, "md": newLayout}
+
     this.setState({
-      layout: newLayout
+      layout: newLayout,
+      gridLayout: newGridLayout
     })
   }
 
@@ -345,12 +389,28 @@ class Dashboard extends Component{
     })
   }
 
+  editToggle(){
+    const { id } = this.state
+
+    this.setState({
+      readOnly:!this.state.readOnly,
+      loading: true,
+    })
+
+    if(window.location.hash.indexOf('edit')>-1){
+      this.props.history.push('/private/datastory/list/'+id)
+    }else{
+      this.props.history.push('/private/datastory/list/'+id+'/edit')
+    }
+    setTimeout(()=>this.setState({loading: false}), 1000)
+  }
+
   render(){
-    const { keys, widgets, isOpen, title, subtitle, id, status } = this.state
-    const { datastory } = this.props
+    const { gridLayout, keys, widgets, isOpen, title, subtitle, id, status, loading } = this.state
+    const { datastory, isFetching } = this.props
 
     return (
-      <div className="mb-5">
+      (isFetching || loading)?<h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>:<div className="mb-5">
         <App
           widgets={widgets}
           isModalOpen={isOpen}
@@ -365,7 +425,7 @@ class Dashboard extends Component{
             onDelete={this.onDelete}
             onStatusChange={this.onStatusChange}
             org={datastory.org}
-            editToggle={()=>{this.setState({readOnly:!this.state.readOnly}); window.location.hash.indexOf('edit')>-1?this.props.history.push('/private/datastory/list/'+id):this.props.history.push('/private/datastory/list/'+id+'/edit')}}
+            editToggle={this.editToggle.bind(this)}
             onSave={this.onSave}
           />
           <SectionTitle readonly={this.state.readOnly} title="Titolo"/>
@@ -392,12 +452,10 @@ class Dashboard extends Component{
             className="layout"
             isDraggable={!this.state.readOnly}
             isResizable={!this.state.readOnly}
-            // layouts={layouts}
             rowHeight={100}
             cols={{ lg: 12, md: 12}}
             breakpoints={{lg: 1200, md: 960}}
-            // cols={this.state.cols}
-            // breakpoints={this.state.breakpoints}
+            layouts={gridLayout}
             onLayoutChange={this.onLayoutChange}
             onBreakpointChange={this.onBreakpointChange}
             draggableHandle=".dragMe"

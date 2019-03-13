@@ -266,7 +266,7 @@ function userReducer(state = {}, action) {
 function datastoryReducer(state = {}, action){
   switch (action.type){
     case REQUEST_ALL_DATASTORY:
-      return Object.assign({}, state, {'datastories': { 'list': [], 'isLoading': true }})
+      return Object.assign({}, state, {'datastories': { 'list': [], 'isLoading': true }, 'datastory': { 'datastory': undefined}})
     case RECEIVE_ALL_DATASTORY:
       return Object.assign({}, state, {'datastories': { 'list': action.datastoriesList, 'isLoading': false }})
     case REQUEST_DATASTORY:

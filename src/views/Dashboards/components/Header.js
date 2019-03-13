@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { isEditor, isAdmin } from '../../../utility'
+import { isEditor, isAdmin, isOrgAdmin } from '../../../utility'
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faGlobe, faUsers, faSortDown, faUser } from '@fortawesome/fontawesome-free-solid'
@@ -101,7 +101,7 @@ class Header extends Component{
                           </div>
                       </div>
                   </button>
-                  {(isEditor(loggedUser) || isAdmin(loggedUser)) && <button className="dropdown-item bg-light b-l-open" onClick={onStatusChange.bind(this, 2)}>
+                  {(isEditor(loggedUser) || isOrgAdmin(loggedUser, this.props.org)) && <button className="dropdown-item bg-light b-l-open" onClick={onStatusChange.bind(this, 2)}>
                   
                       <div className="row">
                           <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faGlobe} className="mx-2"/></h5>
