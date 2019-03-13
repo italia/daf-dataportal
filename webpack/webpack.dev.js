@@ -9,8 +9,8 @@ module.exports =  {
     historyApiFallback: true,
     //https: true,
     // contentBase: 'dist',
-    port: 8080,
-    host: 'localhost.dataportal.daf.teamdigitale.it'
+    port: 80,
+    host: 'localhost.dataportal.daf.teamdigitale.test'
   },
   watch: true,
   plugins: [
