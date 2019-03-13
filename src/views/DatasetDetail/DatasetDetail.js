@@ -1018,10 +1018,10 @@ data`} ></CodeSyntax>
                                             </div>
                                         }
 
-                                        {!isPublic() && loggedUser.uid === dataset.dcatapit.author && <div className="col-8">
+                                        {/* !isPublic() && loggedUser.uid === dataset.dcatapit.author && <div className="col-8">
                                             <button className="btn btn-accento" onClick={this.handleStartFeed}> Prova </button>
                                         </div>
-                                    }
+                                     */}
 
                                         <div className="col-8 my-3">
                                             <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + dataset.dcatapit.modified}</p>

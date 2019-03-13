@@ -61,15 +61,6 @@ class Footer extends Component {
             </div>
           </div>
 
-          {/* <div className="col-12 col-sm-12" >
-            <ul>
-
-              <li className="bg-footer mb-3"><Link to={'/policy'}>Privacy policy</Link></li>
-              <li className="bg-footer mb-3"><Link to={'/termini'}>Termini e condizioni</Link></li>
-
-            </ul>
-          </div> */}
-
           <div className="row">
             {/* <div className="col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">Open data in Italia</h4>
@@ -82,16 +73,10 @@ class Footer extends Component {
             </div> */}
 
           </div>
-          <div className="row b-t-1 p-3">
-            {/* <ul>
-
-              <li className="bg-footer mb-3"><Link to={'/policy'}>Privacy policy</Link></li>
-              <li className="bg-footer mb-3"><Link to={'/termini'}>Termini e condizioni</Link></li>
-
-            </ul> */}
+          {/* <div className="row b-t-1 p-3">
             <Link className="mr-3 text-accento" to={'/policy'}>Privacy policy</Link>
             <Link className="mr-3 text-accento" to={'/termini'}>Termini e condizioni</Link>
-          </div>
+          </div> */}
         </footer>
       </div>
     )

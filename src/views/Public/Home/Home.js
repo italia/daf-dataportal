@@ -271,13 +271,13 @@ class Home extends Component{
           
                 </div>
 
-                <CookieConsent 
+                {/* <CookieConsent 
                   buttonClasses={"btn btn-accento"}
                   buttonStyle={{background:"#fffff",padding:"auto", border:"1px solid transparent"}}
                   buttonText={"Accetto"}
                 >
     Questo sito fa uso di cookie per migliorare l’esperienza di navigazione degli utenti e per raccogliere informazioni sull’utilizzo del sito stesso. <a><Link to={'/policy'}>Privacy policy</Link> <Link to={'/termini'}>Termini e condizioni</Link></a>
-</CookieConsent>
+</CookieConsent> */}
                 
             
 
