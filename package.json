@@ -33,7 +33,7 @@
     "papaparse": "^4.3.3",
     "prop-types": "^15.5.6",
     "rc-collapse": "^1.9.3",
-    "rc-steps": "^3.1.1",
+    "rc-steps": "^3.3.1",
     "react": "^15.6.1",
     "react-ace": "^6.2.0",
     "react-autocomplete": "^1.7.2",
