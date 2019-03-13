@@ -107,7 +107,13 @@ class Dashboard extends Component{
     if(nextProps.datastory!==datastory){
       dispatch(loadWidgets(nextProps.datastory.org))
       .then(json => {
-        var widgets = json
+
+        if(json.code){
+          var widgets = []
+        }else{
+          var widgets = json
+        }
+
         let textWid = {
           identifier: "textwidget",
           iframe_url: null,
@@ -140,7 +146,11 @@ class Dashboard extends Component{
     if(datastory && datastory.org){
       dispatch(loadWidgets(datastory.org))
       .then(json => {
-        var widgets = json
+        if(json.code){
+          var widgets = []
+        }else{
+          var widgets = json
+        }
         let textWid = {
           identifier: "textwidget",
           iframe_url: null,
@@ -344,13 +354,16 @@ class Dashboard extends Component{
           response.json()
           .then(json => {
             toastr.success('Salvataggio completato', 'La storia è stata salvata correttamente')
+
             this.setState({
               modified: false,
             })
             if(window.location.hash.indexOf('create')>-1){
               this.setState({
-                id: json.id
+                id: json.message
               })
+              tmpStory.id = json.message
+              dispatch(receiveDatastory(tmpStory))
               this.props.history.push('/private/datastory/list/'+json.message+'/edit')
             }
           })
@@ -370,9 +383,9 @@ class Dashboard extends Component{
     dispatch(deleteDatastory(datastory.id))
     .then(response => {
       if(response.ok){
-        dispatch(receiveDatastory(undefined))
         toastr.success('Datastory eliminata con successo')
         this.props.history.push('/private/datastory/list')
+        dispatch(receiveDatastory(undefined))
       }else{
         response.json()
         .then(json => {
