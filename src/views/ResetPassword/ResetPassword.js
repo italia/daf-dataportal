@@ -62,7 +62,7 @@ class RequestReset extends Component {
                   </div>
                 }
                 <div className="input-group mb-1">
-                  <span className="input-group-text"><i className="fa fa-envelope-o"/></span>
+                  <span className="input-group-text"><i className="far fa-envelope"/></span>
                   <input type="text" className="form-control" ref={(email) => this.email = email} placeholder="Inserisci la tua mail registrata" />
                 </div>
 {/*                 <div className="input-group mb-1">

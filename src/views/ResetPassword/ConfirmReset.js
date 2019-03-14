@@ -61,8 +61,10 @@ class ConfirmReset extends Component {
     }
   
     componentDidMount() {
-        //window.addEventListener('load', this.handleSubmit);
-        /* this.handleSubmit(); */
+        
+        if(!this.token || this.token.length === 0){
+          this.props.history.push('/login')
+        }
      }
 
     handleSubmit(){
