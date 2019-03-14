@@ -36,7 +36,7 @@ export const serviceurl = {
     // urlJupiter: 'https://datascience.daf.teamdigitale.test',
     // urlCkan: "https://ckan-geo.daf.teamdigitale.test/dataset/", 
     // urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod",
-    // urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
+    // urlCacher: "https://static.daf.teamdigitale.it/swift/v1/dafstatic/", 
     // domain: ".daf.teamdigitale.test",
     // vocabularyName: "dafvoc-ingestionform-option"
 
@@ -59,7 +59,7 @@ export const serviceurl = {
     urlCkan: "https://ckan-geo.daf.teamdigitale.it/dataset/", 
     urlKatalod: "https://api.daf.teamdigitale.it/daf-semantic-katalod/kb/api/v1",
     urlSemanticValidator: "https://api.daf.teamdigitale.it/daf-semantic-validator/validator",
-    urlCacher: "https://s3-eu-west-1.amazonaws.com/dafimgs/", 
+    urlCacher: "https://static.daf.teamdigitale.it/swift/v1/dafstatic/", 
     domain: ".daf.teamdigitale.it",
     vocabularyName: "dafvoc-ingestionform-option" 
   }
