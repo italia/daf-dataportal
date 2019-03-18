@@ -58,6 +58,8 @@ export default class ListMessages extends Component {
             endDate   : '',
             offset    : ''
         }
+
+        this.handleInputChange = this.handleInputChange.bind(this);
     };
 
     openModal = () => {
@@ -121,6 +123,16 @@ export default class ListMessages extends Component {
                           });
 
       this.hideModal();
+    }
+0
+    handleInputChange(event) {
+      const target = event.target;
+      const value = target.type === 'checkbox' ? target.checked : target.value;
+      const name = target.name;
+  
+      this.setState({
+        [name]: value
+      });
     }
 
     componentDidMount(){
