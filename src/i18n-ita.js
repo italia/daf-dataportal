@@ -49,7 +49,7 @@ export const messages = {
 
         {
             step: 0,
-            titolo: 'Step 1 — Scopri la piattaforma digitale nazionale dati.',
+            titolo: 'Step 1 - Scopri la piattaforma digitale nazionale dati.',
             // descrizione: '&lt;h1&gt;Hi there!&lt;/h1&gt;'
             descrizione: `La piattaforma PDND è aperta a tutti: pa, cittadini e imprese.
             Qui puoi consultare un elenco di risorse sulla PDND (partire da questo …)
@@ -62,7 +62,7 @@ export const messages = {
 
         {
             step: 1,
-            titolo: 'Step 2 —Segnalaci il tuo interesse',
+            titolo: 'Step 2 - Segnalaci il tuo interesse',
             descrizione: `Sei un’amministrazione pubblica o un ente di ricerca e vuoi iniziare ad utilizzare la Piattaforma Digitale Nazionale Dati per condividere dati con altri enti che già la utilizzano o all’interno della tua stessa organizzazione?
  
 
@@ -85,7 +85,7 @@ export const messages = {
         {
             step: 2,
 
-            titolo: 'Step 3 —Conosciamoci',
+            titolo: 'Step 3 - Conosciamoci',
             descrizione: `Concordiamo una webcall per confrontarci su come proseguire, 
             su che tipologia di dati intendete lavorare e se intendete condividere dei dataset con altre organizzazioni.
             In questa sessione vi verrà fatta una demo della piattaforma e delle sue funzionalità`
@@ -136,15 +136,28 @@ export const messages = {
             step: 7,
 
             titolo: 'Step 8 - Crea il tuo primo flusso dati',
-            descrizione: ``
+            descrizione: `Al fine di stabilire un flusso che gestisca e renda fruibile un dataset è necessario eseguire due operazioni:
+
+            • METADATAZIONE: indicare alla PDND le caratteristiche del flusso legato al tuo dataset: attraverso il form di ingestion indica al sistema quali sono le informazioni contenute e le modalità cui cui verrà caricato
+            • CARICAMENTO DATI: caricare il contenuto del dataset che hai precedentemente metadato secondo le modalità scelte nel form di ingestion
+        
+        Nota bene: i dati che intendi caricare devono rispettare i casi d’uso esplicitati nel protocollo d’intesa. Non si devono inserire dati personali.
+        <a href = "https://docs.italia.it/italia/daf/daf-dataportal-it-docs/it/bozza/dataportal-privato/dataset.html"> https://docs.italia.it/italia/daf/daf-dataportal-it-docs/it/bozza/dataportal-privato/dataset.html <a/>
+        `
 
         },
 
         {
             step: 8,
 
-            titolo: 'Step 9 - Condividi i tuoi dati',
-            descrizione: ``
+            titolo: 'Step 9 - Utilizza i tuoi dati',
+            descrizione: `Una volta che i tuoi dataset sono stati metadatati e caricati puoi iniziare ad analizzare i tuoi dati 
+            attraverso gli strumenti interni ed esterni di analisi.
+
+            <a href="https://docs.italia.it/italia/daf/daf-dataportal-it-docs/it/bozza/dataportal-privato/dashboard.html"> https://docs.italia.it/italia/daf/daf-dataportal-it-docs/it/bozza/dataportal-privato/dashboard.html </a>
+            
+          <a href="https://docs.italia.it/italia/daf/daf-dataportal-it-docs/it/bozza/dataportal-privato/api.html"> https://docs.italia.it/italia/daf/daf-dataportal-it-docs/it/bozza/dataportal-privato/api.html </a>
+        `
 
         },
 
@@ -153,12 +166,25 @@ export const messages = {
         {
             step: 9,
 
-            titolo: 'Step 10 - Rimaniamo in contatto',
-            descrizione: `Indicare come segnalarci bug
-    Github
-    Gruppo slack`
+            titolo: 'Step 10 - Condividi i tuoi dati',
+            descrizione: ` Di default il dataset non è visibile a nessuno tranne all’utente editor che lo ha metadatato e caricato.
+            E’ necessario abilitare manualmente la pubblicazione del dataset e la condivisione all’interno dei tuoi workgroup 
+            dell’organizzazione.
+            Nel caso si voglia condividere uno o più dataset con un’altra Pubblica Amministrazione è necessario stipulare una 
+            convenzione tra le parti. A livello di sistema,  sarà cura del Referente Tecnico della Pubblica 
+            Amministrazione Titolare dei dati attuare la configurazione necessaria, seguendo le procedure di condivisione. `
 
-        }
+        },
+
+        {
+            step: 10,
+
+            titolo: 'Step 11 - Segnalaci eventuali malfunzionamenti o features',
+            descrizione: `Indicare come segnalarci bug,
+            Github`
+
+        },
+
 
     ]
 }; 
