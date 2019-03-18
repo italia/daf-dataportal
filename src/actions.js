@@ -1,6 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import { serviceurl } from './config/serviceurl.js'
 
+import { toastr } from 'react-redux-toastr'
+
 // MOCK
 //import page from './data/dataset'
 //import det from './data/datasetdetail'
@@ -719,7 +721,16 @@ export function fetchNewNotifications(user){
       .then(json => {
         dispatch(receiveNewNotifications(json))
         if(json.length > 0){
-          console.log("nuova-notifica")
+          console.log("nuova-notifica",json)
+          json.map((notifica) => {
+              let typeNotification = notifica.notificationtype;
+              if(notifica.notificationtype == 'generic'){
+                typeNotification = 'info';
+              }else if(notifica.notificationtype == 'system'){
+                typeNotification = 'warning';
+              }
+              toastr[typeNotification](notifica.info.title, notifica.info.description);
+          });
           dispatch(fetchNotifications(user, 20))
         }
       })
