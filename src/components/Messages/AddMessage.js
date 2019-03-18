@@ -9,6 +9,7 @@ import {
   ModalFooter
 } from 'react-modal-bootstrap';
 import MessageService from '../../views/Messages/services/MessageService';
+import { messages } from '../../i18n-ita'
 
 const messageService = new MessageService()
 
@@ -36,18 +37,24 @@ export default class AddMessage extends Component {
     });
   }; 
 
-  handleSubmit(e) {
+  saveMessage(e) {
     let dataToPost = {
       title: this.state.title,
-      message: this.state.message,
-      date: this.state.date
+      description: this.state.message,
+      endDate: this.state.date
     }
 
     const response = messageService.saveMessage(dataToPost);
+    response.then(response => response.json())
+            .then((json)=> {
+                toastr.success(messages.label.salvataggio, messages.label.salvataggioOK)
+            })
+            .catch(error => { 
+                console.log('Errore nel salvataggio');  
+                toastr.error(messages.label.errore, error.message);
+            });
 
     this.hideModal();
-
-    toastr.success("OK", "OK")
   }
 
   handleInputChange(event) {
@@ -74,37 +81,37 @@ export default class AddMessage extends Component {
         <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
         <form>
                 <ModalHeader>
+                    <ModalTitle>{messages.label.newMessage}</ModalTitle>
                     <ModalClose onClick={this.hideModal}/>
-                    <ModalTitle></ModalTitle>
                 </ModalHeader>
                 <ModalBody>
                 <div className="form-group">
                     <div className="form-group row">
-                      <label className="col-md-2 form-control-label">Titolo</label>
+                      <label className="col-md-2 form-control-label">{messages.label.titolo}</label>
                       <div className="col-md-8">
-                        <input type="text" className="form-control" name="title" value={this.state.title} onChange={this.handleInputChange} id="title" placeholder="Titolo"/>
+                        <input type="text" className="form-control" name="title" value={this.state.title} onChange={this.handleInputChange} id="title" placeholder={messages.label.titolo}/>
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label className="col-md-2 form-control-label">Messaggio</label>
+                      <label className="col-md-2 form-control-label">{messages.label.message}</label>
                       <div className="col-md-8">
-                        <input type="text" className="form-control"  name="message" value={this.state.message} onChange={this.handleInputChange} id="message" placeholder="Messaggio"/>
+                        <input type="text" className="form-control"  name="message" value={this.state.message} onChange={this.handleInputChange} id="message" placeholder={messages.label.message}/>
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label className="col-md-2 form-control-label">Data</label>
+                      <label className="col-md-2 form-control-label">{messages.label.data}</label>
                       <div className="col-md-2">
-                        <input type="text" className="form-control"  name="date" value={this.state.date} onChange={this.handleInputChange} id="date" placeholder="Data"/>
+                        <input type="text" className="form-control"  name="date" value={this.state.date} onChange={this.handleInputChange} id="date" placeholder={messages.label.data}/>
                       </div>
                     </div>
                 </div>
                 </ModalBody>
                 <ModalFooter>
                     <button className='btn btn-default' type="button" onClick={this.hideModal}>
-                      Chiudi
+                      {messages.label.chiudi}
                     </button>
-                    <button className='btn btn-primary' type="button" onClick={this.handleSubmit.bind(this)} >
-                      Salva
+                    <button className='btn btn-primary' type="button" onClick={this.saveMessage.bind(this)} >
+                      {messages.label.salva}
                     </button>
                 </ModalFooter>
               </form>
