@@ -6,7 +6,6 @@ import Steps, { Step } from 'rc-steps';
 import { messages } from '../../../i18n-ita';
 
 const container = document.getElementById('__react-content');
-// const description = 'Prova';
 
 
 class Guida extends Component {
@@ -16,22 +15,25 @@ class Guida extends Component {
     this.state = {
       currentStep: 0,
       stepTitolo: messages.lineeGuida[0].titolo,
-      stepDescrizione: messages.lineeGuida[0].descrizione
-
+      stepDescrizione: messages.lineeGuida[0].descrizione,
+      step: 0
     }
   }
 
-  nextStep(event) {
-    // console.log('event.target', event.target)
+  nextStep(index) {
+    console.log('event.target', index)
+    if (index >= 0 && index <= messages.lineeGuida.length - 1) {
 
-    this.setState({
-      currentStep: event,
-      stepDescrizione: messages.lineeGuida[event].descrizione
+      this.setState({
+        currentStep: index,
+        stepDescrizione: messages.lineeGuida[index].descrizione
 
-    });
+      });
+    }
   }
 
   render() {
+
     const cs = this.state.currentStep;
 
     return (
@@ -39,10 +41,10 @@ class Guida extends Component {
 
       <div className="container p-4 mt-2">
         <div className="row mt-4">
-        <div className="paragrafo col-12 mx-0"><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
+          <div className="col-12 mx-0"><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
           <div className="col-ms-3 mx-auto p-0">
 
-            <Steps direction="vertical" current={cs}>
+            <Steps direction="vertical" current={this.state.currentStep}>
 
               {
                 messages.lineeGuida.map((e, i) => {
@@ -54,10 +56,20 @@ class Guida extends Component {
             </Steps>
 
           </div>
-          <div className="paragrafo col-7 mx-0" dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} >
+          <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} className="col-7 mx-0 paragrafoG" >
           </div>
+
         </div>
-      </div>   
+        <div>
+
+          {this.state.currentStep < messages.lineeGuida.length - 1 && <button className="btn btn-primary float-right col-md-1" onClick={() => this.nextStep(this.state.currentStep + 1)}>Avanti</button>}
+
+        </div>
+        <div>
+
+          {this.state.currentStep > 0 && <button className="btn btn-primary float-left offset-md-6 col-md-1" onClick={() => this.nextStep(this.state.currentStep - 1)}>Indietro</button>}
+        </div>
+      </div>
 
     )
 
