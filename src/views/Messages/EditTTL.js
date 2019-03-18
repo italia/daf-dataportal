@@ -177,66 +177,71 @@ handleCancellByOne = ( name ) => {
 
   render() {
     return (
-        <div>
-           <div className="form-group">
-                {
-                  this.state.storeTTL.map( (field, index ) => {
-                      return (
-                        <div key={index} className="form-group row">
-                            <label className="col-md-2 form-control-label">{messages.label[field.name]}</label>
-                            <div className="col-md-8">
-                              <div className="form-group row">
-                                {!this.state[this.isInputVisible + field.name] ? 
-                                        <label  className="form-control-label" 
-                                                style={{  cursor:'pointer', 
-                                                          'border-bottom': '1px dotted' }} 
-                                                onClick={()=>{  
-                                                                this.setState({ [this.isInputVisible + field.name] :true })
-                                                              }
-                                                        }>
-                                                    {this.state[field.name]}
-                                        </label>
-                                :
-                                 [
-                                        <div className="col-md-8">
-                                          <input  type        = "text" 
-                                                  className   = "form-control" 
-                                                  name        = { field.name  } 
-                                                  onChange    = { this.handleInputChange      } 
-                                                  placeholder = { messages.label[field.name]  } 
-                                                  value       = { this.state[field.name]  } 
-                                                  />
-                                        </div>,
-                                        <div className="col-md-2">
-                                            <button type="button" 
-                                                    className="btn btn-link" 
-                                                    title={messages.label.salva} 
-                                                    onClick={() => this.handleSaveByOne(field.name)} >
-                                              <i className="fas fa-save fa-lg m-t-2"></i>
-                                            </button>  
-                                            <button type="button" 
-                                                    className="btn btn-link" 
-                                                    title={messages.label.annulla}  
-                                                    onClick={() => this.handleCancellByOne(field.name)} >
-                                              <i className="fas fa-ban fa-lg m-t-2"></i>
-                                            </button>  
-                                        </div>
-                                    ]  
-                              }
-                              </div>          
-                              { this.state[this.labelError+field.name] && <span>{this.state[this.labelError+field.name]}</span> }
-                            </div>
-                        </div>    
-                      )
-                  })
-                } 
-                {/* <div className="form-group row">
-                  <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
-                      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        {messages.label.modifica}
-                    </button>
-                </div> */}
-             </div>   
+        <div className="card">
+          <div className="card-block">
+          {/* <div class="row m-0">
+            <div class="col-5"><label for="example-search-input">{messages.menu.gestioneTTL}</label></div>
+          </div> */}
+            <div className="form-group">
+                  {
+                    this.state.storeTTL.map( (field, index ) => {
+                        return (
+                          <div key={index} className="form-group row">
+                              <label className="col-md-2 form-control-label">{messages.label[field.name]}</label>
+                              <div className="col-md-8">
+                                <div className="form-group row">
+                                  {!this.state[this.isInputVisible + field.name] ? 
+                                          <label  className="form-control-label" 
+                                                  style={{  cursor:'pointer', 
+                                                            'border-bottom': '1px dotted' }} 
+                                                  onClick={()=>{  
+                                                                  this.setState({ [this.isInputVisible + field.name] :true })
+                                                                }
+                                                          }>
+                                                      {this.state[field.name]}
+                                          </label>
+                                  :
+                                  [
+                                          <div className="col-md-8">
+                                            <input  type        = "text" 
+                                                    className   = "form-control" 
+                                                    name        = { field.name  } 
+                                                    onChange    = { this.handleInputChange      } 
+                                                    placeholder = { messages.label[field.name]  } 
+                                                    value       = { this.state[field.name]  } 
+                                                    />
+                                          </div>,
+                                          <div className="col-md-2">
+                                              <button type="button" 
+                                                      className="btn btn-link" 
+                                                      title={messages.label.salva} 
+                                                      onClick={() => this.handleSaveByOne(field.name)} >
+                                                <i className="fas fa-save fa-lg m-t-2"></i>
+                                              </button>  
+                                              <button type="button" 
+                                                      className="btn btn-link" 
+                                                      title={messages.label.annulla}  
+                                                      onClick={() => this.handleCancellByOne(field.name)} >
+                                                <i className="fas fa-ban fa-lg m-t-2"></i>
+                                              </button>  
+                                          </div>
+                                      ]  
+                                }
+                                </div>          
+                                { this.state[this.labelError+field.name] && <span>{this.state[this.labelError+field.name]}</span> }
+                              </div>
+                          </div>    
+                        )
+                    })
+                  } 
+                  {/* <div className="form-group row">
+                    <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
+                        <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                          {messages.label.modifica}
+                      </button>
+                  </div> */}
+              </div> 
+          </div>      
         </div>
     )
   }

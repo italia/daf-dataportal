@@ -50,6 +50,8 @@ export const messages = {
             },
             validazione : {
                 campoObbligatorio       :   "Campo obbligatorio",
-                soloNumeri              :   "Solo Numeri"
+                soloNumeri              :   "Solo Numeri",
+                utenteNoAdmin           :   "l'utente non è system admin",
+                erroreGenerico          :   "errore generico"
             }
 }; 

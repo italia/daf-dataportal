@@ -1,4 +1,5 @@
 import { serviceurl } from '../../../config/serviceurl'
+import { messages } from '../../../i18n-ita'
 
 export default class MessageService {
      
@@ -51,9 +52,9 @@ export default class MessageService {
             if (response.status === 200) {
                 return response;
             } else if (response.status === 401) {
-                throw new Error("l'utente è system admin");
+                throw new Error( messages.validazione.utenteNoAdmin );
             } else if (response.status === 500) {
-                throw new Error("errore generico");
+                throw new Error( messages.validazione.erroreGenerico );
             }else{
                 throw new Error(response.statusText);  
             }
@@ -114,9 +115,9 @@ export default class MessageService {
             if (response.status === 200) {
                 return response;
             } else if (response.status === 401) {
-                throw new Error("l'utente è system admin");
+                throw new Error( messages.validazione.utenteNoAdmin );
             } else if (response.status === 500) {
-                throw new Error("errore generico");
+                throw new Error( messages.validazione.erroreGenerico );
             }else{
                 throw new Error(response.statusText);  
             }
