@@ -29,11 +29,13 @@ export const messages = {
                 gestioneTTL     :   "Gestione TTL"
             },
             label   :   {
+                salva           :   "Salva",    
+                annulla         :   "Annulla",    
                 modifica        :   "Modifica",    
-                Success         :   "Success",
-                Error           :   "Error",
-                Info            :   "Info",
-                System          :   "System",
+                successType     :   "Success",
+                errorType       :   "Error",
+                infoType        :   "Info",
+                systemType      :   "System",
                 salvataggio     :   "Salvataggio",
                 salvataggioOK   :   "Salvataggio effettuato con successo",
                 errore          :   "Errore",

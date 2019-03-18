@@ -34,8 +34,8 @@ export default class MessageService {
         }
     */
     async messageTTL() {
-        // var url = 'http://www.mocky.io/v2/5c823849310000f42f1d1c77'
-        var url = serviceurl.apiURLDatiGov + '/notifications/get/ttl'
+        var url = 'http://www.mocky.io/v2/5c8b586b3600007c068f800b'
+        // var url = serviceurl.apiURLDatiGov + '/notifications/get/ttl'
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -43,7 +43,21 @@ export default class MessageService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        })
+        }).then(function(response) {
+            console.log(response.status)     //=> number 100–599
+            console.log(response.statusText) //=> String
+            console.log(response.headers)    //=> Headers
+            console.log(response.url)        //=> String
+            if (response.status === 200) {
+                return response;
+            } else if (response.status === 401) {
+                throw new Error("l'utente è system admin");
+            } else if (response.status === 500) {
+                throw new Error("errore generico");
+            }else{
+                throw new Error(response.statusText);  
+            }
+          })
 
         return response;
     }
@@ -52,11 +66,17 @@ export default class MessageService {
     [UPDATE TTL NOTIFICHE - NO SYSTEM]
         PUT  /notifications/update/ttl
         body
-        {
-            "infoType": 20,
-            "successType": 20,
-            "errorType": 20
-        }
+
+            [
+                {
+                    "name": "successType",
+                    "value": 14
+                },
+                {
+                    "name": "infoType",
+                    "value": 18
+                }
+            ]
         risposte:
         200: <- ttl aggiornato
         {
@@ -86,7 +106,21 @@ export default class MessageService {
                 'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify(messageTTL)
-        })
+        }).then(function(response) {
+            console.log(response.status)     //=> number 100–599
+            console.log(response.statusText) //=> String
+            console.log(response.headers)    //=> Headers
+            console.log(response.url)        //=> String
+            if (response.status === 200) {
+                return response;
+            } else if (response.status === 401) {
+                throw new Error("l'utente è system admin");
+            } else if (response.status === 500) {
+                throw new Error("errore generico");
+            }else{
+                throw new Error(response.statusText);  
+            }
+          })
         return response;
     }
 
