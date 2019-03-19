@@ -139,7 +139,17 @@ export default class MessageService {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
             body: JSON.stringify(message)
-        })
+        }).then(function(response) {
+            if (response.status === 200) {
+                return response;
+            } else if (response.status === 401) {
+                throw new Error( messages.validazione.utenteNoAdmin );
+            } else if (response.status === 500) {
+                throw new Error( messages.validazione.erroreGenerico );
+            }else{
+                throw new Error(response.statusText);  
+            }
+          })
         return response;
     }
 
@@ -155,7 +165,17 @@ export default class MessageService {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
             body: JSON.stringify(message)
-        })
+        }).then(function(response) {
+            if (response.status === 200) {
+                return response;
+            } else if (response.status === 401) {
+                throw new Error( messages.validazione.utenteNoAdmin );
+            } else if (response.status === 500) {
+                throw new Error( messages.validazione.erroreGenerico );
+            }else{
+                throw new Error(response.statusText);  
+            }
+          })
         return response;
     }
 
@@ -169,8 +189,17 @@ export default class MessageService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        })
-
+        }).then(function(response) {
+            if (response.status === 200) {
+                return response;
+            } else if (response.status === 401) {
+                throw new Error( messages.validazione.utenteNoAdmin );
+            } else if (response.status === 500) {
+                throw new Error( messages.validazione.erroreGenerico );
+            }else{
+                throw new Error(response.statusText);  
+            }
+          })
         return response;
     }
 
@@ -184,8 +213,17 @@ export default class MessageService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        })
-
+        }).then(function(response) {
+            if (response.status === 200) {
+                return response;
+            } else if (response.status === 401) {
+                throw new Error( messages.validazione.utenteNoAdmin );
+            } else if (response.status === 500) {
+                throw new Error( messages.validazione.erroreGenerico );
+            }else{
+                throw new Error(response.statusText);  
+            }
+          })
         return response;
     }
 
@@ -199,8 +237,17 @@ export default class MessageService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        })
-
+        }).then(function(response) {
+            if (response.status === 200) {
+                return response;
+            } else if (response.status === 401) {
+                throw new Error( messages.validazione.utenteNoAdmin );
+            } else if (response.status === 500) {
+                throw new Error( messages.validazione.erroreGenerico );
+            }else{
+                throw new Error(response.statusText);  
+            }
+          })
         return response;
     }
 
