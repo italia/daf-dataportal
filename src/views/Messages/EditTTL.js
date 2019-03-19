@@ -228,7 +228,12 @@ handleCancellByOne = ( name ) => {
                                       ]  
                                 }
                                 </div>          
-                                { this.state[this.labelError+field.name] && <span>{this.state[this.labelError+field.name]}</span> }
+                                { this.state[this.labelError+field.name] && 
+                                   <div className="ml-5 w-100">
+                                        <div className="alert alert-danger" role="alert">
+                                            <i className="fa fa-times-circle fa-lg m-t-2"></i>{this.state[this.labelError+field.name]}
+                                        </div>
+                                    </div>}
                               </div>
                           </div>    
                         )
