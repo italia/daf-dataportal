@@ -145,7 +145,7 @@ export default class MessageService {
 
     async updateMessage(message){
         var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18';
-        // var url = serviceurl.apiURLDatiGov + '/notifications/system/update'
+        // var url = serviceurl.apiURLDatiGov + '/notifications/system/update/{message.offset}'
 
         const response = await fetch(url, {
             method: 'PUT',
