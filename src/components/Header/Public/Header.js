@@ -255,9 +255,13 @@ class Header extends Component {
                 <div className={"dropdown-menu " + (this.state.showMenu ? "show":"")} aria-labelledby="dropdownMenuButton">
                   <Link to={'/missione'} className="dropdown-item text-primary font-lg">Missione</Link>
                   <Link to={'/team'} className="dropdown-item text-primary font-lg">Chi siamo</Link>
-                  <Link to={'/lineeguida'} className="dropdown-item text-primary font-lg">Linee guida</Link>
                 </div>
               </div>
+              </NavItem>
+              <NavItem>
+                <div className={"dropdown " + (this.state.showMenu ? "show" : "")}>
+                  <Link className="nav-link font-weight-bold lead text-white" to={'/gettingstarted'}>Getting started</Link>
+                </div>
               </NavItem>
               <NavItem>
               <div className={"dropdown " + (this.state.community ? "show":"")}>
@@ -270,9 +274,9 @@ class Header extends Component {
                 </div>
               </div>
               </NavItem>
-              <NavItem>
+              {/* <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
-              </NavItem>
+              </NavItem> */}
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Application</Link>
               </NavItem>
@@ -296,7 +300,7 @@ class Header extends Component {
                 <div className={"dropdown-menu " + (this.state.showMenu ? "show":"")} aria-labelledby="dropdownMenuButton">
                   <Link to={'/missione'} className="dropdown-item">Missione</Link>
                   <Link to={'/team'} className="dropdown-item">Chi siamo</Link>
-                  <Link to={'/lineeguida'} className="dropdown-item">Linee guida</Link>
+                  <Link to={'/gettingstarted'} className="dropdown-item">Linee guida</Link>
                 </div>
               </div>
               </NavItem>
@@ -310,9 +314,9 @@ class Header extends Component {
                 </div>
               </div>
               </NavItem>
-              <NavItem>
+              {/* <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
-              </NavItem>
+              </NavItem> */}
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Application</Link>
               </NavItem>

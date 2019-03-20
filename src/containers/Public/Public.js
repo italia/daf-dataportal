@@ -8,7 +8,7 @@ import Footer from '../../components/Footer/Public/Footer'
 //import UserStory from '../../views/UserStory/UserStory'
 import Team from '../../views/Public/Team/Team';
 import Guida from '../../views/Public/Guida/Guida';
-import Partecipa from '../../views/Public/Partecipa/Partecipa';
+// import Partecipa from '../../views/Public/Partecipa/Partecipa';
 import Notizie from '../../views/Public/Notizie/NotizieList';
 import NotizieDett from '../../views/Public/Notizie/NotizieDett';
 import UserStoryList from '../../views/UserStory/components/UserStoryList.jsx';
@@ -65,8 +65,8 @@ class Public extends Component {
                 <Route path="/userstory/list" name="Storie" exact component={UserStoryList}/>
                 <Route path="/userstory/list/:id" name="Dettaglio Storie" exact component={UserStoryView}/>
                 <Route path="/team" name="Chi Siamo" exact component={Team}/>
-                <Route path="/lineeguida" name="Linee Guida" exact component={Guida}/>
-                <Route path="/partecipa" name="Partecipa" exact component={Partecipa}/>
+                <Route path="/gettingstarted" name="Linee Guida" exact component={Guida}/>
+                {/* <Route path="/partecipa" name="Partecipa" exact component={Partecipa}/> */}
                 <Route path="/data-applications" name="Data Applications" exact component={DataApplication}/>
                 <Route path="/faqs" name="Faqs" exact component={Faqs}/>
                 <Route path="/policy" name="Policy" exact component={Policy}/>
