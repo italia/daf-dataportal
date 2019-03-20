@@ -46,7 +46,10 @@ export const messages = {
                 chiudi          :   "Chiudi",
                 salva           :   "Salva",
                 newMessage      :   "Nuovo Messaggio",
-                editMessage     :   "Modifica Messaggio"
+                editMessage     :   "Modifica Messaggio",
+                editMessageOK   :   "Messaggio modificato con successo",
+                deleteMessage   :   "Cancella Messaggio",
+                deleteMessageOK :   "Messaggio cancellato con successo"
             },
             validazione : {
                 campoObbligatorio       :   "Campo obbligatorio",

@@ -95,7 +95,7 @@ export default class ListMessages extends Component {
       const responseFromServer = messageService.deleteMessage(param);
       responseFromServer  .then(response => response.json())
                           .then((json)=> {
-                            toastr.success("Cancellato", "Cancellato");
+                            toastr.success(messages.label.deleteMessage, messages.label.deleteMessageOK);
                           })
                           .catch(error => { 
                               console.log('Errore nella cancellazione');
@@ -115,7 +115,7 @@ export default class ListMessages extends Component {
 
       responseFromServer  .then(response => response.json())
                           .then((json)=> {
-                            toastr.success("Cancellato", "Cancellato");
+                            toastr.success(messages.label.editMessage, messages.label.editMessageOK);
                           })
                           .catch(error => { 
                               console.log('Errore nella cancellazione');
