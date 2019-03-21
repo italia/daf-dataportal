@@ -38,7 +38,7 @@ export const messages = {
                 salvataggioOK   :   "Salvataggio effettuato con successo",
                 errore          :   "Errore",
                 salvataggioKO   :   "Impossibile effettuare il salvataggio",
-                gettingStarted  :   "Getting started with PDND:"
+                gettingStarted  :   "Getting started con PDND"
             },
             validazione : {
                 campoObbligatorio       :   "Campo obbligatorio",
@@ -49,7 +49,7 @@ export const messages = {
 
         {
             step: 0,
-            titolo: 'Scopri la piattaforma digitale nazionale dati',
+            titolo: 'Scopri la PDND',
             descrizione: `La Piattaforma Digitale Nazionale Dati fa parte delle attività previste dal <a href = "https://docs.italia.it/italia/piano-triennale-ict/pianotriennale-ict-doc/it/2019-2021/05_dati-della-pubblica-amministrazione.html#piattaforma-digitale-nazionale-dati-pdnd"> Piano Triennale ICT </a>
             
             atte a valorizzare il patrimonio informativo pubblico nazionale; in quanto tale è aperta a tutti: in primo luogo alle Pubbliche Amministrazioni, ma anche a singoli cittadini, università, enti di ricerca e imprese. L’obiettivo è creare un unico punto di accesso al mondo dei dati della Pubblica Amministrazione.
@@ -105,7 +105,8 @@ export const messages = {
             al fine di giungere alla definizione di un protocollo d’intesa tra l’Amministrazione e il Team per la Trasformazione Digitale, quale strumento giuridico per consentire 
             l’impiego della PDND.
             <br></br>
-            <b>Per saperne di più:</b> Template del protocollo di intesa`
+            <!-- <b>Per saperne di più:</b> Template del protocollo di intesa -->` 
+           
         },
 
 
@@ -121,7 +122,7 @@ export const messages = {
             <br></br>
             <img src="" alt="">
             <br></br>
-            <b> Per saperne di più: </b> Manuale utente - Funzionalità per tipologie di utente`
+            <!-- <b> Per saperne di più: </b> Manuale utente - Funzionalità per tipologie di utente -->`
 
 
         },
@@ -167,7 +168,7 @@ export const messages = {
             Incoraggiamo la condivisione dei dataset con altre Amministrazioni, ma per poterla realizzare è necessario stipulare preventivamente un protocollo d’intesa formale tra le parti 
             sulla base della normativa vigente. Completata questa fase, la condivisione sarà un gioco da ragazzi, la PDND penserà a tutto dietro le quinte!
             <br></br>
-            <b>Per saperne di più:</b> Regole convenzioni + gestione su PDND`
+            <!-- <b>Per saperne di più:</b> Regole convenzioni + gestione su PDND -->`
 
         },
 
@@ -189,7 +190,7 @@ export const messages = {
             La PDND garantisce l’allineamento dei dati su tutte le applicazioni e interfacce integrate.
             <br></br>
 
-            <b>Per saperne di più: </b>`
+            <!-- <b>Per saperne di più: </b> -->`
         },
 
         {
@@ -199,7 +200,7 @@ export const messages = {
             descrizione: `La Piattaforma Digitale Nazionale dei Dati è in continua evoluzione: abbiamo degli obiettivi ambiziosi e ci serve il contributo di tutti per raggiungerli. 
             Vuoi darci una mano? 
             <br></br>
-            <li>  aprendo una issue su <a href="https://github.com/teamdigitale/?utf8=%E2%9C%93&q=daf&type=&language=">uno dei repository GitHub</a> </li>
+            <li>  aprendo una issue su <a href="https://github.com/italia/?utf8=%E2%9C%93&q=daf&type=&language=">uno dei repository GitHub</a> </li>
             <li>  scrivendo sul <a href="https://forum.italia.it/c/daf">Forum Italia </a></li>
             <li>  canale <a href="https://developersitalia.slack.com/messages/C760XQX9Q">#daf</a> sullo <a href="https://slack.developers.italia.it/">Slack di Developers Italia </a> </li> 
             <li>  scrivendo una e-mail all’indirizzo <a href="mailto:pdnd@teamdigitale.governo.it">pdnd@teamdigitale.governo.it.</a> </li>
