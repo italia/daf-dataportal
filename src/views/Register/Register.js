@@ -34,11 +34,13 @@ class Register extends Component {
         password2: '',
         verified: false,
         tooltipPassword: false,
-        tooltipUsername: false
+        tooltipUsername: false,
+        tooltipEmail: false
       }
       
       this.verifyCallback = this.verifyCallback.bind(this)
       this.toggleUsername = this.toggleUsername.bind(this)
+      this.toggleEmail = this.toggleEmail.bind(this)
       this.togglePassword = this.togglePassword.bind(this)
 
   }
@@ -57,6 +59,12 @@ class Register extends Component {
   toggleUsername() {
     this.setState({
       tooltipUsername: !this.state.tooltipUsername
+    });
+  }
+  
+  toggleEmail() {
+    this.setState({
+      tooltipEmail: !this.state.tooltipEmail
     });
   }
 
@@ -115,7 +123,11 @@ class Register extends Component {
                 </div>
                 <div className="row">
                   <div className="form-group col-12 mr-auto">
-                    <label>Email</label>
+                    <label>Email <i className="ml-2 fa text-primary fa-info-circle pointer" id="Email"/>
+                      <Tooltip className="ml-3" placement="top" isOpen={this.state.tooltipEmail} autohide={true} target="Email" toggle={this.toggleEmail}>
+                        Fai parte di una PA? Usa la mail istituzionale per poter essere associato alla tua organizzazione.
+                      </Tooltip>
+                    </label>
                     <input type="text" className="form-control" id="email" value={email} onChange={(e) => {this.setState({email: e.target.value.toLowerCase().trim()})}} placeholder="Email"/>
                   </div>
                 </div>
