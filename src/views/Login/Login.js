@@ -87,7 +87,7 @@ class Login extends Component {
                     if (response.ok) {
                       response.json().then(json => {
                         dispatch(receiveLogin(json))
-                        /* dispatch(addUserOrganization(json.uid)) */
+                        // dispatch(addUserOrganization(json.uid))
                         this.setState({
                             authed: true,
                             loading: false
