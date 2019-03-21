@@ -42,6 +42,7 @@ class Register extends Component {
       
       this.verifyCallback = this.verifyCallback.bind(this)
       this.toggleUsername = this.toggleUsername.bind(this)
+      this.toggleEmail = this.toggleEmail.bind(this)
       this.togglePassword = this.togglePassword.bind(this)
 
   }
@@ -60,6 +61,12 @@ class Register extends Component {
   toggleUsername() {
     this.setState({
       tooltipUsername: !this.state.tooltipUsername
+    });
+  }
+  
+  toggleEmail() {
+    this.setState({
+      tooltipEmail: !this.state.tooltipEmail
     });
   }
 
