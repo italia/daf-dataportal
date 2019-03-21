@@ -35,13 +35,14 @@ class Guida extends Component {
   render() {
 
     const cs = this.state.currentStep;
-
+    window.scrollTo(0,0)
+    
     return (
 
 
       <div className="container p-4 mt-2">
         <div className="row mt-4">
-          <div className="col-12 mx-0"><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
+          <div className="col-12 mb-5 mx-0"><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
           <div className="col-3 mx-0">
 
             <Steps direction="vertical" current={this.state.currentStep} className="pointer">
@@ -54,7 +55,7 @@ class Guida extends Component {
               }
 
             </Steps>
-
+            
           </div>
           <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} className="col-8 mx-0 paragrafoG" >
           </div>
