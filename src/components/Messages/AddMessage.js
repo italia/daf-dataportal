@@ -11,6 +11,11 @@ import {
 import MessageService from '../../views/Messages/services/MessageService';
 import { messages } from '../../i18n-ita'
 
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+
+import "react-datepicker/dist/react-datepicker.css";
+
 const messageService = new MessageService()
 
 export default class AddMessage extends Component {
@@ -20,10 +25,11 @@ export default class AddMessage extends Component {
       isOpen: false,
       title: '',
       message: '',
-      date: ''
+      date: moment()
    }
 
    this.handleInputChange = this.handleInputChange.bind(this);
+   this.handleDateChange = this.handleDateChange.bind(this);
   }
   openModal = () => {
     this.setState({
@@ -41,7 +47,7 @@ export default class AddMessage extends Component {
     let dataToPost = {
       title: this.state.title,
       description: this.state.message,
-      endDate: this.state.date
+      endDate: moment(this.state.date).format('YYYY-MM-DD')+"_00:00:00"
     }
 
     const response = messageService.saveMessage(dataToPost);
@@ -58,12 +64,19 @@ export default class AddMessage extends Component {
   }
 
   handleInputChange(event) {
+    console.log(event)
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
       [name]: value
+    });
+  }
+
+  handleDateChange(dateInput) {
+    this.setState({
+      date: dateInput
     });
   }
 
@@ -101,7 +114,13 @@ export default class AddMessage extends Component {
                     <div className="form-group row">
                       <label className="col-md-2 form-control-label">{messages.label.data}</label>
                       <div className="col-md-2">
-                        <input type="text" className="form-control"  name="date" value={this.state.date} onChange={this.handleInputChange} id="date" placeholder={messages.label.data}/>
+                        {/* <input type="text" className="form-control"  name="date" value={this.state.date} onChange={this.handleInputChange} id="date" placeholder={messages.label.data}/> */}
+                      
+                        <DatePicker
+                            name="date"
+                            selected={this.state.date}
+                            onChange={this.handleDateChange}
+                        />
                       </div>
                     </div>
                 </div>

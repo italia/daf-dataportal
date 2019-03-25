@@ -11,6 +11,11 @@ import {
 import MessageService from '../../views/Messages/services/MessageService';
 import { toastr } from 'react-redux-toastr'
 import { messages } from '../../i18n-ita'
+
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+
+import "react-datepicker/dist/react-datepicker.css";
   
 const messageService = new MessageService()
 
@@ -35,7 +40,10 @@ export default class ListMessages extends Component {
                 },
                 {
                     Header: "Data",
-                    accessor: "endDate"
+                    id: "endDate",
+                    accessor: d => {
+                      return moment(d.endDate, "YYYY-MM-DD_HH:mm:ss").format("DD/MM/YYYY")
+                    }
                 },
                 {
                   accessor: "offset",
@@ -55,11 +63,12 @@ export default class ListMessages extends Component {
             isLoading : true,
             title     : '',
             message   : '',
-            endDate   : '',
+            endDate   : moment(),
             offset    : ''
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
     };
 
     openModal = () => {
@@ -78,10 +87,11 @@ export default class ListMessages extends Component {
       const detailMessage = messageService.detailMessage(param);
       detailMessage .then(response => response.json())
                     .then((json)=> {
+                      console.log(json.endDate)
                       this.setState({
                         title   : json.info.title,
                         message : json.info.description,
-                        endDate : json.endDate
+                        endDate : moment(json.endDate, "YYYY-MM-DD_HH:mm:ss")
                       })
                       this.openModal();
                     })
@@ -107,7 +117,7 @@ export default class ListMessages extends Component {
       let dataToPost = {
         title   : this.state.title,
         message : this.state.message,
-        endDate : this.state.endDate,
+        endDate : moment(this.state.endDate).format('YYYY-MM-DD')+"_00:00:00",
         offset  : this.state.offset
     }
 
@@ -124,7 +134,7 @@ export default class ListMessages extends Component {
 
       this.hideModal();
     }
-0
+
     handleInputChange(event) {
       const target = event.target;
       const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -135,11 +145,18 @@ export default class ListMessages extends Component {
       });
     }
 
+    handleDateChange(dateInput) {
+      this.setState({
+        endDate: dateInput
+      });
+    }
+
     componentDidMount(){
         messageService
         .listMessages()
         .then(response => response.json())
         .then((json)=> {
+
           this.setState({ jsonPreview : json, isLoading : false })
         })
         .catch(error => { 
@@ -181,7 +198,13 @@ export default class ListMessages extends Component {
                     <div className="form-group row">
                       <label className="col-md-2 form-control-label">{messages.label.data}</label>
                       <div className="col-md-2">
-                        <input type="text" className="form-control"  name="endDate" value={this.state.endDate} onChange={this.handleInputChange} id="endDate" placeholder="Data"/>
+                        {/* <input type="text" className="form-control"  name="endDate" value={this.state.endDate} onChange={this.handleInputChange} id="endDate" placeholder="Data"/> */}
+                      
+                        <DatePicker
+                            name="endDate"
+                            selected={this.state.endDate}
+                            onChange={this.handleDateChange}
+                        />
                       </div>
                     </div>
                 </div>
@@ -197,6 +220,6 @@ export default class ListMessages extends Component {
               </form>
             </Modal>
        </div>
-    )
+    );
   }
 }

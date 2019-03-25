@@ -180,7 +180,7 @@ export default class MessageService {
     }
 
     async listMessages() {
-        var url = 'http://www.mocky.io/v2/5c877d0c32000024103bd24a?mocky-delay=2000ms'
+        var url = 'http://www.mocky.io/v2/5c98d8833200004d00d9063e?mocky-delay=2000ms'
         // var url = serviceurl.apiURLDatiGov + '/notifications/get-all'
         const response = await fetch(url, {
             method: 'GET',
@@ -204,7 +204,7 @@ export default class MessageService {
     }
 
     async detailMessage(message) {
-        var url = 'http://www.mocky.io/v2/5c87874b320000ca0e3bd2a2'
+        var url = 'http://www.mocky.io/v2/5c98db403200002c00d90653'
         // var url = serviceurl.apiURLDatiGov + '/notifications/system/{message.offset}'
         const response = await fetch(url, {
             method: 'GET',
