@@ -35,8 +35,8 @@ export default class MessageService {
         }
     */
     async messageTTL() {
-        var url = 'http://www.mocky.io/v2/5c8b586b3600007c068f800b'
-        // var url = serviceurl.apiURLDatiGov + '/notifications/get/ttl'
+        // var url = 'http://www.mocky.io/v2/5c8b586b3600007c068f800b'
+        var url = serviceurl.apiURLDatiGov + '/notifications/get/ttl'
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -128,8 +128,8 @@ export default class MessageService {
     //############# MESSAGGI (system) #############
 
     async saveMessage(message){
-        var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18';
-        // var url = serviceurl.apiURLDatiGov + '/notifications/system/save'
+        // var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18';
+        var url = serviceurl.apiURLDatiGov + '/notifications/system/save'
 
         const response = await fetch(url, {
             method: 'POST',
@@ -154,8 +154,8 @@ export default class MessageService {
     }
 
     async updateMessage(message){
-        var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18';
-        // var url = serviceurl.apiURLDatiGov + '/notifications/system/update/{message.offset}'
+        // var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18';
+        var url = serviceurl.apiURLDatiGov + '/notifications/system/update/'+message.offset
 
         const response = await fetch(url, {
             method: 'PUT',
@@ -180,8 +180,8 @@ export default class MessageService {
     }
 
     async listMessages() {
-        var url = 'http://www.mocky.io/v2/5c98d8833200004d00d9063e?mocky-delay=2000ms'
-        // var url = serviceurl.apiURLDatiGov + '/notifications/get-all'
+        // var url = 'http://www.mocky.io/v2/5c98d8833200004d00d9063e?mocky-delay=2000ms'
+        var url = serviceurl.apiURLDatiGov + '/notifications/system/get/all'
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -204,8 +204,8 @@ export default class MessageService {
     }
 
     async detailMessage(message) {
-        var url = 'http://www.mocky.io/v2/5c98db403200002c00d90653'
-        // var url = serviceurl.apiURLDatiGov + '/notifications/system/{message.offset}'
+        // var url = 'http://www.mocky.io/v2/5c98db403200002c00d90653'
+        var url = serviceurl.apiURLDatiGov + '/notifications/system/'+message.offset
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -228,8 +228,8 @@ export default class MessageService {
     }
 
     async deleteMessage(message) {
-        var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18?mocky-delay=2000ms'
-        // var url = serviceurl.apiURLDatiGov + '/notifications/system/{message.offset}'
+        // var url = 'http://www.mocky.io/v2/5c824ed9310000941f1d1d18?mocky-delay=2000ms'
+        var url = serviceurl.apiURLDatiGov + '/notifications/system/'+message.offset
         const response = await fetch(url, {
             method: 'DELETE',
             headers: {
