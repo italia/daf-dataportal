@@ -54,6 +54,7 @@ export default class AddMessage extends Component {
     response.then(response => response.json())
             .then((json)=> {
                 toastr.success(messages.label.salvataggio, messages.label.salvataggioOK)
+                this.loadData()
             })
             .catch(error => { 
                 console.log('Errore nel salvataggio');  
@@ -77,6 +78,20 @@ export default class AddMessage extends Component {
   handleDateChange(dateInput) {
     this.setState({
       date: dateInput
+    });
+  }
+
+  loadData() {
+    messageService
+    .listMessages()
+    .then(response => response.json())
+    .then((response)=> {
+
+      this.setState({ jsonPreview : response, isLoading : false })
+    })
+    .catch(error => { 
+        console.log('Errore nel recupero dei dati');
+        toastr.error(messages.label.errore, error.message);
     });
   }
 

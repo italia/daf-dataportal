@@ -91,7 +91,8 @@ export default class ListMessages extends Component {
                       this.setState({
                         title   : json.info.title,
                         message : json.info.description,
-                        endDate : moment(json.endDate, "YYYY-MM-DD_HH:mm:ss")
+                        endDate : moment(json.endDate, "YYYY-MM-DD_HH:mm:ss"),
+                        offset  : json.offset
                       })
                       this.openModal();
                     })
@@ -106,6 +107,7 @@ export default class ListMessages extends Component {
       responseFromServer  .then(response => response.json())
                           .then((json)=> {
                             toastr.success(messages.label.deleteMessage, messages.label.deleteMessageOK);
+                            this.loadData()
                           })
                           .catch(error => { 
                               console.log('Errore nella cancellazione');
@@ -126,6 +128,7 @@ export default class ListMessages extends Component {
       responseFromServer  .then(response => response.json())
                           .then((json)=> {
                             toastr.success(messages.label.editMessage, messages.label.editMessageOK);
+                            this.loadData()
                           })
                           .catch(error => { 
                               console.log('Errore nella cancellazione');
@@ -152,17 +155,21 @@ export default class ListMessages extends Component {
     }
 
     componentDidMount(){
-        messageService
-        .listMessages()
-        .then(response => response.json())
-        .then((json)=> {
+       this.loadData()
+    }
 
-          this.setState({ jsonPreview : json, isLoading : false })
-        })
-        .catch(error => { 
-            console.log('Errore nel recupero dei dati');
-            toastr.error(messages.label.errore, error.message);
-        });
+    loadData() {
+      messageService
+      .listMessages()
+      .then(response => response.json())
+      .then((response)=> {
+
+        this.setState({ jsonPreview : response, isLoading : false })
+      })
+      .catch(error => { 
+          console.log('Errore nel recupero dei dati');
+          toastr.error(messages.label.errore, error.message);
+      });
     }
 
     render() {

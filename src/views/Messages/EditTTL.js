@@ -142,7 +142,7 @@ class EditTTL extends Component {
           const objUpdate =[
                               {
                                   "name": name,
-                                  "value": this.state[name]
+                                  "value": parseInt(this.state[name])
                               }
                           ];
           const response = messageService.updateMessageTTL( objUpdate );
