@@ -11,11 +11,12 @@ import Header from './components/Header'
 import App from './InfinityScrollWidgets/App'
 import { isPublic } from '../../utility'
 import { loadWidgets, saveDatastory, getDatastory, deleteDatastory, receiveDatastory } from '../../actions'
+import ModalWysiwig from './components/ModalWysiwig';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function getLayoutHeight(height){
-  return Math.floor(((height + 100)/100)+1)
+  return Math.floor(((height + 110)/110))
 }
 
 function checkEditMode(location){
@@ -35,6 +36,8 @@ class Dashboard extends Component{
       readOnly: !checkEditMode(window.location.hash),
       widgets: [],
       isOpen: false,
+      isEditorOpen: false,
+      editingWidget: {},
       loading: true,
       gridLayout: {},
       keys: this.props.datastory && this.props.datastory.widgets?this.props.datastory.widgets:[], 
@@ -53,6 +56,7 @@ class Dashboard extends Component{
     this.handleChangeTitle = this.handleChangeTitle.bind(this)
     this.handleChangeSubTitle = this.handleChangeSubTitle.bind(this)
     this.handleChangeText = this.handleChangeText.bind(this)
+    this.editTextToggle = this.editTextToggle.bind(this)
     this.handleHeight = this.handleHeight.bind(this)
     this.onDelete = this.onDelete.bind(this)
     this.onStatusChange = this.onStatusChange.bind(this)
@@ -63,7 +67,7 @@ class Dashboard extends Component{
     layouts.forEach(element => {
       if(element.i.indexOf('textwidget')>-1){
         var elemH = document.getElementById(element.i+'element')?document.getElementById(element.i+'element').offsetHeight:0
-        element.h = getLayoutHeight(elemH)
+        element.h = element.h>getLayoutHeight(elemH)?element.h:getLayoutHeight(elemH)
       }
     });
     
@@ -260,8 +264,13 @@ class Dashboard extends Component{
     keys[pos].text = value
 
     this.setState({
-      modified: true
+      modified: true,
+      isEditorOpen: false,
+      editingWidget: {},
+      loading: true
     })
+
+    setTimeout(()=>this.setState({loading: false}), 100)
   }
 
   removeBox(id){
@@ -415,11 +424,22 @@ class Dashboard extends Component{
     }else{
       this.props.history.push('/private/datastory/list/'+id+'/edit')
     }
-    setTimeout(()=>this.setState({loading: false}), 1000)
+    setTimeout(()=>this.setState({loading: false}), 500)
+  }
+
+  editTextToggle(identifier, text){
+
+    this.setState({
+      isEditorOpen: true,
+      editingWidget: {
+        'id': identifier,
+        'text': text
+      }
+    })
   }
 
   render(){
-    const { gridLayout, keys, widgets, isOpen, title, subtitle, id, status, loading } = this.state
+    const { gridLayout, keys, widgets, isOpen, title, subtitle, id, status, loading, isEditorOpen } = this.state
     const { datastory, isFetching } = this.props
 
     return (
@@ -430,6 +450,12 @@ class Dashboard extends Component{
           onRequestClose={this.onRequestClose}
           onWidgetSelect={this.newBox}
         />
+        {isEditorOpen && <ModalWysiwig
+          isEditorOpen={isEditorOpen}
+          widget={this.state.editingWidget}
+          onClose={()=>this.setState({isEditorOpen: false, editingWidget: {}})}
+          onSave={this.handleChangeText}
+        />}
         { (datastory && Object.keys(datastory).length>0) && <div className="container">
           <Header
             status={status}
@@ -465,7 +491,7 @@ class Dashboard extends Component{
             className="layout"
             isDraggable={!this.state.readOnly}
             isResizable={!this.state.readOnly}
-            rowHeight={100}
+            rowHeight={110}
             cols={{ lg: 12, md: 12}}
             breakpoints={{lg: 1200, md: 960}}
             layouts={gridLayout}
@@ -481,7 +507,7 @@ class Dashboard extends Component{
                     <button className="btn btn-link text-primary ml-auto" onClick={this.removeBox.bind(this, widget.i)}><i className="fa fa-times"/></button>
                   </div>}
                   { keys[pos].viz_type!=="textwidget"&&<IframeWidget identifier={widget.i} height="95%" url={keys[pos].widget_url}/>}
-                  { keys[pos].viz_type==="textwidget"&&<TextWidget handleHeight={this.handleHeight} text={keys[pos].text} identifier={widget.i} onSave={this.handleChangeText} readOnly={this.state.readOnly}/>}
+                  { keys[pos].viz_type==="textwidget"&&<TextWidget handleHeight={this.handleHeight} text={keys[pos].text} identifier={widget.i} edit={this.editTextToggle} readOnly={this.state.readOnly}/>}
                 </div>
               )
             })}
