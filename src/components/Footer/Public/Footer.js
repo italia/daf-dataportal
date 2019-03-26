@@ -24,10 +24,13 @@ class Footer extends Component {
               <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-footer"><Link to={'/team'}>Chi Siamo</Link></li>
                 <li className="list-group-item bg-footer"><Link to={'/missione'}>Missione</Link></li>
-                <li className="list-group-item bg-footer"><Link to={'/lineeguida'}>Linee guida</Link></li>
+                <li className="list-group-item bg-footer"><Link to={'/gettingstarted'}>Getting started</Link></li>
                 <li className="list-group-item bg-footer"><Link to={'/private'}>Area privata e strumenti</Link></li>
               </ul>
             </div>
+
+
+
             <div className="mt-3 col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">DAF Community</h4>
               <ul className="list-group list-group-flush">
@@ -43,7 +46,7 @@ class Footer extends Component {
               <h4 className="text-white font-weight-bold mb-3">Open data in Italia</h4>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-footer"><Link to={'/dataset/list'}>Il catalogo dei dataset</Link></li>
-                <li className="list-group-item bg-footer"><Link to={'/partecipa'}>Partecipa</Link></li>
+                {/* <li className="list-group-item bg-footer"><Link to={'/partecipa'}>Partecipa</Link></li> */}
               </ul>
             </div>
             <div className="mt-3 col-12 col-sm-3">

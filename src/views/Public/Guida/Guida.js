@@ -14,19 +14,19 @@ class Guida extends Component {
     this.nextStep = this.nextStep.bind(this)
     this.state = {
       currentStep: 0,
-      stepTitolo: messages.lineeGuida[0].titolo,
-      stepDescrizione: messages.lineeGuida[0].descrizione,
+      stepTitolo: messages.gettingStarted[0].titolo,
+      stepDescrizione: messages.gettingStarted[0].descrizione,
       step: 0
     }
   }
 
   nextStep(index) {
     console.log('event.target', index)
-    if (index >= 0 && index <= messages.lineeGuida.length - 1) {
+    if (index >= 0 && index <= messages.gettingStarted.length - 1) {
 
       this.setState({
         currentStep: index,
-        stepDescrizione: messages.lineeGuida[index].descrizione
+        stepDescrizione: messages.gettingStarted[index].descrizione
 
       });
     }
@@ -35,39 +35,44 @@ class Guida extends Component {
   render() {
 
     const cs = this.state.currentStep;
-
+    window.scrollTo(0,0)
+    
     return (
 
 
       <div className="container p-4 mt-2">
         <div className="row mt-4">
-          <div className="col-12 mx-0"><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
-          <div className="col-ms-3 mx-auto p-0">
+          <div className="col-12 mb-5 mx-0"><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
+          <div className="col-3 mx-0">
 
-            <Steps direction="vertical" current={this.state.currentStep}>
+            <Steps direction="vertical" current={this.state.currentStep} className="pointer">
 
               {
-                messages.lineeGuida.map((e, i) => {
-                  return (<Step key={i} title={messages.lineeGuida[i].titolo} onClick={() => this.nextStep(i)} />)
+                messages.gettingStarted.map((e, i) => {
+                  return (<Step key={i} title={messages.gettingStarted[i].titolo} onClick={() => this.nextStep(i)} />)
                 })
 
               }
 
             </Steps>
-
+            
           </div>
-          <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} className="col-7 mx-0 paragrafoG" >
+          <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} className="col-8 mx-0 paragrafoG" >
           </div>
 
         </div>
-        <div>
+        <div className="row mt-4">
+          <div className="col-3 mx-0">
 
-          {this.state.currentStep < messages.lineeGuida.length - 1 && <button className="btn btn-primary float-right col-md-1" onClick={() => this.nextStep(this.state.currentStep + 1)}>Avanti</button>}
+          </div>
+          <div className="col-8 mx-0" >
 
-        </div>
-        <div>
 
-          {this.state.currentStep > 0 && <button className="btn btn-primary float-left offset-md-6 col-md-1" onClick={() => this.nextStep(this.state.currentStep - 1)}>Indietro</button>}
+            {this.state.currentStep < messages.gettingStarted.length - 1 && <button className="btn btn-primary float-right" onClick={() => this.nextStep(this.state.currentStep + 1)}>Avanti</button>}
+
+            {this.state.currentStep > 0 && <button className="btn btn-primary float-left" onClick={() => this.nextStep(this.state.currentStep - 1)}>Indietro</button>}
+
+          </div>
         </div>
       </div>
 

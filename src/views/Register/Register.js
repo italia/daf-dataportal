@@ -19,6 +19,8 @@ function setSuccessMsg(msg) {
   }
 }
 
+
+
 class Register extends Component {
   constructor(props) {
       super(props);
@@ -35,7 +37,7 @@ class Register extends Component {
         verified: false,
         tooltipPassword: false,
         tooltipUsername: false,
-        tooltipEmail: false
+        isMailValid: true,
       }
       
       this.verifyCallback = this.verifyCallback.bind(this)
@@ -73,6 +75,19 @@ class Register extends Component {
       tooltipPassword: !this.state.tooltipPassword
     });
   }
+
+  validateFormEmail (email) {
+        
+    if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
+        this.setState({
+            isMailValid: true
+        })
+    }else{
+        this.setState({
+            isMailValid: false
+        })
+    }
+}
 
   verifyCallback(response){
     console.log(response)
@@ -123,12 +138,12 @@ class Register extends Component {
                 </div>
                 <div className="row">
                   <div className="form-group col-12 mr-auto">
-                    <label>Email <i className="ml-2 fa text-primary fa-info-circle pointer" id="Email"/>
-                      <Tooltip className="ml-3" placement="top" isOpen={this.state.tooltipEmail} autohide={true} target="Email" toggle={this.toggleEmail}>
-                        Fai parte di una PA? Usa la mail istituzionale per poter essere associato alla tua organizzazione.
-                      </Tooltip>
-                    </label>
-                    <input type="text" className="form-control" id="email" value={email} onChange={(e) => {this.setState({email: e.target.value.toLowerCase().trim()})}} placeholder="Email"/>
+                    <label>Email</label>
+                    <input type="text" className="form-control" id="email" value={email} onChange={(e) => {this.setState({email: e.target.value.toLowerCase().trim()}); this.validateFormEmail( e.target.value.toLowerCase().trim() )}} placeholder="Email"/>
+                    {!this.state.isMailValid && <div className="alert alert-danger" role="alert"> Indirizzo Email non corretto
+                </div>
+                }
+                  {/* <input type="text" className="form-control" id="email" value={email} onChange={(e) => {this.setState({email: e.target.value.toLowerCase().trim()})}} placeholder="Email"/> */}
                   </div>
                 </div>
                 <div className="row">
