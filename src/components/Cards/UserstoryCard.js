@@ -15,14 +15,14 @@ class UserstoryCard extends Component {
         this.state = {
             open: false,
             dropdownStyle: {width: '261px', left: 'auto', right: '0'},
-            published: props.story.published,
+            published: props.story.status,
             saving: false
         }
     }
 
     saveStory(status){
         const { story } = this.props
-        story.published = status
+        story.status = status
         let response = userStoryService.save(story, true)
         this.setState({
             saving: true,
