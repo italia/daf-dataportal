@@ -26,6 +26,10 @@ function checkEditMode(location){
     return false
 }
 
+function sharable(widgets){
+  return !(widgets.filter(elem=> elem.pvt===true).length > 0)
+}
+
 class Dashboard extends Component{
   constructor(props){
     super(props)
@@ -466,6 +470,7 @@ class Dashboard extends Component{
             org={datastory.org}
             editToggle={this.editToggle.bind(this)}
             onSave={this.onSave}
+            sharable={sharable(keys)}
           />
           <SectionTitle readonly={this.state.readOnly} title="Titolo"/>
           <TextEditor

@@ -101,7 +101,7 @@ class Header extends Component{
                           </div>
                       </div>
                   </button>
-                  {(isEditor(loggedUser) || isOrgAdmin(loggedUser, this.props.org)) && <button className="dropdown-item bg-light b-l-open" onClick={onStatusChange.bind(this, 2)}>
+                  {(this.props.sharable && (isEditor(loggedUser) || isOrgAdmin(loggedUser, this.props.org))) && <button className="dropdown-item bg-light b-l-open" onClick={onStatusChange.bind(this, 2)}>
                   
                       <div className="row">
                           <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faGlobe} className="mx-2"/></h5>
