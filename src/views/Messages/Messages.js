@@ -62,7 +62,7 @@ export default class Messages extends Component { //PADRE
          isLoading : true,
          isOpenClose : false,
          title       : '',
-         message     : '',
+         description : '',
          endDate     : moment(moment()).add(1, 'days'),
          offset      : ''
       }
@@ -91,15 +91,26 @@ export default class Messages extends Component { //PADRE
     saveMessage = () => {
       let dataToPost = {
         title: this.state.title,
-        description: this.state.message,
+        description: this.state.description,
         endDate: moment(this.state.endDate).format('YYYY-MM-DD')+"_00:00:00"
       }
-  
+      let that = this;
       const response = messageService.saveMessage(dataToPost);
       response.then(response => response.json())
               .then((json)=> {
+                  this.setState({
+                    isLoading: true
+                  })
+
                   toastr.success(messages.label.salvataggio, messages.label.salvataggioOK)
-                  this.loadData()
+                  
+                  setTimeout(function(){
+                    that.loadData()
+                    that.setState({
+                        isLoading: false
+                     })
+                  }, 1000);
+                  
               })
               .catch(error => { 
                   console.log('Errore nel salvataggio');  
@@ -111,17 +122,30 @@ export default class Messages extends Component { //PADRE
 
     saveEditMessage(e) {
       let dataToPost = {
-        title   : this.state.title,
-        message : this.state.message,
-        endDate : moment(this.state.endDate).format('YYYY-MM-DD')+"_00:00:00",
-        offset  : this.state.offset
+        title       : this.state.title,
+        description : this.state.description,
+        endDate     : moment(this.state.endDate).format('YYYY-MM-DD')+"_00:00:00",
+        offset      : this.state.offset
       }
       
       const responseFromServer = messageService.updateMessage(dataToPost);
-      
+      let that = this;
       responseFromServer  .then(response => response.json())
                           .then((json)=> {
-         toastr.success(messages.label.editMessage, messages.label.editMessageOK);
+
+        this.setState({
+          isLoading: true
+        })
+
+        toastr.success(messages.label.editMessage, messages.label.editMessageOK);
+        
+        setTimeout(function(){
+          that.loadData() 
+          that.setState({
+            isLoading: false
+          })
+        }, 1000);
+        
       })
       .catch(error => { 
         console.log('Errore nella cancellazione');
@@ -137,10 +161,10 @@ export default class Messages extends Component { //PADRE
                     .then((json)=> {
                       console.log(json.endDate)
                       this.setState({
-                        title   : json.info.title,
-                        message : json.info.description,
-                        endDate : moment(json.endDate, "YYYY-MM-DD_HH:mm:ss"),
-                        offset  : json.offset
+                        title       : json.info.title,
+                        description : json.info.description,
+                        endDate     : moment(json.endDate, "YYYY-MM-DD_HH:mm:ss"),
+                        offset      : json.offset
                       })
                       this.openCloseModal(true);
                     })
@@ -159,10 +183,10 @@ export default class Messages extends Component { //PADRE
 
   newMessage = () => {
     this.setState({
-      title   : '',
-      message : '',
-      endDate : moment(moment()).add(1, 'days'),
-      offset  : ''
+      title       : '',
+      description : '',
+      endDate     : moment(moment()).add(1, 'days'),
+      offset      : ''
     })
     this.openCloseModal(true);
   }
@@ -226,7 +250,7 @@ export default class Messages extends Component { //PADRE
                     <div className="form-group row">
                       <label className="col-md-2 form-control-label">{messages.label.message}</label>
                       <div className="col-md-8">
-                        <input type="text" className="form-control"  name="message" value={this.state.message} onChange={this.handleInputChange} id="message" placeholder={messages.label.message}/>
+                        <input type="text" className="form-control"  name="description" value={this.state.description} onChange={this.handleInputChange} id="description" placeholder={messages.label.message}/>
                       </div>
                     </div>
                     <div className="form-group row">
