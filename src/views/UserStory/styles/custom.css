@@ -32,7 +32,7 @@
   border: none;
   outline: none;
   color: rgba(0,0,0,.8);
-  font-family: medium-content-sans-serif-font,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif;
+  /* font-family: medium-content-sans-serif-font,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif; */
 }
 
 .text-editor-title {

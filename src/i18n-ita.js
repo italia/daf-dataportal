@@ -219,7 +219,7 @@ export const messages = {
                     <br></br>
                     <b>Per saperne di più:</b> <a href="https://docs.italia.it/italia/daf/daf-piano-di-sviluppo/it/bozza/">Piano di sviluppo</a> e <a href="https://docs.italia.it/italia/daf/daf-docs/en/bozza/">Developer Documentation</a>`
         
-                },
+                }
         
         
             ]

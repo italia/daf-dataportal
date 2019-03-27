@@ -18,13 +18,7 @@ class TextWidget extends Component {
       editorState: undefined,
       oldeditorState: undefined
     }
-    
-    const contentBlock = props.text?htmlToDraft(props.text):undefined;
-    if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-      const editorState = EditorState.createWithContent(contentState);
-      this.state.editorState = editorState
-    }
+
     this.save = this.save.bind(this)
     this.close = this.close.bind(this)
     this.onEditorStateChange = this.onEditorStateChange.bind(this)
@@ -68,10 +62,9 @@ class TextWidget extends Component {
   }
 
   edit() {
-    this.setState({
-      edit: true,
-      oldeditorState: this.state.editorState
-    })
+    const { edit, text, identifier } = this.props
+  
+    edit(identifier, text)
   }
 
   close() {
@@ -83,28 +76,28 @@ class TextWidget extends Component {
   }
 
   render() {
-    const { editorState } = this.state;
-    var toolbar= {
-      options: ['inline', 'blockType', 'list', 'link', 'history'],
-      inline: {
-        options: ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript'],
-      },
-      blockType: {
-        inDropdown: true,
-        options: ['Normal', 'H3', 'Blockquote', 'Code'],
+    const { text } = this.props;
+      
+    var editableProps = {}
+
+    if(!this.props.readOnly){
+      editableProps = {
+        className: "pointer",
+        title: "Clicca qui per modificare il testo",
+        onClick: this.edit.bind(this)
       }
     }
-    var text = editorState?draftToHtml(convertToRaw(editorState.getCurrentContent())).replaceAll('<p></p>','<br></br>'):''
+    
     return (
     <div id={this.props.identifier+"element"} className="x_content">
         {!this.state.edit && 
           <div>
-            <div dangerouslySetInnerHTML={{__html: text}}></div>
+            <div {...editableProps} dangerouslySetInnerHTML={{__html: ((this.props.readOnly || (text && text.length > 0)) ? text : '<i>Clicca qui per inserire il testo</i>')}}></div>
             {
-              !this.props.readOnly &&
-              <div className="mt-20">
-                <button onClick={this.edit.bind(this)} type="button" className="btn btn-link" >Edita testo</button>
-              </div>
+              // !this.props.readOnly &&
+              // <div className="mt-20">
+              //   <button onClick={this.edit.bind(this)} type="button" className="btn btn-link" >Edita testo</button>
+              // </div>
             }
           </div>
         }
