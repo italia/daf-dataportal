@@ -15,14 +15,14 @@ class UserstoryCard extends Component {
         this.state = {
             open: false,
             dropdownStyle: {width: '261px', left: 'auto', right: '0'},
-            published: props.story.published,
+            published: props.story.status,
             saving: false
         }
     }
 
     saveStory(status){
         const { story } = this.props
-        story.published = status
+        story.status = status
         let response = userStoryService.save(story, true)
         this.setState({
             saving: true,
@@ -76,7 +76,7 @@ class UserstoryCard extends Component {
                     </div>
                     <div className="card-body p-0">
                         <div className="title-dash">
-                            <Link to={!isPublic()?"/private/userstory/list/" + story.id:"/userstory/list/" + story.id}>
+                            <Link to={!isPublic()?"/private/datastory/list/" + story.id:"/datastory/list/" + story.id}>
                                 <h3 className="card-title text-primary">{story.title}</h3>
                             </Link>
                         </div>

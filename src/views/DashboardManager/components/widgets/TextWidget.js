@@ -14,6 +14,9 @@
 
 import React, { Component } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 require('medium-editor/dist/css/medium-editor.css');
@@ -24,36 +27,42 @@ class TextWidget extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state= {
+      editorState: undefined
+    }
     
-    this.state = {
-      text: props.text
-    };
+    const contentBlock = props.text?htmlToDraft(props.text):undefined;
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+      const editorState = EditorState.createWithContent(contentState);
+      this.state.editorState = editorState
+    }
     this.save = this.save.bind(this)
     this.close = this.close.bind(this)
     this.onEditorStateChange = this.onEditorStateChange.bind(this)
   }
 
-  onEditorStateChange = (text) => {
+  onEditorStateChange = (editorState) => {
     const { identifier, onChange } = this.props
     
-    onChange(identifier)
+    // onChange(identifier)
 
     this.setState({
-      text: text
+      editorState
     });
   };
 
   save() {
-    //let html = "";
-    //if (this.state.editorState)
-    //  html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
+    let html = "";
+    if (this.state.editorState)
+     html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
     
     this.setState({
       edit: false,
-      text: this.state.text
     })
     
-    this.props.onSave(this.props.identifier, this.state.text);
+    this.props.onSave(this.props.identifier, html);
   }
 
   edit() {
@@ -72,11 +81,17 @@ class TextWidget extends Component {
 
   render() {
     const { editorState } = this.state;
+    var toolbar= {
+      options: ['inline', 'blockType', 'list', 'link', 'history'],
+      inline: {
+        options: ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript'],
+      },
+    }
     return (
     <div id={this.props.identifier}>
         {!this.state.edit && 
           <div>
-            <div dangerouslySetInnerHTML={{__html: this.state.text}}></div>
+            <div dangerouslySetInnerHTML={{__html: editorState?draftToHtml(convertToRaw(editorState.getCurrentContent())):''}}></div>
             {
               !this.props.readOnly &&
               <div className="mt-20">
@@ -90,13 +105,15 @@ class TextWidget extends Component {
           <div>
             
             <Editor
-            data-placeholder="Inserisci il testo"
-            text={this.state.text}
-            toolbarClassName="rdw-storybook-toolbar"
-            wrapperClassName="rdw-storybook-wrapper"
-            editorClassName="rdw-storybook-editor"
-            onEditorStateChange={this.onEditorStateChange}
-          />
+              stripPastedStyles={true}
+              toolbar={toolbar} 
+              data-placeholder="Inserisci il testo"
+              editorState={editorState}
+              toolbarClassName="rdw-storybook-toolbar"
+              wrapperClassName="rdw-storybook-wrapper"
+              editorClassName="rdw-storybook-editor"
+              onEditorStateChange={this.onEditorStateChange}
+            />
 
             {/*  OLD EDITOR
             <Editor

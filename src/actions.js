@@ -6,6 +6,10 @@ import { serviceurl } from './config/serviceurl.js'
 //import det from './data/datasetdetail'
 import settings from './data/settings'
 
+export const REQUEST_DATASTORY = 'REQUEST_DATASTORY'
+export const RECEIVE_DATASTORY = 'RECEIVE_DATASTORY'
+export const REQUEST_ALL_DATASTORY = 'REQUEST_ALL_DATASTORY'
+export const RECEIVE_ALL_DATASTORY = 'RECEIVE_ALL_DATASTORY'
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
 export const DELETE_DATASETS = 'DELETE_DATASETS'
@@ -77,6 +81,42 @@ function receiveNewNotifications(json){
   }
 }
 
+/*********************************** DATA STORY *************************************************/
+function requestDatastory(){
+  console.log('Requesting Datastory detail')
+  return {
+    type: REQUEST_DATASTORY,
+  }
+}
+
+export function receiveDatastory(json){
+  console.log('Received Datastory detail')
+  return {
+    type: RECEIVE_DATASTORY,
+    datastory: json,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_DATASTORY'
+  }
+}
+
+function requestAllStories(){
+  console.log('Requesting Datastories list')
+  return {
+    type: REQUEST_ALL_DATASTORY,
+  }
+}
+
+function receiveAllStories(json){
+  console.log('Received Datastories list')
+  return {
+    type: RECEIVE_ALL_DATASTORY,
+    datastoriesList: json.code===404?[]:json,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_ALL_DATASTORY'
+  }
+}
+
+/*********************************** DATASET *************************************************/
 function receiveDataset(json, value) {
   console.log('receiveDataset');
   //This function creates an action that a reducer can handle 
@@ -538,8 +578,8 @@ export function logout() {
 function deleteDataportalCookies() {
     document.cookie = "dataportal=;path=/;domain=" + serviceurl.domain
     document.cookie = "session=;path=/;domain=.dataportal" + serviceurl.domain
-    document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
-    document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
+    // document.cookie = "metabase.SESSION_ID=;path=/;domain=" + serviceurl.domain
+    // document.cookie = "jupyter=;path=/;domain=" + serviceurl.domain
 }
 
 export function addUserOrganization(uid) {
@@ -565,36 +605,34 @@ export function addUserOrganization(uid) {
 export function resetPwd(email) {
   console.log("Called action reset password");
   var url = serviceurl.apiURLSecurity + '/ipa/resetpwd/request';
-
+  var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  
   var input = {
     "mail": email,
   };
 
   console.log(input)
-
+  
   return dispatch => {
     dispatch(requestResetPwd())
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(input)
-    })
-    .then(response => {
-      if (response.ok) {
-        response.json().then(json => {
-          console.log(json);
-          dispatch(receiveResetSuccess('ok', json))
-        });
-      } else {
-        response.json().then(json => {
-          console.log(json);
-          dispatch(receiveResetSuccess('ko', json))
-        });
+    if(regEmail.test(email)){
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(input)
+      })
+      .then(response => response.json())
+      .then(json => dispatch(receiveResetSuccess(json)))
+      .catch(error => dispatch(receiveResetError(error)))
+    }else{
+      var resp = {
+        "code": 1,
+        "message": 'Inserire una mail valida'
       }
-    })
-    .catch(error => dispatch(receiveResetError(error)))
+      dispatch(receiveResetError(resp))
+    }
   }
 }
 
@@ -629,43 +667,21 @@ export function changePwd(token, pwd1, pwd2) {
   }
 }
 
-function receiveResetSuccess(ok, json) {
-  if (ok === 'ok')
+function receiveResetSuccess(json) {
     return {
       type: RECEIVE_RESET,
-      message: 'Reset della password avvenuta con successo, a breve riceverai una mail per inserire la nuova password all\'indirizzo indicato',
-      error: 0,
+      message: 'Se l\'indirizzo e-mail fornito è registrato, riceverai a breve un messaggio con le istruzioni per procedere alla modifica della password',
+      error: json.code,
       receivedAt: Date.now(),
       ope: 'RECEIVE_RESET'
     }
-  else {
-    if (json.code === 1) {
-      console.log("messaggio errore codificato: " + json.message);
-      return {
-        type: RECEIVE_RESET_ERROR,
-        error: 1,
-        message: json.message,
-        receivedAt: Date.now(),
-        ope: 'RECEIVE_RESET_ERROR'
-      }
-    } else {
-      console.log("messaggio errore non codificato !!!");
-      return {
-        type: RECEIVE_RESET_ERROR,
-        error: 1,
-        message: 'Errore durante la registrazione riprovare più tardi',
-        receivedAt: Date.now(),
-        ope: 'RECEIVE_RESET_ERROR'
-      }
-    }
-  }
 }
 
 function receiveResetError(json) {
   return {
     type: RECEIVE_RESET_ERROR,
     error: 1,
-    message: json,
+    message: json.message,
     receivedAt: Date.now(),
     ope: 'RECEIVE_RESET_ERROR'
   }
@@ -1961,3 +1977,118 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .catch(error => console.error(error))
         }
       }
+
+      export function loadWidgets(org){
+        var token = ''
+        var url = serviceurl.apiURLDatiGov + '/widgets?org='+org
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .then(response => response.json())
+          .catch(error => console.error(error))
+        }
+      }
+
+/*********************************** DATA STORY FETCHES *************************************************/
+export function getDatastory(isPublic, id){
+  var url = serviceurl.apiURLDatiGov + (isPublic?'/public/datastory/get-by-id/':'/datastory/get-by-id/') + id
+  var token = ''
+  
+  if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+  return dispatch => {
+    dispatch(requestDatastory())
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    })
+    .then(response => response.json())
+    .then(json => dispatch(receiveDatastory(json)))
+    .catch(error=> console.error(error))
+  }
+}
+
+export function getAllDatastories(isPublic){
+  var url = serviceurl.apiURLDatiGov + (isPublic?'/public/datastories':'/datastories')
+  var token = ''
+  
+  if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+  return dispatch => {
+    dispatch(requestAllStories())
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    })
+    .then(response => response.json())
+    .then(json => dispatch(receiveAllStories(json)))
+    .catch(error=> console.error(error))
+  }
+}
+
+export function saveDatastory(datastory){
+  var url = serviceurl.apiURLDatiGov + '/datastory/save'
+  var token = ''
+  
+  if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+
+  return dispatch => {
+    dispatch(receiveDatastory(datastory))
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(datastory)
+    })
+    .then(response => response)
+    .catch(error=> console.error(error))
+  } 
+}
+
+export function deleteDatastory(id){
+  var url = serviceurl.apiURLDatiGov + '/datastory/delete/' + id
+  var token = ''
+  
+  if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+
+  return dispatch => {
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    })
+    .then(response => response)
+    .catch(error=> console.error(error))
+  }
+}

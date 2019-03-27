@@ -157,6 +157,12 @@ class Sidebar extends Component {
               }}>
                 <NavLink to={'/private/userstory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Storie</NavLink>
               </li>
+              <li className="nav-item" onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/private/datastory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Datastory <span className="badge badge-light">Nuovo</span></NavLink>
+              </li>
               <li className="nav-title text-secondary">
                 TOOLKIT
               </li>
@@ -198,12 +204,14 @@ class Sidebar extends Component {
               <li className="nav-item nav-dropdown b-r-1">
                 <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-wrench fa-lg text-secondary"></i> Strumenti</a>
                 <ul className="nav-dropdown-items bg-light">
-                  <li className="nav-item" onClick={(e) => {
+                {
+                  /* <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
                     <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-chart-pie fa-lg text-secondary"/>  Metabase</a>
-                  </li>
+                  </li> */
+                  }
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
@@ -216,12 +224,12 @@ class Sidebar extends Component {
                   }}>
                     <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSupersetOpen, 'Potrai creare i tuoi widget partendo dagli opendata presenti nel DAF.')}><i className="fa fa-database fa-lg text-secondary" />  Superset <span className="badge badge-light">Open</span></a>
                   </li>
-                  <li className="nav-item" onClick={(e) => {
+                  {/* <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
                     <a href className="nav-link" onClick={() => this.openModal('Jupyter', serviceurl.urlJupiter)}><i className="fa fa-sticky-note fa-lg text-secondary" />  Jupyter</a>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
 

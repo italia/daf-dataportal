@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux'
 import { reducer as reduxFormReducer } from 'redux-form';
 import {
+  REQUEST_ALL_DATASTORY,
+  RECEIVE_ALL_DATASTORY,
+  REQUEST_DATASTORY,
+  RECEIVE_DATASTORY,
   REQUEST_DATASETS,
   RECEIVE_DATASETS,
   DELETE_DATASETS,
@@ -243,10 +247,11 @@ function userReducer(state = {}, action) {
     case REQUEST_REGISTRATION:
       return Object.assign({}, state, { 'msg': undefined, 'error': undefined })
     case RECEIVE_RESET_ERROR:
+      return Object.assign({}, state, { 'msg': action.message, 'loading': false,'error': action.error })
     case REQUEST_RESET:
-      return Object.assign({}, state, { 'msg': undefined, 'error': undefined })
+      return Object.assign({}, state, { 'msg': undefined, 'error': undefined, 'loading': true })
     case RECEIVE_RESET:
-      return Object.assign({}, state, { 'msg': action.message, 'error': action.error })
+      return Object.assign({}, state, { 'msg': action.message, 'error': action.error, 'loading': false })
     case REQUEST_LOGIN:
     case RECEIVE_LOGIN:
       return Object.assign({}, state, { 'obj': user(state[action], action) })
@@ -254,6 +259,21 @@ function userReducer(state = {}, action) {
       return Object.assign({}, state, { 'org': org(state[action], action) })
     case REMOVE_LOGGED_USER:
       return Object.assign({}, state, { 'obj': null })
+    default:
+      return state
+  }
+}
+
+function datastoryReducer(state = {}, action){
+  switch (action.type){
+    case REQUEST_ALL_DATASTORY:
+      return Object.assign({}, state, {'datastories': { 'list': [], 'isLoading': true }, 'datastory': { 'datastory': undefined}})
+    case RECEIVE_ALL_DATASTORY:
+      return Object.assign({}, state, {'datastories': { 'list': action.datastoriesList, 'isLoading': false }})
+    case REQUEST_DATASTORY:
+      return Object.assign({}, state, {'datastory': { 'datastory': undefined, 'isFetching': true }})
+    case RECEIVE_DATASTORY:
+      return Object.assign({}, state, {'datastory': { 'datastory': action.datastory, 'isFetching': false }})
     default:
       return state
   }
@@ -287,6 +307,7 @@ function searchReducer(state = {}, action) {
 //but you can change it by naming the key differently (form: reduxFormReducer)
 const rootReducer = combineReducers({
   form: reduxFormReducer,
+  datastoryReducer,
   datasetReducer,
   userReducer,
   searchReducer,

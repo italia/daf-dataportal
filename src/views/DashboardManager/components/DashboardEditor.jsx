@@ -30,7 +30,7 @@ import { serviceurl } from "../../../config/serviceurl";
 import 'react-dazzle/lib/style/style.css';
 
 // Our styles
-import '../styles/custom.css';
+// import '../styles/custom.css';
 
 
 const widgetService = new WidgetService();
