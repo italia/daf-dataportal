@@ -33,6 +33,8 @@ import Users from '../../views/Settings/Users';
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import CreateWidget from '../../views/Widgets/CreateWidget'
+import Messages from '../../views/Messages/Messages'
+import EditTTL from '../../views/Messages/EditTTL'
 
 
 import { serviceurl } from '../../config/serviceurl'
@@ -1049,6 +1051,8 @@ class Full extends Component {
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/settings" name="Settings" component={Settings} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/users" name="Users" component={Users} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/messages" name="Messaggi" component={Messages} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/editTTL" name="editTTL" component={EditTTL} />
                 <Redirect from="/private" to="/private/home"/>
               </Switch>
             </div>
