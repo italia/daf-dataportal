@@ -16,5 +16,7 @@ const routes = {
   '/private/widget' : 'Widget',
   '/private/charts' : 'Crea Widget',
   '/private/search': 'Ricerca',
+  '/private/messages': 'Messaggi',
+  '/private/editTTL' : 'Gestione TTL'
 };
 export default routes;
