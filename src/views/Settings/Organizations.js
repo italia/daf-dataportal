@@ -32,10 +32,13 @@ class Organizations extends Component {
             query: '',
             filter: [],
             nome:'',
+            nomeok: true,
             ipaCode:'',
             nomeWG:'',
+            nomeNGok: true,
             mail:'',
-            psw:'',
+            mailok: true,
+            psw:'Password1',
             repeatPassword: '',
             checked: true,
             pswok: true,
@@ -61,8 +64,11 @@ class Organizations extends Component {
         this.openUserModal = this.openUserModal.bind(this)
         this.closeUserModal = this.closeUserModal.bind(this)
         this.updateValue = this.updateValue.bind(this)
-        this.validatePsw = this.validatePsw.bind(this)
-        this.checkDoublePassword = this.checkDoublePassword.bind(this)
+        // this.validatePsw = this.validatePsw.bind(this)
+        // this.checkDoublePassword = this.checkDoublePassword.bind(this)
+        this.validateNomeOrganizzazione    = this.validateNomeOrganizzazione.bind(this);
+        this.validateNomeNGOrganizzazione  = this.validateNomeNGOrganizzazione.bind(this);
+        this.validateEmail    = this.validateEmail.bind(this);
     }
 
     componentDidMount(){
@@ -434,6 +440,7 @@ class Organizations extends Component {
     createWG(selectedOrg){
         console.log('selectedOrg: ' + selectedOrg)
         console.log('wg: ' + this.state.nomeWG)
+        console.log('state: ' + this.state)
         const { psw } = this.state
         let workgroup = {
             groupCn: this.state.nomeWG,
@@ -571,8 +578,9 @@ class Organizations extends Component {
             workgroupEdit: false,
             createWG: false,
             nome: '', 
-            psw: '',
-            repeatPassword:''
+            psw: 'Password1',
+            repeatPassword:'',
+            disableSave: true
         })
     }
 
@@ -584,7 +592,7 @@ class Organizations extends Component {
             createWG: true,
             workgroupUsers: undefined,
             nomeWG: '', 
-            psw: '',
+            psw: 'Password1',
             repeatPassword:''
         })
     }
@@ -640,43 +648,57 @@ class Organizations extends Component {
             user: newValue,
         });
     }
-
-    checkDoublePassword(repeatPassword) {
-        const { psw } = this.state;
-        if (psw === repeatPassword) {
+    validateNomeNGOrganizzazione (event) {
+        const target  = event.target;
+        const value   = target.value;
+        console.log('regex',(/^[a-zA-Z0-9_]+$/.test(value)))
+        console.log('length', value.length)
+        if(value.length <= 18 && (/^[a-zA-Z0-9_]+$/.test(value))){
             this.setState({
-                checked: true,
-                disableSave: false
+                nomeNGok: true,
+                disableSave: false && nomeNGok && nomeNG != ''
             })
-        }
-        else {
+        }else{
             this.setState({
-                checked: false,
-                disableSave: true,
+                nomeNGok: false,
+                disableSave: true
             })
         }
     }
 
-    validatePsw(val) {
-        // pattern to match : Atleast one capital letter, one number and 8 chars length
-        if (val !== '') {
-            var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9%@#,;:_'/<([{^=$!|}.>-]{8,}$")
-            if (reg.test(val)) {
-                this.setState({
-                    pswok: true,
-                })
-            }
-            else {
-                this.setState({
-                    pswok: false,
-                    disableSave: true,
-                })
-            }
-        } else
+    validateNomeOrganizzazione (event) {
+        const target  = event.target;
+        const value   = target.value;
+        console.log('regex',(/^[a-zA-Z0-9_]+$/.test(value)))
+        console.log('length', value.length)
+        if(value.length <= 18 && (/^[a-zA-Z0-9_]+$/.test(value))){
             this.setState({
-                pswok: true,
+                nomeok: true,
+                disableSave: false && nomeok && nome != ''
+            })
+        }else{
+            this.setState({
+                nomeok: false,
                 disableSave: true
             })
+        }
+    }
+
+    validateEmail (event) {
+        const target  = event.target;
+        const value   = target.value;
+        console.log('regex',(/^[A-z0-9\.\+_-]+@[A-z0-9\._-]+\.[A-z]{2,6}$/.test(value)))
+        if(/^[A-z0-9\.\+_-]+@[A-z0-9\._-]+\.[A-z]{2,6}$/.test(value)){
+            this.setState({
+                mailok: true,
+                disableSave: false && nomeok 
+            })
+        }else{
+            this.setState({
+                mailok: false,
+                disableSave: true 
+            })
+        }
     }
 
     render() {
@@ -785,7 +807,7 @@ class Organizations extends Component {
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Nome dell'organizzazione</label>
                                 <div className="col-6">
-                                    <input className="form-control" type="search" value={this.state.nome} onChange={(e)=>{this.setState({nome:e.target.value})}}/>
+                                    <input className="form-control" type="search" value={this.state.nome} maxLength="18" onChange={(e)=>{this.setState({nome:e.target.value}); this.validateNomeOrganizzazione(e)}}/>
                                 </div>
                             </div>
                             <div className="form-group row">
@@ -797,37 +819,24 @@ class Organizations extends Component {
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Email organizzazione</label>
                                 <div className="col-6">
-                                    <input className="form-control" type="mail" value={this.state.mail} onChange={(e) => { this.setState({ mail: e.target.value }) }}/>
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-3 col-form-label">Password amministratore <button className="btn btn-link p-0" data-toggle="tooltip" data-placement="top" title="La password deve essere lunga almeno 8 caratteri e contenere almeno un lettera maiuscola e un numero"><i className="fa fa-info-circle" /></button></label>
-                                <div className="col-6">
-                                    <input className="form-control" type="password" value={this.state.psw} onChange={(e) => { this.setState({ psw: e.target.value, checked: e.target.value === '' ? true : false }); this.validatePsw(e.target.value) }}/>
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-3 col-form-label">Ripeti Password amministratore</label>
-                                <div className="col-6">
-                                    <input className="form-control" type="password" value={this.state.repeatPassword} onChange={(e) => { this.setState({ repeatPassword: e.target.value }); this.checkDoublePassword(e.target.value) }} />
+                                    <input className="form-control" type="mail" value={this.state.mail} onChange={(e) => { this.setState({ mail: e.target.value }); this.validateEmail(e) }}/>
                                 </div>
                             </div>
                             <button type="submit" className="btn btn-primary" disabled={this.state.disableSave} onClick={this.createOrg.bind(this)}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Crea"}</button>
                         </div>
-                        <div hidden={checked} className="ml-5 w-100">
-                            <div className="alert alert-danger" role="alert">
-                                <i className="fa fa-times-circle fa-lg m-t-2"></i> Le password inserite non corrispondono, verificare il corretto inserimento
+    
+                        <div hidden={this.state.nomeok} className="ml-5 w-100">
+                            <div className="alert alert-warning" role="alert">
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> Il Nome dell'organizzazione inserito non rispetta le linee guida: <br />
+                                <ul>
+                                    <li>Almeno 18 caratteri</li>
+                                    <li>I caratteri speciali consentiti sono: "{"_"}"</li>
+                                </ul>
                             </div>
                         </div>
-                        <div hidden={this.state.pswok} className="ml-5 w-100">
+                        <div hidden={this.state.mailok} className="ml-5 w-100">
                             <div className="alert alert-warning" role="alert">
-                                <i className="fa fa-times-circle fa-lg m-t-2"></i> La password inserita non rispetta le linee guida: <br />
-                                <ul>
-                                    <li>Almeno 8 caratteri</li>
-                                    <li>Almeno una lettera maiuscola</li>
-                                    <li>Almeno un numero</li>
-                                    <li>I caratteri speciali consentiti sono: "{"%@#,;:_\'/<([{^=$!|}.>-"}"</li>
-                                </ul>
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> L' Email inserita non è valida 
                             </div>
                         </div>
                     </div>}  
@@ -889,37 +898,23 @@ class Organizations extends Component {
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Nome del workgroup</label>
                                 <div className="col-6">
-                                    <input className="form-control" type="search" value={this.state.nomeWG} onChange={(e)=>{this.setState({nomeWG:e.target.value})}}/>
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-3 col-form-label">Password <button className="btn btn-link p-0" data-toggle="tooltip" data-placement="top" title="La password deve essere lunga almeno 8 caratteri e contenere almeno un lettera maiuscola e un numero"><i className="fa fa-info-circle" /></button></label>
-                                <div className="col-6">
-                                    <input className="form-control" type="password" value={this.state.psw} onChange={(e) => { this.setState({ psw: e.target.value, checked: e.target.value === '' ? true : false }); this.validatePsw(e.target.value) }}/>
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-3 col-form-label">Ripeti Password </label>
-                                <div className="col-6">
-                                    <input className="form-control" type="password" value={this.state.repeatPassword} onChange={(e) => { this.setState({ repeatPassword: e.target.value }); this.checkDoublePassword(e.target.value) }} />
+                                    <input className="form-control" type="search" maxLength="18" value={this.state.nomeWG} onChange={(e)=>{this.setState({nomeWG:e.target.value}); this.validateNomeNGOrganizzazione(e)}}/>
                                 </div>
                             </div>
                             <button type="submit" className="btn btn-primary" disabled={this.state.disableSave || this.state.nomeWG==''?true:false} onClick={this.createWG.bind(this,selectedOrg)}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Crea"}</button>
                         </div>
-                        <div hidden={checked} className="ml-5 w-100">
-                            <div className="alert alert-danger" role="alert">
-                                <i className="fa fa-times-circle fa-lg m-t-2"></i> Le password inserite non corrispondono, verificare il corretto inserimento
+                        <div hidden={this.state.nomeNGok} className="ml-5 w-100">
+                            <div className="alert alert-warning" role="alert">
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> Il Nome dell'organizzazione inserito non rispetta le linee guida: <br />
+                                <ul>
+                                    <li>Almeno 18 caratteri</li>
+                                    <li>I caratteri speciali consentiti sono: "{"_"}"</li>
+                                </ul>
                             </div>
                         </div>
-                        <div hidden={this.state.pswok} className="ml-5 w-100">
+                        <div hidden={this.state.mailok} className="ml-5 w-100">
                             <div className="alert alert-warning" role="alert">
-                                <i className="fa fa-times-circle fa-lg m-t-2"></i> La password inserita non rispetta le linee guida: <br />
-                                <ul>
-                                    <li>Almeno 8 caratteri</li>
-                                    <li>Almeno una lettera maiuscola</li>
-                                    <li>Almeno un numero</li>
-                                    <li>I caratteri speciali consentiti sono: "{"%@#,;:_\'/<([{^=$!|}.>-"}"</li>
-                                </ul>
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> L' Email inserita non è valida 
                             </div>
                         </div>
                     </div>
