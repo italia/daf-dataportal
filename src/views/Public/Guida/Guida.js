@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'rc-steps/assets/index.css';
 import 'rc-steps/assets/iconfont.css';
 import Steps, { Step } from 'rc-steps';
-import { messages } from '../../../i18n-ita';
+import { messages } from '../../../i18n/i18n-ita';
 
 const container = document.getElementById('__react-content');
 
