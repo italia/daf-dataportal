@@ -251,4 +251,26 @@ export default class MessageService {
         return response;
     }
 
+    async listPublicMessages() {
+        var url = serviceurl.apiURLDatiGov + '/public/notifications/system/get/all'
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'            
+            }
+        }).then(function(response) {
+            if (response.status === 200) {
+                return response;
+            } else if (response.status === 401) {
+                throw new Error( messages.validazione.utenteNoAdmin );
+            } else if (response.status === 500) {
+                throw new Error( messages.validazione.erroreGenerico );
+            }else{
+                throw new Error(response.statusText);  
+            }
+          })
+        return response;
+    }
 }
+

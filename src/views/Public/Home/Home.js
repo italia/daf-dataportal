@@ -13,6 +13,7 @@ import {
 import {
   isPublic
 } from '../../../utility'
+import Messages from '../../../components/Messages/Messages';
 
 const homeService = new HomeService();
 
@@ -123,10 +124,11 @@ class Home extends Component{
             </div>
           </div>
         </div>
-        <div className="mt-3 py-5 container">
+        <Messages />
+        <div className="mb-5 py-5 container">
           <div className="container">
             <div className="row">
-              <div className="col-lg-6 col-md-7 col-12">
+              <div className="col-lg-12 col-md-7 col-12">
                 <h1 className="text-gray-600 font-weight-bold" style={{fontSize: '3rem'}}>Esplora gli opendata</h1>
                 <h5 className="text-gray-600 mb-4">{properties.bodyEsplora}</h5>
               </div>
