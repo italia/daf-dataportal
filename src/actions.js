@@ -546,36 +546,34 @@ export function addUserOrganization(uid) {
 export function resetPwd(email) {
   console.log("Called action reset password");
   var url = serviceurl.apiURLSecurity + '/ipa/resetpwd/request';
-
+  var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  
   var input = {
     "mail": email,
   };
 
   console.log(input)
-
+  
   return dispatch => {
     dispatch(requestResetPwd())
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(input)
-    })
-    .then(response => {
-      if (response.ok) {
-        response.json().then(json => {
-          console.log(json);
-          dispatch(receiveResetSuccess('ok', json))
-        });
-      } else {
-        response.json().then(json => {
-          console.log(json);
-          dispatch(receiveResetSuccess('ko', json))
-        });
+    if(regEmail.test(email)){
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(input)
+      })
+      .then(response => response.json())
+      .then(json => dispatch(receiveResetSuccess(json)))
+      .catch(error => dispatch(receiveResetError(error)))
+    }else{
+      var resp = {
+        "code": 1,
+        "message": 'Inserire una mail valida'
       }
-    })
-    .catch(error => dispatch(receiveResetError(error)))
+      dispatch(receiveResetError(resp))
+    }
   }
 }
 
@@ -610,43 +608,21 @@ export function changePwd(token, pwd1, pwd2) {
   }
 }
 
-function receiveResetSuccess(ok, json) {
-  if (ok === 'ok')
+function receiveResetSuccess(json) {
     return {
       type: RECEIVE_RESET,
-      message: 'Reset della password avvenuta con successo, a breve riceverai una mail per inserire la nuova password all\'indirizzo indicato',
-      error: 0,
+      message: 'Se l\'indirizzo e-mail fornito è registrato, riceverai a breve un messaggio con le istruzioni per procedere alla modifica della password',
+      error: json.code,
       receivedAt: Date.now(),
       ope: 'RECEIVE_RESET'
     }
-  else {
-    if (json.code === 1) {
-      console.log("messaggio errore codificato: " + json.message);
-      return {
-        type: RECEIVE_RESET_ERROR,
-        error: 1,
-        message: json.message,
-        receivedAt: Date.now(),
-        ope: 'RECEIVE_RESET_ERROR'
-      }
-    } else {
-      console.log("messaggio errore non codificato !!!");
-      return {
-        type: RECEIVE_RESET_ERROR,
-        error: 1,
-        message: 'Errore durante la registrazione riprovare più tardi',
-        receivedAt: Date.now(),
-        ope: 'RECEIVE_RESET_ERROR'
-      }
-    }
-  }
 }
 
 function receiveResetError(json) {
   return {
     type: RECEIVE_RESET_ERROR,
     error: 1,
-    message: json,
+    message: json.message,
     receivedAt: Date.now(),
     ope: 'RECEIVE_RESET_ERROR'
   }

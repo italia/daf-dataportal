@@ -21,20 +21,17 @@ class RequestReset extends Component {
       super(props);
       this.props = props;
       this.state = {
-        messaggio: null,
-        error: null
+        email: ''
       }
       
   }
   
   handleSubmit = (e) => {
       e.preventDefault()
-      this.setState({loading:true})
-      const { dispatch, selectDataset } = this.props
-      dispatch(resetPwd(this.email.value))
-      .then(()=>{
-        this.setState({loading: false})
-      })
+
+      const { dispatch } = this.props
+      dispatch(resetPwd(this.state.email))
+
   }
 
   handleRedirect = (e) => {
@@ -42,7 +39,7 @@ class RequestReset extends Component {
   }
 
   render() {
-    const { messaggio, error } = this.props
+    const { msg, loading } = this.props
     return (
       <div className="container">
         <div className="row justify-content-center">
@@ -51,25 +48,20 @@ class RequestReset extends Component {
               <div className="card-block p-2">
                 <h1>Hai dimenticato la password?</h1>
                 <p className="text-muted">Reset della password</p>
-                {error===1 && 
-                <div className="alert alert-danger" role="alert">
-                  {messaggio}
+                {msg && msg.length>0 && 
+                <div className="alert alert-info" role="alert">
+                  {msg}
                 </div>
                 }
-                {error===0 && 
-                  <div className="alert alert-success" role="alert">
-                    {messaggio}
-                  </div>
-                }
-                <div className="input-group mb-1">
+                {(!msg || msg.length===0) && <div className="input-group mb-1">
                   <span className="input-group-text"><i className="far fa-envelope"/></span>
-                  <input type="text" className="form-control" ref={(email) => this.email = email} placeholder="Inserisci la tua mail registrata" />
-                </div>
+                  <input type="text" className="form-control" value={this.state.email} onChange={(e)=>this.setState({email: e.target.value})} placeholder="Inserisci la tua mail registrata" />
+                </div>}
 {/*                 <div className="input-group mb-1">
                   <div className="g-recaptcha" data-sitekey="6LcUNjQUAAAAAG-jQyivW5xijDykXzslKqL2PMLr"></div>
                 </div> */}
                 <button type="button" className="btn btn-block btn-secondary" onClick={this.handleRedirect.bind(this)}>Torna al login</button>
-                <button type="button" className="btn btn-block btn-primary" onClick={this.handleSubmit.bind(this)}>{this.state.loading?<i className="fa fa-spin fa-spinner fa-lg"/>:'Reset Password'}</button>
+                <button type="button" className="btn btn-block btn-primary" disabled={this.state.email.length===0} onClick={this.handleSubmit.bind(this)}>{loading?<i className="fa fa-spin fa-spinner fa-lg"/>:'Reset Password'}</button>
               </div>
             </div>
           </div>
@@ -80,8 +72,8 @@ class RequestReset extends Component {
 }
 
 function mapStateToProps(state) {
-  return { messaggio: state.userReducer.msg,
-           error: state.userReducer.error }
+  const { msg, error, loading } = state.userReducer || {msg: undefined, error: undefined, loading: false}
+  return { msg, error, loading }
 }
 
 export default connect(mapStateToProps)(RequestReset)

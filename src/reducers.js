@@ -229,10 +229,11 @@ function userReducer(state = {}, action) {
     case REQUEST_REGISTRATION:
       return Object.assign({}, state, { 'msg': undefined, 'error': undefined })
     case RECEIVE_RESET_ERROR:
+      return Object.assign({}, state, { 'msg': action.message, 'loading': false,'error': action.error })
     case REQUEST_RESET:
-      return Object.assign({}, state, { 'msg': undefined, 'error': undefined })
+      return Object.assign({}, state, { 'msg': undefined, 'error': undefined, 'loading': true })
     case RECEIVE_RESET:
-      return Object.assign({}, state, { 'msg': action.message, 'error': action.error })
+      return Object.assign({}, state, { 'msg': action.message, 'error': action.error, 'loading': false })
     case REQUEST_LOGIN:
     case RECEIVE_LOGIN:
       return Object.assign({}, state, { 'obj': user(state[action], action) })
