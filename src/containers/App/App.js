@@ -89,13 +89,14 @@ class App extends Component {
             <Route path='/' exact component={Public} />
             <Route path='/home' exact component={Public} />
             <Route path='/missione' exact component={Public} />
-            <Route path='/lineeguida' exact component={Public} />
-            <Route path='/partecipa' exact component={Public} />
+            <Route path='/gettingstarted' exact component={Public} />
+            {/* <Route path='/partecipa' exact component={Public} /> */}
+            <Route path='/policy' exact component={Public} />
+            <Route path='/termini' exact component={Public} />
             <Route path='/data-applications' exact component={Public} />
             <Route path='/faqs' exact component={Public} />
             <Route path='/userstory/list' exact component={Public} />
             <Route path='/userstory/list/:id' exact component={Public} />
-            <Route path='/team' exact component={Public} />
             <Route path='/notizie' exact component={Public} />
             <Route path='/notizie/:id' exact component={Public} />
             <Route path='/storie' exact component={Public} />
@@ -139,8 +140,9 @@ class App extends Component {
             <Route path="/private/organizations" name="Organizations" component={Full} />
             <Route path="/private/users" name="Users" component={Full} />
             <Route path="/private/charts" name="Test" component={Full} />
-            <Route path="/private/newdashboards" name="Test" component={Full} />
-
+            <Route path="/private/datastory/list" name="Test" component={Full} />
+            <Route path="/private/datastory/create" name="Test" component={Full} />
+            <Route path="/private/datastory/list/:id" name="Test" component={Full} />
             {/*404 NOT FOUND*/}
             <Route path="*" name="404 Not Found" component={Public} />
           </Switch>
