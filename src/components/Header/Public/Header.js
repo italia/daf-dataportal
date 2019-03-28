@@ -255,7 +255,6 @@ class Header extends Component {
                 <div className={"dropdown-menu " + (this.state.showMenu ? "show":"")} aria-labelledby="dropdownMenuButton">
                   <Link to={'/missione'} className="dropdown-item">Missione</Link>
                   <Link to={'/team'} className="dropdown-item">Chi siamo</Link>
-                  <Link to={'/gettingstarted'} className="dropdown-item">Linee guida</Link>
                 </div>
               </div>
               </NavItem>
@@ -269,9 +268,9 @@ class Header extends Component {
                 </div>
               </div>
               </NavItem>
-              {/* <NavItem>
-                <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
-              </NavItem> */}
+                <NavItem>
+                  <Link to={'/gettingstarted'} className="nav-link font-weight-bold lead text-white">Getting started</Link>
+                </NavItem>
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Application</Link>
               </NavItem>

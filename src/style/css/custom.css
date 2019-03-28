@@ -771,7 +771,19 @@ margin-left: auto;
 margin-right: auto; 
 }
 
+@media (max-width:767px) {
+  .paragrafoG {
+  font: 400 15px "Titillium Web";
+  }
+  }
 
+  @media (max-width:767px) {  
+    #divStep {
+    display: none;
+    }
+    }
+
+    
 @media screen and (min-width:768px) {
 .paragrafo p, .paragrafo div, .paragrafo h5{
   font: 400 21px/32px "Titillium Web"
