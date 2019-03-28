@@ -53,8 +53,7 @@ gettingStarted: [
     descrizione: `La Piattaforma Digitale Nazionale Dati fa parte delle attività previste dal <a href = "https://docs.italia.it/italia/piano-triennale-ict/pianotriennale-ict-doc/it/2019-2021/05_dati-della-pubblica-amministrazione.html#piattaforma-digitale-nazionale-dati-pdnd"> Piano Triennale ICT </a>
     
     atte a valorizzare il patrimonio informativo pubblico nazionale; in quanto tale è aperta a tutti: in primo luogo alle Pubbliche Amministrazioni, ma anche a singoli cittadini, università, enti di ricerca e imprese. L’obiettivo è creare un unico punto di accesso al mondo dei dati della Pubblica Amministrazione.
-    Fanne parte anche tu! Utilizza il seguente link per effettuare la registrazione  <a href="https://dataportal.daf.teamdigitale.it/#/register">https://dataportal.daf.teamdigitale.it/#/register</a>  
-    e inizia ad esplorare le potenzialità della PDND.<br></br>
+    Fanne parte anche tu! <a href="https://dataportal.daf.teamdigitale.it/#/register">Clicca qui</a>  per effettuare la registrazione e inizia ad esplorare le potenzialità della PDND.<br></br>
     
     <i> Nota:</i> Se sei un funzionario di una PA utilizza il tuo indirizzo e-mail istituzionale; in questo modo potrai successivamente richiedere di essere associato al dominio della tua organizzazione quando verrà aggiunta alla PDND.
      <br></br>

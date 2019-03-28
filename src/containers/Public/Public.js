@@ -63,7 +63,7 @@ class Public extends Component {
                 <Route path="/userstory/list" name="Storie" exact component={UserStoryList}/>
                 <Route path="/userstory/list/:id" name="Dettaglio Storie" exact component={UserStoryView}/>
                 <Route path="/team" name="Chi Siamo" exact component={Team}/>
-                <Route path="/gettingstarted" name="Linee Guida" exact component={Guida}/>
+                <Route path="/gettingstarted" name="Getting started" exact component={Guida}/>
                 {/* <Route path="/partecipa" name="Partecipa" exact component={Partecipa}/> */}
                 <Route path="/data-applications" name="Data Applications" exact component={DataApplication}/>
                 <Route path="/faqs" name="Faqs" exact component={Faqs}/>

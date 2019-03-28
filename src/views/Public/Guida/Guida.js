@@ -34,29 +34,27 @@ class Guida extends Component {
   render() {
 
     const cs = this.state.currentStep;
+    window.scrollTo(0, 0)
 
-    window.scrollTo(0,0)
-    
     return (
-
 
       <div className="container p-4 mt-2">
         <div className="row mt-4">
-          <div className="col-12 mb-5 mx-0"><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
-          <div className="col-3 mx-0" >
-            <Steps direction="vertical" current={this.state.currentStep} className="pointer" icons={{}} status="process" >
+          <div className="col-10 col-md-12 mb-5 mx-0 "><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
+          <div className="col-5 col-md-3 mx-0" id="divStep" >
+            <Steps direction="vertical" current={this.state.currentStep} className="pointer" icons={{}} status="process">
 
               {
                 messages.gettingStarted.map((e, i) => {
-                  return (<Step key={i} title={messages.gettingStarted[i].titolo} onClick={() => this.nextStep(i)}  />)
+                  return (<Step key={i} title={messages.gettingStarted[i].titolo} onClick={() => this.nextStep(i)} />)
                 })
 
               }
 
             </Steps>
-            
+
           </div>
-          <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} className="col-8 mx-0 paragrafoG" >
+          <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} className="col-12 col-md-8 mx-0 paragrafoG" >
           </div>
 
         </div>
@@ -64,11 +62,9 @@ class Guida extends Component {
           <div className="col-3 mx-0">
 
           </div>
-          <div className="col-8 mx-0" >
-
+          <div className="col-12 col-md-8 mx-0" >
 
             {this.state.currentStep < messages.gettingStarted.length - 1 && <button className="btn btn-primary float-right" onClick={() => this.nextStep(this.state.currentStep + 1)}>Avanti</button>}
-
             {this.state.currentStep > 0 && <button className="btn btn-primary float-left" onClick={() => this.nextStep(this.state.currentStep - 1)}>Indietro</button>}
 
           </div>
