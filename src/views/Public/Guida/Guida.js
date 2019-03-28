@@ -28,13 +28,16 @@ class Guida extends Component {
         stepDescrizione: messages.gettingStarted[index].descrizione
 
       });
+      
+      var elem = document.getElementById('gs-content')
+    
+      window.scrollTo(0, elem?(elem.offsetTop-250):0)
     }
   }
 
   render() {
 
     const cs = this.state.currentStep;
-    window.scrollTo(0, 0)
 
     return (
 
@@ -54,7 +57,7 @@ class Guida extends Component {
             </Steps>
 
           </div>
-          <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} className="col-12 col-md-8 mx-0 paragrafoG" >
+          <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} id="gs-content" className="col-12 col-md-8 mx-0 paragrafoG" >
           </div>
 
         </div>
