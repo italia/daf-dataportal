@@ -44,7 +44,7 @@ class Missione extends Component{
             </div>
             <p className="text-muted font-lg font-weight-bold pt-3">LINK UTILI</p>
             <ul className="list-group list-group-flush">
-              <li className="list-group-item"><h5><a className="text-primary" href="http://pianotriennale-ict.readthedocs.io/it/latest/doc/09_data-analytics-framework.html" target="_blank">Piano Strategico</a></h5></li>
+              <li className="list-group-item"><h5><a className="text-primary" href="https://docs.italia.it/italia/piano-triennale-ict/pianotriennale-ict-doc/it/2019-2021/05_dati-della-pubblica-amministrazione.html#piattaforma-digitale-nazionale-dati-pdnd" target="_blank">Piano Strategico</a></h5></li>
             </ul>
           </div>
         </div>
