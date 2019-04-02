@@ -11,7 +11,20 @@ import {
 } from 'react-modal-bootstrap';
 import { setCookie, setSupersetCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
-import { prova, loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications, search, getSupersetUrl, datasetDetail, querySearch } from './../../actions.js'
+import { 
+  receiveDatastory, 
+  loginAction, 
+  isValidToken, 
+  receiveLogin, 
+  getApplicationCookie, 
+  logout, 
+  fetchNotifications, 
+  fetchNewNotifications, 
+  search, 
+  getSupersetUrl, 
+  datasetDetail, 
+  querySearch 
+} from './../../actions.js'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -180,19 +193,14 @@ class Full extends Component {
     this.state = {
       open: false,
       isOpenStory: false,
-      isOpenDash: false,
       isOpenWidget: false,
-      pvtStory: '0',
-      orgStory: '',
-      pvtDash: '0',
-      orgDash: '',
+      title: '',
+      subtitle: '',
+      org: '',
       widgetOrg: '',
       pvtWidget: '0',
       widgetTool: '0',
       widgetDataset: '',
-      validationMSg: 'Campo obbligatorio',
-      validationMSgOrg: 'Campo obbligatorio',
-      errorMSgTable: false,
       authed: false,
       loading: true,
       iframe: '',
@@ -207,10 +215,7 @@ class Full extends Component {
     this.openModalWidget = this.openModalWidget.bind(this)
     this.hideModalWidget = this.hideModalWidget.bind(this)
     this.handleSaveStory = this.handleSaveStory.bind(this)
-    this.openModalDash = this.openModalDash.bind(this)
     this.openModalWidget = this.openModalWidget.bind(this)
-    this.hideModalDash = this.hideModalDash.bind(this)
-    this.handleSaveDash = this.handleSaveDash.bind(this)
     this.handleSaveWidget = this.handleSaveWidget.bind(this)
     this.startPoll = this.startPoll.bind(this)
   }
@@ -367,13 +372,6 @@ class Full extends Component {
     })
   }
 
-  onPvtChangeStory(e, value){
-    this.setState({
-        pvtStory: value
-    });
-    this.validateStory(e);
-  }
-
   onPvtChangeWidget(e, value){
     const { dispatch } = this.props
 
@@ -423,13 +421,6 @@ class Full extends Component {
     this.validateWidget(e);
   }
 
-  onOrganizationChangeStory(e, value){
-    this.setState({
-      orgStory: value
-    });
-    this.validateStory(e);
-  }
-
   onOrganizationChangeWidget(e, value){
     const { dispatch } = this.props
     this.setState({
@@ -461,20 +452,6 @@ class Full extends Component {
     })
     .catch(error=>{console.log('Errore nel caricamento dei dataset: ' + error)})
     this.validateWidget(e);
-  }
-
-  onPvtChangeDash(e, value){
-    this.setState({
-        pvtDash: value
-    });
-    this.validateDash(e);
-  }
-
-  onOrganizationChangeDash(e, value){
-    this.setState({
-      orgDash: value
-    });
-    this.validateDash(e);
   }
 
   onDatasetChangeWidget(e, value){
@@ -541,47 +518,23 @@ class Full extends Component {
       });
     }
   }
-
-  validateDash = (e) => {
-    e.preventDefault()
-    if(!this.titleDash.value){
-      this.setState({
-        validationMSg: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSg: null
-      });
-    }
-
-    if(!this.orgDash || this.orgDash.value == ''){
-      this.setState({
-        validationMSgOrg: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSgOrg: null
-      });
-    }
-  }
   
   openModalStory = () => {
     this.setState({
-      isOpenStory: true
-    });
-
-    this.titleStory.value = ''
-    this.pvtStory.value = 0
-    this.orgStory.value = ''
-    this.setState({
-      validationMSgOrg: 'Campo obbligatorio',
-      validationMSg: 'Campo obbligatorio'
+      isOpenStory: true,
+      title: '',
+      subtitle: '',
+      org: ''
     });
   };
   
   hideModalStory = () => {
     this.setState({
-      isOpenStory: false
+      isOpenStory: false,
+      isOpenStory: true,
+      title: '',
+      subtitle: '',
+      org: ''
     });
   };
 
@@ -623,63 +576,35 @@ class Full extends Component {
     dispatch(datasetDetail(this.state.widgetDataset,'', false))
   };
 
-  openModalDash = () => {
-    this.setState({
-      isOpenDash: true
-    });
-
-    this.titleDash.value = ''
-    this.pvtDash.value = 0
-    this.orgDash.value = ''
-    this.setState({
-      validationMSgOrg: 'Campo obbligatorio',
-      validationMSg: 'Campo obbligatorio'
-    });
-  };
-  
-  hideModalDash = () => {
-    this.setState({
-      isOpenDash: false
-    });
-  };
-
   /**
   * Save Story
   */
   handleSaveStory = (e) => {
-    e.preventDefault()
-    if(this.titleStory.value){
-      if(!this.orgStory || this.orgStory.value == ''){
-        this.setState({
-          validationMSgOrg: 'Campo obbligatorio'
-        });
-      }else{
-        let layout = { rows: [] };
-        let widgets = {};
-        //save data
-        let request = {
-          title: this.titleStory.value,
-          pvt: this.state.pvtStory,
-          org: this.state.orgStory,
-          layout: JSON.stringify(layout),
-          widgets: JSON.stringify(widgets),
-          published: 0
-        };
-/*         userStoryService.save(request).then((data)=> {
-            this.props.history.push('/userstory/list/'+ data.message + '/edit');
-        }); */
-        this.props.history.push({
-          'pathname':'/private/userstory/create',
-          'story': request,
-          'modified':true
-        })
-        console.log(request)
-        this.hideModalStory();
-      }
-    }else{
+    const { title, subtitle, org } = this.state
+    const { dispatch } = this.props
+
+    if(title.length>0 && org.length>0){
+      //save data
+      let request = {
+        title: title,
+        subtitle: subtitle,
+        org: org,
+        layout: [],
+        widgets: [],
+        status: 0
+      };
+      dispatch(receiveDatastory(request))
       this.setState({
-          validationMSg: 'Campo obbligatorio'
-        });
+        isOpenStory: false,
+        title: '',
+        subtitle: '',
+        org: ''
+      })
+
+      this.props.history.push({
+        'pathname':'/private/datastory/create',
+        'modified':true
+      })
     }
   }
 
@@ -705,45 +630,6 @@ class Full extends Component {
       }
     })
   }
-  
-  handleSaveDash = (e) => {
-    e.preventDefault()
-
-    if(this.titleDash.value){
-      if(!this.orgDash || this.orgDash.value == ''){
-        this.setState({
-          validationMSgOrg: 'Campo obbligatorio'
-        });
-      }else{
-        //prepara data
-        let layout = { rows: [] };
-        let widgets = {};
-        let request = {
-          title : this.titleDash.value,
-          pvt: this.state.pvtDash,
-          org: this.state.orgDash,
-          subtitle : this.subtitleDash.value,
-          layout : JSON.stringify(layout),
-          widgets : JSON.stringify(widgets),
-          status: 0
-        };
-        
-        this.props.history.push({
-          pathname: '/private/dashboard/create',
-          state: { 'dash': request, 'modified':true }})
-        
-        this.hideModalDash();
-/*         //save data
-        dashboardService.save(request).then((data)=> {
-            this.props.history.push('/dashboard/list/'+ data.message + '/edit');
-        }) */
-      }
-    } else {
-      this.setState({
-        validationMSg: 'Campo obbligatorio'
-      });
-    }
-  }
 
   render() {
     const { history, loggedUser, results } = this.props
@@ -756,17 +642,12 @@ class Full extends Component {
     let home = ''
     let paddingTop = 'pt-3'
 
-    if (window.location.hash.indexOf('/private/datastory/list')!==-1 || 
-        window.location.hash.indexOf('/private/userstory/list')!==-1 || 
+    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || 
         window.location.hash.indexOf('private/widget')!==-1 || 
         window.location.hash.indexOf('private/vocabularies')!==-1 || 
         window.location.hash.indexOf('private/ontologies')!==-1 || 
         window.location.hash.indexOf('private/notifications')!==-1)
       mainDiv='bg-light'
-    
-    if (window.location.hash.indexOf('/private/datastory/list/')!==-1 ||
-        window.location.hash.indexOf('/private/userstory/list/')!==-1)
-      mainDiv='bg-white'
       
     if (window.location.hash.indexOf('/private/home')!==-1 || window.location.hash.indexOf('/private/search')!==-1 || window.location.hash.indexOf('/private/dataset')!==-1)
       home = 'p-0'
@@ -784,43 +665,31 @@ class Full extends Component {
       { this.state.loading && (<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>)} 
       {!this.state.loading && <div className="app aside-menu-show">
       {/* Modal per creazione nuova Storia */}
-      {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
+      {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={()=>this.setState({isOpenStory: false})}>
           <form>
             <ModalHeader>
               <ModalTitle>Crea una Storia</ModalTitle>
-              <ModalClose onClick={this.hideModalStory}/>
+              <ModalClose onClick={()=>this.setState({isOpenStory: false})}/>
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Titolo</label>
-                  <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(titleStory) => this.titleStory = titleStory} onChange={this.validateStory.bind(this)} id="title" placeholder="Titolo"/>
-                    {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
+                  <div className="col-md-9">
+                    <input type="text" className={"form-control "+(this.state.title.length===0?'is-invalid':'')} onChange={(e)=> this.setState({title: e.target.value})} value={this.state.title} placeholder="Titolo"/>
+                    {this.state.title.length===0&&<span className="text-danger">Campo Obbligatorio</span>}
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Privata</label>
-                  <div className="col-md-8">
-                  {loggedUser.organizations && loggedUser.organizations.length > 0 ?
-                    <select className="form-control" ref={(pvtStory) => this.pvtStory = pvtStory} onChange= {(e) => this.onPvtChangeStory(e, e.target.value)} id="pvt" >
-                      <option value="0" defaultValue key="0">No</option>
-                      <option value="1" key='1'>Si</option>
-                    </select>
-                    :
-                    <div>
-                      <select className="form-control" ref={(pvtStory) => this.pvtStory = pvtStory} onChange= {(e) => this.onPvtChangeStory(e, e.target.value)} id="pvt" >
-                      <option value="0" defaultValue key="0">No</option>
-                      </select>
-                      <span>Puoi creare soltanto storie pubbliche in quanto non hai nessuna organizzazione associata</span>
-                    </div>
-                  }
+                  <label className="col-md-2 form-control-label">Sottotitolo</label>
+                  <div className="col-md-9">
+                    <input type="text" className="form-control" onChange={(e)=> this.setState({subtitle: e.target.value})} value={this.state.subtitle} placeholder="Sottotitolo"/>
                   </div>
                 </div>
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Organizzazione</label>
-                  <div className="col-md-8">
-                    <select className="form-control" ref={(orgStory) => this.orgStory = orgStory} onChange= {(e) => this.onOrganizationChangeStory(e, e.target.value)} id="org" >
+                  <div className="col-md-9">
+                    <select className={"form-control "+(this.state.org.length===0?'is-invalid':'')} placeholder="Seleziona l'organizzazione" onChange= {(e) => this.setState({org: e.target.value})} value={this.state.org} >
                         <option value=""  key='organization' defaultValue></option>
                         {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
                               return(
@@ -828,84 +697,16 @@ class Full extends Component {
                           }
                         )}
                     </select>
-                    {this.state.validationMSgOrg && <span>{this.state.validationMSgOrg}</span>}
+                    {this.state.org.length===0 && <span className="text-danger">Campo Obbligatorio</span>}
                   </div>
                 </div>
             </div>
             </ModalBody>
             <ModalFooter>
-              <button type="button" className='btn btn-gray-200' onClick={this.hideModalStory}>
+              <button type="button" className='btn btn-gray-200' onClick={()=>this.setState({isOpenStory: false})}>
                 Chiudi
               </button>
               <button type="button" className="btn btn-primary px-2" onClick={this.handleSaveStory.bind(this)}>
-                <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                  Crea
-              </button>
-            </ModalFooter>
-          </form>
-        </Modal>}
-
-        {/* Modal per creazione nuova Dash */}
-
-        {loggedUser && <Modal isOpen={this.state.isOpenDash} onRequestHide={this.hideModalDash}>
-          <form>
-            <ModalHeader>
-              <ModalTitle>Crea una Dashboard</ModalTitle>
-              <ModalClose onClick={this.hideModalDash}/>
-            </ModalHeader>
-            <ModalBody>
-            <div className="form-group">
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Titolo</label>
-                  <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(titleDash) => this.titleDash = titleDash} onChange={this.validateDash.bind(this)} id="title" placeholder="Titolo"/>
-                    {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Sottotitolo</label>
-                  <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(subtitleDash) => this.subtitleDash = subtitleDash} id="subtitle" placeholder="Sottotitolo"/>
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Privata</label>
-                  <div className="col-md-8">
-                  {loggedUser.organizations && loggedUser.organizations.length > 0 ?
-                    <select className="form-control" ref={(pvtDash) => this.pvtDash = pvtDash} onChange={(e) => this.onPvtChangeDash(e, e.target.value)} id="pvt" >
-                      <option value="0" defaultValue key="0">No</option>
-                      <option value="1" key='1'>Si</option>
-                    </select>
-                    :
-                    <div>
-                      <select className="form-control" ref={(pvtDash) => this.pvtDash = pvtDash} onChange={(e) => this.onPvtChangeDash(e, e.target.value)} id="pvt" >
-                        <option value="0" defaultValue key="0">No</option>
-                      </select>
-                      <span>Puoi creare soltanto dashboards pubbliche in quanto non hai nessuna organizzazione associata</span>
-                    </div>
-                  }
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Organizzazione</label>
-                  <div className="col-md-8">
-                    <select className="form-control" ref={(orgDash) => this.orgDash = orgDash} onChange={(e) => this.onOrganizationChangeDash(e, e.target.value)} id="org" >
-                        <option value=""  key='organization' defaultValue></option>
-                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
-                            return (<option value={organization} key={organization}>{organization}</option>)
-                        })
-                        }
-                    </select>
-                    {this.state.validationMSgOrg && <span>{this.state.validationMSgOrg}</span>}
-                  </div>
-                </div>
-            </div>
-            </ModalBody>
-            <ModalFooter>
-              <button type="button" className='btn btn-gray-200' onClick={this.hideModalDash}>
-                Chiudi
-              </button>
-              <button type="button" className="btn btn-primary px-2" onClick={this.handleSaveDash.bind(this)}>
                 <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   Crea
               </button>

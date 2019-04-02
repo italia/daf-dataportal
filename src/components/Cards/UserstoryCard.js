@@ -27,7 +27,7 @@ class UserstoryCard extends Component {
 
         return(
             <div className="mx-auto">
-                <div className="card b-a-0 border-primary bg-white card-story">
+                <div className={isPublic()?"card b-a-0 border-primary bg-white card-story":"card b-a-0 border-primary bg-gray-100 card-story"}>
                     <div className="card-img-top" style={iframeStyle}>
                         <div className="row m-0">
                             {widgetA && <div className="crop col-12"><img src={serviceurl.urlCacher +widgetA+'.png'} /></div>}
@@ -63,7 +63,7 @@ class UserstoryCard extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="b-t-story py-2 footer-dash">
+                    <div className={isPublic()?"b-t-story py-2 footer-dash":"b-t-dash py-2 footer-dash"}>
                         <div className="pt-1 row">
                             <div className="card-text col-8"><i className="fas fa-clock text-icon pr-2"></i> {time?Math.ceil(time):0} min. di lettura</div>
                         </div>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import ReactDOM from 'react-dom'
 import { serviceurl } from '../../../../config/serviceurl'
 
@@ -12,43 +13,16 @@ class IframeWidget extends Component {
       }
   }
 
-  componentDidMount() {
-    const { identifier } = this.props
-
-    let iframe = ReactDOM.findDOMNode(this.refs.iframe)
-    iframe.addEventListener('load', this.props.onLoad);
-
-    let url = '';
-
-    if (identifier){
-      url = serviceurl.apiURLDatiGov + '/plot/' + identifier + '/330x280';
-      const response = fetch(url, {
-        method: 'GET'
-      }).then(response => {
-        if (response.ok) {
-          response.text().then(text => {
-            this.setState({
-              loading: false,
-              imageSrc: text.replace(/"/g, '')
-            })
-          });
-        } else {
-          this.setState({
-            loading: false,
-            imageSrc: undefined
-          })
-        }
-      })
-    }
-  }
-
   render () {
+    const { loggedUser } = this.props
+
     const iframeStyle = {
       width: '100%',
       height: this.props.height,
       border: '0'
     }
-    if(localStorage.getItem('token')){
+
+    if(loggedUser && localStorage.getItem('token')){
       return (
         <iframe
           className={this.props.class}
@@ -59,10 +33,16 @@ class IframeWidget extends Component {
         />
       )
     }else{
-      <img src={"data:image/jpg;base64," + this.state.imageSrc} alt={this.props.identifier}/>
+      return(
+        <img style={iframeStyle} src={serviceurl.urlCacher +this.props.identifier+'.png'} alt={this.props.identifier}/>
+      )
     }
   }
 
 }
+function mapStateToProps(state) {
+  const loggedUser = state.userReducer['obj']?state.userReducer['obj'].loggedUser:{ }
+  return { loggedUser }
+}
 
-export default IframeWidget
+export default connect(mapStateToProps)(IframeWidget)

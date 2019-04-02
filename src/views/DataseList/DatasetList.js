@@ -119,10 +119,10 @@ class DatasetList extends Component {
 
         if(this.state.ckanChecked===true){
           index = ['catalog_test','ext_opendata']
-          indexDef = ['catalog_test','ext_opendata', 'dashboards', 'stories']
+          indexDef = ['catalog_test','ext_opendata', 'datastory']
         }else{
           index = ['catalog_test']
-          indexDef = ['catalog_test', 'dashboards', 'stories']
+          indexDef = ['catalog_test', 'datastory']
         }
 
         let filter = {
@@ -217,7 +217,7 @@ class DatasetList extends Component {
           if(filter.index.indexOf('catalog_test')>-1 && ckanChecked===true){
             filter.index.push('ext_opendata')
           }else if(filter.index.length===0 && ckanChecked===false){
-            filter.index = ['catalog_test', 'dashboards', 'stories']
+            filter.index = ['catalog_test', 'datastory']
           }
           dispatch(search(query, filter, isPublic(), filterInt))
           .catch((error) => {
@@ -899,120 +899,8 @@ class DatasetList extends Component {
                                                 }
                                                 
                                                     break;
-                                   case 'dashboards':
-                                       let dashboard = JSON.parse(result.source)
-                                       let dashboardMatch = dashboard
-                                       try {
-                                           dashboardMatch = JSON.parse(result.match)
-                                       } catch (error) {
-                                        // console.error(error)
-                                       }
-                                       if ((dashboard.widgets && dashboard.widgets !== '{}') && (dashboard.layout && dashboard.layout !== '{}')) {
-                                           const dashLayout = JSON.parse(dashboard.layout)
-                                           var firstLayout = ''
-                                           let righe = dashLayout.rows
-                                           for (let i = 0; i < righe.length; i++) {
-                                           let colonne = righe[i].columns;
-                                            for (let j = 0; j < colonne.length; j++) {
-                                                let wids = colonne[j].widgets
-                                                wids.map((index) => {
-                                                /*  if (!index.key.startsWith('TextWidget')) { */
-                                                if (index.key.indexOf('TextWidget') == -1) {
-                                                    firstLayout = index.key
-                                                }
-                                                })
-                                                if (firstLayout != '')
-                                                break
-                                            }
-                                            if (firstLayout != '')
-                                                break
-                                            }
-                                            const dashWidgets = JSON.parse(dashboard.widgets)
-                                            if (firstLayout != '') {
-                                                var firstWidget = dashWidgets[firstLayout];
-                                            }
-                                        } 
-
-                                        return(
-                                            <div className="container px-5" key={index}>
-                                                <div className="card risultato-1 mt-3 mb-0" >
-                                                    <div className="card-body p-0 clearfix">
-                                                        <i className="fa fa-columns bg-gray-900 p-3 float-left text-white h-100"></i>
-                                                        <div className="row pl-3 pt-2 h-100" >
-                                                            <div className="col-md-6 py-1 px-1" title={dashboard.title}>
-                                                                <Link to={isPublic()?'/dashboard/list/' + dashboard.id:'/private/dashboard/list/' + dashboard.id} className="title-res text-primary">                                                                    
-{/*                                                                     <div title={dashboard.title} dangerouslySetInnerHTML={{__html: dashboardMatch['title']?truncateDatasetName(dashboardMatch['title'],100):truncateDatasetName(dashboard.title, 60)}}></div>
-
- */}                                                                <div title={dashboard.title} className="text-truncate" dangerouslySetInnerHTML={{__html: dashboardMatch['title']?dashboardMatch['title']:dashboard.title}}></div>
-                                                                        </Link>
-                                                            </div>
-                                                            <div className="col-md-2 py-1 px-1" ></div>
-                                                            <div className="col-md-2 py-1 px-1" >
-                                                                <div title={dashboard.org} className="text-truncate" dangerouslySetInnerHTML={{__html: dashboard.org}}></div>
-                                                            </div>
-                                                            <div className="col-sm-2 py-1 pl-4">
-                                                                <div className="row">
-                                                                    <div className="ml-auto pr-3">
-                                                                        {dashboard.status===2 && <i className="fa fa-globe fa-lg text-icon pt-1"/>}
-                                                                        {dashboard.status===1 && <i className="fa fa-users fa-lg text-icon pt-1"/>}
-                                                                        {dashboard.status===0 && <i className="fas fa-lock fa-lg text-icon pt-1"/>}
-                                                                        <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 btn btn-outline-filters pt-0 pl-4" onClick={this.handleToggleClickDataset.bind(this, index)}>
-                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
-                                                <div className="card mb-3 mt-0">
-                                                     <div className="card-body clearfix">
-                                                        <div className="row pl-3 pt-2" >
-                                                             <div className="col-md-2 py-1 px-1" >
-                                                                 <b>Titolo: </b>
-                                                             </div>
-                                                             <div className="col-md-8 py-1 px-1" >
-                                                                 <div title={dashboard.title} dangerouslySetInnerHTML={{__html: dashboardMatch['title']?dashboardMatch['title']:dashboard.title}}></div>
-                                                             </div>
-                                                        </div>
-                                                        <div className="row pl-3 pt-2" >
-                                                             <div className="col-md-2 py-1 px-1" >
-                                                                 <b>Ultima modifica: </b>
-                                                             </div>
-                                                             <div className="col-md-8 py-1 px-1" >
-                                                                 {dashboard.timestamp}
-                                                             </div>
-                                                        </div>
-                                                         <div className="row pl-3 pt-2" >
-                                                             <div className="col-md-2 py-1 px-1" >
-                                                                 <b>Sottotitolo: </b>
-                                                             </div>
-                                                             <div className="col-md-8 py-1 px-1" >
-                                                                 <div title={dashboard.subtitle} dangerouslySetInnerHTML={{__html: dashboardMatch['subtitle']?dashboardMatch['subtitle']:dashboard.subtitle}}></div>
-                                                             </div>
-                                                         </div>
-                                                         <div className="row pl-3 pt-2" >
-                                                             <div className="col-md-2 py-1 px-1" >
-                                                                 <b>Widget: </b>
-                                                             </div>
-                                                             <div className="col-md-8 py-1 px-1" >
-                                                             {firstWidget &&
-                                                             <WidgetCard
-                                                                 iframe = {firstWidget}
-                                                                 />}
-                                                                {/* dashboardMatch['widgets']&&
-                                                                <div dangerouslySetInnerHTML={{__html: dashboardMatch['widgets']}}></div>
-                                                                 */}
-                                                             </div>
-                                                         </div>
-                                                    </div>
-                                                </div>
-                                                }
-                                            </div>
-                                            )
-                                            break;
-                                    case 'stories': 
+                                   
+                                    case 'datastory': 
                                         let story = JSON.parse(result.source)
                                         let storyMatch = story
                                         try {
@@ -1020,32 +908,25 @@ class DatasetList extends Component {
                                         } catch (error) {
                                           // console.error(error)
                                         }
-                                        if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
-                                            const dashLayout = JSON.parse(story.layout)
-                                            var firstLayout = ''
-
-                                            let righe = dashLayout.rows
-                                            for (let i = 0; i < righe.length; i++) {
-                                            let colonne = righe[i].columns;
-                                            for (let j = 0; j < colonne.length; j++) {
-                                                let wids = colonne[j].widgets
-                                                wids.map((index) => {
-                                                /*  if (!index.key.startsWith('TextWidget')) { */
-                                                if (index.key.indexOf('TextWidget') == -1) {
-                                                    firstLayout = index.key
-                                                }
-                                                })
-                                                if (firstLayout != '')
-                                                break
+                                        if ((story.widgets) && (story.layout && story.layout !== '{}')) {
+                                            const dashwidgets = story.widgets.filter(wid=>{
+                                              return wid.identifier.toLowerCase().indexOf('textwidget')<0
+                                            })
+                          
+                                            var firstLayout = dashwidgets.length>0?dashwidgets[0]:''
+                          
+                                            var time = 0
+                                            for (let k = 0; k < story.widgets.length; k++){
+                                              if(story.widgets[k].identifier.toLowerCase().indexOf('textwidget')!==-1){
+                                                var text = story.widgets[k].text
+                                                var array = text?text.split(' '):[]
+                                                
+                                                time = time + (array.length/275)
+                                              }
+                                              else
+                                                time = time + 1 
                                             }
-                                            if (firstLayout != '')
-                                                break
-                                            }
-                                            const dashWidgets = JSON.parse(story.widgets)
-                                            if (firstLayout != '') {
-                                                var firstWidget = dashWidgets[firstLayout];
-                                            }
-                                        }
+                                          }
                                         return(
                                             <div className="container px-5" key={index}>
                                                 <div className="card risultato-1 mt-3 mb-0">
@@ -1053,7 +934,7 @@ class DatasetList extends Component {
                                                     <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
                                                     <div className="row pl-3 pt-2 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
-                                                            <Link to={isPublic()?'/userstory/list/' + story.id:'/private/userstory/list/' + story.id} className="title-res text-primary">                                                                    
+                                                            <Link to={isPublic()?'/datastory/list/' + story.id:'/private/datastory/list/' + story.id} className="title-res text-primary">                                                                    
 {/*                                                                 <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?truncateDatasetName(storyMatch['title'],100):truncateDatasetName(story.title, 60)}}></div>
  */}                                                        <div title={story.title} className="text-truncate" dangerouslySetInnerHTML={{__html: storyMatch['title']?storyMatch['title']:story.title}}></div>    
                                                             </Link>
@@ -1065,9 +946,9 @@ class DatasetList extends Component {
                                                         <div className="col-sm-2 py-1 pl-4">
                                                             <div className="row">
                                                                 <div className="ml-auto pr-3">
-                                                                    {story.published===2 && <i className="fa fa-globe fa-lg text-icon pt-1"/>}
-                                                                    {story.published===1 && <i className="fa fa-users fa-lg text-icon pt-1"/>}
-                                                                    {story.published===0 && <i className="fas fa-lock fa-lg text-icon pt-1"/>}
+                                                                    {story.status===2 && <i className="fa fa-globe fa-lg text-icon pt-1"/>}
+                                                                    {story.status===1 && <i className="fa fa-users fa-lg text-icon pt-1"/>}
+                                                                    {story.status===0 && <i className="fas fa-lock fa-lg text-icon pt-1"/>}
                                                                     <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 py-0 btn btn-outline-filters pt-0 pl-4" onClick={this.handleToggleClickDataset.bind(this, index)}>
                                                                         {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
                                                                     </button>

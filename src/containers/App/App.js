@@ -95,8 +95,8 @@ class App extends Component {
             <Route path='/termini' exact component={Public} />
             <Route path='/data-applications' exact component={Public} />
             <Route path='/faqs' exact component={Public} />
-            <Route path='/userstory/list' exact component={Public} />
-            <Route path='/userstory/list/:id' exact component={Public} />
+            <Route path='/datastory/list' exact component={Public} />
+            <Route path='/datastory/list/:id' exact component={Public} />
             <Route path='/team' exact component={Public} />
             <Route path='/notizie' exact component={Public} />
             <Route path='/notizie/:id' exact component={Public} />

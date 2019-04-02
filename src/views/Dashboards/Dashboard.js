@@ -13,6 +13,21 @@ import { isPublic } from '../../utility'
 import { loadWidgets, saveDatastory, getDatastory, deleteDatastory, receiveDatastory } from '../../actions'
 import ModalWysiwig from './components/ModalWysiwig';
 
+const months = {
+  '01': 'Gennaio',
+  '02': 'Febbraio',
+  '03': 'Marzo',
+  '04': 'Aprile',
+  '05': 'Maggio',
+  '06': 'Giugno',
+  '07': 'Luglio',
+  '08': 'Agosto',
+  '09': 'Settembre',
+  '10': 'Ottobre',
+  '11': 'Novembre',
+  '12': 'Dicembre',
+}
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function getLayoutHeight(height){
@@ -28,6 +43,12 @@ function checkEditMode(location){
 
 function sharable(widgets){
   return !(widgets.filter(elem=> elem.pvt===true).length > 0)
+}
+
+function convertTime(time){
+  var split = time.split('-')
+
+  return split[2].substr(0, 2) + ' ' + months[split[1]] + ' ' + split[0]
 }
 
 class Dashboard extends Component{
@@ -113,45 +134,56 @@ class Dashboard extends Component{
     }
 
     if(nextProps.datastory!==datastory){
-      dispatch(loadWidgets(nextProps.datastory.org))
-      .then(json => {
+      if(!isPublic()){
+        dispatch(loadWidgets(nextProps.datastory.org))
+        .then(json => {
 
-        if(json.code){
-          var widgets = []
-        }else{
-          var widgets = json
-        }
+          if(json.code){
+            var widgets = []
+          }else{
+            var widgets = json
+          }
 
-        let textWid = {
-          identifier: "textwidget",
-          iframe_url: null,
-          origin: "text",
-          table: null,
-          title: "Testo",
-          viz_type: "textwidget",
-          pvt: false
-        }
-  
-        widgets.unshift(textWid)
-  
+          let textWid = {
+            identifier: "textwidget",
+            iframe_url: null,
+            origin: "text",
+            table: null,
+            title: "Testo",
+            viz_type: "textwidget",
+            pvt: false
+          }
+    
+          widgets.unshift(textWid)
+    
+          this.setState({
+            loading: false,
+            widgets: widgets,
+            keys: nextProps.datastory.widgets,
+            layout: nextProps.datastory.layout,
+            title: nextProps.datastory.title,
+            subtitle: nextProps.datastory.subtitle,
+            status: nextProps.datastory.status
+          })
+
+          this.forceUpdate()
+        })
+      }else{
         this.setState({
           loading: false,
-          widgets: widgets,
           keys: nextProps.datastory.widgets,
           layout: nextProps.datastory.layout,
           title: nextProps.datastory.title,
           subtitle: nextProps.datastory.subtitle,
           status: nextProps.datastory.status
         })
-
-        this.forceUpdate()
-      })
+      }
     }
   }
 
   componentDidMount(){
     const { dispatch, datastory } = this.props
-    if(datastory && datastory.org){
+    if(!isPublic() && datastory && datastory.org){
       dispatch(loadWidgets(datastory.org))
       .then(json => {
         if(json.code){
@@ -448,12 +480,12 @@ class Dashboard extends Component{
 
     return (
       (isFetching || loading)?<h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>:<div className="mb-5">
-        <App
+        {!isPublic()&& <App
           widgets={widgets}
           isModalOpen={isOpen}
           onRequestClose={this.onRequestClose}
           onWidgetSelect={this.newBox}
-        />
+        />}
         {isEditorOpen && <ModalWysiwig
           isEditorOpen={isEditorOpen}
           widget={this.state.editingWidget}
@@ -461,7 +493,7 @@ class Dashboard extends Component{
           onSave={this.handleChangeText}
         />}
         { (datastory && Object.keys(datastory).length>0) && <div className="container">
-          <Header
+          {!isPublic() && <Header
             status={status}
             readOnly={this.state.readOnly}
             author={datastory.user}
@@ -471,7 +503,7 @@ class Dashboard extends Component{
             editToggle={this.editToggle.bind(this)}
             onSave={this.onSave}
             sharable={sharable(keys)}
-          />
+          />}
           <SectionTitle readonly={this.state.readOnly} title="Titolo"/>
           <TextEditor
             readonly={this.state.readOnly}
@@ -492,6 +524,15 @@ class Dashboard extends Component{
             placeholder="Sottotitolo"
             disableHtml={true}/>
           <SectionTitle readonly={this.state.readOnly} title="Contenuto"/>
+          {this.state.readOnly && <h5 className="mb-2 text-center mx-auto text-editor">
+            Autore <i>{datastory.user}</i>
+          </h5>}
+          {this.state.readOnly && <h5 className="mb-3 text-center mx-auto text-editor">
+            Organizzazione <i>{datastory.org}</i>
+          </h5>}
+          {this.state.readOnly && <h5 className="mb-5 text-center mx-auto text-editor">
+            {convertTime(datastory.timestamp)}
+          </h5>}
           <ResponsiveGridLayout 
             className="layout"
             isDraggable={!this.state.readOnly}

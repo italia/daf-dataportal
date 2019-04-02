@@ -103,10 +103,6 @@ class Sidebar extends Component {
     dispatch(search('', filter, false))
   }
 
-  createDash(){
-    this.props.openModalDash();
-  }
-
   createStory(){
     this.props.openModalStory();
   }
@@ -150,35 +146,11 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/private/dashboard/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-columns fa-lg text-secondary"></i> { messages.menu.dashboard }</NavLink>
-              </li>
-              <li className="nav-item" onClick={(e) => {
-                e.preventDefault();
-                document.body.classList.toggle('sidebar-mobile-show');
-              }}>
-                <NavLink to={'/private/userstory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> { messages.menu.storie }</NavLink>
-              </li>
-              <li className="nav-item" onClick={(e) => {
-                e.preventDefault();
-                document.body.classList.toggle('sidebar-mobile-show');
-              }}>
-                <NavLink to={'/private/datastory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Datastory <span className="badge badge-light">Nuovo</span></NavLink>
-              </li>
-              <li className="nav-item" onClick={(e) => {
-                e.preventDefault();
-                document.body.classList.toggle('sidebar-mobile-show');
-              }}>
-                <NavLink to={'/private/datastory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> Datastory <span className="badge badge-light">Nuovo</span></NavLink>
+                <NavLink to={'/private/datastory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> { messages.menu.datastory } <span className="badge badge-light">Nuovo</span></NavLink>
               </li>
               <li className="nav-title text-secondary">
                 { messages.menu.toolkit}
               </li>
-{/*               <li className="nav-item " onClick={(e) => {
-                e.preventDefault();
-                document.body.classList.toggle('sidebar-mobile-show');
-              }}>
-                <NavLink to={'/crea'} className={"nav-link "+crea} activeClassName="nav-link-primary"><i className="fa fa-plus fa-lg text-secondary"></i> Crea</NavLink>
-              </li> */}
               <li className="nav-item nav-dropdown b-r-1">
                 <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-plus fa-lg text-secondary"></i> { messages.menu.crea }</a>
                 <ul className="nav-dropdown-items bg-light">
@@ -188,18 +160,6 @@ class Sidebar extends Component {
                   }}>
                     <a onClick={()=>{ const{ dispatch } = this.props; dispatch(reset('wizard')); this.props.history.push('/private/ingestionwizzard');}} className="nav-link"><i className="fas fa-table fa-lg text-secondary"/>  { messages.menu.nuovoDataset } </a>
                   </li>}
-                  {/* <li className="nav-item" onClick={(e) => {
-                    e.preventDefault();
-                    document.body.classList.toggle('sidebar-mobile-show');
-                  }}>
-                    <a href className="nav-link " onClick={this.createWidget.bind(this)}><i className="fas fa-columns fa-lg text-secondary" />  Nuovo Widget</a>
-                  </li> */}
-                  <li className="nav-item" onClick={(e) => {
-                    e.preventDefault();
-                    document.body.classList.toggle('sidebar-mobile-show');
-                  }}>
-                    <a href className="nav-link " onClick={this.createDash.bind(this)}><i className="fas fa-columns fa-lg text-secondary" />  { messages.menu.nuovaDashboard }</a>
-                  </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');

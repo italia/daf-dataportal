@@ -52,7 +52,7 @@ class Home extends Component{
                   case 'ext_opendata':
                       datasets.push(element)
                       break;
-                  case 'stories':
+                  case 'datastory':
                       let story = JSON.parse(element.source)
                       stories.push(story)
                       break;
@@ -157,48 +157,31 @@ class Home extends Component{
         <div className="py-3 bg-light">
           <div className="container body w-100">
             <div className="row mx-auto text-muted">
-                <i className="fa fa-font fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Storie</h2>
+                <i className="fa fa-font fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Datastory</h2>
             </div>
             {isLoading? <h4 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h4>:
             <div className="row mx-auto m-0">
                 { 
                     this.state.listStories.map((story, index) => {
-                        let chartUrl = undefined
-                        if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
-                            const dashLayout = JSON.parse(story.layout)
-                            var firstLayout = ''
-
-                            let righe = dashLayout.rows
-                            for (let i = 0; i < righe.length; i++) {
-                                let colonne = righe[i].columns;
-                                for (let j = 0; j < colonne.length; j++) {
-                                    let wids = colonne[j].widgets
-                                    wids.map((index) => {
-                                        if (index.key.indexOf('TextWidget') == -1) {
-                                            firstLayout = index.key
-                                        }
-                                    })
-                                    if (firstLayout != '')
-                                        break
-                                }
-                                if (firstLayout != '')
-                                    break
-                            }
-                            const dashWidgets = JSON.parse(story.widgets)
+                      if ((story.widgets) && (story.layout && story.layout !== '{}')) {
+                        const dashwidgets = story.widgets.filter(wid=>{
+                          return wid.identifier.toLowerCase().indexOf('textwidget')<0
+                        })
+      
+                        var firstLayout = dashwidgets.length>0?dashwidgets[0]:''
+      
+                        var time = 0
+                        for (let k = 0; k < story.widgets.length; k++){
+                          if(story.widgets[k].identifier.toLowerCase().indexOf('textwidget')!==-1){
+                            var text = story.widgets[k].text
+                            var array = text?text.split(' '):[]
                             
-                            var time = 0
-                            let widgets = Object.keys(dashWidgets)
-                            for (let k = 0; k < widgets.length; k++) {
-                                if (widgets[k].indexOf('TextWidget') !== -1) {
-                                    var text = dashWidgets[widgets[k]].props.text
-                                    var array = text ? text.split(' ') : []
-
-                                    time = time + (array.length / 275)
-                                }
-                                else
-                                    time = time + 1
-                            }
+                            time = time + (array.length/275)
+                          }
+                          else
+                            time = time + 1 
                         }
+                      }
                         return (
                             <UserstoryCard
                                 story={story}
@@ -213,7 +196,7 @@ class Home extends Component{
                 }
             </div>}
             <div className="w-100 text-center">
-                <Link to={'/userstory/list'}>
+                <Link to={'/datastory/list'}>
                     <h4 className="text-primary"><u>Vedi tutte</u></h4>
                 </Link>
             </div>
