@@ -30,7 +30,7 @@ class SearchBar extends Component{
           org.push(properties.organization)
 
         if(!isPublic()){
-          index = ['catalog_test', 'dashboards', 'stories'] 
+          index = ['catalog_test', 'datastory'] 
         }
         if(window.location.hash.indexOf('search')===-1){
             newFilter = {

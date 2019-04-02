@@ -10,6 +10,7 @@ import {
 } from 'react-modal-bootstrap';
 import { getAllDatastories, receiveDatastory } from '../../actions'
 import UserstoryCard from '../../components/Cards/UserstoryCard'
+import { isPublic } from '../../utility';
 
 class DatastoryList extends Component{
   constructor(props){
@@ -37,7 +38,7 @@ class DatastoryList extends Component{
   componentDidMount(){
     const { dispatch } = this.props
 
-    dispatch(getAllDatastories())
+    dispatch(getAllDatastories(isPublic()))
   }
   
   onSubmit(){
@@ -138,9 +139,9 @@ class DatastoryList extends Component{
             <div className="col-md-11 mt-3">
               <input className="form-control transparent-frame b-b-1" placeholder="Inserisci un titolo per filtrare la lista" value={this.state.filter} onChange={(e)=>this.filter(e.target.value)}/>
             </div>
-            <div className="col-md-1 mt-3">
+            {!isPublic() &&  <div className="col-md-1 mt-3">
               <button className="btn btn-link text-primary float-right" onClick={()=>this.setState({modalOpen: true})}><i className="fas fa-plus-circle fa-lg"/></button>
-            </div>
+            </div>}
           </div>
           {isLoading?<h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> :
           <div className="row mt-5">

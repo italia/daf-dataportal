@@ -267,7 +267,7 @@ class Header extends Component {
               <div className={"dropdown " + (this.state.community ? "show":"")}>
                 <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.community ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.community.bind(this)}>Community</a>
                 <div className={"dropdown-menu " + (this.state.community ? "show":"")} aria-labelledby="dropdownMenuButton">
-                  <Link to={'/userstory/list'} className="dropdown-item text-primary font-lg">Storie</Link>
+                  <Link to={'/datastory/list'} className="dropdown-item text-primary font-lg">Datastory</Link>
                   <Link to={'/notizie'} className="dropdown-item text-primary font-lg">Notizie</Link>
                   <Link to={'/faqs'} className="dropdown-item text-primary font-lg">Faqs</Link>
                   <a href="https://forum.italia.it/" target="_blank" className="dropdown-item text-primary font-lg">Forum</a>
@@ -308,7 +308,7 @@ class Header extends Component {
               <div className={"dropdown " + (this.state.community ? "show":"")}>
                 <a href='#' className={"dropdown-toggle nav-link font-weight-bold lead text-white "+ (this.state.community ? "active":"")} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.community.bind(this)}>Community</a>
                 <div className={"dropdown-menu " + (this.state.community ? "show":"")} aria-labelledby="dropdownMenuButton">
-                  <Link to={'/userstory/list'} className="dropdown-item">Storie</Link>
+                  <Link to={'/datastory/list'} className="dropdown-item">Datastory</Link>
                   <Link to={'/notizie'} className="dropdown-item">Notizie</Link>
                   <a href="https://forum.italia.it/" target="_blank" className="dropdown-item text-primary">Forum</a>
                 </div>

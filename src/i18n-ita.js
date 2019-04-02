@@ -3,13 +3,11 @@ export const messages = {
                 home            :   "Home",
                 dataset         :   "Dataset",
                 widget          :   "Widget",    
-                dashboard       :   "Dashboard",    
-                storie          :   "Storie",    
+                datastory       :   "Datastory",   
                 toolkit         :   "TOOLKIT",    
                 crea            :   "Crea",    // ---
-                nuovoDataset    :   "Nuovo Dataset",    
-                nuovaDashboard  :   "Nuova Dashboard",    
-                nuovaStoria     :   "Nuova Storia",
+                nuovoDataset    :   "Nuovo Dataset",       
+                nuovaStoria     :   "Nuova Datastory",
                 strumenti       :   "Strumenti",  // ----  
                 superset        :   "Superset",
                 open            :   "Open",
