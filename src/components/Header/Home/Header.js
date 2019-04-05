@@ -13,7 +13,7 @@ return (
     <div className={"app-header"}>
       <div className="upper-header">
         <div className="container">
-          <h6 className="mx-5 px-1 mb-0 text-white font-weight-bold">Agid + Team Digitale</h6>
+          {/* <h6 className="mx-5 px-1 mb-0 text-white font-weight-bold">Agid + Team Digitale</h6> */}
         </div>
       </div>
       <div className="main-header container">
@@ -27,11 +27,11 @@ return (
           <div className="col-md col-lg col-sm col-xs col h-auto">
             <div className="row mx-0">
               <Link className="text-white" to={'/'}>
-                <h2 className="mr-4 mb-0">{/* props.styleProps.headerSiglaTool */}<b>DAF {properties.headerSiglaTool}</b></h2>
+                <h2 className="mr-4 mb-0">{/* props.styleProps.headerSiglaTool */}<b>PDND {properties.headerSiglaTool}</b></h2>
               </Link>
               <span className="badge badge-pill mt-2 h-100" style={{backgroundColor: 'rgba(0,0,0,0.2)', height: 'max-content'}}>versione alpha 1.0</span>
             </div>
-            <p className="d-sm-down-none">{/* props.styleProps.headerDescTool */}{"Data & Analytics Framework"} <b>{properties.headerDescTool}</b></p>
+            <p className="d-sm-down-none">{/* props.styleProps.headerDescTool */}{"Piattaforma Digitale Nazionale Dati Italiana ( in origine DAF )"} </p>
           </div>
         </div>
       </div>

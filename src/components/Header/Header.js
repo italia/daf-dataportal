@@ -216,7 +216,7 @@ class Header extends Component {
 					
 				<ul className="nav navbar-nav d-md-down-none mr-auto">
 					<li className="nav-item brand">
-						<Link className="h-100 font-2xl" to={'/private/home'}><img className="img-logo mb-1 pr-3" src="./img/DAF_pittogramma_FU.svg" alt=""/><span className="pl-3 font-weight-bold">DAF {properties.headerSiglaTool}</span></Link>
+						<Link className="h-100 font-2xl" to={'/private/home'}><img className="img-logo mb-1 pr-3" src="./img/DAF_pittogramma_FU.svg" alt=""/><span className="pl-3 font-weight-bold">PDND {properties.headerSiglaTool}</span></Link>
 					</li>
 	{/*           <div className={"search-bar " + revealed}>
 							<form onSubmit={this.handleLoadDatasetClick}>
