@@ -1,16 +1,18 @@
 const jsRule = {
   test: /\.(js|jsx)$/,
   exclude: /node_modules|public|config/,
-  /* use: [{
+  use: [{
     loader: 'babel-loader',
     options: {
-      presets: ['babel-preset-es2015', 'babel-preset-react', 'babel-preset-stage-0', 'babel-preset-env']
+      presets: [ 
+        '@babel/preset-react', 
+        '@babel/preset-env', 
+        {
+          plugins: [ '@babel/plugin-proposal-class-properties' ]
+        }
+      ],
     }
-  }] */
-  loaders: [
-    'babel-loader?presets[]=react,presets[]=es2015,presets[]=stage-0'
-  ]
-
+  }]
 }
 
 const scssRule = (scssPlugin) => {

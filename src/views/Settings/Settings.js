@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { isAdmin } from '../../utility';
 import {
     Modal,
-} from 'react-modal-bootstrap'
+} from 'reactstrap'
 import themes from './data/Themes'
 import Select from "react-select";
 import { serviceurl } from '../../config/serviceurl'
@@ -328,7 +328,8 @@ class Settings extends Component {
             <Modal
                 contentLabel="Seleziona un tema"
                 className="Modal__Bootstrap modal-dialog modal-80"
-                isOpen={this.state.isOpen}>
+                isOpen={this.state.isOpen}
+                toggle={this.hideModal.bind(this)}>
                 <div className="modal-content">
                     <div className="modal-header">
                         <button type="button" className="close" onClick={this.hideModal.bind(this)}>

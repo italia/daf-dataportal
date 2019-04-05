@@ -11,7 +11,7 @@ import DashboardCard from "../../../components/Cards/DashboardCard";
 import DashboardService from './services/DashboardService';
 
 // Our styles
-// import '../styles/custom.css';
+// require('../styles/custom.css')
 
 
 const dashboardService = new DashboardService();

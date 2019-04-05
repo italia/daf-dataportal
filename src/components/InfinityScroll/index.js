@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import throttle from 'throttle-debounce/throttle';
+import {throttle} from 'throttle-debounce';
 
 export default class InfiniteScroll extends Component {
 

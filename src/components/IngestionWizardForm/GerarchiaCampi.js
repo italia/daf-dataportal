@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import SortableTree from 'react-sortable-tree';
-import 'react-sortable-tree/style.css';
+require('react-sortable-tree/style.css');
 
 class GerarchiaCampi extends Component {
     constructor(props) {

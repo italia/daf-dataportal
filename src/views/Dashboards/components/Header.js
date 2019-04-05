@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { isEditor, isAdmin, isOrgAdmin } from '../../../utility'
 import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faGlobe, faUsers, faSortDown, faUser } from '@fortawesome/fontawesome-free-solid'
 
 class Header extends Component{

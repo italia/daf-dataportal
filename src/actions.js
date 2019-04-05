@@ -1086,38 +1086,38 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
   }
 
-  function startFeed(datasetname, org) {
-    var token = '';
-    var url = serviceurl.apiURLCatalog + '/kylo/startfeed/'  + org + '_o_' + datasetname
-    if(localStorage.getItem('username') && localStorage.getItem('token') &&
-      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
-        token = localStorage.getItem('token')
-      }
-    return dispatch => {
-        dispatch(requestFeedStart())
-        return fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-          }
-        })
-          .then(response => response.json())
-          .then(json => {
-            console.log(json)
-            dispatch(getFeedDetail(org, datasetname))
-            .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
-            .then(jsonFeed => {
-              dispatch(updateDatasetFeedInfo(jsonFeed))
-            })
-          })
-          .catch(error => {
-            console.log('Nessun Dataset con questo nome');
-            dispatch(receiveDatasetDetailError(query))
-          }) 
-        }
-    }
+  // function startFeed(datasetname, org) {
+  //   var token = '';
+  //   var url = serviceurl.apiURLCatalog + '/kylo/startfeed/'  + org + '_o_' + datasetname
+  //   if(localStorage.getItem('username') && localStorage.getItem('token') &&
+  //     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+  //       token = localStorage.getItem('token')
+  //     }
+  //   return dispatch => {
+  //       dispatch(requestFeedStart())
+  //       return fetch(url, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           'Content-Type': 'application/json',
+  //           'Authorization': 'Bearer ' + token
+  //         }
+  //       })
+  //         .then(response => response.json())
+  //         .then(json => {
+  //           console.log(json)
+  //           dispatch(getFeedDetail(org, datasetname))
+  //           .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
+  //           .then(jsonFeed => {
+  //             dispatch(updateDatasetFeedInfo(jsonFeed))
+  //           })
+  //         })
+  //         .catch(error => {
+  //           console.log('Nessun Dataset con questo nome');
+  //           dispatch(receiveDatasetDetailError(query))
+  //         }) 
+  //       }
+  //   }
 
 
   export function querySearch(filter){

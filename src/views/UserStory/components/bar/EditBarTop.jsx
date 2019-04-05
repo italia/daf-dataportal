@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { isEditor, isAdmin } from '../../../../utility'
 import { Tooltip } from 'reactstrap';
 import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faGlobe, faUsers, faSortDown, faUser } from '@fortawesome/fontawesome-free-solid'
 
 class EditBarTop extends React.Component {
@@ -32,7 +32,7 @@ class EditBarTop extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       title : nextProps.title,
       id : nextProps.id

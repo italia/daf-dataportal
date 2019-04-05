@@ -1,3 +1,5 @@
+require('react-draft-wysiwyg/dist/react-draft-wysiwyg.css');
+
 import React, { Component } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';

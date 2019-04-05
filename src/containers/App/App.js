@@ -78,9 +78,6 @@ class App extends Component {
     })
   }
 
-  componentWillUnmount() {
-    this.removeListener()
-  }
   render() {
     return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
       <div>

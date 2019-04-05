@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import List from './List';
-import { Modal } from 'react-modal-bootstrap';
+import { Modal } from 'reactstrap';
 
 class App extends Component {
   constructor(props) {
@@ -82,7 +82,8 @@ class App extends Component {
     <Modal
       contentLabel="Add a widget"
       className="Modal__Bootstrap modal-dialog modal-80"
-      isOpen={isModalOpen}>
+      isOpen={isModalOpen}
+      toggle={onRequestClose}>
       <div className="App">
         <div className="App-header">
         <button type="button" className="close" onClick={onRequestClose}>

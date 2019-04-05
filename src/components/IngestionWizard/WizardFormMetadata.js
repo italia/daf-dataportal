@@ -8,14 +8,6 @@ import TestSelect2 from './TestSelect2';
 import { connect } from 'react-redux';
 import { getSchema, getSchemaWS, getSystemNameKylo } from '../../actions';
 import $ from 'jquery';
-import {
-  Modal,
-  ModalHeader,
-  ModalTitle,
-  ModalClose,
-  ModalBody,
-  ModalFooter
-} from 'react-modal-bootstrap';
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 import TagsInput from './TagsInput'
 import AutocompleteSemantic from '../Autocomplete/AutocompleteSemantic'

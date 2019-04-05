@@ -2,11 +2,9 @@ import React, {Component} from 'react';
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter
-  } from 'react-modal-bootstrap';
+  } from 'reactstrap';
   import MappingFileds from './Standard/MappingFields.jsx'
 
 class MappingStandards extends Component {
@@ -58,11 +56,10 @@ class MappingStandards extends Component {
     const { fields, datasetStdList, datasetstd } = this.props;
     return (
       <div>
-        <Modal isOpen={this.state.isOpenMappingStandards} onRequestHide={this.hideModalMappingStandards}>
+        <Modal isOpen={this.state.isOpenMappingStandards} toggle={this.hideModalMappingStandards}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Aggiungi un mapping</ModalTitle>
-              <ModalClose onClick={this.hideModalMappingStandards}/>
+            <ModalHeader toggle={this.hideModalMappingStandards}>
+              Aggiungi un mapping
             </ModalHeader>
             <ModalBody>
                 <MappingFileds fields={fields} datasetStdList={datasetStdList} datasetstd={datasetstd}/>

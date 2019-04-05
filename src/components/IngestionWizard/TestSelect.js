@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import fetch from 'isomorphic-fetch';
 import Select from 'react-select'
-import 'react-select/dist/react-select.css';
  
 class TestSelect extends Component {
     constructor(props) {

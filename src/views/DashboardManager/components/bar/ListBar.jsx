@@ -4,11 +4,9 @@ import { connect } from 'react-redux'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 
 // SERVICES
 import DashboardService from '../services/DashboardService';
@@ -155,11 +153,10 @@ class ListBar extends React.Component {
     return (
       <div>
         
-        <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
+        <Modal isOpen={this.state.isOpen} toggle={this.hideModal}>
           <form onSubmit={this.save}>
-            <ModalHeader>
-              <ModalTitle>Crea una Dashboard</ModalTitle>
-              <ModalClose onClick={this.hideModal}/>
+            <ModalHeader toggle={this.hideModal}>
+              Crea una Dashboard
             </ModalHeader>
             <ModalBody>
             <div className="form-group">

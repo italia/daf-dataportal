@@ -39,6 +39,7 @@ class Home extends Component{
     var datasets = []
     var stories = []
     var org = undefined
+
     if(properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
       org=properties.organization
     let home = homeService.publicHome(org);
@@ -122,7 +123,7 @@ class Home extends Component{
               <div className="col-lg-5 col-md-7 col-8 mx-auto pt-3">
                 <h1 style={{fontSize: '45px'}}><b>La piattaforma <br/> dei dati {properties.bodyIllustrazione}</b></h1>
                 <h5 className="mt-5">Scopri tutto quello che c’è da sapere sul progetto</h5>
-                <a href="http://pianotriennale-ict.readthedocs.io/it/latest/doc/09_data-analytics-framework.html" target="_blank"><button className="font-weight-bold btn btn-lg btn-outline-primary border-white-solid text-white mt-3 py-2 px-3">PIANO STRATEGICO</button></a>
+                <a href="https://docs.italia.it/italia/piano-triennale-ict/pianotriennale-ict-doc/it/2019-2021/05_dati-della-pubblica-amministrazione.html#piattaforma-digitale-nazionale-dati-pdnd" target="_blank"><button className="font-weight-bold btn btn-lg btn-outline-primary border-white-solid text-white mt-3 py-2 px-3">PIANO STRATEGICO</button></a>
               </div>
             </div>
           </div>

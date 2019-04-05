@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal} from 'react-modal-bootstrap';
+import {Modal} from 'reactstrap';
 import App from '../InfinityScrollWidgets/App.js'
 
 class BtnControlWidget extends React.Component {
@@ -194,7 +194,8 @@ class BtnControlWidget extends React.Component {
                 <Modal
                     contentLabel="Set width columns"
                     className="Modal__Bootstrap modal-dialog"
-                    isOpen={this.state.isModalOpen}>
+                    isOpen={this.state.isModalOpen}
+                    toggle={this.closeModal}>
                     <div className="modal-content">
                         <div className="modal-header">
                             <button type="button" className="close" onClick={this.closeModal}>

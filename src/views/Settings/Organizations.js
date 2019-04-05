@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter 
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import Select from 'react-select'
 import OrganizationService from "./services/OrganizationService";
 import { isAdmin, isSysAdmin } from '../../utility'
@@ -710,11 +708,11 @@ class Organizations extends Component {
                 <Modal
                     contentLabel="Delete Organization"
                     className="Modal__Bootstrap modal-dialog modal-60"
-                    isOpen={orgModal}>
+                    isOpen={orgModal}
+                    toggle={this.closeOrgModal.bind(this)}>
                     <form>
-                        <ModalHeader>
-                            <ModalTitle>Cancellazione</ModalTitle>
-                            <ModalClose onClick={this.closeOrgModal.bind(this)} />
+                        <ModalHeader toggle={this.closeOrgModal.bind(this)}>
+                            Cancellazione
                         </ModalHeader>
                         <ModalBody>
                             Sei sicuro di voler eliminare l'organizzazione <b>{org}</b> ?
@@ -732,11 +730,11 @@ class Organizations extends Component {
                 <Modal
                     contentLabel="Add a User"
                     className="Modal__Bootstrap modal-dialog modal-60"
-                    isOpen={userModal}>
-                        <ModalHeader>
-                            {userModalType==='org' && <ModalTitle>Aggiungi un utente all'organizzazione <b>{selectedOrg}</b></ModalTitle>}
-                            {userModalType==='wg' && <ModalTitle>Aggiungi un utente al workgroup <b>{selectedWorkgroup}</b></ModalTitle>}
-                            <ModalClose onClick={this.closeUserModal} />
+                    isOpen={userModal}
+                    toggle={this.closeUserModal}>
+                        <ModalHeader toggle={this.closeUserModal}>
+                            {userModalType==='org' && <div>Aggiungi un utente all'organizzazione <b>{selectedOrg}</b></div>}
+                            {userModalType==='wg' && <div>Aggiungi un utente al workgroup <b>{selectedWorkgroup}</b></div>}
                         </ModalHeader>
                         <ModalBody>
                             <Select
@@ -853,7 +851,7 @@ class Organizations extends Component {
                                 if (user.indexOf("default_admin") === -1)
                                     return(
                                         <li className="list-group-item" key={user}>{user}
-                                            <button type="button" className="btn btn-link float-right" title="Rimuovi utente" onClick={this.removeUser.bind(this, user)}>{removingUser&&user===userToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-user-minus fa-1" />}</button>
+                                            <button type="button" className="btn btn-link float-right" title="Rimuovi utente" onClick={this.removeUser.bind(this, user)}>{removingUser&&user===userToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-user-minus fa-lg" />}</button>
                                         </li>)
                                 }
                             ):<label className="m-2 col-form-label">Non ci sono utenti</label>
@@ -877,7 +875,7 @@ class Organizations extends Component {
                             {(workgroups && workgroups.length > 0)?workgroups.map(workgroup => {
                                         return( 
                                             <li className={"list-group-item "+ (workgroup===selectedWorkgroup?"active":"")} key={workgroup}>{workgroup}
-                                                <button title="Elimina Workgroup" type="button"  className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={this.removeWorkgroup.bind(this, workgroup, selectedOrg)}>{removingWg&&workgroup===wgToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-1" />}</button>
+                                                <button title="Elimina Workgroup" type="button"  className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={this.removeWorkgroup.bind(this, workgroup, selectedOrg)}>{removingWg&&workgroup===wgToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-lg" />}</button>
                                                 <button title="Gestione Utenti Workgroup" type="button" className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={()=>{this.getWorkGroupUsers(workgroup)}}><i className="fa fa-user-plus fa-lg" /></button>
                                             </li>)
                                     }
@@ -930,7 +928,7 @@ class Organizations extends Component {
                             {workgroupUsers.length > 0 && workgroupUsers.map(workgroupUser => {
                                 return(
                                     <li className="list-group-item" key={workgroupUser}>{workgroupUser}
-                                        <button title="Elimina Utente Workgroup" type="button" className="btn btn-link float-right" onClick={this.removeWorkgroupUser.bind(this, selectedWorkgroup, workgroupUser)}>{removingWgUser&&workgroupUser===workgroupUserToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-1" />}</button>
+                                        <button title="Elimina Utente Workgroup" type="button" className="btn btn-link float-right" onClick={this.removeWorkgroupUser.bind(this, selectedWorkgroup, workgroupUser)}>{removingWgUser&&workgroupUser===workgroupUserToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-lg" />}</button>
                                      </li>)
                                 })
                             }

@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import { getAllDatastories, receiveDatastory } from '../../actions'
 import UserstoryCard from '../../components/Cards/UserstoryCard'
 import { isPublic } from '../../utility';
@@ -85,11 +83,10 @@ class DatastoryList extends Component{
     const { filtered } = this.state
     return(
       <div>
-        <Modal isOpen={this.state.modalOpen} onRequestHide={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
+        <Modal isOpen={this.state.modalOpen} toggle={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Crea una Datastory</ModalTitle>
-              <ModalClose onClick={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}/>
+            <ModalHeader toggle={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
+              Crea una Datastory
             </ModalHeader>
             <ModalBody>
             <div className="form-group">

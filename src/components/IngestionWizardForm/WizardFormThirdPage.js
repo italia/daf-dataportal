@@ -9,7 +9,7 @@ import Pipelines from './Pipelines'
 import MappingStandards from './MappingStandards'
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderOrganization, renderStd, renderFieldLicenze} from './renderField';
 import Collapse from 'rc-collapse'
-import 'rc-collapse/assets/index.css'
+require('rc-collapse/assets/index.css')
 
 var Panel = Collapse.Panel;
 

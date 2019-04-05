@@ -3,11 +3,9 @@ import ReactTable from "react-table"
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter
-  } from 'react-modal-bootstrap';
+  } from 'reactstrap';
 import MessageService from '../../views/Messages/services/MessageService';
 import { toastr } from 'react-redux-toastr'
 import { messages } from '../../i18n-ita'
@@ -234,10 +232,9 @@ export default class Messages extends Component { //PADRE
                 </button>
             </div>
         </div>
-        <Modal isOpen={this.state.isOpenClose} onRequestHide={() => this.openCloseModal(false)}>
-                <ModalHeader>
-                    <ModalTitle>{messages.label.newMessage}</ModalTitle>
-                    <ModalClose onClick={() => this.openCloseModal(false)}/>
+        <Modal isOpen={this.state.isOpenClose} toggle={() => this.openCloseModal(false)}>
+                <ModalHeader toggle={() => this.openCloseModal(false)}>
+                  {messages.label.newMessage}
                 </ModalHeader>
                 <ModalBody>
                 <div className="form-group">

@@ -2,11 +2,9 @@ import React, {Component} from 'react';
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter
-  } from 'react-modal-bootstrap';
+  } from 'reactstrap';
 
 class Convenzioni extends Component {
     constructor(props){
@@ -98,11 +96,10 @@ class Convenzioni extends Component {
     const { listaConvenzioni, config } = this.props;
     return (
       <div>
-        <Modal isOpen={this.state.isOpenConvenzioni} onRequestHide={this.hideModalConvenzioni}>
+        <Modal isOpen={this.state.isOpenConvenzioni} toggle={this.hideModalConvenzioni}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Aggiungi una convenzione</ModalTitle>
-              <ModalClose onClick={this.hideModalConvenzioni}/>
+            <ModalHeader toggle={this.hideModalConvenzioni}>
+              Aggiungi una convenzione
             </ModalHeader>
             <ModalBody>
             <div className="form-group">

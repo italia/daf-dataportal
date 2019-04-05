@@ -4,11 +4,9 @@ import { roles, isSysAdmin, isAdmin } from '../../utility'
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter 
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import { toastr } from 'react-redux-toastr'
 import UserService from "./services/UserService";
 
@@ -380,11 +378,11 @@ class Users extends Component {
                 <Modal
                     contentLabel="Delete Organization"
                     className="Modal__Bootstrap modal-dialog modal-60"
-                    isOpen={userModal}>
+                    isOpen={userModal}
+                    toggle={this.closeUserModal}>
                     <form>
-                        <ModalHeader>
-                            <ModalTitle>Cancellazione Utente</ModalTitle>
-                            <ModalClose onClick={this.closeUserModal} />
+                        <ModalHeader toggle={this.closeUserModal}>
+                            Cancellazione Utente
                         </ModalHeader>
                         <ModalBody>
                             Sei sicuro di voler eliminare l'utente <b>{userAct}</b> ?

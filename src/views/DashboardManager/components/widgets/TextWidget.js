@@ -1,16 +1,4 @@
-// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
-// import React, { Component } from 'react';
-// //import { Editor } from 'react-draft-wysiwyg';
-// import htmlToDraft from 'html-to-draftjs';
-// import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
-// import draftToHtml from 'draftjs-to-html';
-
-// //medium text editor
-// import Editor from 'react-medium-editor';
-
-// require('medium-editor/dist/css/medium-editor.css');
-// require('medium-editor/dist/css/themes/default.css');
+require ('react-draft-wysiwyg/dist/react-draft-wysiwyg.css');
 
 import React, { Component } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
