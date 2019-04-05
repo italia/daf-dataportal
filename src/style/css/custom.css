@@ -1084,7 +1084,7 @@ li.bg-footer:last-child.social-links {
 }
 
 .ProvaSpazio {
-  border-right: 1px solid whitesmoke;
+  border-right: 1px solid #137ae2;
   padding-right: 8px;
 }
 
@@ -1278,3 +1278,10 @@ li.bg-footer:last-child.social-links {
     width: auto;
     height: auto;
   }
+
+  .color-text-header {
+    color: #bfccef !important; }
+
+    #color-hp {
+      border-bottom: 1px solid  #137ae2 !important;
+    }
