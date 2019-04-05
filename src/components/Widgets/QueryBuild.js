@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import { toastr } from 'react-redux-toastr'
 import { querySearch, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult, translateQueryToSQL, resetQueryResult } from '../../actions'
 import { rulesConverter, jsonToCSV } from '../../utility'
@@ -526,14 +524,11 @@ class QueryBuild extends Component {
 
     return(
       <div className={classes}>
-        <Modal isOpen={modalOpen}>
-          <ModalHeader>
-            <ModalTitle>
-              {this.state.modalType==='JOIN' && "Seleziona un dataset da mettere in JOIN"}
-              {this.state.modalType==='FROM' && "Seleziona il dataset da cui iniziare la query"}
-              {this.state.modalType==='AGGR' && "Seleziona il tipo di aggregazione e il campo da aggregare"}
-            </ModalTitle>
-            <ModalClose onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:'',aggrFunction:'',fieldAggr:''})}/>
+        <Modal isOpen={modalOpen} toggle={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:'',aggrFunction:'',fieldAggr:''})}>
+          <ModalHeader toggle={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:'',aggrFunction:'',fieldAggr:''})}>
+            {this.state.modalType==='JOIN' && "Seleziona un dataset da mettere in JOIN"}
+            {this.state.modalType==='FROM' && "Seleziona il dataset da cui iniziare la query"}
+            {this.state.modalType==='AGGR' && "Seleziona il tipo di aggregazione e il campo da aggregare"}
           </ModalHeader>
           {this.state.modalType!=='AGGR' && <ModalBody>
           <div className="form-group row">

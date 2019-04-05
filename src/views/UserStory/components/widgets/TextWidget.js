@@ -1,4 +1,4 @@
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+require('react-draft-wysiwyg/dist/react-draft-wysiwyg.css');
 
 import React, { Component } from 'react';
 //import { Editor } from 'react-draft-wysiwyg';

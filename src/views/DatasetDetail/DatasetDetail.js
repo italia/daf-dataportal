@@ -22,11 +22,9 @@ import { serviceurl } from "../../config/serviceurl";
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import Dropzone from 'react-dropzone'
 // Services
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -144,7 +142,7 @@ class DatasetDetail extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { dispatch } = this.props
         if ((nextProps.dataset) && (this.props.dataset !== nextProps.dataset)) {
             const isExtOpendata = (nextProps.dataset.operational.ext_opendata && nextProps.dataset.operational.ext_opendata != {}) ? true : false
@@ -530,10 +528,9 @@ class DatasetDetail extends Component {
         return (loading && isFetching) ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (<div>
             {((ope === 'RECEIVE_DATASET_DETAIL' || ope === 'RECEIVE_FILE_STORAGEMANAGER') || ope === 'RECEIVE_DATASET_ADDITIONAL_DETAIL') && (dataset) &&
                 <div>
-                    <Modal isOpen={this.state.uploadFile} onRequestHide={this.toggleUploadFile}>
-                        <ModalHeader>
-                            <ModalTitle>Carica il file</ModalTitle>
-                            <ModalClose onClick={this.toggleUploadFile} />
+                    <Modal isOpen={this.state.uploadFile} toggle={this.toggleUploadFile}>
+                        <ModalHeader toggle={this.toggleUploadFile}>
+                            Carica il file
                         </ModalHeader>
                         <ModalBody>
                             {this.state.file === '' && <Dropzone
@@ -596,22 +593,22 @@ class DatasetDetail extends Component {
                             </div>
                             <ul className="nav b-b-0 nav-tabs w-100 pl-4" style={{ display: "inline-flex" }}>
                                 <li className="nav-item">
-                                    <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showAdmin: false, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle pr-2" />Dettaglio</a>
+                                    <a className={!this.state.showDett ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showDett: true, showAdmin: false, showPreview: false, showAPI: false, showTools: false, showWidget: false, showDownload: false }) }}><i className="text-icon fa fa-info-circle mr-2" />Dettaglio</a>
                                 </li>
                                 {(this.state.hasPreview || isPublic()) && <li className="nav-item h-100">
-                                    <a className={!this.state.showPreview ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handlePreview.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="text-icon fa fa-eye pr-2" /> Anteprima</a>
+                                    <a className={!this.state.showPreview ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handlePreview.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}><i className="text-icon fa fa-eye mr-2" /> Anteprima</a>
                                 </li>}
                                 {(this.state.hasPreview || isPublic()) && <li className="nav-item h-100">
-                                    <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showAdmin: false, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug pr-2" />API</a>
+                                    <a className={!this.state.showAPI ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAPI: true, showAdmin: false, showPreview: false, showTools: false, showWidget: false, showDownload: false, showDett: false, copied: false, value: serviceurl.apiURLDataset + '/dataset/' + encodeURIComponent(dataset.operational.logical_uri) }) }}><i className="text-icon fa fa-plug mr-2" />API</a>
                                 </li>}
                                 {this.state.hasPreview && !isPublic() && <li className="nav-item h-100">
-                                    <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench pr-2" />Strumenti</a>
+                                    <a className={!this.state.showTools ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={this.handleTools.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org)}><i className="text-icon fa fa-wrench mr-2" />Strumenti</a>
                                 </li>}
                                 {(this.state.hasPreview || isPublic()) && <li className="nav-item h-100">
-                                    <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar pr-2" />Widget</a>
+                                    <a className={!this.state.showWidget ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showWidget: true, showAdmin: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fa fa-chart-bar mr-2" />Widget</a>
                                 </li>}
                                 {!isPublic() && (this.state.hasPreview || ableToEdit(loggedUser, dataset)) && <li className="nav-item h-100">
-                                    <a className={!this.state.showAdmin ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAdmin: true, showWidget: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fas fa-cogs pr-2" />Amministrazione</a>
+                                    <a className={!this.state.showAdmin ? 'nav-link button-data-nav' : 'nav-link active button-data-nav'} onClick={() => { this.setState({ showAdmin: true, showWidget: false, showTools: false, showAPI: false, showPreview: false, showDownload: false, showDett: false }) }}><i className="text-icon fas fa-cogs mr-2" />Amministrazione</a>
                                 </li>}
                             </ul>
                         </div>
@@ -621,7 +618,7 @@ class DatasetDetail extends Component {
                             <div hidden={!this.state.showPreview} className="col-12 pt-5">
                               {this.state.previewState === 1 && <div>{this.renderPreview(dataset, this.state.jsonPreview)}</div>}
                               {this.state.previewState === 2 && <div className="alert alert-danger">Ci sono stati dei problemi durante il caricamento della risorsa, contatta l'assistenza.</div>}
-                              {this.state.previewState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg pr-1" /> Caricamento in corso..</div>}
+                              {this.state.previewState === 3 && <div><i className="fa fa-spinner fa-spin fa-lg mr-1" /> Caricamento in corso..</div>}
                             </div>
                             <div hidden={this.state.showWidget} className="col-md-7 pt-5">
                                 <div>
@@ -1009,11 +1006,11 @@ data`} ></CodeSyntax>
                                         }
 
                                         <div className="col-8 my-3">
-                                            <i className="fa fa-calendar text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + dataset.dcatapit.modified}</p>
-                                            <i className="fa fa-balance-scale text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{dataset.dcatapit.license_id ? dataset.dcatapit.license_id : 'Licenza non trovata'}</p>
+                                            <i className="fa fa-calendar text-icon float-left mr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{" Creato " + dataset.dcatapit.modified}</p>
+                                            <i className="fa fa-balance-scale text-icon float-left mr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">{dataset.dcatapit.license_id ? dataset.dcatapit.license_id : 'Licenza non trovata'}</p>
                                             {dataset.dcatapit.privatex ?
-                                                <div><i className="fa fa-lock text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è privato</p></div> :
-                                                <div><i className="fa fa-globe text-icon float-left pr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p></div>
+                                                <div><i className="fa fa-lock text-icon float-left mr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è privato</p></div> :
+                                                <div><i className="fa fa-globe text-icon float-left mr-3" style={{ lineHeight: 'inherit' }} /><p className="text-muted pb-1 mb-2">Il dataset è pubblico</p></div>
                                             }
                                         </div>
 

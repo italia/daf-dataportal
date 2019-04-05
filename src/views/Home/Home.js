@@ -95,10 +95,6 @@ class Home extends Component {
         window.addEventListener("resize", this.updatePredicate);
     }
 
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.updatePredicate);
-    }
-
     updatePredicate() {
         if (window.innerWidth <= 1200)
             this.setState({items: 2});
@@ -147,7 +143,9 @@ class Home extends Component {
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
                                     </div> */}
-                                    <i className="fa fa-table bg-primary p-4 font-2xl mr-3 float-left"></i>
+                                    <div className="bg-primary p-4 mr-3 float-left">
+                                        <i className="fa fa-table" style={{'fontSize':'1.5em'}}></i>
+                                    </div>
                                     <div className="h5 text-muted mb-0 pt-3">{(totData>=0)?totData:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dataset</div>
                                 </div>
@@ -160,7 +158,9 @@ class Home extends Component {
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
                                     </div> */}
-                                    <i className="fa fa-chart-bar bg-primary p-4 font-2xl mr-3 float-left"></i>
+                                    <div className="bg-primary p-4 mr-3 float-left">
+                                        <i className="fa fa-chart-bar" style={{'fontSize':'1.5em'}}></i>
+                                    </div>
                                     <div className="h5 text-muted mb-0 pt-3">{listIframes.length>0?listIframes.length:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Widget</div>
                                 </div>
@@ -173,7 +173,9 @@ class Home extends Component {
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
                                     </div> */}
-                                    <i className="fa fa-columns bg-primary p-4 font-2xl mr-3 float-left"></i>
+                                    <div className="bg-primary p-4 mr-3 float-left">
+                                        <i className="fa fa-columns" style={{'fontSize':'1.5em'}}></i>
+                                    </div>
                                     <div className="h5 text-muted mb-0 pt-3">{counter.dashboards?counter.dashboards:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Dashboard</div>
                                 </div>
@@ -186,7 +188,9 @@ class Home extends Component {
                                         <button type="button" className="btn btn-transparent btn-lg text-primary dropdown-toggle py-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         </button>
                                     </div> */}
-                                    <i className="fa fa-font bg-primary p-4 font-2xl mr-3 float-left"></i>
+                                    <div className="bg-primary p-4 mr-3 float-left">
+                                        <i className="fa fa-font" style={{'fontSize':'1.5em'}}></i>
+                                    </div>
                                     <div className="h5 text-muted mb-0 pt-3">{counter.stories?counter.stories:'-'}</div>
                                     <div className="text-muted text-uppercase font-weight-bold font-xs">Storie</div>
                                 </div>

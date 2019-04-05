@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'reactstrap'
 import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faGlobe, faUsers, faSortDown, faUser } from '@fortawesome/fontawesome-free-solid'
 import { toastr } from 'react-redux-toastr'
 import UserStoryService from '../services/UserStoryService';

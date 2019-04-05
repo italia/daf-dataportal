@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faLock } from '@fortawesome/fontawesome-free-solid'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
@@ -39,6 +39,7 @@ class Header extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
+
     if(localStorage.getItem('token')){
       dispatch(isValidToken(localStorage.getItem('token')))
       .then(ok=>{

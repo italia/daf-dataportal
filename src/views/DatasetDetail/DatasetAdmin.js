@@ -16,11 +16,9 @@ import { toastr } from 'react-redux-toastr'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter 
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import Select from 'react-select'
 
 
@@ -453,10 +451,10 @@ class DatasetAdmin extends Component{
         <Modal
           contentLabel="Add a User"
           className="Modal__Bootstrap modal-dialog modal-60"
-          isOpen={aggiungi}>
-          <ModalHeader>
-              <ModalTitle>Condivisione</ModalTitle>
-              <ModalClose onClick={this.toggleClose} />
+          isOpen={aggiungi}
+          toggle={this.toggleClose}>
+          <ModalHeader toggle={this.toggleClose}>
+              Condivisione
           </ModalHeader>
           <ModalBody>
             <div className="row">

@@ -12,14 +12,12 @@ import Steps, { Step } from 'rc-steps';
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 
-import 'rc-steps/assets/index.css'
-import 'rc-steps/assets/iconfont.css'
+require('rc-steps/assets/index.css')
+require('rc-steps/assets/iconfont.css')
 
 const steps = [{'title': 'Carica file e descrivi le colonne'},{'title': 'Aggiungi i Metadati'},{'title': 'Modalità di invio'}]
 
@@ -181,11 +179,10 @@ class WizardForm extends Component {
           <Modal
             contentLabel="Add a widget"
             className="Modal__Bootstrap modal-dialog modal-80"
-            isOpen={this.state.isOpen}>
-            <ModalHeader>
-            <ModalClose onClick={this.hideModal}/>
-            <ModalTitle>Titolo</ModalTitle>
-          </ModalHeader>
+            isOpen={this.state.isOpen}
+            toggle={this.hideModal}
+            >
+            <ModalHeader toggle={this.hideModal}>Titolo</ModalHeader>
           <ModalBody>
           <p>Il titolo deve essere univoco nel DAF. </p>
           <p>Il valore di default sarà il nome del file.</p>

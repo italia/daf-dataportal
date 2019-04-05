@@ -1,19 +1,18 @@
 {
   "presets": [
-    ["es2015"],
-    ["react"],
-    ["stage-0"],
-    ["env", {
-      "targets": {
-        "browsers": [">1%", "last 2 versions"]
-      }
-    }]
+    ["@babel/preset-react"],
+    ["@babel/preset-env"]
   ],
   "plugins": [
-    ["transform-class-properties"],
-    ["transform-object-rest-spread"],
-    ["transform-es2015-template-literals"],
-    ["transform-runtime", {
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "@babel/plugin-proposal-function-sent",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-proposal-numeric-separator",
+    "@babel/plugin-proposal-throw-expressions",
+    ["@babel/plugin-proposal-class-properties"],
+    ["@babel/plugin-proposal-object-rest-spread"],
+    ["@babel/plugin-transform-template-literals"],
+    ["@babel/plugin-transform-runtime", {
       "regenerator": true
     }]
   ]

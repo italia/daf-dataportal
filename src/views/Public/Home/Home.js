@@ -35,6 +35,7 @@ class Home extends Component{
     var datasets = []
     var stories = []
     var org = undefined
+
     if(properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
       org=properties.organization
     let home = homeService.publicHome(org);

@@ -4,15 +4,13 @@ import { connect } from 'react-redux'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import { setCookie, setSupersetCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
-import { prova, loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications, search, getSupersetUrl, datasetDetail, querySearch } from './../../actions.js'
-import Header from '../../components/Header/';
+import { loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications, search, getSupersetUrl, datasetDetail, querySearch } from './../../actions.js'
+import Header from '../../components/Header/Header.js';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
@@ -213,7 +211,7 @@ class Full extends Component {
     this.startPoll = this.startPoll.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { dispatch } = this.props
     if (this.props.newNotifications !== nextProps.newNotifications) {
       clearTimeout(this.timeout);
@@ -270,6 +268,7 @@ class Full extends Component {
   componentDidMount() {
     
     const { dispatch } = this.props
+
     listenMessage(dispatch)
     if (this.props.loggedUser && this.props.loggedUser.mail) {
       this.setState({
@@ -286,67 +285,51 @@ class Full extends Component {
         dispatch(isValidToken(localStorage.getItem('token')))
         .then(ok => {
           if (ok) {
-                dispatch(getApplicationCookie('superset'))
-                .then(json => {
-                  if (json) {
-                    setSupersetCookie(json)
-                  }
-                })
-                dispatch(getApplicationCookie('metabase'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                })
-                /*dispatch(getApplicationCookie('jupyter'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                })*/
-                /* dispatch(getApplicationCookie('grafana'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                })*/ 
-                dispatch(loginAction())
-                .then(response => {
-                  if (response.ok) {
-                    response.json().then(json => {
-                      dispatch(receiveLogin(json))
-                      this.setState({
-                          authed: true,
-                          loading: false
-                        })
-                        askPermission(this.props.loggedUser.uid)
-                        dispatch(fetchNewNotifications(localStorage.getItem('user')))
-                        dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
-                  })
-                }else{
-                  console.log('Login Action Response: ' + response.statusText)
+            dispatch(getApplicationCookie('superset'))
+            .then(json => {
+              if (json) {
+                setSupersetCookie(json)
+              }
+            })
+            /* dispatch(getApplicationCookie('metabase'))
+            .then(json => {
+              if (json) {
+                setCookie(json)
+              }
+            }) */
+            /*dispatch(getApplicationCookie('jupyter'))
+            .then(json => {
+              if (json) {
+                setCookie(json)
+              }
+            })*/
+            /* dispatch(getApplicationCookie('grafana'))
+            .then(json => {
+              if (json) {
+                setCookie(json)
+              }
+            })*/ 
+            dispatch(loginAction())
+            .then(response => {
+              if (response.ok) {
+                response.json().then(json => {
+                  dispatch(receiveLogin(json))
+                  askPermission(json.uid)
                   this.setState({
-                    authed: false,
+                    authed: true,
                     loading: false
                   })
-                  this.props.history.push('/login?' + window.location)
-                }})
-              } else {
+                  dispatch(fetchNewNotifications(localStorage.getItem('user')))
+                  dispatch(fetchNotifications(json.uid, 20))
+                })
+              }else{
+                console.log('Login Action Response: ' + response.statusText)
                 this.setState({
                   authed: false,
                   loading: false
                 })
-                logout();
                 this.props.history.push('/login?' + window.location)
               }
-            })
-            .catch((error) => {
-              this.setState({
-                authed: false,
-                loading: false
-              })
-              logout();
-              this.props.history.push('/login?' + window.location)
             })
           } else {
             this.setState({
@@ -356,7 +339,24 @@ class Full extends Component {
             logout();
             this.props.history.push('/login?' + window.location)
           }
-        }
+        })
+        .catch((error) => {
+          this.setState({
+            authed: false,
+            loading: false
+          })
+          logout();
+          this.props.history.push('/login?' + window.location)
+        })
+      } else {
+        this.setState({
+          authed: false,
+          loading: false
+        })
+        logout();
+        this.props.history.push('/login?' + window.location)
+      }
+    }
   }
 
   openSearch(){
@@ -776,11 +776,10 @@ class Full extends Component {
       { this.state.loading && (<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>)} 
       {!this.state.loading && <div className="app aside-menu-show">
       {/* Modal per creazione nuova Storia */}
-      {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
+      {loggedUser && <Modal isOpen={this.state.isOpenStory} toggle={this.hideModalStory}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Crea una Storia</ModalTitle>
-              <ModalClose onClick={this.hideModalStory}/>
+            <ModalHeader toggle={this.hideModalStory}>
+              Crea una Storia
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
@@ -839,11 +838,10 @@ class Full extends Component {
 
         {/* Modal per creazione nuova Dash */}
 
-        {loggedUser && <Modal isOpen={this.state.isOpenDash} onRequestHide={this.hideModalDash}>
+        {loggedUser && <Modal isOpen={this.state.isOpenDash} toggle={this.hideModalDash}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Crea una Dashboard</ModalTitle>
-              <ModalClose onClick={this.hideModalDash}/>
+            <ModalHeader toggle={this.hideModalDash}>
+              Crea una Dashboard
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
@@ -904,113 +902,6 @@ class Full extends Component {
             </ModalFooter>
           </form>
         </Modal>}
-
-        {/* Modal per creazione nuovo Widget */}
-
-        {/* {loggedUser && <Modal isOpen={this.state.isOpenWidget} onRequestHide={this.hideModalWidget}>
-          <form>
-            <ModalHeader>
-              <ModalTitle>Crea un Widget</ModalTitle>
-              <ModalClose onClick={this.hideModalWidget}/>
-            </ModalHeader>
-            <ModalBody>
-            <div className="form-group">
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Strumento</label>
-                  <div className="col-md-8">
-                    <select className="form-control" ref={(widgetTool) => this.widgetTool = widgetTool} onChange={(e) => this.onChangeWidgetTool(e, e.target.value)} id="widgetTool" >
-                      <option value="0" defaultValue key="0">Superset</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Dataset Privato</label>
-                  <div className="col-md-8">
-                  {loggedUser.organizations && loggedUser.organizations.length > 0 ?
-                    <select className="form-control" ref={(pvtWidget) => this.pvtWidget = pvtWidget} onChange={(e) => this.onPvtChangeWidget(e, e.target.value)} id="pvtWidget" >
-                      <option value="" defaultValue></option>
-                      <option value="0" key="0">No</option>
-                      <option value="1" key='1'>Si</option>
-                    </select>
-                    :
-                    <div>
-                      <select className="form-control" ref={(pvtWidget) => this.pvtWidget = pvtWidget} onChange={(e) => this.onPvtChangeWidget(e, e.target.value)} id="pvtWidget" >
-                        <option value="0" defaultValue key="0">No</option>
-                      </select>
-                      <span>Puoi creare soltanto widget con dataset pubblici in quanto non hai nessuna organizzazione associata</span>
-                    </div>
-                  }
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Organizzazione</label>
-                  <div className="col-md-8">
-                    {this.state.pvtWidget==1?
-                    <select className="form-control" ref={(widgetOrg) => this.widgetOrg = widgetOrg} onChange={(e) => this.onOrganizationChangeWidget(e, e.target.value)} id="widgetOrg" disabled={this.state.pvtWidget==='' || allOrganizations.length===0}>
-                        <option value=""  key='widgetOrg' defaultValue></option>
-                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
-                            return (<option value={organization} key={organization}>{organization}</option>)
-                        })
-                        }
-                    </select>
-                    :
-                    <select className="form-control" ref={(widgetOrg) => this.widgetOrg = widgetOrg} onChange={(e) => this.onOrganizationChangeWidget(e, e.target.value)} id="widgetOrg" disabled={this.state.pvtWidget===''}>
-                        <option value=""  key='widgetOrg' defaultValue></option>
-                        {allOrganizations && allOrganizations.length > 0 && allOrganizations.map(organization => {
-                            return (<option value={organization} key={organization}>{organization}</option>)
-                        })
-                        }
-                    </select>
-                    }
-                    {this.state.validationMSgOrgWidget && <span>{this.state.validationMSgOrgWidget}</span>}
-                  </div>
-                </div>
-                {this.state.widgetOrg && this.state.widgetOrg!='' &&
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Dataset</label>
-                  {results && results.length>4?
-                    <div className="col-md-8">
-                      <select className="form-control" ref={(widgetDataset) => this.widgetDataset = widgetDataset} onChange={(e) => this.onDatasetChangeWidget(e, e.target.value)} id="widgetDataset" >
-                          <option value=""  key='widgetDataset' defaultValue></option>
-                          {results.map(result => {
-                              if(result.type=='catalog_test'){
-                                var source = JSON.parse(result.source)
-                                return (<option value={source.dcatapit.name} key={source.dcatapit.name}>{source.dcatapit.name}</option>)
-                              }else if(result.type=='ext_opendata'){
-                                var source = JSON.parse(result.source)
-                                return (<option value={source.name} key={source.name}>{source.name}</option>)
-                              }
-                          })
-                          }
-                      </select>
-                      {this.state.validationMSgDataset && <span>{this.state.validationMSgDataset}</span>}
-                    </div>
-                    :
-                    <div className="col-md-8">
-                      <span className="text-danger">Non è stato trovato nessun dataset per i criteri selezionati.</span>
-                    </div>
-                    }
-                </div>
-                }
-                <div className="form-group row">
-                    <label className="col-md-2 form-control-label"></label>
-                    <div className="col-md-8">
-                      {this.state.errorMSgTable && <span className="text-danger">Non è possibile creare un widget con il dataset selezionato. Clicca  <button type="button" className='btn btn-link px-0 btn-lg' onClick={this.hideModalWidgetAndRedirect}>qui</button> per verificare che sia stato caricato e condiviso all'interno dell'organizzazione selezionata.</span>}
-                    </div>
-                </div>
-            </div>
-            </ModalBody>
-            <ModalFooter>
-              <button type="button" className='btn btn-gray-200' onClick={this.hideModalWidget}>
-                Chiudi
-              </button>
-              <button type="button" className="btn btn-primary px-2" disabled={!(this.state.widgetDataset && this.state.widgetDataset!='')} onClick={this.handleSaveWidget.bind(this)}>
-                <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                  Crea
-              </button>
-            </ModalFooter>
-          </form>
-        </Modal>} */}
 
         <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash} openModalWidget={this.openModalWidget} />
         <div className="app-body">

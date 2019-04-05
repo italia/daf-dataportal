@@ -5,11 +5,9 @@ import { connect  } from 'react-redux';
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter
-  } from 'react-modal-bootstrap';
+  } from 'reactstrap';
 
 class Gruppi extends Component {
     constructor(props){
@@ -99,11 +97,10 @@ class Gruppi extends Component {
     const { listaGruppi, config } = this.props;
     return (
       <div>
-         <Modal isOpen={this.state.isOpenGruppi} onRequestHide={this.hideModalGruppi}>
+         <Modal isOpen={this.state.isOpenGruppi} toggle={this.hideModalGruppi}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Aggiungi una gruppo</ModalTitle>
-              <ModalClose onClick={this.hideModalGruppi}/>
+            <ModalHeader toggle={this.hideModalGruppi}>
+              Aggiungi una gruppo
             </ModalHeader>
             <ModalBody>
             <div className="form-group">

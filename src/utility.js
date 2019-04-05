@@ -1,5 +1,4 @@
 import { serviceurl } from './config/serviceurl.js'
-import { truncate } from 'fs';
 
 export const themes = [
   { 'val': 'AGRI', 'name': 'AGRICOLTURA' },

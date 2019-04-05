@@ -15,7 +15,7 @@ class Aside extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     if(nextProps.notifications){
       this.setState({
         notifications: nextProps.notifications

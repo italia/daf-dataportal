@@ -15,10 +15,10 @@ import { isPublic } from '../../../utility'
 
 
 // Default styes of dazzle.
-import 'react-dazzle/lib/style/style.css';
+require('react-dazzle/lib/style/style.css');
 
 // Our styles
-import '../styles/custom.css';
+require('../styles/custom.css');
 
 const widgetService = new WidgetService();
 

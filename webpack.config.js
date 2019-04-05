@@ -19,9 +19,7 @@ const scssPlugin = new ExtractTextPlugin('./css/[name].styles.[hash:8].css')
 
 
 const commonConfig = {
-  entry: {
-    app: sourceDirectory.concat('/index.js')
-  },
+  entry: ['@babel/polyfill', sourceDirectory.concat('/index.js')],
   output: {
     path: buildDirectory,
     publicPath: '/',
@@ -39,7 +37,7 @@ const commonConfig = {
     }),
     cssFontPlugin,
     scssPlugin,
-    CopyWebpackPlugin([
+    new CopyWebpackPlugin([
       { from: './public/img', to: './img' }/* ,
       {
         from: './node_modules/@coreui/react/React_Full_Project/public/img',

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import { serviceurl } from "../../config/serviceurl";
 import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faUser, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
 import { isAdmin, isEditor, isPublic } from '../../utility.js'
 import UserStoryService from '../../views/UserStory/components/services/UserStoryService'
@@ -160,7 +160,7 @@ class UserstoryCard extends Component {
                     </div>
                     <div className="b-t-story py-2 footer-dash">
                         <div className="pt-1 row">
-                            <div className="card-text col-8"><i className="fas fa-clock text-icon pr-2"></i> {time?Math.ceil(time):0} min. di lettura</div>
+                            <div className="card-text col-8 d-flex d-inline align-items-center"> <div className="pr-3"><i className="fas fa-clock text-icon"></i></div> {time?Math.ceil(time):0} min. di lettura</div>
                         </div>
                     </div>
                 </div>

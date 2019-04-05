@@ -2,11 +2,9 @@ import React, {Component} from 'react';
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter
-  } from 'react-modal-bootstrap';
+  } from 'reactstrap';
 
 class Gerarchie extends Component {
     constructor(props){
@@ -96,11 +94,10 @@ class Gerarchie extends Component {
     const { listaGerarchie, config } = this.props;
     return (
       <div>
-        <Modal isOpen={this.state.isOpenGerarchie} onRequestHide={this.hideModalGerarchie}>
+        <Modal isOpen={this.state.isOpenGerarchie} toggle={this.hideModalGerarchie}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Aggiungi una gerarchia</ModalTitle>
-              <ModalClose onClick={this.hideModalGerarchie}/>
+            <ModalHeader toggle={this.hideModalGerarchie}>
+              Aggiungi una gerarchia
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
