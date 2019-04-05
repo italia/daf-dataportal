@@ -34,7 +34,7 @@ class Footer extends Component {
             <div className="mt-3 col-12 col-sm-3">
               <h4 className="text-white font-weight-bold mb-3">DAF Community</h4>
               <ul className="list-group list-group-flush">
-                <li className="list-group-item bg-footer"><Link to={'/userstory/list'}>Le storie</Link></li>
+                <li className="list-group-item bg-footer"><Link to={'/datastory/list'}>Le storie</Link></li>
                 <li className="list-group-item bg-footer"><Link to={'/notizie'}>Notizie</Link></li>
                 <li className="list-group-item bg-footer"><Link to={'/faqs'}>Faqs</Link></li>
                 <li className="list-group-item bg-footer">

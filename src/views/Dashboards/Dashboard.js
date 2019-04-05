@@ -11,11 +11,27 @@ import Header from './components/Header'
 import App from './InfinityScrollWidgets/App'
 import { isPublic } from '../../utility'
 import { loadWidgets, saveDatastory, getDatastory, deleteDatastory, receiveDatastory } from '../../actions'
+import ModalWysiwig from './components/ModalWysiwig';
+
+const months = {
+  '01': 'Gennaio',
+  '02': 'Febbraio',
+  '03': 'Marzo',
+  '04': 'Aprile',
+  '05': 'Maggio',
+  '06': 'Giugno',
+  '07': 'Luglio',
+  '08': 'Agosto',
+  '09': 'Settembre',
+  '10': 'Ottobre',
+  '11': 'Novembre',
+  '12': 'Dicembre',
+}
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function getLayoutHeight(height){
-  return Math.floor(((height + 100)/100)+1)
+  return Math.floor(((height + 110)/110))
 }
 
 function checkEditMode(location){
@@ -23,6 +39,16 @@ function checkEditMode(location){
     return true
   else
     return false
+}
+
+function sharable(widgets){
+  return !(widgets.filter(elem=> elem.pvt===true).length > 0)
+}
+
+function convertTime(time){
+  var split = time.split('-')
+
+  return split[2].substr(0, 2) + ' ' + months[split[1]] + ' ' + split[0]
 }
 
 class Dashboard extends Component{
@@ -35,6 +61,8 @@ class Dashboard extends Component{
       readOnly: !checkEditMode(window.location.hash),
       widgets: [],
       isOpen: false,
+      isEditorOpen: false,
+      editingWidget: {},
       loading: true,
       gridLayout: {},
       keys: this.props.datastory && this.props.datastory.widgets?this.props.datastory.widgets:[], 
@@ -53,6 +81,7 @@ class Dashboard extends Component{
     this.handleChangeTitle = this.handleChangeTitle.bind(this)
     this.handleChangeSubTitle = this.handleChangeSubTitle.bind(this)
     this.handleChangeText = this.handleChangeText.bind(this)
+    this.editTextToggle = this.editTextToggle.bind(this)
     this.handleHeight = this.handleHeight.bind(this)
     this.onDelete = this.onDelete.bind(this)
     this.onStatusChange = this.onStatusChange.bind(this)
@@ -63,7 +92,7 @@ class Dashboard extends Component{
     layouts.forEach(element => {
       if(element.i.indexOf('textwidget')>-1){
         var elemH = document.getElementById(element.i+'element')?document.getElementById(element.i+'element').offsetHeight:0
-        element.h = getLayoutHeight(elemH)
+        element.h = element.h>getLayoutHeight(elemH)?element.h:getLayoutHeight(elemH)
       }
     });
     
@@ -105,45 +134,56 @@ class Dashboard extends Component{
     }
 
     if(nextProps.datastory!==datastory){
-      dispatch(loadWidgets(nextProps.datastory.org))
-      .then(json => {
+      if(!isPublic()){
+        dispatch(loadWidgets(nextProps.datastory.org))
+        .then(json => {
 
-        if(json.code){
-          var widgets = []
-        }else{
-          var widgets = json
-        }
+          if(json.code){
+            var widgets = []
+          }else{
+            var widgets = json
+          }
 
-        let textWid = {
-          identifier: "textwidget",
-          iframe_url: null,
-          origin: "text",
-          table: null,
-          title: "Testo",
-          viz_type: "textwidget",
-          pvt: false
-        }
-  
-        widgets.unshift(textWid)
-  
+          let textWid = {
+            identifier: "textwidget",
+            iframe_url: null,
+            origin: "text",
+            table: null,
+            title: "Testo",
+            viz_type: "textwidget",
+            pvt: false
+          }
+    
+          widgets.unshift(textWid)
+    
+          this.setState({
+            loading: false,
+            widgets: widgets,
+            keys: nextProps.datastory.widgets,
+            layout: nextProps.datastory.layout,
+            title: nextProps.datastory.title,
+            subtitle: nextProps.datastory.subtitle,
+            status: nextProps.datastory.status
+          })
+
+          this.forceUpdate()
+        })
+      }else{
         this.setState({
           loading: false,
-          widgets: widgets,
           keys: nextProps.datastory.widgets,
           layout: nextProps.datastory.layout,
           title: nextProps.datastory.title,
           subtitle: nextProps.datastory.subtitle,
           status: nextProps.datastory.status
         })
-
-        this.forceUpdate()
-      })
+      }
     }
   }
 
   componentDidMount(){
     const { dispatch, datastory } = this.props
-    if(datastory && datastory.org){
+    if(!isPublic() && datastory && datastory.org){
       dispatch(loadWidgets(datastory.org))
       .then(json => {
         if(json.code){
@@ -260,8 +300,13 @@ class Dashboard extends Component{
     keys[pos].text = value
 
     this.setState({
-      modified: true
+      modified: true,
+      isEditorOpen: false,
+      editingWidget: {},
+      loading: true
     })
+
+    setTimeout(()=>this.setState({loading: false}), 100)
   }
 
   removeBox(id){
@@ -415,23 +460,40 @@ class Dashboard extends Component{
     }else{
       this.props.history.push('/private/datastory/list/'+id+'/edit')
     }
-    setTimeout(()=>this.setState({loading: false}), 1000)
+    setTimeout(()=>this.setState({loading: false}), 500)
+  }
+
+  editTextToggle(identifier, text){
+
+    this.setState({
+      isEditorOpen: true,
+      editingWidget: {
+        'id': identifier,
+        'text': text
+      }
+    })
   }
 
   render(){
-    const { gridLayout, keys, widgets, isOpen, title, subtitle, id, status, loading } = this.state
+    const { gridLayout, keys, widgets, isOpen, title, subtitle, id, status, loading, isEditorOpen } = this.state
     const { datastory, isFetching } = this.props
 
     return (
       (isFetching || loading)?<h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1>:<div className="mb-5">
-        <App
+        {!isPublic()&& <App
           widgets={widgets}
           isModalOpen={isOpen}
           onRequestClose={this.onRequestClose}
           onWidgetSelect={this.newBox}
-        />
+        />}
+        {isEditorOpen && <ModalWysiwig
+          isEditorOpen={isEditorOpen}
+          widget={this.state.editingWidget}
+          onClose={()=>this.setState({isEditorOpen: false, editingWidget: {}})}
+          onSave={this.handleChangeText}
+        />}
         { (datastory && Object.keys(datastory).length>0) && <div className="container">
-          <Header
+          {!isPublic() && <Header
             status={status}
             readOnly={this.state.readOnly}
             author={datastory.user}
@@ -440,7 +502,8 @@ class Dashboard extends Component{
             org={datastory.org}
             editToggle={this.editToggle.bind(this)}
             onSave={this.onSave}
-          />
+            sharable={sharable(keys)}
+          />}
           <SectionTitle readonly={this.state.readOnly} title="Titolo"/>
           <TextEditor
             readonly={this.state.readOnly}
@@ -461,11 +524,20 @@ class Dashboard extends Component{
             placeholder="Sottotitolo"
             disableHtml={true}/>
           <SectionTitle readonly={this.state.readOnly} title="Contenuto"/>
+          {this.state.readOnly && <h5 className="mb-2 text-center mx-auto text-editor">
+            Autore <i>{datastory.user}</i>
+          </h5>}
+          {this.state.readOnly && <h5 className="mb-3 text-center mx-auto text-editor">
+            Organizzazione <i>{datastory.org}</i>
+          </h5>}
+          {this.state.readOnly && <h5 className="mb-5 text-center mx-auto text-editor">
+            {convertTime(datastory.timestamp)}
+          </h5>}
           <ResponsiveGridLayout 
             className="layout"
             isDraggable={!this.state.readOnly}
             isResizable={!this.state.readOnly}
-            rowHeight={100}
+            rowHeight={110}
             cols={{ lg: 12, md: 12}}
             breakpoints={{lg: 1200, md: 960}}
             layouts={gridLayout}
@@ -481,7 +553,7 @@ class Dashboard extends Component{
                     <button className="btn btn-link text-primary ml-auto" onClick={this.removeBox.bind(this, widget.i)}><i className="fa fa-times"/></button>
                   </div>}
                   { keys[pos].viz_type!=="textwidget"&&<IframeWidget identifier={widget.i} height="95%" url={keys[pos].widget_url}/>}
-                  { keys[pos].viz_type==="textwidget"&&<TextWidget handleHeight={this.handleHeight} text={keys[pos].text} identifier={widget.i} onSave={this.handleChangeText} readOnly={this.state.readOnly}/>}
+                  { keys[pos].viz_type==="textwidget"&&<TextWidget handleHeight={this.handleHeight} text={keys[pos].text} identifier={widget.i} edit={this.editTextToggle} readOnly={this.state.readOnly}/>}
                 </div>
               )
             })}

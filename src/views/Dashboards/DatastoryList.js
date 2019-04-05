@@ -10,6 +10,7 @@ import {
 } from 'react-modal-bootstrap';
 import { getAllDatastories, receiveDatastory } from '../../actions'
 import UserstoryCard from '../../components/Cards/UserstoryCard'
+import { isPublic } from '../../utility';
 
 class DatastoryList extends Component{
   constructor(props){
@@ -19,13 +20,25 @@ class DatastoryList extends Component{
       title: '',
       subtitle: '',
       org: '',
+      list: [],
+      filtered: []
+    }
+    this.filter = this.filter.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.list !== this.props.list){
+      this.setState({
+        list: nextProps.list,
+        filtered: nextProps.list
+      })
     }
   }
 
   componentDidMount(){
     const { dispatch } = this.props
 
-    dispatch(getAllDatastories())
+    dispatch(getAllDatastories(isPublic()))
   }
   
   onSubmit(){
@@ -56,9 +69,20 @@ class DatastoryList extends Component{
       })
     }
   }
+
+  filter(value){
+    const { list } = this.state
+
+    this.setState({
+      filtered: list.filter((item) => item.title.toLowerCase().indexOf(value.toLowerCase()) != -1),
+      filter: value
+    });
+  }
+
  
   render(){
-    const { isLoading, list, loggedUser } = this.props
+    const { isLoading, loggedUser } = this.props
+    const { filtered } = this.state
     return(
       <div>
         <Modal isOpen={this.state.modalOpen} onRequestHide={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
@@ -110,16 +134,19 @@ class DatastoryList extends Component{
           </form>
         </Modal>
         <div className="container">
-          <div className="row">
+          <div className="row mb-3">
             <i className="fas fa-font fa-lg m-2" style={{lineHeight:'1'}}/><h2>Datastory</h2>
-            <div className="col-md-12">
-              <button className="btn btn-link text-primary float-right" onClick={()=>this.setState({modalOpen: true})}><i className="fas fa-plus-circle fa-lg"/></button>
+            <div className="col-md-11 mt-3">
+              <input className="form-control transparent-frame b-b-1" placeholder="Inserisci un titolo per filtrare la lista" value={this.state.filter} onChange={(e)=>this.filter(e.target.value)}/>
             </div>
+            {!isPublic() &&  <div className="col-md-1 mt-3">
+              <button className="btn btn-link text-primary float-right" onClick={()=>this.setState({modalOpen: true})}><i className="fas fa-plus-circle fa-lg"/></button>
+            </div>}
           </div>
           {isLoading?<h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> :
-          <div className="row">
+          <div className="row mt-5">
             {
-              list && list.map((story, index) => {
+              filtered && filtered.map((story, index) => {
                 if ((story.widgets) && (story.layout && story.layout !== '{}')) {
                   const dashwidgets = story.widgets.filter(wid=>{
                     return wid.identifier.toLowerCase().indexOf('textwidget')<0
