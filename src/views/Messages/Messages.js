@@ -9,11 +9,8 @@ import {
 import MessageService from '../../views/Messages/services/MessageService';
 import { toastr } from 'react-redux-toastr'
 import { messages } from '../../i18n-ita'
-
-import DatePicker from 'react-datepicker';
+import { SingleDatePicker } from 'react-dates'
 import moment from 'moment';
-
-import "react-datepicker/dist/react-datepicker.css";
 
 const messageService = new MessageService()
 
@@ -59,6 +56,7 @@ export default class Messages extends Component { //PADRE
          ],
          isLoading : true,
          isOpenClose : false,
+         focused: false,
          title       : '',
          description : '',
          endDate     : moment(moment()).add(1, 'days'),
@@ -67,6 +65,7 @@ export default class Messages extends Component { //PADRE
 
       this.handleInputChange = this.handleInputChange.bind(this);
       this.handleDateChange = this.handleDateChange.bind(this);
+      this.onFocusChange = this.onFocusChange.bind(this)
     }
 
     handleInputChange(event) {
@@ -221,6 +220,10 @@ export default class Messages extends Component { //PADRE
                             });
       }
 
+      onFocusChange({ focused }) {
+        this.setState({ focused });
+      }
+
   render() {
     return (
       <div>
@@ -253,12 +256,15 @@ export default class Messages extends Component { //PADRE
                     <div className="form-group row">
                       <label className="col-md-2 form-control-label">{messages.label.data}</label>
                       <div className="col-md-2">                      
-                        <DatePicker
-                            name="endDate"
-                            selected={this.state.endDate}
-                            onChange={this.handleDateChange}
-                            minDate={moment(moment()).add(1, 'days')}
-                            readOnly={true}
+                        <SingleDatePicker
+                          // name="endDate"
+                          focused={this.state.focused} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                          onFocusChange={this.onFocusChange}
+                          date={this.state.endDate}
+                          onDateChange={this.handleDateChange}
+                          placeholder=''
+                          isOutsideRange={day => (moment().diff(day) > 0)}
+                          numberOfMonths={1}
                         />
                       </div>
                     </div>

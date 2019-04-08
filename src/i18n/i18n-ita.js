@@ -9,7 +9,7 @@ export const messages = {
         crea            :   "Crea",    // ---
         nuovoDataset    :   "Nuovo Dataset",    
         nuovaDashboard  :   "Nuova Dashboard",    
-        nuovaStoria     :   "Nuova Storia",
+        nuovaStoria     :   "Nuova Datastory",
         strumenti       :   "Strumenti",  // ----  
         superset        :   "Superset",
         open            :   "Open",

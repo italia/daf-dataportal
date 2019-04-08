@@ -6,7 +6,6 @@ import { isPublic } from '../../utility'
 import Select from 'react-select'
 import { decodeTheme, decodeTipo, decodeVisibilita } from '../../utility' 
 import moment from 'moment';
-require('react-datepicker/dist/react-datepicker.css');
 require('react-dates/initialize');
 require('react-dates/lib/css/_datepicker.css');
 import { DateRangePicker } from 'react-dates';

@@ -250,7 +250,7 @@ class Header extends Component {
 									{(isEditor(loggedUser) || isAdmin(loggedUser)) && <button className="dropdown-item" onClick={()=> { const{ dispatch } = this.props; dispatch(reset('wizard')); this.props.history.push('/private/ingestionwizzard'); this.toggleCrea}}><i className="fa fa-table" style={iconStyle}></i> Nuovo Dataset</button>}
 									{/* <button className="dropdown-item" onClick={this.createWidget} ><i className="fa fa-chart-bar"></i> Nuovo Widget</button> */}
 									{/* <button className="dropdown-item" onClick={this.createDash} ><i className="fa fa-columns" style={iconStyle}></i> Nuova Dashboard</button> */}
-									<button className="dropdown-item" onClick={this.createStory} ><i className="fa fa-font" style={iconStyle}></i> Nuova Storia</button>
+									<button className="dropdown-item" onClick={this.createStory} ><i className="fa fa-font" style={iconStyle}></i> Nuova Datastory</button>
 							</div>
 						</div>
 						{/* <button className="w-100 h-100 btn btn-header" onClick={this.crea.bind(this)}><i className="fa fa-plus fa-lg"/></button> */}

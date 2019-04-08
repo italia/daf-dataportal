@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-require('react-datepicker/dist/react-datepicker.css');
 require('react-dates/initialize');
 require('react-dates/lib/css/_datepicker.css');
 import { SingleDatePicker } from 'react-dates';
