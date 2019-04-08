@@ -682,8 +682,8 @@ class DatasetList extends Component {
                                 name="selected-organization"
                                 value={this.state.selectedOrg}
                                 onChange={this.addOrganization}
-                                rtl={false}
-                                searchable={true}
+                                isRtl={false}
+                                isSearchable={true}
                                 style={{maxWidth: '230px'}}
                                 />
                             </div>

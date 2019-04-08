@@ -473,8 +473,8 @@ class DatasetAdmin extends Component{
                 name="selected-user"
                 value={this.state.selectedOrg}
                 onChange={this.updateValueOrg}
-                rtl={false}
-                searchable={true}
+                isRtl={false}
+                isSearchable={true}
                 className="my-3" 
               />
               </div>
