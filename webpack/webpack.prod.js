@@ -12,7 +12,7 @@ module.exports = {
         parallel: true,
         uglifyOptions: {
           compress: false,
-          ecma: 6,
+          ecma: 8,
           mangle: true
         },
         sourceMap: true
