@@ -260,7 +260,7 @@ class Users extends Component {
         this.setState({
             saving: true
         })
-        response.then((json)=>{
+        response.then(((json)=>{
             if(json.fields){
                 this.setState({
                     userEdit: true,
@@ -282,7 +282,7 @@ class Users extends Component {
                 toastr.error('Errore', 'Errore durante la modifica dell\'utente: ' + json.message)
                 console.log('Edit error: ' + json.message)
             }
-        }) 
+        }).bind(this)) 
 
     }
 
@@ -468,7 +468,7 @@ class Users extends Component {
                                     <input className="form-control" type="password" value={repeatPassword} onChange={(e) => { this.setState({ repeatPassword: e.target.value }); this.checkDoublePassword(e.target.value) }} />
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" disabled={this.state.enableSave} onClick={this.save}>{this.state.saving&&<i className="fa fa-spinner fa-spin fa-lg"/>}{!this.state.saving&&"Crea"}</button>
+                            <button type="submit" className="btn btn-primary" disabled={this.state.enableSave} onClick={this.save}>{this.state.saving?<div><i className="fa fa-spinner fa-spin fa-lg"/></div>:"Crea"}</button>
                         </div>
                         <div hidden={checked} className="ml-5 w-100">
                             <div className="alert alert-danger" role="alert">
@@ -544,7 +544,7 @@ class Users extends Component {
                                 </table>
                             </div>
                             }
-                            <button type="submit" className="btn btn-primary" onClick={this.edit}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving &&"Modifica"}</button>
+                            <button type="submit" className="btn btn-primary" onClick={this.edit}>{this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>:"Modifica"}</button>
                         </div>
                     </div>}
                 </div>

@@ -1991,7 +1991,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 
       export function loadWidgets(org){
         var token = ''
-        var url = serviceurl.apiURLDatiGov + '/widgets?org='+org
+        var url = serviceurl.apiURLDatiGov + '/widgets'+(org?('?org='+org):'')
 
         if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
           token = localStorage.getItem('token')

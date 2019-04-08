@@ -61,7 +61,7 @@ class RequestReset extends Component {
                   <div className="g-recaptcha" data-sitekey="6LcUNjQUAAAAAG-jQyivW5xijDykXzslKqL2PMLr"></div>
                 </div> */}
                 <button type="button" className="btn btn-block btn-secondary" onClick={this.handleRedirect.bind(this)}>Torna al login</button>
-                <button type="button" className="btn btn-block btn-primary" disabled={this.state.email.length===0} onClick={this.handleSubmit.bind(this)}>{loading?<i className="fa fa-spin fa-spinner fa-lg"/>:'Reset Password'}</button>
+                <button type="button" className="btn btn-block btn-primary" disabled={this.state.email.length===0} onClick={this.handleSubmit.bind(this)}>{loading?<div><i className="fa fa-spin fa-spinner fa-lg"/></div>:'Reset Password'}</button>
               </div>
             </div>
           </div>

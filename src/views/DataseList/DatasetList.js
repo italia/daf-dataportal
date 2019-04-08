@@ -764,7 +764,7 @@ class DatasetList extends Component {
                                                                         {!dataset.dcatapit.privatex && <i className="fa fa-globe fa-lg text-icon pt-1"/>}
                                                                         {dataset.dcatapit.privatex && <i className="fa fa-users fa-lg text-icon pt-1"/>}
                                                                         <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 btn btn-outline-filters pt-0 pl-4" onClick={this.handleToggleClickDataset.bind(this, index)}>
-                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<div><i className="fa fa-angle-up"></i></div>:<div><i className="fa fa-angle-down"></i></div>}
                                                                         </button>
                                                                     </div>
                                                                 </div>
@@ -856,7 +856,7 @@ class DatasetList extends Component {
                                                                                     <div className="ml-auto pr-3">
                                                                                         <i className="fa fa-globe fa-lg text-icon pt-1"/>
                                                                                         <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 btn btn-outline-filters pt-0 pl-4" onClick={this.handleToggleClickDataset.bind(this, index)}>
-                                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<div><i className="fa fa-angle-up"></i></div>:<div><i className="fa fa-angle-down"></i></div>}
                                                                                         </button>
                                                                                     </div>
                                                                                 </div>
@@ -957,7 +957,7 @@ class DatasetList extends Component {
                                                                     {story.status===1 && <i className="fa fa-users fa-lg text-icon pt-1"/>}
                                                                     {story.status===0 && <i className="fas fa-lock fa-lg text-icon pt-1"/>}
                                                                     <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 py-0 btn btn-outline-filters pt-0 pl-4" onClick={this.handleToggleClickDataset.bind(this, index)}>
-                                                                        {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                                        {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<div><i className="fa fa-angle-up"></i></div>:<div><i className="fa fa-angle-down"></i></div>}
                                                                     </button>
                                                                 </div>
                                                             </div>

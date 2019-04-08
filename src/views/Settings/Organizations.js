@@ -851,7 +851,7 @@ class Organizations extends Component {
                                 if (user.indexOf("default_admin") === -1)
                                     return(
                                         <li className="list-group-item" key={user}>{user}
-                                            <button type="button" className="btn btn-link float-right" title="Rimuovi utente" onClick={this.removeUser.bind(this, user)}>{removingUser&&user===userToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-user-minus fa-lg" />}</button>
+                                            <button type="button" className="btn btn-link float-right" title="Rimuovi utente" onClick={this.removeUser.bind(this, user)}>{removingUser&&user===userToRemove?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:<div><i className="fa fa-user-minus fa-lg" /></div>}</button>
                                         </li>)
                                 }
                             ):<label className="m-2 col-form-label">Non ci sono utenti</label>
@@ -875,7 +875,7 @@ class Organizations extends Component {
                             {(workgroups && workgroups.length > 0)?workgroups.map(workgroup => {
                                         return( 
                                             <li className={"list-group-item "+ (workgroup===selectedWorkgroup?"active":"")} key={workgroup}>{workgroup}
-                                                <button title="Elimina Workgroup" type="button"  className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={this.removeWorkgroup.bind(this, workgroup, selectedOrg)}>{removingWg&&workgroup===wgToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-lg" />}</button>
+                                                <button title="Elimina Workgroup" type="button"  className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={this.removeWorkgroup.bind(this, workgroup, selectedOrg)}>{removingWg&&workgroup===wgToRemove?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:<div><i className="fa fa-times fa-lg" /></div>}</button>
                                                 <button title="Gestione Utenti Workgroup" type="button" className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={()=>{this.getWorkGroupUsers(workgroup)}}><i className="fa fa-user-plus fa-lg" /></button>
                                             </li>)
                                     }
@@ -928,7 +928,7 @@ class Organizations extends Component {
                             {workgroupUsers.length > 0 && workgroupUsers.map(workgroupUser => {
                                 return(
                                     <li className="list-group-item" key={workgroupUser}>{workgroupUser}
-                                        <button title="Elimina Utente Workgroup" type="button" className="btn btn-link float-right" onClick={this.removeWorkgroupUser.bind(this, selectedWorkgroup, workgroupUser)}>{removingWgUser&&workgroupUser===workgroupUserToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-lg" />}</button>
+                                        <button title="Elimina Utente Workgroup" type="button" className="btn btn-link float-right" onClick={this.removeWorkgroupUser.bind(this, selectedWorkgroup, workgroupUser)}>{removingWgUser&&workgroupUser===workgroupUserToRemove?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:<div><i className="fa fa-times fa-lg" /></div>}</button>
                                      </li>)
                                 })
                             }

@@ -667,7 +667,7 @@ class QueryBuild extends Component {
               <div className="ml-auto">
                 <button className="btn btn-link text-primary float-right" title={this.state.datasetFrom?"Modifica il dataset da cui selezionare":"Aggiungi un dataset da cui selezionare"} 
                   onClick={(e)=>{e.preventDefault(); this.setState({modalOpen:true,modalType:'FROM',privateWdg:'',selectedDataset:'',selectedOrg:''})}}>
-                  {this.state.datasetFrom?<i className="far fa-edit fa-lg"/>:<i className="fas fa-plus-circle fa-lg"/>}
+                  {this.state.datasetFrom?<div><i className="far fa-edit fa-lg"/></div>:<div><i className="fas fa-plus-circle fa-lg"/></div>}
                 </button>
               </div>
             </div>
@@ -695,7 +695,7 @@ class QueryBuild extends Component {
                 </button>}
                 <button className="btn btn-link text-primary float-right" title={this.state.datasetJoin?"Modifica il dataset da cui fare la join":"Aggiungi un dataset con cui fare la join" }
                   onClick={(e)=>{e.preventDefault();this.setState({modalOpen:true,modalType:'JOIN',privateWdg:'',selectedDataset:'',selectedOrg:''})}}>
-                  {this.state.datasetJoin?<i className="far fa-edit fa-lg"/>:<i className="fas fa-plus-circle fa-lg"/>}
+                  {this.state.datasetJoin?<div><i className="far fa-edit fa-lg"/></div>:<div><i className="fas fa-plus-circle fa-lg"/></div>}
                 </button>
               </div>
             </div>
