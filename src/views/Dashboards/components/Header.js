@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { isEditor, isAdmin, isOrgAdmin } from '../../../utility'
 import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faGlobe, faUsers, faSortDown, faUser } from '@fortawesome/fontawesome-free-solid'
 
 class Header extends Component{
@@ -91,7 +91,7 @@ class Header extends Component{
                       </div>
                       
                   </button>
-                  <button className="dropdown-item bg-light b-l-org" onClick={onStatusChange.bind(this, 1)}>
+                  {loggedUser.organizations.length!==0 && <button className="dropdown-item bg-light b-l-org" onClick={onStatusChange.bind(this, 1)}>
                       <div className="row">
                           <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faUsers} className="mx-2"/></h5>
                           <div className="row col-11 ml-1">
@@ -100,15 +100,15 @@ class Header extends Component{
                               <div className="col-12 pl-1">Contenuto visibile ai membri <br/>della tua organizzazione</div>
                           </div>
                       </div>
-                  </button>
-                  {(this.props.sharable && (isEditor(loggedUser) || isOrgAdmin(loggedUser, this.props.org))) && <button className="dropdown-item bg-light b-l-open" onClick={onStatusChange.bind(this, 2)}>
+                  </button>}
+                  {this.props.sharable && <button className="dropdown-item bg-light b-l-open" onClick={onStatusChange.bind(this, 2)}>
                   
                       <div className="row">
                           <h5 className="col-1 pl-0"><FontAwesomeIcon icon={faGlobe} className="mx-2"/></h5>
                           <div className="row col-11 ml-1">
                               <div className="col-12 pl-1"><p className="mb-0"><b>Open data</b></p></div>
                               
-                              <div className="col-12 pl-1">Contenuto visibile a <br/>chiunque, visibile sul <br/>dataportal pubblico </div>
+                              <div className="col-12 pl-1">Contenuto visibile a <br/>chiunque, visibile sul <br/>portale pubblico </div>
                           </div>
                       </div>
                   </button>}

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-
-import 'rc-steps/assets/index.css';
-import 'rc-steps/assets/iconfont.css';
+require('rc-steps/assets/index.css');
+require('rc-steps/assets/iconfont.css');
 import Steps, { Step } from 'rc-steps';
-import { messages } from '../../../i18n-ita';
+import { messages } from '../../../i18n/i18n-ita';
 
 const container = document.getElementById('__react-content');
 
@@ -16,12 +15,12 @@ class Guida extends Component {
       currentStep: 0,
       stepTitolo: messages.gettingStarted[0].titolo,
       stepDescrizione: messages.gettingStarted[0].descrizione,
-      step: 0
+      step: 0,
     }
   }
 
   nextStep(index) {
-    console.log('event.target', index)
+    // console.log('event.target', index)
     if (index >= 0 && index <= messages.gettingStarted.length - 1) {
 
       this.setState({
@@ -29,6 +28,10 @@ class Guida extends Component {
         stepDescrizione: messages.gettingStarted[index].descrizione
 
       });
+      
+      var elem = document.getElementById('gs-content')
+    
+      window.scrollTo(0, elem?(elem.offsetTop-250):0)
     }
   }
 
@@ -39,13 +42,11 @@ class Guida extends Component {
     
     return (
 
-
       <div className="container p-4 mt-2">
         <div className="row mt-4">
-          <div className="col-12 mb-5 mx-0"><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
-          <div className="col-3 mx-0">
-
-            <Steps direction="vertical" current={this.state.currentStep} className="pointer">
+          <div className="col-10 col-md-12 mb-5 mx-0 "><h1 className="ml-0">{messages.label.gettingStarted}</h1></div>
+          <div className="col-5 col-md-3 mx-0" id="divStep" >
+            <Steps direction="vertical" current={this.state.currentStep} className="pointer" icons={{}} status="process">
 
               {
                 messages.gettingStarted.map((e, i) => {
@@ -57,7 +58,7 @@ class Guida extends Component {
             </Steps>
             
           </div>
-          <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} className="col-8 mx-0 paragrafoG" >
+          <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} id="gs-content" className="col-12 col-md-8 mx-0 paragrafoG" >
           </div>
 
         </div>
@@ -65,11 +66,9 @@ class Guida extends Component {
           <div className="col-3 mx-0">
 
           </div>
-          <div className="col-8 mx-0" >
-
+          <div className="col-12 col-md-8 mx-0" >
 
             {this.state.currentStep < messages.gettingStarted.length - 1 && <button className="btn btn-primary float-right" onClick={() => this.nextStep(this.state.currentStep + 1)}>Avanti</button>}
-
             {this.state.currentStep > 0 && <button className="btn btn-primary float-left" onClick={() => this.nextStep(this.state.currentStep - 1)}>Indietro</button>}
 
           </div>
@@ -80,6 +79,5 @@ class Guida extends Component {
 
   }
 }
-
 
 export default Guida

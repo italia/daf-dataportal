@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css';
+require('./style.css');
 import { WithOutContext as ReactTags } from 'react-tag-input';
 
 class TagsInput extends React.Component {

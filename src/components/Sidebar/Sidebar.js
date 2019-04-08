@@ -2,14 +2,6 @@ import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { reset } from 'redux-form'
-import {
-  Modal,
-  ModalHeader,
-  ModalTitle,
-  ModalClose,
-  ModalBody,
-  ModalFooter
-} from 'react-modal-bootstrap'
 import { toastr } from 'react-redux-toastr'
 import {
   loadDatasets,
@@ -128,98 +120,116 @@ class Sidebar extends Component {
               <li className="nav-item b-r-1" onClick={(e) => { 
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');}}>
-                <NavLink to={'/private/home'} className={"nav-link "+home} activeClassName="nav-link-primary"><i className="fa fa-home fa-lg text-secondary"></i> { messages.menu.home } </NavLink>
+                <NavLink to={'/private/home'} className={"nav-link "+home} activeClassName="nav-link-primary"><i className="fa fa-home text-secondary mr-2"></i> { messages.menu.home }</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/private/dataset'} className="nav-link" activeClassName="nav-link-primary" onClick={this.handleLoadDatasetClick.bind(this)}><i className="fa fa-table fa-lg text-secondary"></i> { messages.menu.dataset } </NavLink>
+                <NavLink to={'/private/dataset'} className="nav-link" activeClassName="nav-link-primary" onClick={this.handleLoadDatasetClick.bind(this)}><i className="fa fa-table text-secondary mr-2"></i> {messages.menu.dataset}</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/private/widget'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-chart-bar fa-lg text-secondary"></i> { messages.menu.widget }</NavLink>
+                <NavLink to={'/private/widget'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-chart-bar  text-secondary mr-2"></i> {messages.menu.widget}</NavLink>
               </li>
               <li className="nav-item" onClick={(e) => {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'/private/datastory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font fa-lg text-secondary"></i> { messages.menu.datastory } <span className="badge badge-light">Nuovo</span></NavLink>
+                <NavLink to={'/private/datastory/list'} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-font text-secondary mr-2"></i> { messages.menu.datastory } <span className="badge badge-light">Nuovo</span></NavLink>
               </li>
               <li className="nav-title text-secondary">
                 { messages.menu.toolkit}
               </li>
+{/*               <li className="nav-item " onClick={(e) => {
+                e.preventDefault();
+                document.body.classList.toggle('sidebar-mobile-show');
+              }}>
+                <NavLink to={'/crea'} className={"nav-link "+crea} activeClassName="nav-link-primary"><i className="fa fa-plus  text-secondary"></i> Crea</NavLink>
+              </li> */}
               <li className="nav-item nav-dropdown b-r-1">
-                <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-plus fa-lg text-secondary"></i> { messages.menu.crea }</a>
+                <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-plus  text-secondary mr-2"></i> Crea</a>
                 <ul className="nav-dropdown-items bg-light">
                   {(isEditor(loggedUser) || isAdmin(loggedUser)) && <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a onClick={()=>{ const{ dispatch } = this.props; dispatch(reset('wizard')); this.props.history.push('/private/ingestionwizzard');}} className="nav-link"><i className="fas fa-table fa-lg text-secondary"/>  { messages.menu.nuovoDataset } </a>
+                    <a onClick={()=>{ const{ dispatch } = this.props; dispatch(reset('wizard')); this.props.history.push('/private/ingestionwizzard');}} className="nav-link"><i className="fas fa-table  text-secondary mr-2"/>  {messages.menu.nuovoDataset}</a>
                   </li>}
+                  {/* <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <a href className="nav-link " onClick={this.createWidget.bind(this)}><i className="fas fa-columns  text-secondary" />  Nuovo Widget</a>
+                  </li> */}
+                  {/* <li className="nav-item" onClick={(e) => {
+                    e.preventDefault();
+                    document.body.classList.toggle('sidebar-mobile-show');
+                  }}>
+                    <a href className="nav-link " onClick={this.createDash.bind(this)}><i className="fas fa-columns  text-secondary mr-2" />  Nuova Dashboard</a>
+                  </li> */}
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link" onClick={this.createStory.bind(this)}><i className="fas fa-font fa-lg text-secondary" />  { messages.menu.nuovaStoria }</a>
+                    <a href className="nav-link" onClick={this.createStory.bind(this)}><i className="fas fa-font  text-secondary mr-2" />  {messages.menu.nuovaStoria}</a>
                   </li>
                 </ul>
               </li>
               <li className="nav-item nav-dropdown b-r-1">
-                <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-wrench fa-lg text-secondary"></i> { messages.menu.strumenti }</a>
+                <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-wrench  text-secondary mr-2"></i> {messages.menu.strumenti}</a>
                 <ul className="nav-dropdown-items bg-light">
                 {
                   /* <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-chart-pie fa-lg text-secondary"/>  Metabase</a>
+                    <a href onClick={() => this.openModal('Metabase', serviceurl.urlMetabase)} className="nav-link"><i className="fa fa-chart-pie  text-secondary"/>  Metabase</a>
                   </li> */
                   }
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSuperset, 'Potrai creare i tuoi widget partendo dai dataset privati condivisi con le tue organizzazioni.')}><i className="fa fa-database fa-lg text-secondary" />  { messages.menu.superset } <span className="badge badge-light">{ messages.menu.privato }</span></a>
+                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSuperset, 'Potrai creare i tuoi widget partendo dai dataset privati condivisi con le tue organizzazioni.')}><i className="fa fa-database  text-secondary mr-2" />  {messages.menu.superset} <span className="badge badge-light">Privato</span></a>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSupersetOpen, 'Potrai creare i tuoi widget partendo dagli opendata presenti nel DAF.')}><i className="fa fa-database fa-lg text-secondary" />   { messages.menu.superset }  <span className="badge badge-light">{ messages.menu.open }</span></a>
+                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSupersetOpen, 'Potrai creare i tuoi widget partendo dagli opendata presenti nel DAF.')}><i className="fa fa-database  text-secondary mr-2" />  {messages.menu.superset} <span className="badge badge-light">Open</span></a>
                   </li>
                   {/* <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link" onClick={() => this.openModal('Jupyter', serviceurl.urlJupiter)}><i className="fa fa-sticky-note fa-lg text-secondary" />  Jupyter</a>
+                    <a href className="nav-link" onClick={() => this.openModal('Jupyter', serviceurl.urlJupiter)}><i className="fa fa-sticky-note  text-secondary" />  Jupyter</a>
                   </li> */}
                 </ul>
               </li>
 
               <li className="nav-item nav-dropdown b-r-1">
-                <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-sitemap fa-lg text-secondary"></i> { messages.menu.semantica }</a>
+                <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-sitemap text-secondary mr-2"></i> {messages.menu.semantica}</a>
                 <ul className="nav-dropdown-items bg-light">
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <NavLink to={'/private/ontologies'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-book fa-lg text-secondary" /> { messages.menu.ontologie }</NavLink>
+                    <NavLink to={'/private/ontologies'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-book text-secondary mr-2" /> {messages.menu.ontologie}</NavLink>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <NavLink to={'/private/vocabularies'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-book fa-lg text-secondary" /> { messages.menu.vocabolari }</NavLink>
+                    <NavLink to={'/private/vocabularies'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-book text-secondary mr-2" /> {messages.menu.vocabolari}</NavLink>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <NavLink to={'/private/validator'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-clipboard-check fa-lg text-secondary" /> { messages.menu.validatore }</NavLink>
+                    <NavLink to={'/private/validator'} className="nav-link" activeClassName="nav-link-primary"><i className="fas fa-clipboard-check text-secondary mr-2" /> {messages.menu.validatore}</NavLink>
                   </li>
                 </ul>
               </li>
@@ -231,7 +241,7 @@ class Sidebar extends Component {
                 e.preventDefault();
                 document.body.classList.toggle('sidebar-mobile-show');
               }}>
-                <NavLink to={'#'} onClick={() => window.open('http://daf-dataportal.readthedocs.io/it/latest/')} className="nav-link" activeClassName="nav-link-primary"><i className="fa fa-info text-secondary"></i> { messages.menu.documentazione }</NavLink>
+                <a href="http://daf-dataportal.readthedocs.io/it/latest/" target="_blank" className="nav-link"><i className="fa fa-info text-secondary mr-2"></i> {messages.menu.documentazione}</a>
               </li>
 
               {/* <li className={this.activeRoute("/icons")}>
@@ -282,7 +292,7 @@ class Sidebar extends Component {
                 <NavLink to={'/userstory/list'} className="nav-link" activeClassName="active"><i className="icon-note"></i> Crea Storia</NavLink>
               </li> */}
 
-              {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) && 
+                {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) && 
                 // <div>
                 [
                   <li key="1" className="nav-title text-secondary">
@@ -294,7 +304,7 @@ class Sidebar extends Component {
                                                 document.body.classList.toggle('sidebar-mobile-show');
                                             }}>
                       <NavLink to={'/private/users'} className="nav-link nav-link-light" activeClassName="nav-link-light">
-                        <i className="fas fa-user-cog text-secondary"></i> { messages.menu.gestioneUtenti }
+                        <i className="fas fa-user-cog text-secondary mr-2"></i> { messages.menu.gestioneUtenti }
                       </NavLink>
                   </li>,
                   // }
@@ -303,7 +313,7 @@ class Sidebar extends Component {
                                                   document.body.classList.toggle('sidebar-mobile-show');
                                             }}>
                         <NavLink to={'/private/organizations'} className="nav-link nav-link-light" activeClassName="nav-link-light">
-                          <i className="fas fa-users text-secondary"></i> { messages.menu.organizzazioni }
+                          <i className="fas fa-users text-secondary mr-2"></i> { messages.menu.organizzazioni }
                         </NavLink>
                   </li>,
                   <li key="4" className="nav-item" onClick={(e) => {
@@ -311,7 +321,7 @@ class Sidebar extends Component {
                                                   document.body.classList.toggle('sidebar-mobile-show');
                                               }}>
                         <NavLink to={'/private/settings'} className="nav-link nav-link-light" activeClassName="nav-link-light">
-                          <i className="fas fa-image text-secondary"></i>  { messages.menu.interfaccia }
+                          <i className="fas fa-image text-secondary mr-2"></i>  { messages.menu.interfaccia }
                         </NavLink>
                   </li>,
                   <li key="5" className="nav-item nav-dropdown b-r-1">
@@ -324,7 +334,7 @@ class Sidebar extends Component {
                                                       document.body.classList.toggle('sidebar-mobile-show');
                                                   }}>
                                 <NavLink to={'/private/messages'} className="nav-link nav-link-light" activeClassName="nav-link-light">
-                                    <i className="fas fa-tasks text-secondary"></i> { messages.menu.gestioneMessaggi }
+                                    <i className="fas fa-tasks text-secondary mr-2"></i> { messages.menu.gestioneMessaggi }
                                 </NavLink>
                           </li>
                           <li className="nav-item" onClick={(e) => {
@@ -332,7 +342,7 @@ class Sidebar extends Component {
                                                       document.body.classList.toggle('sidebar-mobile-show');
                                                     }}>
                                 <NavLink to={'/private/editTTL'} className="nav-link nav-link-light" activeClassName="nav-link-light">
-                                    <i className="fas fa-stopwatch text-secondary"></i> { messages.menu.gestioneTTL }
+                                    <i className="fas fa-stopwatch text-secondary mr-2"></i> { messages.menu.gestioneTTL }
                                 </NavLink>
                           </li>
                         </ul>
@@ -340,6 +350,7 @@ class Sidebar extends Component {
                 ]   
               // </div>
               }
+
             </ul>
           </nav>
           <button className="sidebar-minimizer brand-minimizer bg-secondary" type="button" onClick={this.handleMinimizer.bind(this)}/>

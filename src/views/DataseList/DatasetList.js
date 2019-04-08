@@ -5,10 +5,9 @@ import { search } from '../../actions'
 import { isPublic } from '../../utility'
 import Select from 'react-select'
 import { decodeTheme, decodeTipo, decodeVisibilita } from '../../utility' 
-import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
+require('react-dates/initialize');
+require('react-dates/lib/css/_datepicker.css');
 import { DateRangePicker } from 'react-dates';
 import WidgetCard from '../../components/Cards/WidgetCard';
 import InfiniteScroll from '../../components/InfinityScroll'
@@ -396,7 +395,7 @@ class DatasetList extends Component {
         this.search(this.state.order_filter, '', false, false, !this.state.ckanChecked)
       }
 
-      componentWillReceiveProps(nextProps){
+      UNSAFE_componentWillReceiveProps(nextProps){
         const queryString = require('query-string');
         const query = queryString.parse(nextProps.location.search).q 
 
@@ -743,27 +742,29 @@ class DatasetList extends Component {
                                             <div className="container px-5" key={index}>
                                                 <div className="card risultato-1 mt-3 mb-0" >
                                                     <div className="card-body p-0 clearfix bg-light">
-                                                        <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
-                                                        <div className="row pl-3 pt-2 h-100" >
-                                                            <div className="col-md-6 py-1 px-1" >
+                                                        <div className="p-3 float-left bg-dataset">
+                                                            <i className="fa fa-table"></i>
+                                                        </div>
+                                                        <div className="row pl-3 pt-3 h-100" >
+                                                            <div className="col-md-6 px-1" >
                                                                 <Link to={isPublic()?'/dataset/' + dataset.dcatapit.name:'/private/dataset/' + dataset.dcatapit.name} className="title-res text-primary">
 {/*                                                                <div title={dataset.dcatapit.title} dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?truncateDatasetName(datasetMatch['dcatapit.title'],100):truncateDatasetName(dataset.dcatapit.title, 60)}}></div>
  */}                                                               <div title={dataset.dcatapit.title} className="text-truncate" dangerouslySetInnerHTML={{__html: datasetMatch['dcatapit.title']?datasetMatch['dcatapit.title']:dataset.dcatapit.title}}></div>
                                                                 </Link>
                                                             </div>
-                                                            <div className="col-md-2 py-1 px-4" >
+                                                            <div className="col-md-2 px-4" >
                                                                 <span className="badge badge-info my-1">{decodeTheme(dataset.dcatapit.theme)}</span>
                                                             </div>
-                                                            <div className="col-md-2 py-1 px-3" >
+                                                            <div className="col-md-2 px-3" >
                                                                 <div title={dataset.dcatapit.owner_org} className="text-truncate" dangerouslySetInnerHTML={{__html: dataset.dcatapit.owner_org}}></div>
                                                             </div>
-                                                            <div className="col-sm-2 py-1 pl-4">
+                                                            <div className="col-sm-2 pl-4">
                                                                 <div className="row">
                                                                     <div className="ml-auto pr-3">
                                                                         {!dataset.dcatapit.privatex && <i className="fa fa-globe fa-lg text-icon pt-1"/>}
                                                                         {dataset.dcatapit.privatex && <i className="fa fa-users fa-lg text-icon pt-1"/>}
                                                                         <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 btn btn-outline-filters pt-0 pl-4" onClick={this.handleToggleClickDataset.bind(this, index)}>
-                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<div><i className="fa fa-angle-up"></i></div>:<div><i className="fa fa-angle-down"></i></div>}
                                                                         </button>
                                                                     </div>
                                                                 </div>
@@ -831,27 +832,31 @@ class DatasetList extends Component {
                                                         <div className="container px-5" key={index}>
                                                         <div className="card risultato-1 mt-3 mb-0" >
                                                             <div className="card-body p-0 clearfix bg-e7ecef">
-                                                                <i className="fa fa-table bg-dataset p-3 float-left h-100"></i>
-                                                                <i className="fa fa-external-link-square-alt b-r-dash b-l-ext bg-light float-left text-icon p-3 h-100"></i>
-                                                                <div className="row pl-3 pt-2 h-100" >
-                                                                    <div className="col-md-6 py-1 px-1" >
+                                                                <div className="p-3 float-left bg-dataset">
+                                                                    <i className="fa fa-table"></i>
+                                                                </div>
+                                                                <div className="b-r-dash b-l-ext bg-light float-left text-icon p-3 h-100">
+                                                                    <i className="fa fa-external-link-square-alt"></i>
+                                                                </div>
+                                                                <div className="row pl-3 pt-3 h-100" >
+                                                                    <div className="col-md-6 px-1" >
                                                                                 <Link to={isPublic()?'/dataset/' + datasetOpen.name + '?type=open':'/private/dataset/' + datasetOpen.name + '?type=open'} className="title-res text-primary">
                                                                                     {/* <div title={datasetOpen.title} dangerouslySetInnerHTML={{__html: datasetOpenMatch['title']?truncateDatasetName(datasetOpenMatch['title'],100):truncateDatasetName(datasetOpen.title, 60)}}></div> */}
                                                                                     <div title={datasetOpen.title} className="text-truncate" dangerouslySetInnerHTML={{__html: datasetOpenMatch['title']?datasetOpenMatch['title']:datasetOpen.title}}></div>
                                                                                 </Link>
                                                                             </div>
-                                                                            <div className="col-md-2 py-1 px-1" >
+                                                                            <div className="col-md-2 px-1" >
                                                                                 <span className="badge badge-info my-1">{decodeTheme(datasetOpen.theme)}</span>
                                                                             </div>
-                                                                            <div className="col-md-2 py-1 px-1" >
+                                                                            <div className="col-md-2 px-1" >
                                                                                 <div title={datasetOpen.organization.name} className="text-truncate" dangerouslySetInnerHTML={{__html: datasetOpen.organization.name}}></div>
                                                                             </div>
-                                                                            <div className="col-sm-2 py-1 pl-4">
+                                                                            <div className="col-sm-2 pl-4">
                                                                                 <div className="row">
                                                                                     <div className="ml-auto pr-3">
                                                                                         <i className="fa fa-globe fa-lg text-icon pt-1"/>
                                                                                         <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 btn btn-outline-filters pt-0 pl-4" onClick={this.handleToggleClickDataset.bind(this, index)}>
-                                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                                                            {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<div><i className="fa fa-angle-up"></i></div>:<div><i className="fa fa-angle-down"></i></div>}
                                                                                         </button>
                                                                                     </div>
                                                                                 </div>
@@ -931,26 +936,28 @@ class DatasetList extends Component {
                                             <div className="container px-5" key={index}>
                                                 <div className="card risultato-1 mt-3 mb-0">
                                                 <div className="card-body p-0 clearfix">
-                                                    <i className="fa fa-font bg-primary p-3 float-left h-100"></i>
-                                                    <div className="row pl-3 pt-2 h-100" >
+                                                    <div className="bg-primary p-3 float-left h-100">
+                                                        <i className="fa fa-font"></i>
+                                                    </div>
+                                                    <div className="row pl-3 pt-3 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
                                                             <Link to={isPublic()?'/datastory/list/' + story.id:'/private/datastory/list/' + story.id} className="title-res text-primary">                                                                    
 {/*                                                                 <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?truncateDatasetName(storyMatch['title'],100):truncateDatasetName(story.title, 60)}}></div>
  */}                                                        <div title={story.title} className="text-truncate" dangerouslySetInnerHTML={{__html: storyMatch['title']?storyMatch['title']:story.title}}></div>    
                                                             </Link>
                                                         </div>
-                                                        <div className="col-md-2 py-1 px-1" ></div>
-                                                        <div className="col-md-2 py-1 px-1" >
+                                                        <div className="col-md-2 px-1" ></div>
+                                                        <div className="col-md-2 px-1" >
                                                             <div title={story.org} className="text-truncate" dangerouslySetInnerHTML={{__html: story.org}}></div>
                                                         </div>
-                                                        <div className="col-sm-2 py-1 pl-4">
+                                                        <div className="col-sm-2 pl-4">
                                                             <div className="row">
                                                                 <div className="ml-auto pr-3">
                                                                     {story.status===2 && <i className="fa fa-globe fa-lg text-icon pt-1"/>}
                                                                     {story.status===1 && <i className="fa fa-users fa-lg text-icon pt-1"/>}
                                                                     {story.status===0 && <i className="fas fa-lock fa-lg text-icon pt-1"/>}
                                                                     <button type="button" className="b-t-0 b-b-0 b-l-0 b-r-0 py-0 btn btn-outline-filters pt-0 pl-4" onClick={this.handleToggleClickDataset.bind(this, index)}>
-                                                                        {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<i className="fa fa-angle-up"></i>:<i className="fa fa-angle-down"></i>}
+                                                                        {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1?<div><i className="fa fa-angle-up"></i></div>:<div><i className="fa fa-angle-down"></i></div>}
                                                                     </button>
                                                                 </div>
                                                             </div>

@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import { getAllDatastories, receiveDatastory } from '../../actions'
 import UserstoryCard from '../../components/Cards/UserstoryCard'
 import { isPublic } from '../../utility';
@@ -43,14 +41,20 @@ class DatastoryList extends Component{
   
   onSubmit(){
     const { title, subtitle, org } = this.state
-    const { dispatch } = this.props
+    const { dispatch, loggedUser } = this.props
+    
+    var organization = org
+    
+    if(loggedUser.organizations.length === 0){
+      organization = 'open_data_group'
+    }
 
-    if(title.length>0 && org.length>0){
+    if(title.length>0 && organization.length>0){
       //save data
       let request = {
         title: title,
         subtitle: subtitle,
-        org: org,
+        org: organization,
         layout: [],
         widgets: [],
         status: 0
@@ -85,11 +89,10 @@ class DatastoryList extends Component{
     const { filtered } = this.state
     return(
       <div>
-        <Modal isOpen={this.state.modalOpen} onRequestHide={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
+        <Modal isOpen={this.state.modalOpen} toggle={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Crea una Datastory</ModalTitle>
-              <ModalClose onClick={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}/>
+            <ModalHeader toggle={()=>{this.setState({modalOpen: false, title: '', subtitle: '', org: ''})}}>
+              Crea una Datastory
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
@@ -108,17 +111,23 @@ class DatastoryList extends Component{
                 </div>
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Organizzazione</label>
-                  <div className="col-md-9">
+                  {loggedUser.organizations && loggedUser.organizations.length > 0 &&<div className="col-md-9">
                     <select className={"form-control "+(this.state.org.length===0?'is-invalid':'')} placeholder="Seleziona l'organizzazione" onChange= {(e) => this.setState({org: e.target.value})} value={this.state.org} >
                         <option value=""  key='organization' defaultValue></option>
-                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
+                        {loggedUser.organizations.map(organization => {
                               return(
                                 <option value={organization} key={organization}>{organization}</option>)
                           }
                         )}
                     </select>
+                    
                     {this.state.org.length===0 && <span className="text-danger">Campo Obbligatorio</span>}
-                  </div>
+                  </div>}
+                  {
+                      !loggedUser.organizations || loggedUser.organizations.length === 0 && <div className="col-md-9">
+                          La tua datastory sarà associata all'organizzazione di default per gli OpenData
+                        </div>
+                    }
                 </div>
             </div>
             </ModalBody>

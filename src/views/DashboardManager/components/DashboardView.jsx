@@ -15,15 +15,11 @@ import IframeWidget from './widgets/IframeWidget';
 import WidgetService from './services/WidgetService';
 import DashboardService from './services/DashboardService';
 
-// We are using bootstrap as the UI library
-// Removed for conflicts
-//import 'bootstrap/dist/css/bootstrap.css';
-
 // Default styes of dazzle.
-import 'react-dazzle/lib/style/style.css';
+require('react-dazzle/lib/style/style.css');
 
 // Our styles
-// import '../styles/custom.css';
+// require('../styles/custom.css');
 
 
 const widgetService = new WidgetService();

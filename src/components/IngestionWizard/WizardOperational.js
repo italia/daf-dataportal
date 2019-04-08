@@ -6,8 +6,6 @@ import TestSelectDomain from './TestSelectDomain';
 import { connect  } from 'react-redux';
 import { serviceurl } from '../../config/serviceurl.js'
 import { cron } from '../../const.js'
- 
-import 'react-select/dist/react-select.css';
 
 const isStds = ['true'];
 const tipo_lettura = ['ts']

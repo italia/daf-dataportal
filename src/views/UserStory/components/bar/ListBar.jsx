@@ -5,11 +5,9 @@ import { isAdmin, isEditor, isPublic } from '../../../../utility.js'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 
 // SERVICES
 import UserStoryService from '../services/UserStoryService';
@@ -124,11 +122,10 @@ class ViewBar extends React.Component {
     return (
       <div>
         
-        <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
+        <Modal isOpen={this.state.isOpen} toggle={this.hideModal}>
           <form onSubmit={this.save}>
-            <ModalHeader>
-              <ModalTitle>Crea una Storia</ModalTitle>
-              <ModalClose onClick={this.hideModal}/>
+            <ModalHeader toggle={this.hideModal}>
+              Crea una Storia
             </ModalHeader>
             <ModalBody>
             <div className="form-group">

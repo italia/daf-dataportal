@@ -9,8 +9,8 @@ import { connect  } from 'react-redux';
 import { getSchema, getSchemaWS, getSystemNameKylo, loadVocabulary, loadDatasetStandard } from '../../actions';
 import { change, reset } from 'redux-form'
 import { getEditorAdminOrganizations } from '../../utility'
-import 'rc-steps/assets/index.css'
-import 'rc-steps/assets/iconfont.css'
+require('rc-steps/assets/index.css')
+require('rc-steps/assets/iconfont.css')
 import { reduxForm, formValueSelector } from 'redux-form';
 import validate from './validate';
 import { serviceurl } from '../../config/serviceurl'
@@ -18,11 +18,9 @@ import { config } from './config'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 
 const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiungi i Metadati'}]
 
@@ -670,10 +668,10 @@ class WizardForm extends Component {
         <Modal
           contentLabel="Info"
           className="Modal__Bootstrap modal-dialog modal-80"
-          isOpen={this.state.isOpenInfo}>
-          <ModalHeader>
-            <ModalClose onClick={this.hideModal} />
-            <ModalTitle>Informazioni</ModalTitle>
+          isOpen={this.state.isOpenInfo}
+          toggle={this.hideModal}>
+          <ModalHeader toggle={this.hideModal}>
+            Informazioni
           </ModalHeader>
           <ModalBody>
             <p dangerouslySetInnerHTML={{__html: infoText}}></p>

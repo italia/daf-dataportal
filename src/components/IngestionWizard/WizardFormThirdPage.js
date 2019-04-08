@@ -5,11 +5,6 @@ import TestSelect from './TestSelect';
 import { connect  } from 'react-redux';
 import { serviceurl } from '../../config/serviceurl.js'
 
-
-
-import 'react-select/dist/react-select.css';
-
-
 const isStds = ['true'];
 const tipo_lettura = ['ts']
 

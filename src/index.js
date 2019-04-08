@@ -4,17 +4,17 @@ import App from './containers/App'
 import configureStore from './configureStore'
 import { Provider } from 'react-redux';
 
-import './style/css/simple-line-icons.css'
-import './style/css/style.css'
-import './style/css/custom.css'
-import './style/css/autocomplete.css'
-import './style/css/infinityscroll.css'
-import './style/css/react-redux-toastr.min.css'
-import '@fortawesome/fontawesome-free/css/all.css'
-import '@fortawesome/fontawesome-free/js/all.js'
-import 'flag-icon-css/css/flag-icon.min.css'
-import 'react-grid-layout/css/styles.css'
-import 'react-resizable/css/styles.css'
+require('./style/css/simple-line-icons.css')
+require('./style/css/style.css')
+require('./style/css/custom.css')
+require('./style/css/autocomplete.css')
+require('./style/css/infinityscroll.css')
+require('./style/css/react-redux-toastr.min.css')
+require('@fortawesome/fontawesome-free/css/all.css')
+require('@fortawesome/fontawesome-free/js/all.js')
+require('flag-icon-css/css/flag-icon.min.css')
+require('react-grid-layout/css/styles.css')
+require('react-resizable/css/styles.css')
 
 function registerServiceWorker(){
   if ('serviceWorker' in navigator) {

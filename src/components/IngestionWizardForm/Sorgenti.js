@@ -2,11 +2,9 @@ import React, {Component} from 'react';
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter
-  } from 'react-modal-bootstrap';
+  } from 'reactstrap';
 
 class Sorgenti extends Component {
     constructor(props){
@@ -97,11 +95,10 @@ class Sorgenti extends Component {
     const { listaSorgenti, config } = this.props;
     return (
       <div>
-        <Modal isOpen={this.state.isOpenSorgenti} onRequestHide={this.hideModalSorgenti}>
+        <Modal isOpen={this.state.isOpenSorgenti} toggle={this.hideModalSorgenti}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Aggiungi una sorgente</ModalTitle>
-              <ModalClose onClick={this.hideModalSorgenti}/>
+            <ModalHeader toggle={this.hideModalSorgenti}>
+              Aggiungi una sorgente
             </ModalHeader>
             <ModalBody>
             <div className="form-group">

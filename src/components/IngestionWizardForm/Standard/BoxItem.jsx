@@ -2,7 +2,7 @@ import React from 'react';
 //import { DragDropContainer, DropTarget } from '../../src';
 import { DragDropContainer, DropTarget } from 'react-drag-drop-container';
 
-import './BoxItem.css';
+require('./BoxItem.css');
 
 /*
     BoxItem - a thing that appears in a box, after you drag something into the box

@@ -135,7 +135,7 @@ class Dashboard extends Component{
 
     if(nextProps.datastory!==datastory){
       if(!isPublic()){
-        dispatch(loadWidgets(nextProps.datastory.org))
+        dispatch(loadWidgets(nextProps.datastory.org==='open_data_group'?undefined:nextProps.datastory.org))
         .then(json => {
 
           if(json.code){
@@ -184,7 +184,7 @@ class Dashboard extends Component{
   componentDidMount(){
     const { dispatch, datastory } = this.props
     if(!isPublic() && datastory && datastory.org){
-      dispatch(loadWidgets(datastory.org))
+      dispatch(loadWidgets(datastory.org==='open_data_group'?undefined:datastory.org))
       .then(json => {
         if(json.code){
           var widgets = []

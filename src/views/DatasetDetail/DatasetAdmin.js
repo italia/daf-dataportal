@@ -16,11 +16,9 @@ import { toastr } from 'react-redux-toastr'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter 
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import Select from 'react-select'
 
 
@@ -453,10 +451,10 @@ class DatasetAdmin extends Component{
         <Modal
           contentLabel="Add a User"
           className="Modal__Bootstrap modal-dialog modal-60"
-          isOpen={aggiungi}>
-          <ModalHeader>
-              <ModalTitle>Condivisione</ModalTitle>
-              <ModalClose onClick={this.toggleClose} />
+          isOpen={aggiungi}
+          toggle={this.toggleClose}>
+          <ModalHeader toggle={this.toggleClose}>
+              Condivisione
           </ModalHeader>
           <ModalBody>
             <div className="row">
@@ -519,7 +517,7 @@ class DatasetAdmin extends Component{
           </ModalBody>
           <ModalFooter>
               <button className='btn btn-primary' onClick={this.setACL} disabled={(this.state.selectedOrg == '' || this.state.saving)}>
-              {this.state.saving?<i className="fa fa-spinner fa-spin fa-lg" />:"Aggiungi permesso"}
+              {this.state.saving?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:"Aggiungi permesso"}
               </button>
               <button className='btn btn-secondary' onClick={this.toggleClose}>
                   Annulla
@@ -589,7 +587,7 @@ class DatasetAdmin extends Component{
               <i className="text-icon fa-pull-left fas fa-trash fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4><b>Elimina</b></h4>
           </div>
           <div className="col-5">
-            <button className="btn btn-danger" disabled={this.state.cancella || this.state.acl.length>0 } onClick={this.delete.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org, dataset.dcatapit.title)}>{this.state.cancella?<i className="fa fa-spinner fa-spin fa-lg"/>:'Elimina Dataset'}</button>
+            <button className="btn btn-danger" disabled={this.state.cancella || this.state.acl.length>0 } onClick={this.delete.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org, dataset.dcatapit.title)}>{this.state.cancella?<div><i className="fa fa-spinner fa-spin fa-lg"/></div>:'Elimina Dataset'}</button>
           </div>
         </div>}
       </div>
