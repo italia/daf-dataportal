@@ -581,7 +581,7 @@ class Full extends Component {
   */
   handleSaveStory = (e) => {
     const { title, subtitle, org } = this.state
-    const { dispatch } = this.props
+    const { dispatch, loggedUser } = this.props
 
     var organization = org
     

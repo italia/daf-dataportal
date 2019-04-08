@@ -747,8 +747,8 @@ class Organizations extends Component {
                                 name="selected-user"
                                 value={this.state.user}
                                 onChange={this.updateValue}
-                                rtl={false}
-                                searchable={true}
+                                isRtl={false}
+                                isSearchable={true}
                             />
                         </ModalBody>
                         <ModalFooter>

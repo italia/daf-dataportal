@@ -153,10 +153,11 @@ class QueryBuild extends Component {
   select(field){
     const { query } = this.state
     query.select = []
+
     field.map(campo => {
       query.select.push({"name": campo.value})
     })
-    
+
     this.setState({
       selected: field,
       aggregators: [],
@@ -317,7 +318,7 @@ class QueryBuild extends Component {
       value={groupBy?this.state.groupedBy:this.state.selected}
       onChange={groupBy?this.groupBy:this.select}
       options={fields}
-      multi={true}
+      isMulti={true}
       className="form-control"
       disabled={!this.state.isQuery}
     />
