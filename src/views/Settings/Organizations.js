@@ -344,7 +344,7 @@ class Organizations extends Component {
 
     add(org){
         const { user } = this.state;
-        let response = organizationService.userAdd(org, user)
+        let response = organizationService.userAdd(org, user.value)
         this.setState({ saving: true })
         response.then((response) => {
             if (response.ok) {
@@ -391,7 +391,7 @@ class Organizations extends Component {
 
     addWG(wg){
         const { user } = this.state;
-        let response = organizationService.userAddWG(wg, user)
+        let response = organizationService.userAddWG(wg, user.value)
         this.setState({ saving: true })
         response.then((response) => {
             if (response.ok) {
@@ -646,6 +646,7 @@ class Organizations extends Component {
             user: newValue,
         });
     }
+    
     validateNomeNGOrganizzazione (event) {
         const target  = event.target;
         const value   = target.value;
@@ -719,7 +720,7 @@ class Organizations extends Component {
                         </ModalBody>
                         <ModalFooter>
                         <button className='btn btn-danger' onClick={this.deleteOrg.bind(this)}>
-                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Cancella l'organizzazione"} 
+                            {this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Cancella l'organizzazione"} 
                         </button>
                             <button className='btn btn-secondary' onClick={this.closeOrgModal.bind(this)}>
                                 Annulla
@@ -753,12 +754,12 @@ class Organizations extends Component {
                         </ModalBody>
                         <ModalFooter>
                             {userModalType==='org' && <button className='btn btn-primary' onClick={this.add.bind(this, selectedOrg)}>
-                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Aggiungi utente"}
+                            {this.state.saving?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Aggiungi utente"}
                             </button>
                             }
                             
                             {userModalType==='wg' && <button className='btn btn-primary' onClick={this.addWG.bind(this, selectedWorkgroup)}>
-                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Aggiungi utente"}
+                            {this.state.saving? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>:"Aggiungi utente"}
                             </button>
                             }
                                 
@@ -820,7 +821,7 @@ class Organizations extends Component {
                                     <input className="form-control" type="mail" value={this.state.mail} onChange={(e) => { this.setState({ mail: e.target.value }); this.validateEmail(e) }}/>
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" disabled={this.state.disableSave} onClick={this.createOrg.bind(this)}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Crea"}</button>
+                            <button type="submit" className="btn btn-primary" disabled={this.state.disableSave} onClick={this.createOrg.bind(this)}>{this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Crea"}</button>
                         </div>
     
                         <div hidden={this.state.nomeok} className="ml-5 w-100">
@@ -899,7 +900,7 @@ class Organizations extends Component {
                                     <input className="form-control" type="search" maxLength="18" value={this.state.nomeWG} onChange={(e)=>{this.setState({nomeWG:e.target.value}); this.validateNomeNGOrganizzazione(e)}}/>
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" disabled={this.state.disableSave || this.state.nomeWG==''?true:false} onClick={this.createWG.bind(this,selectedOrg)}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Crea"}</button>
+                            <button type="submit" className="btn btn-primary" disabled={this.state.disableSave || this.state.nomeWG==''?true:false} onClick={this.createWG.bind(this,selectedOrg)}>{this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div> : "Crea"}</button>
                         </div>
                         <div hidden={this.state.nomeNGok} className="ml-5 w-100">
                             <div className="alert alert-warning" role="alert">

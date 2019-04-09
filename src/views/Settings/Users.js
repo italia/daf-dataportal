@@ -389,7 +389,7 @@ class Users extends Component {
                         </ModalBody>
                         <ModalFooter>
                         <button className='btn btn-danger' onClick={this.delete}>
-                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Cancella l'utente"}
+                            {this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div> : "Cancella l'utente"}
                         </button>
                         <button className='btn btn-secondary' onClick={this.closeUserModal}>
                             Annulla

@@ -287,7 +287,7 @@ class Settings extends Component {
                 showDiv: false
             })
         }
-        this.load(newValue)
+        this.load(newValue.value)
     }
 
     addDomain(){
@@ -429,14 +429,14 @@ class Settings extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                        <label className="col-2 col-form-label"><i className="fa fa-twitter"></i>{" "}Twitter</label>
+                                        <label className="col-2 col-form-label"><i className="fab fa-twitter"></i>{" "}Twitter</label>
                                     <div className="col-10">
                                         <input className="form-control" type="text" value={this.state.twitter} 
                                             onChange={(e) => this.onTwitterChange(e.target.value)}/>
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                        <label className="col-2 col-form-label"><i className="fa fa-medium"></i>{" "}Medium</label>
+                                        <label className="col-2 col-form-label"><i className="fab fa-medium"></i>{" "}Medium</label>
                                     <div className="col-10">
                                         <input className="form-control" type="search" value={this.state.medium} 
                                             onChange={(e) => this.onMediumChange(e.target.value)}/>

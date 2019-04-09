@@ -86,6 +86,7 @@ class DatasetList extends Component {
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleChangeOrdinamento = this.handleChangeOrdinamento.bind(this);
+        this.handleScrollToBottom = this.handleScrollToBottom.bind(this)
         this.addOrganization = this.addOrganization.bind(this)
         this.toggleMiei = this.toggleMiei.bind(this)
         this.toggleShared = this.toggleShared.bind(this)
@@ -105,6 +106,12 @@ class DatasetList extends Component {
             const query = queryString.parse(this.props.location.search).q  
             this.searchAll(query)
         }
+        window.addEventListener('scroll', this.handleScrollToBottom, false);
+    }
+
+    
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScrollToBottom, false);
     }
 
     searchAll(query){
@@ -226,24 +233,6 @@ class DatasetList extends Component {
           })
         }
     }
-
-    /* handleLoadDatasetDetailClick(name, e) {
-        e.preventDefault()
-        this.setState({
-          edit: false
-        })
-        const { dispatch, query } = this.props
-        const { order_filter, category_filter, organization_filter, group_filter } = this.state
-        this.props.history.push({
-          pathname: '/private/dataset/'+name,
-          state: {'query': query,
-                  'category_filter': category_filter,
-                  'organization_filter': organization_filter,
-                  'order_filter': order_filter,
-                  'group_filter': group_filter
-          }
-        })
-      } */
 
       handleToggleClickDataset(index){
         var array = this.state.showDivDataset
@@ -529,7 +518,11 @@ class DatasetList extends Component {
         });
     }
 
-    handleScrollToBottom = () => this.loadMore()
+    handleScrollToBottom = () => {
+        if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500) && this.props.results.length) {
+            this.loadMore()
+        }
+    }
 
     addOrganization(newValue){
       this.setState({
@@ -537,7 +530,7 @@ class DatasetList extends Component {
       })
 
       if(newValue){
-        this.addFilter(3, newValue)
+        this.addFilter(3, newValue.value)
       }
     }
 
@@ -577,7 +570,7 @@ class DatasetList extends Component {
                                   {window.location.hash.indexOf('dataset')===-1 && <div className="col"><i className="fa-pull-left fa fa-search fa-lg my-2 mr-3" style={{lineHeight: '1'}}></i><h2>{search && 'Hai cercato ' }<i className="mr-1">{search?search:""}</i> trovati <i>{this.state.totalResults}</i> risultati</h2></div>}
                                   {!isPublic() && <div className="pt-2"><b className="h5 font-weight-bold">Ckan data</b> <button className="btn btn-link mr-2 py-0 px-1" title="Abilita la ricerca a tutti i dataset open data del catalogo ckan nazionale"><i className="fas fa-info-circle fa-lg"/></button>
                                   <label className="switch switch-3d switch-primary mr-3">
-                                    <input type="checkbox" className="switch-input" checked={this.state.ckanChecked} onClick={this.toggleCkan}/>
+                                    <input type="checkbox" className="switch-input" checked={this.state.ckanChecked} onChange={this.toggleCkan} onClick={this.toggleCkan}/>
                                     <span className="switch-label" title="Abilita la ricerca a tutti i dataset open data del catalogo ckan nazionale"></span>
                                     <span className="switch-handle" title="Abilita la ricerca a tutti i dataset open data del catalogo ckan nazionale"></span>
                                   </label></div>}
