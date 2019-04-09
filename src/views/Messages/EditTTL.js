@@ -212,7 +212,11 @@ handleCancellByOne = ( name ) => {
                       <td class="bg-grigino">
                         <Row>
                             <Col sm={4}>
+                              <Form inline>
+                              <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                               <Input />
+                              </FormGroup>
+                              </Form>
                             </Col>
                             <Col>
                             
