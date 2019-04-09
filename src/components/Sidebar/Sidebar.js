@@ -8,7 +8,7 @@ import {
   search
 } from '../../actions'
 import { serviceurl } from '../../config/serviceurl.js'
-import { messages } from '../../i18n-ita'
+import { messages } from '../../i18n/i18n-ita'
 import { isEditor, isAdmin, isSysAdmin } from '../../utility'
 
 class Sidebar extends Component {

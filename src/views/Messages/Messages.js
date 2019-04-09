@@ -8,7 +8,7 @@ import {
   } from 'reactstrap';
 import MessageService from '../../views/Messages/services/MessageService';
 import { toastr } from 'react-redux-toastr'
-import { messages } from '../../i18n-ita'
+import { messages } from '../../i18n/i18n-ita'
 import { SingleDatePicker } from 'react-dates'
 import moment from 'moment';
 

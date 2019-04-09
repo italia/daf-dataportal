@@ -26,19 +26,31 @@ export const messages = {
         interfaccia     :   "Interfaccia",
         messaggi        :   "Messaggi",
         gestioneMessaggi:   "Gestione Messaggi",
-        gestioneTTL     :   "Gestione TTL"
+        gestioneTTL     :   "Validità Notifiche"
     },
     label   :   {
+        salva           :   "Salva",    
+        annulla         :   "Annulla",    
         modifica        :   "Modifica",    
-        Success         :   "Success",
-        Error           :   "Error",
-        Info            :   "Info",
-        System          :   "System",
+        successType     :   "Success",
+        errorType       :   "Error",
+        infoType        :   "Info",
+        systemType      :   "System",
         salvataggio     :   "Salvataggio",
         salvataggioOK   :   "Salvataggio effettuato con successo",
         errore          :   "Errore",
         salvataggioKO   :   "Impossibile effettuare il salvataggio",
-        gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)"
+        titolo          :   "Titolo",
+        message         :   "Messaggio",
+        data            :   "Data",
+        chiudi          :   "Chiudi",
+        newMessage      :   "Nuovo Messaggio",
+        editMessage     :   "Modifica Messaggio",
+        editMessageOK   :   "Messaggio modificato con successo",
+        deleteMessage   :   "Cancella Messaggio",
+        deleteMessageOK :   "Messaggio cancellato con successo",
+        gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)",
+        editTTLDescFunction:    "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista"
     },
     validazione : {
         campoObbligatorio       :   "Campo obbligatorio",
