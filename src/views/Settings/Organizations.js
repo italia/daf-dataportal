@@ -646,6 +646,7 @@ class Organizations extends Component {
             user: newValue,
         });
     }
+    
     validateNomeNGOrganizzazione (event) {
         const target  = event.target;
         const value   = target.value;

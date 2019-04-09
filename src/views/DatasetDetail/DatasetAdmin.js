@@ -146,7 +146,7 @@ class DatasetAdmin extends Component{
     });
     let allWg = []
     let tmp = {}
-    dispatch(groupsInfo([newValue]))
+    dispatch(groupsInfo([newValue.value]))
     .then((json) => {
       if(json[0].workgroups){
         json[0].workgroups.map(wg => {

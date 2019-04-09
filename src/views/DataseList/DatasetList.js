@@ -530,7 +530,7 @@ class DatasetList extends Component {
       })
 
       if(newValue){
-        this.addFilter(3, newValue)
+        this.addFilter(3, newValue.value)
       }
     }
 
