@@ -186,7 +186,7 @@ handleCancellByOne = ( name ) => {
                       ButtonClass.CLOCK.description
                     }
             />
-            <EasyTitleContainer message={}  />
+            <EasyTitleContainer message={ messages.label.editTTLDescFunction }  />
         <div className="card">
           <div className="card-block">
           {/* <div class="row m-0">
