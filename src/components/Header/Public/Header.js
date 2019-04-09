@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock } from '@fortawesome/fontawesome-free-solid'
 import { Link } from 'react-router-dom';
@@ -145,11 +145,56 @@ class Header extends Component {
 
     return(
       <div className={"app-header " + jsscrolled}>
-        <div className="upper-header">
-          <div className="container">
-            <h6 className="mx-5 px-1 mb-0"><a className="text-white" href="https://www.agid.gov.it/">Agid</a> + <a href="https://teamdigitale.governo.it/" className="text-white">Team Digitale</a></h6>
-          </div>
+        <div className="upper-header" id="color-hp">
+          <div className="container-fluid ">
+          <div className="row">
+    <div className="col-xs-2 mr-auto font-weight-bold text-white">
+              <a className="font-weight-bold text-white" style={{ textDecoration: 'none' }} href="https://teamdigitale.governo.it/">Team Digitale</a>
+
         </div>
+
+       <div className="col-xs-8 ml-auto">
+
+
+            <ul className="list-inline m-0">
+              <li className="list-inline-item">
+                
+                  <a className="color-text-header font-weight-bold ProvaSpazio" style={{ textDecoration: 'none' }} href="https://pianotriennale-ict.italia.it">Piano Triennale</a>
+                
+              </li>
+              <li className="list-inline-item">
+               
+                  <a className="color-text-header font-weight-bold ProvaSpazio" style={{ textDecoration: 'none' }} href="https://developers.italia.it">Developers</a>
+               
+              </li>
+              <li className="list-inline-item">
+               
+                  <a className="color-text-header font-weight-bold ProvaSpazio" style={{ textDecoration: 'none' }}  href="https://designers.italia.it">Designers</a>
+                
+              </li>
+              <li className="list-inline-item">
+               
+                  <a className="color-text-header font-weight-bold" style={{ textDecoration: 'none' }} href="https://forum.italia.it">Forum</a>
+               
+              </li>
+              <li className="list-inline-item">
+                
+                  <a className="color-text-header font-weight-bold" style={{ textDecoration: 'none' }} href="https://docs.italia.it">Docs</a>
+                
+              </li>
+              <li className="list-inline-item">
+              
+                  <a className="color-text-header font-weight-bold a" style={{ textDecoration: 'none' }} href="https://github.com/italia">GitHub</a>
+              
+              </li>
+            </ul>
+
+          </div>
+          </div>
+          </div>
+      
+        </div>
+        <div className="row color-row-header"></div>
         <div className="main-header container">
           <div className="h-100 bg-primary row">
             <div className='float-left'>
@@ -161,11 +206,11 @@ class Header extends Component {
             <div className="col-md col-lg col-sm col-xs col h-auto">
               <div className="row mx-0">
                 <Link className="text-white" to={'/'}>
-                  <h2 className="mr-4 mb-0">{/* props.styleProps.headerSiglaTool */}<b>DAF {properties.headerSiglaTool}</b></h2>
+                  <h2 className="mr-4 mb-0">{/* props.styleProps.headerSiglaTool */}<b>PDND {properties.headerSiglaTool}</b></h2>
                 </Link>
                 <span className="d-sm-down-none badge badge-pill align-self-center h-100" style={{backgroundColor: 'rgba(0,0,0,0.2)', height: 'max-content'}}>versione alpha 1.0</span>
               </div>
-              <p className="d-sm-down-none">{/* props.styleProps.headerDescTool */}{"Data & Analytics Framework"} <b>{properties.headerDescTool}</b></p>
+              <p className="d-sm-down-none">{/* props.styleProps.headerDescTool */}{"Piattaforma Digitale Nazionale Dati Italiana ( in origine DAF )"} </p>
             </div>
             <div className="col-lg-3 col-md-4 col-sm-4 col h-auto">
               <div className="h-100 row">
@@ -255,6 +300,7 @@ class Header extends Component {
                 <div className={"dropdown-menu " + (this.state.showMenu ? "show":"")} aria-labelledby="dropdownMenuButton">
                   <Link to={'/missione'} className="dropdown-item">Missione</Link>
                   <Link to={'/team'} className="dropdown-item">Chi siamo</Link>
+                  <Link to={'/gettingstarted'} className="dropdown-item">Linee guida</Link>
                 </div>
               </div>
               </NavItem>
@@ -268,9 +314,9 @@ class Header extends Component {
                 </div>
               </div>
               </NavItem>
-                <NavItem>
-                  <Link to={'/gettingstarted'} className="nav-link font-weight-bold lead text-white">Getting started</Link>
-                </NavItem>
+              {/* <NavItem>
+                <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
+              </NavItem> */}
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Application</Link>
               </NavItem>
