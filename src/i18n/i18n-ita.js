@@ -10,6 +10,7 @@ export const messages = {
         nuovoDataset    :   "Nuovo Dataset",    
         nuovaDashboard  :   "Nuova Dashboard",    
         nuovaStoria     :   "Nuova Datastory",
+        datastory       :   "Datastory",
         strumenti       :   "Strumenti",  // ----  
         superset        :   "Superset",
         open            :   "Open",

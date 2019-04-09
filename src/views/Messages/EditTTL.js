@@ -6,7 +6,7 @@ import { toastr } from 'react-redux-toastr'
 import { messages } from '../../i18n/i18n-ita'
 import MessageService from "./services/MessageService";
 import { ButtonClass, StyleColor, TopBannerPage, EasyTitleContainer } from '../Settings/LayoutCustom';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Card, Row, Col } from 'reactstrap';
 
 const messageService = new MessageService()
 
@@ -187,6 +187,13 @@ handleCancellByOne = ( name ) => {
                     }
             />
             <EasyTitleContainer message={ messages.label.editTTLDescFunction }  />
+            <Card body>
+              
+            </Card>
+
+
+
+
         <div className="card">
           <div className="card-block">
           {/* <div class="row m-0">
