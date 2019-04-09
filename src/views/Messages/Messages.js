@@ -11,6 +11,7 @@ import { toastr } from 'react-redux-toastr'
 import { messages } from '../../i18n/i18n-ita'
 import { SingleDatePicker } from 'react-dates'
 import moment from 'moment';
+import { TopBannerPage } from '../Settings/LayoutCustom';
 
 const messageService = new MessageService()
 
@@ -229,6 +230,7 @@ export default class Messages extends Component { //PADRE
   render() {
     return (
       <div>
+        <TopBannerPage title="Messaggi di Sistema" icon="fa fa-tasks"></TopBannerPage>
         <div className="form-group row">
             <label className="col-sm-2 col-form-label"></label>
             <div className="col-sm-10">
