@@ -38,7 +38,8 @@ export default class Messages extends Component { //PADRE
                  id: "endDate",
                  accessor: d => {
                    return moment(d.endDate, "YYYY-MM-DD_HH:mm:ss").format("DD/MM/YYYY")
-                 }
+                 },
+                 width: 100
              },
              {
                accessor: "offset",
@@ -48,10 +49,11 @@ export default class Messages extends Component { //PADRE
                  accessor: "actions",
                  Cell: row => (
                      <div>
-                         <button style={buttonStyle} className="btn btn-primary px-2" onClick={() => this.editMethod(row.row)}>Modifica</button>
-                         <button style={buttonStyle} className="btn btn-primary px-2" onClick={() => this.deleteMethod(row.row)}>Cancella</button>
+                         <button style={buttonStyle} className="btn btn-link" onClick={() => this.editMethod(row.row)}><i className="pointer fas fa-edit text-primary" title="Modifica"/></button>
+                         <button style={buttonStyle} className="btn btn-link" onClick={() => this.deleteMethod(row.row)}><i className="pointer fas fa-trash text-primary" title="Cancella"/></button>
                      </div>
-                 )
+                 ),
+                 width: 100
              }
          ],
          isLoading : true,
@@ -244,13 +246,13 @@ export default class Messages extends Component { //PADRE
                     <div className="form-group row">
                       <label className="col-md-2 form-control-label">{messages.label.titolo}</label>
                       <div className="col-md-8">
-                        <input type="text" className="form-control" name="title" value={this.state.title} onChange={this.handleInputChange} id="title" placeholder={messages.label.titolo}/>
+                        <input type="text" className="form-control" name="title" maxLength="50" value={this.state.title} onChange={this.handleInputChange} id="title" placeholder={messages.label.titolo}/>
                       </div>
                     </div>
                     <div className="form-group row">
                       <label className="col-md-2 form-control-label">{messages.label.message}</label>
                       <div className="col-md-8">
-                        <input type="text" className="form-control"  name="description" value={this.state.description} onChange={this.handleInputChange} id="description" placeholder={messages.label.message}/>
+                        <input type="text" className="form-control"  name="description" maxLength="140" value={this.state.description} onChange={this.handleInputChange} id="description" placeholder={messages.label.message}/>
                       </div>
                     </div>
                     <div className="form-group row">
