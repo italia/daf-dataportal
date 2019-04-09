@@ -11,7 +11,7 @@ import { toastr } from 'react-redux-toastr'
 import { messages } from '../../i18n/i18n-ita'
 import { SingleDatePicker } from 'react-dates'
 import moment from 'moment';
-import { TopBannerPage } from '../Settings/LayoutCustom';
+import { TopBannerPage, EasyTitleContainer } from '../Settings/LayoutCustom';
 
 const messageService = new MessageService()
 
@@ -28,11 +28,13 @@ export default class Messages extends Component { //PADRE
         columns: [
              {
                  Header: "Titolo",
-                 accessor: "info.title"
+                 accessor: "info.title",
+                 resizable: false
              },
              {
                  Header: "Messaggio",
-                 accessor: "info.description"
+                 accessor: "info.description",
+                 resizable: false
              },
              {
                  Header: "Data",
@@ -40,7 +42,8 @@ export default class Messages extends Component { //PADRE
                  accessor: d => {
                    return moment(d.endDate, "YYYY-MM-DD_HH:mm:ss").format("DD/MM/YYYY")
                  },
-                 width: 100
+                 width: 100,
+                 resizable: false
              },
              {
                accessor: "offset",
@@ -54,7 +57,8 @@ export default class Messages extends Component { //PADRE
                          <button style={buttonStyle} className="btn btn-link" onClick={() => this.deleteMethod(row.row)}><i className="pointer fas fa-trash text-primary" title="Cancella"/></button>
                      </div>
                  ),
-                 width: 100
+                 width: 100,
+                 resizable: false
              }
          ],
          isLoading : true,
@@ -231,6 +235,7 @@ export default class Messages extends Component { //PADRE
     return (
       <div>
         <TopBannerPage title="Messaggi di Sistema" icon="fa fa-tasks"></TopBannerPage>
+        <EasyTitleContainer message={messages.label.systemMessageTitle}></EasyTitleContainer>
         <div className="form-group row">
             <label className="col-sm-2 col-form-label"></label>
             <div className="col-sm-10">

@@ -26,7 +26,7 @@ export const messages = {
         organizzazioni  :   "Organizzazioni",
         interfaccia     :   "Interfaccia",
         messaggi        :   "Messaggi",
-        gestioneMessaggi:   "Gestione Messaggi",
+        gestioneMessaggi:   "Messaggi di Sistema",
         gestioneTTL     :   "Validità Notifiche"
     },
     label   :   {
@@ -51,9 +51,10 @@ export const messages = {
         deleteMessage   :   "Cancella Messaggio",
         deleteMessageOK :   "Messaggio cancellato con successo",
         gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)",
-        editTTLDescFunction:    "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista",
+        editTTLDescFunction: "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista",
         tipologiaDiNotifica: "Tipologia di Notifica",
-        validita:   "Validità"
+        validita        :   "Validità",
+        systemMessageTitle: "In questa sezione puoi aggiungere i messaggi di sistema che saranno visibili all'interno del portale (pubblico o privato) fino alle ore 23:59 della data impostata"
     },
     validazione : {
         campoObbligatorio       :   "Campo obbligatorio",
