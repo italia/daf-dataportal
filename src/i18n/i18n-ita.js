@@ -51,7 +51,9 @@ export const messages = {
         deleteMessage   :   "Cancella Messaggio",
         deleteMessageOK :   "Messaggio cancellato con successo",
         gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)",
-        editTTLDescFunction:    "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista"
+        editTTLDescFunction:    "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista",
+        tipologiaDiNotifica: "Tipologia di Notifica",
+        validita:   "Validità"
     },
     validazione : {
         campoObbligatorio       :   "Campo obbligatorio",

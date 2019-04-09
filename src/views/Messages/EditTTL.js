@@ -6,7 +6,12 @@ import { toastr } from 'react-redux-toastr'
 import { messages } from '../../i18n/i18n-ita'
 import MessageService from "./services/MessageService";
 import { ButtonClass, StyleColor, TopBannerPage, EasyTitleContainer } from '../Settings/LayoutCustom';
-import { Container, Card, Row, Col } from 'reactstrap';
+import { Container, Card, Row, Col,  InputGroup,
+  InputGroupButtonDropdown,
+  Input,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem } from 'reactstrap';
 
 const messageService = new MessageService()
 
@@ -23,6 +28,7 @@ class EditTTL extends Component {
       this.isInputVisible = 'isInputVisible';
       this.labelError = 'validationMSgTTL';
       this.state = { 
+        dropdownOpen: false,
                       storeTTL: [ ],
                       infoType:0,
                       successType:0,
@@ -31,6 +37,7 @@ class EditTTL extends Component {
                       isInputVisiblesuccessType:false,
                       isInputVisibleerrorType:false
        }
+       this.toggleDropDown = this.toggleDropDown.bind(this);
     }
 
     handleInputChange(event) {
@@ -60,6 +67,12 @@ class EditTTL extends Component {
   componentWillMount(){
       console.log('Init Form');
       this.load ();
+  }
+
+  toggleDropDown() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    });
   }
 
   load = () => {
@@ -188,7 +201,46 @@ handleCancellByOne = ( name ) => {
             />
             <EasyTitleContainer message={ messages.label.editTTLDescFunction }  />
             <Card body>
-              
+              <table class="table table-striped table-responsive-1">
+                <thead>
+                  <th>{messages.label.tipologiaDiNotifica}</th>
+                  <th>{messages.label.validita}</th>
+                </thead>
+                <tbody class="w-100">
+                    <tr>
+                      <th class="bg-white" style={{width: 192}}><i className="fas fa-exclamation-circle text-info mr-2 fa-lg"/><strong>{messages.label.infoType}: </strong></th>
+                      <td class="bg-grigino">
+                        <Row>
+                            <Col sm={4}>
+                            <InputGroup>
+                              <Input />
+                              <InputGroupButtonDropdown addonType="append" isOpen={this.state.dropdownOpen} toggle={this.toggleDropDown}>
+                                <DropdownToggle caret>
+                                  Button Dropdown
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                  <DropdownItem header>Header</DropdownItem>
+                                  <DropdownItem disabled>Action</DropdownItem>
+                                  <DropdownItem>Another Action</DropdownItem>
+                                  <DropdownItem divider />
+                                  <DropdownItem>Another Action</DropdownItem>
+                                </DropdownMenu>
+                              </InputGroupButtonDropdown>
+                            </InputGroup>
+                            </Col>
+                        </Row>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="bg-white" style={{width: 192}}><i className="fas fa-check-circle text-success mr-2 fa-lg"/><strong>{messages.label.successType}: </strong></th>
+                      <td class="bg-grigino">Web HDFS</td>
+                    </tr>
+                    <tr>
+                      <th class="bg-white" style={{width: 192}}><i className="fas fa-exclamation-circle text-danger mr-2 fa-lg"/><strong>{messages.label.errorType}: </strong></th>
+                      <td class="bg-grigino">Web HDFS</td>
+                    </tr>
+                </tbody>
+              </table>
             </Card>
 
 
