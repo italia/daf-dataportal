@@ -226,4 +226,4 @@ Nel corpo della mail indicare:
 
 ]
 
-}; 
+};   

@@ -212,21 +212,10 @@ handleCancellByOne = ( name ) => {
                       <td class="bg-grigino">
                         <Row>
                             <Col sm={4}>
-                            <InputGroup>
                               <Input />
-                              <InputGroupButtonDropdown addonType="append" isOpen={this.state.dropdownOpen} toggle={this.toggleDropDown}>
-                                <DropdownToggle caret>
-                                  Button Dropdown
-                                </DropdownToggle>
-                                <DropdownMenu>
-                                  <DropdownItem header>Header</DropdownItem>
-                                  <DropdownItem disabled>Action</DropdownItem>
-                                  <DropdownItem>Another Action</DropdownItem>
-                                  <DropdownItem divider />
-                                  <DropdownItem>Another Action</DropdownItem>
-                                </DropdownMenu>
-                              </InputGroupButtonDropdown>
-                            </InputGroup>
+                            </Col>
+                            <Col>
+                            
                             </Col>
                         </Row>
                       </td>
