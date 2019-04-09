@@ -6,12 +6,10 @@ import { toastr } from 'react-redux-toastr'
 import { messages } from '../../i18n/i18n-ita'
 import MessageService from "./services/MessageService";
 import { ButtonClass, StyleColor, TopBannerPage, EasyTitleContainer } from '../Settings/LayoutCustom';
-import { Container, Card, Row, Col,  InputGroup,
-  InputGroupButtonDropdown,
+import { Container, Card, Row, Col, 
   Input,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  FormGroup,
+  Form } from 'reactstrap';
 
 const messageService = new MessageService()
 
@@ -213,6 +211,9 @@ handleCancellByOne = ( name ) => {
                         <Row>
                             <Col sm={4}>
                               <Form inline>
+                              <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                              <Input />
+                              </FormGroup>
                               <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                               <Input />
                               </FormGroup>
