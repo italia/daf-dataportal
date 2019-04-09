@@ -176,7 +176,7 @@ class ConfirmReset extends Component {
                 {/* <div className="input-group mb-1">
                   <div className="g-recaptcha" data-sitekey="6LcUNjQUAAAAAG-jQyivW5xijDykXzslKqL2PMLr"></div>
                 </div> */}
-                <button type="button" disabled={this.state.uploading} className="btn btn-block btn-primary" onClick={this.handleSubmit.bind(this)}>{this.state.uploading ? <i className="fa fa-spinner fa-spin fa-lg"/>:'Cambia Password'}</button>
+                <button type="button" disabled={this.state.uploading} className="btn btn-block btn-primary" onClick={this.handleSubmit.bind(this)}>{this.state.uploading ? <div><i className="fa fa-spinner fa-spin fa-lg"/></div>:'Cambia Password'}</button>
                 <button hidden={this.state.showLink} type="button" className="btn btn-block btn-secondary" onClick={() => this.props.history.push('/login')}>Vai al login</button>
               </div>
             </div>

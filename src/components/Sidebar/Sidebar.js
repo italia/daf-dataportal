@@ -150,13 +150,13 @@ class Sidebar extends Component {
                 <NavLink to={'/crea'} className={"nav-link "+crea} activeClassName="nav-link-primary"><i className="fa fa-plus  text-secondary"></i> Crea</NavLink>
               </li> */}
               <li className="nav-item nav-dropdown b-r-1">
-                <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-plus  text-secondary mr-2"></i> Crea</a>
+                <a className="nav-link nav-link-light nav-dropdown-toggle pointer" onClick={this.handleClick.bind(this)}><i className="fa fa-plus  text-secondary mr-2"></i> Crea</a>
                 <ul className="nav-dropdown-items bg-light">
                   {(isEditor(loggedUser) || isAdmin(loggedUser)) && <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a onClick={()=>{ const{ dispatch } = this.props; dispatch(reset('wizard')); this.props.history.push('/private/ingestionwizzard');}} className="nav-link"><i className="fas fa-table  text-secondary mr-2"/>  {messages.menu.nuovoDataset}</a>
+                    <a onClick={()=>{ const{ dispatch } = this.props; dispatch(reset('wizard')); this.props.history.push('/private/ingestionwizzard');}} className="nav-link pointer"><i className="fas fa-table  text-secondary mr-2"/>  {messages.menu.nuovoDataset}</a>
                   </li>}
                   {/* <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
@@ -174,12 +174,12 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link" onClick={this.createStory.bind(this)}><i className="fas fa-font  text-secondary mr-2" />  {messages.menu.nuovaStoria}</a>
+                    <a className="nav-link pointer" onClick={this.createStory.bind(this)}><i className="fas fa-font  text-secondary mr-2" />  {messages.menu.nuovaStoria}</a>
                   </li>
                 </ul>
               </li>
               <li className="nav-item nav-dropdown b-r-1">
-                <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}><i className="fa fa-wrench  text-secondary mr-2"></i> {messages.menu.strumenti}</a>
+                <a className="nav-link nav-link-light nav-dropdown-toggle pointer" onClick={this.handleClick.bind(this)}><i className="fa fa-wrench  text-secondary mr-2"></i> {messages.menu.strumenti}</a>
                 <ul className="nav-dropdown-items bg-light">
                 {
                   /* <li className="nav-item" onClick={(e) => {
@@ -193,13 +193,13 @@ class Sidebar extends Component {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSuperset, 'Potrai creare i tuoi widget partendo dai dataset privati condivisi con le tue organizzazioni.')}><i className="fa fa-database  text-secondary mr-2" />  {messages.menu.superset} <span className="badge badge-light">Privato</span></a>
+                    <a className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSuperset, 'Potrai creare i tuoi widget partendo dai dataset privati condivisi con le tue organizzazioni.')}><i className="fa fa-database  text-secondary mr-2" />  {messages.menu.superset} <span className="badge badge-light">Privato</span></a>
                   </li>
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
                     document.body.classList.toggle('sidebar-mobile-show');
                   }}>
-                    <a href className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSupersetOpen, 'Potrai creare i tuoi widget partendo dagli opendata presenti nel DAF.')}><i className="fa fa-database  text-secondary mr-2" />  {messages.menu.superset} <span className="badge badge-light">Open</span></a>
+                    <a className="nav-link " onClick={() => this.openModal('Superset', serviceurl.urlSupersetOpen, 'Potrai creare i tuoi widget partendo dagli opendata presenti nel DAF.')}><i className="fa fa-database  text-secondary mr-2" />  {messages.menu.superset} <span className="badge badge-light">Open</span></a>
                   </li>
                   {/* <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
@@ -211,7 +211,7 @@ class Sidebar extends Component {
               </li>
 
               <li className="nav-item nav-dropdown b-r-1">
-                <a className="nav-link nav-link-light nav-dropdown-toggle" onClick={this.handleClick.bind(this)}><i className="fa fa-sitemap text-secondary mr-2"></i> {messages.menu.semantica}</a>
+                <a className="nav-link nav-link-light nav-dropdown-toggle pointer" onClick={this.handleClick.bind(this)}><i className="fa fa-sitemap text-secondary mr-2"></i> {messages.menu.semantica}</a>
                 <ul className="nav-dropdown-items bg-light">
                   <li className="nav-item" onClick={(e) => {
                     e.preventDefault();
@@ -323,8 +323,9 @@ class Sidebar extends Component {
                         <NavLink to={'/private/settings'} className="nav-link nav-link-light" activeClassName="nav-link-light">
                           <i className="fas fa-image text-secondary mr-2"></i>  { messages.menu.interfaccia }
                         </NavLink>
-                  </li>,
-                  <li key="5" className="nav-item nav-dropdown b-r-1">
+                  </li>
+                ]}
+                  {isSysAdmin(loggedUser)&&<li className="nav-item nav-dropdown b-r-1">
                         <a className="nav-link nav-link-light nav-dropdown-toggle " onClick={this.handleClick.bind(this)}>
                           <i className="fa fa-comments fa-lg text-secondary"></i> { messages.menu.messaggi }
                         </a>
@@ -346,10 +347,8 @@ class Sidebar extends Component {
                                 </NavLink>
                           </li>
                         </ul>
-                  </li>
-                ]   
-              // </div>
-              }
+                  </li>}  
+              {/* </div> */}
 
             </ul>
           </nav>

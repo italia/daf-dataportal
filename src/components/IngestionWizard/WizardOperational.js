@@ -652,7 +652,7 @@ let WizardOperational = props => {
         </div>
         <div className="col-6">
           {/* <button type="submit" className="btn btn-primary float-right" disabled={pristine || submitting}>Invia</button> */}
-              <button type="submit" className="btn btn-primary float-right" disabled={saving}>{saving&&<i className="fa fa-spinner fa-spin fa-lg"/>}{!saving&&"Invia"}</button>
+              <button type="submit" className="btn btn-primary float-right" disabled={saving}>{saving?<div><i className="fa fa-spinner fa-spin fa-lg"/></div>:"Invia"}</button>
         </div>
       </div>
 
