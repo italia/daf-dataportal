@@ -344,7 +344,7 @@ class Organizations extends Component {
 
     add(org){
         const { user } = this.state;
-        let response = organizationService.userAdd(org, user)
+        let response = organizationService.userAdd(org, user.value)
         this.setState({ saving: true })
         response.then((response) => {
             if (response.ok) {
@@ -391,7 +391,7 @@ class Organizations extends Component {
 
     addWG(wg){
         const { user } = this.state;
-        let response = organizationService.userAddWG(wg, user)
+        let response = organizationService.userAddWG(wg, user.value)
         this.setState({ saving: true })
         response.then((response) => {
             if (response.ok) {
