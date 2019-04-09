@@ -15,6 +15,6 @@ const routes = {
   '/private/charts' : 'Crea Widget',
   '/private/search': 'Ricerca',
   '/private/messages': 'Messaggi',
-  '/private/editTTL' : 'Gestione TTL'
+  '/private/editTTL' : 'Validità Notifiche'
 };
 export default routes;

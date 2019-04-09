@@ -1,5 +1,5 @@
 import { serviceurl } from '../../../config/serviceurl'
-import { messages } from '../../../i18n-ita'
+import { messages } from '../../i18n/i18n-ita'
 
 export default class MessageService {
      

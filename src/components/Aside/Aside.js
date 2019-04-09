@@ -76,7 +76,7 @@ class Aside extends Component {
                 )
                 case 'system':
                 return(
-                  <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item pointer"} key={index}>
+                  <div className={notification.status===1?"list-group-item b-new-notif pointer":"list-group-item"} key={index}>
                     {notification.info && <p><i className="fas fa-exclamation-circle text-warning mr-2"/>{notification.info.description}</p>}
                     <p>{convertNotificationTime(notification.createDate)}</p>
                   </div>
