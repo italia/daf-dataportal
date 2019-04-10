@@ -175,6 +175,7 @@ export const ButtonClass = Object.freeze({
 
 export const StyleColor = Object.freeze({
     DANGER:     Symbol( "danger"),
+    LINK:       Symbol( "link"),
     PRIMARY:    Symbol( "primary"),
     TEXTICON:   Symbol( " text-icon " ),
     TEXTPRIMARY:Symbol( " text-primary "),

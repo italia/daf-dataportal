@@ -28,13 +28,13 @@ const CreateRowTTL = ({ row }) =>{
           </Col>
           <Col sm={3}>
             <CreateButton 
-                  color={StyleColor.PRIMARY.description} 
-                  icon={{ iconClass:ButtonClass.SAVE.description, 
+                  color={StyleColor.LINK.description} 
+                  icon={{ iconClass:ButtonClass.SAVE.description+StyleColor.TEXTPRIMARY.description, 
                           title: messages.label.salva}}
                   fnc={()=>row.fncSave(row.inputID, event)} />{' '}
             <CreateButton 
-                  color={StyleColor.PRIMARY.description} 
-                  icon={{ iconClass:ButtonClass.UNDO.description, 
+                  color={StyleColor.LINK.description} 
+                  icon={{ iconClass:ButtonClass.UNDO.description+StyleColor.TEXTPRIMARY.description, 
                           title: messages.label.annulla}}
                   fnc={()=>row.fncUndo(row.inputID, event)} />{' '}
           </Col>
@@ -46,7 +46,9 @@ const CreateRowTTL = ({ row }) =>{
 
 const CreateButton = ( { color, icon, fnc} ) => { 
     return (
-        <Button onClick={fnc} color={color}> <i className={icon.iconClass} title={icon.title}></i></Button> 
+        <Button onClick={fnc} color={color}> 
+          <i onClick={fnc} className={icon.iconClass+" fa-lg "} title={icon.title}></i>
+        </Button> 
     )
 }
 
