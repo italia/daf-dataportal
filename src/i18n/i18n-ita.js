@@ -53,11 +53,16 @@ export const messages = {
         gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)",
         editTTLDescFunction:    "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista",
         tipologiaDiNotifica: "Tipologia di Notifica",
-        validita:   "Validità"
+        validita:   "Validità",
+        descInfoType: "Notifiche informative per eventi generici ( es. condivisione e pubblicazione dataset )" ,
+        descSuccessType: "Notifiche legate alla corretta creazione di nuovi flussi di ingestion", 
+        descErrorType: "Notifiche di eventi di errore rispetto alla creazione di nuovi flussi di ingestion" 
     },
     validazione : {
+        almenoUnGiorno          :   "Inserire almento un giorno",
         campoObbligatorio       :   "Campo obbligatorio",
-        soloNumeri              :   "Solo Numeri"
+        soloNumeri              :   "Solo Numeri",
+        campoImpostareSoloGiorni:   "In questo campo sono accettati solo valori numerici che indicano i giorni di validità di una notifica"
     },
 
 gettingStarted: [

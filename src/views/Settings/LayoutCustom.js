@@ -162,16 +162,24 @@ export const ModalCustom = ({ modal, body, buttonSave, buttonCancel} ) => {
 } 
 
 export const ButtonClass = Object.freeze({
-    ADD:        Symbol( "fa fa-plus-circle fa-lg m-t-2" ),
-    DETAIL:     Symbol( "fa fa-info-circle pr-2 "),
-    USERS:      Symbol( "fa fa-users  mr-3"),
-    CONVENTION: Symbol( "fa fa-handshake mr-3"),
-    CLOCK:      Symbol( "fa fa-clock")
+    ADD:                Symbol( "fa fa-plus-circle fa-lg m-t-2" ),
+    DETAIL:             Symbol( "fa fa-info-circle pr-2 "),
+    USERS:              Symbol( "fa fa-users  mr-3"),
+    CONVENTION:         Symbol( "fa fa-handshake mr-3"),
+    CLOCK:              Symbol( "fa fa-clock"),
+    PUNTOESCLAMATIVO:   Symbol( "fas fa-exclamation-circle"),
+    CHECK:              Symbol( "fas fa-check-circle"),
+    SAVE:               Symbol( "fas fa-save"),
+    UNDO:               Symbol( "fas fa-undo-alt")
 });
 
 export const StyleColor = Object.freeze({
-    DANGER:     Symbol("danger"),
+    DANGER:     Symbol( "danger"),
+    PRIMARY:    Symbol( "primary"),
     TEXTICON:   Symbol( " text-icon " ),
-    TEXTPRIMARY:Symbol( " text-primary ")
+    TEXTPRIMARY:Symbol( " text-primary "),
+    TEXTINFO:   Symbol( " text-info "),
+    TEXTSUCCESS:Symbol( " text-success "),
+    TEXTDANGER: Symbol( " text-danger ")
 });
 
