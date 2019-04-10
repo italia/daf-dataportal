@@ -8,7 +8,7 @@ import {
   } from 'reactstrap';
 import MessageService from '../../views/Messages/services/MessageService';
 import { toastr } from 'react-redux-toastr'
-import { messages } from '../../i18n-ita'
+import { messages } from '../../i18n/i18n-ita'
 import { SingleDatePicker } from 'react-dates'
 import moment from 'moment';
 
@@ -59,7 +59,7 @@ export default class Messages extends Component { //PADRE
          focused: false,
          title       : '',
          description : '',
-         endDate     : moment(moment()).add(1, 'days'),
+         endDate     : null,
          offset      : ''
       }
 
@@ -182,7 +182,7 @@ export default class Messages extends Component { //PADRE
     this.setState({
       title       : '',
       description : '',
-      endDate     : moment(moment()).add(1, 'days'),
+      endDate     : null,
       offset      : ''
     })
     this.openCloseModal(true);
@@ -258,12 +258,16 @@ export default class Messages extends Component { //PADRE
                       <div className="col-md-2">                      
                         <SingleDatePicker
                           // name="endDate"
-                          focused={this.state.focused} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                          focused={this.state.focused}
                           onFocusChange={this.onFocusChange}
                           date={this.state.endDate}
                           onDateChange={this.handleDateChange}
                           placeholder=''
-                          isOutsideRange={day => (moment().diff(day) > 0)}
+                          isOutsideRange={day => {
+                            let tomorrow = moment(new Date()).add(1, 'days')
+                            return (day.isBefore(tomorrow))
+                          }
+                          }
                           numberOfMonths={1}
                         />
                       </div>

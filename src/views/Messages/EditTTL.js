@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { toastr } from 'react-redux-toastr'
 
-import { messages } from '../../i18n-ita'
+import { messages } from '../../i18n/i18n-ita'
 import MessageService from "./services/MessageService";
 
 const messageService = new MessageService()

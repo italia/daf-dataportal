@@ -592,7 +592,10 @@ class DatasetDetail extends Component {
                                     <h2 className="dashboardHeader title-dataset text-primary" title={dataset.dcatapit.title}><i className="fa fa-table fa-xs text-primary mr-3" />{this.truncate(dataset.dcatapit.title, 75)}</h2>
                                 </div>
                                 <div className="ml-auto col-md-2">
-                                    <button className="btn btn-accento nav-link button-data-nav" disabled={isPublic() ? false : !this.state.hasPreview} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download {this.state.downloadState === 4 ? <div><i className="ml-4 fa fa-spinner fa-spin" /></div> : <div><i className="ml-4 fa fa-download" /></div>}</button>
+                                    {this.state.downloadState === 4 ?
+                                    <div className="btn btn-accento nav-link button-data-nav"><i className="fa fa-lg fa-spinner fa-spin" /></div>
+                                    : <button className="btn btn-accento nav-link button-data-nav" disabled={isPublic() ? false : !this.state.hasPreview} onClick={this.handleDownloadFile.bind(this, dataset.dcatapit.name, dataset.operational.logical_uri)}>Download <i className="ml-3 fa fa-download" /></button>
+                                    }
                                 </div>
                                 {isPublic() && <div className="col-md-2">
                                     <ShareButton background="bg-white" />
