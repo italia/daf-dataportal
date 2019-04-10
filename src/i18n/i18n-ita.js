@@ -26,7 +26,7 @@ export const messages = {
         organizzazioni  :   "Organizzazioni",
         interfaccia     :   "Interfaccia",
         messaggi        :   "Messaggi",
-        gestioneMessaggi:   "Gestione Messaggi",
+        gestioneMessaggi:   "Messaggi di Sistema",
         gestioneTTL     :   "Validità Notifiche"
     },
     label   :   {
@@ -51,12 +51,13 @@ export const messages = {
         deleteMessage   :   "Cancella Messaggio",
         deleteMessageOK :   "Messaggio cancellato con successo",
         gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)",
-        editTTLDescFunction:    "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista",
+        editTTLDescFunction: "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista",
         tipologiaDiNotifica: "Tipologia di Notifica",
         validita:   "Validità",
         descInfoType: "Notifiche informative per eventi generici ( es. condivisione e pubblicazione dataset )" ,
         descSuccessType: "Notifiche legate alla corretta creazione di nuovi flussi di ingestion", 
-        descErrorType: "Notifiche di eventi di errore rispetto alla creazione di nuovi flussi di ingestion" 
+        descErrorType: "Notifiche di eventi di errore rispetto alla creazione di nuovi flussi di ingestion", 
+        systemMessageTitle: "In questa sezione puoi aggiungere i messaggi di sistema che saranno visibili all'interno del portale (pubblico o privato) fino alle ore 23:59 della data impostata"
     },
     validazione : {
         almenoUnGiorno          :   "Inserire almento un giorno",
