@@ -1,7 +1,7 @@
 const routes = {
   /* '/': 'Home', */
   '/private': 'Area Privata',
-  '/private/home': 'DAF - Data Analytics Framework',
+  '/private/home': 'PDND - Piattaforma Digitale Nazionale Dati Italiana',
   '/private/notifications': 'Notifiche',
   '/private/profile': 'Il mio profilo',
   '/private/dashboard/list': 'Dashboard',
