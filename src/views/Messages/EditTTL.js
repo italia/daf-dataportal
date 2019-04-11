@@ -1,263 +1,235 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-
-import { toastr } from 'react-redux-toastr'
-
-import { messages } from '../../i18n/i18n-ita'
+import { messages } from "../../i18n/i18n-ita";
+import { ButtonClass, TopBannerPage, EasyTitleContainer, StyleColor } from "../Settings/LayoutCustom";
+import { Button, Container, Card, Row, Col, Input, FormGroup, Form, FormFeedback } from "reactstrap";
 import MessageService from "./services/MessageService";
+import { toastr } from "react-redux-toastr";
 
-const messageService = new MessageService()
+const CreateRowTTL = ({ row }) =>{
+  return (
+    <tr>
+      <th className="bg-white" style={{ width: 192 }}>
+        <i className={ "pointer mr-2 fa-lg " + row.icon } id={row.id} title={row.tooltip} />
+        <strong>{row.label}: </strong>
+      </th>
+      <td className="bg-grigino">
+        <Row form>
+          <Col sm={3}>
+            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+              <Input  type="text" 
+                      name={row.inputID} 
+                      id={row.inputID} 
+                      maxLength="3" 
+                      onChange={row.inputOnchange} 
+                      valid={row.inputValid.isValid} 
+                      invalid={!row.inputValid.isValid} />
+              <FormFeedback >{row.inputValid.messageError}</FormFeedback>
+            </FormGroup>
+          </Col>
+          <Col sm={3}>
+            <CreateButton 
+                  color={StyleColor.LINK.description} 
+                  icon={{ iconClass:ButtonClass.SAVE.description+StyleColor.TEXTPRIMARY.description, 
+                          title: messages.label.salva}}
+                  fnc={()=>row.fncSave(row.inputID, event)} />{' '}
+            <CreateButton 
+                  color={StyleColor.LINK.description} 
+                  icon={{ iconClass:ButtonClass.UNDO.description+StyleColor.TEXTPRIMARY.description, 
+                          title: messages.label.annulla}}
+                  fnc={()=>row.fncUndo(row.inputID, event)} />{' '}
+          </Col>
+        </Row>
+      </td>
+    </tr>
+  )  
+}
 
-class EditTTL extends Component {
+const CreateButton = ( { color, icon, fnc} ) => { 
+    return (
+        <Button onClick={fnc} color={color}> 
+          <i onClick={fnc} className={icon.iconClass+" fa-lg "} title={icon.title}></i>
+        </Button> 
+    )
+}
+
+const fieldOK = () => ({  isValid: true, messageError: ''  })
+const fieldKO = ( message ) => ({ isValid: false, messageError: message  })
+
+const dayToSecond = ( day = 1 ) =>  ( day * 86400 )
+const secondToDay = ( second = 86400 ) =>  ( second / 86400 )
+const getNameField = ( name ) => (name.substring(0, name.indexOf('T')))
+
+const messageService = new MessageService();
+
+export default class EditTTL extends Component {
 
   constructor(props) {
-      super(props);
-      this.props = props;
+    super(props)
 
-      this.handleInputChange    = this.handleInputChange.bind(this);
-      // this.handleSave           = this.handleSave.bind(this);
-      this.handleSaveByOne      = this.handleSaveByOne.bind(this);
-      this.handleCancellByOne   = this.handleCancellByOne.bind(this);
-      this.isInputVisible = 'isInputVisible';
-      this.labelError = 'validationMSgTTL';
-      this.state = { 
-                      storeTTL: [ ],
-                      infoType:0,
-                      successType:0,
-                      errorType:0,
-                      isInputVisibleinfoType:false,
-                      isInputVisiblesuccessType:false,
-                      isInputVisibleerrorType:false
-       }
-    }
+    this.state = {
+      isValidinfo: fieldOK(),
+      isValidsuccess: fieldOK(),
+      isValiderror: fieldOK()
+    };
 
-    handleInputChange(event) {
-      const target  = event.target;
-      const value   = target.type === 'checkbox' ? target.checked : target.value;
-      const name    = target.name;
-  
-      this.setState({
-        [name]: value
-      });
-
-      if(!value){
-        this.setState({
-          [this.labelError+name]: messages.validazione.campoObbligatorio
-        });
-      }else if (!/^[0-9]+$/.test(value)) {
-        this.setState({
-          [this.labelError+name]: messages.validazione.soloNumeri
-        });
-      }else {
-        this.setState({
-          [this.labelError+name]: null
-        });
-      }
-    }
-
-  componentWillMount(){
-      console.log('Init Form');
-      this.load ();
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+    let check =  fieldOK()
+   
+    if (!value) {
+      check = fieldKO(messages.validazione.campoObbligatorio) 
+    } else if (!/^[0-9]+$/.test(value)) {
+      check = fieldKO(messages.validazione.campoImpostareSoloGiorni) 
+    } else if (value == 0) {
+      check = fieldKO(messages.validazione.almenoUnGiorno) 
+    } else {
+      check =  fieldOK()
+    }
+
+    this.setState({
+      ["isValid"+name]: check
+    });
+  }
+
+  
   load = () => {
-    console.log('Load Data');
+
     let response = messageService.messageTTL();
-        response.then(response => response.json())
-         .then((json)=> {
+    response
+      .then(response => response.json())
+      .then(json => {
+        
+        this.setState({
+          storeTTL: json
+        });
+
+        this.state.storeTTL.map(element => {
+          const  name  = element.name;
+          const  value = element.value;
+          let    check = fieldOK()
+          const  field = getNameField(name)
+
+          if (value == 0 || value == undefined) {
+            check = fieldKO(messages.validazione.campoObbligatorio) 
+          } else {
+            check =  fieldOK()
+          }
 
           this.setState({
-              storeTTL: json
-            });
-
-            this.state.storeTTL.map( field => {
-        
-              this.setState({
-                [field.name]: field.value
-              });
-             
-              if(field.value == 0 || field.value == undefined){
-                this.setState({
-                  [this.labelError+field.name]: messages.validazione.campoObbligatorio
-                });
-              }else {
-                this.setState({
-                  [this.labelError+field.name]: null
-                });
-              }
-            });
-        })
-        .catch(error => { 
-            console.log('Errore nel caricamento della lista');  
-            toastr.error(messages.label.errore, error.message);
-        })
-        ;
+            ["isValid"+ field ]: check
+          });
+          this.formTTL[field].value= secondToDay ( value )
+        });
+      })
+      .catch(error => {
+        toastr.error(messages.label.errore, error.message);
+      });
+  };
+  
+  componentWillMount() {
+    this.load();
   }
 
-  // handleSave = (e) => {
-     
-  //     e.preventDefault();
+  restoreField = ( name, e ) => {
 
-  //     let countError =  this.state.storeTTL.length;
-  //     this.state.storeTTL.map( field => {
-  //       if(!this.state[this.labelError+field.name] || this.state[this.labelError+field.name] == null ){
-  //         countError--;
-  //       }
-  //     });
+    e.preventDefault()
+    const field = this.state.storeTTL.filter(obj => {
+      return obj.name == name+"Type";
+    }); 
+    this.formTTL[name].value= secondToDay ( field[0].value )
+  }
 
-  //     if( countError === 0 ){
-  //           console.log('Salvataggio');
-  //           //Aggiorno obj per gestire il salvataggio
-  //           const objUpdate ={
-  //             "infoType": this.state["infoType"],
-  //             "successType": this.state["successType"],
-  //             "errorType": this.state["errorType"]
-  //           };
-            
-  //           const response = messageService.updateMessageTTL( objUpdate );
-  //                 response.then(response => response.json())
-  //                         .then((response)=> {
-  //                             toastr.success(messages.label.salvataggio, messages.label.salvataggioOK)
-  //                         })
-  //                         .catch(error => { 
-  //                             console.log('Errore nel salvataggio');  
-  //                             toastr.error(messages.label.errore, error.message);
-  //                         });
-  //     }else{
-  //           console.log('NO Salva');
-  //           toastr.error(messages.label.errore, messages.label.salvataggioKO)
-  //     }
-  // }
-
-  handleSaveByOne = ( name ) => {
-  
-    let countError =  1;
-    if(!this.state[this.labelError+name] || this.state[this.labelError+name] == null ){
-        countError--;
-    }
-
-    if( countError === 0 ){
-          console.log('Salvataggio');
-          //Aggiorno obj per gestire il salvataggio
-          const objUpdate =[
-                              {
-                                  "name": name,
-                                  "value": parseInt(this.state[name])
-                              }
-                          ];
-          const response = messageService.updateMessageTTL( objUpdate );
-                response.then(response => response.json())
-                        .then((json)=> {                          
-                            toastr.success(messages.label.salvataggio, messages.label.salvataggioOK)
-                            this.load ();
-                            this.setState({
-                              [this.isInputVisible+name]:false
-                            });
-                        })
-                        .catch(error => { 
-                            console.log('Errore nel salvataggio: ',error);  
-                            toastr.error(messages.label.errore, error.message);
-                        });
-    }else{
-          console.log('NO Salva');
-          toastr.error(messages.label.errore, messages.label.salvataggioKO)
-    }
-}
-
-handleCancellByOne = ( name ) => {
-  
-        console.log('Annulla');
-        const restore = this.state.storeTTL.filter( (obj) => { return obj.name==name  } );
-        this.setState({
-          [name]: restore[0].value,
-          [this.labelError+name]: null,
-          [this.isInputVisible+name]:false
-        });
-}
+  saveField = ( name, e ) => {
+    e.preventDefault()
+    const field = this.state['isValid'+name]
+    if( field.isValid ){
+      const ttl =[{
+                    name: name+"Type",
+                    value: dayToSecond( parseInt( this.formTTL[name].value ) )
+                  }];
+      const response = messageService.updateMessageTTL(ttl);
+      response.then(response => response.json())
+              .then(json => {
+                  toastr.success(
+                      messages.label.salvataggio,
+                      messages.label.salvataggioOK
+                  );
+                  this.load();
+              })
+              .catch(error => {
+                  toastr.error(messages.label.errore, error.message);
+              });
+      } else {
+        toastr.error(messages.label.errore, messages.label.salvataggioKO);
+      }            
+  }
 
   render() {
     return (
-        <div className="card">
-          <div className="card-block">
-          {/* <div class="row m-0">
-            <div class="col-5"><label for="example-search-input">{messages.menu.gestioneTTL}</label></div>
-          </div> */}
-            <div className="form-group">
-                  {
-                    this.state.storeTTL.map( (field, index ) => {
-                        return (
-                          <div key={index} className="form-group row">
-                              <label className="col-md-2 form-control-label">{messages.label[field.name]}</label>
-                              <div className="col-md-8">
-                                <div className="form-group row">
-                                  {!this.state[this.isInputVisible + field.name] ? 
-                                          <label  className="form-control-label" 
-                                                  style={{  cursor:'pointer', 
-                                                            'border-bottom': '1px dotted' }} 
-                                                  onClick={()=>{  
-                                                                  this.setState({ [this.isInputVisible + field.name] :true })
-                                                                }
-                                                          }>
-                                                      {this.state[field.name]}
-                                          </label>
-                                  :
-                                  [
-                                          <div className="col-md-8">
-                                            <input  type        = "text" 
-                                                    className   = "form-control" 
-                                                    name        = { field.name  } 
-                                                    onChange    = { this.handleInputChange      } 
-                                                    placeholder = { messages.label[field.name]  } 
-                                                    value       = { this.state[field.name]  } 
-                                                    />
-                                          </div>,
-                                          <div className="col-md-2">
-                                              <button type="button" 
-                                                      className="btn btn-link" 
-                                                      title={messages.label.salva} 
-                                                      onClick={() => this.handleSaveByOne(field.name)} >
-                                                <i className="fas fa-save fa-lg m-t-2"></i>
-                                              </button>  
-                                              <button type="button" 
-                                                      className="btn btn-link" 
-                                                      title={messages.label.annulla}  
-                                                      onClick={() => this.handleCancellByOne(field.name)} >
-                                                <i className="fas fa-ban fa-lg m-t-2"></i>
-                                              </button>  
-                                          </div>
-                                      ]  
-                                }
-                                </div>          
-                                { this.state[this.labelError+field.name] && 
-                                   <div className="ml-5 w-100">
-                                        <div className="alert alert-danger" role="alert">
-                                            <i className="fa fa-times-circle fa-lg m-t-2"></i>{this.state[this.labelError+field.name]}
-                                        </div>
-                                    </div>}
-                              </div>
-                          </div>    
-                        )
-                    })
-                  } 
-                  {/* <div className="form-group row">
-                    <button type="button" className="btn btn-primary px-2" onClick={this.handleSave.bind(this)}>
-                        <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                          {messages.label.modifica}
-                      </button>
-                  </div> */}
-              </div> 
-          </div>      
-        </div>
+      <Container className="container">
+  
+        <Row>
+          <Col sm={1} />
+          <Col sm={10}>
+            <TopBannerPage
+                title={messages.menu.gestioneTTL}
+                icon={ButtonClass.CLOCK.description}
+            />
+            <EasyTitleContainer message={messages.label.editTTLDescFunction} />
+            <Card body>
+                <form ref={el => (this.formTTL = el)} className="px-4">
+                  <table className="table table-striped table-responsive-1">
+                    <thead>
+                      <tr>
+                        <th>{messages.label.tipologiaDiNotifica}</th>
+                        <th>{messages.label.validita+" (Espressa in giorni) "}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="w-100">
+                      <CreateRowTTL row={{ 
+                              icon:ButtonClass.PUNTOESCLAMATIVO.description + StyleColor.TEXTINFO.description, 
+                              tooltip: messages.label.descInfoType,
+                              label: messages.label.infoType,
+                              inputID: "info",
+                              inputOnchange: this.handleInputChange,
+                              inputValid: this.state.isValidinfo,
+                              fncSave: this.saveField,
+                              fncUndo: this.restoreField
+                            }}
+                              />
+                      <CreateRowTTL row={{ 
+                              icon:ButtonClass.CHECK.description + StyleColor.TEXTSUCCESS.description, 
+                              tooltip: messages.label.descSuccessType,
+                              label: messages.label.successType,
+                              inputID: "success", 
+                              inputOnchange: this.handleInputChange,
+                              inputValid: this.state.isValidsuccess,
+                              fncSave:  this.saveField,
+                              fncUndo:  this.restoreField  }}
+                              />
+                      <CreateRowTTL row={{ 
+                              icon:ButtonClass.PUNTOESCLAMATIVO.description + StyleColor.TEXTDANGER.description, 
+                              tooltip: messages.label.descErrorType,
+                              label: messages.label.errorType,
+                              inputID: "error",
+                              inputOnchange: this.handleInputChange,
+                              inputValid: this.state.isValiderror,
+                              fncSave: this.saveField,
+                              fncUndo: this.restoreField  }}
+                              />                
+                    </tbody>
+                  </table>
+                </form>
+            </Card>
+          </Col>
+          <Col sm={1} />
+        </Row>
+      </Container>
     )
   }
 }
-
-function mapStateToProps(state) {
-    const loggedUser = state.userReducer['obj'].loggedUser || { }
-    const properties = state.propertiesReducer ? state.propertiesReducer['prop'] || {} : {} 
-    return { loggedUser, properties }
-}
-
-export default connect(mapStateToProps)(EditTTL)
-
-

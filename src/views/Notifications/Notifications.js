@@ -191,14 +191,14 @@ class Notifications extends Component{
               case 'system':
                 if(checkedSystem)
                   return (
-                  <Link to={(notification.info.link!==null?notification.info.link:"/")} className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
+                  <div className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
                     <div className="d-flex w-100 justify-content-between">
                       <h5 className="mb-1"><i className="fas fa-info-circle text-warning mr-2"/>{notification.info.title}</h5>
                       <small>{checkDate(notification.createDate)}</small>
                     </div>
                     <p className="mb-1">{notification.info.description}</p>
                     <small>{convertNotificationTime(notification.createDate)}</small>
-                  </Link>)
+                  </div>)
                 break 
             }
           })
