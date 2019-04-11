@@ -38,7 +38,6 @@ export const messages = {
         "salvataggioOK"   :   "Salvataggio effettuato con successo",
         "errore"          :   "Errore",
         "salvataggioKO"   :   "Impossibile effettuare il salvataggio",
-        "gettingStarted"  :   "Getting started con PDND",
         "titolo"          :   "Titolo",
         "message"         :   "Messaggio",
         "data"            :   "Data",
