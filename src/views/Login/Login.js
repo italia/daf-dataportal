@@ -199,13 +199,14 @@ class Login extends Component {
             console.log('Get Autentication Token json: ' + JSON.stringify(json))
           })
           this.setState({
-            loginMessage: 'Errore durante il login. Si prega di riprovare più tardi.',
+            loginMessage: 'Nome utente o password non corretto.',
             uploading: false
           })
         }
         }).catch((error) => {
+            console.log('Get Autentication error: ' + error)
             this.setState({
-              loginMessage: 'Nome utente o password non corretto.',
+              loginMessage: 'Errore durante il login. Si prega di riprovare più tardi.',
               uploading: false
             })
           })
