@@ -49,7 +49,7 @@ export const messages = {
         editMessageOK   :   "Messaggio modificato con successo",
         deleteMessage   :   "Cancella Messaggio",
         deleteMessageOK :   "Messaggio cancellato con successo",
-        gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)"
+        gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)",
         editTTLDescFunction: "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista",
         tipologiaDiNotifica: "Tipologia di Notifica",
         validita:   "Validità",
