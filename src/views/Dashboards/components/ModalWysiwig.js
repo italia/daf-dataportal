@@ -62,20 +62,17 @@ export default class ModalWysiwig extends Component {
 					{/* <ModalTitle>Modifica il testo da inserire</ModalTitle> */}
 				</ModalHeader>
 				<ModalBody>
-					<div className="App">
 						<Editor
 							stripPastedStyles={true}
 							toolbar={toolbar}
 							data-placeholder="Inserisci il testo"
 							editorState={editorState}
 							// toolbarClassName="rdw-storybook-toolbar"
-							wrapperClassName="b-a-1 border-light"
+							wrapperClassName="b-a-1 border-light App"
 							editorClassName="scroll-y"
 							onEditorStateChange={this.onEditorStateChange}
-							wrapperStyle={{'maxHeight':'60vh'}}
-							editorStyle={{'maxHeight':'55vh'}}
+							wrapperStyle={{'maxHeight':'74vh'}}
 						/>
-					</div>
 				</ModalBody>
 				<ModalFooter>
               <button className='btn btn-primary' onClick={this.save.bind(this)}>

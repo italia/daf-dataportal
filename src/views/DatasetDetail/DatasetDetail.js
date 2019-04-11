@@ -28,7 +28,6 @@ import {
 } from 'reactstrap';
 import Dropzone from 'react-dropzone'
 // Services
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import WidgetCard from '../../components/Cards/WidgetCard';
 import { decodeTheme, isPublic, decodeCkan, isSysAdmin, getTimestamp } from '../../utility'
 import Widgets from '../Widgets/Widgets'
@@ -114,6 +113,7 @@ class DatasetDetail extends Component {
         this.fileToBase64 = this.fileToBase64.bind(this)
         this.linkFunction = this.linkFunction.bind(this)
         this.handleStartFeed = this.handleStartFeed.bind(this)
+        this.copyToClip = this.copyToClip.bind(this)
     }
 
     componentDidMount() {
@@ -519,6 +519,16 @@ class DatasetDetail extends Component {
         dispatch(startFeed(dataset.dcatapit.name, dataset.dcatapit.owner_org))
     }
 
+    copyToClip(text){
+        const el = document.createElement('textarea');
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+        console.log('Copio: ', text)
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
     render() {
         const { dataset, metadata, ope, feed, iframes, linkedDs, isFetching, dispatch, isAdditionalFetching, loggedUser, isFeedLoading } = this.props
         const { loading, numberDataset } = this.state
@@ -657,9 +667,9 @@ class DatasetDetail extends Component {
                                                             <tr>
                                                                 <th className="bg-white" style={{ width: "192px" }}><strong>Slug: </strong></th>
                                                                 <td className="bg-grigino" title={dataset.dcatapit.name}>{this.truncate(dataset.dcatapit.name, 30)}
-                                                                    <CopyToClipboard text={dataset.dcatapit.name}>
-                                                                        <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
-                                                                    </CopyToClipboard>
+                                                                    <button className="btn btn-link p-0 float-right font-lg text-gray-600" onClick={this.copyToClip.bind(this,dataset.dcatapit.name)}>
+                                                                        <i className="fa fa-copy" style={{ lineHeight: '1.5' }} />
+                                                                    </button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -690,9 +700,9 @@ class DatasetDetail extends Component {
                                                                 <tr>
                                                                     <th className="bg-white" style={{ width: "192px" }}><strong>Percorso: </strong></th>
                                                                     <td className="bg-grigino" title={dataset.operational.input_src.sftp[0].url}>{this.truncate(dataset.operational.input_src.sftp[0].url, 30)}
-                                                                        <CopyToClipboard text={dataset.operational.input_src.sftp[0].url}>
-                                                                            <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
-                                                                        </CopyToClipboard>
+                                                                        <button className="btn btn-link p-0 float-right font-lg text-gray-600" onClick={this.copyToClip.bind(this,dataset.operational.input_src.sftp[0].url)}>
+                                                                            <i className="fa fa-copy" style={{ lineHeight: '1.5' }} />
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -707,9 +717,9 @@ class DatasetDetail extends Component {
                                                                 <tr>
                                                                     <th className="bg-white" style={{ width: "192px" }}><strong>Indirizzo: </strong></th>
                                                                     <td className="bg-grigino" title={dataset.operational.input_src.srv_pull[0].url}>{this.truncate(dataset.operational.input_src.srv_pull[0].url, 30)}
-                                                                        <CopyToClipboard text={dataset.operational.input_src.srv_pull[0].url}>
-                                                                            <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
-                                                                        </CopyToClipboard>
+                                                                        <button className="btn btn-link p-0 float-right font-lg text-gray-600" onClick={this.copyToClip.bind(this,dataset.operational.input_src.srv_pull[0].url)}>
+                                                                            <i className="fa fa-copy" style={{ lineHeight: '1.5' }} />
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -734,9 +744,9 @@ class DatasetDetail extends Component {
                                                                     <tr>
                                                                         <th className="bg-white" style={{ width: "192px" }}><strong>API di Upload: </strong></th>
                                                                         <td className="bg-grigino" title={dataset.operational.input_src.srv_push[0].url + '<NOME_FILE>.' + dataset.operational.file_type + '?op=CREATE'}>{this.truncate(dataset.operational.input_src.srv_push[0].url, 60)}
-                                                                            <CopyToClipboard text={dataset.operational.input_src.srv_push[0].url + '<NOME_FILE>.' + dataset.operational.file_type + '?op=CREATE'}>
-                                                                                <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
-                                                                            </CopyToClipboard>
+                                                                            <button className="btn btn-link p-0 float-right font-lg text-gray-600" onClick={this.copyToClip.bind(this,dataset.operational.input_src.srv_push[0].url + '<NOME_FILE>.' + dataset.operational.file_type + '?op=CREATE')}>
+                                                                                <i className="fa fa-copy" style={{ lineHeight: '1.5' }} />
+                                                                            </button>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -761,9 +771,9 @@ class DatasetDetail extends Component {
                                                                     <tr>
                                                                         <th className="bg-white" style={{ width: "192px" }}><strong>Query: </strong></th>
                                                                         <td className="bg-grigino" title={dataset.operational.type_info.query_sql}>{dataset.operational.type_info.query_sql}
-                                                                            <CopyToClipboard text={dataset.operational.type_info.query_sql}>
-                                                                                <i className="text-gray-600 font-lg float-right fa fa-copy pointer" style={{ lineHeight: '1.5' }} />
-                                                                            </CopyToClipboard>
+                                                                            <button className="btn btn-link p-0 float-right font-lg text-gray-600" onClick={this.copyToClip.bind(this,dataset.operational.type_info.query_sql)}>
+                                                                                <i className="fa fa-copy" style={{ lineHeight: '1.5' }} />
+                                                                            </button>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -803,11 +813,9 @@ class DatasetDetail extends Component {
                                                 <div className="col-12">
                                                     <p>E' possibile accedere ai dati di questo Dataset utilizzando il seguente API Endpoint</p><br />
                                                     <input className='w-75' value={this.state.value} onChange={({ target: { value } }) => this.setState({ value, copied: false })} disabled='true' />
-                                                    <CopyToClipboard text={this.state.value}
-                                                        onCopy={() => this.setState({ copied: true })}>
-                                                        <button><i className="fa fa-clone"></i></button>
-                                                    </CopyToClipboard>
-                                                    {this.state.copied ? <span className="badge badge-pill badge-success"> Copiato</span> : null}
+                                                    <button className="btn btn-link p-0 float-right font-lg text-gray-600" onClick={this.copyToClip.bind(this,this.state.value)}>
+                                                        <i className="fa fa-copy" style={{ lineHeight: '1.5' }} />
+                                                    </button>
                                                 </div>
                                             </div>
                                             <br /><br /><br />

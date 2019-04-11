@@ -49,7 +49,7 @@ class Header extends Component{
 
     return(
       <div className="row">
-       <div className={"fa-pull-right dropdown" + show }>
+       {!readOnly?<div className={"fa-pull-right dropdown" + show }>
           {
               <button className={"h-100 btn btn-light text-primary text-center"+active} id='dropdown_story' data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.openVisibility.bind(this)}>
 
@@ -114,12 +114,35 @@ class Header extends Component{
                   </button>}
               </div>
           </div>
+          :
+          <button className="btn btn-link text-primary h-100 text-center">
+            {
+                status == "2" &&
+                //<span className="badge badge-pill badge-warning fa-pull-right badge-dash" title="Pubblica"> </span>
+                //<i className="fa fa-globe fa-pull-right fa-lg text-icon" title='Pubblica'/>
+                <span title="Open Data" className="ml-2"><FontAwesomeIcon icon={faGlobe} size={"lg"} /></span>
+            }
+            {
+                status == "1" &&
+                //<span className="badge badge-pill badge-success fa-pull-right badge-dash" title="Condivisa"> </span>
+                //<i className="fa fa-users fa-lg fa-pull-right text-icon" title="Condivisa"/>
+                <span title="Organizzazione" className="ml-2"><FontAwesomeIcon icon={faUsers} size={"lg"}/></span>
+            }
+            {
+                status == "0" &&
+                //<span className="badge badge-pill badge-secondary fa-pull-right badge-dash" title="In bozza"> </span>
+                //<i className="fa fa-lock fa-lg fa-pull-right text-icon" title="In Bozza"/>
+                <span title="Privata" className="ml-2"><FontAwesomeIcon icon={faUser} size={"lg"}/></span>
+            }
+          </button>
+          }
           <div className="align-self-center ml-3">
               {this.props.org}
           </div>
         {!readOnly && <button className="ml-auto btn btn-link text-primary" onClick={onSave.bind(this)}><i className="fa fa-save fa-lg"/></button>}
         {author === loggedUser.uid && <button className={readOnly?"ml-auto btn btn-link text-primary":"btn btn-link text-primary"} onClick={onDelete.bind(this)}><i className="fa fa-trash fa-lg"/></button>}
         {author === loggedUser.uid && window.location.hash.indexOf('create')===-1 && <button className="btn btn-link text-primary" onClick={editToggle}><i className="fa fa-edit fa-lg"/></button>}
+        {!readOnly && (this.props.modified?<span className="badge badge-warning my-2">Modificato</span>:<span className="badge badge-success my-2">Salvato</span>)}
       </div>
     )
   }
