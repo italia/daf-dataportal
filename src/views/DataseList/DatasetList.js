@@ -716,10 +716,7 @@ class DatasetList extends Component {
                             }
                             {isFetching === true ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
                              <div className="mb-3">
-                                <div className="App" style={{overflowX: 'hidden'}}>
-                                {results ? 
-                                <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="w-100">
-                                {results.slice(0,this.state.items).map((result, index) => {
+                                {results && results.slice(0,this.state.items).map((result, index) => {
                                 switch(result.type){
                                     case 'catalog_test': 
                                         let dataset = JSON.parse(result.source)
@@ -1008,11 +1005,7 @@ class DatasetList extends Component {
                                     }
                                 })
                             }
-                            </InfiniteScroll>
-                                :
-                                <h3 className="container px-5 mt-3"><i>Non sono stati trovati risultati.</i></h3>
-                            }
-                        </div>
+                            {!results && <h3 className="container px-5 mt-3"><i>Non sono stati trovati risultati.</i></h3>}
                         </div>
                         }
                 </div>
