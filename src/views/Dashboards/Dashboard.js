@@ -56,7 +56,7 @@ class Dashboard extends Component{
     super(props)
 
     this.state = {
-      modified: this.props.history.location.modified?this.props.history.location.modified:checkEditMode(window.location.hash),
+      modified: this.props.history.location.modified?this.props.history.location.modified:false,
       id: this.props.match.params.id?this.props.match.params.id:undefined,
       readOnly: !checkEditMode(window.location.hash),
       widgets: [],
@@ -98,7 +98,11 @@ class Dashboard extends Component{
     
     var gridLayout = { "lg": layouts, "md": layouts}
 
-    this.setState({ layout: layouts, modified: checkEditMode(window.location.hash), gridLayout: gridLayout, modified: checkEditMode(window.location.hash) })
+    this.setState({ 
+      layout: layouts, 
+      modified: checkEditMode(window.location.hash), 
+      gridLayout: gridLayout, 
+    })
   }
 
   onBreakpointChange(breakpoint, cols) {
@@ -244,7 +248,7 @@ class Dashboard extends Component{
           "maxH": 1000000,
           "maxW": 12,
           "minH": 1,
-          "minW": 1,
+          "minW": 3,
           "moved":false,
           "static":false
         })
@@ -297,16 +301,20 @@ class Dashboard extends Component{
 
     let pos = keys.map(elem => { return elem.identifier}).indexOf(key)
 
-    keys[pos].text = value
+    if(value.length > 10500){
+      toastr.error("Errore","Testo troppo lungo per un unico blocco di testo. Dividi in più widget testuali")
+    }else{
+      keys[pos].text = value
 
-    this.setState({
-      modified: true,
-      isEditorOpen: false,
-      editingWidget: {},
-      loading: true
-    })
+      this.setState({
+        modified: true,
+        isEditorOpen: false,
+        editingWidget: {},
+        loading: true
+      })
 
-    setTimeout(()=>this.setState({loading: false}), 100)
+      setTimeout(()=>this.setState({loading: false}), 100)
+    }
   }
 
   removeBox(id){
@@ -391,6 +399,8 @@ class Dashboard extends Component{
       toastr.error('Impossibile salvare', 'Non è possibile salvare una Data Story senza alcun elemento')
     }else if(layout.length !== Object.keys(keys).length){
       toastr.error('Errore', 'C\'è stato un errore nella creazione della Data Story.')
+    }else if(keys.length > 50){
+      toastr.error('Impossibile salvare', 'La Datastory è troppo grande: Hai superato il limite di 50 widget inseribili')
     }else{
       // console.log(JSON.stringify(tmpStory))
       dispatch(saveDatastory(tmpStory))
@@ -496,6 +506,7 @@ class Dashboard extends Component{
           {!isPublic() && <Header
             status={status}
             readOnly={this.state.readOnly}
+            modified={this.state.modified}
             author={datastory.user}
             onDelete={this.onDelete}
             onStatusChange={this.onStatusChange}
