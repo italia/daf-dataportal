@@ -112,7 +112,6 @@ export default class EditTTL extends Component {
           const  name  = element.name;
           const  value = element.value;
           let    check = fieldOK()
-          const  field = getNameField(name)
 
           if (value == 0 || value == undefined) {
             check = fieldKO(messages.validazione.campoObbligatorio) 
@@ -121,9 +120,9 @@ export default class EditTTL extends Component {
           }
 
           this.setState({
-            ["isValid"+ field ]: check
+            ["isValid"+ name ]: check
           });
-          this.formTTL[field].value= secondToDay ( value )
+          this.formTTL[name].value= secondToDay ( value )
         });
       })
       .catch(error => {
@@ -139,7 +138,7 @@ export default class EditTTL extends Component {
 
     e.preventDefault()
     const field = this.state.storeTTL.filter(obj => {
-      return obj.name == name+"Type";
+      return obj.name == name;
     }); 
     this.formTTL[name].value= secondToDay ( field[0].value )
   }
@@ -149,7 +148,7 @@ export default class EditTTL extends Component {
     const field = this.state['isValid'+name]
     if( field.isValid ){
       const ttl =[{
-                    name: name+"Type",
+                    name: name,
                     value: dayToSecond( parseInt( this.formTTL[name].value ) )
                   }];
       const response = messageService.updateMessageTTL(ttl);
