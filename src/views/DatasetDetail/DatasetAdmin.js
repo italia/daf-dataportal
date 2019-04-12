@@ -191,7 +191,7 @@ class DatasetAdmin extends Component{
     this.setState({
       saving: true
     })
-    dispatch(setDatasetACL(dataset.dcatapit.name,(selectedWg!==''?selectedWg:selectedOrg)))
+    dispatch(setDatasetACL(dataset.dcatapit.name,(selectedWg!==''?selectedWg:selectedOrg.value)))
     .then(json=>{
       this.setState({
         saving:false,
@@ -204,7 +204,7 @@ class DatasetAdmin extends Component{
       if(json.fields && json.fields==="ok"){
         toastr.success("Completato", "Permesso aggiunto con successo")
         console.log(json.message)
-        dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" è stato appena condiviso con la tua organizzazione/workgroup "+(selectedWg!==''?selectedWg:selectedOrg), (selectedWg!==''?selectedWg:selectedOrg), "/private/dataset/"+dataset.dcatapit.name))
+        dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" è stato appena condiviso con la tua organizzazione/workgroup "+(selectedWg!==''?selectedWg:selectedOrg.value), (selectedWg!==''?selectedWg:selectedOrg.value), "/private/dataset/"+dataset.dcatapit.name))
       }
       dispatch(getDatasetACL(dataset.dcatapit.name))
       .then(risp => {
@@ -438,11 +438,11 @@ class DatasetAdmin extends Component{
     const { acl, aggiungi, orgs, workgroups } = this.state
     const {dataset, loggedUser, hasPreview } = this.props
     var result = ""
-    if(this.state.selectedOrg!=="" && this.state.selectedOrg!==null){
+    if(this.state.selectedOrg.value!=="" && this.state.selectedOrg.value!==null){
       if(this.state.selectedWg!=="" && this.state.selectedWg!==null){
-        result = <h5>Stai condividendo il dataset con gli utenti del workgroup <b>{this.state.selectedWg}</b> dell'organizzazione <b>{this.state.selectedOrg}</b></h5>
+        result = <h5>Stai condividendo il dataset con gli utenti del workgroup <b>{this.state.selectedWg}</b> dell'organizzazione <b>{this.state.selectedOrg.value}</b></h5>
       }else{
-        result = <h5>Stai condividendo il dataset con gli utenti dell'organizzazione <b>{this.state.selectedOrg}</b></h5>
+        result = <h5>Stai condividendo il dataset con gli utenti dell'organizzazione <b>{this.state.selectedOrg.value}</b></h5>
       }
     }
     console.log(hasPreview)
@@ -478,7 +478,7 @@ class DatasetAdmin extends Component{
                 className="my-3" 
               />
               </div>
-              {(this.state.selectedOrg!=="" && this.state.selectedOrg!==null) &&
+              {(this.state.selectedOrg.value!=="" && this.state.selectedOrg.value!==null) &&
               <div className="col">
                 <div> 
                 Workgroup
@@ -499,9 +499,7 @@ class DatasetAdmin extends Component{
                 <ul className="my-3 list-group">
                   {workgroups && workgroups.length > 0 && workgroups.map((wg, index) => {
                       return(
-                        <li className={"list-group-item "+(this.state.selectedWg===wg.value?"list-group-item-primary":"")} key={index} onClick={this.updateValueWg.bind(this, wg.value)}>{wg.value}
-                          {this.state.selectedWg===wg.value && <i className="fas fa-check fa-lg fa-pull-right" style={{lineHeight: "1"}}/>}
-                        </li>
+                        <li className={"list-group-item "+(this.state.selectedWg===wg.value?"list-group-item-primary":"")} key={index} onClick={this.updateValueWg.bind(this, wg.value)}>{wg.value}</li>
                       )
                     })
                   }
@@ -516,7 +514,7 @@ class DatasetAdmin extends Component{
             <div className="text-muted text-center">{result}</div>
           </ModalBody>
           <ModalFooter>
-              <button className='btn btn-primary' onClick={this.setACL} disabled={(this.state.selectedOrg == '' || this.state.saving)}>
+              <button className='btn btn-primary' onClick={this.setACL} disabled={(this.state.selectedOrg.value == '' || this.state.saving)}>
               {this.state.saving?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:"Aggiungi permesso"}
               </button>
               <button className='btn btn-secondary' onClick={this.toggleClose}>
