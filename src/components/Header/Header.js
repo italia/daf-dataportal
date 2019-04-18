@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { reset } from 'redux-form'
 import fontawesome from '@fortawesome/fontawesome'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faGlobe } from '@fortawesome/fontawesome-free-solid'
 import {
 	loadDatasets,

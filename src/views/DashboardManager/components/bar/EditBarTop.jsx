@@ -3,7 +3,7 @@ import { isEditor, isAdmin } from '../../../../utility'
 import { connect } from 'react-redux'
 import { Tooltip } from 'reactstrap';
 import fontawesome from '@fortawesome/fontawesome'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faGlobe, faUsers, faSortDown, faUser } from '@fortawesome/fontawesome-free-solid'
 
 class EditBarTop extends React.Component {

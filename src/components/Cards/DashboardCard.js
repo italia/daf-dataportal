@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { serviceurl } from "../../config/serviceurl";
 import fontawesome from '@fortawesome/fontawesome'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faUser, faGlobe, faUsers, faSortDown } from '@fortawesome/fontawesome-free-solid'
 import { isAdmin, isEditor } from '../../utility.js'
 
