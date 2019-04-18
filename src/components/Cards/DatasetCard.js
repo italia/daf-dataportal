@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import fontawesome from '@fortawesome/fontawesome'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faLock, faGlobe } from '@fortawesome/fontawesome-free-solid'
 import { truncateDatasetName, decodeTheme, isPublic } from '../../utility' 
 
 class DatasetCard extends Component{
