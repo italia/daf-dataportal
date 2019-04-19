@@ -96,7 +96,7 @@ export default class Messages extends Component { //PADRE
       let dataToPost = {
         title: this.state.title,
         description: this.state.description,
-        endDate: moment(this.state.endDate).format('YYYY-MM-DD')+"_00:00:00"
+        endDate: moment(this.state.endDate).format('YYYY-MM-DD')+"_23:59:59"
       }
       let that = this;
       const response = messageService.saveMessage(dataToPost);
@@ -128,7 +128,7 @@ export default class Messages extends Component { //PADRE
       let dataToPost = {
         title       : this.state.title,
         description : this.state.description,
-        endDate     : moment(this.state.endDate).format('YYYY-MM-DD')+"_00:00:00",
+        endDate     : moment(this.state.endDate).format('YYYY-MM-DD')+"_23:59:59",
         offset      : this.state.offset
       }
       
@@ -273,7 +273,7 @@ export default class Messages extends Component { //PADRE
                           onDateChange={this.handleDateChange}
                           placeholder=''
                           isOutsideRange={day => {
-                            let tomorrow = moment(new Date()).add(1, 'days')
+                            let tomorrow = moment(new Date()).subtract(1, 'days')
                             return (day.isBefore(tomorrow))
                           }
                           }
