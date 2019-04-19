@@ -158,7 +158,7 @@ export default class EditTTL extends Component {
                       messages.label.salvataggio,
                       messages.label.salvataggioOK
                   );
-                  this.load();
+                  // this.load();
               })
               .catch(error => {
                   toastr.error(messages.label.errore, error.message);
