@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import ReactTable from "react-table"
 import {
+    Container, 
+    Row, 
+    Col, 
     Modal,
     ModalHeader,
     ModalBody,
@@ -29,6 +32,7 @@ export default class Messages extends Component { //PADRE
              {
                  Header: "Titolo",
                  accessor: "info.title",
+                 width: 310,
                  resizable: false
              },
              {
@@ -37,12 +41,12 @@ export default class Messages extends Component { //PADRE
                  resizable: false
              },
              {
-                 Header: "Data",
+                 Header: "Data fine validità",
                  id: "endDate",
                  accessor: d => {
                    return moment(d.endDate, "YYYY-MM-DD_HH:mm:ss").format("DD/MM/YYYY")
                  },
-                 width: 100,
+                 width: 120,
                  resizable: false
              },
              {
@@ -96,7 +100,7 @@ export default class Messages extends Component { //PADRE
       let dataToPost = {
         title: this.state.title,
         description: this.state.description,
-        endDate: moment(this.state.endDate).format('YYYY-MM-DD')+"_00:00:00"
+        endDate: moment(this.state.endDate).format('YYYY-MM-DD')+"_23:59:59"
       }
       let that = this;
       const response = messageService.saveMessage(dataToPost);
@@ -128,7 +132,7 @@ export default class Messages extends Component { //PADRE
       let dataToPost = {
         title       : this.state.title,
         description : this.state.description,
-        endDate     : moment(this.state.endDate).format('YYYY-MM-DD')+"_00:00:00",
+        endDate     : moment(this.state.endDate).format('YYYY-MM-DD')+"_23:59:59",
         offset      : this.state.offset
       }
       
@@ -233,7 +237,11 @@ export default class Messages extends Component { //PADRE
 
   render() {
     return (
-      <div>
+      <Container className="container">
+  
+      <Row>
+        <Col sm={1} />
+        <Col sm={10}>
         <TopBannerPage title="Messaggi di Sistema" icon="fa fa-tasks"></TopBannerPage>
         <EasyTitleContainer message={messages.label.systemMessageTitle}></EasyTitleContainer>
         <div className="form-group row">
@@ -263,7 +271,7 @@ export default class Messages extends Component { //PADRE
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label className="col-md-2 form-control-label">{messages.label.data}</label>
+                      <label className="col-md-2 form-control-label">{messages.label.dataFineValidita}</label>
                       <div className="col-md-2">                      
                         <SingleDatePicker
                           // name="endDate"
@@ -273,7 +281,7 @@ export default class Messages extends Component { //PADRE
                           onDateChange={this.handleDateChange}
                           placeholder=''
                           isOutsideRange={day => {
-                            let tomorrow = moment(new Date()).add(1, 'days')
+                            let tomorrow = moment(new Date()).subtract(1, 'days')
                             return (day.isBefore(tomorrow))
                           }
                           }
@@ -299,7 +307,10 @@ export default class Messages extends Component { //PADRE
                 defaultPageSize={10}
                 className="-striped -highlight"
         />
-      </div>
+        </Col>
+          <Col sm={1} />
+        </Row>
+      </Container>
     )
   }
 }
