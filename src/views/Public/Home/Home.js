@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
+import CookieConsent from "react-cookie-consent";
+
+
 
 import UserstoryCard from '../../../components/Cards/UserstoryCard';
 import DatasetCard from '../../../components/Cards/DatasetCard';
@@ -13,6 +16,7 @@ import {
 import {
   isPublic
 } from '../../../utility'
+import Messages from '../../../components/Messages/Messages';
 
 const homeService = new HomeService();
 
@@ -35,6 +39,7 @@ class Home extends Component{
     var datasets = []
     var stories = []
     var org = undefined
+
     if(properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
       org=properties.organization
     let home = homeService.publicHome(org);
@@ -48,7 +53,7 @@ class Home extends Component{
                   case 'ext_opendata':
                       datasets.push(element)
                       break;
-                  case 'stories':
+                  case 'datastory':
                       let story = JSON.parse(element.source)
                       stories.push(story)
                       break;
@@ -123,10 +128,11 @@ class Home extends Component{
             </div>
           </div>
         </div>
-        <div className="mt-3 py-5 container">
+        <Messages />
+        <div className="mb-5 py-5 container">
           <div className="container">
             <div className="row">
-              <div className="col-lg-6 col-md-7 col-12">
+              <div className="col-lg-12 col-md-7 col-12">
                 <h1 className="text-gray-600 font-weight-bold" style={{fontSize: '3rem'}}>Esplora gli opendata</h1>
                 <h5 className="text-gray-600 mb-4">{properties.bodyEsplora}</h5>
               </div>
@@ -152,48 +158,31 @@ class Home extends Component{
         <div className="py-3 bg-light">
           <div className="container body w-100">
             <div className="row mx-auto text-muted">
-                <i className="fa fa-font fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Storie</h2>
+                <i className="fa fa-font fa-lg m-4" style={{ lineHeight: '1' }}/><h2 className="mt-3 mb-4">Datastory</h2>
             </div>
             {isLoading? <h4 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h4>:
             <div className="row mx-auto m-0">
                 { 
                     this.state.listStories.map((story, index) => {
-                        let chartUrl = undefined
-                        if ((story.widgets && story.widgets !== '{}') && (story.layout && story.layout !== '{}')) {
-                            const dashLayout = JSON.parse(story.layout)
-                            var firstLayout = ''
-
-                            let righe = dashLayout.rows
-                            for (let i = 0; i < righe.length; i++) {
-                                let colonne = righe[i].columns;
-                                for (let j = 0; j < colonne.length; j++) {
-                                    let wids = colonne[j].widgets
-                                    wids.map((index) => {
-                                        if (index.key.indexOf('TextWidget') == -1) {
-                                            firstLayout = index.key
-                                        }
-                                    })
-                                    if (firstLayout != '')
-                                        break
-                                }
-                                if (firstLayout != '')
-                                    break
-                            }
-                            const dashWidgets = JSON.parse(story.widgets)
+                      if ((story.widgets) && (story.layout && story.layout !== '{}')) {
+                        const dashwidgets = story.widgets.filter(wid=>{
+                          return wid.identifier.toLowerCase().indexOf('textwidget')<0
+                        })
+      
+                        var firstLayout = dashwidgets.length>0?dashwidgets[0]:''
+      
+                        var time = 0
+                        for (let k = 0; k < story.widgets.length; k++){
+                          if(story.widgets[k].identifier.toLowerCase().indexOf('textwidget')!==-1){
+                            var text = story.widgets[k].text
+                            var array = text?text.split(' '):[]
                             
-                            var time = 0
-                            let widgets = Object.keys(dashWidgets)
-                            for (let k = 0; k < widgets.length; k++) {
-                                if (widgets[k].indexOf('TextWidget') !== -1) {
-                                    var text = dashWidgets[widgets[k]].props.text
-                                    var array = text ? text.split(' ') : []
-
-                                    time = time + (array.length / 275)
-                                }
-                                else
-                                    time = time + 1
-                            }
+                            time = time + (array.length/275)
+                          }
+                          else
+                            time = time + 1 
                         }
+                      }
                         return (
                             <UserstoryCard
                                 story={story}
@@ -208,7 +197,7 @@ class Home extends Component{
                 }
             </div>}
             <div className="w-100 text-center">
-                <Link to={'/userstory/list'}>
+                <Link to={'/datastory/list'}>
                     <h4 className="text-primary"><u>Vedi tutte</u></h4>
                 </Link>
             </div>
@@ -247,7 +236,7 @@ class Home extends Component{
                   <img src="./img/dataportaltools.png" alt="dataportal-tools" className="toolkit-img position-absolute" />
                 </div>
                 <div className="col-lg-5 text-white px-5 pt-3 mt-3">
-                  <h1 className="font-weight-bold">Partecipa</h1>
+                  <h1 className="font-weight-bold"></h1>
                   <h5><b>Sei un esperto di dati?</b> Scopri come sfruttare tutte le potenzialità: accedi e usa strumenti di analisi e storytelling integrati ed a portata di click</h5>
                 </div>
                 <div className="col-lg-3 align-self-center mx-auto">
@@ -265,7 +254,20 @@ class Home extends Component{
                 <div className="col-lg-5 text-white px-5 py-3 my-3">
                   <h1 className="font-weight-bold">DAF è per la PA</h1>
                   <h5><b>Sei una PA?</b> Scopri come accedere ai dataset e alle analisi delle pubbliche amministrazioni e come dare valore ai tuoi dati.</h5>
+          
                 </div>
+
+                {/* <CookieConsent 
+                  buttonClasses={"btn btn-accento"}
+                  buttonStyle={{background:"#fffff",padding:"auto", border:"1px solid transparent"}}
+                  buttonText={"Accetto"}
+                >
+    Questo sito fa uso di cookie per migliorare l’esperienza di navigazione degli utenti e per raccogliere informazioni sull’utilizzo del sito stesso. <a><Link to={'/policy'}>Privacy policy</Link> <Link to={'/termini'}>Termini e condizioni</Link></a>
+</CookieConsent> */}
+                
+            
+
+
                 <div className="col-lg-3 align-self-center mx-auto">
                   
                 </div>
@@ -285,10 +287,14 @@ class Home extends Component{
   }
 }
 
+
 function mapStateToProps(state) {
   const { properties } = state.propertiesReducer['prop'] || {}
 
   return { properties }
 }
+
+
+
 
 export default connect(mapStateToProps)(Home);

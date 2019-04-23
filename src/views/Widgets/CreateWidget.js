@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import QueryBuild from '../../components/Widgets/QueryBuild'
 import Chart from '../../components/Widgets/Chart'
 import Collapse from 'rc-collapse'
-import 'rc-collapse/assets/index.css'
+require('rc-collapse/assets/index.css')
 import { chartType } from '../../utility'
 import ReactTable from "react-table"
 

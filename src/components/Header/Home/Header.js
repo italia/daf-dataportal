@@ -13,7 +13,7 @@ return (
     <div className={"app-header"}>
       <div className="upper-header">
         <div className="container">
-          {/* <h6 className="mx-5 px-1 mb-0">Agid + Team Digitale</h6> */}
+          {/* <h6 className="mx-5 px-1 mb-0 text-white font-weight-bold">Agid + Team Digitale</h6> */}
         </div>
       </div>
       <div className="main-header container">

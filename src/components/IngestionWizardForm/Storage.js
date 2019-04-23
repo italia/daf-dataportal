@@ -2,11 +2,9 @@ import React, {Component} from 'react';
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter
-  } from 'react-modal-bootstrap';
+  } from 'reactstrap';
 
 class Storage extends Component {
     constructor(props){
@@ -96,11 +94,10 @@ class Storage extends Component {
     const { listaStorage, config } = this.props;
     return (
       <div>
-        <Modal isOpen={this.state.isOpenStorage} onRequestHide={this.hideModalStorage}>
+        <Modal isOpen={this.state.isOpenStorage} toggle={this.hideModalStorage}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Aggiungi uno Storage</ModalTitle>
-              <ModalClose onClick={this.hideModalStorage}/>
+            <ModalHeader toggle={this.hideModalStorage}>
+              Aggiungi uno Storage
             </ModalHeader>
             <ModalBody>
             <div className="form-group">

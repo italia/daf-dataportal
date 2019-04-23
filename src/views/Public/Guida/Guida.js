@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import 'rc-steps/assets/index.css';
-import 'rc-steps/assets/iconfont.css';
+require('rc-steps/assets/index.css');
+require('rc-steps/assets/iconfont.css');
 import Steps, { Step } from 'rc-steps';
 import { messages } from '../../../i18n/i18n-ita';
 
@@ -38,7 +38,8 @@ class Guida extends Component {
   render() {
 
     const cs = this.state.currentStep;
-
+    window.scrollTo(0,0)
+    
     return (
 
       <div className="container p-4 mt-2">
@@ -55,7 +56,7 @@ class Guida extends Component {
               }
 
             </Steps>
-
+            
           </div>
           <div dangerouslySetInnerHTML={{ __html: this.state.stepDescrizione }} id="gs-content" className="col-12 col-md-8 mx-0 paragrafoG" >
           </div>

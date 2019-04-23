@@ -3,13 +3,11 @@ export const messages = {
         home            :   "Home",
         dataset         :   "Dataset",
         widget          :   "Widget",    
-        dashboard       :   "Dashboard",    
-        storie          :   "Storie",    
+        datastory       :   "Datastory",
         toolkit         :   "TOOLKIT",    
         crea            :   "Crea",    // ---
         nuovoDataset    :   "Nuovo Dataset",    
-        nuovaDashboard  :   "Nuova Dashboard",    
-        nuovaStoria     :   "Nuova Storia",
+        nuovaStoria     :   "Nuova Datastory",
         strumenti       :   "Strumenti",  // ----  
         superset        :   "Superset",
         open            :   "Open",
@@ -25,24 +23,44 @@ export const messages = {
         organizzazioni  :   "Organizzazioni",
         interfaccia     :   "Interfaccia",
         messaggi        :   "Messaggi",
-        gestioneMessaggi:   "Gestione Messaggi",
-        gestioneTTL     :   "Gestione TTL"
+        gestioneMessaggi:   "Messaggi di Sistema",
+        gestioneTTL     :   "Validità Notifiche"
     },
     label   :   {
+        salva           :   "Salva",    
+        annulla         :   "Annulla",    
         modifica        :   "Modifica",    
-        Success         :   "Success",
-        Error           :   "Error",
-        Info            :   "Info",
-        System          :   "System",
+        successType     :   "Success",
+        errorType       :   "Error",
+        infoType        :   "Info",
+        systemType      :   "System",
         salvataggio     :   "Salvataggio",
         salvataggioOK   :   "Salvataggio effettuato con successo",
         errore          :   "Errore",
         salvataggioKO   :   "Impossibile effettuare il salvataggio",
-        gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)"
+        titolo          :   "Titolo",
+        message         :   "Messaggio",
+        data            :   "Data",
+        chiudi          :   "Chiudi",
+        newMessage      :   "Nuovo Messaggio",
+        editMessage     :   "Modifica Messaggio",
+        editMessageOK   :   "Messaggio modificato con successo",
+        deleteMessage   :   "Cancella Messaggio",
+        deleteMessageOK :   "Messaggio cancellato con successo",
+        gettingStarted  :   "Getting started con la Piattaforma Digitale Nazionale Dati (PDND)",
+        editTTLDescFunction: "In questa sezione puoi modificare li periodo di validità associato alle varie tipologie di notifiche prevista",
+        tipologiaDiNotifica: "Tipologia di Notifica",
+        validita:   "Validità",
+        descInfoType: "Notifiche informative per eventi generici ( es. condivisione e pubblicazione dataset )" ,
+        descSuccessType: "Notifiche legate alla corretta creazione di nuovi flussi di ingestion", 
+        descErrorType: "Notifiche di eventi di errore rispetto alla creazione di nuovi flussi di ingestion", 
+        systemMessageTitle: "In questa sezione puoi aggiungere i messaggi di sistema che saranno visibili all'interno del portale (pubblico o privato) fino alle ore 23:59 della data impostata"
     },
     validazione : {
+        almenoUnGiorno          :   "Inserire almento un giorno",
         campoObbligatorio       :   "Campo obbligatorio",
-        soloNumeri              :   "Solo Numeri"
+        soloNumeri              :   "Solo Numeri",
+        campoImpostareSoloGiorni:   "In questo campo sono accettati solo valori numerici che indicano i giorni di validità di una notifica"
     },
 
 gettingStarted: [
@@ -206,9 +224,9 @@ Nel corpo della mail indicare:
     <br></br>
     <b>Per saperne di più:</b> <a href="https://docs.italia.it/italia/daf/daf-piano-di-sviluppo/it/bozza/">Piano di sviluppo</a> e <a href="https://docs.italia.it/italia/daf/daf-docs/en/bozza/">Developer Documentation</a>`
 
-},
+}
 
 
 ]
 
-}; 
+};   

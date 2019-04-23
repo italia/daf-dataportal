@@ -7,10 +7,9 @@ import { connect } from 'react-redux'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap'
+} from 'reactstrap'
 import {toastr} from 'react-redux-toastr'
 
 
@@ -128,10 +127,10 @@ hideModalAndRedirect = (e) => {
     const { loggedUser } = this.props
     return (
       <div>
-      <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
+      <Modal isOpen={this.state.isOpen} toggle={this.hideModal}>
       <form>
-        <ModalHeader>
-          <ModalTitle>Operazione effettuata con successo.</ModalTitle>
+        <ModalHeader toggle={this.hideModal}>
+          Operazione effettuata con successo.
         </ModalHeader>
         <ModalBody>
         <div className="form-group">

@@ -6,8 +6,6 @@ import TestSelectDomain from './TestSelectDomain';
 import { connect  } from 'react-redux';
 import { serviceurl } from '../../config/serviceurl.js'
 import { cron } from '../../const.js'
- 
-import 'react-select/dist/react-select.css';
 
 const isStds = ['true'];
 const tipo_lettura = ['ts']
@@ -654,7 +652,7 @@ let WizardOperational = props => {
         </div>
         <div className="col-6">
           {/* <button type="submit" className="btn btn-primary float-right" disabled={pristine || submitting}>Invia</button> */}
-              <button type="submit" className="btn btn-primary float-right" disabled={saving}>{saving&&<i className="fa fa-spinner fa-spin fa-lg"/>}{!saving&&"Invia"}</button>
+              <button type="submit" className="btn btn-primary float-right" disabled={saving}>{saving?<div><i className="fa fa-spinner fa-spin fa-lg"/></div>:"Invia"}</button>
         </div>
       </div>
 

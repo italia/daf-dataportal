@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
+require('react-dates/initialize');
+require('react-dates/lib/css/_datepicker.css');
 import { SingleDatePicker } from 'react-dates';
 
 class DatePicker extends Component {

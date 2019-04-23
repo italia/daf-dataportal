@@ -1,5 +1,4 @@
 import { serviceurl } from './config/serviceurl.js'
-import { truncate } from 'fs';
 
 export const themes = [
   { 'val': 'AGRI', 'name': 'AGRICOLTURA' },
@@ -47,7 +46,7 @@ export const chartType = [
   {'val':'table', 'name':'Tabella'}]
   
 
-export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}/* , {'val':'ext_opendata', 'name':'Ext. Opendata'} */]
+export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}, {'val': 'datastory', 'name':'Datastory'}]
 
 export const visibilita = [{ 'val': '2','name': 'Open data'},{ 'val': '0','name': 'Privato'},{ 'val': '1','name': 'Organizzazione'}]
 

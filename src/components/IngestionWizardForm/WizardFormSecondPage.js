@@ -6,7 +6,7 @@ import AutocompleteSemantic from './AutocompleteSemantic'
 import { renderFieldInput, renderFieldTextArea, renderFieldSelect, renderTipi, renderFieldTags, renderContesti} from './renderField';
 import Collapse from 'rc-collapse'
 import Convenzioni from './Convenzioni'
-import 'rc-collapse/assets/index.css'
+require('rc-collapse/assets/index.css')
 import GerarchiaCampi from './GerarchiaCampi';
 
 var Panel = Collapse.Panel;

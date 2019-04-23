@@ -86,7 +86,7 @@ export default class ValidatorForm extends React.Component {
                   >
                     {
                       serverValidation.isFetching
-                        ? <i className="fa fa-spinner fa-spin fa-lg" />
+                        ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>
                         : 'Valida RDF'
                     }
                   </Button>

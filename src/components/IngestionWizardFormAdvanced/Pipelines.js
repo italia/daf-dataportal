@@ -4,11 +4,9 @@ import { connect  } from 'react-redux';
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter
-  } from 'react-modal-bootstrap';
+  } from 'reactstrap';
 
 class Pipelines extends Component {
     constructor(props){
@@ -89,11 +87,10 @@ class Pipelines extends Component {
     const { listaPipelines, config } = this.props;
     return (
       <div>
-         <Modal isOpen={this.state.isOpenPipelines} onRequestHide={this.hideModalPipelines}>
+         <Modal isOpen={this.state.isOpenPipelines} toggle={this.hideModalPipelines}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Aggiungi una pipeline</ModalTitle>
-              <ModalClose onClick={this.hideModalPipelines}/>
+            <ModalHeader toggle={this.hideModalPipelines}>
+              Aggiungi una pipeline
             </ModalHeader>
             <ModalBody>
             <div className="form-group">

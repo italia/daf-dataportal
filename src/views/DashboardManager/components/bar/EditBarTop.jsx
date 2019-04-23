@@ -1,12 +1,4 @@
 import React from 'react';
-import {
-  Modal,
-  ModalHeader,
-  ModalTitle,
-  ModalClose,
-  ModalBody,
-  ModalFooter
-} from 'react-modal-bootstrap'
 import { isEditor, isAdmin } from '../../../../utility'
 import { connect } from 'react-redux'
 import { Tooltip } from 'reactstrap';
@@ -33,7 +25,7 @@ class EditBarTop extends React.Component {
     this.condividi = this.condividi.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if(nextProps.dashboard)
       this.state.dashboard = nextProps.dashboard;
     if(nextProps.modified)

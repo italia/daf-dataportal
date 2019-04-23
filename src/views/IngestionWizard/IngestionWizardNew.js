@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Values } from "redux-form-website-template";
 import WizardForm from "../../components/IngestionWizardForm/WizardForm";
 import { connect } from 'react-redux'
 import { addDataset } from './../../actions.js'

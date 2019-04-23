@@ -16,11 +16,9 @@ import { toastr } from 'react-redux-toastr'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter 
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import Select from 'react-select'
 
 
@@ -148,7 +146,7 @@ class DatasetAdmin extends Component{
     });
     let allWg = []
     let tmp = {}
-    dispatch(groupsInfo([newValue]))
+    dispatch(groupsInfo([newValue.value]))
     .then((json) => {
       if(json[0].workgroups){
         json[0].workgroups.map(wg => {
@@ -193,7 +191,7 @@ class DatasetAdmin extends Component{
     this.setState({
       saving: true
     })
-    dispatch(setDatasetACL(dataset.dcatapit.name,(selectedWg!==''?selectedWg:selectedOrg)))
+    dispatch(setDatasetACL(dataset.dcatapit.name,(selectedWg!==''?selectedWg:selectedOrg.value)))
     .then(json=>{
       this.setState({
         saving:false,
@@ -206,7 +204,7 @@ class DatasetAdmin extends Component{
       if(json.fields && json.fields==="ok"){
         toastr.success("Completato", "Permesso aggiunto con successo")
         console.log(json.message)
-        dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" è stato appena condiviso con la tua organizzazione/workgroup "+(selectedWg!==''?selectedWg:selectedOrg), (selectedWg!==''?selectedWg:selectedOrg), "/private/dataset/"+dataset.dcatapit.name))
+        dispatch(sendNotification("Condivisione Dataset", "Il dataset "+dataset.dcatapit.title+" è stato appena condiviso con la tua organizzazione/workgroup "+(selectedWg!==''?selectedWg:selectedOrg.value), (selectedWg!==''?selectedWg:selectedOrg.value), "/private/dataset/"+dataset.dcatapit.name))
       }
       dispatch(getDatasetACL(dataset.dcatapit.name))
       .then(risp => {
@@ -440,11 +438,11 @@ class DatasetAdmin extends Component{
     const { acl, aggiungi, orgs, workgroups } = this.state
     const {dataset, loggedUser, hasPreview } = this.props
     var result = ""
-    if(this.state.selectedOrg!=="" && this.state.selectedOrg!==null){
+    if(this.state.selectedOrg.value!=="" && this.state.selectedOrg.value!==null){
       if(this.state.selectedWg!=="" && this.state.selectedWg!==null){
-        result = <h5>Stai condividendo il dataset con gli utenti del workgroup <b>{this.state.selectedWg}</b> dell'organizzazione <b>{this.state.selectedOrg}</b></h5>
+        result = <h5>Stai condividendo il dataset con gli utenti del workgroup <b>{this.state.selectedWg}</b> dell'organizzazione <b>{this.state.selectedOrg.value}</b></h5>
       }else{
-        result = <h5>Stai condividendo il dataset con gli utenti dell'organizzazione <b>{this.state.selectedOrg}</b></h5>
+        result = <h5>Stai condividendo il dataset con gli utenti dell'organizzazione <b>{this.state.selectedOrg.value}</b></h5>
       }
     }
     console.log(hasPreview)
@@ -453,10 +451,10 @@ class DatasetAdmin extends Component{
         <Modal
           contentLabel="Add a User"
           className="Modal__Bootstrap modal-dialog modal-60"
-          isOpen={aggiungi}>
-          <ModalHeader>
-              <ModalTitle>Condivisione</ModalTitle>
-              <ModalClose onClick={this.toggleClose} />
+          isOpen={aggiungi}
+          toggle={this.toggleClose}>
+          <ModalHeader toggle={this.toggleClose}>
+              Condivisione
           </ModalHeader>
           <ModalBody>
             <div className="row">
@@ -475,12 +473,12 @@ class DatasetAdmin extends Component{
                 name="selected-user"
                 value={this.state.selectedOrg}
                 onChange={this.updateValueOrg}
-                rtl={false}
-                searchable={true}
+                isRtl={false}
+                isSearchable={true}
                 className="my-3" 
               />
               </div>
-              {(this.state.selectedOrg!=="" && this.state.selectedOrg!==null) &&
+              {(this.state.selectedOrg.value!=="" && this.state.selectedOrg.value!==null) &&
               <div className="col">
                 <div> 
                 Workgroup
@@ -501,9 +499,7 @@ class DatasetAdmin extends Component{
                 <ul className="my-3 list-group">
                   {workgroups && workgroups.length > 0 && workgroups.map((wg, index) => {
                       return(
-                        <li className={"list-group-item "+(this.state.selectedWg===wg.value?"list-group-item-primary":"")} key={index} onClick={this.updateValueWg.bind(this, wg.value)}>{wg.value}
-                          {this.state.selectedWg===wg.value && <i className="fas fa-check fa-lg fa-pull-right" style={{lineHeight: "1"}}/>}
-                        </li>
+                        <li className={"list-group-item "+(this.state.selectedWg===wg.value?"list-group-item-primary":"")} key={index} onClick={this.updateValueWg.bind(this, wg.value)}>{wg.value}</li>
                       )
                     })
                   }
@@ -518,8 +514,8 @@ class DatasetAdmin extends Component{
             <div className="text-muted text-center">{result}</div>
           </ModalBody>
           <ModalFooter>
-              <button className='btn btn-primary' onClick={this.setACL} disabled={(this.state.selectedOrg == '' || this.state.saving)}>
-              {this.state.saving?<i className="fa fa-spinner fa-spin fa-lg" />:"Aggiungi permesso"}
+              <button className='btn btn-primary' onClick={this.setACL} disabled={(this.state.selectedOrg.value == '' || this.state.saving)}>
+              {this.state.saving?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:"Aggiungi permesso"}
               </button>
               <button className='btn btn-secondary' onClick={this.toggleClose}>
                   Annulla
@@ -589,7 +585,7 @@ class DatasetAdmin extends Component{
               <i className="text-icon fa-pull-left fas fa-trash fa-lg mr-3 mt-1" style={{ lineHeight: '1' }} /><h4><b>Elimina</b></h4>
           </div>
           <div className="col-5">
-            <button className="btn btn-danger" disabled={this.state.cancella || this.state.acl.length>0 } onClick={this.delete.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org, dataset.dcatapit.title)}>{this.state.cancella?<i className="fa fa-spinner fa-spin fa-lg"/>:'Elimina Dataset'}</button>
+            <button className="btn btn-danger" disabled={this.state.cancella || this.state.acl.length>0 } onClick={this.delete.bind(this, dataset.dcatapit.name, dataset.dcatapit.owner_org, dataset.dcatapit.title)}>{this.state.cancella?<div><i className="fa fa-spinner fa-spin fa-lg"/></div>:'Elimina Dataset'}</button>
           </div>
         </div>}
       </div>

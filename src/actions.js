@@ -1,11 +1,17 @@
 import fetch from 'isomorphic-fetch'
 import { serviceurl } from './config/serviceurl.js'
 
+import { toastr } from 'react-redux-toastr'
+
 // MOCK
 //import page from './data/dataset'
 //import det from './data/datasetdetail'
 import settings from './data/settings'
 
+export const REQUEST_DATASTORY = 'REQUEST_DATASTORY'
+export const RECEIVE_DATASTORY = 'RECEIVE_DATASTORY'
+export const REQUEST_ALL_DATASTORY = 'REQUEST_ALL_DATASTORY'
+export const RECEIVE_ALL_DATASTORY = 'RECEIVE_ALL_DATASTORY'
 export const REQUEST_DATASETS = 'REQUEST_DATASETS'
 export const RECEIVE_DATASETS = 'RECEIVE_DATASETS'
 export const DELETE_DATASETS = 'DELETE_DATASETS'
@@ -14,6 +20,8 @@ export const RECEIVE_METADATA = 'RECEIVE_METADATA'
 export const REQUEST_DATASET_DETAIL = 'REQUEST_DATASET_DETAIL'
 export const RECEIVE_DATASET_DETAIL = 'RECEIVE_DATASET_DETAIL'
 export const RECEIVE_DATASET_ADDITIONAL_DETAIL = 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
+export const REQUEST_UPDATE_DATASET_FEED_INFO = 'REQUEST_UPDATE_DATASET_FEED_INFO'
+export const UPDATE_DATASET_FEED_INFO = 'UPDATE_DATASET_FEED_INFO'
 export const RECEIVE_DATASET_DETAIL_ERROR = 'RECEIVE_DATASET_DETAIL_ERROR'
 export const REQUEST_LOGIN = 'REQUEST_LOGIN'
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN'
@@ -75,6 +83,42 @@ function receiveNewNotifications(json){
   }
 }
 
+/*********************************** DATA STORY *************************************************/
+function requestDatastory(){
+  console.log('Requesting Datastory detail')
+  return {
+    type: REQUEST_DATASTORY,
+  }
+}
+
+export function receiveDatastory(json){
+  console.log('Received Datastory detail')
+  return {
+    type: RECEIVE_DATASTORY,
+    datastory: json,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_DATASTORY'
+  }
+}
+
+function requestAllStories(){
+  console.log('Requesting Datastories list')
+  return {
+    type: REQUEST_ALL_DATASTORY,
+  }
+}
+
+function receiveAllStories(json){
+  console.log('Received Datastories list')
+  return {
+    type: RECEIVE_ALL_DATASTORY,
+    datastoriesList: json.code===404?[]:json,
+    receivedAt: Date.now(),
+    ope: 'RECEIVE_ALL_DATASTORY'
+  }
+}
+
+/*********************************** DATASET *************************************************/
 function receiveDataset(json, value) {
   console.log('receiveDataset');
   //This function creates an action that a reducer can handle 
@@ -157,6 +201,23 @@ function receiveDatasetAdditionalDetail(jsonDataset, jsonFeed, jsonIFrames, json
       linkedDs: jsonLinked,
       receivedAt: Date.now(),
       ope: 'RECEIVE_DATASET_ADDITIONAL_DETAIL'
+  }
+}
+
+function requestFeedStart(){
+  return {
+    type: REQUEST_UPDATE_DATASET_FEED_INFO,
+    receivedAt: Date.now(),
+    ope: 'REQUEST_UPDATE_DATASET_FEED_INFO'
+  }
+}
+
+function updateDatasetFeedInfo(jsonFeed) {
+  return {
+      type: UPDATE_DATASET_FEED_INFO,
+      feed: jsonFeed,
+      receivedAt: Date.now(),
+      ope: 'UPDATE_DATASET_FEED_INFO'
   }
 }
 
@@ -695,7 +756,16 @@ export function fetchNewNotifications(user){
       .then(json => {
         dispatch(receiveNewNotifications(json))
         if(json.length > 0){
-          console.log("nuova-notifica")
+          console.log("nuova-notifica",json)
+          json.map((notifica) => {
+              let typeNotification = notifica.notificationtype;
+              if(notifica.notificationtype == 'generic'){
+                typeNotification = 'info';
+              }else if(notifica.notificationtype == 'system'){
+                typeNotification = 'warning';
+              }
+              toastr[typeNotification](notifica.info.title, notifica.info.description);
+          });
           dispatch(fetchNotifications(user, 20))
         }
       })
@@ -1015,6 +1085,40 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }) 
       }
   }
+
+  // function startFeed(datasetname, org) {
+  //   var token = '';
+  //   var url = serviceurl.apiURLCatalog + '/kylo/startfeed/'  + org + '_o_' + datasetname
+  //   if(localStorage.getItem('username') && localStorage.getItem('token') &&
+  //     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+  //       token = localStorage.getItem('token')
+  //     }
+  //   return dispatch => {
+  //       dispatch(requestFeedStart())
+  //       return fetch(url, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           'Content-Type': 'application/json',
+  //           'Authorization': 'Bearer ' + token
+  //         }
+  //       })
+  //         .then(response => response.json())
+  //         .then(json => {
+  //           console.log(json)
+  //           dispatch(getFeedDetail(org, datasetname))
+  //           .catch(error => console.log('Errore durante il caricamento delle info sul feed'))
+  //           .then(jsonFeed => {
+  //             dispatch(updateDatasetFeedInfo(jsonFeed))
+  //           })
+  //         })
+  //         .catch(error => {
+  //           console.log('Nessun Dataset con questo nome');
+  //           dispatch(receiveDatasetDetailError(query))
+  //         }) 
+  //       }
+  //   }
+
 
   export function querySearch(filter){
     var url = serviceurl.apiURLDatiGov+'/elasticsearch/search'
@@ -1884,3 +1988,118 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           .catch(error => console.error(error))
         }
       }
+
+      export function loadWidgets(org){
+        var token = ''
+        var url = serviceurl.apiURLDatiGov + '/widgets'+(org?('?org='+org):'')
+
+        if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+          token = localStorage.getItem('token')
+        }
+
+        return dispatch => {
+          return fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .then(response => response.json())
+          .catch(error => console.error(error))
+        }
+      }
+
+/*********************************** DATA STORY FETCHES *************************************************/
+export function getDatastory(isPublic, id){
+  var url = serviceurl.apiURLDatiGov + (isPublic?'/public/datastory/get-by-id/':'/datastory/get-by-id/') + id
+  var token = ''
+  
+  if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+  return dispatch => {
+    dispatch(requestDatastory())
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    })
+    .then(response => response.json())
+    .then(json => dispatch(receiveDatastory(json)))
+    .catch(error=> console.error(error))
+  }
+}
+
+export function getAllDatastories(isPublic){
+  var url = serviceurl.apiURLDatiGov + (isPublic?'/public/datastories':'/datastories')
+  var token = ''
+  
+  if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+  return dispatch => {
+    dispatch(requestAllStories())
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    })
+    .then(response => response.json())
+    .then(json => dispatch(receiveAllStories(json)))
+    .catch(error=> console.error(error))
+  }
+}
+
+export function saveDatastory(datastory){
+  var url = serviceurl.apiURLDatiGov + '/datastory/save'
+  var token = ''
+  
+  if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+
+  return dispatch => {
+    dispatch(receiveDatastory(datastory))
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(datastory)
+    })
+    .then(response => response)
+    .catch(error=> console.error(error))
+  } 
+}
+
+export function deleteDatastory(id){
+  var url = serviceurl.apiURLDatiGov + '/datastory/delete/' + id
+  var token = ''
+  
+  if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
+    token = localStorage.getItem('token')
+  }
+
+  return dispatch => {
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    })
+    .then(response => response)
+    .catch(error=> console.error(error))
+  }
+}
