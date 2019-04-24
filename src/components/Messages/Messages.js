@@ -23,7 +23,7 @@ export default class Messages extends Component {
     loadData() {
         console.log("loadData")
         messageService
-            .listMessages()
+            .listMessagesPublic()
             .then(response => response.json())
             .then((response) => {
 

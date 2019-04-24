@@ -179,6 +179,30 @@ export default class MessageService {
         return response;
     }
 
+    async listMessagesPublic(){
+         // var url = 'http://www.mocky.io/v2/5c98d8833200004d00d9063e?mocky-delay=2000ms'
+         var url = serviceurl.apiURLDatiGov + '/public/notifications/system/get/all'
+         const response = await fetch(url, {
+             method: 'GET',
+             headers: {
+                 'Accept': 'application/json',
+                 'Content-Type': 'application/json',
+                 'Authorization': 'Bearer ' + localStorage.getItem('token')
+             }
+         }).then(function(response) {
+             if (response.status === 200) {
+                 return response;
+             } else if (response.status === 401) {
+                 throw new Error( messages.validazione.utenteNoAdmin );
+             } else if (response.status === 500) {
+                 throw new Error( messages.validazione.erroreGenerico );
+             }else{
+                 throw new Error(response.statusText);  
+             }
+           })
+         return response;
+    }
+
     async listMessages() {
         // var url = 'http://www.mocky.io/v2/5c98d8833200004d00d9063e?mocky-delay=2000ms'
         var url = serviceurl.apiURLDatiGov + '/notifications/system/get/all'
