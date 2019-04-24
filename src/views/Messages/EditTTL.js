@@ -141,6 +141,9 @@ export default class EditTTL extends Component {
       return obj.name == name;
     }); 
     this.formTTL[name].value= secondToDay ( field[0].value )
+    this.setState({
+      ["isValid"+ name ]: fieldOK()
+    });
   }
 
   saveField = ( name, e ) => {
