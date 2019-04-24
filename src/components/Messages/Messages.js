@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import MessageService from '../../views/Messages/services/MessageService';
-
+import { toastr } from "react-redux-toastr";
 
 const messageService = new MessageService()
 
