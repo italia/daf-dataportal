@@ -139,10 +139,22 @@ export default class EditTTL extends Component {
   restoreField = ( name, e ) => {
 
     e.preventDefault()
-    const field = this.state.storeTTL.filter(obj => {
-      return obj.name == name;
-    }); 
-    this.formTTL[name].value= secondToDay ( field[0].value )
+
+    let response = messageService.messageTTL();
+    response
+      .then(response => response.json())
+      .then(json => {
+                    
+        const field = json.filter(obj => {
+          return obj.name == name;
+        }); 
+        this.formTTL[name].value= secondToDay ( field[0].value )
+
+      })
+      .catch(error => {
+        toastr.error(messages.label.errore, error.message);
+      });
+
     this.setState({
       ["isValid"+ name ]: fieldEmpty()
     });
