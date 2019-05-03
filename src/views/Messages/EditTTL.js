@@ -21,8 +21,9 @@ const CreateRowTTL = ({ row }) =>{
                       id={row.inputID} 
                       maxLength="3" 
                       onChange={row.inputOnchange} 
-                      valid={row.inputValid.isValid} 
-                      invalid={!row.inputValid.isValid} />
+                      {...(row.inputValid.isValid!=null ? {valid:    row.inputValid.isValid} : {})}
+                      {...(row.inputValid.isValid!=null ? {invalid: !row.inputValid.isValid} : {})}
+                      />
               <FormFeedback >{row.inputValid.messageError}</FormFeedback>
             </FormGroup>
           </Col>
@@ -54,6 +55,7 @@ const CreateButton = ( { color, icon, fnc} ) => {
 
 const fieldOK = () => ({  isValid: true, messageError: ''  })
 const fieldKO = ( message ) => ({ isValid: false, messageError: message  })
+const fieldEmpty = ( ) => ({ isValid: null, messageError: ''  })
 
 const dayToSecond = ( day = 1 ) =>  ( day * 86400 )
 const secondToDay = ( second = 86400 ) =>  ( second / 86400 )
@@ -67,9 +69,9 @@ export default class EditTTL extends Component {
     super(props)
 
     this.state = {
-      isValidinfo: fieldOK(),
-      isValidsuccess: fieldOK(),
-      isValiderror: fieldOK()
+      isValidinfo: fieldEmpty(),
+      isValidsuccess: fieldEmpty(),
+      isValiderror: fieldEmpty()
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -111,13 +113,13 @@ export default class EditTTL extends Component {
         this.state.storeTTL.map(element => {
           const  name  = element.name;
           const  value = element.value;
-          let    check = fieldOK()
+          let    check = fieldEmpty()
 
-          if (value == 0 || value == undefined) {
-            check = fieldKO(messages.validazione.campoObbligatorio) 
-          } else {
-            check =  fieldOK()
-          }
+           if (value == 0 || value == undefined) {
+             check = fieldKO(messages.validazione.campoObbligatorio) 
+           } else {
+             check =  fieldEmpty()
+           }
 
           this.setState({
             ["isValid"+ name ]: check
@@ -137,12 +139,24 @@ export default class EditTTL extends Component {
   restoreField = ( name, e ) => {
 
     e.preventDefault()
-    const field = this.state.storeTTL.filter(obj => {
-      return obj.name == name;
-    }); 
-    this.formTTL[name].value= secondToDay ( field[0].value )
+
+    let response = messageService.messageTTL();
+    response
+      .then(response => response.json())
+      .then(json => {
+                    
+        const field = json.filter(obj => {
+          return obj.name == name;
+        }); 
+        this.formTTL[name].value= secondToDay ( field[0].value )
+
+      })
+      .catch(error => {
+        toastr.error(messages.label.errore, error.message);
+      });
+
     this.setState({
-      ["isValid"+ name ]: fieldOK()
+      ["isValid"+ name ]: fieldEmpty()
     });
   }
 
@@ -162,6 +176,9 @@ export default class EditTTL extends Component {
                       messages.label.salvataggioOK
                   );
                   // this.load();
+                  this.setState({
+                    ["isValid"+ name ]: fieldEmpty()
+                  });
               })
               .catch(error => {
                   toastr.error(messages.label.errore, error.message);
