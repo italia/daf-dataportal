@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import MessageService from '../../views/Messages/services/MessageService';
-
+import { toastr } from "react-redux-toastr";
 
 const messageService = new MessageService()
 
@@ -23,7 +23,7 @@ export default class Messages extends Component {
     loadData() {
         console.log("loadData")
         messageService
-            .listMessages()
+            .listMessagesPublic()
             .then(response => response.json())
             .then((response) => {
 
