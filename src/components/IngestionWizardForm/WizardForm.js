@@ -581,7 +581,7 @@ class WizardForm extends Component {
     return this.state.loadingConfiguration === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
       <div>
         {config?
-        <div className="mb-5">
+        <div className="pb-5">
           <div>
             <Steps current={page}>
               {steps.map((s, i) => {
