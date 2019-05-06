@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock } from '@fortawesome/fontawesome-free-solid'
 import { Link } from 'react-router-dom';
@@ -315,9 +315,9 @@ class Header extends Component {
                 </div>
               </div>
               </NavItem>
-                <NavItem>
-                  <Link to={'/gettingstarted'} className="nav-link font-weight-bold lead text-white">Getting started</Link>
-                </NavItem>
+              {/* <NavItem>
+                <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
+              </NavItem> */}
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Application</Link>
               </NavItem>
