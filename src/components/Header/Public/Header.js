@@ -1,4 +1,4 @@
- import React, { Component } from 'react';
+import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faLock } from '@fortawesome/fontawesome-free-solid'
 import { Link } from 'react-router-dom';
@@ -159,34 +159,34 @@ class Header extends Component {
 
             <ul className="list-inline m-0">
               <li className="list-inline-item">
-                
+
                   <a className="color-text-header font-weight-bold ProvaSpazio" style={{ textDecoration: 'none' }} href="https://pianotriennale-ict.italia.it">Piano Triennale</a>
-                
+
               </li>
               <li className="list-inline-item">
-               
+
                   <a className="color-text-header font-weight-bold ProvaSpazio" style={{ textDecoration: 'none' }} href="https://developers.italia.it">Developers</a>
-               
+
               </li>
               <li className="list-inline-item">
-               
+
                   <a className="color-text-header font-weight-bold ProvaSpazio" style={{ textDecoration: 'none' }}  href="https://designers.italia.it">Designers</a>
-                
+
               </li>
               <li className="list-inline-item">
-               
+
                   <a className="color-text-header font-weight-bold" style={{ textDecoration: 'none' }} href="https://forum.italia.it">Forum</a>
-               
+
               </li>
               <li className="list-inline-item">
-                
+
                   <a className="color-text-header font-weight-bold" style={{ textDecoration: 'none' }} href="https://docs.italia.it">Docs</a>
-                
+
               </li>
               <li className="list-inline-item">
-              
+
                   <a className="color-text-header font-weight-bold a" style={{ textDecoration: 'none' }} href="https://github.com/italia">GitHub</a>
-              
+
               </li>
             </ul>
 
@@ -301,7 +301,6 @@ class Header extends Component {
                 <div className={"dropdown-menu " + (this.state.showMenu ? "show":"")} aria-labelledby="dropdownMenuButton">
                   <Link to={'/missione'} className="dropdown-item">Missione</Link>
                   <Link to={'/team'} className="dropdown-item">Chi siamo</Link>
-                  <Link to={'/gettingstarted'} className="dropdown-item">Linee guida</Link>
                 </div>
               </div>
               </NavItem>
@@ -315,9 +314,9 @@ class Header extends Component {
                 </div>
               </div>
               </NavItem>
-              {/* <NavItem>
-                <Link className="nav-link font-weight-bold lead text-white" to={'/partecipa'}>Partecipa</Link>
-              </NavItem> */}
+                <NavItem>
+                  <Link to={'/gettingstarted'} className="nav-link font-weight-bold lead text-white">Getting started</Link>
+                </NavItem>
               <NavItem>
                 <Link className="nav-link font-weight-bold lead text-white" to={'/data-applications'}>Data Application</Link>
               </NavItem>

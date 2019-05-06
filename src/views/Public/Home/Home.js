@@ -170,7 +170,7 @@ class Home extends Component{
                         })
       
                         var firstLayout = dashwidgets.length>0?dashwidgets[0]:''
-      
+ 
                         var time = 0
                         for (let k = 0; k < story.widgets.length; k++){
                           if(story.widgets[k].identifier.toLowerCase().indexOf('textwidget')!==-1){
@@ -186,7 +186,7 @@ class Home extends Component{
                         return (
                             <UserstoryCard
                                 story={story}
-                                widgetA={firstLayout}
+                                widgetA={firstLayout.identifier}
                                 time={time}
                                 id={index}
                                 key={index}

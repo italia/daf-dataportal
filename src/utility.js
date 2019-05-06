@@ -326,10 +326,14 @@ export function transformName(name){
   }
 
   export function convertNotificationTime(timestamp){
-    var sp = timestamp.split('_')
-    var dateSp = sp[0].split('-')
+    if(timestamp){
+      var sp = timestamp.split('_')
+      var dateSp = sp[0].split('-')
 
-    return (dateSp[2]+'/'+dateSp[1]+'/'+dateSp[0]+' '+sp[1])
+      return (dateSp[2]+'/'+dateSp[1]+'/'+dateSp[0]+' '+sp[1])
+    }else{
+      return 'undefined'
+    }
   }
 
 /* 

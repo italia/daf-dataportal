@@ -228,6 +228,11 @@ class Dashboard extends Component{
     }).length > 0
 
     console.log(JSON.stringify(widget))
+    
+    if(widget.pvt){
+      toastr.info("Hai aggiunto un widget privato", "Aggiungendo un widget privato non potrai pubblicare la datastory come OpenData")
+    }
+
 
     if(!check){
       if(widget.identifier==="textwidget"){

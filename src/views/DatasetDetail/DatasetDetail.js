@@ -575,12 +575,15 @@ class DatasetDetail extends Component {
                                     toastr.error("Errore", "Il file selezionato è troppo grande, seleziona un file di massimo 100MB")
                                 }}
                             >
-                                <div style={{ position: 'absolute', top: '35%', bottom: '35%', left: '0', right: '0' }}>
-                                    <div className="text-center">
-                                        <h5 className="font-weight-bold">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</h5>
-                                        <h5 className="font-weight-bold">Dimensione massima 100MB</h5>
+                                {({getRootProps, getInputProps}) => ( 
+                                    <div {...getRootProps({className: 'dropzone w-100 container'})}>
+                                        <input {...getInputProps()}/>
+                                        <div className="text-center">
+                                            <h5 className="font-weight-bold">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</h5>
+                                            <h5 className="font-weight-bold">Dimensione massima 100MB</h5>
+                                        </div>
                                     </div>
-                                </div>
+                                    )}
                             </Dropzone>}
                             {this.state.file !== '' &&
                                 <h5>File <b>{this.state.fileName}</b> pronto per il caricamento</h5>
