@@ -2053,7 +2053,7 @@ export function getAllDatastories(isPublic){
       },
     })
     .then(response => response.json())
-    .then(json => dispatch(receiveAllStories(json)))
+    .then(json => Array.isArray(json)?dispatch(receiveAllStories(json)):dispatch(receiveAllStories([])))
     .catch(error=> console.error(error))
   }
 }

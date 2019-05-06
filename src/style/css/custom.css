@@ -59,9 +59,9 @@ color: #304047!important;
 }
 
 .bn-dash {
-filter: gray; /* IE6-9 */
--webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
-filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+  filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
 }
 
 .b-r-dash{
@@ -278,13 +278,13 @@ font-size: 14px;
 line-height: 19px;
 }
 .dataset-body{
-  height: 169px;
-  widows: 100%;
+    height: 169px;
+    widows: 100%;
 }
 .header-dataset {
-height: 45px;
-  width: 100%;
-  background-color: #E7ECEF;
+	height: 45px;
+    width: 100%;
+    background-color: #E7ECEF;
 }
 
 .btn-header,
@@ -574,46 +574,46 @@ text-decoration: underline;
 }
 
 .main-header {
-  height: 124px;
-  background-color: var(--primary);
-  color: #FFFFFF;
-  position: relative; 
-  padding-top: 1.5rem !important}
-  .js-scrolled .main-header {
-      height: 56px; 
-      padding-top: 0!important}
+    height: 124px;
+    background-color: var(--primary);
+    color: #FFFFFF;
+    position: relative;
+    padding-top: 1.5rem !important}
+    .js-scrolled .main-header {
+        height: 56px;
+        padding-top: 0!important}
 
-      .upper-header,
-      .main-header,
-      .upper-header *,
-      .main-header * {
-        -webkit-transition: height 0.5s ease, line-height 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, bottom 0.5s ease, padding 0.5s ease, background-size 0.5s ease, width 0.5s ease, border 0.5s ease, margin 0.5s ease;
-        transition: height 0.5s ease, line-height 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, bottom 0.5s ease, padding 0.5s ease, background-size 0.5s ease, width 0.5s ease, border 0.5s ease, margin 0.5s ease; }
+.upper-header,
+.main-header,
+.upper-header *,
+.main-header * {
+  -webkit-transition: height 0.5s ease, line-height 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, bottom 0.5s ease, padding 0.5s ease, background-size 0.5s ease, width 0.5s ease, border 0.5s ease, margin 0.5s ease;
+  transition: height 0.5s ease, line-height 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, bottom 0.5s ease, padding 0.5s ease, background-size 0.5s ease, width 0.5s ease, border 0.5s ease, margin 0.5s ease; }
 
 .header-fixed .app-body.pub{
-  margin-top: 220px;
+    margin-top: 220px;
 }
 
 .header-fixed .app-body.pub .js-scrolled {
-  margin-top: 60px; }
+    margin-top: 60px; }
 
 .js-scrolled .logo-pub{
-  height: 34px;
-  width: 40px;
-  margin-bottom: auto;
+    height: 34px;
+    width: 40px;
+    margin-bottom: auto;
 }
 
 .js-scrolled .main-header h2{
-font-size: 24px;
-line-height: 24px;
-padding-top: 0.5rem!important;
-padding-bottom: 0.5rem!important
+  font-size: 24px;
+  line-height: 24px;
+  padding-top: 0.5rem!important;
+  padding-bottom: 0.5rem!important
 }
 
 .logo-pub{
-  height: 51px;
-  width: 60px;
-  margin-top: 0.25rem!important
+    height: 51px;
+    width: 60px;
+    margin-top: 0.25rem!important
 }
 
 .js-scrolled .logo-pub-pa{
@@ -772,7 +772,7 @@ max-width: 800px
 .paragrafoG {
   font: 400 21px/32px "Titillium Web";
   margin-left: auto;
-  margin-right: auto; 
+  margin-right: auto;
 }
 
 @media (max-width:767px) {
@@ -1297,6 +1297,9 @@ text-align: center !important; }
   height: auto;
 }
 
+  .color-text-header {
+    color: #bfccef !important; }
+
 .ProvaSpazio {
   border-right: 1px solid #137ae2;
   padding-right: 8px;
@@ -1356,12 +1359,12 @@ text-align: center !important; }
 
 .text-editor-subtitle {
   --x-height-multiplier: 0.35;
-  --baseline-multiplier: 0.179; 
+  --baseline-multiplier: 0.179;
   letter-spacing: .01rem;
   font-weight: 400;
-  color: #444E57;	
-  font-family: "Titillium Web";	
-  font-size: 32px;	
+  color: #444E57;
+  font-family: "Titillium Web";
+  font-size: 32px;
   line-height: 38px;
   letter-spacing: -.003em;
   margin-bottom: 30px;
@@ -1440,17 +1443,17 @@ text-align: center !important; }
   }
   /* .x_content h3, .x_content h2, */ .x_content p{
     margin-left: auto!important;
-    margin-right: auto!important; 
+    margin-right: auto!important;
     /* max-width: 600px; */
     font: 400 16px/25px "Titillium Web"
   }
-  
+
   @media screen and (min-width:768px) {
     /* .x_content h3, .x_content h2, */ .x_content p{
       font: 400 21px/32px "Titillium Web"
     }
   }
-  
+
   .x_content h4 {
     font-size: 16px;
     font-weight: 500;
@@ -1470,24 +1473,24 @@ text-align: center !important; }
   .panel_toolbox>li>a:hover {
     background: #F5F7FA;
   }
-  
+
   .dashboard-card {
     padding: 20px;
     margin: 20px;
     background: #F5F7FA;
   }
-  
+
   .panel_toolbox {
     position: absolute;
     right: 25px;
     top: 6px;
   }
-  
+
   .x_title {
     height: 0px;
     border: none;
   }
-  
+
   .rdw-link-modal {
     width: auto;
     height: auto;
