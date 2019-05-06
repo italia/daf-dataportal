@@ -23,11 +23,14 @@ class FileInput extends Component {
                     onDropFunction(fields, filesToUpload, tipofile, e)
                 }
                 }> 
-                <div className="container">
-                <div className="row" style={{"paddingTop": "10px"}}>
-                    <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
-                </div>
-                </div>
+                {({getRootProps, getInputProps}) => ( 
+                  <div {...getRootProps({className: 'dropzone w-100 container'})}>
+                    <input {...getInputProps()}/>
+                    <div className="row" style={{"paddingTop": "10px"}}>
+                        <div className="col">Trascina il tuo file qui, oppure clicca per selezionare il file da caricare.</div>
+                    </div>
+                  </div>
+                )}
             </Dropzone>
         {error && touched ? <span className="text-danger">{error}</span> : ''}
       </div>

@@ -1,14 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAuthToken, loginAction, isValidToken, logout, getApplicationCookie, receiveLogin } from './../../actions.js'
-import {
-  Modal,
-  ModalHeader,
-  ModalTitle,
-  ModalClose,
-  ModalBody,
-  ModalFooter
-} from 'react-modal-bootstrap';
 import { setCookie, setSupersetCookie } from '../../utility'
 import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 import { serviceurl } from '../../config/serviceurl'
@@ -87,7 +79,7 @@ class Login extends Component {
                     if (response.ok) {
                       response.json().then(json => {
                         dispatch(receiveLogin(json))
-                        /* dispatch(addUserOrganization(json.uid)) */
+                        // dispatch(addUserOrganization(json.uid))
                         this.setState({
                             authed: true,
                             loading: false
@@ -207,13 +199,14 @@ class Login extends Component {
             console.log('Get Autentication Token json: ' + JSON.stringify(json))
           })
           this.setState({
-            loginMessage: 'Errore durante il login. Si prega di riprovare più tardi.',
+            loginMessage: 'Nome utente o password non corretto.',
             uploading: false
           })
         }
         }).catch((error) => {
+            console.log('Get Autentication error: ' + error)
             this.setState({
-              loginMessage: 'Nome utente o password non corretto.',
+              loginMessage: 'Errore durante il login. Si prega di riprovare più tardi.',
               uploading: false
             })
           })

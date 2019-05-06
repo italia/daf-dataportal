@@ -1,5 +1,4 @@
 import { serviceurl } from './config/serviceurl.js'
-import { truncate } from 'fs';
 
 export const themes = [
   { 'val': 'AGRI', 'name': 'AGRICOLTURA' },
@@ -47,7 +46,7 @@ export const chartType = [
   {'val':'table', 'name':'Tabella'}]
   
 
-export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}/* , {'val':'ext_opendata', 'name':'Ext. Opendata'} */]
+export const tipi = [{ 'val': 'catalog_test','name': 'Dataset'},{ 'val': 'dashboards','name': 'Dashboard'},{ 'val': 'stories','name': 'Storie'}, {'val': 'datastory', 'name':'Datastory'}]
 
 export const visibilita = [{ 'val': '2','name': 'Open data'},{ 'val': '0','name': 'Privato'},{ 'val': '1','name': 'Organizzazione'}]
 
@@ -327,10 +326,14 @@ export function transformName(name){
   }
 
   export function convertNotificationTime(timestamp){
-    var sp = timestamp.split('_')
-    var dateSp = sp[0].split('-')
+    if(timestamp){
+      var sp = timestamp.split('_')
+      var dateSp = sp[0].split('-')
 
-    return (dateSp[2]+'/'+dateSp[1]+'/'+dateSp[0]+' '+sp[1])
+      return (dateSp[2]+'/'+dateSp[1]+'/'+dateSp[0]+' '+sp[1])
+    }else{
+      return 'undefined'
+    }
   }
 
 /* 

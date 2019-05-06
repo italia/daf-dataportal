@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux'
 import { reducer as reduxFormReducer } from 'redux-form';
 import {
+  REQUEST_ALL_DATASTORY,
+  RECEIVE_ALL_DATASTORY,
+  REQUEST_DATASTORY,
+  RECEIVE_DATASTORY,
   REQUEST_DATASETS,
   RECEIVE_DATASETS,
   DELETE_DATASETS,
@@ -83,6 +87,7 @@ function datasets(state = { isFetching: false, didInvalidate: false, items: [], 
       return Object.assign({}, state, {
         isFetching: false,
         isAdditionalFetching: true,
+        isFeedLoading: true,
         didInvalidate: false,
         items: null,
         query: action.query,
@@ -97,12 +102,25 @@ function datasets(state = { isFetching: false, didInvalidate: false, items: [], 
     case RECEIVE_DATASET_ADDITIONAL_DETAIL:
       return Object.assign({}, state, {
         isAdditionalFetching: false,
+        isFeedLoading: false,
         dataset: action.dataset,
         feed: action.feed,
         iframes: action.iframes,
         linkedDs: action.linkedDs,
         ope: action.ope
       })
+    case REQUEST_UPDATE_DATASET_FEED_INFO:
+      return Object.assign({}, state, {
+        isFeedLoading: true,
+        feed: undefined,
+        ope: action.ope
+      })
+    case UPDATE_DATASET_FEED_INFO:
+      return Object.assign({}, state, {
+        isFeedLoading: false,
+        feed: action.feed,
+        ope: action.ope
+      })      
     case RECEIVE_DATASET_DETAIL_ERROR:
       return Object.assign({}, state, {
         isFetching: false,
@@ -229,10 +247,11 @@ function userReducer(state = {}, action) {
     case REQUEST_REGISTRATION:
       return Object.assign({}, state, { 'msg': undefined, 'error': undefined })
     case RECEIVE_RESET_ERROR:
+      return Object.assign({}, state, { 'msg': action.message, 'loading': false,'error': action.error })
     case REQUEST_RESET:
-      return Object.assign({}, state, { 'msg': undefined, 'error': undefined })
+      return Object.assign({}, state, { 'msg': undefined, 'error': undefined, 'loading': true })
     case RECEIVE_RESET:
-      return Object.assign({}, state, { 'msg': action.message, 'error': action.error })
+      return Object.assign({}, state, { 'msg': action.message, 'error': action.error, 'loading': false })
     case REQUEST_LOGIN:
     case RECEIVE_LOGIN:
       return Object.assign({}, state, { 'obj': user(state[action], action) })
@@ -240,6 +259,21 @@ function userReducer(state = {}, action) {
       return Object.assign({}, state, { 'org': org(state[action], action) })
     case REMOVE_LOGGED_USER:
       return Object.assign({}, state, { 'obj': null })
+    default:
+      return state
+  }
+}
+
+function datastoryReducer(state = {}, action){
+  switch (action.type){
+    case REQUEST_ALL_DATASTORY:
+      return Object.assign({}, state, {'datastories': { 'list': [], 'isLoading': true }, 'datastory': { 'datastory': undefined}})
+    case RECEIVE_ALL_DATASTORY:
+      return Object.assign({}, state, {'datastories': { 'list': action.datastoriesList, 'isLoading': false }})
+    case REQUEST_DATASTORY:
+      return Object.assign({}, state, {'datastory': { 'datastory': undefined, 'isFetching': true }})
+    case RECEIVE_DATASTORY:
+      return Object.assign({}, state, {'datastory': { 'datastory': action.datastory, 'isFetching': false }})
     default:
       return state
   }
@@ -273,6 +307,7 @@ function searchReducer(state = {}, action) {
 //but you can change it by naming the key differently (form: reduxFormReducer)
 const rootReducer = combineReducers({
   form: reduxFormReducer,
+  datastoryReducer,
   datasetReducer,
   userReducer,
   searchReducer,

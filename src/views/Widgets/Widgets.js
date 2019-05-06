@@ -100,9 +100,7 @@ class Widgets extends Component{
                                     </div>
                                 </div>
                                 <div className="col-md-2">
-                                    <button type="button" className="btn btn-link float-right" title="Aggiungi Widget" onClick={this.createWidget}>
-                                        <i className="fa fa-plus-circle fa-lg m-t-2"></i>
-                                    </button>
+                                    
                                     </div>
                                     
                             </div>}

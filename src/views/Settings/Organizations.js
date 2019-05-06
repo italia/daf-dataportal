@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import {
     Modal,
     ModalHeader,
-    ModalTitle,
-    ModalClose,
     ModalBody,
     ModalFooter 
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import Select from 'react-select'
 import OrganizationService from "./services/OrganizationService";
 import { isAdmin, isSysAdmin } from '../../utility'
@@ -346,7 +344,7 @@ class Organizations extends Component {
 
     add(org){
         const { user } = this.state;
-        let response = organizationService.userAdd(org, user)
+        let response = organizationService.userAdd(org, user.value)
         this.setState({ saving: true })
         response.then((response) => {
             if (response.ok) {
@@ -393,7 +391,7 @@ class Organizations extends Component {
 
     addWG(wg){
         const { user } = this.state;
-        let response = organizationService.userAddWG(wg, user)
+        let response = organizationService.userAddWG(wg, user.value)
         this.setState({ saving: true })
         response.then((response) => {
             if (response.ok) {
@@ -648,6 +646,7 @@ class Organizations extends Component {
             user: newValue,
         });
     }
+    
     validateNomeNGOrganizzazione (event) {
         const target  = event.target;
         const value   = target.value;
@@ -710,18 +709,18 @@ class Organizations extends Component {
                 <Modal
                     contentLabel="Delete Organization"
                     className="Modal__Bootstrap modal-dialog modal-60"
-                    isOpen={orgModal}>
+                    isOpen={orgModal}
+                    toggle={this.closeOrgModal.bind(this)}>
                     <form>
-                        <ModalHeader>
-                            <ModalTitle>Cancellazione</ModalTitle>
-                            <ModalClose onClick={this.closeOrgModal.bind(this)} />
+                        <ModalHeader toggle={this.closeOrgModal.bind(this)}>
+                            Cancellazione
                         </ModalHeader>
                         <ModalBody>
                             Sei sicuro di voler eliminare l'organizzazione <b>{org}</b> ?
                         </ModalBody>
                         <ModalFooter>
                         <button className='btn btn-danger' onClick={this.deleteOrg.bind(this)}>
-                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Cancella l'organizzazione"} 
+                            {this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Cancella l'organizzazione"} 
                         </button>
                             <button className='btn btn-secondary' onClick={this.closeOrgModal.bind(this)}>
                                 Annulla
@@ -732,11 +731,11 @@ class Organizations extends Component {
                 <Modal
                     contentLabel="Add a User"
                     className="Modal__Bootstrap modal-dialog modal-60"
-                    isOpen={userModal}>
-                        <ModalHeader>
-                            {userModalType==='org' && <ModalTitle>Aggiungi un utente all'organizzazione <b>{selectedOrg}</b></ModalTitle>}
-                            {userModalType==='wg' && <ModalTitle>Aggiungi un utente al workgroup <b>{selectedWorkgroup}</b></ModalTitle>}
-                            <ModalClose onClick={this.closeUserModal} />
+                    isOpen={userModal}
+                    toggle={this.closeUserModal}>
+                        <ModalHeader toggle={this.closeUserModal}>
+                            {userModalType==='org' && <div>Aggiungi un utente all'organizzazione <b>{selectedOrg}</b></div>}
+                            {userModalType==='wg' && <div>Aggiungi un utente al workgroup <b>{selectedWorkgroup}</b></div>}
                         </ModalHeader>
                         <ModalBody>
                             <Select
@@ -749,18 +748,18 @@ class Organizations extends Component {
                                 name="selected-user"
                                 value={this.state.user}
                                 onChange={this.updateValue}
-                                rtl={false}
-                                searchable={true}
+                                isRtl={false}
+                                isSearchable={true}
                             />
                         </ModalBody>
                         <ModalFooter>
                             {userModalType==='org' && <button className='btn btn-primary' onClick={this.add.bind(this, selectedOrg)}>
-                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Aggiungi utente"}
+                            {this.state.saving?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Aggiungi utente"}
                             </button>
                             }
                             
                             {userModalType==='wg' && <button className='btn btn-primary' onClick={this.addWG.bind(this, selectedWorkgroup)}>
-                            {this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Aggiungi utente"}
+                            {this.state.saving? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>:"Aggiungi utente"}
                             </button>
                             }
                                 
@@ -822,7 +821,7 @@ class Organizations extends Component {
                                     <input className="form-control" type="mail" value={this.state.mail} onChange={(e) => { this.setState({ mail: e.target.value }); this.validateEmail(e) }}/>
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" disabled={this.state.disableSave} onClick={this.createOrg.bind(this)}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Crea"}</button>
+                            <button type="submit" className="btn btn-primary" disabled={this.state.disableSave} onClick={this.createOrg.bind(this)}>{this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Crea"}</button>
                         </div>
     
                         <div hidden={this.state.nomeok} className="ml-5 w-100">
@@ -853,7 +852,7 @@ class Organizations extends Component {
                                 if (user.indexOf("default_admin") === -1)
                                     return(
                                         <li className="list-group-item" key={user}>{user}
-                                            <button type="button" className="btn btn-link float-right" title="Rimuovi utente" onClick={this.removeUser.bind(this, user)}>{removingUser&&user===userToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-user-minus fa-1" />}</button>
+                                            <button type="button" className="btn btn-link float-right" title="Rimuovi utente" onClick={this.removeUser.bind(this, user)}>{removingUser&&user===userToRemove?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:<div><i className="fa fa-user-minus fa-lg" /></div>}</button>
                                         </li>)
                                 }
                             ):<label className="m-2 col-form-label">Non ci sono utenti</label>
@@ -877,7 +876,7 @@ class Organizations extends Component {
                             {(workgroups && workgroups.length > 0)?workgroups.map(workgroup => {
                                         return( 
                                             <li className={"list-group-item "+ (workgroup===selectedWorkgroup?"active":"")} key={workgroup}>{workgroup}
-                                                <button title="Elimina Workgroup" type="button"  className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={this.removeWorkgroup.bind(this, workgroup, selectedOrg)}>{removingWg&&workgroup===wgToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-1" />}</button>
+                                                <button title="Elimina Workgroup" type="button"  className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={this.removeWorkgroup.bind(this, workgroup, selectedOrg)}>{removingWg&&workgroup===wgToRemove?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:<div><i className="fa fa-times fa-lg" /></div>}</button>
                                                 <button title="Gestione Utenti Workgroup" type="button" className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={()=>{this.getWorkGroupUsers(workgroup)}}><i className="fa fa-user-plus fa-lg" /></button>
                                             </li>)
                                     }
@@ -901,7 +900,7 @@ class Organizations extends Component {
                                     <input className="form-control" type="search" maxLength="18" value={this.state.nomeWG} onChange={(e)=>{this.setState({nomeWG:e.target.value}); this.validateNomeNGOrganizzazione(e)}}/>
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" disabled={this.state.disableSave || this.state.nomeWG==''?true:false} onClick={this.createWG.bind(this,selectedOrg)}>{this.state.saving && <i className="fa fa-spinner fa-spin fa-lg" />}{!this.state.saving && "Crea"}</button>
+                            <button type="submit" className="btn btn-primary" disabled={this.state.disableSave || this.state.nomeWG==''?true:false} onClick={this.createWG.bind(this,selectedOrg)}>{this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div> : "Crea"}</button>
                         </div>
                         <div hidden={this.state.nomeNGok} className="ml-5 w-100">
                             <div className="alert alert-warning" role="alert">
@@ -930,7 +929,7 @@ class Organizations extends Component {
                             {workgroupUsers.length > 0 && workgroupUsers.map(workgroupUser => {
                                 return(
                                     <li className="list-group-item" key={workgroupUser}>{workgroupUser}
-                                        <button title="Elimina Utente Workgroup" type="button" className="btn btn-link float-right" onClick={this.removeWorkgroupUser.bind(this, selectedWorkgroup, workgroupUser)}>{removingWgUser&&workgroupUser===workgroupUserToRemove?<i className="fa fa-spinner fa-spin fa-lg" />:<i className="fa fa-times fa-1" />}</button>
+                                        <button title="Elimina Utente Workgroup" type="button" className="btn btn-link float-right" onClick={this.removeWorkgroupUser.bind(this, selectedWorkgroup, workgroupUser)}>{removingWgUser&&workgroupUser===workgroupUserToRemove?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:<div><i className="fa fa-times fa-lg" /></div>}</button>
                                      </li>)
                                 })
                             }

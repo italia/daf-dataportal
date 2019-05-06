@@ -78,9 +78,6 @@ class App extends Component {
     })
   }
 
-  componentWillUnmount() {
-    this.removeListener()
-  }
   render() {
     return this.state.loading === true ? <h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : (
       <div>
@@ -95,8 +92,9 @@ class App extends Component {
             <Route path='/termini' exact component={Public} />
             <Route path='/data-applications' exact component={Public} />
             <Route path='/faqs' exact component={Public} />
-            <Route path='/userstory/list' exact component={Public} />
-            <Route path='/userstory/list/:id' exact component={Public} />
+            <Route path='/datastory/list' exact component={Public} />
+            <Route path='/datastory/list/:id' exact component={Public} />
+            <Route path='/team' exact component={Public} />
             <Route path='/notizie' exact component={Public} />
             <Route path='/notizie/:id' exact component={Public} />
             <Route path='/storie' exact component={Public} />
@@ -143,6 +141,9 @@ class App extends Component {
             <Route path="/private/datastory/list" name="Test" component={Full} />
             <Route path="/private/datastory/create" name="Test" component={Full} />
             <Route path="/private/datastory/list/:id" name="Test" component={Full} />
+            <Route path="/private/messages" name="Messaggi" component={Full} />
+            <Route path="/private/editTTL" name="editTTL" component={Full} />
+
             {/*404 NOT FOUND*/}
             <Route path="*" name="404 Not Found" component={Public} />
           </Switch>

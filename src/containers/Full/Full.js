@@ -4,14 +4,25 @@ import { connect } from 'react-redux'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import { setCookie, setSupersetCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
-import { prova, loginAction, isValidToken, receiveLogin, getApplicationCookie, logout, fetchNotifications, fetchNewNotifications, search, getSupersetUrl, datasetDetail, querySearch } from './../../actions.js'
+import { 
+  receiveDatastory, 
+  loginAction, 
+  isValidToken, 
+  receiveLogin, 
+  getApplicationCookie, 
+  logout, 
+  fetchNotifications, 
+  fetchNewNotifications, 
+  search, 
+  getSupersetUrl, 
+  datasetDetail, 
+  querySearch 
+} from './../../actions.js'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -33,6 +44,8 @@ import Users from '../../views/Settings/Users';
 import Widgets from '../../views/Widgets/Widgets';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import CreateWidget from '../../views/Widgets/CreateWidget'
+import Messages from '../../views/Messages/Messages'
+import EditTTL from '../../views/Messages/EditTTL'
 
 
 import { serviceurl } from '../../config/serviceurl'
@@ -44,7 +57,7 @@ import Ontologies from '../../semantics/containers/Ontologies.js'
 import Ontology from '../../semantics/containers/Ontology.js'
 import Validator from '../../semantics/containers/Validator.js'
 import IngestionWizardNewAdvanced from '../../views/IngestionWizard/IngestionWizardNewAdvanced';
-import Dashboard from '../../views/Dashboards/Dashboard';
+import DatastoryManager from '../../views/Dashboards/DatastoryManager';
 
 const publicVapidKey = 'BI28-LsMRvryKklb9uk84wCwzfyiCYtb8cTrIgkXtP3EYlnwq7jPzOyhda1OdyCd1jqvrJZU06xHSWSxV1eZ_0o';
 
@@ -178,19 +191,14 @@ class Full extends Component {
     this.state = {
       open: false,
       isOpenStory: false,
-      isOpenDash: false,
       isOpenWidget: false,
-      pvtStory: '0',
-      orgStory: '',
-      pvtDash: '0',
-      orgDash: '',
+      title: '',
+      subtitle: '',
+      org: '',
       widgetOrg: '',
       pvtWidget: '0',
       widgetTool: '0',
       widgetDataset: '',
-      validationMSg: 'Campo obbligatorio',
-      validationMSgOrg: 'Campo obbligatorio',
-      errorMSgTable: false,
       authed: false,
       loading: true,
       iframe: '',
@@ -205,15 +213,12 @@ class Full extends Component {
     this.openModalWidget = this.openModalWidget.bind(this)
     this.hideModalWidget = this.hideModalWidget.bind(this)
     this.handleSaveStory = this.handleSaveStory.bind(this)
-    this.openModalDash = this.openModalDash.bind(this)
     this.openModalWidget = this.openModalWidget.bind(this)
-    this.hideModalDash = this.hideModalDash.bind(this)
-    this.handleSaveDash = this.handleSaveDash.bind(this)
     this.handleSaveWidget = this.handleSaveWidget.bind(this)
     this.startPoll = this.startPoll.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { dispatch } = this.props
     if (this.props.newNotifications !== nextProps.newNotifications) {
       clearTimeout(this.timeout);
@@ -270,6 +275,7 @@ class Full extends Component {
   componentDidMount() {
     
     const { dispatch } = this.props
+
     listenMessage(dispatch)
     if (this.props.loggedUser && this.props.loggedUser.mail) {
       this.setState({
@@ -286,67 +292,51 @@ class Full extends Component {
         dispatch(isValidToken(localStorage.getItem('token')))
         .then(ok => {
           if (ok) {
-                dispatch(getApplicationCookie('superset'))
-                .then(json => {
-                  if (json) {
-                    setSupersetCookie(json)
-                  }
-                })
-                dispatch(getApplicationCookie('metabase'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                })
-                /*dispatch(getApplicationCookie('jupyter'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                })*/
-                /* dispatch(getApplicationCookie('grafana'))
-                .then(json => {
-                  if (json) {
-                    setCookie(json)
-                  }
-                })*/ 
-                dispatch(loginAction())
-                .then(response => {
-                  if (response.ok) {
-                    response.json().then(json => {
-                      dispatch(receiveLogin(json))
-                      this.setState({
-                          authed: true,
-                          loading: false
-                        })
-                        askPermission(this.props.loggedUser.uid)
-                        dispatch(fetchNewNotifications(localStorage.getItem('user')))
-                        dispatch(fetchNotifications(this.props.loggedUser.uid, 20))
-                  })
-                }else{
-                  console.log('Login Action Response: ' + response.statusText)
+            dispatch(getApplicationCookie('superset'))
+            .then(json => {
+              if (json) {
+                setSupersetCookie(json)
+              }
+            })
+            /* dispatch(getApplicationCookie('metabase'))
+            .then(json => {
+              if (json) {
+                setCookie(json)
+              }
+            }) */
+            /*dispatch(getApplicationCookie('jupyter'))
+            .then(json => {
+              if (json) {
+                setCookie(json)
+              }
+            })*/
+            /* dispatch(getApplicationCookie('grafana'))
+            .then(json => {
+              if (json) {
+                setCookie(json)
+              }
+            })*/ 
+            dispatch(loginAction())
+            .then(response => {
+              if (response.ok) {
+                response.json().then(json => {
+                  dispatch(receiveLogin(json))
+                  askPermission(json.uid)
                   this.setState({
-                    authed: false,
+                    authed: true,
                     loading: false
                   })
-                  this.props.history.push('/login?' + window.location)
-                }})
-              } else {
+                  dispatch(fetchNewNotifications(localStorage.getItem('user')))
+                  dispatch(fetchNotifications(json.uid, 20))
+                })
+              }else{
+                console.log('Login Action Response: ' + response.statusText)
                 this.setState({
                   authed: false,
                   loading: false
                 })
-                logout();
                 this.props.history.push('/login?' + window.location)
               }
-            })
-            .catch((error) => {
-              this.setState({
-                authed: false,
-                loading: false
-              })
-              logout();
-              this.props.history.push('/login?' + window.location)
             })
           } else {
             this.setState({
@@ -356,20 +346,30 @@ class Full extends Component {
             logout();
             this.props.history.push('/login?' + window.location)
           }
-        }
+        })
+        .catch((error) => {
+          this.setState({
+            authed: false,
+            loading: false
+          })
+          logout();
+          this.props.history.push('/login?' + window.location)
+        })
+      } else {
+        this.setState({
+          authed: false,
+          loading: false
+        })
+        logout();
+        this.props.history.push('/login?' + window.location)
+      }
+    }
   }
 
   openSearch(){
     this.setState({
       open: !this.state.open
     })
-  }
-
-  onPvtChangeStory(e, value){
-    this.setState({
-        pvtStory: value
-    });
-    this.validateStory(e);
   }
 
   onPvtChangeWidget(e, value){
@@ -421,13 +421,6 @@ class Full extends Component {
     this.validateWidget(e);
   }
 
-  onOrganizationChangeStory(e, value){
-    this.setState({
-      orgStory: value
-    });
-    this.validateStory(e);
-  }
-
   onOrganizationChangeWidget(e, value){
     const { dispatch } = this.props
     this.setState({
@@ -459,20 +452,6 @@ class Full extends Component {
     })
     .catch(error=>{console.log('Errore nel caricamento dei dataset: ' + error)})
     this.validateWidget(e);
-  }
-
-  onPvtChangeDash(e, value){
-    this.setState({
-        pvtDash: value
-    });
-    this.validateDash(e);
-  }
-
-  onOrganizationChangeDash(e, value){
-    this.setState({
-      orgDash: value
-    });
-    this.validateDash(e);
   }
 
   onDatasetChangeWidget(e, value){
@@ -539,47 +518,23 @@ class Full extends Component {
       });
     }
   }
-
-  validateDash = (e) => {
-    e.preventDefault()
-    if(!this.titleDash.value){
-      this.setState({
-        validationMSg: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSg: null
-      });
-    }
-
-    if(!this.orgDash || this.orgDash.value == ''){
-      this.setState({
-        validationMSgOrg: 'Campo obbligatorio'
-      });
-    }else{
-      this.setState({
-        validationMSgOrg: null
-      });
-    }
-  }
   
   openModalStory = () => {
     this.setState({
-      isOpenStory: true
-    });
-
-    this.titleStory.value = ''
-    this.pvtStory.value = 0
-    this.orgStory.value = ''
-    this.setState({
-      validationMSgOrg: 'Campo obbligatorio',
-      validationMSg: 'Campo obbligatorio'
+      isOpenStory: true,
+      title: '',
+      subtitle: '',
+      org: ''
     });
   };
   
   hideModalStory = () => {
     this.setState({
-      isOpenStory: false
+      isOpenStory: false,
+      isOpenStory: true,
+      title: '',
+      subtitle: '',
+      org: ''
     });
   };
 
@@ -621,63 +576,41 @@ class Full extends Component {
     dispatch(datasetDetail(this.state.widgetDataset,'', false))
   };
 
-  openModalDash = () => {
-    this.setState({
-      isOpenDash: true
-    });
-
-    this.titleDash.value = ''
-    this.pvtDash.value = 0
-    this.orgDash.value = ''
-    this.setState({
-      validationMSgOrg: 'Campo obbligatorio',
-      validationMSg: 'Campo obbligatorio'
-    });
-  };
-  
-  hideModalDash = () => {
-    this.setState({
-      isOpenDash: false
-    });
-  };
-
   /**
   * Save Story
   */
   handleSaveStory = (e) => {
-    e.preventDefault()
-    if(this.titleStory.value){
-      if(!this.orgStory || this.orgStory.value == ''){
-        this.setState({
-          validationMSgOrg: 'Campo obbligatorio'
-        });
-      }else{
-        let layout = { rows: [] };
-        let widgets = {};
-        //save data
-        let request = {
-          title: this.titleStory.value,
-          pvt: this.state.pvtStory,
-          org: this.state.orgStory,
-          layout: JSON.stringify(layout),
-          widgets: JSON.stringify(widgets),
-          published: 0
-        };
-/*         userStoryService.save(request).then((data)=> {
-            this.props.history.push('/userstory/list/'+ data.message + '/edit');
-        }); */
-        this.props.history.push({
-          'pathname':'/private/userstory/create',
-          'story': request,
-          'modified':true
-        })
-        console.log(request)
-        this.hideModalStory();
-      }
-    }else{
+    const { title, subtitle, org } = this.state
+    const { dispatch, loggedUser } = this.props
+
+    var organization = org
+    
+    if(loggedUser.organizations.length === 0){
+      organization = 'open_data_group'
+    }
+
+    if(title.length>0 && organization.length>0){
+      //save data
+      let request = {
+        title: title,
+        subtitle: subtitle,
+        org: org,
+        layout: [],
+        widgets: [],
+        status: 0
+      };
+      dispatch(receiveDatastory(request))
       this.setState({
-          validationMSg: 'Campo obbligatorio'
-        });
+        isOpenStory: false,
+        title: '',
+        subtitle: '',
+        org: ''
+      })
+
+      this.props.history.push({
+        'pathname':'/private/datastory/create',
+        'modified':true
+      })
     }
   }
 
@@ -703,45 +636,6 @@ class Full extends Component {
       }
     })
   }
-  
-  handleSaveDash = (e) => {
-    e.preventDefault()
-
-    if(this.titleDash.value){
-      if(!this.orgDash || this.orgDash.value == ''){
-        this.setState({
-          validationMSgOrg: 'Campo obbligatorio'
-        });
-      }else{
-        //prepara data
-        let layout = { rows: [] };
-        let widgets = {};
-        let request = {
-          title : this.titleDash.value,
-          pvt: this.state.pvtDash,
-          org: this.state.orgDash,
-          subtitle : this.subtitleDash.value,
-          layout : JSON.stringify(layout),
-          widgets : JSON.stringify(widgets),
-          status: 0
-        };
-        
-        this.props.history.push({
-          pathname: '/private/dashboard/create',
-          state: { 'dash': request, 'modified':true }})
-        
-        this.hideModalDash();
-/*         //save data
-        dashboardService.save(request).then((data)=> {
-            this.props.history.push('/dashboard/list/'+ data.message + '/edit');
-        }) */
-      }
-    } else {
-      this.setState({
-        validationMSg: 'Campo obbligatorio'
-      });
-    }
-  }
 
   render() {
     const { history, loggedUser, results } = this.props
@@ -754,11 +648,12 @@ class Full extends Component {
     let home = ''
     let paddingTop = 'pt-3'
 
-    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || window.location.hash.indexOf('private/widget')!==-1 || window.location.hash.indexOf('private/vocabularies')!==-1 || window.location.hash.indexOf('private/ontologies')!==-1 || window.location.hash.indexOf('private/notifications')!==-1)
+    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || 
+        window.location.hash.indexOf('private/widget')!==-1 || 
+        window.location.hash.indexOf('private/vocabularies')!==-1 || 
+        window.location.hash.indexOf('private/ontologies')!==-1 || 
+        window.location.hash.indexOf('private/notifications')!==-1)
       mainDiv='bg-light'
-    
-    if (window.location.hash.indexOf('/private/userstory/list/')!==-1)
-      mainDiv='bg-white'
       
     if (window.location.hash.indexOf('/private/home')!==-1 || window.location.hash.indexOf('/private/search')!==-1 || window.location.hash.indexOf('/private/dataset')!==-1)
       home = 'p-0'
@@ -776,57 +671,50 @@ class Full extends Component {
       { this.state.loading && (<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>)} 
       {!this.state.loading && <div className="app aside-menu-show">
       {/* Modal per creazione nuova Storia */}
-      {loggedUser && <Modal isOpen={this.state.isOpenStory} onRequestHide={this.hideModalStory}>
+      {loggedUser && <Modal isOpen={this.state.isOpenStory} toggle={this.hideModalStory}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Crea una Storia</ModalTitle>
-              <ModalClose onClick={this.hideModalStory}/>
+            <ModalHeader toggle={this.hideModalStory}>
+              Crea una Storia
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Titolo</label>
-                  <div className="col-md-8">
-                    <input type="text" className="form-control" ref={(titleStory) => this.titleStory = titleStory} onChange={this.validateStory.bind(this)} id="title" placeholder="Titolo"/>
-                    {this.state.validationMSg && <span>{this.state.validationMSg}</span>}
+                  <div className="col-md-9">
+                    <input type="text" className={"form-control "+(this.state.title.length===0?'is-invalid':'')} onChange={(e)=> this.setState({title: e.target.value})} value={this.state.title} placeholder="Titolo"/>
+                    {this.state.title.length===0&&<span className="text-danger">Campo Obbligatorio</span>}
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Privata</label>
-                  <div className="col-md-8">
-                  {loggedUser.organizations && loggedUser.organizations.length > 0 ?
-                    <select className="form-control" ref={(pvtStory) => this.pvtStory = pvtStory} onChange= {(e) => this.onPvtChangeStory(e, e.target.value)} id="pvt" >
-                      <option value="0" defaultValue key="0">No</option>
-                      <option value="1" key='1'>Si</option>
-                    </select>
-                    :
-                    <div>
-                      <select className="form-control" ref={(pvtStory) => this.pvtStory = pvtStory} onChange= {(e) => this.onPvtChangeStory(e, e.target.value)} id="pvt" >
-                      <option value="0" defaultValue key="0">No</option>
-                      </select>
-                      <span>Puoi creare soltanto storie pubbliche in quanto non hai nessuna organizzazione associata</span>
-                    </div>
-                  }
+                  <label className="col-md-2 form-control-label">Sottotitolo</label>
+                  <div className="col-md-9">
+                    <input type="text" className="form-control" onChange={(e)=> this.setState({subtitle: e.target.value})} value={this.state.subtitle} placeholder="Sottotitolo"/>
                   </div>
                 </div>
                 <div className="form-group row">
                   <label className="col-md-2 form-control-label">Organizzazione</label>
-                  <div className="col-md-8">
-                    <select className="form-control" ref={(orgStory) => this.orgStory = orgStory} onChange= {(e) => this.onOrganizationChangeStory(e, e.target.value)} id="org" >
+                  {loggedUser.organizations && loggedUser.organizations.length > 0 &&<div className="col-md-9">
+                    <select className={"form-control "+(this.state.org.length===0?'is-invalid':'')} placeholder="Seleziona l'organizzazione" onChange= {(e) => this.setState({org: e.target.value})} value={this.state.org} >
                         <option value=""  key='organization' defaultValue></option>
-                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
+                        {loggedUser.organizations.map(organization => {
                               return(
                                 <option value={organization} key={organization}>{organization}</option>)
                           }
                         )}
                     </select>
-                    {this.state.validationMSgOrg && <span>{this.state.validationMSgOrg}</span>}
-                  </div>
+                    
+                    {this.state.org.length===0 && <span className="text-danger">Campo Obbligatorio</span>}
+                  </div>}
+                  {
+                      !loggedUser.organizations || loggedUser.organizations.length === 0 && <div className="col-md-9">
+                          La tua datastory sarà associata all'organizzazione di default per gli OpenData
+                        </div>
+                    }
                 </div>
             </div>
             </ModalBody>
             <ModalFooter>
-              <button type="button" className='btn btn-gray-200' onClick={this.hideModalStory}>
+              <button type="button" className='btn btn-gray-200' onClick={()=>this.setState({isOpenStory: false})}>
                 Chiudi
               </button>
               <button type="button" className="btn btn-primary px-2" onClick={this.handleSaveStory.bind(this)}>
@@ -839,11 +727,10 @@ class Full extends Component {
 
         {/* Modal per creazione nuova Dash */}
 
-        {loggedUser && <Modal isOpen={this.state.isOpenDash} onRequestHide={this.hideModalDash}>
+        {/* loggedUser && <Modal isOpen={this.state.isOpenDash} toggle={this.hideModalDash}>
           <form>
-            <ModalHeader>
-              <ModalTitle>Crea una Dashboard</ModalTitle>
-              <ModalClose onClick={this.hideModalDash}/>
+            <ModalHeader toggle={this.hideModalDash}>
+              Crea una Dashboard
             </ModalHeader>
             <ModalBody>
             <div className="form-group">
@@ -903,114 +790,7 @@ class Full extends Component {
               </button>
             </ModalFooter>
           </form>
-        </Modal>}
-
-        {/* Modal per creazione nuovo Widget */}
-
-        {/* {loggedUser && <Modal isOpen={this.state.isOpenWidget} onRequestHide={this.hideModalWidget}>
-          <form>
-            <ModalHeader>
-              <ModalTitle>Crea un Widget</ModalTitle>
-              <ModalClose onClick={this.hideModalWidget}/>
-            </ModalHeader>
-            <ModalBody>
-            <div className="form-group">
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Strumento</label>
-                  <div className="col-md-8">
-                    <select className="form-control" ref={(widgetTool) => this.widgetTool = widgetTool} onChange={(e) => this.onChangeWidgetTool(e, e.target.value)} id="widgetTool" >
-                      <option value="0" defaultValue key="0">Superset</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Dataset Privato</label>
-                  <div className="col-md-8">
-                  {loggedUser.organizations && loggedUser.organizations.length > 0 ?
-                    <select className="form-control" ref={(pvtWidget) => this.pvtWidget = pvtWidget} onChange={(e) => this.onPvtChangeWidget(e, e.target.value)} id="pvtWidget" >
-                      <option value="" defaultValue></option>
-                      <option value="0" key="0">No</option>
-                      <option value="1" key='1'>Si</option>
-                    </select>
-                    :
-                    <div>
-                      <select className="form-control" ref={(pvtWidget) => this.pvtWidget = pvtWidget} onChange={(e) => this.onPvtChangeWidget(e, e.target.value)} id="pvtWidget" >
-                        <option value="0" defaultValue key="0">No</option>
-                      </select>
-                      <span>Puoi creare soltanto widget con dataset pubblici in quanto non hai nessuna organizzazione associata</span>
-                    </div>
-                  }
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Organizzazione</label>
-                  <div className="col-md-8">
-                    {this.state.pvtWidget==1?
-                    <select className="form-control" ref={(widgetOrg) => this.widgetOrg = widgetOrg} onChange={(e) => this.onOrganizationChangeWidget(e, e.target.value)} id="widgetOrg" disabled={this.state.pvtWidget==='' || allOrganizations.length===0}>
-                        <option value=""  key='widgetOrg' defaultValue></option>
-                        {loggedUser.organizations && loggedUser.organizations.length > 0 && loggedUser.organizations.map(organization => {
-                            return (<option value={organization} key={organization}>{organization}</option>)
-                        })
-                        }
-                    </select>
-                    :
-                    <select className="form-control" ref={(widgetOrg) => this.widgetOrg = widgetOrg} onChange={(e) => this.onOrganizationChangeWidget(e, e.target.value)} id="widgetOrg" disabled={this.state.pvtWidget===''}>
-                        <option value=""  key='widgetOrg' defaultValue></option>
-                        {allOrganizations && allOrganizations.length > 0 && allOrganizations.map(organization => {
-                            return (<option value={organization} key={organization}>{organization}</option>)
-                        })
-                        }
-                    </select>
-                    }
-                    {this.state.validationMSgOrgWidget && <span>{this.state.validationMSgOrgWidget}</span>}
-                  </div>
-                </div>
-                {this.state.widgetOrg && this.state.widgetOrg!='' &&
-                <div className="form-group row">
-                  <label className="col-md-2 form-control-label">Dataset</label>
-                  {results && results.length>4?
-                    <div className="col-md-8">
-                      <select className="form-control" ref={(widgetDataset) => this.widgetDataset = widgetDataset} onChange={(e) => this.onDatasetChangeWidget(e, e.target.value)} id="widgetDataset" >
-                          <option value=""  key='widgetDataset' defaultValue></option>
-                          {results.map(result => {
-                              if(result.type=='catalog_test'){
-                                var source = JSON.parse(result.source)
-                                return (<option value={source.dcatapit.name} key={source.dcatapit.name}>{source.dcatapit.name}</option>)
-                              }else if(result.type=='ext_opendata'){
-                                var source = JSON.parse(result.source)
-                                return (<option value={source.name} key={source.name}>{source.name}</option>)
-                              }
-                          })
-                          }
-                      </select>
-                      {this.state.validationMSgDataset && <span>{this.state.validationMSgDataset}</span>}
-                    </div>
-                    :
-                    <div className="col-md-8">
-                      <span className="text-danger">Non è stato trovato nessun dataset per i criteri selezionati.</span>
-                    </div>
-                    }
-                </div>
-                }
-                <div className="form-group row">
-                    <label className="col-md-2 form-control-label"></label>
-                    <div className="col-md-8">
-                      {this.state.errorMSgTable && <span className="text-danger">Non è possibile creare un widget con il dataset selezionato. Clicca  <button type="button" className='btn btn-link px-0 btn-lg' onClick={this.hideModalWidgetAndRedirect}>qui</button> per verificare che sia stato caricato e condiviso all'interno dell'organizzazione selezionata.</span>}
-                    </div>
-                </div>
-            </div>
-            </ModalBody>
-            <ModalFooter>
-              <button type="button" className='btn btn-gray-200' onClick={this.hideModalWidget}>
-                Chiudi
-              </button>
-              <button type="button" className="btn btn-primary px-2" disabled={!(this.state.widgetDataset && this.state.widgetDataset!='')} onClick={this.handleSaveWidget.bind(this)}>
-                <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                  Crea
-              </button>
-            </ModalFooter>
-          </form>
-        </Modal>} */}
+        </Modal> */}
 
         <Header history={history} openSearch={this.openSearch} openModalStory={this.openModalStory} openModalDash={this.openModalDash} openModalWidget={this.openModalWidget} />
         <div className="app-body">
@@ -1039,10 +819,12 @@ class Full extends Component {
                 <PrivateRoute authed={this.state.authed} exact path="/private/dataset/:id" name="Dataset Detail" component={DatasetDetail} />
                 <PrivateRoute authed={this.state.authed} path="/private/profile" name="Profile" component={Profile} />
                 <PrivateRoute authed={this.state.authed} path="/private/charts" name="Test" component={CreateWidget} />
-                <PrivateRoute authed={this.state.authed} path="/private/newdashboards" name="Test" component={Dashboard} />
+                <PrivateRoute authed={this.state.authed} path="/private/datastory" name="Data story" component={DatastoryManager} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/settings" name="Settings" component={Settings} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/organizations" name="Organizations" component={Organizations} />
                 <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/users" name="Users" component={Users} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/messages" name="Messaggi" component={Messages} />
+                <PrivateRouteAdmin authed={this.state.authed} loggedUser={loggedUser} path="/private/editTTL" name="editTTL" component={EditTTL} />
                 <Redirect from="/private" to="/private/home"/>
               </Switch>
             </div>

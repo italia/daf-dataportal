@@ -32,7 +32,7 @@ class EditBarTop extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       title : nextProps.title,
       id : nextProps.id

@@ -23,7 +23,6 @@ class Header extends Component {
 			this.toggleSearch = this.toggleSearch.bind(this)
 			this.toggleCrea = this.toggleCrea.bind(this)
 			this.mobileSidebarToggle = this.mobileSidebarToggle.bind(this)
-			this.createDash = this.createDash.bind(this)
 			// this.createWidget = this.createWidget.bind(this)
       this.createStory = this.createStory.bind(this)
       this.closeMenu = this.closeMenu.bind(this)
@@ -43,7 +42,7 @@ class Header extends Component {
       this.pushToPublic = this.pushToPublic.bind(this)
 		}
   
-    componentWillReceiveProps(nextProps){
+    UNSAFE_componentWillReceiveProps(nextProps){
       
       if(nextProps.notifications){
         var unreadNot = nextProps.notifications.filter(notification =>{
@@ -140,15 +139,6 @@ class Header extends Component {
 			this.props.history.push('/private/crea')
 		}
 
-		createDash(){
-			/* this.props.history.push({
-				pathname: '/dashboard/list',
-				state: { 'isOpen': true }
-			}) */
-			this.props.openModalDash();
-			this.toggleCrea()
-		}
-
 		createWidget(){
 			this.props.history.push('/private/charts');
 			this.toggleCrea()
@@ -219,6 +209,16 @@ class Header extends Component {
 			let crea = this.state.crea ? "show" : ""
 			var navigation = this.state.navigation?" active":""
 			var show = this.state.navigation?" show":"" 
+
+			var iconStyle = {
+				display: 'inline-block',
+				width: '20px',
+				marginRight: '10px',
+				marginLeft: '-10px',
+				color: '#c2cfd6',
+				textAlign: 'center',
+			}
+
 			return (
 				<header className="app-header navbar border-0">
 				<button className="nav-link navbar-toggler sidebar-toggler d-lg-none" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
@@ -226,7 +226,7 @@ class Header extends Component {
 					
 				<ul className="nav navbar-nav d-md-down-none mr-auto">
 					<li className="nav-item brand">
-					<Link className="h-100 font-2xl" to={'/private/home'}><img className="img-logo mb-1 pr-3" src="./img/DAF_pittogramma_FU.svg" alt=""/><span className="pl-3 font-weight-bold">PDND {properties.headerSiglaTool}</span></Link>
+						<Link className="h-100 font-2xl" to={'/private/home'}><img className="img-logo mb-1 pr-3" src="./img/DAF_pittogramma_FU.svg" alt=""/><span className="pl-3 font-weight-bold">PDND {properties.headerSiglaTool}</span></Link>
 					</li>
 	{/*           <div className={"search-bar " + revealed}>
 							<form onSubmit={this.handleLoadDatasetClick}>
@@ -247,10 +247,10 @@ class Header extends Component {
 								<button className="w-100 h-100 btn btn-header" onClick={/* this.crea.bind(this) */this.toggleCrea}><i className="fa fa-plus fa-lg"/></button>
 								<div className={"dropdown-menu m-0 dropdown-menu-right "+ crea} aria-labelledby="dropdownMenuButton">
 									<h6 className="dropdown-header text-center"><b>Crea</b></h6>
-									{(isEditor(loggedUser) || isAdmin(loggedUser)) && <button className="dropdown-item" onClick={()=> { const{ dispatch } = this.props; dispatch(reset('wizard')); this.props.history.push('/private/ingestionwizzard'); this.toggleCrea}}><i className="fa fa-table"></i> Nuovo Dataset</button>}
+									{(isEditor(loggedUser) || isAdmin(loggedUser)) && <button className="dropdown-item" onClick={()=> { const{ dispatch } = this.props; dispatch(reset('wizard')); this.props.history.push('/private/ingestionwizzard'); this.toggleCrea}}><i className="fa fa-table" style={iconStyle}></i> Nuovo Dataset</button>}
 									{/* <button className="dropdown-item" onClick={this.createWidget} ><i className="fa fa-chart-bar"></i> Nuovo Widget</button> */}
-									<button className="dropdown-item" onClick={this.createDash} ><i className="fa fa-columns"></i> Nuova Dashboard</button>
-									<button className="dropdown-item" onClick={this.createStory} ><i className="fa fa-font"></i> Nuova Storia</button>
+									{/* <button className="dropdown-item" onClick={this.createDash} ><i className="fa fa-columns" style={iconStyle}></i> Nuova Dashboard</button> */}
+									<button className="dropdown-item" onClick={this.createStory} ><i className="fa fa-font" style={iconStyle}></i> Nuova Datastory</button>
 							</div>
 						</div>
 						{/* <button className="w-100 h-100 btn btn-header" onClick={this.crea.bind(this)}><i className="fa fa-plus fa-lg"/></button> */}
@@ -271,8 +271,8 @@ class Header extends Component {
 								</a>
 								<div className={"dropdown-menu dropdown-menu-right "+ open} aria-labelledby="dropdownMenuButton">
 									<h6 className="dropdown-header text-center"><b>{loggedUser ? loggedUser.givenname : ''}</b></h6>
-									<a className="dropdown-item" href="/#/private/profile" onClick={this.toggle}><i className="fa fa-user"></i> Profilo</a>
-									<a className="dropdown-item" onClick={() => { logout(); this.toggle }} href="/"><i className="fa fa-lock"></i> Logout</a>
+									<a className="dropdown-item" href="/#/private/profile" onClick={this.toggle}><i className="fa fa-user" style={iconStyle}></i> Profilo</a>
+									<a className="dropdown-item" onClick={() => { logout(); this.toggle }} href="/"><i className="fa fa-lock" style={iconStyle}></i> Logout</a>
 							</div>
 						</div>
 					</li>
@@ -283,7 +283,7 @@ class Header extends Component {
 						<button className={"h-100 btn btn-accento"+navigation} id="dropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" onClick={this.toggleNav.bind(this)}><p className="m-0 p-0 d-md-down-none float-left">Area Privata</p><i className="float-left fa fa-lock fa-lg d-lg-none"/> <i className="fa fa-sort-down ml-2 align-top"/></button>
 							<div className={"dropdown-menu dropdown-menu-right m-0" + show} aria-labelledby="dropdownMenuButton">
 								<h6 className="dropdown-header bg-white"><b>VAI A</b></h6>
-								<button className="dropdown-item bg-light b-l-pvt border-primary pr-5" onClick={this.pushToPublic}>
+								<button className="dropdown-item bg-light b-l-pvt border-primary pr-5" onClick={this.pushToPublic.bind(this)}>
 										<div className="row">
 												<h5 className="col-1 pl-0"><FontAwesomeIcon icon={faGlobe} className="mx-2"/></h5>
 												<div className="row col-11 ml-1">

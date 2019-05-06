@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { isAdmin } from '../../utility';
 import {
     Modal,
-} from 'react-modal-bootstrap'
+} from 'reactstrap'
 import themes from './data/Themes'
 import Select from "react-select";
 import { serviceurl } from '../../config/serviceurl'
@@ -287,7 +287,7 @@ class Settings extends Component {
                 showDiv: false
             })
         }
-        this.load(newValue)
+        this.load(newValue.value)
     }
 
     addDomain(){
@@ -328,7 +328,8 @@ class Settings extends Component {
             <Modal
                 contentLabel="Seleziona un tema"
                 className="Modal__Bootstrap modal-dialog modal-80"
-                isOpen={this.state.isOpen}>
+                isOpen={this.state.isOpen}
+                toggle={this.hideModal.bind(this)}>
                 <div className="modal-content">
                     <div className="modal-header">
                         <button type="button" className="close" onClick={this.hideModal.bind(this)}>
@@ -428,14 +429,14 @@ class Settings extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                        <label className="col-2 col-form-label"><i className="fa fa-twitter"></i>{" "}Twitter</label>
+                                        <label className="col-2 col-form-label"><i className="fab fa-twitter"></i>{" "}Twitter</label>
                                     <div className="col-10">
                                         <input className="form-control" type="text" value={this.state.twitter} 
                                             onChange={(e) => this.onTwitterChange(e.target.value)}/>
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                        <label className="col-2 col-form-label"><i className="fa fa-medium"></i>{" "}Medium</label>
+                                        <label className="col-2 col-form-label"><i className="fab fa-medium"></i>{" "}Medium</label>
                                     <div className="col-10">
                                         <input className="form-control" type="search" value={this.state.medium} 
                                             onChange={(e) => this.onMediumChange(e.target.value)}/>

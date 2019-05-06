@@ -15,23 +15,28 @@ function checkDate(timestamp) {
   var day = date.getDate();
   var year = date.getFullYear()
 
-  var stampfrom = timestamp.substring(0,10)
-  var datefrom = stampfrom.split('-')
-  var yearFrom = parseInt(datefrom[0])
-  var monthFrom = parseInt(datefrom[1])
-  var dayFrom = parseInt(datefrom[2])
+  if(timestamp){
+    var stampfrom = timestamp.substring(0,10)
+    var datefrom = stampfrom.split('-')
+    var yearFrom = parseInt(datefrom[0])
+    var monthFrom = parseInt(datefrom[1])
+    var dayFrom = parseInt(datefrom[2])
 
-  if(year - yearFrom > 0){
-    return "Più di un anno fa"
-  }else if(month - monthFrom > 0){
-    return("Più di un mese fa")
-  }else if( day - dayFrom === 0){
-    return "Oggi"
-  }else if( day - dayFrom > 0 && day - dayFrom < 8){
-    return (day - dayFrom===1? "1 giorno fa": (day - dayFrom + " giorni fa"))
-  }else if( day - dayFrom > 7){
-    return "Più di una settimana fa"
-  } 
+
+    if(year - yearFrom > 0){
+      return "Più di un anno fa"
+    }else if(month - monthFrom > 0){
+      return("Più di un mese fa")
+    }else if( day - dayFrom === 0){
+      return "Oggi"
+    }else if( day - dayFrom > 0 && day - dayFrom < 8){
+      return (day - dayFrom===1? "1 giorno fa": (day - dayFrom + " giorni fa"))
+    }else if( day - dayFrom > 7){
+      return "Più di una settimana fa"
+    }
+  }else{
+    return "Tempo indefinito"
+  }
 }
 
 class Notifications extends Component{
@@ -42,11 +47,13 @@ class Notifications extends Component{
       checkedOk: true,
       checkedErr: true,
       checkedGeneric: true,
+      checkedSystem : true
     }
 
     this.toggleOk = this.toggleOk.bind(this)
     this.toggleErr = this.toggleErr.bind(this)
     this.toggleGeneric = this.toggleGeneric.bind(this)
+    this.toggleSystem = this.toggleSystem.bind(this)
     
   }
 
@@ -88,8 +95,14 @@ class Notifications extends Component{
     })
   }
 
+  toggleSystem(){
+    this.setState({
+      checkedSystem: !this.state.checkedSystem
+    })
+  }
+
   render(){
-    const { notifications, checkedErr, checkedOk, checkedGeneric } = this.state
+    const { notifications, checkedErr, checkedOk, checkedGeneric, checkedSystem } = this.state
     return(
       <div className="container body">
         <div className="main_container">
@@ -119,60 +132,79 @@ class Notifications extends Component{
           <span className="switch-label"></span>
           <span className="switch-handle"></span>
         </label>
+        <i className="fas fa-info-circle text-warning mr-2 fa-lg"/>
+        <label className="switch switch-3d switch-warning mr-3 mb-4">
+          <input type="checkbox" className="switch-input" checked={checkedSystem} onClick={this.toggleSystem}/>
+          <span className="switch-label"></span>
+          <span className="switch-handle"></span>
+        </label>
+        
         <div className="list-group mb-5">
           { notifications && notifications.length > 0 &&
           notifications.map(function(notification, index){
             switch(notification.notificationtype){
-              case 'kylo_feed':
+              case 'success':
                 if(checkedOk)
                   return (
                   <Link to={'/private/dataset/'+notification.info.name} className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
                     <div className="d-flex w-100 justify-content-between">
                       <h5 className="mb-1"><i className="fas fa-check-circle text-success mr-2"/>Creazione avvenuta con successo</h5>
-                      <small>{checkDate(notification.timestamp)}</small>
+                      <small>{checkDate(notification.createDate)}</small>
                     </div>
                     <p className="mb-1">Il dataset <b>{notification.info.title}</b> è stato creato correttamente</p>
-                    <small>{convertNotificationTime(notification.timestamp)}</small>
+                    <small>{convertNotificationTime(notification.createDate)}</small>
                   </Link>)
                 break
-              case 'kylo_feed_error':
-                if(checkedErr)
-                  return(
-                    <a href="#" className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
-                      <div className="d-flex w-100 justify-content-between">
-                        <h5 className="mb-1"><i className="fas fa-exclamation-circle text-danger mr-2"/>Creazione andata in errore</h5>
-                        <small>{checkDate(notification.timestamp)}</small>
-                      </div>
-                      <p className="mb-1">C'è stato un problema nella creazione del dataset <b>{notification.info.title}</b>: {notification.info.errors}</p>
-                      <small>{convertNotificationTime(notification.timestamp)}</small>
-                    </a>
-                  )
-                break
-              case 'delete_error':
+              // case 'kylo_feed_error':
+              //   if(checkedErr)
+              //     return(
+              //       <a href="#" className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
+              //         <div className="d-flex w-100 justify-content-between">
+              //           <h5 className="mb-1"><i className="fas fa-exclamation-circle text-danger mr-2"/>Creazione andata in errore</h5>
+              //           <small>{checkDate(notification.createDate)}</small>
+              //         </div>
+              //         <p className="mb-1">C'è stato un problema nella creazione del dataset <b>{notification.info.title}</b>: {notification.info.errors}</p>
+              //         <small>{convertNotificationTime(notification.createDate)}</small>
+              //       </a>
+              //     )
+              //   break
+              case 'error':
                 if(checkedErr)
                   return(
                     <a href="#" className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
                       <div className="d-flex w-100 justify-content-between">
                         <h5 className="mb-1"><i className="fas fa-exclamation-circle text-danger mr-2"/>{notification.info.title}</h5>
-                        <small>{checkDate(notification.timestamp)}</small>
+                        <small>{checkDate(notification.createDate)}</small>
                       </div>
                       <p className="mb-1">{notification.info.description} </p>
-                      <small>{convertNotificationTime(notification.timestamp)}</small>
+                      <small>{convertNotificationTime(notification.createDate)}</small>
                     </a>
                   )
                 break
-              case 'generic':
+              case 'info':
                 if(checkedGeneric)
                   return (
                   <Link to={(notification.info.link!==null?notification.info.link:"/")} className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
                     <div className="d-flex w-100 justify-content-between">
                       <h5 className="mb-1"><i className="fas fa-info-circle text-info mr-2"/>{notification.info.title}</h5>
-                      <small>{checkDate(notification.timestamp)}</small>
+                      <small>{checkDate(notification.createDate)}</small>
                     </div>
                     <p className="mb-1">{notification.info.description}</p>
-                    <small>{convertNotificationTime(notification.timestamp)}</small>
+                    <small>{convertNotificationTime(notification.createDate)}</small>
                   </Link>)
                 break
+              case 'system':
+                if(checkedSystem)
+                  return (
+                  <div className="list-group-item list-group-item-action flex-column align-items-start" key={index}>
+                    <div className="d-flex w-100 justify-content-between">
+                      <h5 className="mb-1"><i className="fas fa-info-circle text-warning mr-2"/>{notification.info.title}</h5>
+                      <small>{checkDate(notification.createDate)}</small>
+                    </div>
+                    <p className="mb-1">{notification.info.description}</p>
+                    <small>{convertNotificationTime(notification.createDate)}</small>
+                  </div>)
+                break 
             }
           })
           }

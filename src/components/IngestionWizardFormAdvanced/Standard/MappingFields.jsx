@@ -1,7 +1,7 @@
 import React from 'react';
 import Boxable from './Boxable.jsx';
 import Box from './Box.jsx';
-import './MappingFileds.css';
+require('./MappingFileds.css');
 
 
 export default class MappingFileds extends React.Component {

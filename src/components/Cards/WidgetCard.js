@@ -108,19 +108,22 @@ class WidgetCard extends Component {
                     </div>
                     <div className="row m-0 footer-widget">
                         <div className="col-2 p-0 h-100">
-                            <div className="tool text-icon text-center bg-light b-b-card b-r-dash">
-                                {this.isSuperset() && <i className="fa fa-database py-3 pointer" title="Realizzato con Superset"/>}
-                                {this.isMetabase() && <i className="fa fa-chart-pie py-3 pointer" title="Realizzato con Metabase" />}
+                            <div className="tool text-icon text-center bg-light b-b-card b-r-dash d-flex align-items-center pointer justify-content-center">
+                                {this.isSuperset() && <i className="fa fa-database" title="Realizzato con Superset"/>}
+                                {this.isMetabase() && <i className="fa fa-chart-pie" title="Realizzato con Metabase" />}
                             </div>
                         </div>
-                        <div className="col-8 pr-0 h-100">
-                            <div title={table ? (table) : ''}>
-                                <i className="text-icon fa fa-table py-3 pr-2" /> {table ? transformDatasetName(table):''}
+                        <div className="col-8 h-100 d-flex align-items-center">
+                            <div className="mr-2" title={table ? (table) : ''}>
+                                <i className="text-icon fa fa-table" />
                             </div>
+                            {table ? transformDatasetName(table):''}
                         </div>
-                        {sp1 && <div className="col-2 p-0 h-100">
+                        {sp1 && <div className="col-2 h-100 d-flex align-items-center">
                             <Link to={'/private/dataset/'+table}>
-                                <i className="text-primary fa fa-arrow-circle-right fa-pull-right fa-lg py-3 pr-3" title="Vai al Dataset"/>
+                                <div className="text-primary">
+                                    <i className="fa fa-arrow-circle-right fa-pull-right fa-lg" title="Vai al Dataset"/>
+                                </div>
                             </Link>
                         </div>}
                     </div>

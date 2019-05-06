@@ -23,6 +23,8 @@ spec:
       labels:
         app: data-portal
     spec:
+      nodeSelector:
+        node-type: worker
       containers:
       - name: data-portal
         image: nexus.teamdigitale.test/data-portal:1.0.2-SNAPSHOT

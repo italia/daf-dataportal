@@ -8,11 +8,16 @@ import ResetPassword from '../../views/ResetPassword/ResetPassword'
 import ConfirmReset from '../../views/ResetPassword/ConfirmReset'
 import HomeHeader from '../../components/Header/Home/Header'
 
-const mapStateToProps = state => ({
-  appName: state.appName
-});
-
 class Home extends React.Component {
+
+  componentDidMount(){
+    const { loggedUser } = this.props
+  
+    if(loggedUser && loggedUser.mail){
+      this.props.history.push('/private/home')
+    }
+  }
+
   render() {
     return (
       <div className="app">
@@ -32,4 +37,9 @@ class Home extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, () => ({}))(Home);
+function mapStateToProps(state) {
+  const { loggedUser } = state.userReducer['obj'] || {}
+  return { loggedUser }
+}
+
+export default connect(mapStateToProps)(Home);

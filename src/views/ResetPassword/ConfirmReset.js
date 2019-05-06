@@ -61,8 +61,10 @@ class ConfirmReset extends Component {
     }
   
     componentDidMount() {
-        //window.addEventListener('load', this.handleSubmit);
-        /* this.handleSubmit(); */
+        
+        if(!this.token || this.token.length === 0){
+          this.props.history.push('/login')
+        }
      }
 
     handleSubmit(){
@@ -83,15 +85,18 @@ class ConfirmReset extends Component {
                     if(json.code===1){
                       toastr.error('Errore', json.message, {timeOut:0})
                       /* this.setState(setErrorMsg(json.message)) */
+                      this.setState({uploading: false})
                     }else{
                       /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
-                      toastr.error('Errore', 'Errore durante il salvataggio.', {timeOut: 0 })
+                      this.setState({uploading: false})
+                      toastr.error('Errore', 'Errore durante il processamento', {timeOut: 0 })
                     }
                   });
                 }
             }).catch((error) => {
               /* this.setState(setErrorMsg('Errore durante il salvataggio.')) */
-              toastr.error('Errore', 'Errore durante il salvataggio.')
+              this.setState({uploading: false})
+              toastr.error('Errore', 'Errore durante il processamento')
             })
           }else{
             this.setState(setErrorMsg('Le password inserite non corrispondono'))
@@ -171,7 +176,7 @@ class ConfirmReset extends Component {
                 {/* <div className="input-group mb-1">
                   <div className="g-recaptcha" data-sitekey="6LcUNjQUAAAAAG-jQyivW5xijDykXzslKqL2PMLr"></div>
                 </div> */}
-                <button type="button" className="btn btn-block btn-primary" onClick={this.handleSubmit.bind(this)}>{this.state.uploading ? <i className="fa fa-spinner fa-spin fa-lg"/>:'Cambia Password'}</button>
+                <button type="button" disabled={this.state.uploading} className="btn btn-block btn-primary" onClick={this.handleSubmit.bind(this)}>{this.state.uploading ? <div><i className="fa fa-spinner fa-spin fa-lg"/></div>:'Cambia Password'}</button>
                 <button hidden={this.state.showLink} type="button" className="btn btn-block btn-secondary" onClick={() => this.props.history.push('/login')}>Vai al login</button>
               </div>
             </div>

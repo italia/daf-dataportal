@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import {
   Modal,
   ModalHeader,
-  ModalTitle,
-  ModalClose,
   ModalBody,
   ModalFooter
-} from 'react-modal-bootstrap';
+} from 'reactstrap';
 import { toastr } from 'react-redux-toastr'
 import { querySearch, search, launchQueryOnStorage, getDatasetCatalog, receiveQueryResult, translateQueryToSQL, resetQueryResult } from '../../actions'
 import { rulesConverter, jsonToCSV } from '../../utility'
@@ -155,10 +153,11 @@ class QueryBuild extends Component {
   select(field){
     const { query } = this.state
     query.select = []
+
     field.map(campo => {
       query.select.push({"name": campo.value})
     })
-    
+
     this.setState({
       selected: field,
       aggregators: [],
@@ -319,7 +318,7 @@ class QueryBuild extends Component {
       value={groupBy?this.state.groupedBy:this.state.selected}
       onChange={groupBy?this.groupBy:this.select}
       options={fields}
-      multi={true}
+      isMulti={true}
       className="form-control"
       disabled={!this.state.isQuery}
     />
@@ -526,14 +525,11 @@ class QueryBuild extends Component {
 
     return(
       <div className={classes}>
-        <Modal isOpen={modalOpen}>
-          <ModalHeader>
-            <ModalTitle>
-              {this.state.modalType==='JOIN' && "Seleziona un dataset da mettere in JOIN"}
-              {this.state.modalType==='FROM' && "Seleziona il dataset da cui iniziare la query"}
-              {this.state.modalType==='AGGR' && "Seleziona il tipo di aggregazione e il campo da aggregare"}
-            </ModalTitle>
-            <ModalClose onClick={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:'',aggrFunction:'',fieldAggr:''})}/>
+        <Modal isOpen={modalOpen} toggle={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:'',aggrFunction:'',fieldAggr:''})}>
+          <ModalHeader toggle={()=>this.setState({modalOpen:false,modalType:'',privateWdg:'',selectedDataset:'',selectedOrg:'',aggrFunction:'',fieldAggr:''})}>
+            {this.state.modalType==='JOIN' && "Seleziona un dataset da mettere in JOIN"}
+            {this.state.modalType==='FROM' && "Seleziona il dataset da cui iniziare la query"}
+            {this.state.modalType==='AGGR' && "Seleziona il tipo di aggregazione e il campo da aggregare"}
           </ModalHeader>
           {this.state.modalType!=='AGGR' && <ModalBody>
           <div className="form-group row">
@@ -672,7 +668,7 @@ class QueryBuild extends Component {
               <div className="ml-auto">
                 <button className="btn btn-link text-primary float-right" title={this.state.datasetFrom?"Modifica il dataset da cui selezionare":"Aggiungi un dataset da cui selezionare"} 
                   onClick={(e)=>{e.preventDefault(); this.setState({modalOpen:true,modalType:'FROM',privateWdg:'',selectedDataset:'',selectedOrg:''})}}>
-                  {this.state.datasetFrom?<i className="far fa-edit fa-lg"/>:<i className="fas fa-plus-circle fa-lg"/>}
+                  {this.state.datasetFrom?<div><i className="far fa-edit fa-lg"/></div>:<div><i className="fas fa-plus-circle fa-lg"/></div>}
                 </button>
               </div>
             </div>
@@ -700,7 +696,7 @@ class QueryBuild extends Component {
                 </button>}
                 <button className="btn btn-link text-primary float-right" title={this.state.datasetJoin?"Modifica il dataset da cui fare la join":"Aggiungi un dataset con cui fare la join" }
                   onClick={(e)=>{e.preventDefault();this.setState({modalOpen:true,modalType:'JOIN',privateWdg:'',selectedDataset:'',selectedOrg:''})}}>
-                  {this.state.datasetJoin?<i className="far fa-edit fa-lg"/>:<i className="fas fa-plus-circle fa-lg"/>}
+                  {this.state.datasetJoin?<div><i className="far fa-edit fa-lg"/></div>:<div><i className="fas fa-plus-circle fa-lg"/></div>}
                 </button>
               </div>
             </div>

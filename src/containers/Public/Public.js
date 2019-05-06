@@ -11,8 +11,8 @@ import Guida from '../../views/Public/Guida/Guida';
 // import Partecipa from '../../views/Public/Partecipa/Partecipa';
 import Notizie from '../../views/Public/Notizie/NotizieList';
 import NotizieDett from '../../views/Public/Notizie/NotizieDett';
-import UserStoryList from '../../views/UserStory/components/UserStoryList.jsx';
-import UserStoryView from '../../views/UserStory/components/UserStoryView.jsx';
+// import UserStoryList from '../../views/UserStory/components/UserStoryList.jsx';
+// import UserStoryView from '../../views/UserStory/components/UserStoryView.jsx';
 import DataApplication from '../../views/Public/DataApplication/DataApplication';
 import Faqs from '../../views/Public/Faqs'
 import DatasetList from '../../views/DataseList/DatasetList'
@@ -24,6 +24,10 @@ import Vocabularies from '../../semantics/containers/Vocabularies.js'
 import Vocabulary from '../../semantics/containers/Vocabulary.js'
 import Ontologies from '../../semantics/containers/Ontologies.js'
 import Ontology from '../../semantics/containers/Ontology.js'
+import Policy from '../../views/Public/Policy/Policy';
+import Termini from '../../views/Public/Policy/Termini';
+import DatastoryList from '../../views/Dashboards/DatastoryList';
+import Dashboard from '../../views/Dashboards/Dashboard';
 
 class Public extends Component {
 
@@ -39,12 +43,11 @@ class Public extends Component {
     if(window.location.hash.indexOf('data-applications') !== -1) bg = 'bg-light'
     if(window.location.hash.indexOf('search')!==-1)
       p='py-5'
-    if(window.location.hash.indexOf('userstory/list')!==-1){
+    if(window.location.hash.indexOf('datastory/list')!==-1){
       p='py-5'
       bg='bg-light'
     }
-    if(window.location.hash.indexOf('userstory/list/')!==-1){
-      p=''
+    if(window.location.hash.indexOf('datastory/list/')!==-1){
       bg='bg-white'
     }
      if(window.location.hash.indexOf('dataset/list')!==-1)
@@ -60,13 +63,15 @@ class Public extends Component {
                 <Route path="/home" name="Home" exact component={Home} />
                 <Route path="/" name="Home" exact component={Home} />
                 <Route path="/missione" name="Missione" exact component={Missione}/>
-                <Route path="/userstory/list" name="Storie" exact component={UserStoryList}/>
-                <Route path="/userstory/list/:id" name="Dettaglio Storie" exact component={UserStoryView}/>
+                <Route path="/datastory/list" name="Storie" exact component={DatastoryList}/>
+                <Route path="/datastory/list/:id" name="Dettaglio Storie" exact component={Dashboard}/>
                 <Route path="/team" name="Chi Siamo" exact component={Team}/>
                 <Route path="/gettingstarted" name="Getting started" exact component={Guida}/>
                 {/* <Route path="/partecipa" name="Partecipa" exact component={Partecipa}/> */}
                 <Route path="/data-applications" name="Data Applications" exact component={DataApplication}/>
                 <Route path="/faqs" name="Faqs" exact component={Faqs}/>
+                <Route path="/policy" name="Policy" exact component={Policy}/>
+                <Route path="/termini" name="Termini e condizioni" exact component={Termini}/>
                 <Route path="/notizie" name="Notizie" exact component={Notizie}/>
                 <Route path="/notizie/:id" name="Dettaglio Notizie" exact component={NotizieDett}/>
                 <Route path="/dataset/list" name="Lista Dataset" exact component={DatasetList}/>
