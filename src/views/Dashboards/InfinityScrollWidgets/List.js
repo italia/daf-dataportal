@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import InfiniteScroll from '../../../components/InfinityScroll';
 import { serviceurl } from "../../../config/serviceurl";
+import WidgetCard from "../../../components/Cards/WidgetCard";
 
 
 class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: 6,
+      items: 20,
       visibility: 'visible'
     }
   }
@@ -22,7 +23,7 @@ class List extends Component {
 
   loadMore = () => {
     if (this.state.isLoading) { return }
-    var totitems = this.state.items + 1;
+    var totitems = this.state.items + 10;
     this.setState({ items: totitems, visibility: 'hidden'});
   }
 
@@ -39,13 +40,13 @@ class List extends Component {
         count++;
         if(widget.viz_type==="textwidget"){
           return(
-            <div className="infinity-iframe-100" key={key}>
+            <div className="infinity-iframe-100 col-12" key={key}>
               <div className="card text-center">
                 <div className="card-body">
                   <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
                   <h6 className="list-group-item-heading">
                   <i className="fa fa-font" aria-hidden="true"></i>  
-                    {" "+widget.title}
+                    {" Aggiungi un "+widget.title}
                   </h6>
                   </a>
                 </div>
@@ -54,10 +55,10 @@ class List extends Component {
           )
         }else{
           return (
-              <div className="infinity-iframe-50" key={key}>
+              /*<div className="infinity-iframe-50" key={key}>
                   <div className="card text-center">
-                      <div className="card-body">  
-                
+                      <div className="card-body">
+
                         <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
                           <h6 className="list-group-item-heading" id={"title-preview-" + key}>
                       {" [" + this.transformName(widget.table) + "] " + widget.title}
@@ -70,13 +71,19 @@ class List extends Component {
                         </a>
                   </div>
                 </div>
-              </div>
+              </div>*/
+              <WidgetCard
+                  className="col"
+                  cardClassName="mx-auto"
+                  iframe={widget}
+                  index={key}
+              />
             )
         }
       }
     });
     return (
-      <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="d-flex flex-wrap">
+      <InfiniteScroll onScrollToBottom={this.handleScrollToBottom} className="row d-flex flex-wrap mx-auto m-0">
         {widgetItems}
         <button
           className="List-load-more-button"

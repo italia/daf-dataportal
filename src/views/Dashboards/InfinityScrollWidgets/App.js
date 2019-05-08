@@ -11,11 +11,16 @@ class App extends Component {
       metabase: false,
       query: '',
       filter: '',
+      pubCheck: true,
+      pvtCheck: true,
       filtered: props.widgets,
       widgets: props.widgets
     }
 
     this.filter = this.filter.bind(this)
+    this.onPvtClick = this.onPvtClick.bind(this)
+    this.onPubClick = this.onPubClick.bind(this)
+
   }
 
   filter(value){
@@ -25,6 +30,42 @@ class App extends Component {
       filtered: widgets.filter((item) => item.title.toLowerCase().indexOf(value.toLowerCase()) != -1),
       filter: value
     });
+  }
+
+  onPubClick(){
+    const { widgets } = this.state
+    var tmp = []
+
+    if(!this.state.pubCheck === false){
+      tmp = widgets.filter(widget => {
+        return widget.pvt === true
+      })
+    }else{
+      tmp = widgets
+    }
+    this.setState({
+      filter: '',
+      pubCheck: !this.state.pubCheck,
+      filtered: tmp
+    })
+  }
+
+  onPvtClick(){
+    const { widgets } = this.state
+    var tmp = []
+
+    if(!this.state.pvtCheck === false){
+      tmp = widgets.filter(widget => {
+        return widget.pvt === false
+      })
+    }else{
+      tmp = widgets
+    }
+    this.setState({
+      filter: '',
+      pvtCheck: !this.state.pvtCheck,
+      filtered: tmp
+    })
   }
 
   render() {
@@ -45,12 +86,24 @@ class App extends Component {
           <div className="inline mb-4">
             <h4 className="modal-title">Aggiungi un widget</h4>
           </div>
+          <i className="fas fa-globe text-primary mr-2 fa-lg"/>
+          <label className="switch switch-3d switch-primary mr-3 mb-4">
+            <input type="checkbox" className="switch-input" checked={this.state.pubCheck} onClick={this.onPubClick}/>
+            <span className="switch-label"></span>
+            <span className="switch-handle"></span>
+          </label>
+          <i className="fas fa-lock text-primary mr-2 fa-lg"/>
+          <label className="switch switch-3d switch-primary mr-3 mb-4">
+            <input type="checkbox" className="switch-input" checked={this.state.pvtCheck} onClick={this.onPvtClick}/>
+            <span className="switch-label"></span>
+            <span className="switch-handle"></span>
+          </label>
           <input className="form-control" placeholder="Filtra la lista" value={filter} onChange={(e) => this.filter(e.target.value)}/>
         </div>
         <List widgets={filtered}
-            isModalOpen={isModalOpen}
-            onWidgetSelect={onWidgetSelect}
-            onRequestClose={this.props.onRequestClose}/>
+              isModalOpen={isModalOpen}
+              onWidgetSelect={onWidgetSelect}
+              onRequestClose={this.props.onRequestClose}/>
       </div>
     </Modal>
 
