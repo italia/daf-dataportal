@@ -35,10 +35,7 @@ function getLayoutHeight(height){
 }
 
 function checkEditMode(location){
-  if(location.indexOf('create')>-1 || location.indexOf('edit')>-1)
-    return true
-  else
-    return false
+  return location.indexOf('create') > -1 || location.indexOf('edit') > -1;
 }
 
 function sharable(widgets){

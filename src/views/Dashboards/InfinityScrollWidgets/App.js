@@ -19,7 +19,7 @@ class App extends Component {
 
     this.filter = this.filter.bind(this)
     this.onPvtClick = this.onPvtClick.bind(this)
-    this.onPubClick = this.onPubClick.bind(this)
+    // this.onPubClick = this.onPubClick.bind(this)
 
   }
 
@@ -32,23 +32,23 @@ class App extends Component {
     });
   }
 
-  onPubClick(){
-    const { widgets } = this.state
-    var tmp = []
-
-    if(!this.state.pubCheck === false){
-      tmp = widgets.filter(widget => {
-        return widget.pvt === true
-      })
-    }else{
-      tmp = widgets
-    }
-    this.setState({
-      filter: '',
-      pubCheck: !this.state.pubCheck,
-      filtered: tmp
-    })
-  }
+  // onPubClick(){
+  //   const { widgets } = this.state
+  //   var tmp = []
+  //
+  //   if(!this.state.pubCheck === false){
+  //     tmp = widgets.filter(widget => {
+  //       return widget.pvt === true
+  //     })
+  //   }else{
+  //     tmp = widgets
+  //   }
+  //   this.setState({
+  //     filter: '',
+  //     pubCheck: !this.state.pubCheck,
+  //     filtered: tmp
+  //   })
+  // }
 
   onPvtClick(){
     const { widgets } = this.state
@@ -86,14 +86,14 @@ class App extends Component {
           <div className="inline mb-4">
             <h4 className="modal-title">Aggiungi un widget</h4>
           </div>
-          <i className="fas fa-globe text-primary mr-2 fa-lg"/>
+          {/*<i className="fas fa-globe text-primary mr-2 fa-lg"/>
           <label className="switch switch-3d switch-primary mr-3 mb-4">
             <input type="checkbox" className="switch-input" checked={this.state.pubCheck} onClick={this.onPubClick}/>
             <span className="switch-label"></span>
             <span className="switch-handle"></span>
-          </label>
+          </label>*/}
           <i className="fas fa-lock text-primary mr-2 fa-lg"/>
-          <label className="switch switch-3d switch-primary mr-3 mb-4">
+          <label className="switch switch-3d switch-primary mr-3 mb-4" title={this.state.pvtCheck?"Mostra solo i widget Open Data":"Aggiungi i widget Privati"}>
             <input type="checkbox" className="switch-input" checked={this.state.pvtCheck} onClick={this.onPvtClick}/>
             <span className="switch-label"></span>
             <span className="switch-handle"></span>

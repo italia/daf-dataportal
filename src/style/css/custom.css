@@ -1502,3 +1502,6 @@ text-align: center !important; }
     #color-hp {
       border-bottom: 1px solid  #137ae2 !important;
     }
+.add-widget{
+  background: transparent;
+}

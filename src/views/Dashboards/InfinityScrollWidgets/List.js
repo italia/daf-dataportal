@@ -77,6 +77,7 @@ class List extends Component {
                   cardClassName="mx-auto"
                   iframe={widget}
                   index={key}
+                  onClick={() => onWidgetSelect(widget)}
               />
             )
         }

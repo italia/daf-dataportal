@@ -42,7 +42,7 @@ class WidgetCard extends Component {
     }
 
     render(){
-        const { iframe, className, cardClassName } = this.props
+        const { iframe, className, cardClassName, onClick } = this.props
         var org = ''
         var sp1 = []
         var table
@@ -110,7 +110,8 @@ class WidgetCard extends Component {
                     <div className="header-widget py-1">
                         <div className="row my-1 mx-0">
                             <div className="col-9 title-widget my-1 pl-3">
-                                <a href={this.getLink(iframeUrl)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
+                                {onClick && <button className="btn btn-link text-primary p-0 font-weight-bold" title={iframe.title} onClick={onClick}><u>{truncateWidgetTitle(iframe.title)}</u></button>}
+                                {!onClick && <a href={this.getLink(iframeUrl)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>}
                             </div>
                             <div className="col-3 my-2">
                                 {!open?
