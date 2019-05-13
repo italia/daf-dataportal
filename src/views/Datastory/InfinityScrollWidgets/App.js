@@ -71,7 +71,15 @@ class App extends Component {
   render() {
     const { isModalOpen, onRequestClose, onWidgetSelect } = this.props;
     const { filtered, filter } = this.state
-
+    const txtWid = {
+      identifier: "textwidget",
+      iframe_url: null,
+      origin: "text",
+      table: null,
+      title: "Testo",
+      viz_type: "textwidget",
+      pvt: false
+    }
     return (
     <Modal
       contentLabel="Add a widget"
@@ -92,6 +100,10 @@ class App extends Component {
             <span className="switch-label"></span>
             <span className="switch-handle"></span>
           </label>*/}
+          <div className="row mb-3">
+            <button className="btn btn-accento col-lg-3 col-md-4 col-7 mx-auto btn-lg" onClick={()=>onWidgetSelect(txtWid)}><i className="fa fa-font mr-2"/>Aggiungi un testo</button>
+          </div>
+          <p className="text-center mb-3 font-italic font-weight-light font-xl">Oppure</p>
           <i className="fas fa-lock text-primary mr-2 fa-lg"/>
           <label className="switch switch-3d switch-primary mr-3 mb-4" title={this.state.pvtCheck?"Mostra solo i widget Open Data":"Aggiungi i widget Privati"}>
             <input type="checkbox" className="switch-input" checked={this.state.pvtCheck} onClick={this.onPvtClick}/>

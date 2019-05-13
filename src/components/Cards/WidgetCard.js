@@ -110,8 +110,7 @@ class WidgetCard extends Component {
                     <div className="header-widget py-1">
                         <div className="row my-1 mx-0">
                             <div className="col-9 title-widget my-1 pl-3">
-                                {onClick && <button className="btn btn-link text-primary p-0 font-weight-bold" title={iframe.title} onClick={onClick}><u>{truncateWidgetTitle(iframe.title)}</u></button>}
-                                {!onClick && <a href={this.getLink(iframeUrl)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>}
+                                <a href={this.getLink(iframeUrl)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
                             </div>
                             <div className="col-3 my-2">
                                 {!open?
@@ -125,14 +124,19 @@ class WidgetCard extends Component {
                     <div>
                         <div className="row m-0 b-b-card">
                             <div className="crop col-12 w-100">
-                                <div>
-                                    
-                                    <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''}/> 
-{/*                                     
-                                    
-                                        React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click" }) */
-                                    }
-                                </div>
+                                {onClick ? <div className="img_hover_container pointer" onClick={onClick} title="Aggiungi questo widget">
+                                                <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''} className="hover_image"/>
+                                                <div className="middle">
+                                                    {/*<div className="text">+</div>*/}
+                                                    <i className="fas fa-3x fa-plus text-secondary"/>
+                                                </div>
+                                                {/* React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click" }) */}
+                                            </div>
+                                :
+                                    <div>
+                                        <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''}/>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

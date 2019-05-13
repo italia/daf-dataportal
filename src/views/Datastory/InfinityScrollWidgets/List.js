@@ -40,8 +40,8 @@ class List extends Component {
         count++;
         if(widget.viz_type==="textwidget"){
           return(
-            <div className="infinity-iframe-100 col-12" key={key}>
-              <div className="card text-center">
+            <div className="" key={key}>
+              {/*<div className="card text-center">
                 <div className="card-body">
                   <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
                   <h6 className="list-group-item-heading">
@@ -50,28 +50,11 @@ class List extends Component {
                   </h6>
                   </a>
                 </div>
-              </div>
+              </div>*/}
             </div>
           )
         }else{
           return (
-              /*<div className="infinity-iframe-50" key={key}>
-                  <div className="card text-center">
-                      <div className="card-body">
-
-                        <a className="list-group-item" onClick={() => onWidgetSelect(widget)}>
-                          <h6 className="list-group-item-heading" id={"title-preview-" + key}>
-                      {" [" + this.transformName(widget.table) + "] " + widget.title}
-                          </h6>
-                          <div className="preview-widget">
-                            <div style={{width: '100%'}}>
-                              <img src={serviceurl.urlCacher +widget.identifier+'.png'} />
-                            </div>
-                          </div>
-                        </a>
-                  </div>
-                </div>
-              </div>*/
               <WidgetCard
                   className="col"
                   cardClassName="mx-auto"

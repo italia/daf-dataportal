@@ -26,8 +26,8 @@ import Ontologies from '../../semantics/containers/Ontologies.js'
 import Ontology from '../../semantics/containers/Ontology.js'
 import Policy from '../../views/Public/Policy/Policy';
 import Termini from '../../views/Public/Policy/Termini';
-import DatastoryList from '../../views/Dashboards/DatastoryList';
-import Dashboard from '../../views/Dashboards/Dashboard';
+import DatastoryList from '../../views/Datastory/DatastoryList';
+import Dashboard from '../../views/Datastory/Dashboard';
 
 class Public extends Component {
 

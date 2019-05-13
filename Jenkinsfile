@@ -29,7 +29,7 @@ pipeline {
     stage('Upload'){
       steps {
         script { 
-          if(env.BRANCH_NAME=='docker_file_update' || env.BRANCH_NAME=='newSecurity'){ 
+          if(env.BRANCH_NAME=='docker_file_update' || env.BRANCH_NAME=='dev'){
             sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker push $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID' 
             sh 'COMMIT_ID=$(echo ${GIT_COMMIT} | cut -c 1-6); docker rmi $REPOSITORY:$BUILD_NUMBER-$COMMIT_ID'  
           }       
@@ -39,7 +39,7 @@ pipeline {
    stage('Staging') {
       steps { 
         script {
-          if(env.BRANCH_NAME=='docker_file_update' || env.BRANCH_NAME=='newSecurity'){
+          if(env.BRANCH_NAME=='docker_file_update' || env.BRANCH_NAME=='dev'){
           sh ''' COMMIT_ID=$(echo ${GIT_COMMIT}|cut -c 1-6); cd kubernetes/test;
               sed "s#image: nexus.teamdigitale.test/data-.*#image: nexus.teamdigitale.test/data-portal:$BUILD_NUMBER-$COMMIT_ID#" daf_data-portal.yml > daf-dataportal$BUILD_NUMBER-$COMMIT_ID.yaml ;kubectl  --kubeconfig=${JENKINS_HOME}/.kube/config.teamdigitale-staging replace -f daf-dataportal$BUILD_NUMBER-$COMMIT_ID.yaml --force --validate=false '''             
           slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' https://cd.daf.teamdigitale.it/blue/organizations/jenkins/CI-DataPortal_Frontend/activity")
