@@ -531,7 +531,6 @@ class Full extends Component {
   hideModalStory = () => {
     this.setState({
       isOpenStory: false,
-      isOpenStory: true,
       title: '',
       subtitle: '',
       org: ''
@@ -594,7 +593,7 @@ class Full extends Component {
       let request = {
         title: title,
         subtitle: subtitle,
-        org: org,
+        org: organization,
         layout: [],
         widgets: [],
         status: 0

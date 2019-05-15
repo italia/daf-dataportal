@@ -138,6 +138,7 @@
     "build": "webpack --env.prod --progress",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "run-sudo": "sudo npm start",
     "mock": "concurrently \"npm run start-mock-server\" \"npm start\" ",
     "start-mock-server": "mock-json-server mock-server.json --port=3001"
   }
