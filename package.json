@@ -134,10 +134,11 @@
     "webpack-merge": "^4.2.1"
   },
   "scripts": {
-    "start": "sudo webpack-dev-server --progress",
+    "start": "webpack-dev-server --progress",
     "build": "webpack --env.prod --progress",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "run-sudo": "sudo npm start",
     "mock": "concurrently \"npm run start-mock-server\" \"npm start\" ",
     "start-mock-server": "mock-json-server mock-server.json --port=3001"
   }

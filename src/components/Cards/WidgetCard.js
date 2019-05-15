@@ -42,7 +42,7 @@ class WidgetCard extends Component {
     }
 
     render(){
-        const { iframe } = this.props
+        const { iframe, className, cardClassName, onClick } = this.props
         var org = ''
         var sp1 = []
         var table
@@ -64,9 +64,29 @@ class WidgetCard extends Component {
         var open
         if(iframe.iframe_url && iframe.iframe_url.indexOf(serviceurl.urlSuperset)>-1){
             open = false
-        }else if(iframe.iframe_url && iframe.iframe_url.indexOf(serviceurl.urlSupersetOpen)>-1){
+        }else if(iframe.iframe_url && (iframe.iframe_url.indexOf(serviceurl.urlSupersetOpen)>-1)){
             open = true
         }
+        if(iframe.iframe_url) {
+            if(iframe.iframe_url.indexOf(serviceurl.urlSuperset)>-1){
+                open = false
+            }else if(iframe.iframe_url.indexOf(serviceurl.urlSupersetOpen)>-1){
+                open = true
+            }
+        }else if(iframe.props && iframe.props.url){
+            if(iframe.props.url.indexOf(serviceurl.urlSuperset)>-1){
+                open = false
+            }else if(iframe.props.url.indexOf(serviceurl.urlSupersetOpen)>-1){
+                open = true
+            }
+        }else if(iframe.widget_url){
+            if(iframe.widget_url.indexOf(serviceurl.urlSuperset)>-1){
+                open = false
+            }else if(iframe.widget_url.indexOf(serviceurl.urlSupersetOpen)>-1){
+                open = true
+            }
+        }
+
 
         var url = ''
 
@@ -74,14 +94,23 @@ class WidgetCard extends Component {
           url = serviceurl.urlCacher  + iframe.identifier + '.png';
         if(iframe.props)
           url = serviceurl.urlCacher  + iframe.props.identifier + '.png';
-        
+
+        var iframeUrl = ''
+
+        if(iframe.iframe_url) {
+            iframeUrl = iframe.iframe_url
+        }else if(iframe.props && iframe.props.url){
+            iframeUrl = iframe.props.url
+        }else if(iframe.widget_url){
+            iframeUrl = iframe.widget_url
+        }
         return(
-            <div className="mx-auto">
-                <div className="card widget-card">
+            <div className={"mx-auto "+className}>
+                <div className={"card widget-card "+cardClassName}>
                     <div className="header-widget py-1">
                         <div className="row my-1 mx-0">
                             <div className="col-9 title-widget my-1 pl-3">
-                                <a href={this.getLink(iframe.iframe_url?iframe.iframe_url:iframe.props.url)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
+                                <a href={this.getLink(iframeUrl)} target='_blank' rel="noopener noreferrer" title={iframe.title}><p className="text-primary"><u>{truncateWidgetTitle(iframe.title)}</u></p></a>
                             </div>
                             <div className="col-3 my-2">
                                 {!open?
@@ -95,14 +124,19 @@ class WidgetCard extends Component {
                     <div>
                         <div className="row m-0 b-b-card">
                             <div className="crop col-12 w-100">
-                                <div>
-                                    
-                                    <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''}/> 
-{/*                                     
-                                    
-                                        React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click" }) */
-                                    }
-                                </div>
+                                {onClick ? <div className="img_hover_container pointer" onClick={onClick} title="Aggiungi questo widget">
+                                                <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''} className="hover_image"/>
+                                                <div className="middle">
+                                                    {/*<div className="text">+</div>*/}
+                                                    <i className="fas fa-3x fa-plus text-secondary"/>
+                                                </div>
+                                                {/* React.createElement(IframeWidget, { url: iframe.iframe_url, class: "no-click" }) */}
+                                            </div>
+                                :
+                                    <div>
+                                        <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''}/>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
