@@ -1,67 +1,34 @@
+let backendDomain
+const hostname = window && window.location && window.location.hostname
+
+if(hostname.indexOf('.test')>-1){
+    backendDomain = '.test'
+}else if(hostname.indexOf('.it')>-1){
+    backendDomain  = '.it'
+}
+
 export const serviceurl = {
-    //KUBE
-/*  apiURLSSOManager: process.env.API_URL_SSO_MANAGER,
-    urlApiOpen: process.env.URL_API_OPEN,
-    apiURLDatiGov: process.env.API_URL_DATI_GOV, 
-    apiURLCatalog: process.env.API_URL_CATALOG,
-    apiURLSecurity : process.env.API_URL_SECURITY,
-    apiURLDataset : process.env.API_URL_DATASET,
-    apiURLHdfs: process.env.API_URL_HDFS,
-    apiCKAN: process.env.API_CKAN,
-    apiMedium: process.env.API_MEDIUM, 
-    urlSemantic: process.env.URL_SEMANTIC,
-    urlMetabase: process.env.URL_METABASE,
-    urlSuperset: process.env.URL_SUPERSET,
-    urlSupersetOpen: process.env.URL_SUPERSET_OPEN,
-    urlJupiter: process.env.URL_JUPITER,
-    urlCkan: process.env.URL_CKAN,
-    urlKatalod: process.env.URL_KATALOD,
-    urlCacher: process.env.URL_CACHER,
-    domain: process.env.DOMAIN */
 
-    // TEST   
-    apiURLSSOManager: "https://api.daf.teamdigitale.test/sso-manager",
-    urlApiOpen: 'https://api.open.daf.teamdigitale.test/sso-manager',
-    apiURLDatiGov: "https://api.daf.teamdigitale.test/dati-gov/v1",
-    apiURLCatalog: "https://api.daf.teamdigitale.test/catalog-manager/v1",
-    apiURLSecurity : "https://api.daf.teamdigitale.test/security-manager/v1",
-    apiURLDataset : "https://api.daf.teamdigitale.test/dataset-manager/v1",
-    apiURLHdfs: "https://api.daf.teamdigitale.test/hdfs/proxy",
-    apiURLConfigurator: "https://api.daf.teamdigitale.test/daf-configurator/v2",
-    apiCKAN: "https://api.daf.teamdigitale.test/dati-gov/ckan_proxy",
-    apiMedium: "https://api.daf.teamdigitale.test/dati-gov/medium",
-    urlSemantic: "https://api.daf.teamdigitale.test/stanbol/ontonethub/ontologies/find",
-    urlMetabase: 'https://graph.daf.teamdigitale.test',
-    urlSuperset: 'https://bi.dataportal.daf.teamdigitale.test',
-    urlJupiter: 'https://datascience.daf.teamdigitale.test',
-    urlCkan: "https://ckan-geo.daf.teamdigitale.test/dataset/",
-    urlKatalod: "https://api.daf.teamdigitale.test/daf-semantic-katalod/kb/api/v1",
-    urlSemanticValidator: "https://api.daf.teamdigitale.test/daf-semantic-validator/validator",
-    urlCacher: "https://static.daf.teamdigitale.it/swift/v1/dafstatic/",
-    domain: ".daf.teamdigitale.test",
-    vocabularyName: "dafvoc-ingestionform-option"
-
-    // PROD   
-    // apiURLSSOManager: "https://api.daf.teamdigitale.it/sso-manager",
-    // urlApiOpen: 'https://api.open.daf.teamdigitale.it/sso-manager',
-    // apiURLDatiGov: "https://api.daf.teamdigitale.it/dati-gov/v1",
-    // apiURLCatalog: "https://api.daf.teamdigitale.it/catalog-manager/v1",
-    // apiURLSecurity : "https://api.daf.teamdigitale.it/security-manager/v1",
-    // apiURLDataset : "https://api.daf.teamdigitale.it/dataset-manager/v1",
-    // apiURLHdfs: "https://api.daf.teamdigitale.it/hdfs/proxy",
-    // apiURLConfigurator: "https://api.daf.teamdigitale.it/daf-configurator/v2",
-    // apiCKAN: "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy",
-    // apiMedium: "https://api.daf.teamdigitale.it/dati-gov/medium",
-    // urlSemantic: "https://api.daf.teamdigitale.it/stanbol/ontonethub/ontologies/find",
-    // urlMetabase: 'https://graph.daf.teamdigitale.it',
-    // urlSuperset: 'https://bi.dataportal.daf.teamdigitale.it',
-    // urlSupersetOpen: 'https://bi.open.daf.teamdigitale.it',
-    // urlJupiter: 'https://datascience.daf.teamdigitale.it',
-    // urlCkan: "https://ckan-geo.daf.teamdigitale.it/dataset/",
-    // urlKatalod: "https://api.daf.teamdigitale.it/daf-semantic-katalod/kb/api/v1",
-    // urlSemanticValidator: "https://api.daf.teamdigitale.it/daf-semantic-validator/validator",
-    // urlCacher: "https://static.daf.teamdigitale.it/swift/v1/dafstatic/",
-    // domain: ".daf.teamdigitale.it",
-    // vocabularyName: "dafvoc-ingestionform-option"
+    apiURLSSOManager: `https://api.daf.teamdigitale${backendDomain}/sso-manager`,
+    urlApiOpen: `https://api.daf.teamdigitale${backendDomain}/sso-manager`,
+    apiURLDatiGov: `https://api.daf.teamdigitale${backendDomain}/dati-gov/v1`,
+    apiURLCatalog: `https://api.daf.teamdigitale${backendDomain}/catalog-manager/v1`,
+    apiURLSecurity : `https://api.daf.teamdigitale${backendDomain}/security-manager/v1`,
+    apiURLDataset : `https://api.daf.teamdigitale${backendDomain}/dataset-manager/v1`,
+    apiURLHdfs: `https://api.daf.teamdigitale${backendDomain}/hdfs/proxy`,
+    apiURLConfigurator: `https://api.daf.teamdigitale${backendDomain}/daf-configurator/v2`,
+    apiCKAN: `https://api.daf.teamdigitale${backendDomain}/dati-gov/ckan_proxy`,
+    apiMedium: `https://api.daf.teamdigitale${backendDomain}/dati-gov/medium`,
+    urlSemantic: `https://api.daf.teamdigitale${backendDomain}/stanbol/ontonethub/ontologies/find`,
+    urlMetabase: `https://graph.daf.teamdigitale${backendDomain}`,
+    urlSuperset: `https://bi.dataportal.daf.teamdigitale${backendDomain}`,
+    urlSupersetOpen: `https://bi.open.daf.teamdigitale${backendDomain}`,
+    urlJupiter: `https://datascience.daf.teamdigitale${backendDomain}`,
+    urlCkan: `https://ckan-geo.daf.teamdigitale${backendDomain}/dataset/`,
+    domain: `.daf.teamdigitale${backendDomain}`,
+    urlKatalod: "https://api.daf.teamdigitale.it/daf-semantic-katalod/kb/api/v1",
+    urlSemanticValidator: "https://api.daf.teamdigitale.it/daf-semantic-validator/validator",
+    vocabularyName: "dafvoc-ingestionform-option",
+    urlCacher: "https://static.daf.teamdigitale.it/swift/v1/dafstatic/"
   }
 
