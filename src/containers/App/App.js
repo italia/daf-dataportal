@@ -34,7 +34,7 @@ class App extends Component {
         domain = 'dataportal'
       }
     }
-    dispatch(getAllPublicMessages())
+    // dispatch(getAllPublicMessages())
 
     dispatch(fetchProperties(domain))
     .then(json => {
