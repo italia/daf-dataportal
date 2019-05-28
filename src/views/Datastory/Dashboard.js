@@ -62,7 +62,7 @@ class Dashboard extends Component{
       editingWidget: {},
       loading: true,
       gridLayout: {},
-      keys: this.props.datastory && this.props.datastory.widgets?this.props.datastory.widgets:[], 
+      keys: this.props.datastory && this.props.datastory.widgets?this.props.datastory.widgets:[],
       layout: this.props.datastory && this.props.datastory.layout?this.props.datastory.layout:[],
       title: this.props.datastory && this.props.datastory.title?this.props.datastory.title:'',
       subtitle: this.props.datastory && this.props.datastory.subtitle?this.props.datastory.subtitle:'',
@@ -85,20 +85,20 @@ class Dashboard extends Component{
   }
 
   onLayoutChange(layouts){
-    
+
     layouts.forEach(element => {
       if(element.i.indexOf('textwidget')>-1){
         var elemH = document.getElementById(element.i+'element')?document.getElementById(element.i+'element').offsetHeight:0
         element.h = element.h>getLayoutHeight(elemH)?element.h:getLayoutHeight(elemH)
       }
     });
-    
+
     var gridLayout = { "lg": layouts, "md": layouts}
 
-    this.setState({ 
-      layout: layouts, 
-      modified: checkEditMode(window.location.hash), 
-      gridLayout: gridLayout, 
+    this.setState({
+      layout: layouts,
+      modified: checkEditMode(window.location.hash),
+      gridLayout: gridLayout,
     })
   }
 
@@ -110,7 +110,7 @@ class Dashboard extends Component{
       cols: cols
     });
   }
-  
+
   componentWillUnmount(){
     this.setState({
       layout: [],
@@ -154,9 +154,9 @@ class Dashboard extends Component{
             viz_type: "textwidget",
             pvt: false
           }
-    
+
           widgets.unshift(textWid)
-    
+
           this.setState({
             loading: false,
             widgets: widgets,
@@ -201,9 +201,9 @@ class Dashboard extends Component{
           viz_type: "textwidget",
           pvt: false
         }
-  
+
         widgets.unshift(textWid)
-  
+
         this.setState({
           widgets: widgets,
           loading: false
@@ -225,7 +225,7 @@ class Dashboard extends Component{
     }).length > 0
 
     console.log(JSON.stringify(widget))
-    
+
     if(widget.pvt){
       toastr.info("Hai aggiunto un widget privato", "Aggiungendo un widget privato non potrai pubblicare la datastory come OpenData")
     }
@@ -238,7 +238,7 @@ class Dashboard extends Component{
           return wid.identifier.indexOf("textwidget")>-1
         }).length
         tmpW.identifier = widget.identifier+"_"+ idNo.toString()
-        tmpk.push(tmpW) 
+        tmpk.push(tmpW)
         tmpjson.push({
           "w":4,
           "h":4,
@@ -281,7 +281,7 @@ class Dashboard extends Component{
       })
     }else{
       toastr.error("Errore", "Il widget selezionato è già presente nella dashboard")
-    } 
+    }
   }
 
   handleChangeTitle(text){
@@ -290,14 +290,14 @@ class Dashboard extends Component{
       modified: true
     })
   }
-  
+
   handleChangeSubTitle(text){
     this.setState({
       subtitle: text,
       modified: true
     })
   }
-  
+
   handleChangeText(key, value){
     const { keys } = this.state
 
@@ -324,15 +324,15 @@ class Dashboard extends Component{
     var tmpk = keys
     var tmpjson = layout
 
-    
+
     tmpk = tmpk.filter(wid => {
       return wid.identifier!==id
     })
-    
+
     tmpjson = tmpjson.filter(elem => {
       return elem.i!==id
     })
-      
+
     console.log(tmpk)
 
     this.setState({
@@ -350,11 +350,11 @@ class Dashboard extends Component{
 
   handleHeight(identifier){
     const { layout } = this.state
-    
+
     console.log('RESIZING')
 
     var newLayout = layout
-    
+
     let pos = layout.map(elem => { return elem.i}).indexOf(identifier)
     var newH = 0
 
@@ -521,7 +521,7 @@ class Dashboard extends Component{
           <TextEditor
             readonly={this.state.readOnly}
             keyValue="title"
-            text={title} 
+            text={title}
             className="text-editor-title"
             onChange={this.handleChangeTitle}
             placeholder="Title"
@@ -531,7 +531,7 @@ class Dashboard extends Component{
           <TextEditor
             readonly={this.state.readOnly}
             keyValue="subtitle"
-            text={subtitle} 
+            text={subtitle}
             className="text-editor-subtitle"
             onChange={this.handleChangeSubTitle}
             placeholder="Sottotitolo"
@@ -546,7 +546,7 @@ class Dashboard extends Component{
           {this.state.readOnly && <h5 className="mb-5 text-center mx-auto text-editor">
             {convertTime(datastory.timestamp)}
           </h5>}
-          <ResponsiveGridLayout 
+          <ResponsiveGridLayout
             className="layout"
             isDraggable={!this.state.readOnly}
             isResizable={!this.state.readOnly}
