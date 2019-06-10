@@ -25,7 +25,7 @@ color: #304047!important;
 .sidebar .nav .nav-item .nav-link.active i {
   color: #304047;
 }
-/* 
+/*
 .sidebar .nav .nav-title {
   color: #304047;
 } */
@@ -415,7 +415,7 @@ border-color: var(--accento); }
     background-color: #f0f3f5;
     box-shadow: 0 0 0 0.2rem rgba(240, 243, 245, 0.5); }
   .btn-outline-filters.disabled, .btn-outline-filters:disabled {
-      /*color: #f0f3f5;*/      
+      /*color: #f0f3f5;*/
       background-color: transparent; }
   .btn-outline-filters:not(:disabled):not(.disabled):active, .btn-outline-filters:not(:disabled):not(.disabled).active,
   .show > .btn-outline-filters.dropdown-toggle {
@@ -465,7 +465,7 @@ font-size: 14px;
   .badge-white[href]:hover, .badge-white[href]:focus {
     color: #151b1e;
     text-decoration: none;
-    background-color: #fff; 
+    background-color: #fff;
   }
 
 .b-t-0{
@@ -647,14 +647,14 @@ margin-top:-20px
   height: 48px;
   background-color: var(--primary);
   color: #FFFFFF;
-  position: relative; 
+  position: relative;
 }
 
 .border-white-solid{
   border: 4px solid #FFFFFF !important;
 }
 .btn-accedi{
-margin-left: 1px;  
+margin-left: 1px;
 }
 @media (min-width: 768px) {
 .btn-accedi{
@@ -739,14 +739,14 @@ margin: -10% 0 0 -10%;
 
 .paragrafo{
 margin-left: auto;
-margin-right: auto; 
+margin-right: auto;
 max-width: 800px;
 }
 
 .paragrafo p, .paragrafo div, .paragrafo h5{
 font: 400 16px/25px "Titillium Web";
 margin-left: auto;
-margin-right: auto; 
+margin-right: auto;
 max-width: 600px;
 }
 
@@ -754,14 +754,14 @@ max-width: 600px;
 font: 700 32px/38px "Titillium Web";
 margin: 32px 0 16px 0;
 margin-left: auto;
-margin-right: auto; 
+margin-right: auto;
 max-width: 600px;
 }
 
 .paragrafo h2{
 font: 200 24px/28px "Titillium Web";
 margin-left: auto;
-margin-right: auto; 
+margin-right: auto;
 max-width: 600px;
 }
 
@@ -781,13 +781,13 @@ max-width: 800px
   }
   }
 
-  @media (max-width:767px) {  
+  @media (max-width:767px) {
     #divStep {
     display: none;
     }
     }
 
-    
+
 @media screen and (min-width:768px) {
 .paragrafo p, .paragrafo div, .paragrafo h5{
   font: 400 21px/32px "Titillium Web"
@@ -797,7 +797,7 @@ max-width: 800px
   font: 700 40px/48px "Titillium Web";
   margin: 4px 0 32px 0;
   margin-left: auto;
-  margin-right: auto; 
+  margin-right: auto;
 }
 
 .paragrafo h2{
@@ -959,7 +959,7 @@ background-color: #fff;
 background-clip: padding-box;
 border: 1px solid #c2cfd6;
 border-radius: 0;
-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; 
+transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .DateInput_input__focused {
@@ -1080,7 +1080,7 @@ padding-left: 0.5rem;
 padding-right: 0.5rem;
 }
 
-.autocomplete-tag-class { 
+.autocomplete-tag-class {
 display: block;
 width: 100%;
 line-height: 1.5;
@@ -1088,7 +1088,7 @@ color: #3e515b;
 background-color: #fff;
 background-clip: padding-box;
 border: 1px solid #c2cfd6!important;
-border-radius: 0;  
+border-radius: 0;
 }
 
 .rule,
@@ -1160,12 +1160,12 @@ max-width: 600px;
 
 .text-editor-subtitle {
 --x-height-multiplier: 0.35;
---baseline-multiplier: 0.179; 
+--baseline-multiplier: 0.179;
 letter-spacing: .01rem;
 font-weight: 400;
-color: #444E57;	
-font-family: "Titillium Web";	
-font-size: 32px;	
+color: #444E57;
+font-family: "Titillium Web";
+font-size: 32px;
 line-height: 38px;
 letter-spacing: -.003em;
 margin-bottom: 30px;
@@ -1244,7 +1244,7 @@ text-align: center !important; }
 }
 /* .x_content h3, .x_content h2, */ .x_content p{
   margin-left: auto!important;
-  margin-right: auto!important; 
+  margin-right: auto!important;
   /* max-width: 600px; */
   font: 400 16px/25px "Titillium Web"
 }
@@ -1441,23 +1441,31 @@ text-align: center !important; }
     clear: both;
     margin-top: 5px;
   }
-  /* .x_content h3, .x_content h2, */ .x_content p{
+
+  .x_content p{
     margin-left: auto!important;
     margin-right: auto!important;
     /* max-width: 600px; */
     font: 400 16px/25px "Titillium Web"
   }
 
-  @media screen and (min-width:768px) {
-    /* .x_content h3, .x_content h2, */ .x_content p{
-      font: 400 21px/32px "Titillium Web"
-    }
-  }
-
   .x_content h4 {
     font-size: 16px;
     font-weight: 500;
   }
+
+  @media screen and (min-width:768px) {
+    .x_content p{
+      font: 400 21px/32px "Titillium Web"
+    }
+
+    .x_content h4{
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+
   .panel_toolbox {
     float: right;
     min-width: 10px;

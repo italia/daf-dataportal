@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import CookieConsent from "react-cookie-consent";
-
-
-
 import UserstoryCard from '../../../components/Cards/UserstoryCard';
 import DatasetCard from '../../../components/Cards/DatasetCard';
 import HomeService from '../../Home/services/HomeService';
@@ -71,11 +68,11 @@ class Home extends Component{
 
     handleDatasetSearch(){
       const { dispatch, properties } = this.props
-      
+
       var org = []
       if(isPublic() && properties.domain!=='dataportal' && properties.domain!=='dataportal-private')
         org.push(properties.organization)
-      
+
         let filter = {
           'text': '',
           'index': ['catalog_test','ext_opendata'],
@@ -111,7 +108,7 @@ class Home extends Component{
   render(){
     const { listDataset, isLoading } = this.state
     const { properties } = this.props
-    
+
     return(
       <div>
         <div className="py-5 w-100 bg-lightblue text-white">
@@ -128,7 +125,7 @@ class Home extends Component{
             </div>
           </div>
         </div>
-        <Messages />
+        {/*<Messages />*/}
         <div className="mb-5 py-5 container">
           <div className="container">
             <div className="row">
@@ -138,7 +135,7 @@ class Home extends Component{
               </div>
             </div>
             <div className="row">
-              <div className="col-lg-7 col-md-7 col-12 pr-0 my-3">              
+              <div className="col-lg-7 col-md-7 col-12 pr-0 my-3">
                 <div className="search-pub pl-0">
                     <form onSubmit={()=> this.handleSearch(this.refs.auto.value, undefined)}>
                         <div className="input-group">
@@ -151,7 +148,7 @@ class Home extends Component{
                 </div>
               </div>
               <h5 className="text-gray-600 align-self-center mx-4">oppure</h5>
-              <button className="btn btn-accento my-3" onClick={()=> this.handleSearch(undefined, true)}>Esplora per categoria</button>            
+              <button className="btn btn-accento my-3" onClick={()=> this.handleSearch(undefined, true)}>Esplora per categoria</button>
             </div>
           </div>
         </div>
@@ -162,25 +159,25 @@ class Home extends Component{
             </div>
             {isLoading? <h4 className="text-center"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h4>:
             <div className="row mx-auto m-0">
-                { 
+                {
                     this.state.listStories.map((story, index) => {
                       if ((story.widgets) && (story.layout && story.layout !== '{}')) {
                         const dashwidgets = story.widgets.filter(wid=>{
                           return wid.identifier.toLowerCase().indexOf('textwidget')<0
                         })
-      
+
                         var firstLayout = dashwidgets.length>0?dashwidgets[0]:''
- 
+
                         var time = 0
                         for (let k = 0; k < story.widgets.length; k++){
                           if(story.widgets[k].identifier.toLowerCase().indexOf('textwidget')!==-1){
                             var text = story.widgets[k].text
                             var array = text?text.split(' '):[]
-                            
+
                             time = time + (array.length/275)
                           }
                           else
-                            time = time + 1 
+                            time = time + 1
                         }
                       }
                         return (
@@ -254,22 +251,22 @@ class Home extends Component{
                 <div className="col-lg-5 text-white px-5 py-3 my-3">
                   <h1 className="font-weight-bold">DAF è per la PA</h1>
                   <h5><b>Sei una PA?</b> Scopri come accedere ai dataset e alle analisi delle pubbliche amministrazioni e come dare valore ai tuoi dati.</h5>
-          
+
                 </div>
 
-                {/* <CookieConsent 
+                {/* <CookieConsent
                   buttonClasses={"btn btn-accento"}
                   buttonStyle={{background:"#fffff",padding:"auto", border:"1px solid transparent"}}
                   buttonText={"Accetto"}
                 >
     Questo sito fa uso di cookie per migliorare l’esperienza di navigazione degli utenti e per raccogliere informazioni sull’utilizzo del sito stesso. <a><Link to={'/policy'}>Privacy policy</Link> <Link to={'/termini'}>Termini e condizioni</Link></a>
 </CookieConsent> */}
-                
-            
+
+
 
 
                 <div className="col-lg-3 align-self-center mx-auto">
-                  
+
                 </div>
               </div>
           </div>
@@ -277,7 +274,7 @@ class Home extends Component{
         <div className="bg-grey-n">
           <div className="container py-4">
             <div className="row">
-              <h5 className="ml-auto mr-4 align-self-center mb-0">Sei un Developer? Contribuisci su </h5> 
+              <h5 className="ml-auto mr-4 align-self-center mb-0">Sei un Developer? Contribuisci su </h5>
               <a className="btn btn-accento py-2 px-3 mr-auto font-lg" href='https://github.com/italia/?utf8=%E2%9C%93&q=daf&type=&language=' target="_blank">Github <i className="ml-4 fab fa-github fa-lg"/></a>
             </div>
           </div>

@@ -9,19 +9,19 @@ import {
 } from 'reactstrap';
 import { setCookie, setSupersetCookie, isEditor, isAdmin, isSysAdmin } from '../../utility'
 import { toastr } from 'react-redux-toastr'
-import { 
-  receiveDatastory, 
-  loginAction, 
-  isValidToken, 
-  receiveLogin, 
-  getApplicationCookie, 
-  logout, 
-  fetchNotifications, 
-  fetchNewNotifications, 
-  search, 
-  getSupersetUrl, 
-  datasetDetail, 
-  querySearch 
+import {
+  receiveDatastory,
+  loginAction,
+  isValidToken,
+  receiveLogin,
+  getApplicationCookie,
+  logout,
+  fetchNotifications,
+  fetchNewNotifications,
+  search,
+  getSupersetUrl,
+  datasetDetail,
+  querySearch
 } from './../../actions.js'
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
@@ -137,7 +137,7 @@ function askPermission() {
 
 async function subscribeUserToPush() {
   const registration = await navigator.serviceWorker.register('sw.js',  {scope: '/'})
-  
+
   const subscribeOptions = {
     userVisibleOnly: true,
     applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
@@ -273,7 +273,7 @@ class Full extends Component {
   }
 
   componentDidMount() {
-    
+
     const { dispatch } = this.props
 
     listenMessage(dispatch)
@@ -315,7 +315,7 @@ class Full extends Component {
               if (json) {
                 setCookie(json)
               }
-            })*/ 
+            })*/
             dispatch(loginAction())
             .then(response => {
               if (response.ok) {
@@ -442,7 +442,7 @@ class Full extends Component {
         'order': "desc"
     }
     //let filter = {'text':'','index':index,'org':[org],'theme':[],'date':'','status':[],'order':'desc'}
-    dispatch(search('', filter, false, filter))    
+    dispatch(search('', filter, false, filter))
     .then(response => {
       this.setState({
         widgetOrg: value,
@@ -461,7 +461,7 @@ class Full extends Component {
     });
     this.validateWidget(e);
   }
-  
+
 
   validateWidget = (e) => {
     e.preventDefault()
@@ -518,16 +518,20 @@ class Full extends Component {
       });
     }
   }
-  
+
   openModalStory = () => {
+
     this.setState({
       isOpenStory: true,
       title: '',
       subtitle: '',
       org: ''
     });
+
+    if(window.location.hash.indexOf('datastory/list/')>-1)
+      this.props.history.push('/private/datastory/list')
   };
-  
+
   hideModalStory = () => {
     this.setState({
       isOpenStory: false,
@@ -559,7 +563,7 @@ class Full extends Component {
     })
 
   };
-  
+
   hideModalWidget = () => {
     this.setState({
       isOpenWidget: false
@@ -583,7 +587,7 @@ class Full extends Component {
     const { dispatch, loggedUser } = this.props
 
     var organization = org
-    
+
     if(loggedUser.organizations.length === 0){
       organization = 'open_data_group'
     }
@@ -647,27 +651,27 @@ class Full extends Component {
     let home = ''
     let paddingTop = 'pt-3'
 
-    if (window.location.hash.indexOf('/private/userstory/list')!==-1 || 
-        window.location.hash.indexOf('private/widget')!==-1 || 
-        window.location.hash.indexOf('private/vocabularies')!==-1 || 
-        window.location.hash.indexOf('private/ontologies')!==-1 || 
+    if (window.location.hash.indexOf('/private/userstory/list')!==-1 ||
+        window.location.hash.indexOf('private/widget')!==-1 ||
+        window.location.hash.indexOf('private/vocabularies')!==-1 ||
+        window.location.hash.indexOf('private/ontologies')!==-1 ||
         window.location.hash.indexOf('private/notifications')!==-1)
       mainDiv='bg-light'
-      
+
     if (window.location.hash.indexOf('/private/home')!==-1 || window.location.hash.indexOf('/private/search')!==-1 || window.location.hash.indexOf('/private/dataset')!==-1)
       home = 'p-0'
 
     if (window.location.hash.indexOf('/private/home')!==-1)
       paddingTop = ''
-    
+
     if (window.location.hash.indexOf('/private/dataset/')!==-1)
       paddingTop = ''
 
     if (this.props.authed)
-      this.state.authed = true;  
+      this.state.authed = true;
     return (
-    <div> 
-      { this.state.loading && (<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>)} 
+    <div>
+      { this.state.loading && (<h1 className="text-center fixed-middle"><i className="fas fa-circle-notch fa-spin mr-2"/>Caricamento</h1>)}
       {!this.state.loading && <div className="app aside-menu-show">
       {/* Modal per creazione nuova Storia */}
       {loggedUser && <Modal isOpen={this.state.isOpenStory} toggle={this.hideModalStory}>
@@ -701,7 +705,7 @@ class Full extends Component {
                           }
                         )}
                     </select>
-                    
+
                     {this.state.org.length===0 && <span className="text-danger">Campo Obbligatorio</span>}
                   </div>}
                   {

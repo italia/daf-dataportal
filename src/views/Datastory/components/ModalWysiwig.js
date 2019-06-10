@@ -18,11 +18,11 @@ export default class ModalWysiwig extends Component {
 		}
 
 		const contentBlock = props.widget.text?htmlToDraft(props.widget.text):undefined;
-    if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-      const editorState = EditorState.createWithContent(contentState);
-			this.state.editorState = editorState
-    }
+		if (contentBlock) {
+		  const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+		  const editorState = EditorState.createWithContent(contentState);
+		  this.state.editorState = editorState
+		}
 			
 	}
 
@@ -36,10 +36,10 @@ export default class ModalWysiwig extends Component {
 	}
 
 	onEditorStateChange = (editorState) => {
-    this.setState({
-      editorState
-    });
-  };
+		this.setState({
+		  editorState
+		});
+	};
 
 	render() {
 		const { editorState } = this.state;
@@ -71,7 +71,7 @@ export default class ModalWysiwig extends Component {
 							wrapperClassName="b-a-1 border-light App"
 							editorClassName="scroll-y"
 							onEditorStateChange={this.onEditorStateChange}
-							wrapperStyle={{'maxHeight':'74vh'}}
+							wrapperStyle={{'height':'58vh'}}
 						/>
 				</ModalBody>
 				<ModalFooter>

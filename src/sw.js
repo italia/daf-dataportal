@@ -44,7 +44,7 @@ function messageToAllClients(msg){
 // When the service worker is first added to a computer.
 self.addEventListener('install', event => {
   // Perform install steps.
-  
+
   self.skipWaiting()
 
   if (DEBUG) {
@@ -84,7 +84,7 @@ self.addEventListener('activate', event => {
           // Return true if you want to remove this cache,
           // but remember that caches are shared across
           // the whole origin
-          if (cacheName.indexOf(CACHE_NAME) === -1) 
+          if (cacheName.indexOf(CACHE_NAME) === -1)
             return true
         }).map(function(cacheName) {
           return caches.delete(cacheName);
@@ -112,27 +112,10 @@ self.addEventListener('push', function(event) {
   console.log('[Service Worker] Push Received.');
 
   const data = event.data.json()
-  
-  var title = '';
-  var options = {
-    body: '',
-  };
-  
-  switch(data.notificationtype){
-    case 'kylo_feed':
-      title = 'Creazione Dataset'
-      options.body = 'Il dataset '+ data.info.title+ ' è stato creato correttamente.'
-      break;
-    case 'kylo_feed_error':
-      title = 'Errore creazione Dataset'
-      options.body = "C'è stato un problema nella creazione del dataset " + data.info.title +": " + data.info.errors
-      break;
-    case 'generic':
-      title = data.info.title
-      options.body = data.info.description
-  }
 
-  var notification = {'title':title, 'body':options.body}
+
+
+  var notification = {'title':data.info.title, 'body':data.info.description}
 
   messageToAllClients(notification)
 

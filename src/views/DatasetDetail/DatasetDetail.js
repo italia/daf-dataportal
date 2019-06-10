@@ -151,11 +151,11 @@ class DatasetDetail extends Component {
             var dafIndex = 0
 
             dispatch(checkFileOnHdfs(nextProps.dataset.operational.physical_uri))
-              .then(json => { 
+              .then(json => {
                 if(json.ok) {
-                  dafIndex = dafIndex + 2; 
+                  dafIndex = dafIndex + 2;
                   this.setState({ hasPreview: true, dafIndex: dafIndex, loading: false })
-                } 
+                }
               })
               .catch(error => { this.setState({ hasPreview: false, loading: false }) })
 
@@ -172,7 +172,7 @@ class DatasetDetail extends Component {
             //         this.setState({ hasMetabase: json.is_on_metabase, dafIndex: dafIndex })
             //     })
             //     .catch(error => { this.setState({ hasMetabase: false }) })
-            
+
             // var sources = []
             // nextProps.dataset.operational.type_info&& nextProps.dataset.operational.type_info.dataset_type==="derived_sql" && nextProps.dataset.operational.type_info.sources.map(source => {
             //   var tmp = JSON.parse(source)
@@ -296,11 +296,11 @@ class DatasetDetail extends Component {
             previewState: 3
         })
         dispatch(getFileFromStorageManager(logical_uri, 20, 'json', isPublic()))
-            .then(response => { 
+            .then(response => {
               const result = response.json()
               result.then(json => {
                 if(json.length > 0)
-                  this.setState({ previewState: 1, jsonPreview: json }) 
+                  this.setState({ previewState: 1, jsonPreview: json })
                 else
                   this.setState({previewState: 2, jsonPreview: json })
               })
@@ -355,7 +355,7 @@ class DatasetDetail extends Component {
         }
 
         const isExtOpendata = (dataset.operational.ext_opendata
-            && dataset.operational.ext_opendata != {}) ? true : false
+            && dataset.operational.ext_opendata !== {}) ? true : false
         dispatch(getSupersetUrl(nomeFile, org, isExtOpendata))
             .then(json => {
                 var supersetLinks = json
@@ -575,7 +575,7 @@ class DatasetDetail extends Component {
                                     toastr.error("Errore", "Il file selezionato è troppo grande, seleziona un file di massimo 100MB")
                                 }}
                             >
-                                {({getRootProps, getInputProps}) => ( 
+                                {({getRootProps, getInputProps}) => (
                                     <div {...getRootProps({className: 'dropzone w-100 container'})}>
                                         <input {...getInputProps()}/>
                                         <div className="text-center">
@@ -651,7 +651,7 @@ class DatasetDetail extends Component {
                                         </div>
                                         <div hidden={!this.state.showDett} className="col-2 mx-auto">
                                             {(dataset.operational.ext_opendata &&
-                                                dataset.operational.ext_opendata.url) &&
+                                                dataset.operational.ext_opendata.url != null) &&
                                                 <a className="btn btn-accento px-3 py-2 text-dark" href={serviceurl.urlCkan + dataset.operational.ext_opendata.name} target='_blank'>
                                                     APRI CKAN
                                             </a>
