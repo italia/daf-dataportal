@@ -651,7 +651,7 @@ class DatasetDetail extends Component {
                                         </div>
                                         <div hidden={!this.state.showDett} className="col-2 mx-auto">
                                             {(dataset.operational.ext_opendata &&
-                                                dataset.operational.ext_opendata.url) &&
+                                                dataset.operational.ext_opendata.url != null) &&
                                                 <a className="btn btn-accento px-3 py-2 text-dark" href={serviceurl.urlCkan + dataset.operational.ext_opendata.name} target='_blank'>
                                                     APRI CKAN
                                             </a>

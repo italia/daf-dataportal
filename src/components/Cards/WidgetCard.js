@@ -7,11 +7,23 @@ import { serviceurl } from "../../config/serviceurl";
 class WidgetCard extends Component {
     constructor(props){
         super(props)
-        this.state = {}
+        var url = ''
+
+        if(props.iframe.identifier)
+            url = serviceurl.urlCacher  + props.iframe.identifier + '.png';
+        if(props.iframe.props)
+            url = serviceurl.urlCacher  + props.iframe.props.identifier + '.png';
+
+        this.state = {
+            url: url,
+            onError: false
+        }
 
         this.isSuperset = this.isSuperset.bind(this)
         this.isMetabase = this.isMetabase.bind(this)
+        this.onImgError = this.onImgError.bind(this)
     }
+
     isSuperset(){
         const { iframe } = this.props
         if((iframe.identifier && iframe.identifier.indexOf('superset')!== -1) || (iframe.props && iframe.props.identifier.indexOf('superset')!== -1))
@@ -41,8 +53,17 @@ class WidgetCard extends Component {
         this.props.history.push('/private/dataset/'+nome)
     }
 
+    onImgError = ()=>{
+        if(!this.state.onError)
+            this.setState({
+                url: serviceurl.urlCacher + 'image404.png',
+                onError: true
+            })
+    }
+
     render(){
         const { iframe, className, cardClassName, onClick } = this.props
+        const { url } = this.state
         var org = ''
         var sp1 = []
         var table
@@ -87,14 +108,6 @@ class WidgetCard extends Component {
             }
         }
 
-
-        var url = ''
-
-        if(iframe.identifier)
-          url = serviceurl.urlCacher  + iframe.identifier + '.png';
-        if(iframe.props)
-          url = serviceurl.urlCacher  + iframe.props.identifier + '.png';
-
         var iframeUrl = ''
 
         if(iframe.iframe_url) {
@@ -125,7 +138,7 @@ class WidgetCard extends Component {
                         <div className="row m-0 b-b-card">
                             <div className="crop col-12 w-100">
                                 {onClick ? <div className="img_hover_container pointer" onClick={onClick} title="Aggiungi questo widget">
-                                                <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''} className="hover_image"/>
+                                                <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''} className="hover_image" onError={this.onImgError}/>
                                                 <div className="middle">
                                                     {/*<div className="text">+</div>*/}
                                                     <i className="fas fa-3x fa-plus text-secondary"/>
@@ -134,7 +147,7 @@ class WidgetCard extends Component {
                                             </div>
                                 :
                                     <div>
-                                        <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''}/>
+                                        <img src={url} alt={iframe.table?transformWidgetName(iframe.table):''} onError={this.onImgError}/>
                                     </div>
                                 }
                             </div>
