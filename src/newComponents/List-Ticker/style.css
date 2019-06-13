@@ -1,0 +1,17 @@
+.slider {
+    position: fixed;
+    width: 100%;
+    height: 90px;
+    overflow: hidden;
+    bottom: 0;
+    background-color: #0066CC;
+    z-index: 1;
+}
+
+.slider a.previousButton{
+    left: 0
+}
+
+.slider a.nextButton{
+    right: 0
+}

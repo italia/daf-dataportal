@@ -19,6 +19,8 @@ import DatasetList from '../../views/DataseList/DatasetList'
 import DatasetDetail from '../../views/DatasetDetail/DatasetDetail'
 import Page404 from '../../views/404/Page404';
 
+import Ticker from '../../newComponents/List-Ticker/Ticker'
+
 // semantic's containers imports
 import Vocabularies from '../../semantics/containers/Vocabularies.js'
 import Vocabulary from '../../semantics/containers/Vocabulary.js'
@@ -36,7 +38,7 @@ class Public extends Component {
   } */
 
   render() {
-    const { history } = this.props
+    const { history, messages } = this.props
     var bg = 'bg-white'
     var p = ''
 
@@ -85,6 +87,7 @@ class Public extends Component {
               </Switch>
           </main>
         </div>
+        {/*messages && messages.length > 0 && <Ticker data={messages} />*/}
         <Footer/>
       </div>
       );
@@ -95,7 +98,8 @@ class Public extends Component {
 
 function mapStateToProps(state) {
   const { loggedUser, authed } = state.userReducer['obj'] || {}
-  return { loggedUser, authed }
+  const { messages } = state.ticker || { messages: [] }
+  return { loggedUser, authed, messages }
 }
 
 export default connect(mapStateToProps)(Public);

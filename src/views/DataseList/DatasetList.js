@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { search } from '../../actions'
 import { isPublic } from '../../utility'
 import Select from 'react-select'
-import { decodeTheme, decodeTipo, decodeVisibilita } from '../../utility' 
+import { decodeTheme, decodeTipo, decodeVisibilita } from '../../utility'
 import moment from 'moment';
 require('react-dates/initialize');
 require('react-dates/lib/css/_datepicker.css');
@@ -22,7 +22,7 @@ class DatasetList extends Component {
         if(window.location.hash.indexOf('search')!==-1)
           defaultOrder = 'score'
 
-        var order =  props.filterInt&&props.filterInt.order?props.filterInt.order:defaultOrder 
+        var order =  props.filterInt&&props.filterInt.order?props.filterInt.order:defaultOrder
         var filter = props.filterInt?props.filterInt:{'da':'',
                                                         'a':'',
                                                         'order': defaultOrder,
@@ -32,7 +32,7 @@ class DatasetList extends Component {
             Object.keys(JSON.parse(props.results[props.results.length-4].source)).map((tipo, index) =>{
                 var tipi=JSON.parse(props.results[props.results.length-4].source)
                 totalResults += parseInt(tipi[tipo])
-            })            
+            })
         }
 
         var ownerCheck = false
@@ -68,14 +68,14 @@ class DatasetList extends Component {
             ckanChecked: isPublic()
         }
 
-        
+
 
 
         //this.load();
-        this.searchAll = this.searchAll.bind(this)  
-        this.search = this.search.bind(this)  
-        this.addFilter = this.addFilter.bind(this)  
-        this.removeFilter = this.removeFilter.bind(this)  
+        this.searchAll = this.searchAll.bind(this)
+        this.search = this.search.bind(this)
+        this.addFilter = this.addFilter.bind(this)
+        this.removeFilter = this.removeFilter.bind(this)
         //this.handleLoadDatasetDetailClick = this.handleLoadDatasetDetailClick.bind(this)
         this.handleToggleClickTipo = this.handleToggleClickTipo.bind(this)
         this.handleToggleClickData = this.handleToggleClickData.bind(this)
@@ -95,21 +95,21 @@ class DatasetList extends Component {
 /*         if(window.location.hash==='#/dataset'){
             this.searchAll('')
         } */
-        
+
         this.handleToggleClickDataset = this.handleToggleClickDataset.bind(this);
     }
-    
+
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
     componentDidMount() {
         if(!this.props.isFetching && (!this.props.results || this.props.results.length === 0)){
             const queryString = require('query-string');
-            const query = queryString.parse(this.props.location.search).q  
+            const query = queryString.parse(this.props.location.search).q
             this.searchAll(query)
         }
         window.addEventListener('scroll', this.handleScrollToBottom, false);
     }
 
-    
+
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScrollToBottom, false);
     }
@@ -156,7 +156,7 @@ class DatasetList extends Component {
     //Filter Type: 0-tip, 1-cat, 2-vis, 3-org
     search(order, owner, lastFilter, sharedWithMe, ckanChecked){
         const { dispatch, properties } = this.props
-        
+
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search).q
 
@@ -166,7 +166,7 @@ class DatasetList extends Component {
         else{
             orderFilter = this.state.filter.order
         }
-        
+
         var filterInt = this.state.filter
         filterInt.order = orderFilter
 
@@ -203,13 +203,13 @@ class DatasetList extends Component {
                       case 3:
                           filter.org.push(fi.value)
                           break;
-                      
+
                   }
               })
           }
         }
 
-          
+
         if(dataset){
             if(filter.index.length===0){
               if(ckanChecked===false){
@@ -314,7 +314,7 @@ class DatasetList extends Component {
       }
 
       handleChangeDate(startDate, endDate){
-        let newFilter = Object.assign({}, this.state.filter); 
+        let newFilter = Object.assign({}, this.state.filter);
         newFilter.da = startDate
         newFilter.a = endDate
         this.setState({
@@ -325,29 +325,29 @@ class DatasetList extends Component {
       }
 
       handleChangeStartDate(date) {
-        let newFilter = Object.assign({}, this.state.filter); 
+        let newFilter = Object.assign({}, this.state.filter);
         newFilter.da = date
         this.setState({
           startDate: date,
           filter: newFilter
         });
       }
-      
+
       handleChangeEndDate(date) {
-        let newFilter = Object.assign({}, this.state.filter); 
+        let newFilter = Object.assign({}, this.state.filter);
         newFilter.a = date
         this.setState({
           startDate: date,
           filter: newFilter
         });
       }
-      
+
       handleChangeOrdinamento(e) {
         const { dispatch, loggedUser } = this.props
         const { mieiContenutichecked, sharedWithMeChecked } = this.state
         const queryString = require('query-string');
-        const query = queryString.parse(this.props.location.search).q  
-        let newFilter = Object.assign({}, this.state.filter); 
+        const query = queryString.parse(this.props.location.search).q
+        let newFilter = Object.assign({}, this.state.filter);
         newFilter.order = e.target.value
         this.setState({
             order_filter: e.target.value,
@@ -375,7 +375,7 @@ class DatasetList extends Component {
 
         this.search(this.state.order_filter, '', false, true, this.state.ckanChecked)
       }
-      
+
       toggleCkan(){
         this.setState({
           ckanChecked: !this.state.ckanChecked
@@ -386,7 +386,7 @@ class DatasetList extends Component {
 
       UNSAFE_componentWillReceiveProps(nextProps){
         const queryString = require('query-string');
-        const query = queryString.parse(nextProps.location.search).q 
+        const query = queryString.parse(nextProps.location.search).q
 
         if(nextProps.results!==this.props.results){
           this.setState({query: query,
@@ -458,9 +458,9 @@ class DatasetList extends Component {
       addFilter(type, value){
         let newElement = {'type': type, 'value': value}
         if(!this.isInArray(this.state.filter.elements, newElement)){
-            let newFilter = Object.assign({}, this.state.filter);    
-            newFilter.elements = this.state.filter.elements.concat(newElement)                      
-            this.setState({ 
+            let newFilter = Object.assign({}, this.state.filter);
+            newFilter.elements = this.state.filter.elements.concat(newElement)
+            this.setState({
                 filter: newFilter
             })
         }
@@ -469,7 +469,7 @@ class DatasetList extends Component {
       isInArray(filter, element){
         var found = false;
         if(filter.elements){
-            var array = filter.elements 
+            var array = filter.elements
             for(var i = 0; i < array.length; i++) {
                 if (array[i].type == element.type && array[i].value == element.value) {
                     found = true;
@@ -483,9 +483,9 @@ class DatasetList extends Component {
       removeFilter(index) {
         const { loggedUser } = this.props
         const { mieiContenutichecked } = this.state
-        let newFilter = Object.assign({}, this.state.filter); 
+        let newFilter = Object.assign({}, this.state.filter);
         newFilter.elements = this.state.filter.elements.filter((_, i) => i !== index)
-        this.setState({ 
+        this.setState({
             filter: newFilter
         })
         if(newFilter.elements.length===0 && newFilter.a==='' && newFilter.da===''){
@@ -495,7 +495,7 @@ class DatasetList extends Component {
 
       removeFilterDate() {
         let newFilter = Object.assign({}, this.state.filter);
-        
+
         newFilter.a = ''
         newFilter.da = ''
         this.setState({
@@ -512,7 +512,7 @@ class DatasetList extends Component {
       loadMore = () => {
         if (this.state.isLoading) { return }
         var totitems = this.state.items + 10;
-        this.setState({ 
+        this.setState({
             items: totitems,
             visible: "hidden"
         });
@@ -534,10 +534,10 @@ class DatasetList extends Component {
       }
     }
 
- 
+
     render() {
         const { results, isFetching, properties, loggedUser, filter } = this.props
-        
+
         const queryString = require('query-string');
         var search = queryString.parse(this.props.location.search).q
 
@@ -552,7 +552,7 @@ class DatasetList extends Component {
                 'value': org,
                 'label': org
               })
-            })            
+            })
           }
         }
 
@@ -582,7 +582,7 @@ class DatasetList extends Component {
                                   </label></div> */}
                                   {!isPublic() && <div id="tab" className="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label className={"btn btn-outline-filters "+((!this.state.mieiContenutichecked&&!this.state.sharedWithMeChecked)?"active":"")}>
-                                      <input type="radio" name="all" id="option1" onClick={()=>{this.setState({ sharedWithMeChecked: false, mieiContenutichecked: false}); this.search(this.state.order_filter, '', false, false, this.state.ckanChecked)}}/> Tutti i contenuti 
+                                      <input type="radio" name="all" id="option1" onClick={()=>{this.setState({ sharedWithMeChecked: false, mieiContenutichecked: false}); this.search(this.state.order_filter, '', false, false, this.state.ckanChecked)}}/> Tutti i contenuti
                                     </label>
                                     <label className={"btn btn-outline-filters "+((!this.state.mieiContenutichecked&&this.state.sharedWithMeChecked)?"active":"")}>
                                       <input type="radio" name="shared" id="option2" onClick={this.toggleShared}/> Condivisi con me
@@ -591,7 +591,7 @@ class DatasetList extends Component {
                                       <input type="radio" name="mine" id="option3" onClick={this.toggleMiei}/> I miei contenuti
                                     </label>
                                   </div>}
-                                </div>  
+                                </div>
                               </div>
                               <div className="container mb-3">
                                 {/* <i className="fas fa-user text-primary mr-2 fa-lg"/> */}
@@ -635,7 +635,7 @@ class DatasetList extends Component {
                                       return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 0, 'value': tipo})} onClick={this.addFilter.bind(this, 0, tipo)} key={index} className={!this.isInArray(this.state.filter, {'type': 0, 'value': tipo})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTipo(tipo)}<span className="ml-2 badge badge-pill badge-secondary">{tipi[tipo]}</span></button>)
                                 })
                             }
-                            {this.state.showDivData && 
+                            {this.state.showDivData &&
                                 <DateRangePicker
                                     startDatePlaceholderText={'Data di inizio'} //PropTypes.string,
                                     endDatePlaceholderText={'Data di fine'} //PropTypes.string,
@@ -655,7 +655,7 @@ class DatasetList extends Component {
                                 categories.map((theme, index) =>{
                                     var themes=JSON.parse(results[results.length-1].source)
                                     return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 1, 'value': theme})} onClick={this.addFilter.bind(this, 1, theme)} key={index} className={!this.isInArray(this.state.filter, {'type': 1, 'value': theme})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeTheme(theme)}<span className="ml-2 badge badge-pill badge-secondary">{themes[theme]}</span></button>)
-                                }) 
+                                })
                             }
                             {this.state.showDivOrganizzazione && results &&
                                 organizations.map((org, index) =>{
@@ -687,13 +687,13 @@ class DatasetList extends Component {
                                     return(<button type="button" style={{height: '48px'}} disabled={this.isInArray(this.state.filter, {'type': 2, 'value': vis})} onClick={this.addFilter.bind(this, 2, vis)} key={index} className={!this.isInArray(this.state.filter, {'type': 2, 'value': vis})?"my-2 mr-2 btn btn-outline-filters":"btn my-2 mr-2 btn-secondary"}>{decodeVisibilita(vis)}<span className="ml-2 badge badge-pill badge-secondary">{arrVis[vis]}</span></button>)
                                 })
                             }
-                            {/* this.state.showDivSearch && 
+                            {/* this.state.showDivSearch &&
                                 <form className="py-2 w-100" onSubmit={this.search.bind(this, this.state.order_filter)}>
                                     <input className="search-input w-100" placeholder="Cosa vuoi cercare?" value={this.state.query} onChange={e => this.setState({query: e.target.value})}/>
                                 </form> */
                             }
                             </nav>
-                            { (this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) && 
+                            { (this.state.filter.elements.length>0 || this.state.filter.da || this.state.filter.a) &&
                               <div className="bg-grigino">
                                 <nav className="dashboardHeader container py-2 px-5">
                                 {this.state.filter.elements.length>0 && this.state.filter.elements.map((fi, index) => {
@@ -714,11 +714,11 @@ class DatasetList extends Component {
                                 </nav>
                               </div>
                             }
-                            {isFetching === true ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> : 
+                            {isFetching === true ? <h1 className="text-center p-5"><i className="fas fa-circle-notch fa-spin mr-2" />Caricamento</h1> :
                              <div className="mb-3">
                                 {results && results.slice(0,this.state.items).map((result, index) => {
                                 switch(result.type){
-                                    case 'catalog_test': 
+                                    case 'catalog_test':
                                         let dataset = JSON.parse(result.source)
                                         let datasetMatch = dataset
                                         try {
@@ -762,7 +762,7 @@ class DatasetList extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
+                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 &&
                                                 <div className="card mb-3 mt-0">
                                                     <div className="card-body clearfix">
                                                         <div className="row pl-3 pt-2" >
@@ -798,9 +798,9 @@ class DatasetList extends Component {
                                                                 {fields.map((result, index) => {
                                                                     if(index===0)
                                                                         return(result.name)
-                                                                    else 
+                                                                    else
                                                                         return(', ' + result.name)
-                                                                }) 
+                                                                })
                                                                 }
                                                                 </p>
                                                             </div>
@@ -811,9 +811,9 @@ class DatasetList extends Component {
                                            </div>
                                            );
                                            break;
-                                            case 'ext_opendata': 
-                                                let datasetOpen = {}; 
-                                                let datasetOpenMatch = {}; 
+                                            case 'ext_opendata':
+                                                let datasetOpen = {};
+                                                let datasetOpenMatch = {};
                                                 try {
                                                     datasetOpen = JSON.parse(result.source)
                                                     datasetOpenMatch = datasetOpen
@@ -854,7 +854,7 @@ class DatasetList extends Component {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
+                                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 &&
                                                                 <div className="card mb-3 mt-0">
                                                                     <div className="card-body clearfix">
                                                                         <div className="row px-3 pt-2" >
@@ -881,7 +881,7 @@ class DatasetList extends Component {
                                                                                     <div dangerouslySetInnerHTML={{__html: datasetOpenMatch['notes']?datasetOpenMatch['notes']:datasetOpen.notes}}></div>
                                                                                 </div>
                                                                         </div>
-                                                                       
+
                                                                     </div>
                                                                 </div>
                                                                 }
@@ -892,10 +892,10 @@ class DatasetList extends Component {
                                                 } catch (error) {
                                                     // console.error(error)
                                                 }
-                                                
+
                                                     break;
-                                   
-                                    case 'datastory': 
+
+                                    case 'datastory':
                                         let story = JSON.parse(result.source)
                                         let storyMatch = story
                                         try {
@@ -907,19 +907,19 @@ class DatasetList extends Component {
                                             const dashwidgets = story.widgets.filter(wid=>{
                                               return wid.identifier.toLowerCase().indexOf('textwidget')<0
                                             })
-                          
-                                            var firstLayout = dashwidgets.length>0?dashwidgets[0]:''
-                          
+
+                                            var firstWidget = dashwidgets.length>0?dashwidgets[0]:''
+
                                             var time = 0
                                             for (let k = 0; k < story.widgets.length; k++){
                                               if(story.widgets[k].identifier.toLowerCase().indexOf('textwidget')!==-1){
                                                 var text = story.widgets[k].text
                                                 var array = text?text.split(' '):[]
-                                                
+
                                                 time = time + (array.length/275)
                                               }
                                               else
-                                                time = time + 1 
+                                                time = time + 1
                                             }
                                           }
                                         return(
@@ -931,9 +931,9 @@ class DatasetList extends Component {
                                                     </div>
                                                     <div className="row pl-3 pt-3 h-100" >
                                                         <div className="col-md-6 py-1 px-1" >
-                                                            <Link to={isPublic()?'/datastory/list/' + story.id:'/private/datastory/list/' + story.id} className="title-res text-primary">                                                                    
+                                                            <Link to={isPublic()?'/datastory/list/' + story.id:'/private/datastory/list/' + story.id} className="title-res text-primary">
 {/*                                                                 <div title={story.title} dangerouslySetInnerHTML={{__html: storyMatch['title']?truncateDatasetName(storyMatch['title'],100):truncateDatasetName(story.title, 60)}}></div>
- */}                                                        <div title={story.title} className="text-truncate" dangerouslySetInnerHTML={{__html: storyMatch['title']?storyMatch['title']:story.title}}></div>    
+ */}                                                        <div title={story.title} className="text-truncate" dangerouslySetInnerHTML={{__html: storyMatch['title']?storyMatch['title']:story.title}}></div>
                                                             </Link>
                                                         </div>
                                                         <div className="col-md-2 px-1" ></div>
@@ -955,7 +955,7 @@ class DatasetList extends Component {
                                                     </div>
                                                 </div>
                                                 </div>
-                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 && 
+                                                {this.state.showDivDataset && this.state.showDivDataset.length>0 && this.state.showDivDataset.indexOf(index)>-1 &&
                                                     <div className="card mb-3 mt-0">
                                                         <div className="card-body clearfix">
                                                             <div className="row pl-3 pt-2" >
@@ -1001,7 +1001,7 @@ class DatasetList extends Component {
                                                 }
                                             </div>
                                             )
-                                    break;         
+                                    break;
                                     }
                                 })
                             }

@@ -5,6 +5,7 @@ import { createBrowserHistory } from 'history';
 import Full from '../Full/'
 import Home from '../Home/'
 import { fetchProperties } from './../../actions.js'
+import { getAllPublicMessages } from '../../newComponents/List-Ticker/tickerActions'
 import ReduxToastr from 'react-redux-toastr'
 import Public from '../Public/';
 
@@ -33,6 +34,8 @@ class App extends Component {
         domain = 'dataportal'
       }
     }
+    // dispatch(getAllPublicMessages())
+
     dispatch(fetchProperties(domain))
     .then(json => {
       var html = document.getElementsByTagName('html')[0];

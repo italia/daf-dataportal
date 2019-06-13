@@ -4,7 +4,7 @@ import {
     Modal,
     ModalHeader,
     ModalBody,
-    ModalFooter 
+    ModalFooter
 } from 'reactstrap';
 import Select from 'react-select'
 import OrganizationService from "./services/OrganizationService";
@@ -54,7 +54,7 @@ class Organizations extends Component {
             removingWgUser:false,
             workgroupUserToRemove:''
         }
-        
+
         this.openOrgCreate = this.openOrgCreate.bind(this)
         this.openWGCreate = this.openWGCreate.bind(this)
         this.openOrgModal = this.openOrgModal.bind(this)
@@ -134,7 +134,7 @@ class Organizations extends Component {
     getWorkGroupUsers(workgroup){
          console.log(workgroup)
         let response = organizationService.groupInfo(workgroup)
-        response.then((json) => { 
+        response.then((json) => {
              this.setState({
                 userEdit: false,
                 createOrg: false,
@@ -144,8 +144,8 @@ class Organizations extends Component {
                 selectedWorkgroup: workgroup,
                 removeUserWG:undefined
 
-             }); 
-        });  
+             });
+        });
     }
 
     getWorkgroups(org) {
@@ -189,7 +189,7 @@ class Organizations extends Component {
             workgroupError: undefined,
             removingWg:true,
             wgToRemove:workgroup
-        })        
+        })
         let response = organizationService.workgroupDel(workgroup)
         response.then((response) => {
             if (response.ok) {
@@ -197,7 +197,7 @@ class Organizations extends Component {
                     workgroupError: undefined,
                     removingWg:false,
                     wgToRemove:''
-                })    
+                })
                 this.getWorkgroups(selectedOrg)
                 toastr.success('Completato', 'Workgroup eliminato con successo')
             }else {
@@ -245,36 +245,36 @@ class Organizations extends Component {
                 this.setState({
                     removingWgUser:false,
                     workgroupUserToRemove:''
-                })      
+                })
                 toastr.success('Completato', 'Utente eliminato con successo dal workgroup')
-                this.getWorkGroupUsers(workgroupuser)                   
+                this.getWorkGroupUsers(workgroupuser)
             }else{
                 response.json().then(json => {
                     if (json.code == '1') {
                         this.setState({
                             removingWgUser:false,
                             workgroupUserToRemove:''
-                        })     
+                        })
                         console.log('User remove WG error: ' + json.message)
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dal workgroup: ' + json.message)
                     }else  if (json.code == '0') {
                         this.setState({
                             removingWgUser:false,
                             workgroupUserToRemove:''
-                        }) 
-                        console.log('User remove WG error: ' + json.message)    
+                        })
+                        console.log('User remove WG error: ' + json.message)
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dal workgroup')
                     }else {
                         this.setState({
                             removingWgUser:false,
                             workgroupUserToRemove:''
-                        })  
-                        console.log('User remove WG error')   
+                        })
+                        console.log('User remove WG error')
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dal workgroup')
                     }
                 })
             }
-        })   
+        })
     }
 
     removeUser(user){
@@ -298,7 +298,7 @@ class Organizations extends Component {
                         this.setState({
                             removingUser:false,
                             userToRemove:''
-                        })                        
+                        })
                         this.getUsers(org);
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione: ' + json.message)
                         console.log('User remove error: ' + json.message)
@@ -310,27 +310,27 @@ class Organizations extends Component {
                         this.setState({
                             removingUser:false,
                             userToRemove:''
-                        })     
+                        })
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione: ' + json.message)
                         console.log('User remove error: ' + json.message)
                     } else if (json.code == '0') {
                         this.setState({
                             removingUser:false,
                             userToRemove:''
-                        })     
+                        })
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione')
                         console.log('User remove error: ' + json.message)
                     } else {
                         this.setState({
                             removingUser:false,
                             userToRemove:''
-                        })     
+                        })
                         toastr.error('Errore', 'Errore durante l\'eliminazione dell\'utente dall\'organizzazione')
                         console.log('User remove error')
                     }
                 })
             }
-        })   
+        })
     }
 
     removeUserFromWorkgroups(user,org){
@@ -366,7 +366,7 @@ class Organizations extends Component {
                         })
                         console.log('User Add error: '+json.message)
                         toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente all\'organizzazione: ' + json.message)
-                    
+
                     } else if(json.code== '0'){
                         this.getUsers(org);
                         this.setState({
@@ -375,7 +375,7 @@ class Organizations extends Component {
                             saving: false
                         })
                         console.log('User Add error: '+json.message)
-                        toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente all\'organizzazione')                    
+                        toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente all\'organizzazione')
                     } else {
                         this.setState({
                             user:'',
@@ -386,7 +386,7 @@ class Organizations extends Component {
                     }
                 })
             }
-        })   
+        })
     }
 
     addWG(wg){
@@ -412,7 +412,7 @@ class Organizations extends Component {
                         })
                         console.log('User Add error: '+json.message)
                         toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente al workgroup: ' + json.message)
-                    
+
                     } else  if(json.code== '0'){
                         this.setState({
                             user: '',
@@ -421,7 +421,7 @@ class Organizations extends Component {
                         })
                         console.log('User Add error: '+json.message)
                         toastr.error('Errore', 'Errore durante l\'aggiunta dell\'utente al workgroup')
-                    
+
                     } else {
                         this.setState({
                             user:'',
@@ -432,7 +432,7 @@ class Organizations extends Component {
                     }
                 })
             }
-        })   
+        })
     }
 
     createWG(selectedOrg){
@@ -495,7 +495,7 @@ class Organizations extends Component {
             if (response.ok) {
                     this.setState({
                         saving: false,
-                        createOrg: false                    
+                        createOrg: false
                     });
                     toastr.success('Completato', 'Organizzazione creata con successo')
                     this.load();
@@ -566,7 +566,7 @@ class Organizations extends Component {
                     }
                 })
             }
-        }) 
+        })
     }
 
     openOrgCreate(){
@@ -575,7 +575,7 @@ class Organizations extends Component {
             userEdit: false,
             workgroupEdit: false,
             createWG: false,
-            nome: '', 
+            nome: '',
             psw: 'Password1',
             repeatPassword:'',
             disableSave: true
@@ -589,7 +589,7 @@ class Organizations extends Component {
             workgroupEdit: true,
             createWG: true,
             workgroupUsers: undefined,
-            nomeWG: '', 
+            nomeWG: '',
             psw: 'Password1',
             repeatPassword:''
         })
@@ -602,7 +602,7 @@ class Organizations extends Component {
             workgroupEdit: false,
             userEdit: false,
             createOrg: false
-            
+
         })
     }
 
@@ -646,7 +646,7 @@ class Organizations extends Component {
             user: newValue,
         });
     }
-    
+
     validateNomeNGOrganizzazione (event) {
         const target  = event.target;
         const value   = target.value;
@@ -668,9 +668,9 @@ class Organizations extends Component {
     validateNomeOrganizzazione (event) {
         const target  = event.target;
         const value   = target.value;
-        console.log('regex',(/^[a-zA-Z0-9_]+$/.test(value)))
+        console.log('regex',(/^[a-z0-9_]+$/.test(value)))
         console.log('length', value.length)
-        if(value.length <= 18 && (/^[a-zA-Z0-9_]+$/.test(value))){
+        if(value.length <= 18 && (/^[a-z0-9_]+$/.test(value))){
             this.setState({
                 nomeok: true,
                 disableSave: false && nomeok && nome != ''
@@ -690,12 +690,12 @@ class Organizations extends Component {
         if(/^[A-z0-9\.\+_-]+@[A-z0-9\._-]+\.[A-z]{2,6}$/.test(value)){
             this.setState({
                 mailok: true,
-                disableSave: false && nomeok 
+                disableSave: false && nomeok
             })
         }else{
             this.setState({
                 mailok: false,
-                disableSave: true 
+                disableSave: true
             })
         }
     }
@@ -703,7 +703,7 @@ class Organizations extends Component {
     render() {
         const { loggedUser } = this.props
         const { users, allUsers, removingUser, userToRemove, removingWg, wgToRemove, removingWgUser, workgroupUserToRemove, filter, user, org, orgModal, userModal, userModalType ,userEdit, createOrg, checked, workgroupEdit, workgroups, workgroupUsers, orgUsers, selectedWorkgroup, selectedOrg, createWG} = this.state
-    
+
         return (
             <div>
                 <Modal
@@ -720,7 +720,7 @@ class Organizations extends Component {
                         </ModalBody>
                         <ModalFooter>
                         <button className='btn btn-danger' onClick={this.deleteOrg.bind(this)}>
-                            {this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Cancella l'organizzazione"} 
+                            {this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Cancella l'organizzazione"}
                         </button>
                             <button className='btn btn-secondary' onClick={this.closeOrgModal.bind(this)}>
                                 Annulla
@@ -757,13 +757,13 @@ class Organizations extends Component {
                             {this.state.saving?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Aggiungi utente"}
                             </button>
                             }
-                            
+
                             {userModalType==='wg' && <button className='btn btn-primary' onClick={this.addWG.bind(this, selectedWorkgroup)}>
                             {this.state.saving? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>:"Aggiungi utente"}
                             </button>
                             }
-                                
-                            
+
+
                             <button className='btn btn-secondary' onClick={this.closeUserModal}>
                                 Annulla
                             </button>
@@ -799,14 +799,14 @@ class Organizations extends Component {
                             <i className="fa fa-plus-circle fa-lg"></i>
                         </button>*/}
                     </div>
-                    {createOrg && 
+                    {createOrg &&
                     <div className="col-7">
                         <div className="form-group form-control ml-5">
                             <label htmlFor="example-search-input" className="mb-3">Crea organizzazione</label>
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Nome dell'organizzazione</label>
                                 <div className="col-6">
-                                    <input className="form-control" type="search" value={this.state.nome} maxLength="18" onChange={(e)=>{this.setState({nome:e.target.value}); this.validateNomeOrganizzazione(e)}}/>
+                                    <input className="form-control" type="search" value={this.state.nome} maxLength="18" onChange={(e)=>{this.setState({nome:e.target.value.toLowerCase()}); this.validateNomeOrganizzazione(e)}}/>
                                 </div>
                             </div>
                             <div className="form-group row">
@@ -823,7 +823,7 @@ class Organizations extends Component {
                             </div>
                             <button type="submit" className="btn btn-primary" disabled={this.state.disableSave} onClick={this.createOrg.bind(this)}>{this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div>: "Crea"}</button>
                         </div>
-    
+
                         <div hidden={this.state.nomeok} className="ml-5 w-100">
                             <div className="alert alert-warning" role="alert">
                                 <i className="fa fa-times-circle fa-lg m-t-2"></i> Il Nome dell'organizzazione inserito non rispetta le linee guida: <br />
@@ -835,11 +835,11 @@ class Organizations extends Component {
                         </div>
                         <div hidden={this.state.mailok} className="ml-5 w-100">
                             <div className="alert alert-warning" role="alert">
-                                <i className="fa fa-times-circle fa-lg m-t-2"></i> L' Email inserita non è valida 
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> L' Email inserita non è valida
                             </div>
                         </div>
-                    </div>}  
-                    {userEdit && 
+                    </div>}
+                    {userEdit &&
                     <div className="form-group ml-5">
                         <label htmlFor="example-search-input" className="col-2 mb-3">Utenti</label>
                         {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) &&
@@ -864,7 +864,7 @@ class Organizations extends Component {
                             </button>
                         */}
                     </div>}
-                    {workgroupEdit && 
+                    {workgroupEdit &&
                     <div className="form-group ml-5">
                         <label htmlFor="example-search-input" className="mb-3">Workgroups <i>{selectedOrg}</i></label>
                         {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) &&
@@ -874,7 +874,7 @@ class Organizations extends Component {
                         }
                         <ul className="list-group">
                             {(workgroups && workgroups.length > 0)?workgroups.map(workgroup => {
-                                        return( 
+                                        return(
                                             <li className={"list-group-item "+ (workgroup===selectedWorkgroup?"active":"")} key={workgroup}>{workgroup}
                                                 <button title="Elimina Workgroup" type="button"  className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={this.removeWorkgroup.bind(this, workgroup, selectedOrg)}>{removingWg&&workgroup===wgToRemove?<div><i className="fa fa-spinner fa-spin fa-lg" /></div>:<div><i className="fa fa-times fa-lg" /></div>}</button>
                                                 <button title="Gestione Utenti Workgroup" type="button" className={"float-right btn " + ((workgroup===selectedWorkgroup ? "btn-active" : "btn-link"))} onClick={()=>{this.getWorkGroupUsers(workgroup)}}><i className="fa fa-user-plus fa-lg" /></button>
@@ -890,14 +890,14 @@ class Organizations extends Component {
                         */}
                      </div>
                     }
-                    {workgroupEdit && createWG && 
+                    {workgroupEdit && createWG &&
                         <div className="col-7">
                         <div className="form-group form-control ml-5">
                             <label htmlFor="example-search-input" className="mb-3">Crea workgroup</label>
                             <div className="form-group row">
                                 <label className="col-3 col-form-label">Nome del workgroup</label>
                                 <div className="col-6">
-                                    <input className="form-control" type="search" maxLength="18" value={this.state.nomeWG} onChange={(e)=>{this.setState({nomeWG:e.target.value}); this.validateNomeNGOrganizzazione(e)}}/>
+                                    <input className="form-control" type="search" maxLength="18" value={this.state.nomeWG} onChange={(e)=>{this.setState({nomeWG:e.target.value.toLowerCase()}); this.validateNomeNGOrganizzazione(e)}}/>
                                 </div>
                             </div>
                             <button type="submit" className="btn btn-primary" disabled={this.state.disableSave || this.state.nomeWG==''?true:false} onClick={this.createWG.bind(this,selectedOrg)}>{this.state.saving ? <div><i className="fa fa-spinner fa-spin fa-lg" /></div> : "Crea"}</button>
@@ -913,12 +913,12 @@ class Organizations extends Component {
                         </div>
                         <div hidden={this.state.mailok} className="ml-5 w-100">
                             <div className="alert alert-warning" role="alert">
-                                <i className="fa fa-times-circle fa-lg m-t-2"></i> L' Email inserita non è valida 
+                                <i className="fa fa-times-circle fa-lg m-t-2"></i> L' Email inserita non è valida
                             </div>
                         </div>
                     </div>
                     }
-                    {workgroupUsers && 
+                    {workgroupUsers &&
                         <div className="form-group ml-5">
                             <label htmlFor="example-search-input" className="mb-3">Utenti <i>{selectedWorkgroup}</i></label>
                             {(isAdmin(loggedUser) || isSysAdmin(loggedUser)) &&
@@ -939,7 +939,7 @@ class Organizations extends Component {
                                 </button>
                             */}
                         </div>
-                    } 
+                    }
                 </div>
             </div>
         )
@@ -948,7 +948,7 @@ class Organizations extends Component {
 
 function mapStateToProps(state) {
     const loggedUser = state.userReducer['obj'].loggedUser || { }
-    const properties = state.propertiesReducer ? state.propertiesReducer['prop'] || {} : {} 
+    const properties = state.propertiesReducer ? state.propertiesReducer['prop'] || {} : {}
     return { loggedUser, properties }
 }
 

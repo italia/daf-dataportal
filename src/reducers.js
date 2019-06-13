@@ -47,6 +47,10 @@ import {
   dataApplicationsReducer
 } from './views/Public/DataApplication/reducers/dataApplicationsReducer'
 
+import {
+  tickerReducer
+} from "./newComponents/List-Ticker/tickerReducer";
+
 // semantic's reducers
 import {
   ontListReducer,
@@ -122,7 +126,7 @@ function datasets(state = { isFetching: false, didInvalidate: false, items: [], 
         isFeedLoading: false,
         feed: action.feed,
         ope: action.ope
-      })      
+      })
     case RECEIVE_DATASET_DETAIL_ERROR:
       return Object.assign({}, state, {
         isFetching: false,
@@ -283,7 +287,7 @@ function datastoryReducer(state = {}, action){
 
 function queryReducer(state = {}, action){
   switch(action.type) {
-    case RESET_QUERY_RESULT: 
+    case RESET_QUERY_RESULT:
       return Object.assign({}, state, {'query':{ 'queryLoading': false, 'queryResult': action.result, 'query': undefined }})
     case REQUEST_QUERY_RESULT:
       return Object.assign({}, state, {'query': { 'queryLoading': action.queryLoading, 'queryResult': action.result, 'query': action.query }})
@@ -318,6 +322,7 @@ const rootReducer = combineReducers({
   notificationsReducer,
   toastr: toastrReducer, // <- Mounted at toastr.
   dataApplicationsList: dataApplicationsReducer,
+  ticker: tickerReducer,
   // semantic's reducers
   ontologiesList: ontListReducer,
   ontologyDetail: ontDetailReducer,
