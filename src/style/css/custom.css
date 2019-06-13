@@ -1441,23 +1441,31 @@ text-align: center !important; }
     clear: both;
     margin-top: 5px;
   }
-  /* .x_content h3, .x_content h2, */ .x_content p{
+
+  .x_content p{
     margin-left: auto!important;
     margin-right: auto!important;
     /* max-width: 600px; */
     font: 400 16px/25px "Titillium Web"
   }
 
-  @media screen and (min-width:768px) {
-    /* .x_content h3, .x_content h2, */ .x_content p{
-      font: 400 21px/32px "Titillium Web"
-    }
-  }
-
   .x_content h4 {
     font-size: 16px;
     font-weight: 500;
   }
+
+  @media screen and (min-width:768px) {
+    .x_content p{
+      font: 400 21px/32px "Titillium Web"
+    }
+
+    .x_content h4{
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+
   .panel_toolbox {
     float: right;
     min-width: 10px;
