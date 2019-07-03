@@ -36,7 +36,7 @@ DAF Dataportal is the entry point of the Piattaforma Digitale Nazionale Dati, th
 the use cases for _datasets_ and the place to create new content: Datastory and Datasets.
 
 <!-- Insert here informations about files and folders structure, branch model adopted and release policy. -->
-The *master* branch refers to the code available production environment ([reachable here](https://dataportal.daf.teamdigitale.it)).
+The *master* branch refers to the code available for the production release ([reachable here](https://dataportal.daf.teamdigitale.it)).
 All the development starts from *dev* branch working on feature branches and merged first on _dev_ and after testing and reviewing 
 can be merged on master. 
 
@@ -49,6 +49,12 @@ This project depends by the following components.
 * **Redux** version 4.0.1, available [here](https://redux.js.org/).
 
 * **Webpack** version 4.29.6, available [here](https://webpack.js.org/).
+
+### Related PDND Services
+
+* **DAF Catalog Manager** available [here](https://github.com/italia/daf-srv-catalog/tree/master)
+* **DAF Security Manager** available [here](https://github.com/italia/daf-srv-security/tree/master)
+* **DAF Dataportal Backend** available [here](https://github.com/italia/daf-dataportal-backend)
 
 ## How to install and use DAF Dataportal
 
@@ -98,6 +104,10 @@ The second (and more geeky) is based on Docker (You can find all the following i
 sudo docker build --no-cache -t <YOUR_DOCKER_IMAGE_NAME> .
 ```
 
+**NOTE**: In order to work properly it's necessary a running instance of the related PDND services (see the related paragraph). 
+The endpoint for all the services and *API* can be found at `src/config/serviceurl.js` and can be edited to target 
+the correct endpoint of the services above, otherwise the application will target to the default production endpoints.
+ 
 ## How to contribute
 
 Contributions are welcome. Feel free to [open issues](./issues) and submit a [pull request](./pulls) at any time, but please read [our handbook](https://github.com/teamdigitale/daf-handbook) first.
