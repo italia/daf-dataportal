@@ -125,7 +125,7 @@ class Home extends Component{
             </div>
           </div>
         </div>
-        {/*<Messages />*/}
+        <Messages />
         <div className="mb-5 py-5 container">
           <div className="container">
             <div className="row">

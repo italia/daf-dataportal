@@ -87,7 +87,7 @@ class Public extends Component {
               </Switch>
           </main>
         </div>
-        {messages && messages.length > 0 && <Ticker data={messages} />}
+        {/*messages && messages.length > 0 && <Ticker data={messages} />*/}
         <Footer/>
       </div>
       );

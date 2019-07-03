@@ -10,7 +10,7 @@ if(hostname.indexOf('.test')>-1){
 export const serviceurl = {
 
     apiURLSSOManager: `https://api.daf.teamdigitale${backendDomain}/sso-manager`,
-    urlApiOpen: `https://api.daf.teamdigitale${backendDomain}/sso-manager`,
+    urlApiOpen: `https://api.open.daf.teamdigitale${backendDomain}/sso-manager`,
     apiURLDatiGov: `https://api.daf.teamdigitale${backendDomain}/dati-gov/v1`,
     apiURLCatalog: `https://api.daf.teamdigitale${backendDomain}/catalog-manager/v1`,
     apiURLSecurity : `https://api.daf.teamdigitale${backendDomain}/security-manager/v1`,

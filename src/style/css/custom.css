@@ -1518,6 +1518,7 @@ text-align: center !important; }
 /*Hover image widget card*/
 .img_hover_container {
   position: relative;
+  min-height: 367px;
 }
 
 .hover_image {

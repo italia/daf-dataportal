@@ -121,10 +121,10 @@ function receiveAllStories(json){
 /*********************************** DATASET *************************************************/
 function receiveDataset(json, value) {
   console.log('receiveDataset');
-  //This function creates an action that a reducer can handle 
+  //This function creates an action that a reducer can handle
   //Action are payload of information that sends data from the application to the store
   //Store doesn't have any other way to get data
-  //Action are not responsible for update the state (only reducers) !!! 
+  //Action are not responsible for update the state (only reducers) !!!
   return {
       type: RECEIVE_DATASETS,
       datasets: json,
@@ -237,13 +237,13 @@ function receiveDatasetDetailError(query, category_filter, group_filter, organiz
   }
 }
 
-function requestSearch() { 
+function requestSearch() {
   return {
     type: REQUEST_SEARCH
   }
 }
 
-function receiveSearchError(query) { 
+function receiveSearchError(query) {
   return {
     type: RECEIVE_SEARCH,
     results: undefined,
@@ -254,7 +254,7 @@ function receiveSearchError(query) {
   }
 }
 
-function receiveSearch(json, query, filter, filterInt) { 
+function receiveSearch(json, query, filter, filterInt) {
   return {
     type: RECEIVE_SEARCH,
     results: json,
@@ -267,7 +267,7 @@ function receiveSearch(json, query, filter, filterInt) {
   }
 }
 
-function receiveAddDataset(response) { 
+function receiveAddDataset(response) {
   return {
       type: RECEIVE_ADD_DATASET,
       user: response,
@@ -303,7 +303,7 @@ export function receiveLogin(response) {
   }
 }
 
-function receiveOrganization(response) {  
+function receiveOrganization(response) {
   return {
       type: RECEIVE_ORGANIZATION,
       org: response,
@@ -312,7 +312,7 @@ function receiveOrganization(response) {
   }
 }
 
-function receiveActivationSuccess(ok, json) {  
+function receiveActivationSuccess(ok, json) {
   if(ok==='ok')
   return {
       type: RECEIVE_ACTIVATION,
@@ -344,7 +344,7 @@ function receiveActivationSuccess(ok, json) {
   }
 }
 
-function receiveActivationError(json) {  
+function receiveActivationError(json) {
   return {
       type: RECEIVE_ACTIVATION_ERROR,
       error: 1,
@@ -362,7 +362,7 @@ function requestRegistration (){
 
 
 
-function receiveRegistrationSuccess(ok, json) {  
+function receiveRegistrationSuccess(ok, json) {
   if(ok==='ok')
   return {
       type: RECEIVE_REGISTRATION,
@@ -394,7 +394,7 @@ function receiveRegistrationSuccess(ok, json) {
   }
 }
 
-function receiveRegistrationError(json) {  
+function receiveRegistrationError(json) {
   return {
       type: RECEIVE_REGISTRATION_ERROR,
       error: 1,
@@ -411,7 +411,7 @@ function requestResetPwd() {
 }
 
 function cleanDataset(json) {
-  //This function creates an action that a reducer can handle 
+  //This function creates an action that a reducer can handle
   return {
     type: DELETE_DATASETS,
     datasets: null,
@@ -444,7 +444,7 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
-              'Content-Type': 'application/json'      
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify(input)
           })
@@ -460,7 +460,7 @@ export function registerUser(nome, cognome, username, email, pw, pw2) {
                   dispatch(receiveRegistrationSuccess('ko', json))
                 });
               }
-            }) 
+            })
           .catch(error => dispatch(receiveRegistrationError(error)))
         } else{
           dispatch(receiveRegistrationError('I campi Password e Ripeti Password non coincidono'))
@@ -608,13 +608,13 @@ export function resetPwd(email) {
   console.log("Called action reset password");
   var url = serviceurl.apiURLSecurity + '/ipa/resetpwd/request';
   var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  
+
   var input = {
     "mail": email,
   };
 
   console.log(input)
-  
+
   return dispatch => {
     dispatch(requestResetPwd())
     if(regEmail.test(email)){
@@ -827,7 +827,7 @@ function fetchDataset(query, start, owner, category_filter, group_filter, organi
     if (!first)
       groupurl += ")";
   }
-  
+
   if (organization_filter) {
     let first = true;
     for (let i in organization_filter) {
@@ -858,7 +858,7 @@ function fetchDataset(query, start, owner, category_filter, group_filter, organi
   if ((!queryurl) && (categoryurl || groupurl || orgurl))
     stringaIniz = '&q=('
 
-  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=1001&start=' + start +"&"+ stringaIniz + queryurl + ownerurl+ categoryurl + groupurl + orgurl +orderurl;  
+  var url = serviceurl.apiURLCatalog + '/ckan/searchDataset?rows=1001&start=' + start +"&"+ stringaIniz + queryurl + ownerurl+ categoryurl + groupurl + orgurl +orderurl;
   console.log(url)
   if(localStorage.getItem('username') && localStorage.getItem('token') &&
     localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
@@ -907,7 +907,7 @@ export function datasetMetadata(datasetname, query) {
         return dispatch(fetchMetadataAndResources(datasetname))
     }
   }
-  
+
 export function getOpendataResources(datasetname) {
     console.log('Opendata resources Detail action');
     return (dispatch, getState) => {
@@ -953,14 +953,14 @@ function fetchOpendataResources(datasetname) {
           .then(response => response.json())
           .catch(error => {
             console.log('Nessun Metadato trovato con questo nome');
-            
-          }) 
+
+          })
       }
     }
-  
+
   function fetchMetadataAndResources(datasetname) {
     var token = '';
-    var url = serviceurl.apiURLDatiGov + '/public/opendata/' + datasetname    
+    var url = serviceurl.apiURLDatiGov + '/public/opendata/' + datasetname
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
         token = localStorage.getItem('token')
@@ -981,11 +981,11 @@ function fetchOpendataResources(datasetname) {
           })
           .catch(error => {
             console.log('Nessun Metadato trovato con questo nome');
-            
-          }) 
+
+          })
       }
     }
-  
+
 export function addDatasetKylo(json, token, fileType) {
   console.log("Called action addDataset");
   var url = serviceurl.apiURLCatalog + "/kylo/feed/" + fileType
@@ -999,7 +999,7 @@ export function addDatasetKylo(json, token, fileType) {
           },
           body: JSON.stringify(json)
         }).then(response => response)
-        .catch(error => console.log('Eccezione durante il caricamento del file su Kylo ')) 
+        .catch(error => console.log('Eccezione durante il caricamento del file su Kylo '))
   }
 }
 
@@ -1007,7 +1007,7 @@ export function getDatasetCatalog(datasetname, isPublic){
   var token = ''
   var token = '';
   var url = serviceurl.apiURLCatalog + (isPublic?'/public/catalog-ds/getbyname/'  + datasetname:'/catalog-ds/getbyname/'  + datasetname)
-  if(localStorage.getItem('username') && localStorage.getItem('token') && 
+  if(localStorage.getItem('username') && localStorage.getItem('token') &&
      localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
     token = localStorage.getItem('token')
   }
@@ -1082,7 +1082,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         .catch(error => {
           console.log('Nessun Dataset con questo nome');
           dispatch(receiveDatasetDetailError(query))
-        }) 
+        })
       }
   }
 
@@ -1115,7 +1115,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
   //         .catch(error => {
   //           console.log('Nessun Dataset con questo nome');
   //           dispatch(receiveDatasetDetailError(query))
-  //         }) 
+  //         })
   //       }
   //   }
 
@@ -1161,7 +1161,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
     var token = '';
     console.log('richiedo gli iframes per il dataset: ' + nomeDataset)
     var url = ''
-    if(privatex){ 
+    if(privatex){
       url = serviceurl.apiURLDatiGov + '/dashboard/iframesByName/' + nomeDataset;
     }else{
       url = serviceurl.apiURLDatiGov + '/dashboard/open-iframesByName/' + nomeDataset;
@@ -1187,7 +1187,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
   export function getFeedDetail(org, nomeDataset) {
     var token = '';
     var name = org + '.' + org + '_o_' + nomeDataset;
-    console.log('richiedo lo stato del feed per il dataset: ' + name) 
+    console.log('richiedo lo stato del feed per il dataset: ' + name)
     var url = serviceurl.apiURLDatiGov + '/kylo/feeds/' + name;
     if(localStorage.getItem('username') && localStorage.getItem('token') &&
       localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
@@ -1314,10 +1314,9 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 /******************************************************************************* */
 
     export function getSchema(filesToUpload, typeFile) {
-      console.log('getSchema'); 
+      console.log('getSchema');
       /* console.log(filesToUpload) */
       var url = serviceurl.apiURLDatiGov + "/infer/kylo/" + typeFile
-      //var url = 'http://localhost:3001/dati-gov/v1/infer/kylo/csv'
       var token = '';
       if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
@@ -1337,12 +1336,12 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               'Authorization': 'Bearer ' + token
             }
           })
-            .then(response => response.json())
-        } 
+              .then(response => response.json())
+        }
       }
 
       export function getSchemaWS(url, typeFile) {
-        console.log('getSchemaWS'); 
+        console.log('getSchemaWS');
         var url = serviceurl.apiURLDatiGov + "/infer/ws/kylo/" + encodeURIComponent(url) + "/" + typeFile
         var token = '';
         if(localStorage.getItem('username') && localStorage.getItem('token') &&
@@ -1365,7 +1364,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         }
 
       export function getSystemNameKylo(title) {
-        console.log('getSchemaWS'); 
+        console.log('getSchemaWS');
         var token = '';
         if(localStorage.getItem('username') && localStorage.getItem('token') &&
           localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
@@ -1403,13 +1402,13 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
               //'Accept': 'application/json',
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + token
-            }, 
+            },
             body: JSON.stringify(unreadNotifications)
           })
           .then(response => response.json())
         }
       }
-      
+
       export function getDatasetACL(datasetname){
         var url = serviceurl.apiURLSecurity + '/daf/datasetACL/' + datasetname
         var token = ''
@@ -1418,7 +1417,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
           token = localStorage.getItem('token')
         }
-        
+
         return dispatch => {
           return fetch(url, {
             method: 'GET',
@@ -1446,7 +1445,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           "groupType": "group",
           "permission": "rwx"
         }
-        
+
         return dispatch => {
           return fetch(url, {
             method: 'PUT',
@@ -1474,7 +1473,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           "groupName": groupname,
           "groupType": "group",
         }
-        
+
         return dispatch => {
           return fetch(url, {
             method: 'PUT',
@@ -1490,7 +1489,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       }
 
       export function uploadHdfsFile(url, file){
-        var token = '' 
+        var token = ''
         if(localStorage.getItem('username') && localStorage.getItem('token') &&
         localStorage.getItem('username') != 'null' && localStorage.getItem('token') != 'null'){
           token = localStorage.getItem('token')
@@ -1664,7 +1663,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
           "resource_type" : null,
           "size" : null
         }]
-        
+
 
         return dispatch => {
           return fetch(url, {
@@ -1888,7 +1887,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
         console.log('Launch Query on storage action');
         return (dispatch) => {
           return dispatch(launchQueryOnStorage(logical_uri, query))
-        }      
+        }
       } */
 
       export function launchQueryOnStorage(logical_uri, query) {
@@ -1941,7 +1940,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
       export function getLinkedDs(datasetName, sources){
         var url = serviceurl.apiURLCatalog + '/catalog-ds/linked/' + datasetName
         var token = ''
-        
+
         if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
           token = localStorage.getItem('token')
         }
@@ -2015,7 +2014,7 @@ function fetchDatasetDetail(datasetname, query, isPublic) {
 export function getDatastory(isPublic, id){
   var url = serviceurl.apiURLDatiGov + (isPublic?'/public/datastory/get-by-id/':'/datastory/get-by-id/') + id
   var token = ''
-  
+
   if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
     token = localStorage.getItem('token')
   }
@@ -2038,7 +2037,7 @@ export function getDatastory(isPublic, id){
 export function getAllDatastories(isPublic){
   var url = serviceurl.apiURLDatiGov + (isPublic?'/public/datastories':'/datastories')
   var token = ''
-  
+
   if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
     token = localStorage.getItem('token')
   }
@@ -2061,7 +2060,7 @@ export function getAllDatastories(isPublic){
 export function saveDatastory(datastory){
   var url = serviceurl.apiURLDatiGov + '/datastory/save'
   var token = ''
-  
+
   if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
     token = localStorage.getItem('token')
   }
@@ -2079,13 +2078,13 @@ export function saveDatastory(datastory){
     })
     .then(response => response)
     .catch(error=> console.error(error))
-  } 
+  }
 }
 
 export function deleteDatastory(id){
   var url = serviceurl.apiURLDatiGov + '/datastory/delete/' + id
   var token = ''
-  
+
   if(localStorage.getItem('username') && localStorage.getItem('token') && localStorage.getItem('username') !== 'null' && localStorage.getItem('token') !== 'null'){
     token = localStorage.getItem('token')
   }
