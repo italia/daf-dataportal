@@ -471,8 +471,8 @@ class WizardForm extends Component {
         dispatch(getSchema(filesToUpload, tipofile))//defaul value is csv
             .then(json => {
               if(json.code && json.code===400){
-                this.setUploading(false, "L'upload del file è andato in errore a causa del nome dei campi. Campi in errore: "+json.fields );
-                toastr.error('Errore',"L'upload del file è andato in errore a causa del nome dei campi. Campi in errore: "+json.fields)
+                this.setUploading(false, "L'upload del file è andato in errore per la presenza di caratteri non ammessi nei seguenti nomi delle colonne: "+json.fields+". Controllare i caratteri ammessi al seguente "+<a href="https://docs.italia.it/italia/daf/daf-dataportal-it-docs/it/master/dataportal-privato/dataset.html" target="_blank">"link"</a> );
+                toastr.error('Errore',"L'upload del file è andato in errore per la presenza di caratteri non ammessi nei seguenti nomi delle colonne: "+json.fields+".")
               }else{
                 this.calcDataFields(fields, JSON.parse(json))
             //.then(json => { this.calcDataFields(fields, json)
