@@ -21,6 +21,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
+import { toastr } from 'react-redux-toastr'
 
 const steps = [{'title': 'Carica file'},{'title': 'Descrivi le colonne'},{'title': 'Aggiungi i Metadati'}]
 
@@ -31,7 +32,7 @@ class WizardForm extends Component {
     this.previousPage = this.previousPage.bind(this);
     this.goToSecondPage = this.goToSecondPage.bind(this)
     this.setUploading = this.setUploading.bind(this);
-    this.onDropFunction = this.onDropFunction.bind(this) 
+    this.onDropFunction = this.onDropFunction.bind(this)
     this.addSemanticToForm = this.addSemanticToForm.bind(this)
     this.addConvenzioneToForm = this.addConvenzioneToForm.bind(this)
     this.deleteConvenzioneToForm = this.deleteConvenzioneToForm.bind(this)
@@ -110,11 +111,11 @@ class WizardForm extends Component {
           this.setState({ datasetStdList: json })
        })
     }else{
-     console.log('Errore nel reperimento del json [loaddatasetStandard]: ' + error) 
+     console.log('Errore nel reperimento del json [loaddatasetStandard]: ' + error)
     }})
-   .catch((error)=>{ 
-     console.log('Errore nel reperimento del json [loaddatasetStandard]: ' + error) 
-   }) 
+   .catch((error)=>{
+     console.log('Errore nel reperimento del json [loaddatasetStandard]: ' + error)
+   })
  }
 
   loadConfiguration(){
@@ -125,18 +126,18 @@ class WizardForm extends Component {
       if(response.ok){
         response.json()
         .then(json=>{
-          this.setState({ config: JSON.parse(json.voc), 
+          this.setState({ config: JSON.parse(json.voc),
                           loadingConfiguration: false})
           console.log(json.message)
         })
      }else{
-      console.log('Errore nel reperimento del json di configurazione: ' + error) 
+      console.log('Errore nel reperimento del json di configurazione: ' + error)
       this.setState({ config: config, loadingConfiguration: false })
      }})
-    .catch((error)=>{ 
-      console.log('Errore nel reperimento del json di configurazione: ' + error) 
+    .catch((error)=>{
+      console.log('Errore nel reperimento del json di configurazione: ' + error)
       this.setState({ config: config, loadingConfiguration: false })
-    }) 
+    })
   }
 
   loadVocabolariControllati(){
@@ -208,50 +209,50 @@ class WizardForm extends Component {
     const { dispatch } = this.props
     this.state.listaPipelines.push(value)
     dispatch(change('wizard', 'pipelines', this.state.listaPipelines))
-  }  
+  }
 
   deleteConvenzioneToForm(index, tipo, val){
-    for(var i=0;i<this.state.listaConvenzioni.length;i++){    
+    for(var i=0;i<this.state.listaConvenzioni.length;i++){
       if(this.state.listaConvenzioni[i].index==index&&this.state.listaConvenzioni[i].tipo==tipo&&this.state.listaConvenzioni[i].val==val) {
         this.state.listaConvenzioni.splice(i, 1);
       }
     }
     const { dispatch } = this.props
-    dispatch(change('wizard', 'inferred['+index+'].convenzioni',  this.state.listaConvenzioni)) 
+    dispatch(change('wizard', 'inferred['+index+'].convenzioni',  this.state.listaConvenzioni))
   }
 
   deleteGerarchiaToForm(index, tipo, val){
-    for(var i=0;i<this.state.listaGerarchie.length;i++){    
+    for(var i=0;i<this.state.listaGerarchie.length;i++){
       if(this.state.listaGerarchie[i].index==index&&this.state.listaGerarchie[i].tipo==tipo&&this.state.listaGerarchie[i].val==val) {
         this.state.listaGerarchie.splice(i, 1);
       }
     }
     const { dispatch } = this.props
-    dispatch(change('wizard', 'inferred['+index+'].gerarchie',  this.state.listaGerarchie)) 
+    dispatch(change('wizard', 'inferred['+index+'].gerarchie',  this.state.listaGerarchie))
   }
 
   deleteGruppiToForm(nome, permesso){
-    for(var i=0;i<this.state.listaGruppi.length;i++){    
+    for(var i=0;i<this.state.listaGruppi.length;i++){
       if(this.state.listaGruppi[i].nome==nome&&this.state.listaGruppi[i].permesso==permesso) {
         this.state.listaGruppi.splice(i, 1);
       }
     }
     const { dispatch } = this.props
-    dispatch(change('wizard', 'gruppiaccesso',  this.state.listaGruppi)) 
+    dispatch(change('wizard', 'gruppiaccesso',  this.state.listaGruppi))
   }
 
   deletePipelineToForm(nome, parametro){
-    for(var i=0;i<this.state.listaPipelines.length;i++){    
+    for(var i=0;i<this.state.listaPipelines.length;i++){
       if(this.state.listaPipelines[i].nome==nome&&this.state.listaPipelines[i].parametro==parametro) {
         this.state.listaPipelines.splice(i, 1);
       }
     }
     const { dispatch } = this.props
-    dispatch(change('wizard', 'pipelines',  this.state.listaPipelines)) 
+    dispatch(change('wizard', 'pipelines',  this.state.listaPipelines))
   }
 
   deleteSorgenteToForm(tipo, val){
-    for(var i=0;i<this.state.listaSorgenti.length;i++){    
+    for(var i=0;i<this.state.listaSorgenti.length;i++){
       if(this.state.listaSorgenti[i].tipo==tipo&&this.state.listaSorgenti[i].val==val) {
         this.state.listaSorgenti.splice(i, 1);
       }
@@ -261,7 +262,7 @@ class WizardForm extends Component {
   }
 
   deleteStorageToForm(tipo, val){
-    for(var i=0;i<this.state.listaStorage.length;i++){    
+    for(var i=0;i<this.state.listaStorage.length;i++){
       if(this.state.listaStorage[i].tipo==tipo&&this.state.listaStorage[i].val==val) {
         this.state.listaStorage.splice(i, 1);
       }
@@ -272,14 +273,14 @@ class WizardForm extends Component {
 
   modificaDataDCATAPIT(value){
     const { dispatch } = this.props
-    dispatch(change('wizard', 'ultimamodifica', value)) 
+    dispatch(change('wizard', 'ultimamodifica', value))
   }
 
   changeTreeData(value){
     const { dispatch } = this.props
-    dispatch(change('wizard', 'treedata', value)) 
+    dispatch(change('wizard', 'treedata', value))
   }
-  
+
   openModalInfo = (infoText) => {
     console.log('infoText: ' + infoText)
     this.setState({
@@ -297,10 +298,10 @@ class WizardForm extends Component {
   aggiornaStato(context, uri_voc, index){
     var contextArray = this.state.context
     contextArray[index] = context
-    
+
     var uri_vocArray = this.state.uri_voc
     uri_vocArray[index] = uri_voc
-    
+
     this.setState({context: contextArray,
                    uri_voc: uri_vocArray
                   })
@@ -335,7 +336,7 @@ class WizardForm extends Component {
   goToSecondPage(){
     const { tipodataset } = this.props
     const { query, filePullLoaded } = this.state
-    
+
     if(tipodataset==="derived_sql"){
       if(query){
         this.setState({
@@ -347,11 +348,11 @@ class WizardForm extends Component {
           errorNext: "Specifica e testa una query prima di poter continuare"
         });
       }
-    }else{  
+    }else{
       this.setState({
         errorNext: undefined
       });
-      this.nextPage() 
+      this.nextPage()
     }
   }
 
@@ -378,20 +379,20 @@ class WizardForm extends Component {
   }
 
   getSchemaFromWS(fields, urlws, tipofile){
-    console.log('getSchemaFromWS - url:' + urlws +' - tipofile:'+tipofile) 
+    console.log('getSchemaFromWS - url:' + urlws +' - tipofile:'+tipofile)
     if(urlws && tipofile){
       const { dispatch } = this.props;
       this.setUploading(true, undefined);
-      this.setState({filePullLoaded:false}) 
+      this.setState({filePullLoaded:false})
       dispatch(getSchemaWS( urlws, tipofile))
-      .then(json => { 
+      .then(json => {
         if(json.status=='error'){
           this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
           console.log('error: ' + json.message);
         }else{
           this.calcDataFields(fields, json)
           this.setUploading(false, undefined);
-          this.setState({filePullLoaded:true}) 
+          this.setState({filePullLoaded:true})
           this.setDefaultValue()
         }
       })
@@ -411,13 +412,13 @@ class WizardForm extends Component {
 
   setDefaultValue(){
       const { dispatch, modalitacaricamento, categoria, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws, tipodataset } = this.props
-      
+
       //PIPELINE
       var pipeline = new Object()
       pipeline.nome = 'DAF Ingestion Pipeline default'
       pipeline.parametro = ''
       this.state.listaPipelines.push(pipeline)
-      dispatch(change('wizard', 'pipelines',  this.state.listaPipelines)) 
+      dispatch(change('wizard', 'pipelines',  this.state.listaPipelines))
 
       //SORGENTI
       var sorgente = new Object
@@ -468,14 +469,20 @@ class WizardForm extends Component {
       if(filesToUpload.length>0){
       this.setState({errorDrop:''})
         dispatch(getSchema(filesToUpload, tipofile))//defaul value is csv
-            .then(json => { this.calcDataFields(fields, JSON.parse(json))
+            .then(json => {
+              if(json.code && json.code===400){
+                this.setUploading(false, "L'upload del file è andato in errore per la presenza di caratteri non ammessi nei seguenti nomi delle colonne: "+json.fields+". Controllare i caratteri ammessi al seguente "+<a href="https://docs.italia.it/italia/daf/daf-dataportal-it-docs/it/master/dataportal-privato/dataset.html" target="_blank">"link"</a> );
+                toastr.error('Errore',"L'upload del file è andato in errore per la presenza di caratteri non ammessi nei seguenti nomi delle colonne: "+json.fields+".")
+              }else{
+                this.calcDataFields(fields, JSON.parse(json))
             //.then(json => { this.calcDataFields(fields, json)
-                            this.setUploading(false, undefined);
-                            dispatch(change('wizard', 'separator', json.separator))
-                            dispatch(change('wizard', 'filesToUpload', filesToUpload))
-                            dispatch(change('wizard', 'nomefile', filesToUpload[0].name))
-                            this.setDefaultValue()
-                        })
+                this.setUploading(false, undefined);
+                dispatch(change('wizard', 'separator', json.separator))
+                dispatch(change('wizard', 'filesToUpload', filesToUpload))
+                dispatch(change('wizard', 'nomefile', filesToUpload[0].name))
+                this.setDefaultValue()
+              }
+            })
             .catch(exception => {
                             console.log('Eccezione !!! ' + exception)
                             this.setUploading(false, 'Errore durante il caricamento. Si prega di riprovare più tardi.' );
@@ -496,8 +503,8 @@ class WizardForm extends Component {
     var tipi = new Object()
     inferred.map((item, index) => {
       tipi[index] =  new Array(item.derivedDataType); //Only one type returned from the service !!!
-      fields.push({nome : item.name, tipo : item.derivedDataType, concetto : '', 
-      desc : '', required : 0, field_type : '' , cat : '', tag : '', 
+      fields.push({nome : item.name, tipo : item.derivedDataType, concetto : '',
+      desc : '', required : 0, field_type : '' , cat : '', tag : '',
       constr : [{"`type`": "","param": ""}], semantics : { id: '',context: '' },
       data :  item.sampleValues, gerarchiacampinome: item.name});
     })
@@ -534,11 +541,11 @@ class WizardForm extends Component {
       }
     }
   }
-  
+
 
   getFormValue(nome){
-    const selector = formValueSelector('wizard') 
-    const value = selector(this.state, nome) 
+    const selector = formValueSelector('wizard')
+    const value = selector(this.state, nome)
     return value
   }
 
@@ -565,7 +572,7 @@ class WizardForm extends Component {
     dispatch(change('wizard', 'query_sql', sql))
     dispatch(change('wizard', 'sources', sources))
   }
-  
+
   executeQuery(value){
     const { dispatch } = this.props;
     var resultQuery = 'resultQuery'
@@ -655,8 +662,8 @@ class WizardForm extends Component {
                 modificaDataDCATAPIT={this.modificaDataDCATAPIT}
                 config={config}
                 licenze={licenze}
-                listaStorage={listaStorage} 
-                addStorageToForm={this.addStorageToForm} 
+                listaStorage={listaStorage}
+                addStorageToForm={this.addStorageToForm}
                 deleteStorageToForm={this.deleteStorageToForm}
                 datasetStdList={datasetStdList}
               />}
@@ -683,7 +690,7 @@ class WizardForm extends Component {
           </ModalFooter>
         </Modal>
       </div>
-            
+
     );
   }
 }
@@ -695,7 +702,7 @@ WizardForm = reduxForm({
   validate,
 })(WizardForm);
 
-const selector = formValueSelector('wizard') 
+const selector = formValueSelector('wizard')
 WizardForm = connect(state => {
   const categoria = selector(state, 'categoria')
   const modalitacaricamento = selector(state, 'modalitacaricamento')
@@ -708,7 +715,7 @@ WizardForm = connect(state => {
   const timerunita = selector(state, 'timerunita')
   const urlws = selector(state, 'urlws')
   const query = selector(state, 'query')
-  
+
   return { categoria, modalitacaricamento, tipodataset, sottocategoria, nome, tempopolling, espressionecron, timerquantita, timerunita, urlws, query }
 })(WizardForm)
 
