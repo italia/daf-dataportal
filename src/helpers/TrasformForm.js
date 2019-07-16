@@ -14,8 +14,7 @@ export function createOperational (values, data) {
      "merge_strategy" : values.strategiamerge,
      "scheduling_strategy" :  values.tempopolling==0?"CRON_DRIVEN":"TIMER_DRIVEN",
      "cron" : values.tempopolling==0?values.espressionecron:(values.timerquantita + ' ' + values.timerunita),
-     "dataset_type" : "batch",  
-     "read_type" : (values.tiposalvataggio) ? values.tiposalvataggio : 'update'
+     "dataset_type" : "batch",
     }
   data[operational]['type_info'] = {
     'dataset_type' : values.tipodataset,
@@ -61,14 +60,6 @@ export function createOperational (values, data) {
 }else{
   data[operational]['input_src'] = { }
 }
-  data[operational]['storage_info'] = 
-    {
-			"hdfs": {
-        "name": "hdfs_daf",
-        "path" : null,
-        "param" : null
-			}
-    }
   data[operational]['dataset_type'] = (values.tipoingestiondati) ? values.tipoingestiondati  : 'batch'
   data[operational]['is_vocabulary'] = (values.isvocabulary === 'yes')?true:false
   
@@ -91,14 +82,6 @@ export function createOperational (values, data) {
         data[operational]['input_src']['srv_push'] = []
         data[operational]['input_src']['srv_push'].push(sorgente)
       }
-    }
-  }
-
-  if(values.pipelines && values.pipelines.length>0){
-    for(var i=0;i<values.pipelines.length;i++){
-      let pipeline = values.pipelines[i]
-      data[operational]['ingestion_pipeline'] = []
-      data[operational]['ingestion_pipeline'].push(pipeline)
     }
   }
 
@@ -129,15 +112,11 @@ export function createDcat (values, data) {
   data[dcatapit]['holder_identifier'] = values.gruppoproprietario
   //data[dcatapit]['license_title'] = values.licenza 
   data[dcatapit]['license_id'] = values.licenza
-  data[dcatapit]['organization'] = {'name': values.gruppoproprietario }
   data[dcatapit]['owner_org'] = values.gruppoproprietario
   data[dcatapit]['frequency'] = values.frequenzaaggiornamento
   //data[dcatapit]['creation_date'] = currentDate
-  data[dcatapit]["groups"] = []
   data[dcatapit]["resources"] = []
   data[dcatapit]["relationships_as_object"] = []
-  data[dcatapit]["relationships_as_subject"] = []
-  data[dcatapit]["tags"] = tags
   return data
 }
 
@@ -173,7 +152,6 @@ export function createDataschema (values, data) {
     }
     var obj = {'name' : name, "`type`" : tipo}
     var metadata = {//INFORMAZIONI PRINCIPALI
-                    "type": item.tipo,
                     "title": item.nomehr,
                     "desc": item.desc,
                     "tag": item.tag?item.tag:[],
@@ -201,10 +179,6 @@ export function createDataschema (values, data) {
                     "required": item.obbligatorio?1:0,
                     "is_createdate": item.datacreazione,
                     "is_updatedate": item.dataaggiornamento,                    
-                    "field_profile": {
-                        "is_index": item.indicizzare,
-                        "is_profile": item.profiloindicizzazione
-                    },
                     //DATI PERSONALI
                     "personal": {
                         "is_personal": item.datipersonali,
