@@ -269,30 +269,6 @@ const renderFieldArray = ({fields, addTagsFieldToForm, handleSubmit, aggiornaSta
                             />
                         </div>
                       </div>
-                      <div className="form-group row">
-                        <label className="col-sm-5 col-form-label">Indicizzare il Campo</label>
-                        <div className="col-sm-2 pt-2">
-                          <Field
-                              name={`${field}.indicizzare`}
-                              component="input"
-                              type="checkbox"
-                              value={`${field}.indicizzare`}
-                              className="form-control"
-                            />
-                        </div>
-                      </div>
-                      <div className="form-group row">
-                        <label className="col-sm-5 col-form-label">Creare Profilo per Indicizzazione</label>
-                        <div className="col-sm-2 pt-2">
-                          <Field
-                              name={`${field}.profiloindicizzazione`}
-                              component="input"
-                              type="checkbox"
-                              value={`${field}.profiloindicizzazione`}
-                              className="form-control"
-                            />
-                        </div>
-                      </div>
 
 {/*                          <Field
                           name={`${field}.entityextraction`}

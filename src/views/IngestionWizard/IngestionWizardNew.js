@@ -52,7 +52,7 @@ class IngestionForm extends Component {
     console.log(transformed)
     this.setState({transformed:transformed})
 
-    if(transformed.operational.dataset_type===undefined || transformed.operational.dataset_proc.merge_strategy===undefined || transformed.operational.dataset_proc.read_type===undefined){
+    if(transformed.operational.dataset_type===undefined || transformed.operational.dataset_proc.merge_strategy===undefined || transformed.operational.read_type===undefined){
       toastr.error("Form incompleto", 'Ci sono dei valori mancanti nella finestra "Informazioni Procedurali"')
     }else{
       if(localStorage.getItem('token') && localStorage.getItem('token') !== 'null'){
