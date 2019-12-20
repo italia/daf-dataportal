@@ -1,0 +1,78 @@
+---
+- hosts: daf_target_machines
+  vars:
+#	Directory di destinazione
+    dest_dir: /srv/daf-dataportal
+  become: true
+
+  tasks:
+#	Task specifici debian/ubuntu
+  - name: aggiungi repo node 8.x
+    shell: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: apt-get update
+    apt:
+      update_cache: yes
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: installa git
+    apt:
+      name: git
+      state: present
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: installa node 8
+    apt:
+      name: nodejs
+      state: present
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+#ci vogliamo anche docker? nel caso, scommentare il prossimo blocco
+# - name: installa docker 
+#   apt:
+#     name: docker.io
+#     state: present
+#   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+#   #become:true
+
+#	Task specifici RHEL/CentOS
+  - name: aggiungi repo node 8.x
+    shell: curl -sL https://rpm.nodesource.com/setup_8.x | sudo bash -
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: yum update
+    yum:
+      name: '*'
+      state: latest
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: installa git
+    yum:
+      name: git
+      state: present
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: installa node 8
+    yum:
+      name: nodejs
+      state: present
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+#	Task generali
+  - name: pulisci dest_dir
+    #clonare dopo npm install da problemi, razziamo la dest_dir e ricloniamo
+    file:
+      path: '{{dest_dir}}'
+      state: absent
+
+  - name: clona il progetto
+    git:
+      repo: 'https://github.com/italia/daf-dataportal.git'
+      dest: '{{dest_dir}}'
+
+  - name: npm install
+    npm:
+      path: '{{dest_dir}}'
+
+

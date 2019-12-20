@@ -1,0 +1,4 @@
+[daf_target_machines]
+#inserire riga per riga gli ip o gli hostname delle vm destinatarie del deploy. es:
+#123.123.123.123
+#vm_daf_dataportal.miodominio.it
